@@ -88,7 +88,7 @@ unmonitor(sayHello);
 -----地址栏输入:JavaScript:+执行的语句。
 
 # 浏览器地址栏运行HTML代码
------地址栏中输入：data:text/html,<h1>Hello, world!</h1>
+-----地址栏中输入：data:text/html,'<h5>Hello, world!</h5>'
 ----页面也编辑：document.body.contentEditable='true';
 
 # 利用a标签自动解析URL
