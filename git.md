@@ -1,14 +1,19 @@
 # vscode-sync-setting ：
-> token: bb7d41e1e039fdd294a6819e7305b73bd066d9a1
-> sync.gist: b3a0bf7bab5419ea91488dcaee403f83
+* token: bb7d41e1e039fdd294a6819e7305b73bd066d9a1
+* sync.gist: b3a0bf7bab5419ea91488dcaee403f83
 
 # git
 git init 
+
 touch README.md
+
 git add README.md
+
 git commit -m "first commit"
+
 git remote add origin https://github.com/chenzong24635/仓库名.git   //关联远程仓库
-  //,若报错: remote origin already exists. 先运行  git remote rm origin  	          
+  //,若报错: remote origin already exists. 先运行  git remote rm origin  	  
+  
 git push -u origin master  //提交到你的仓库
 
 
