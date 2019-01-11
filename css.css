@@ -14,28 +14,30 @@ window.devicePixelRatio获取到当前设备的dpr
 主流手机显示屏的devicePixelRatio=2或3
 
 
-
-DPR(device pixel ratio) 设备像素比
-DIPS(device-independent pixels) CSS像素是一个抽象概念，设备无关像素
-DPI(dots per inch) 为打印机每英寸可以喷的墨汁点数，用于印刷行业中度量空间点的密度
-PPI(pixels per inch)为屏幕每英寸的像素数量(即在一个对角线长度为1英寸的正方形内所拥有的像素数)，用于度量计算机显示屏上像
+# 像素
+* DPR(device pixel ratio) 设备像素比
+* DIPS(device-independent pixels) CSS像素是一个抽象概念，设备无关像素
+* DPI(dots per inch) 为打印机每英寸可以喷的墨汁点数，用于印刷行业中度量空间点的密度
+* PPI(pixels per inch)为屏幕每英寸的像素数量(即在一个对角线长度为1英寸的正方形内所拥有的像素数)，用于度量计算机显示屏上像
 素的密度。目前PPI(主要是iOS)和DPI(比如在Android中)都会用在计算机显示设备的参数描述中，并且二者的意思是一样的，都是代表像素密度
 
 
 
-:empty 和 :blank CSS的伪选择器。
+#  :empty 和 :blank CSS的伪选择器。
     :empty 选择 空元素 。空元素是指没有任何内容的元素，甚至空格都不行。
     :blank 选择 没有子节点、仅有空的文本节点、仅有空白符的文本节点--浏览器不支持
 
 font-family: 'Microsoft YaHei', 'Avenir', Helvetica, Arial, sans-serif;
 
+# user-select
 user-select:none
 -webkit-user-select:none
-(1) 语法
+> (1) 语法
 user-select:none | text | all | element
 默认值：text
 适用范围：除替换元素外的所有元素
-(2) 取值说明
+
+> (2) 取值说明
 none:文本不能被选择
 text:可以选择文本
 all：当所有内容作为一个整体时可以被选择。如果双击或者在 上下文上点击子元素，
@@ -83,12 +85,12 @@ box-shadow: h-shadow v-shadow blur spread color inset;
 	    水平阴影 垂直阴影  模糊距离 阴影尺寸 阴影色 外部阴影（默认内部阴影)
 box-shadow: 0 6px 0 0 #eee;
 
-//单行文字溢出省略号
+# //单行文字溢出省略号
   white-space: nowrap; //强制文本在一行内输出
   overflow: hidden; //隐藏溢出部分
   text-overflow: ellipsis; //对溢出部分加上...
 
-//多行文字溢出省略号(主要针对webkit内核)
+# //多行文字溢出省略号(主要针对webkit内核)
   display: -webkit-box;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -106,45 +108,45 @@ div:after {
   right: 0;
 }
 
-文字换行
-强制不换行
-white-space:nowrap;
+# 文字换行
+> 强制不换行
+  white-space:nowrap;
 
-正常文字的换行(亚洲文字和非亚洲文字)
-white-space:normal;
+> 正常文字的换行(亚洲文字和非亚洲文字)
+  white-space:normal;
 
-强制英文单词断行
-word-break:break-all;
+> 强制英文单词断行
+  word-break:break-all;
 
-自动换行
-white-space:normal;
-word-break:break-all;
-word-wrap:break-word;
+> 自动换行
+  white-space:normal;
+  word-break:break-all;
+  word-wrap:break-word;
 
-字母大小写：
-text-transform ：
-Capitalize 英文拼音的首字母大写
-Uppercase 英文拼音字母全大写
-Lowercase 英文拼音字母全小写
+> 字母大小写：
+  text-transform ：
+  Capitalize 英文拼音的首字母大写
+  Uppercase 英文拼音字母全大写
+  Lowercase 英文拼音字母全小写
 
-手机端调起电话、email
-<a href="tel:电话号码" >电话号码</a>
-<a href="mailto:邮箱">邮箱</a>
+# 手机端调起电话、email
+  <a href="tel:电话号码" >电话号码</a>
+  <a href="mailto:邮箱">邮箱</a>
 
-清除手机端a链接点击高亮：
-  tap-highlight-color: rgba(0, 0, 0, 0);
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-  -webkit-tap-highlight-color:transparent;
+# 清除手机端a链接点击高亮：
+tap-highlight-color: rgba(0, 0, 0, 0);
+-webkit-tap-highlight-color: rgba(0,0,0,0);
+-webkit-tap-highlight-color:transparent;
 
-三角形
-    width:0; 
-    height:0; 
-    border-style: solid;
-    border-width: 30px 10px;
-    border-color: #f4f4f4  transparent transparent #f4f4f4;
+# 三角形
+  width:0; 
+  height:0; 
+  border-style: solid;
+  border-width: 30px 10px;
+  border-color: #f4f4f4  transparent transparent #f4f4f4;
 
 
-/* input placeholder颜色 */
+# input placeholder颜色
 ::-webkit-input-placeholder { color: #d3d2d2; }/*WebKit, Blink, Edge*/
 :-moz-placeholder { color: #d3d2d2; }/*Mozilla Firefox 4 to 18*/
 ::-moz-placeholder { color: #d3d2d2; }/*Mozilla Firefox 19+*/

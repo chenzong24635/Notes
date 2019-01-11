@@ -142,3 +142,17 @@ var swapItems = function(arr, index1, index2) {
   arr[index1] = arr.splice(index2, 1, arr[index1])[0];
   return arr;
 };
+
+
+// function adapte(){//适配
+//   var designWidth = 640; //设计图宽度
+//   var rem2px = 100; //1rem = 100px
+//   document.documentElement.style.fontSize = window.innerWidth / designWidth * rem2px + 'px';
+// }
+
+// $(function(){
+//   adapte()
+// })
+// $(window).resize(function(){
+//   adapte();
+// })
