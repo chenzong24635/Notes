@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="initial-scale=1, user-scalable=0, minimal-ui" charset="UTF-8">
+  <title>移动端滑动到底加载</title>
+  <!-- UC强制全屏 -->
+  <meta name="full-screen" content="yes">
+  <!-- QQ强制全屏 -->
+  <meta name="x5-fullscreen" content="true">
+  <link type="text/css" rel="stylesheet" href="dist/simplePagination1.css">
+  <link rel="stylesheet" href="dist/dropload.css">
+  
+  <style>
+    .news-item{
+      margin-bottom: 40px ;
+      font-size: 14px;
+      overflow: hidden;
+    }
+    .news-item-img,
+    .news-item-div{
+      width: 50%;
+      float: left;
+    }
+    img{
+      width:100%;
+    }
+    span, a{text-decoration:none;user-select: none;}
+    .page{margin:30px auto;width:620px}
+  </style>
+</head>
+<body>
+<div id="paging" class="page light-theme simple-pagination">
+</div>
+<div class="content">
+  <ul class="lists1"></ul>
+</div>
+<!-- <div class="content">
+  <ul class="lists"></ul>
+</div> -->
+<!-- jQuery1.7以上 或者 Zepto 二选一，不要同时都引用 -->
+<script src="dist/jquery.min.js"></script>
+<!-- <script src="dist/zepto.min.js"></script> -->
+<script src='dist/cookie.js'></script>
+<script src='dist/url.js'></script>
+<script src="dist/dropload.js"></script>
+<script type="text/javascript" src="dist/jquery.simplePagination.js"></script>
+<script>
+</script>
+</body>
+</html>

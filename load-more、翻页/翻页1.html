@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>-->
+  <title>jQuery翻页插件simplePagination</title>
+  <script type="text/javascript" src="dist/jquery.min.js"></script>
+  <!-- <script type="text/javascript" src="./zepto.min.js"></script> -->
+  <script type="text/javascript" src="dist/jquery.simplePagination.js"></script>
+  <link type="text/css" rel="stylesheet" href="dist/simplePagination.css">
+  <style type="text/css">
+    a{text-decoration:none}
+    .page{margin:30px auto;width:620px}
+  </style>
+</head>
+<body>
+<h1>演示1</h1>
+<div id="paging1" class="page light-theme simple-pagination">
+  <ul>
+    <li class="active"><span class="current prev">上一页</span></li>
+    <li class="active"><span class="current">1</span></li>
+    <li><a href="2" class="page-link">2</a>
+    </li><li><a href="3" class="page-link">3</a></li>
+    <li><a href="4" class="page-link">4</a></li>
+    <li><a href="5" class="page-link">5</a></li>
+    <li class="disabled"><span class="ellipse">…</span></li>
+    <li><a href="9" class="page-link">9</a></li>
+    <li><a href="10" class="page-link">10</a></li>
+    <li><a href="2" class="page-link next">下一页</a></li>
+  </ul>
+</div>
+<script type="text/javascript">
+  $(function(){
+    $("#paging1").pagination({
+      items: 100,
+      itemsOnPage: 10,
+      cssStyle: 'light-theme'
+    });
+  });
+/* $(function(){
+  $("#paging2").pagination({
+    items: 100,
+    itemsOnPage: 10,
+    cssStyle: 'dark-theme'
+  });
+});
+$(function(){
+  $("#paging3").pagination({
+    items: 100,
+    itemsOnPage: 10,
+    cssStyle: 'compact-theme'
+  });
+}); */
+</script>
+
+</body></html>
