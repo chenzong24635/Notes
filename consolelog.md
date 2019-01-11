@@ -70,7 +70,8 @@ values(object)方法返回一个数组，包含特定对象的所有键值。
 # 修改页面：控制台输入：document.body.contentEditable=true
 
 # monitor & unmonitor
-monitor(function)，它接收一个函数名作为参数，比如function a，每次a被执行了，都会在控制台输出一条信息，里面包含了函数的名称a及执行时所传入的参数。而unmonitor(function)便是用来停止这一监听。
+> monitor(function)，它接收一个函数名作为参数，比如function a，每次a被执行了，都会在控制台输出一条信息，里面包含了函数的名称a及执行时所传入的参数。而unmonitor(function)便是用来停止这一监听。
+
 function sayHello(name){
     alert('hello,'+name);
 }
@@ -83,27 +84,25 @@ unmonitor(sayHello);
 * debug同样也是接收一个函数名作为参数。当该函数执行时自动断下来以供调试，类似于在该函数的入口处打了个断点，可以通过debugger来做到，同时也可以通过在Chrome开发者工具里找到相应源码然后手动打断点。而undebug 则是解除该断点。而其他还有好些命令则让人没有说的欲望，因为好些都可以通过Chrome开发者工具的UI界面来操作并且比用在控制台输入要方便。
 
 
-
-
-浏览器地址栏运行JavaScript代码: 
+# 浏览器地址栏运行JavaScript代码: 
 -----地址栏输入:JavaScript:+执行的语句。
 
-浏览器地址栏运行HTML代码
+# 浏览器地址栏运行HTML代码
 -----地址栏中输入：data:text/html,<h1>Hello, world!</h1>
 ----页面也编辑：document.body.contentEditable='true';
 
-#利用a标签自动解析URL
+# 利用a标签自动解析URL
 let a=document.createElement('a');
 a.href='http://www.bing.com'
 console.log(a.host)
 
-#快速查找要调试的函数:
+# 快速查找要调试的函数:
 假设你要在函数中打断点，最常用的两种方式是：
 在控制台查找行并添加断点 .//debug(funcName)，当到达传入的函数时，代码将停止。
 在代码中添加debugger
 
-#获取函数的堆栈跟踪信息:console.trace (仅仅只是在控制台中跟踪) 可以方便地调试JavaScript.
-var car;
+# 获取函数的堆栈跟踪信息:console.trace (仅仅只是在控制台中跟踪) 可以方便地调试JavaScript.
+> var car;
 var func1 = function() {
 	func2();
 }
