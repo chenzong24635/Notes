@@ -1,4 +1,4 @@
-﻿vscode-sync-setting ：
+#vscode-sync-setting ：
 token: bb7d41e1e039fdd294a6819e7305b73bd066d9a1
 sync.gist: b3a0bf7bab5419ea91488dcaee403f83
 
@@ -12,7 +12,7 @@ git push -u origin master  //提交到你的仓库
 
 
 
-git基本命令：
+#git基本命令：
 
 git init  --初始化git 将当前目录变为仓库
 git clone url   --获取  git clone http://chenzong@git.nb800.cn:60051/root/xuanmixcx.git
@@ -22,14 +22,14 @@ git pull origin   ---从服务器拉取
 git push origin  ---更新到服务器
 
 
-安装配置：
+#安装配置：
 npm install git
 git config --global user.name "chenzong24635"
 git config --global user.email "chenzong24635@163.com"
 
 
 
-重设git用户的名字和邮箱:
+#重设git用户的名字和邮箱:
 
 git config --global user.name "chenzong24635"
 git config --global user.email ""chenzong24635@163.com"
@@ -44,7 +44,7 @@ ssh -T git@github.com 或 ssh -T git@gitee.com
 
 
 
-git命令:
+#git命令:
 
 git init  //初始化git  将当前目录变为仓库
 git add ./filename  //将文件添加到暂存区
