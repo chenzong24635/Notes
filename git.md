@@ -15,7 +15,7 @@
 
 # git基本命令：
 * git init  --初始化git 将当前目录变为仓库
-* git clone url   --获取  git clone http://chenzong@git.nb800.cn:60051/root/xuanmixcx.git
+* git clone url   --获取  git clone http://chenzong@git/仓库名.git
 * git add .    ---添加 
 * git commit  -m "备注"      ---提交 
 * git pull origin   ---从服务器拉取
@@ -46,7 +46,7 @@
 * git init  //初始化git  将当前目录变为仓库
 * git add ./filename  //将文件添加到暂存区
 * git commit -m "备注" //将暂存区文件提交到仓库
-* git remote add origin http://github.com/youname/repo.git //关联远端仓库
+* git remote add origin http://github.com/仓库名.git //关联远端仓库
 * git remote rm origin//删除远端仓库关联
 * git remote -v//查看已关联远端库
 * git push -u origin master //提交到远端仓库 第一次以后用：git push origin master
