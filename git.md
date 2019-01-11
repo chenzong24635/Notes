@@ -1,6 +1,6 @@
 # vscode-sync-setting ：
-token: bb7d41e1e039fdd294a6819e7305b73bd066d9a1
-sync.gist: b3a0bf7bab5419ea91488dcaee403f83
+> token: bb7d41e1e039fdd294a6819e7305b73bd066d9a1
+>sync.gist: b3a0bf7bab5419ea91488dcaee403f83
 
 # git
 git init 
