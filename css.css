@@ -1,5 +1,5 @@
- el.style.cssText +=
-
+el.style.cssText +=
+# meta
 <meta id="viewport" name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no;">
 
 window.devicePixelRatio是设备上物理像素和设备独立像素(device-independent pixels (dips))的比例。
@@ -62,7 +62,7 @@ all：当所有内容作为一个整体时可以被选择。如果双击或者�
 //IE10、11
 <style type="text/css">
   @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-   .ov2{height: 47px;}
+    .ov2{height: 47px;}
   }
 </style>
 
