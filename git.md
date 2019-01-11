@@ -16,7 +16,9 @@ git push -u origin master  //提交到你的仓库
 # git基本命令：
 
 > git init  --初始化git 将当前目录变为仓库
+
 > git clone url   --获取  git clone http://chenzong@git.nb800.cn:60051/root/xuanmixcx.git
+
 > git add .    ---添加 
 git commit  -m "备注"      ---提交 
 git pull origin   ---从服务器拉取
