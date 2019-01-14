@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>pageNav_demo</title>
+        <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
+        <link rel="stylesheet" type="text/css" href="css/pageNav.css" />
+       <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+        <script src="js/pageNav.js" type="text/javascript"></script>
+        <style type="text/css">
+            .main-container{
+                text-align: center;
+            }
+            ol{
+                list-style: none;
+            }
+            p{
+                padding-left: 20px;
+            }
+            .test-box{
+                padding-left: 20px;
+            }
+            .dark-footer{
+                background-color: rgba(18, 101, 148, 0.9);
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h2>PageNav</h2>
+            <h4>Usage</h4>
+        </header>
+        <p>
+            一:<br />
+            pageNav.css <br />
+            jquery <br />
+            pageNav.js <br />
+            将上述3个文件依次引入<br />
+            二:<br />
+            复制nav的html至你的页面中，并给与id，这个将作为生成分页条的盒子。
+            根据需要可以在Nav中添加/删除 dark 类名来搭配浅色/深色背景。<br />
+            <code>&lt;nav aria-label="Page navigation" class="page-nav-outer" id="PageNavId"&gt;&lt;/nav&gt;</code><br />
+            三:<br />
+            生成翻页导航:<br />
+            <code>
+                var pageNavObj = null;//用于储存分页对象<br />
+                pageNavObj = new PageNavCreate("PageNavId",{
+                    pageCount:30,
+                    currentPage:1,
+                    perPageNum:5,
+                });<br />
+                pageNavObj.afterClick(pageNavCallBack);<br />
+                /*<br />
+                    PageNavId://盒子的id名<br />
+                    pageCount://总页数<br />
+                    currentPage://当前页<br />
+                    perPageNum://每页按钮数(非必须,默认5)<br />
+                    pageNavObj.afterClick()<br />
+                    在这个方法内传入你的回调函数，这个回调函数会在翻页按钮被点击后执行，回调函数的参数中将会传入当前点击的页码值，pageNavCallBack函数的名称和内容根据需要自定;<br />
+                    一般在回调函数中执行AJAX异步请求，然后根据返回的数据，重复步骤三重新生成一个分页条。<br />
+                */<br />
+            </code>
+
+        </p>
+        <div class="test-box">
+            <p>pageCount:<input type="number" value="30" id="testPageCount" required="required"></p>
+            <p>currentPage:<input type="number" value="1" id="testCurrentPage" required="required"></p>
+            <p>perPageNum:<input type="number" value="" id="testPerPageNum" placeholder="5"></p>
+            <p><input type="button" value="submit"/ id="testBtn"></p>
+            <label for="pageNavStyle">浅色/深色:</label>
+            <select name="style" id="pageNavStyle">
+                <option value="0">Bright</option>
+                <option value="1">Dark</option>
+            </select>
+        </div>
+        <div class="main-container">
+            <ol>
+                <li>1. listItem</li>
+                <li>2. listItem</li>
+                <li>3. listItem</li>
+                <li>4. listItem</li>
+                <li>5. listItem</li>
+                <li>6. listItem</li>
+                <li>7. listItem</li>
+                <li>8. listItem</li>
+                <li>9. listItem</li>
+            </ol>
+        </div>
+        <footer>
+            <nav aria-label="Page navigation" class="page-nav-outer" id="PageNavId">
+                <!-- <div class="page-nav-inner clearfloat">
+                    <ul class="pagination">
+                        <li class="page-nav-Prev">
+                          <a href="javascript:void(null)" aria-label="Previous" pagenum="1" >
+                            <span aria-hidden="true">&laquo;</span>
+                          </a>
+                        </li>
+                        <li class="active pageNum" ><a href="javascript:void(null)"  pagenum="1" >1</a></li>
+                        <li class="pageNum"><a href="javascript:void(null)" pagenum="2" >2</a></li>
+                        <li class="pageNum"><a href="javascript:void(null)" pagenum="3" >3</a></li>
+                        <li class="pageNum"><a href="javascript:void(null)" pagenum="4" >4</a></li>
+                        <li class="pageNum"><a href="javascript:void(null)" pagenum="5" >5</a></li>
+                        <li class="disabled">
+                            <a href="javascript:void(null)">...</a>
+                        </li>
+                        <li class="page-nav-Next">
+                          <a href="javascript:void(null)" aria-label="Next"  pagenum="" >
+                            <span aria-hidden="true">&raquo;</span>
+                          </a>
+                        </li>
+                    </ul>
+                    <div class="page-input-box">
+                        <input type="text" values=""/>
+                        <button>Go</button>
+                    </div>
+                </div> -->
+            </nav>
+        </footer>
+    </body>
+    <script type="text/javascript">
+        var pageNavObj = null;
+        jQuery(document).ready(function($) {
+            //初始化
+            //pageNavCreate("PageNav",200,1,pageNavCallBack);
+            pageNavObj = new PageNavCreate("PageNavId",{
+                pageCount:30,//总页数
+                currentPage:1,//当前页
+                perPageNum:5,//每页按钮数
+            });
+            pageNavObj.afterClick(pageNavCallBack);
+        });
+
+        //翻页按钮点击后触发的回调函数
+        function pageNavCallBack(clickPage){
+            //clickPage是被点击的目标页码
+            //console.log(clickPage);
+
+            //一般来说可以在这里通过clickPage,执行AJAX请求取数来重写页面
+
+            //最后别忘了更新一遍翻页导航栏
+            //pageNavCreate("PageNav",pageCount,clickPage,pageNavCallBack);
+            pageNavObj = new PageNavCreate("PageNavId",{
+                pageCount:getPageSet().pageCount,//总页数
+                currentPage:clickPage,//当前页
+                perPageNum:getPageSet().perPageNum,//每页按钮数
+            });
+            pageNavObj.afterClick(pageNavCallBack);
+        }
+
+
+
+
+        //本示例页的一些js
+        jQuery(document).ready(function($) {
+            $("#testBtn").click(function(event) {
+                pageNavObj = new PageNavCreate("PageNavId",{
+                    pageCount:getPageSet().pageCount,//总页数
+                    currentPage:getPageSet().currentPage,//当前页
+                    perPageNum:getPageSet().perPageNum,//每页按钮数
+                });
+                pageNavObj.afterClick(pageNavCallBack);
+            });
+            $(".test-box input").keydown(function(event) {
+                if(event.which == 13){
+                    pageNavObj = new PageNavCreate("PageNavId",{
+                        pageCount:getPageSet().pageCount,//总页数
+                        currentPage:getPageSet().currentPage,//当前页
+                        perPageNum:getPageSet().perPageNum,//每页按钮数
+                    });
+                    pageNavObj.afterClick(pageNavCallBack);
+                }
+            });
+            $("#pageNavStyle").change(function(event) {
+                var selectVal = $(this).val();
+                //console.log(selectVal);
+                if(selectVal==0){
+                    $("#PageNavId").removeClass('dark');
+                    $("footer").removeClass('dark-footer');
+                }else if(selectVal==1){
+                    $("#PageNavId").addClass('dark');
+                    $("footer").addClass('dark-footer');
+                }
+            });
+
+        });
+        //本示例页的一些js
+        function getPageSet(){
+            var obj = {
+                pageCount:null,//总页数
+                currentPage:null,//当前页
+                perPageNum:null,//每页按钮数
+            }
+            if($("#testPageCount").val() && !isNaN(parseInt($("#testPageCount").val()))){
+                obj.pageCount = parseInt($("#testPageCount").val());
+            }else{
+                obj.pageCount = parseInt($(".page-input-box > input").attr("placeholder"));
+            }
+
+            if($("#testCurrentPage").val() && !isNaN(parseInt($("#testCurrentPage").val()))){
+                obj.currentPage = parseInt($("#testCurrentPage").val());
+                obj.currentPage = (obj.currentPage<=obj.pageCount ? obj.currentPage : obj.pageCount);
+            }else{
+                obj.currentPage = 1;
+            }
+
+
+
+            if($("#testPerPageNum").val() && !isNaN(parseInt($("#testPerPageNum").val()))){
+                obj.perPageNum = parseInt($("#testPerPageNum").val());
+            }else{
+                obj.perPageNum = null;
+            }
+
+            return obj;
+        }
+        
+    </script>
+</html>
