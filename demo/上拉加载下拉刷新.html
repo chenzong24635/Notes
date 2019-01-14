@@ -29,8 +29,8 @@
   </style>
 </head>
 <body>
-<div id="paging" class="page light-theme simple-pagination">
-</div>
+<!-- <div id="paging" class="page light-theme simple-pagination">
+</div> -->
 <div class="content">
   <ul class="lists"></ul>
 </div>
@@ -74,7 +74,7 @@ $(function(){
         pageNum:pageNum,
         pageSize:pageSize
       }
-      pageNum++;//以便上拉加载时不会重复加载第一页
+      
       var result = '';
       $.ajax({
         url:callurl+'/web/newlist',
@@ -105,6 +105,7 @@ $(function(){
             me.lock();// 锁定
             me.noData(); // 无数据
           }
+          pageNum++;//以便上拉加载时不会重复加载第一页
           $('.lists').html(result);// 插入数据到页面，放到最后面
           me.resetload();// 每次数据插入，必须重置
         },
@@ -119,7 +120,6 @@ $(function(){
         pageNum:pageNum,
         pageSize:pageSize
       }
-      pageNum++;
       var result = '';
       $.ajax({
         url:callurl+'/web/newlist',
@@ -150,6 +150,7 @@ $(function(){
             me.lock();// 锁定
             me.noData();// 无数据
           }
+          pageNum++;
           $('.lists').append(result);// 插入数据到页面，放到最后面
           me.resetload();// 每次数据插入，必须重置
         },

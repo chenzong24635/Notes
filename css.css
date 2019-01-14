@@ -1,3 +1,6 @@
+﻿
+
+
 el.style.cssText +=
 # meta
 <meta id="viewport" name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no;">
@@ -143,7 +146,7 @@ tap-highlight-color: rgba(0, 0, 0, 0);
   height:0; 
   border-style: solid;
   border-width: 30px 10px;
-  border-color: #f4f4f4  transparent transparent #f4f4f4;
+  border-color:  transparent transparent transparent #f4f4f4;
 
 
 # input placeholder颜色
@@ -151,3 +154,7 @@ tap-highlight-color: rgba(0, 0, 0, 0);
 :-moz-placeholder { color: #d3d2d2; }/*Mozilla Firefox 4 to 18*/
 ::-moz-placeholder { color: #d3d2d2; }/*Mozilla Firefox 19+*/
 :-ms-input-placeholder { color: #d3d2d2; }/*Internet Explorer 10-11 */
+
+
+-webkit-text-size-adjust: 100%;  // 关闭字体大小自动调整功能.; 防止iPhone在坚屏转向横屏时放大文字（注意，就算viewport设置了maximum-scale=1.0 文字还是会放大的）
+//放在body中会导致页面缩放失效,不要把-webkit-text-size-adjust设置为全局或者可继承的
