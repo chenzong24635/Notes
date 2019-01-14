@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>demo</title>
+  <link rel="stylesheet" type="text/css" href="dist/pageNav.css" />
+  <script type="text/javascript" src="dist/jquery-3.1.1.min.js"></script>
+  <script type="text/javascript" src="dist/cookie.js"></script>
+  <script type="text/javascript" src="dist/url.js"></script>
+  <script type="text/javascript" src="dist/pageNav.js"></script>
+</head>
+
+<body>
+  <nav aria-label="Page navigation" class="page-nav-outer" id="PageNavId"></nav>
+  <div class="lists"></div>
+  <script type="text/javascript">
+    var cid = '';
+    var lists = [];
+    var pageSize = 5; //每页加载个数
+    var len = 0; //总个数
+    var pageNum = 1; //点击加载的页数
+    var pageNavObj = null; //用于储存分页对象
+
+    function pageNavCallBack(clickPage) {
+      pageNavObj = new PageNavCreate("PageNavId", {
+        pageCount: len,
+        currentPage: clickPage,
+        perPageNum: 5,
+      });
+      pageNavObj.afterClick(pageNavCallBack);
+    }
+    pageFlipSet(pageNum,pageSize)
+    $(document).on('click', '.pagination li a', function () {
+      pageNum = $(this).attr('pagenum') / 1;
+      console.log(pageNum);
+      if($(this).parent().hasClass('disabled')){
+        return false;
+      }
+      pageFlipSet(pageNum,pageSize)
+    })
+
+    function pageFlipSet(pageNum,pageSize){
+      var json = {
+        order:"ASC",
+        pageNum:pageNum,
+        pageSize:pageSize
+      }
+      var result = '';
+      $.ajax({
+        url:callurl+'/web/newlist',
+        type:'post',
+        data:JSON.stringify(json),
+        contentType: 'application/json',
+        dataType: "json",
+        success: function(data){
+          len = data.data.pages;
+          console.log(len)
+          var arrLen = data.data.list.length;
+          if(arrLen > 0){
+            var lists = data.data.list;
+            console.log(lists)
+            for(var i=0; i<arrLen; i++){
+              result += ` 
+                <li class="news-item clearfix" data-id=${lists[i].cid} data-newitemid=${lists[i].id}>
+                  <a class="news-item-img" data-newitemid=${lists[i].id} href="javascript:;">
+                      <img src=${lists[i].pic} alt=${lists[i].title} title=${lists[i].title} onerror="this.src='./images/newsList-3.jpg'"/>
+                  </a>
+                  <div class="news-item-div">
+                      <p class="title fs20">${lists[i].title}</p>
+                      <p class="date mt10 fs20"></p>
+                  </div>
+                </li>   
+                `
+            }
+            $('.lists').html(result);// 插入数据到页面，放到最后面
+            pageNavObj = new PageNavCreate("PageNavId", {
+              pageCount: len,
+              currentPage: pageNum,
+              perPageNum: pageSize,
+            });
+            pageNavObj.afterClick(pageNavCallBack);
+          }
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>
