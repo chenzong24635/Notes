@@ -7,14 +7,13 @@ height: 64px; /*px*/
 font-size: 28px; /*px*/
 
 # 页面跳转
-* 1
-* <!-- 使用 router-link 组件来导航. -->
-* <!-- 通过传入 `to` 属性指定在main.js文件设置的别名链接，如/1 -->
-* <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
-* <router-link to="/1">Go to Foo</router-link>
+> 1
+  <!-- 使用 router-link 组件来导航. -->
+  <!-- 通过传入 `to` 属性指定在main.js文件设置的别名链接，如/1 -->
+  <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+  <router-link to="/1">Go to Foo</router-link>
 
-* 2
-> 
+> 2
 methods:{
     clickFn:function(){
         this.$router.go('/login');//其中login是你定义的一个路由模块
@@ -22,8 +21,7 @@ methods:{
 
 # 修改Vux组件中预先定义的样式变量（组件颜色）
 修改build/webpack.base.conf.js
-> 
-module.exports = vuxLoader.merge(webpackConfig, {
+> module.exports = vuxLoader.merge(webpackConfig, {
   plugins:[
     {name: 'vux-ui'},
     {name: 'less-theme', path: 'src/assets/style/yisong.less'}//自定义的Less文件路径
