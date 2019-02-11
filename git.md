@@ -11,7 +11,8 @@
   //,若报错: remote origin already exists. 先运行  git remote rm origin  	  
 * git push -u origin master  //提交到你的仓库
 
-
+# md添加图片
+![image](https://github.com/chenzong24635/images/blob/master/img/1.png)
 
 # git基本命令：
 * git init  --初始化git 将当前目录变为仓库

@@ -1,3 +1,41 @@
+# px2remLoader用法
+直接写px，编译后会直接转化成rem —- 除开下面两种情况，其他长度用这个
+在px;后面添加/*no*/，不会转化px，原样输出。 — 一般border需用这个
+在px;后面添加/*px*/,会根据dpr的不同，生成三套代码。—- 一般字体需用这个
+border: 1px solid #ddd; /*no*/
+height: 64px; /*px*/
+font-size: 28px; /*px*/
+
+# 页面跳转
+* 1
+* <!-- 使用 router-link 组件来导航. -->
+* <!-- 通过传入 `to` 属性指定在main.js文件设置的别名链接，如/1 -->
+* <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+* <router-link to="/1">Go to Foo</router-link>
+
+* 2
+> 
+methods:{
+    clickFn:function(){
+        this.$router.go('/login');//其中login是你定义的一个路由模块
+}
+
+# 修改Vux组件中预先定义的样式变量（组件颜色）
+修改build/webpack.base.conf.js
+> 
+module.exports = vuxLoader.merge(webpackConfig, {
+  plugins:[
+    {name: 'vux-ui'},
+    {name: 'less-theme', path: 'src/assets/style/yisong.less'}//自定义的Less文件路径
+  ]
+})
+
+修改.less内容可自己根据项目需求定制
+@tabbar-text-active-color: #ff0d00;
+
+最后 修改配置文件以后需要重新启动项目，不然配置不起效果
+
+
 # npm
 npm init 在此目录生成package.json文件，可以添加-y | --yes 参数则默认所有配置为默认yes
 
