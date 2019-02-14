@@ -1,8 +1,8 @@
 # meta
-## 必要属性 
-* content
+    ## 必要属性 
+    * content
   
-## 可选属性 
+    ## 可选属性 
     * http-equiv:content-type / expire / refresh / set-cookie  把content属性关联到HTTP头部
     * name:author / description / keywords / generator / others  把content属性关联到一个名称
 
