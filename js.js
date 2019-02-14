@@ -66,6 +66,12 @@ arr.filter((item, index, array) => {
   console.log('filter()-->', 'index:', index, ';item:', item, '源数组:', array)
 });
 
+// 利用filter去重
+var arr = [2,3,4,4,5,2,3,6];
+var arr2 = arr.filter(function(element,index,self){
+return self.indexOf(element) === index;
+});
+console.log(arr2);
 
 // entries()，keys()和values()——用于遍历数组。它们都返回一个遍历器对象
   for (let [index, item] of arr.entries()) {
