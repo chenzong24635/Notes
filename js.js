@@ -1,3 +1,8 @@
+// unicode=>中文
+/* 记得head标记中加入
+<meta http-equiv="content-type" content="text/html; charset=utf-8">  */
+var str = "\u6D77\u66D9\u4E2D\u5FC3\u83DC\u5E02\u573A" ;
+unescape(str.replace(/\\u/g, '%u'))
 
 // 遍历方法
 
@@ -85,8 +90,6 @@ console.log('Object.keys()-->', keys)
 let values = Object.values(arr);
 console.log('Object.values()-->', values)
 
-
-
 // 删除变量
 var {a,b,...obj} = {
   d: 'd',
@@ -142,17 +145,3 @@ var swapItems = function(arr, index1, index2) {
   arr[index1] = arr.splice(index2, 1, arr[index1])[0];
   return arr;
 };
-
-
-// function adapte(){//适配
-//   var designWidth = 640; //设计图宽度
-//   var rem2px = 100; //1rem = 100px
-//   document.documentElement.style.fontSize = window.innerWidth / designWidth * rem2px + 'px';
-// }
-
-// $(function(){
-//   adapte()
-// })
-// $(window).resize(function(){
-//   adapte();
-// })

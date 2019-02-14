@@ -1,3 +1,22 @@
+# rem
+    
+    npm install lib-flexible --save //安装flexible
+    import 'lib-flexible' //在main.js中引入flexible
+
+    npm install px2rem-loader --save-dev //安装px2rem-loader,自动将px转换为rem
+
+    配置px2rem-loader
+    在vue-cli生成的文件中,找到以下文件 build/utils.js,
+    在exports.cssLoaders添加
+    const px2remLoader = {
+      loader: 'px2rem-loader',
+      options: {
+        remUnit: 75
+      }
+    }
+    在generateLoaders修改
+    const loaders = options.usePostCSS ? [cssLoader, px2remLoader, postcssLoader] : [cssLoader, px2remLoader]
+
 # px2remLoader用法
     直接写px，编译后会直接转化成rem —- 除开下面两种情况，其他长度用这个
     在px;后面添加/*no*/，不会转化px，原样输出。 — 一般border需用这个
@@ -15,62 +34,24 @@
 
     2
     methods:{
-        clickFn:function(){
-            this.$router.go('/login');//其中login是你定义的一个路由模块
+      clickFn:function(){
+        this.$router.go('/login');//其中login是你定义的一个路由模块
+      }
     }
 
-# 修改Vux组件中预先定义的样式变量（组件颜色）
+# 修改Vux组件中样式变量（组件颜色）
     修改build/webpack.base.conf.js
     module.exports = vuxLoader.merge(webpackConfig, {
       plugins:[
         {name: 'vux-ui'},
-        {name: 'less-theme', path: 'src/assets/style/yisong.less'}//自定义的Less文件路径
+        {name: 'less-theme', path: 'src/assets/style/dy.less'}//自定义的Less文件路径
       ]
     })
 
-    修改.less内容可自己根据项目需求定制
+    自定义dy.less内容
     @tabbar-text-active-color: #ff0d00;
 
-    最后 修改配置文件以后需要重新启动项目，不然配置不起效果
-
-
-# npm
-npm init 在此目录生成package.json文件，可以添加-y | --yes 参数则默认所有配置为默认yes
-
-npm install <package> -g 全局安装依赖包
-npm install <package> 默认使用–save 参数，如果不想保存到package.json中，可以添加--no-save参数；还可以指定–save-dev 或 -g参数
-npm install --production 安装dependencies，不包含devDependencies
-
-npm uninstall <package> 卸载依赖包， 默认使用–save参数，即从package.json中移除
-npm update <package> 升级依赖包版本
-npm outdated 查看当前过期依赖，其中current显示当前安装版本，latest显示依赖包的最新版本，wanted显示我们可以升级到可以不破坏当前代码的版本
-
-npm ls [-g] [--depth=0] 查看当前目录或全局的依赖包，可指定层级为0
-
-npm root -g 查看全局安装地址
-
-npm ll[la] [--depth=0] 查看依赖包信息
-
-npm list <package>查看依赖的当前版本
-
-npm search <string> 查找包含该字符串的依赖包
-
-npm view <package> [field] [--json]列出依赖信息，包括历史版本，可以指定field来查看某个具体信息，比如（versions) 可以添加–json参数输出全部结果
-
-npm home <package> 在浏览器端查看项目（项目主页）
-
-npm repo <package> 浏览器端打开项目地址（GitHub）
-
-npm docs <packge> 查看项目文档
-
-npm bugs <packge> 查看项目bug
-
-npm prune 移除当前不在package.json中但是存在node_modules中的依赖
-
-npm link 不使用npm install 而连接某个依赖包，通常用作开发本地依赖包 
-
-
-
+    最后需要重新启动项目，不然配置不起效果
 
 # vue-cli安装
 npm install --global vue-cli
@@ -137,3 +118,40 @@ npm run dev
     └── package.json                # 项目文件，记载着一些命令和依赖还有简要的项目描述信息 
     └── README.md                   #介绍自己这个项目的，可参照github上star多的项目。
     build/
+
+
+
+# npm
+npm init 在此目录生成package.json文件，可以添加-y | --yes 参数则默认所有配置为默认yes
+
+npm install <package> -g 全局安装依赖包
+npm install <package> 默认使用–save 参数，如果不想保存到package.json中，可以添加--no-save参数；还可以指定–save-dev 或 -g参数
+npm install --production 安装dependencies，不包含devDependencies
+
+npm uninstall <package> 卸载依赖包， 默认使用–save参数，即从package.json中移除
+npm update <package> 升级依赖包版本
+npm outdated 查看当前过期依赖，其中current显示当前安装版本，latest显示依赖包的最新版本，wanted显示我们可以升级到可以不破坏当前代码的版本
+
+npm ls [-g] [--depth=0] 查看当前目录或全局的依赖包，可指定层级为0
+
+npm root -g 查看全局安装地址
+
+npm ll[la] [--depth=0] 查看依赖包信息
+
+npm list <package>查看依赖的当前版本
+
+npm search <string> 查找包含该字符串的依赖包
+
+npm view <package> [field] [--json]列出依赖信息，包括历史版本，可以指定field来查看某个具体信息，比如（versions) 可以添加–json参数输出全部结果
+
+npm home <package> 在浏览器端查看项目（项目主页）
+
+npm repo <package> 浏览器端打开项目地址（GitHub）
+
+npm docs <packge> 查看项目文档
+
+npm bugs <packge> 查看项目bug
+
+npm prune 移除当前不在package.json中但是存在node_modules中的依赖
+
+npm link 不使用npm install 而连接某个依赖包，通常用作开发本地依赖包 
