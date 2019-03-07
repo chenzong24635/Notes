@@ -5,7 +5,7 @@
 
   2. 未加前缀的URL(同相对URL)，例如，assets/logo.png将被视为与相对URL相同并被翻译成./assets/logo.png。
 
-  3. 带有前缀的URL~被视为模块请求，类似于require('some-module/image.png')。如果要利用Webpack的模块解析配置，则需要使用此前缀。例如，如果您有解析别名assets，则需要使用<img src="~assets/logo.png">以确保遵守别名。
+  3. 带有前缀的URL~被视为模块请求，类似于require('some-module/image.png')。如果要利用Webpack的模块解析配置，则需要使用此前缀。例如，如果您有解析别名assets，则需要使用'<img src="~assets/logo.png">'以确保遵守别名。
 
   4. 根相对URL，如/assets/logo.png根本不处理。--打包后图片不加载
 
