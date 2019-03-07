@@ -5,7 +5,7 @@
 
   2. 未加前缀的URL(同相对URL)，例如，assets/logo.png将被视为与相对URL相同并被翻译成./assets/logo.png。
 
-  3. 带有前缀的URL~被视为模块请求，类似于require('some-module/image.png')。如果要利用Webpack的模块解析配置，则需要使用此前缀。例如，如果您有解析别名assets，则需要使用<img src="~assets/logo.png">以确保遵守别名。
+  3. 带有前缀的URL~被视为模块请求，类似于require('some-module/image.png')。如果要利用Webpack的模块解析配置，则需要使用此前缀。例如，如果您有解析别名assets，则需要使用\<img src="~assets/logo.png">以确保遵守别名。
 
   4. 根相对URL，如/assets/logo.png根本不处理。--打包后图片不加载
 
@@ -25,22 +25,23 @@
     注意：如果把图片放在assets与static中，html页面可以使用；但在动态绑定中，assets路径的图片会加载失败，因为webpack使用的是commenJS规范，必须使用require才可以
 
   1. 图片路径为static
-  <img class="img-title" src="static/images/index/b-t.jpg" alt="">
+  \<img class="img-title" src="static/images/index/b-t.jpg" alt="">
 
-  onerror最好使用此路径下的图片<img :src="item.pic" alt="" onerror="this.src='static/images/errorImg.jpg'">
+  onerror最好使用此路径下的图片\<img :src="item.pic" alt="" onerror="this.src='static/images/errorImg.jpg'">
 
   2. assets
-  <img class="img-title" src="../assets/images/index/m-t.jpg" alt="">
+  \<img class="img-title" src="../assets/images/index/m-t.jpg" alt="">
   编译后会转为
-  <img data-v-57509004="" src="/static/img/m-t.f606898.jpg" alt="" class="img-title">
+  \<img data-v-57509004="" src="/static/img/m-t.f606898.jpg" alt="" class="img-title">
 
   3. 在JavaScript中获取资源路径 使用require对图片路径进行引用，这样通过变量传递的不是字符串而是图片资源。
-    例：<img :src="imgUrl" alt=""> 
-        data () {
-          return {
-            imgUrl: require('../assets/images/index/m-t.jpg')
-          }
-        }
+    例：
+    \<img :src="imgUrl" alt=""> 
+    data () {
+      return {
+        imgUrl: require('../assets/images/index/m-t.jpg')
+      }
+    }
 
 
 # 引入外部js文件的方法和常量
