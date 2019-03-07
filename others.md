@@ -1,41 +1,93 @@
-# 获取当前页面url网址信息
+    function Foo() {
+        getName = function () {
+            alert(1);
+        }
+        return this;
+    }
+    Foo.getName = function () {
+        alert(2)
+    }
+    Foo.prototype.getName = function () {
+        alert(3)
+    }
+    var getName = function () {
+        alert(4)
+    }
+    function getName() {
+        alert(5)
+    }
+    Foo.getName();
+    getName();
+    Foo().getName();
+    getName();
+    new Foo.getName();
+    new Foo().getName();
+    new new Foo().getName()
+
+
+# 获取浏览器屏幕高度
+
+    IE中：
+    document.body.clientWidth ==> BODY对象宽度
+    document.body.clientHeight ==> BODY对象高度
+    document.documentElement.clientWidth ==> 可见区域宽度
+    document.documentElement.clientHeight ==> 可见区域高度
+    FireFox中：
+    document.body.clientWidth ==> BODY对象宽度
+    document.body.clientHeight ==> BODY对象高度
+    document.documentElement.clientWidth ==> 可见区域宽度
+    document.documentElement.clientHeight ==> 可见区域高度
+    Opera中：
+    document.body.clientWidth ==> 可见区域宽度
+    document.body.clientHeight ==> 可见区域高度
+    document.documentElement.clientWidth ==> 页面对象宽度（即BODY对象宽度加上Margin宽）
+    document.documentElement.clientHeight ==> 页面对象高度（即BODY对象高度加上Margin高）
+
+# 获取当前页面 url 网址信息
 
 ## window.location.href(设置或获取整个 URL 为字符串)
+
     var test = window.location.href;
     alert(test);
     返回：http://i.cnblogs.com/EditPosts.aspx?opt=1
 
 ## window.location.protocol(设置或获取 URL 的协议部分)
+
     var test = window.location.protocol;
     alert(test);
     返回：http:
 
 ## window.location.host(设置或获取 URL 的主机部分)
+
     var test = window.location.host;
     alert(test);
     返回：i.cnblogs.com
 
 ## window.location.port(设置或获取与 URL 关联的端口号码)
+
     var test = window.location.port;
     alert(test);
     返回：空字符(如果采用默认的80端口(update:即使添加了:80)，那么返回值并不是默认的80而是空字符)
 
 ## window.location.pathname(设置或获取与 URL 的路径部分（就是文件地址）)
+
     var test = window.location.pathname;
     alert(test);
     返回：/EditPosts.aspx
 
 ## window.location.search(设置或获取 href 属性中跟在问号后面的部分)
+
     var test = window.location.search;
     alert(test);
     返回：?opt=1
 
 ## window.location.hash(设置或获取 href 属性中在井号“#”后面的分段)
+
     var test = window.location.hash;
     alert(test);
     返回：空字符(因为url中没有)
 
-## js获取url中的参数值
+## js 获取 url 中的参数值
 
 ### 一、正则法
 
@@ -52,7 +104,7 @@
     alert(GetQueryString("参数名2"));
     alert(GetQueryString("参数名3"));
 
-### 二、split拆分法
+### 二、split 拆分法
 
     function GetRequest() {
       var url = location.search; //获取url中"?"符后的字串
@@ -67,7 +119,7 @@
       return theRequest;
     }
     var Request = new Object();
-    Request = GetRequest();<br>// var id=Request["id"]; 
+    Request = GetRequest();<br>// var id=Request["id"];
     // var 参数1,参数2,参数3,参数N;
     // 参数1 = Request['参数1'];
     // 参数2 = Request['参数2'];
@@ -78,15 +130,15 @@
 
     比如说一个url：http://i.cnblogs.com/?j=js,我们想得到参数j的值，可以通过以下函数调用。
 
-    function GetQueryString(name) { 
-      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+    function GetQueryString(name) {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
       var r = window.location.search.substr(1).match(reg); //获取url中"?"符后的字符串并正则匹配
-      var context = ""; 
-      if (r != null) 
-          context = r[2]; 
-      reg = null; 
-      r = null; 
-      return context == null || context == "" || context == "undefined" ? "" : context; 
+      var context = "";
+      if (r != null)
+          context = r[2];
+      reg = null;
+      r = null;
+      return context == null || context == "" || context == "undefined" ? "" : context;
     }
     alert(GetQueryString("j"));
 
@@ -101,28 +153,29 @@
       }
     }
 
-
-
 # meta
-    必要属性 
+
+    必要属性
     * content
-  
-    可选属性 
+
+    可选属性
     * http-equiv:content-type / expire / refresh / set-cookie  把content属性关联到HTTP头部
     * name:author / description / keywords / generator / others  把content属性关联到一个名称
 
-
 # 关键词
+
     描述网页上所提供信息的描述性和代表性关键字及短语。标记不应超过 874 个字符。
     <meta name="keywords" content="关键词1, 关键词2">
 
-# 页面描述 
+# 页面描述
+
     每个网页都应有一个不超过 150 个字符且能准确反映网页内容的描述标签。
     <meta name="description" content="页面描述的内容">
 
 # 搜索引擎索引方式
+
     <meta name="robots" content="none,noindex,nofollow,all,index,follow">
-    robotterms是一组使用逗号(,)分割的值，通常有如下几种取值：
+    robots是一组使用逗号(,)分割的值，通常有如下几种取值：
     all, 文件将被检索，且页面上的链接可以被查询
     none, 文件将不被检索，且页面上的链接不可以被查询
     index, 文件将被检索
@@ -130,12 +183,13 @@
     follow, 页面上的链接可以被查询
     nofollow, 页面上的链接不可以被查询
 
+# 页面重定向和刷新
 
-# 页面重定向和刷新 
     content内的数字代表时间（秒），既多少时间后刷新。如果加url,则会重定向到指定网页（搜索引擎能够自动检测，也很容易被引擎视作误导而受到惩罚）。
     <meta http-equiv="refresh" content="0;url=">
 
 # viewport
+
     <meta name="viewport" content="width=device-width, inital-scale=1.0, maximum-scale=1.0, user-scable=no">
 
     1.width：宽度（数值 / device-width）（范围从200 到10,000，默认为980 像素）
@@ -151,11 +205,12 @@
     6.user-scalable：用户是否可以手动缩 (no,yes)
 
 # 忽略数字自动识别为电话号码
+
     <meta content="telephone=no" name="format-detection">
 
 # 忽略邮箱识别
-    <meta content="email=no" name="format-detection">
 
+    <meta content="email=no" name="format-detection">
 
 # 其他
 
@@ -210,8 +265,13 @@
     <!-- windows phone 点击无高光 -->
     <meta name="msapplication-tap-highlight" content="no">
 
+    <!-- 设置页面不缓存 -->
+    <meta http-equiv=”pragma” content=”no-cache”>
+    <meta http-equiv=”cache-control” content=”no-cache”>
+    <meta http-equiv=”expires” content=”0″>
 
 # IE
+
     IE中，无论是否用DTD声明文档标准，IE8/9都会以IE7引擎来渲染页面。
     <meta http-equiv="X-UA-Compatible" content="IE=7">
 

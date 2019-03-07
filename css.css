@@ -1,4 +1,28 @@
-﻿
+﻿	$(function () {
+	    var navLis = $(".nav-bar  li");
+	    var navA = $("a");
+	    var hrefList = []; /*"products","dict","client"*/
+	    navA.each(function (i) {
+	        var href = $(this).data("href")
+	        if (href) {
+	            hrefList.push(href)
+	        }
+	    })
+	    var href = window.location.pathname.slice(1).replace(/.aspx/, '')
+	    var _index = href.indexOf('_');
+        console.log(_index)
+        if (_index >= 0) { href = href.slice(0, _index)}
+	    console.log('href', href)
+	    console.log('hrefList', hrefList)
+	    for (var i in hrefList) {
+	        navLis.each(function (index, item) {
+	            console.log(href)
+	            if ($(this).children('a').data("href") == href) {
+	                hrefLink($(this))
+	            }
+	        })
+	    }
+	})
 
 
 el.style.cssText +=
