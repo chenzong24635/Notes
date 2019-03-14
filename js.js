@@ -1,3 +1,15 @@
+/* # 区分数组对象方法 */
+1.
+  Object.prototype.toString.call([]) // "[object Array]"
+  Object.prototype.toString.call({}) // "[object Object]"
+
+2.
+([] instanceof Array) // true
+({} instanceof Array) // false
+
+([].constructor) // ƒ Array() { [native code] }
+({}.constructor) // ƒ Object() { [native code] }
+
 // unicode=>中文
 document.onmousewheel = function (evt) {
   var e = evt || window.event;

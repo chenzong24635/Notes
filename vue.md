@@ -121,7 +121,82 @@
     }
 
 
+
 # token 验证
+  ## api/index.js
+    // 请求拦截器
+    axios.interceptors.request.use(
+      config => {
+        if (store.state.accessToken) { // 在请求头中加token
+          config.headers['X-Access-Auth-Token'] = store.state.accessToken
+        }
+        return config
+      }, error => {
+        return Promise.reject(error)
+      }
+    )   
+  ## store/index.js
+    const store = new Vuex.Store({
+      state: {
+        accessToken: localStorage.getItem('accessToken') ? localStorage.getItem('accessToken') : '',
+      },
+      mutations: {
+        // 修改token，并将token存入localStorage
+        changeToken (state, user) {
+          state.accessToken = user.accessToken
+          localStorage.setItem('accessToken', user.accessToken)
+        }
+      }
+    })
+  ## router/index.js
+  给需要判断是否登录的页面添加参数 requiresAuth
+    const router = new Router({
+      routes: [
+        {
+          path: '/cart',
+          meta: {
+            title: '购物车',
+            requiresAuth: true
+          }
+        },
+        {
+          path: '/login',
+          name: 'login',
+          component: login
+        }
+      ]
+    })
+
+    //  在全局前置守卫中判断
+    router.beforeEach((to, from, next) => {
+      if (to.meta.requiresAuth) { // 是否需要toekn验证
+        let token = localStorage.getItem('accessToken')
+        if (!token) { // toekn是否存在
+          next('/login') 
+        } else {
+          next()
+        }
+      } else {
+        next()
+      }
+    })
+  ## 登录页面的token设置
+    import { mapMutations } from 'vuex'
+    methods: {
+      ...mapMutations([
+        // 将 `this.changeToken(args)` 映射为 `this.$store.commit('changeToken', args)`
+        // 对应store/index.js的mutations方法
+        'changeToken'
+      ]),
+      login () { // 登录成功时
+        // // 将用户token保存到vuex中
+        this.changeToken({ accessToken: data.accessToken})
+      }
+    }
+
+
+
+
 
 # store管理部分页面隐藏全局组件
   ## store/index.js
