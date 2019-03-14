@@ -1,47 +1,211 @@
-# 处理静态资源 -- http://vuejs-templates.github.io/webpack/static.html
-
-## 图片路径 
-  1. 相对URL，例如./assets/logo.png将被解释为模块依赖性。它们将替换为基于Webpack输出配置的自动生成的URL。
-
-  2. 未加前缀的URL(同相对URL)，例如，assets/logo.png将被视为与相对URL相同并被翻译成./assets/logo.png。
-
-  3. 带有前缀的URL~被视为模块请求，类似于require('some-module/image.png')。如果要利用Webpack的模块解析配置，则需要使用此前缀。例如，如果您有解析别名assets，则需要使用\<img src="~assets/logo.png" >以确保遵守别名。
-
-  4. 根相对URL，如/assets/logo.png根本不处理。--打包后图片不加载
-
-
-
-## src/assets和static/区别
-
-    能被 webpack 追踪到的静态资源，如 img 标签引入的图片， 可以放到 assets 里，
-    而webpack无法追踪到的图片，如通过 css backgrount-image 引入的图片，只能放到 static 目录。
-
-    相同点：资源在html中使用，都是可以的。
-
-    不同点：使用assets下面的资源，在js中使用的话，路径要经过webpack中file-loader编译，路径不能直接写。
-
-    assets中的文件会经过webpack打包，重新编译，推荐该方式。而static中的文件，不会经过编译static中的文件只是复制一遍而已。简单来说，static中建议放一些外部第三方，自己的放到assets，别人的放到static中。
-
-    注意：如果把图片放在assets与static中，html页面可以使用；但在动态绑定中，assets路径的图片会加载失败，因为webpack使用的是commenJS规范，必须使用require才可以
-
-  1. 图片路径为static
-  \<img class="img-title" src="static/images/index/b-t.jpg" alt="">
-
-  onerror最好使用此路径下的图片\<img :src="item.pic" alt="" onerror="this.src='static/images/errorImg.jpg'">
-
-  2. assets
-  \<img class="img-title" src="../assets/images/index/m-t.jpg" alt="">
-  编译后会转为
-  \<img data-v-57509004="" src="/static/img/m-t.f606898.jpg" alt="" class="img-title">
-
-  3. 在JavaScript中获取资源路径 使用require对图片路径进行引用，这样通过变量传递的不是字符串而是图片资源。
-    例：
-    \<img :src="imgUrl" alt=""> 
-    data () {
-      return {
-        imgUrl: require('../assets/images/index/m-t.jpg')
+# 适配pc端改为适配pc端和移动端，使用2套css
+  ## App.vue
+    created: function () {
+      if(document.documentElement.clientWidth > 640){
+          require('./style/index.scss');
+          this.plaform = 'pc';
+      }else{
+          require('./style/mobile.scss');
+          this.plaform = 'mobile';
       }
     }
+
+# 父子组件通信 
+    https://cn.vuejs.org/v2/guide/components-props.html
+
+## 父组件->子组件
+  父组件
+    <child :child-com="content"></child> //注意这里用驼峰写法
+
+  子组件
+    props: ['childCom', 'title']
+
+    //指定值类型
+    props: {
+      title: String,
+      likes: Number,
+      isPublished: Boolean,
+      commentIds: Array,
+      author: Object
+    }
+    // 设置默认值
+    propD: {
+      type: Number,
+      default: 100
+    },
+    propE: {
+      type: Object,
+      default: function () {  // 对象或数组默认值必须从一个工厂函数获取
+        return { message: 'hello' }
+      }
+    }
+
+## 子组件->父组件
+  子组件
+    <template>
+        <div @click="open"></div>
+    </template>
+
+    methods: {
+      open() {
+          this.$emit('showbox','msg'); //触发showbox方法，'msg'为向父组件传递的数据
+      }
+    }
+  父组件
+    <child @showbox="toshow" :msg="msg"></child> //监听子组件触发的showbox事件,然后调用toshow方法
+
+    methods: {
+      toshow(msg) {
+        this.msg = msg;
+      }
+    }
+
+# VueAwesomeSwiper
+// notNextTick是一个组件自有属性，如果notNextTick设置为true，组件则不会通过NextTick来实例化swiper，也就意味着你可以在第一时间获取到swiper对象，假如你需要刚加载遍使用获取swiper对象来做什么事，那么这个属性一定要是true
+    swiperOption: {
+      notNextTick: true,
+      swiperOption: { // swiper options 所有的配置同swiper官方api配置
+        autoplay: true, // 可设置数值来指定播放速度
+        speed: 400, // 滑动速度
+        direction : 'horizontal', // 滑动方向
+        loop: true, //是否循环
+        navigation: { // 上一张、下一张
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        pagination: { // 圆点
+          el: '.swiper-pagination',
+          clickable: true, // 点击滑动
+          type: 'custom',
+          renderCustom: function (swiper, current, total) { // 自定义分页器样式
+            const activeColor = '#168fed'
+            const normalColor = '#aeaeae'
+            let color = ''
+            let paginationStyle = ''
+            let html = ''
+            for (let i = 1; i <= total; i++) {
+              if (i === current) {
+                  color = activeColor
+              } else {
+                  color = normalColor
+              }
+              paginationStyle = `background:${color};opacity:1;margin-right:20px;width:20px;height:20px;transform:skew(15deg);border-radius:0;`
+              html += `<span class="swiper-pagination-bullet" style=${paginationStyle}></span>`
+            }
+            return html
+          }
+        },
+        initialSlide: 0, // 设定初始化时slide的索引
+        grabCursor: true, // 小手掌抓取滑动
+        setWrapperSize: true,
+        autoHeight: true,
+        scrollbar: '.swiper-scrollbar', // 滚动条
+        on: { // 滑动之后回调函数
+          slideChangeTransitionEnd: function(){
+            console.log(this.activeIndex);//切换结束时，告诉我现在是第几个slide
+          },
+        },
+      }
+    }
+
+    // 如果你需要得到当前的swiper对象来做一些事情，你可以像下面这样定义一个方法属性来获取当前的swiper对象，同时notNextTick必须为true
+    computed: {
+    swiper() {
+      return this.$refs.mySwiper.swiper
+    }
+    },
+    mounted() {
+    // 然后你就可以使用当前上下文内的swiper对象去做你想做的事了
+    console.log('this is current swiper instance object', this.swiper)
+    // this.swiper.slideTo(3, 1000, false)
+    }
+
+
+# token 验证
+
+# store管理部分页面隐藏全局组件
+  ## store/index.js
+      const store = new Vuex.Store({
+        state: {
+          headerShow: true, // 头部是否显示
+        }
+      })
+  ## 页面
+      destroyed () { //销毁时显示
+        this.$store.state.headerShow = true
+      },
+      created () { //创建时隐藏
+        this.$store.state.headerShow = false
+      },
+
+
+# 处理静态资源 -- http://vuejs-templates.github.io/webpack/static.html
+  ## 图片路径 
+    1. 相对URL，例如./assets/logo.png将被解释为模块依赖性。它们将替换为基于Webpack输出配置的自动生成的URL。
+
+    2. 未加前缀的URL(同相对URL)，例如，assets/logo.png将被视为与相对URL相同并被翻译成./assets/logo.png。
+
+    3. 带有前缀的URL~被视为模块请求，类似于require('some-module/image.png')。如果要利用Webpack的模块解析配置，则需要使用此前缀。例如，如果您有解析别名assets，则需要使用\<img src="~assets/logo.png" >以确保遵守别名。
+
+    4. 根相对URL，如/assets/logo.png根本不处理。--打包后图片不加载
+
+
+
+  ## src/assets和static/区别
+
+      能被 webpack 追踪到的静态资源，如 img 标签引入的图片， 可以放到 assets 里，
+      而webpack无法追踪到的图片，如通过 css backgrount-image 引入的图片，只能放到 static 目录。
+
+      相同点：资源在html中使用，都是可以的。
+
+      不同点：使用assets下面的资源，在js中使用的话，路径要经过webpack中file-loader编译，路径不能直接写。
+
+      assets中的文件会经过webpack打包，重新编译，推荐该方式。而static中的文件，不会经过编译static中的文件只是复制一遍而已。简单来说，static中建议放一些外部第三方，自己的放到assets，别人的放到static中。
+
+      注意：如果把图片放在assets与static中，html页面可以使用；但在动态绑定中，assets路径的图片会加载失败，因为webpack使用的是commenJS规范，必须使用require才可以
+
+    1. 图片路径为static
+      \<img class="img-title" src="static/images/index/b-t.jpg" alt="">
+
+      onerror最好使用此路径下的图片\<img :src="item.pic" alt="" onerror="this.src='static/images/errorImg.jpg'">
+
+    2. assets
+      \<img class="img-title" src="../assets/images/index/m-t.jpg" alt="">
+      编译后会转为
+      \<img data-v-57509004="" src="/static/img/m-t.f606898.jpg" alt="" class="img-title">
+
+    3. 在JavaScript中获取资源路径 使用require对图片路径进行引用，这样通过变量传递的不是字符串而是图片资源。
+      例：\<img :src="imgUrl" alt=""> 
+      data () {
+        return {
+          imgUrl: require('../assets/images/index/m-t.jpg')
+        }
+      }
+
+
+# 打包后打开 index.html 空白,某些图片字体文件加载不出来解决办法
+
+## 修改config下面的index.js中bulid模块导出的路径
+    build: {
+      //修改此处路径
+      assetsPublicPath: './',  
+    }
+
+## 修改build文件夹下边的utils.js文件
+    if (options.extract) {
+      return ExtractTextPlugin.extract({
+        use: loaders,
+        fallback: 'vue-style-loader',
+          //此处添加publicPath:'../../'
+        publicPath:'../../'
+      })
+    } else {
+      return ['vue-style-loader'].concat(loaders)
+    }
+
+## 如果以上方法仍然没有解决你的问题
+    src里边router/index.js路由配置里边默认模式是hash，如果你改成了history模式的话，打开也会是一片空白。所以改为hash或者直接把模式配置删除，让它默认的就行 。如果非要使用history模式的话，需要你在服务端加一个覆盖所有的情况的候选资源：如果URL匹配不到任何静态资源，则应该返回一个index.html
+
 
 
 # 引入外部js文件的方法和常量
@@ -191,7 +355,10 @@
 
 
 # Vue 用 axios 调用本地的 json 文件，
-json 必须存放在 “ static ” 文件夹下，static 目录是 vue-cli 向外暴露的静态文件夹，所有静态数据都应该放到static目录中。
+  json 必须存放在 “ static ” 文件夹下，static 目录是 vue-cli 向外暴露的静态文件夹，所有静态数据都应该放到static目录中。
+  ## 调本地json文件
+  import data from '@/assets/json/index/swiper1.json'
+  console.log(data)
 
 # 修改组件css  /deep/ 或 >>>   
     // less和sass中不管用

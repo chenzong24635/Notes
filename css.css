@@ -91,7 +91,7 @@ all：当所有内容作为一个整体时可以被选择。如果双击或者�
 //IE10、11
 <style type="text/css">
   @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-    .ov2{height: 47px;}
+    /* .ov2{height: 47px;} */
   }
 </style>
 
@@ -112,27 +112,65 @@ box-shadow: h-shadow v-shadow blur spread color inset;
 	    水平阴影 垂直阴影  模糊距离 阴影尺寸 阴影色 外部阴影（默认内部阴影)
 box-shadow: 0 6px 0 0 #eee;
 
-# //单行文字溢出省略号
+
+## 单行省略号
+.ov1{
   white-space: nowrap; //强制文本在一行内输出
   overflow: hidden; //隐藏溢出部分
   text-overflow: ellipsis; //对溢出部分加上...
+}
 
-# //多行文字溢出省略号(主要针对webkit内核)
+## 多行省略号
+### 只适用于webkit内核
+.ov2{
+  position: relative;
   display: -webkit-box;
+  display: -moz-box;
   overflow: hidden;
   text-overflow: ellipsis;
   word-break: break-all;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;//显示行数
+  -webkit-line-clamp: 2;
+  -moz-line-clamp: 2;
+  // 防止 打包后出现css中文本超出部分隐藏显示省略号失效
+  // autoprefixer自动移除老式过时的代码
+  /*! autoprefixer: off */
+    -webkit-box-orient: vertical;/*伸缩盒子的子元素排列：从上到下*/
+    -moz-box-orient: vertical;
+  /* autoprefixer: on */
+}
 
-//其余浏览器
-div:after {
-  background: linear-gradient(to right, rgba(255, 255, 255, 0), #FFFFFF 50%) repeat scroll 0 0 rgba(0, 0, 0, 0);
-  bottom: 0;
-  content: "...";
-  padding: 0 5px 1px 30px;
-  position: absolute;
-  right: 0;
+### 火狐
+@-moz-document url-prefix() {
+  .ov2{
+    max-height: 40px;//设置最大高度，加上overflowhidden，正好是两行，使超出部分隐藏
+  }
+  .ov2::after{
+    content: "...";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-left: 40px;//以上三个属性，可以后续调整，看要把...放在哪个位置
+    background: -webkit-linear-gradient(left, transparent, #fff 55%);
+    background: -o-linear-gradient(right, transparent, #fff 55%);
+    background: -moz-linear-gradient(right, transparent, #fff 55%);
+    background: linear-gradient(to right, transparent, #fff 55%);//背景色可写成渐变也可写成一样的颜色
+  }
+}
+
+### IE10、11
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .ov2{max-height: 36px;}
+  .ov2::after{
+    content: "...";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-left: 40px;//以上三个属性，可以后续调整，看要把...放在哪个位置
+    background: -webkit-linear-gradient(left, transparent, #fff 55%);
+    background: -o-linear-gradient(right, transparent, #fff 55%);
+    background: -moz-linear-gradient(right, transparent, #fff 55%);
+    background: linear-gradient(to right, transparent, #fff 55%);//背景色可写成渐变也可写成一样的颜色
+  }
 }
 
 # 文字换行

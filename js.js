@@ -1,4 +1,11 @@
 // unicode=>中文
+document.onmousewheel = function (evt) {
+  var e = evt || window.event;
+  if(e.preventDefault && e.ctrlKey) e.preventDefault();
+  if(e.ctrlKey) e.returnValue = false;
+};
+if (window.addEventListener) window.addEventListener('DOMMouseScroll', document.onmousewheel, false);
+
 /* 记得head标记中加入
 <meta http-equiv="content-type" content="text/html; charset=utf-8">  */
 var str = "\u6D77\u66D9\u4E2D\u5FC3\u83DC\u5E02\u573A" ;

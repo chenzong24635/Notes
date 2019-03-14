@@ -11,9 +11,20 @@
   //,若报错: remote origin already exists. 先运行  git remote rm origin  	  
 * git push -u origin master  //提交到你的仓库
 
-# md添加图片
-![image](https://github.com/chenzong24635/images/blob/master/img/1.png)
+* git push --force --set-upstream origin master // 强制替换所有内容
 
+
+# md添加图片
+    ![这里添加图片的alt属性值](/pics/index.png)
+    <img src="/pics/index.png" width="49%" />
+
+    图片水平排列居中
+    <div align="center">
+      <img src="/pics/index.png" height="300" width="300" >
+      <img src="/pics/index.png" height="300" width="300" >
+      <img src="/pics/index.png" height="300" width="300" >
+    </div>
+    
 # git基本命令：
 * git init  --初始化git 将当前目录变为仓库
 * git clone url   --获取  git clone http://chenzong@git/仓库名.git
@@ -28,8 +39,6 @@
 * git config --global user.name "chenzong24635"
 * git config --global user.email "chenzong24635@163.com"
 
-
-
 # 重设git用户的名字和邮箱:
 * git config --global user.name "chenzong24635"
 * git config --global user.email ""chenzong24635@163.com"
@@ -39,7 +48,6 @@
 * 拷贝公钥id_rsa.pub到托管服务（github, gitee）的SSH 公钥设置中 
 * git Bash执行（管理员身份） 
 * ssh -T git@github.com 或 ssh -T git@gitee.com 
-
 
 
 # git命令:
