@@ -38,8 +38,6 @@
 * console.group   console.groupEnd  用于将显示的信息分组。分在一组的信息，可以用鼠标折叠/展开
 * console.groupCollapsed方法与console.group方法很类似，唯一的区别是该组的内容，在第一次显示时是收起的（collapsed），而不是展开的。
 
-
-
 * console.log还提供了一个的API：第一个参数可以带一些格式化指令，
 >> 比如%c,n;看下面这个炫酷的效果：
 >> console.log('%chello world', 'background-image:-webkit-gradient( linear, left top, right top, color-stop(0, #f22), color-stop(0.15, #f2f), color-stop(0.3, #22f), color-stop(0.45, #2ff), color-stop(0.6, #2f2),color-stop(0.75, #2f2), color-stop(0.9, #ff2), color-stop(1, #f22) );color:transparent;-webkit-background-clip: text;font-size:5em;');
@@ -73,7 +71,7 @@ values(object)方法返回一个数组，包含特定对象的所有键值。
 > monitor(function)，它接收一个函数名作为参数，比如function a，每次a被执行了，都会在控制台输出一条信息，里面包含了函数的名称a及执行时所传入的参数。而unmonitor(function)便是用来停止这一监听。
 
 function sayHello(name){
-    alert('hello,'+name);
+  alert('hello,'+name);
 }
 monitor(sayHello);
 sayHello('damonare');
@@ -103,29 +101,29 @@ console.log(a.host)
 
 # 获取函数的堆栈跟踪信息:console.trace (仅仅只是在控制台中跟踪) 可以方便地调试JavaScript.
 > var car;
-var func1 = function() {
-	func2();
-}
-var func2 = function() {
-	func4();
-}
-var func3 = function() {}
-var func4 = function() {
-	car = new Car();
-	car.funcX();
-}
-var Car = function() {
-	this.brand = 'volvo';
-	this.color = 'red';
-	this.funcX = function() {
-		this.funcY();
-	}
-	this.funcY = function() {
-		this.funcZ();
-	}
-	this.funcZ = function() {
-		console.trace('trace car')
-	}
-}
-func1();
+    var func1 = function() {
+      func2();
+    }
+    var func2 = function() {
+      func4();
+    }
+    var func3 = function() {}
+    var func4 = function() {
+      car = new Car();
+      car.funcX();
+    }
+    var Car = function() {
+      this.brand = 'volvo';
+      this.color = 'red';
+      this.funcX = function() {
+        this.funcY();
+      }
+      this.funcY = function() {
+        this.funcZ();
+      }
+      this.funcZ = function() {
+        console.trace('trace car')
+      }
+    }
+    func1();
 可以看到 func1 调用 func2， func2 调用 func4。 Func4 创建了一个 Car 的实例，然后调用函数 car.funcX，依此类推。

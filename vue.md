@@ -1,3 +1,16 @@
+# vux的组件x-number绑定on-change事件不生效， input值绑定必须使用  v-model 而不是 :value
+    有效：<x-number @on-change="changeNumber(index, item.id)" v-model="item.number" ></x-number>
+    无效：<x-number @on-change="changeNumber(index, item.id)" :value="item.number"></x-number>
+
+# 解决 Vue 相同路由参数不同不会刷新的问题
+    watch: {
+      '$route' () {
+        if (this.$route.path === 'test') {
+          this.test();
+        }
+      }
+    }
+
 # 适配pc端改为适配pc端和移动端，使用2套css
   ## App.vue
     created: function () {
@@ -258,7 +271,7 @@
       }
 
 
-# 打包后打开 index.html 空白,某些图片字体文件加载不出来解决办法
+# vue-cli2打包后打开 index.html 空白,某些图片字体文件加载不出来解决办法
 
 ## 修改config下面的index.js中bulid模块导出的路径
     build: {
@@ -266,7 +279,7 @@
       assetsPublicPath: './',  
     }
 
-## 修改build文件夹下边的utils.js文件
+## vue-cli2修改build文件夹下边的utils.js文件
     if (options.extract) {
       return ExtractTextPlugin.extract({
         use: loaders,
