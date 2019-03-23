@@ -1,13 +1,13 @@
 # 目录
 
-><a href="#===">===运算符判断</a>
-><a href="#==">==运算符判断</a>
-><a href="#1">**HTML**</a>
-><a href="#1-1">xhtml、html区别</a>
-><a href="#1-2">Doctype作用？标准模式、兼任模式区别</a>
-><a name="1-3">HTML5 为什么只需要写 <!DOCTYPE HTML></a>
-><a href="#1-4">渐进增强与优雅降级-----开发方式，设计理念</a>
-> <a href="#1-5">src和href的区别</a>
+* <a href="#===">===运算符判断</a>
+* <a href="#==">==运算符判断</a>
+* <a href="#1">**HTML**</a>
+* <a href="#1-1">xhtml、html区别</a>
+* <a href="#1-2">Doctype作用？标准模式、兼任模式区别</a>
+* <a name="1-3">HTML5 为什么只需要写 <!DOCTYPE HTML></a>
+* <a href="#1-4">渐进增强与优雅降级-----开发方式，设计理念</a>
+* <a href="#1-5">src和href的区别</a>
 
 <a href="#222">设计模式</a>
 
@@ -62,11 +62,11 @@
 * documnet type(文档类型的简写),位于HTML文档的第一行，告知浏览器用什么规范解析
 DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 * 在标准模式中，浏览器根据规范呈现页面；在混杂模式中，页面以一种比较宽松的向后兼容的方式显示。
-    判断方法：document.compatMode 
+  >判断方法：document.compatMode 
     1. 标准模式：CSS1Compat
     2. 混杂模式：BackCompat	
 
-## <a name="1-3">HTML5 为什么只需要写 <!DOCTYPE HTML></a>
+## <a name="1-3">HTML5 为什么只需要写 \<!DOCTYPE HTML\></a>
 * HTML5 不基于 SGML，因此不需要对DTD进行引用，但是需要doctype来规范浏览器的行为（让浏览器按照它们应该的方式来运行）；
 * HTML4.01基于SGML,所以需要对DTD进行引用，才能告知浏览器文档所使用的文档类型。
 
