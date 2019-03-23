@@ -68,6 +68,7 @@
 
 ## 构造函数模式 -- Constructor
 * 核心：
+>
     1.将属性绑定到this上
     2.将方法绑定到prototype上
     3.用new 创建实例
@@ -81,39 +82,44 @@
     }
     let xiaoming = new People()
 * 说明：
+>
   1.与工厂方式相比，使用构造函数方式创建对象，无需再函数内部重建创建对象，而使用this指代，并而函数无需明确return
   2.同工厂模式一样，虽然属性的值可以为方法，扔建议将该方法定义在函数之外
   3.不推荐
 
 ## 原型模式
 * 例：
+>
     function Parent(){};  
     Parent.prototype.name="john";  
     Parent.prototype.age="30";  
     Parent.prototype.lev=lev;  
     var x=new Parent();  
  * 说明：
+ >
     1.函数中不对属性进行定义
     2.利用prototype属性对属性进行定义
     3.同样的，不推荐使用这样方式创建对象
 
 ## 单例模式 —— Singleton
 * 核心
+>
     1.产生一个类的唯一实例
     2.好处就是节约内存
 
 * 案例
-    function createPeople() {
-        let name
-        return function (userName) {
-            return name || (name = userName)
-        }
-    }
+>
+function createPeople() {
+  let name
+  return function (userName) {
+      return name || (name = userName)
+  }
+}
 
-    let single = createPeople()
-    console.log(single('人')) // '人'
-    // 不管再传递任何值，也只会返回 '人'
-    console.log(single('马')) // '马'
+let single = createPeople()
+console.log(single('人')) // '人'
+// 不管再传递任何值，也只会返回 '人'
+console.log(single('马')) // '马'
 
 
 ## 混合模式 —— Mixin
@@ -121,6 +127,7 @@
     1.在JS中，一般我们实现继承的过程就是混合模式
     2.其概念就是提供能够被一个或者一组子类简单继承功能的类
 * 例子
+>
     function People(name, age) {
       this.name = name
       this.age = age
@@ -151,9 +158,10 @@
     }
 
 * 说明：
-    1.该模式是指混合搭配使用构造函数方式和原型方式
-    2.将所有属性不是方法的属性定义在函数中（构造函数方式）
-    将所有属性值为方法的属性利用prototype在函数之外定义（原型方式）
+>
+1.该模式是指混合搭配使用构造函数方式和原型方式
+2.将所有属性不是方法的属性定义在函数中（构造函数方式）
+将所有属性值为方法的属性利用prototype在函数之外定义（原型方式）
 
 ## 模块模式 —— Module
 * 核心
