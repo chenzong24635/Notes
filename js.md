@@ -1,19 +1,31 @@
+# 0.1+0.2!=0.3 ？？？:
+* 解决：
+先升幂再降幂
+使用内置的 toPrecision() 和 toFixed() 方法，注意，返回值字符串。
 
+* 原因：
+>
+    JavaScript 中的 number 类型就是浮点型，数字和浮点精度的处理相同，JavaScript 中的浮点数采用IEEE-754 格式的规定，这是一种二进制表示法，可以精确地表示分数，比如1/2，1/8，1/1024，每个浮点数占64位。但是，二进制浮点数表示法并不能精确的表示类似0.1这样 的简单的数字，会有舍入误差。
+    由于采用二进制，JavaScript 也不能有限表示 1/10、1/2 等这样的分数。在二进制中，1/10(0.1)被表示为0.00110011001100110011…… 注意 0011 是无限重复的，这是舍入误差造成的，所以对于 0.1 + 0.2 这样的运算，操作数会先被转成二进制，然后再计算：
+    0.1 => 0.0001 1001 1001 1001…（无限循环）
+    0.2 => 0.0011 0011 0011 0011…（无限循环）
+    双精度浮点数的小数部分最多支持 52 位，所以两者相加之后得到这么一串 0.0100110011001100110011001100110011001100...因浮点数小数位的限制而截断的二进制数字，这时候，再把它转换为十进制，就成了 0.30000000000000004。
 
 # 区分数组对象方法 
-* 1.
+
+>
     Object.prototype.toString.call([]) // "[object Array]"
     Object.prototype.toString.call({}) // "[object Object]"
 
-* 2.
+>
     ([] instanceof Array) // true
     ({} instanceof Array) // false
 
     ([].constructor) // ƒ Array() { [native code] }
     ({}.constructor) // ƒ Object() { [native code] }
 
-
 # unicode=>中文
+>
     document.onmousewheel = function (evt) {
       var e = evt || window.event;
       if(e.preventDefault && e.ctrlKey) e.preventDefault();
@@ -42,17 +54,17 @@
 
 * for...in循环遍历对象自身的和继承的可枚举属性（不含 Symbol 属性）。
 * for in更适合遍历对象，不要使用for in遍历数组。
-# for...in
+## for...in
     for (index in arr) { 
       console.log('index:', index, ';item:', arr[index]);
     }
 
-# for...of
+## for...of
     for (item of arr) {
       console.log('item:', item);
     }
 
-# reduce((sum, item, index, array) => {}) 
+## reduce((sum, item, index, array) => {}) 
     //接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终为一个值，// reduceRight() (从右到左)
     //  Accumulator (acc) (累计器 累计回调的返回值; 它是上一次调用回调时返回的累积值)
     //  Current Value (cur) (当前值)
@@ -65,13 +77,13 @@
     }, 0);
 
 
-# map()
+## map()
     arr.map((item, index) => {
       console.log('map()-->', 'index:', index, ';item:', item)
     });
 
 
-# forEach((item, index, array) => {})遍历所有值并忽略回调函数的返回值 --- 改变原数组
+## forEach((item, index, array) => {})遍历所有值并忽略回调函数的返回值 --- 改变原数组
     // 	item--正在数组中处理的当前元素的值
     // 	index--数组中正在处理的元素的索引
     // 	array--源数组
@@ -80,7 +92,7 @@
       console.log('forEach()-->', 'index:', index, ';item:', item, '源数组:', array)
     });
 
-# every(),some(),filter()
+## every(),some(),filter()
     // every() 检测每个元素 是否符合条件（函数提供），全部满足才返回true，不检测空数组
     // some()                                      一个满足就返回true
     // filter() 以数组形式返回满足条件的元素，没有返回[]
@@ -96,7 +108,7 @@
     });
     console.log(arr2);
 
-# entries()，keys()和values()——用于遍历数组。它们都返回一个遍历器对象
+## entries()，keys()和values()——用于遍历数组。它们都返回一个遍历器对象
     for (let [index, item] of arr.entries()) {
       console.log('entries()-->','index:', index, ';item:', item);
     }
@@ -108,8 +120,8 @@
     }
 
   
-# Object.keys(obj)、Object.keys(obj)、Object.keys(obj)
-## 返回一个数组，包括对象自身的（不含继承的）所有可枚举属性（不含 Symbol 属性）的键值对数组、键名、键值。  
+## Object.keys(obj)、Object.keys(obj)、Object.keys(obj)
+#### 返回一个数组，包括对象自身的（不含继承的）所有可枚举属性（不含 Symbol 属性）的键值对数组、键名、键值。  
     let entries = Object.entries(arr);
     console.log('Object.entries()-->', entries)
 
@@ -138,12 +150,12 @@
 
     [a,b]=[b,a]
 
-# 自动触发onclick事件
-## IE
+## 自动触发onclick事件
+#### IE
     if(document.all) {
       document.getElementById("clickMe").click();
     }
-## 其它浏览器
+#### 其它浏览器
     else {
       var e = document.createEvent("MouseEvents");
       e.initEvent("click", true, true);
@@ -151,25 +163,25 @@
     }
 
 
-# sleect 选中的option
-    $("#select1  option:selected")
+## sleect 选中的option
+    $("##select1  option:selected")
     //触发select 的chang事件
-    $("#area").val(mes.rname).trigger('change');
+    $("##area").val(mes.rname).trigger('change');
 
     //回车键		 keypress						
-    $('#search_input').on('keyup', function(event) {
+    $('##search_input').on('keyup', function(event) {
     　　if (event.keyCode == "13") {//回车执行
     　　　　
     　　}
     });
 
-# 地址链接参数
+## 地址链接参数
     var url = window.location.href.split("?")[1];
     var arr= url.split("&");       //将结果用&符分隔
     var a = arr[0].split("=")[1]; //参数1
 
 
-# 数组元素的上下移动 //splice ---返回被删除的项目(数组形式）
+## 数组元素的上下移动 //splice ---返回被删除的项目(数组形式）
     var swapItems = function(arr, index1, index2) {
       arr[index1] = arr.splice(index2, 1, arr[index1])[0];
       return arr;

@@ -258,12 +258,12 @@
       onerror最好使用此路径下的图片\<img :src="item.pic" alt="" onerror="this.src='static/images/errorImg.jpg'">
 
     2. assets
-      \<img class="img-title" src="../assets/images/index/m-t.jpg" alt="">
+      <img class="img-title" src="../assets/images/index/m-t.jpg" alt="">
       编译后会转为
-      \<img data-v-57509004="" src="/static/img/m-t.f606898.jpg" alt="" class="img-title">
+      <img data-v-57509004="" src="/static/img/m-t.f606898.jpg" alt="" class="img-title">
 
     3. 在JavaScript中获取资源路径 使用require对图片路径进行引用，这样通过变量传递的不是字符串而是图片资源。
-      例：\<img :src="imgUrl" alt=""> 
+      例：<img :src="imgUrl" alt=""> 
       data () {
         return {
           imgUrl: require('../assets/images/index/m-t.jpg')
