@@ -1,3 +1,47 @@
+## 使用navigator.userAgent属性 PC端、手机端、iPad判断 ，ie、火狐、其他浏览器判断， 微信浏览器判断， Android、IOS判断
+
+#### navigator为Window对象的一个属性，指向了一个包含浏览器相关信息的对象。
+常用到的属性：
+1. navigator.appVersion 浏览器的平台和版本信息
+2. navigator.appName 浏览器的名称 
+3. navigator.language 浏览器使用的语言 
+4. navigator.platform 浏览器操作系统平台 
+5. navigator.userAgent 浏览器的user-agent信息,客户机发送服务器的user-agent 头部的值
+
+
+* PC端、手机端、iPad
+    if (/Android|Windows Phone|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+      console.log("手机端");
+    } else if (/iPad/i.test(navigator.userAgent)) {
+      console.log("iPad");
+    } else {
+      console.log("PC")
+    }
+
+* 微信内置浏览器
+    if (navigator.userAgent.toLowerCase().match(/MicroMessenger/i) === "micromessenger") {
+      console.log("微信")
+    } else { 
+      console.log("非微信")
+    } 
+
+* IE 、火狐、其他
+    if (navigator.userAgent.toLowerCase().indexOf("firefox") >=0) { // 若-1为其他，否则火狐
+      console.log("firefox");
+    } else if(window.addEventListener){
+        console.log("not ie、not firefox");
+    }else if(window.attachEvent){
+      console.log("ie");
+    }
+
+* Android、IOS
+    if(/android/i.test(navigator.userAgent)){
+      console.log("Android");
+    } else if(/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)){
+      console.log("iOS");
+    }
+
+
 # 0.1+0.2!=0.3 ？？？:
 * 解决：
 先升幂再降幂

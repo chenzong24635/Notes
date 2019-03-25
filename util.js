@@ -90,28 +90,28 @@ function formatMsgTime1(timestamp) {/* 时间戳-->  */
   } else {
     time = time / 1;
   }
-  var date = new Date(time);
-  var Y = date.getFullYear();
-  var M = ((date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1));
+  var date = new Date(time)
+  var Y = date.getFullYear()
+  var M = ((date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1))
   var D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
   var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours());
   var m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
   var s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
   if (yearC >= 1 || monthC >= 1 || weekC >= 1 || dayC >= 1) {
-    result =  Y + '-' + M + '-' + D + ' ' + h + ':' + m + ':' + s;
+    result =  Y + '-' + M + '-' + D + ' ' + h + ':' + m + ':' + s
   } else {
     //未超过1天 但时间为昨天
     if (new Date().getDay() - date.getDay() === 1) {
-      return Y + '-' + M + '-' + D + ' ' + h + ':' + m + ':' + s;
+      return Y + '-' + M + '-' + D + ' ' + h + ':' + m + ':' + s
     }
     //当天 
-    result = h + ':' + m;
+    result = h + ':' + m
   }
-  return result;
+  return result
 }
 
 function isPhone(val) {//手机验证
-  var valnew = val.replace(/(^\s*)|(\s*$)/g, "");
+  var valnew = val.replace(/(^\s*)|(\s*$)/g, "")
   if(valnew.match(/^(13[0-9]|14[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$/) || valnew.match(/^(0[0-9]{2,3}\-)([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$/)) {
     return true
   }else{
