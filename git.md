@@ -32,7 +32,7 @@
 * git commit  -m "备注"      ---提交 
 * git pull origin   ---从服务器拉取
 * git push origin  ---更新到服务器
-
+* git status 
 
 # 安装配置：
 * npm install git
@@ -49,6 +49,9 @@
 * git Bash执行（管理员身份） 
 * ssh -T git@github.com 或 ssh -T git@gitee.com 
 
+# 查看用户名、邮箱
+* git config user.name
+* git config user.email
 
 # git命令:
 
