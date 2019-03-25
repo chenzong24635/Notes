@@ -1,6 +1,40 @@
 ﻿
 el.style.cssText +=
 
+// 图片缩放
+// 先放大1.1倍 ，再还原。一般用于轮播图
+.img{
+  transform: matrix(1.1, 0, 0, 1.1, 0, 0);/* 等同于transfrom:scale(1.1,1.1) */
+  -webkit-transition: all 0.4s ease 1.2s;
+  -moz-transition: all 0.4s ease 1.2s;
+  -ms-transition: all 0.4s ease 1.2s;
+  -o-transition: all 0.4s ease 1.2s;
+  transition: all 0.4s ease 1.2s;
+}
+
+.img.active{
+  transform: matrix(1, 0, 0, 1, 0, 0); /* 等同于transfrom:scale(1,1)*/
+  -webkit-transition: all 7.0s ease;
+  -moz-transition: all 7.0s ease;
+  -ms-transition: all 7.0s ease;
+  -o-transition: all 7.0s ease;
+  transition: all 7.0s ease;  
+  transition-delay: 0.4s;
+}
+
+// css矩阵matrix
+transform: matrix(a,b,c,d,e,f)
+
+a c e   x   ax + cy + e // ax+cy+e:变换后的水平坐标
+b d f . y = bx + dy + f // bx+dy+f:变换后的垂直位置 
+0 0 1   1   0  + 0  + 1
+
+x, y表示转换元素的所有坐标（变量）
+
+matrix(sx, 0, 0, sy, 0, 0) 等同于scale(sx, sy)
+matrix(0, 0, 0, 0, tx, ty) 等同于translate(tx, ty)
+
+
 # meta
 <meta id="viewport" name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no;">
 
