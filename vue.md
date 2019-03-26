@@ -1,3 +1,7 @@
+# 
+
+
+
 # vux的组件x-number绑定on-change事件不生效， input值绑定必须使用  v-model 而不是 :value
     有效：<x-number @on-change="changeNumber(index, item.id)" v-model="item.number" ></x-number>
     无效：<x-number @on-change="changeNumber(index, item.id)" :value="item.number"></x-number>
@@ -10,6 +14,43 @@
         }
       }
     }
+
+# 解决vue多个路由共用一个页面的问题
+  当路由变化时，watch里的路由监听函数都会被触发，可以在这个函数中对页面的数据进行重新加载的操作。
+  watch:{
+    "$route":function(to,from){
+      //to 对象：包含目标地址
+      //from 对象：包含当前地址
+      //其实还有一个next参数的，这个参数是控制路由是否跳转的，如果没写，可以不用写next()来代表允许路由跳转，如果写了就必须写next(),否则路由是不会生效的。
+    }
+  }
+
+# 刷新当前路由方法
+    this.$router.go(0);
+    location.reload() 
+    //这两种方式都相当于f5刷新，页面会有卡顿的情况
+
+    // 使用页面
+    refresh () {
+      this.$router.replace({
+        path: '/refresh',
+        query: {
+          t: Date.now()
+        }
+      })
+    }
+
+    // refresh.vue
+    <script>
+    export default {
+      beforeRouteEnter(to, from, next) {
+        next(vm => {
+          vm.$router.replace(from.path)
+        })
+      }
+    }
+    </script>
+
 
 # 适配pc端改为适配pc端和移动端，使用2套css
   ## App.vue
@@ -73,7 +114,7 @@
       }
     }
 
-# VueAwesomeSwiper
+# 轮播图--VueAwesomeSwiper
 // notNextTick是一个组件自有属性，如果notNextTick设置为true，组件则不会通过NextTick来实例化swiper，也就意味着你可以在第一时间获取到swiper对象，假如你需要刚加载遍使用获取swiper对象来做什么事，那么这个属性一定要是true
     swiperOption: {
       notNextTick: true,
@@ -237,6 +278,17 @@
 
     4. 根相对URL，如/assets/logo.png根本不处理。--打包后图片不加载
 
+# vue中打包后出现css中文本超出部分隐藏显示省略号失效
+    这是webpack的锅，webpack打包后-webkit-box-orient被移除，所以导致失效。
+     .content {
+        display: -webkit-box; /*作为弹性伸缩盒子模型显示*/
+        -webkit-line-clamp: 2; /*显示的行数；如果要设置2行加...则设置为2*/
+        overflow: hidden;
+        text-overflow: ellipsis; /* 溢出用省略号*/
+        /*! autoprefixer: off */
+        -webkit-box-orient: vertical;/*伸缩盒子的子元素排列：从上到下*/
+        /* autoprefixer: on */
+      }
 
 
   ## src/assets和static/区别
@@ -252,23 +304,25 @@
 
       注意：如果把图片放在assets与static中，html页面可以使用；但在动态绑定中，assets路径的图片会加载失败，因为webpack使用的是commenJS规范，必须使用require才可以
 
-    1. 图片路径为static
-      \<img class="img-title" src="static/images/index/b-t.jpg" alt="">
+1. 图片路径为static
+    \<img class="img-title" src="static/images/index/b-t.jpg" alt="">
 
-      onerror最好使用此路径下的图片\<img :src="item.pic" alt="" onerror="this.src='static/images/errorImg.jpg'">
+    onerror图片
+    * \<img :src="item.pic" alt="" onerror="this.src='static/images/errorImg.jpg'">
+    * \<img :src="item.pic" alt="" :onerror="errorImg'">
+      data下: errorImg: 'this.src="' + require('../../assets/images/common/errorImg.jpg') + '"',
+2. assets
+    \<img class="img-title" src="../assets/images/index/m-t.jpg" alt="">
+    编译后会转为
+    \<img data-v-57509004="" src="/static/img/m-t.f606898.jpg" alt="" class="img-title">
 
-    2. assets
-      <img class="img-title" src="../assets/images/index/m-t.jpg" alt="">
-      编译后会转为
-      <img data-v-57509004="" src="/static/img/m-t.f606898.jpg" alt="" class="img-title">
-
-    3. 在JavaScript中获取资源路径 使用require对图片路径进行引用，这样通过变量传递的不是字符串而是图片资源。
-      例：<img :src="imgUrl" alt=""> 
-      data () {
-        return {
-          imgUrl: require('../assets/images/index/m-t.jpg')
-        }
+3. 在JavaScript中获取资源路径 使用require对图片路径进行引用，这样通过变量传递的不是字符串而是图片资源。
+    例：\<img :src="imgUrl" alt=""> 
+    data () {
+      return {
+        imgUrl: require('../assets/images/index/m-t.jpg')
       }
+    }
 
 
 # vue-cli2打包后打开 index.html 空白,某些图片字体文件加载不出来解决办法
@@ -293,6 +347,12 @@
 
 ## 如果以上方法仍然没有解决你的问题
     src里边router/index.js路由配置里边默认模式是hash，如果你改成了history模式的话，打开也会是一片空白。所以改为hash或者直接把模式配置删除，让它默认的就行 。如果非要使用history模式的话，需要你在服务端加一个覆盖所有的情况的候选资源：如果URL匹配不到任何静态资源，则应该返回一个index.html
+
+## 使用mode：history
+dist包不是服务器跟目录，在index.htm里手动给js和css添加dist目录即可/dist/；
+
+mode: 'history',之后添加
+base: '/dist/'
 
 
 
@@ -359,15 +419,7 @@
     //如果使用query方式传入的参数使用this.$route.query 接收
     //如果使用params方式传入的参数使用this.$router.params接收
 
-# 解决vue多个路由共用一个页面的问题
-  当路由变化时，watch里的路由监听函数都会被触发，可以在这个函数中对页面的数据进行重新加载的操作。
-  watch:{
-    "$route":function(to,from){
-      //to 对象：包含目标地址
-      //from 对象：包含当前地址
-      //其实还有一个next参数的，这个参数是控制路由是否跳转的，如果没写，可以不用写next()来代表允许路由跳转，如果写了就必须写next(),否则路由是不会生效的。
-    }
-  }
+
 
 # vuex store 
 ## 部分页面隐藏全局组件 --如：导航栏
@@ -400,7 +452,23 @@
     // 在build/webpack.base.conf.js中定义了 @
     @/commponents/a.vue
 
-# 如何去除vue项目中的网址的 # --- History模式
+# mode: hash | history区别
+1. hash —— 即地址栏 URL 中的 # 符号（此 hash 不是密码学里的散列运算）。
+比如这个 URL：http://www.abc.com/#/hello，hash 的值为 #/hello。它的特点在于：hash 虽然出现在 URL 中，但不会被包括在 HTTP 请求中，对后端完全没有影响，因此改变 hash 不会重新加载页面。
+2. history —— 利用了 HTML5 History Interface 中新增的 pushState() 和 replaceState() 方法。（需要特定浏览器支持）
+这两个方法应用于浏览器的历史记录栈，在当前已有的 back、forward、go 的基础之上，它们提供了对历史记录进行修改的功能。只是当它们执行修改时，虽然改变了当前的 URL，但浏览器不会立即向后端发送请求。
+
+## mode:history缺点
+* 打包存放路径问题
+mode: 'history',
+base: '/dist/'
+
+* 刷新问题
+不怕前进，不怕后退，就怕刷新，f5，（如果后端没有准备的话）,因为刷新是实实在在地去请求服务器的。
+
+在hash模式下，前端路由修改的是#中的信息，而浏览器请求时是不带它玩的，所以没有问题.但是在history下，你可以自由的修改path，当刷新时，如果服务器中没有相应的响应或者资源，页面会404。
+
+## 如何去除vue项目中的网址的 # --- History模式
     const router = new VueRouter({
       mode: 'history',
       routes: [...]
