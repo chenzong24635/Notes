@@ -24,6 +24,9 @@
 * <a href="#3-1">数据类型、内置对象</a>
 * <a href="#3-2">undefined与null定义、区别</a>
 
+* <a href="#4">**其他**</a>
+* <a href="#4-1">移动端点透问题(click 300ms延迟)</a>
+
 
 # ===、==、Object.is()判断
 ![===、==、Object.is()](/img/===.png)
@@ -71,7 +74,7 @@
 * XHTML是作为一种xml应用被重新定义的HTML
 * XHTML文档必须拥有根元素、元素必须被关闭、元素必须被正确地嵌套、标签应该使用小写
 
-## <a name="1-2">Doctype作用？标准模式、兼任模式区别</a>
+## <a name="1-2">Doctype作用？标准模式、混杂模式区别</a>
 * documnet type(文档类型的简写),位于HTML文档的第一行，告知浏览器用什么规范解析
 DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 * 在标准模式中，浏览器根据规范呈现页面；在混杂模式中，页面以一种比较宽松的向后兼容的方式显示。
@@ -115,21 +118,68 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
     -o-：opera
 
 ## <a name="1-7">cookies、sessionStorage 、和 localStorage 的区别</a>
-* cookie是存储在浏览器端，并且随浏览器的请求一起发送到服务器端的，它有一定的过期时间，到了过期时间自动会消失。sessionStorage和localeStorage也是存储在客户端的，同属于web Storage，比cookie的存储大小要大有8m，cookie只有4kb，localeStorage是持久化的存储在客户端，如果用户不手动清除的话，不会自动消失，会一直存在，sessionStorage也是存储在客户端，但是它的存活时间是在一个回话期间，只要浏览器的回话关闭了就会自动消失。
+### cookie
+cookie是存储在浏览器端，并且随浏览器的请求一起发送到服务器端的，它有一定的过期时间，到了过期时间自动会消失。sessionStorage和localeStorage也是存储在客户端的，同属于web Storage，比cookie的存储大小要大有8m，cookie只有4kb，localeStorage是持久化的存储在客户端，如果用户不手动清除的话，不会自动消失，会一直存在，sessionStorage也是存储在客户端，但是它的存活时间是在一个回话期间，只要浏览器的回话关闭了就会自动消失。
 
-* cookie是网站为了标示用户身份而储存在用户本地终端（Client Side）上的数据（通常经过加密）。 cookie数据始终在同源的http请求中携带（即使不需要），记会在浏览器和服务器间来回传递。
-  sessionStorage和localStorage不会自动把数据发给服务器，仅在本地保存。
+客户端可以设置cookie 的下列选项：expires、domain、path、secure（有条件：只有在https协议的网页中，客户端设置secure类型的 cookie 才能成功），但无法设置HttpOnly选项。
+读取：document.cookie
+
+### 区别
+cookie是网站为了标示用户身份而储存在用户本地终端（Client Side）上的数据（通常经过加密）。 cookie数据始终在同源的http请求中携带（即使不需要），记会在浏览器和服务器间来回传递。
+sessionStorage和localStorage不会自动把数据发给服务器，仅在本地保存。
 
 * 存储大小：
   	cookie数据大小不能超过4k。
   	sessionStorage，localStorage  达到5M甚至更多
 * 有期时间：
     localStorage   浏览器关闭后数据不丢失除非主动删除数据；多窗口数据共享
-    sessionStorage  数据在当前浏览器窗口关闭后自动删除。同窗口数据共享
+    sessionStorage 数据在当前浏览器窗口关闭后自动删除。同窗口数据共享
     cookie         设置的cookie过期时间之前一直有效，即使窗口或浏览器关闭
 * 作用域:
     sessionStorage不在不同的浏览器窗口中共享，即使是同一个页面；
     localStorage 在所有同源窗口中都是共享的；cookie也是在所有同源窗口中都是共享的。
+
+* Storage方法
+setItem(key, value) 保存数据
+getItem(key) 读取数据
+removeItem(key) 删除键值为key的存储内容
+clear() 清空所有数据
+key(n) 以索引值来获取键值key的数据
+length 存储空间积累项的数目
+
+保存数据：sessionStorage.setItem('key','value');/sessionStroge.key='value';
+读取数据：sessionStorage.getItem('key'); /sessionStroge.key(n)
+
+* cookie方法
+>
+    let cookie = {
+      set: function (key, val, time) { // 设置cookie方法
+        let date = new Date() // 获取当前时间
+        let expiresDays = time // 将date设置为n天以后的时间
+        date.setTime(date.getTime() + expiresDays * 24 * 3600 * 1000) // 格式化为cookie识别的时间
+        // document.cookie = key + '=' + val + ';expires=' + date.toGMTString();  //设置cookie
+        document.cookie = key + '=' + val + ';expires=' + date.toGMTString() + '; path=/' // 设置cookie
+      },
+      get: function (key) { // 获取cookie方法
+        /* 获取cookie参数 */
+        let getCookie = document.cookie.replace(/[ ]/g, '') // 获取cookie，并且将获得的cookie格式化，去掉空格字符
+        let arrCookie = getCookie.split(';') // 将获得的cookie以'分号'为标识 将cookie保存到arrCookie的数组中
+        let tips // 声明变量tips
+        for (let i = 0; i < arrCookie.length; i++) { // 使用for循环查找cookie中的tips变量
+          let arr = arrCookie[i].split('=') // 将单条cookie用'等号'为标识，将单条cookie保存为arr数组
+          if (key === arr[0]) { // 匹配变量名称，其中arr[0]是指的cookie名称，如果该条变量为tips则执行判断语句中的赋值操作
+            tips = arr[1] // 将cookie的值赋给变量tips
+            break // 终止for循环遍历
+          }
+        }
+        return tips
+      },
+      remove: function (key) { // 删除cookie方法
+        let date = new Date() // 获取当前时间
+        date.setTime(date.getTime() - 10000) // 将date设置为过去的时间
+        document.cookie = key + '=v; expires =' + date.toGMTString() // 设置cookie
+      }
+    }
 
 ### cookie有什么作用？
 * cookie可以解决http的无状态的问题，与服务器进行交互，作为http规范存在。它具有极高的简便性、可扩展性和可用性，也可以通过加密和SSL技术来提高其安全性。因此推荐使用cookie作为标识而不是身份验证的工具。
@@ -150,22 +200,46 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 3. iframe和主页面共享连接池，而浏览器对相同域的连接有限制，所以会影响页面的并行加载.
 通过javascript动态给iframe添加src属性值，这样可以绕开以上两个问题。
 
+## <a name="1-9">响应式设计-viewport</a>
 
+什么是 Viewport?
+viewport 是用户网页的可视区域。
+viewport 翻译为中文可以叫做"视区"。
+手机浏览器是把页面放在一个虚拟的"窗口"（viewport）中，通常这个虚拟的"窗口"（viewport）比屏幕宽，这样就不用把每个网页挤到很小的窗口中（这样会破坏没有针对手机浏览器优化的网页的布局），用户可以通过平移和缩放来看网页的不同部分
+
+ viewport meta 标签属性：
+width：控制 viewport 的大小，可以指定的一个值，如果 600，或者特殊的值，如 device-width 为设备的宽度（单位为缩放为 100% 时的 CSS 的像素）。
+height：和 width 相对应，指定高度。
+initial-scale：初始缩放比例，也即是当页面第一次 load 的时候缩放比例。
+maximum-scale：允许用户缩放到的最大比例。
+minimum-scale：允许用户缩放到的最小比例。
+user-scalable：用户是否可以手动缩放
 
 
 # <a name="2">**CSS**</a>
+## <a name="2-0">概述</a>
+1. CSS 是层叠样式表 ( Cascading Style Sheets ) 的简称。
+2. CSS 是一种标记语言，属于浏览器解释型语言，可以直接由浏览器执行，不需要编译。
+3. CSS 是用来表现HTML或XML的标记语言。
+4. CSS 是由W3C的CSS工作组发布推荐和维护的.
+5. CSS 是编程入门人员的必修课，运用CSS样式可以让页面变得美观。
+6. CSS语法由三部分构成：选择器、属性和值： selector {property: value} 
+
+CSS的优势
+内容与表现分离，有了CSS，网页的内容(XHMTL)与表现就可以分开了。
+使用CSS可以减少网页的代码量，增加网页的浏览速度。
 
 ## <a name="2-1">权重、优先级</a>
 优先级就近原则，同权重情况下样式定义最近者为准;
 载入样式以最后载入的定位为准;
-1. 行内样式 > 内部样式表 > 外联样式表
+1. 行内样式 > 内部样式表 > 外部样式表
 2. important > 行内样式 > ID > 类，属性选择器和伪类选择器>元素和伪元素
 
 ## <a name="2-2">CSS引入的方式有哪些? link和@import的区别是?</a>
 ### CSS引入的方式
 1. 行内样式：直接在 HTML 标签中的 style 属性中添加 \<div style=’color:red’></div>
-2. 内接样式：写在head中style, \<head>\<style> div{color:red;}\</style>\</head>
-3. 外接样式：在head标签中引入外部的 CSS 文件\<head><link rel="stylesheet" href="demo.css"></head>
+2. 内部样式：写在head中style, \<head>\<style> div{color:red;}\</style>\</head>
+3. 外部样式：在head标签中引入外部的 CSS 文件\<head><link rel="stylesheet" href="demo.css"></head>
 4. @import: \<style>@import url(style.css);\</style>
 
 ### link与@important区别：
@@ -185,21 +259,93 @@ HTML中每个元素都被描绘成一个矩形盒子，这些盒子通过一个�
     box-sizing: border-box; border和padding计算入width之内
 
 ## <a name="2-4">css选择器</a>
-1. 通配符选择器（ * ）
-2. id选择器（ #myid）
-3. 类选择器（.myclassname）
-4. 标签选择器（div, h1, p）
-5. 相邻选择器（h1 + p）
-6. 子选择器（ul > li）
-7. 后代选择器（li a）
-8. 属性选择器（a[rel = "external"]）
-9. 伪类选择器（a:hover, li:nth-child）
-10. .....
+### 
+* 通配符选择器(*)
+* id选择器（ #myid）
+* 类选择器（.myclassname）
+* 标签选择器（div, h1, p）
+* 相邻选择器（h1 + p）
+* 子选择器（ul > li）
+* 后代选择器（li a）
+* 通用兄弟选择器(E ~ F) //E后面所有的兄弟F 
+* 属性选择器（a[rel = "external"]）
+* 伪类选择器（a:hover, li:nth-child）
+* .....
+
+#### 属性选择器
+
+E[attr]        //E中带有attr属性
+E[attr=val]    //E中带有attr属性 且值为 val
+E[attr*=val]   //E中带有attr属性 且值包含 val
+E[attr^=val]   //E中带有attr属性 且值以 val 开始
+E[attr$=val]   //E中带有attr属性 且值以 val 结尾 
+E[attr~=val]   //E中带有attr属性 且值具有多个空格分隔的值，其中一个值为val
+E[attr|=val]   //E中带有attr属性 且值具有 val 或以 val- 开始的值，常用于lang（lang='en-us'）
+
+#### 伪类  
+* 结构伪类：子元素序号从1开始算
+>
+    E F:first-child        //第一个子元素F
+    E F:last-child         //最后一个子元素
+    E F:nth-child(n)       //第n个   n=1,2,3....n  //不要带入数组的概念
+    E F:nth-last-child(n)  //倒数第n个子元素
+    E F:nth-child(odd)     //奇数
+    E F:nth-child(2n+1)    //奇数   在表达式中n取值范围：n=0,1,2,3...
+    E F:nth-child(even)    //偶数
+    E F:nth-child(2n)      //偶数  
+    E F:nth-child(-n+5)    //前5个子元素
+    E F:nth-last-child(-n+5)//后5个子元素
+    E F:nth-child(7n)      //选择7的倍数的E
+    E :only-child          //只包含一个子元素
+
+    E F:nth-of-type(n)     //选择指定类型的第n个F
+    E F:nth-last-of-type(n)//选择指定类型倒数的第n个F
+    E F:first-of-type      //选择指定类型的第1个F
+    E F:last-of-type       //选择指定类型的倒数第1个F
+    E F:only-of-type       //选择只包含一个同类型的F子元素
+
+* 空伪类
+>
+    :empty 选择 空元素 。空元素是指没有任何内容的元素，甚至空格都不行。//无内容 无子元素
+    :blank 选择 没有子节点、仅有空的文本节点、仅有空白符的文本节点--浏览器不支持
+
+* 目标伪类：
+>
+    E:target   //表示元素被激活的状态  配合锚点使用
+* 排除伪类：
+>
+    E:not(selector) //除selector（任意选择器）外的元素会被选中；
+* 动态伪类：
+>
+    a:link{...}		选择所有未访问过的超链接
+    a:visited{...}	选择所有访问过的超链接
+    a:hover{...} 当鼠标悬停于元素上方时  IE6只支持a:hover
+    a:active{...} 当元素被激活时
+    input:foucs{...} 当元素获得输入焦点  IE7前都不支持
+* 语言伪类
+>
+    E：lang（language） 匹配E的所有指定lang值为language的元素
+    状态伪类：
+    E:checked 匹配选中的单选和复选按钮表单元素
+    E:enabled  匹配所有启动的表单元素
+    E:disabled  匹配所有禁用的表单元素
+
+#### 伪元素
+    E::before{content:"";......}
+    E::after{content:"";......}
+    E::first-letter     //选中第一个单词、字
+    E::first-line     //选中第一行的伪元素
+    E::selection       //选中的区域 
 
 ## <a name="2-5">哪些属性可继承</a>
-* 不可继承的样式：border padding margin width height
+* 不可继承的样式：
+>
+    border 、padding、 margin、 width 、height、position、
+    a标签不能继承父元素中的文字颜色（层叠掉了）
+    h1-h6 标题标签不能继承父元素中的文字大小
 * 可继承的样式：
-    font-
+>
+    font- (font-family、font-size、 ...)
     line- (line-height ...)
     text- (text-align,text-indent,text-transform,text-shadow ...)
     letter-spacing
@@ -210,7 +356,18 @@ HTML中每个元素都被描绘成一个矩形盒子，这些盒子通过一个�
     visibility
     cursor
 
-## <a name="2-6" href="https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Understanding_z_index/The_stacking_context">堆叠上下文(stacking context )z-index</a>
+* font属性:
+>
+    font: font-style  font-weight  font-size/line-height  font-family;
+    一定按照书写顺序。font-size和font-family必须，其他可选 
+    font-style: normal | italic;      normal 默认值  italic  斜体
+    font-weight: 700; 文字粗细  值从100-900，不推荐使用font-weight:bold;
+    font-size:16px;  文字大小
+    如：font:italic 700 16px/40px  微软雅黑;
+
+
+## <a name="2-6">堆叠上下文(stacking context )z-index</a>
+"https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Understanding_z_index/The_stacking_context
 
 * 概述：主要用来比较一个拥有定位元素（position不为static）的元素的z轴层叠关系（z-index）。
 同一个层叠上下文中，层叠级别（即z-index属性值）大的显示在上面。
@@ -233,6 +390,12 @@ HTML中每个元素都被描绘成一个矩形盒子，这些盒子通过一个�
 -webkit-overflow-scrolling 属性被设置 "touch"的元素
 
 在层叠上下文中，其子元素同样也按照上面解释的规则进行层叠。 特别值得一提的是，其子元素的 z-index 值只在父级层叠上下文中有意义。子级层叠上下文被自动视为父级层叠上下文的一个独立单元。
+
+* z-index不起作用情况：
+这种情况发生的条件有三个：
+1、父标签 position属性为relative；
+2、问题标签无position属性（不包括static）；
+3、问题标签含有浮动(float)属性。
 
 * 总结:
 给一个 HTML 元素定位和 z-index 赋值创建一个层叠上下文，（opacity 值不为 1 的也是相同）。
@@ -309,7 +472,87 @@ HTML中每个元素都被描绘成一个矩形盒子，这些盒子通过一个�
 2. visibility：hidden：元素消失的时间跟transition属性设置的时间一样，但是没有动画效果.
 3. opacity:0,动画属性生效,能够进行正常的动画效果.
 
-## <a name="2-9">CSS和JS的位置会影响页面效率，为什么？</a>
+## <a name="2-9">注意事项：</a>
+
+1. margin的top、bottom及padding的top、bottom使用百分比作为单位时，是相对父元素的宽度width的而不是高度height；
+2. 含有定位属性的元素，其top、bottom单位为百分比时，是相对于父元素的高度的。left、right则是相对于父元素的宽度的。
+3. 边框宽度不允许使用百分比值
+4. 当子元素是绝对定位，子元素设置width:100%实际上指的是相对于父容器的padding+content的宽度。
+   当子元素是非绝对定位，子元素设置width:100%才是指子元素的 content ，其等于父元素的 content宽度。
+5. line-height有单位时，子元素是继承父元素的line-height的，
+    无单位时，其line-height等于无单位的数值乘以子元素本身的字体大小
+6. 使用calc时运算符之间要有空格 ，否则可能无效 
+
+## <a name="2-10">line-hieght:</a>
+定义：两行文字基线之间的距离。//不同字体之间的基线是不同的。
+
+line-height:normal   | <number>  | <lenght>  |  <percent>  |  inherit;
+>
+    单独给一个标签设行高       结果
+    行高单位px           行高与文字大小无关
+    行高单位em           行高=文字大小*行高值
+    行高单位%            行高=文字大小*行高值
+    行高无单位           行高=文字大小*行高值
+>
+    父元素设行高       子元素行高 font-size
+    行高单位px      行高=父元素行高
+    行高单位em      行高=父元素文字大小*行高值（与子元素文字大小无关）
+    行高单位%       行高=父元素文字大小*行高值（与子元素文字大小无关）
+    行高单位无      行高=子元素大小*行高值
+
+
+## <a name="2-11">换行：</a>
+强制不换行
+white-space:nowrap;
+
+正常文字的换行(亚洲文字和非亚洲文字)
+white-space:normal;
+
+自动换行
+word-wrap: break-word; 
+word-break: normal; 
+
+强制英文单词断行
+word-break:break-all;
+
+
+## <a name="2-11">尺寸单位：</a>
+>
+    %:  占父元素的百分比
+    px:像素，指屏幕上的一个点  .绝对尺寸单位，其值是固定的
+    em: 标准字体大小的倍率 ,继承父级元素的字体大小，如果元素的 font-size 为 14px ，那么 1em = 14px；如果 font-size 为 18px，那么 1em = 18px
+    ex 定义为当前字体的小写x字母的高度或者 1/2 的 1em。 很多时候，它是字体的中间标志。
+    rem:对于html根元素确定的。
+    
+* vw、vh、vmin、vmax 的含义
+vw、vh、vmin、vmax 是一种视窗单位，也是相对单位。它相对的不是父节点或者页面的根节点。而是由视窗（Viewport）大小来决定的，单位 1. 代表类似于 1%。
+
+视窗(Viewport)是你的浏览器实际显示内容的区域—，换句话说是你的不包括工具栏和按钮的网页浏览器。
+
+    vh:1vh 等于1/100的视口高度。浏览器高度900px, 1 vh = 900px/100 = 9 px。
+    vw:1vw 等于1/100的视口宽度。  视口宽度750px, 1vw = 750px/100 = 7.5 px。
+    vmin 、vmax：关于视口高度和宽度两者的最小或者最大值。比如，浏览器的宽度设置为1100px，高度设置为700px， 1vmin = 7px， 1vmax = 11px。
+
+    ch ：类似于 em 和 rem, 依赖于当前的字体和字体大小。 是基于字体的度量单位，依赖于设定的字体。
+      ch 单位通常被定义为数字0的宽度
+
+
+1. 具体描述如下：
+* vw：视窗宽度的百分比（1vw 代表视窗的宽度为 1%）
+* vh：视窗高度的百分比
+* vmin：当前 vw 和 vh 中较小的一个值
+* vmax：当前 vw 和 vh 中较大的一个值
+
+2. vw、vh 与 % 百分比的区别
+* % 是相对于父元素的大小设定的比率，vw、vh 是视窗大小决定的。
+* vw、vh 优势在于能够直接获取高度，而用 % 在没有设置 body 高度的情况下，是无法正确获得可视区域的高度的，所以这是挺不错的优势。
+
+3. vmin、vmax 用处
+做移动页面开发时，如果使用 vw、wh 设置字体大小（比如 5vw），在竖屏和横屏状态下显示的字体大小是不一样的。
+由于 vmin 和 vmax 是当前较小的 vw 和 vh 和当前较大的 vw 和 vh。这里就可以用到 vmin 和 vmax。使得文字大小在横竖屏下保持一致。
+
+
+## <a name="2-">CSS和JS的位置会影响页面效率，为什么？</a>
 css在加载过程中不会影响到DOM树的生成，但是会影响到Render树的生成，进而影响到layout，所以一般来说，style的link标签需要尽量放在head里面，因为在解析DOM树的时候是自上而下的，而css样式又是通过异步加载的，这样的话，解析DOM树下的body节点和加载css样式能尽可能的并行，加快Render树的生成的速度。
 
 js脚本应该放在底部，原因在于js线程与GUI渲染线程是互斥的关系，如果js放在首部，当下载执行js的时候，会影响渲染行程绘制页面，js的作用主要是处理交互，而交互必须得先让页面呈现才能进行，所以为了保证用户体验，尽量让页面先绘制出来。
@@ -1285,3 +1528,491 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
     EventCenter.fire('hello', 1) // 1[出现两次]
 
 
+
+# <a name="4">**常用**</a>
+
+## <a name="4-1">移动端点透问题(click 300ms延迟) </a>
+https://codepen.io/chenzong24635/pen/jROWmM
+
+在移动端开发中，有时会出现click点透的问题
+
+A是遮罩层，B是正常的DOM，C是B上的某个元素，这里是链接。场景是点击A的时候A消失，结果点到了C，页面发生了跳转，
+
+### 点透的出现场景：
+1. A/B两个层上下z轴重叠。
+2. 上层的A点击后消失或移开。（这一点很重要）
+3. B元素本身有默认click事件（如a标签） 或 B绑定了click事件。
+在以上情况下，点击A/B重叠的部分，就会出现点透的现象。
+
+### 为什么会出现点透
+ click延迟，延迟，还是延迟。
+
+在移动端不使用click而用touch事件代替触摸是因为click事件有着明显的延迟，具体touchstart与click的区别如下：
+
+1. touchstart：在这个DOM（或冒泡到这个DOM）上手指触摸开始即能立即触发
+2. click：在这个DOM（或冒泡到这个DOM）上手指触摸开始，且手指未曾在屏幕上移动（某些浏览器允许移动一个非常小的位移值），且在这个在这个dom上手指离开屏幕，且触摸和离开屏幕之间的间隔时间较短（某些浏览器不检测间隔时间，也会触发click）才能触发
+
+事件的触发时间按由早到晚排列为：touchstart 早于 touchend 早于 click。亦即click的触发是有延迟的，这个时间大概在300ms左右。
+
+由于我们在touchstart阶段就已经隐藏了罩层A，当click被触发时候，能够被点击的元素则是其下的B元素，根据click事件的触发规则：
+只有在被触发时，当前有click事件的元素显示，且在面朝用户的最前端时，才触发click事件。
+由于B绑定了click事件（或者B本身默认存在click事件），所以B的click事件被触发，产生了点透的情况。
+
+### 解决方案
+
+1.对于B元素本身没有默认click事件的情况（无a标签等），应统一使用touch事件，统一代码风格，并且由于click事件在移动端的延迟要大很多，不利于用户体验，所以关于触摸事件应尽量使用touch相关事件。
+
+2. 对于B元素本身存在默认click事件的情况,应及时取消A元素的默认点击事件，从而阻止click事件的产生。即应在上例的handle函数中添加代码如下：
+>
+    document.querySelector('#A').addEventListener('touchend', function(event) {
+      event.preventDefault();
+    })
+
+3. A 300ms延迟消失
+>
+    let A = document.querySelector('#A')
+    A.addEventListener('touchend', function(event) {
+      let timer = setTimeout(() => {
+        A.style.display = 'none'
+      }, 300)
+    })
+
+4. fastclick库地址 ：https://github.com/ftlabs/fastclick
+>
+    在原生的js前直接加上
+    window.addEventListener( "load", function() {
+      FastClick.attach( document.body );
+    }, false )
+
+
+
+
+
+## <a name="4-2">随机生成字符串</a>
+1. 
+Math.random().toString(36).slice(2)
+>
+    由于：number.toString(36) -> 0-9 a-z的字符串
+    toString(radix) 方法以指定的基数返回该对象的字符串表示。
+    radix-->用于数字到字符串的转换的基数(从2到36)。
+    如果转换的基数大于10，则会使用字母来表示大于9的数字，比如基数为16的情况，则使用a到f的字母来表示10到15。
+    如果基数没有指定，则使用 10
+
+2. 随机生成n个字符串
+>
+    function a(n) {  
+      let str = 'abcdefghijklmnopqrstuvwxyz9876543210';
+      let tmp = '',
+          i = 0,
+          l = str.length;
+      for (i = 0; i < n; i++) {
+        tmp += str.charAt(Math.floor(Math.random() * l));
+      }
+      return tmp;
+    }
+
+## <a name="4-3">生成随机6个数字 </a>
+Math.floor(Math.random() * 999999)
+Math.random().toString().slice(-6) / 1
+Math.random().toFixed(6).slice(-6) / 1
+
+## <a name="4-4">范围内随机数，包括两个数在内</a>
+>
+    const number =(min, max) => Math.random() * (max - min + 1) + min
+    --->小数 
+    --->整数： Math.floor(number) 
+
+## <a name="4-5">统计字符串中同一字符出现次数</a>
+str.split('').reduce((val, count) => (val[count]++ || (val[count] = 1), val), {});
+
+## <a name="4-5">将argruments对象转换成数组</a>
+ Array.prototype.slice.call(arguments) //  [].slice.call(arguments)
+ Array.from(arguments)
+ [...arguments]
+
+
+## <a name="4-5">判断是否回文、实现回文</a>
+* 判断是否回文
+>
+    function isPalindrome(line) {  
+    line += "";//转为字符串
+    line=line.replace(/\W/g, '').toLowerCase();   //替换非单词字符串，转换为小写  
+    return line === line.split("").reverse().join("");  
+    }
+* 实现回文
+>
+    let arr=[1,2,3,4];
+    let temp=arr.join().split(',');
+    temp.pop();
+    temp.reverse();
+    console.log(arr.concat(temp).join())
+
+## <a name="4-6">节流、防抖</a>
+
+/* 同：
+都可以通过使用 setTimeout 实现。
+目的都是，降低回调执行频率。节省计算资源。
+
+异：
+函数防抖，在一段连续操作结束后，处理回调，利用 clearTimeout 和 setTimeout 实现。
+函数节流，在一段连续操作中，每一段时间只执行一次，频率较高的事件中使用来提高性能。
+函数防抖是一定时间连续触发，只在最后执行一次，而函数节流侧重于一段时间内只执行一次。 */
+
+/* 防抖:不管你触发多少次，都等到 最后触发后过一段时间 才触发。
+调用定时器执行某个函数之前首先清除这个定时器。当函数多次被调用时, 
+每一次都会将之前的定时器清除, 即只有在执行函数的请求停止了一段时间之后才会真正执行函数。 */
+    function debounce(func, delay = 500, context) {
+      clearTimeout(func.setTime);
+      func.setTime = setTimeout(() => {
+        func.call(context); 
+      }, delay);
+    }
+
+/* 节流:不管怎么触发，都是按照指定的间隔来执行
+设置一个执行函数间隔时间time, 当多次触发某个事件时便将执行函数的频率降低到time */
+
+    function throttle(func, time = 1000, context) {
+      var start = Date.now();
+      return function() {
+        console.log(Date.now() - start > time)
+        if (Date.now() - start > time && time > 0) {
+            func.call(context);
+            start = Date.now();
+        }
+      }
+    }
+
+## <a name="4-7">柯里化</a>
+
+参数够了就执行，参数不够就返回一个函数，之前的参数存起来，直到够了为止。
+它与函数绑定紧密相关, 用于创建已经设置好了一个或多个参数的函数, 其具体做法时使用一个闭包返回一个函数, 当函数被调用时, 返回的函数还需要设置一些传入的参数。
+柯里化的三个作用 : 1.参数复用 2. 提前返回 3.延迟计算
+    function curry(func) {
+      var l = func.length
+      return function curried() {
+        var args = [].slice.call(arguments)
+        if(args.length < l) {
+          return function() {
+            var argsInner = [].slice.call(arguments)
+            return curried.apply(this, args.concat(argsInner))
+          }
+        } else {
+          return func.apply(this, args)
+        }
+      }
+    }
+    var f = function(a, b, c) {
+      return console.log([a, b, c])
+    };
+    var curried = curry(f)
+    curried(1)(2)(3) // => [1, 2, 3]
+    curried(1, 2)(3) // => [1, 2, 3]
+    curried(1, 2, 3) // => [1, 2, 3]
+
+## <a name="4-8">实现f(a)(b)与f(a,b)一样的效果></a>
+
+1. 
+>
+    function f(m,n){
+      if (m!==undefined&&n!==undefined) { return m + n}
+      else{ return function(a){  return m+a;} }
+    }
+2.  
+>
+    function f(...arg){
+      if(arg.length == 2){ return arg[0]+arg[1];}
+      else return function(x){ return  Number(...arg.join(''))+x}
+    }
+
+## <a name="4-9">数组无序排列：</a>
+  arr.sort(function(){ return Math.random() - 0.5});
+
+
+## <a name="4-9">数组扁平化:n维数组展开成一维数组  </a>
+var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10]; 
+
+1. 
+>
+    const flatten = (ary) => ary.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []);
+    flatten(foo); // [1, 2, 3, "4", 5, "6", 7, 8, 9, 10]
+
+2. 
+>
+    function func(arr){
+      var arr1 =[].concat(...arr);
+      return arr1.some(item =>Array.isArray(item))?func(arr1):arr1
+    }
+
+3. 
+>
+    function flatten(a) {
+      return Array.isArray(a) ? [].concat(...a.map(flatten)) : a;
+    }
+    flatten(foo); // [1, 2, 3, "4", 5, "6", 7, 8, 9, 10]
+
+## <a name="4-10">数组去重:</a>
+1. 
+    [...new Set([1,2,2,3,4,1])]  --> [1,2,3,4]
+
+2. 
+>
+    var arr = [2,3,4,4,5,2,3,6];
+    var arr2 = arr.filter(function(element,index,self){
+      return self.indexOf(element) === index;
+    });
+    console.log(arr2);
+
+3. 
+>
+    var arr = [0,2,3,4,4,0,2];
+    var obj = {};
+    var tmp = [];
+    for(var i = 0 ;i< arr.length;i++){
+      if( !obj[arr[i]] ){
+          obj[arr[i]] = 1;
+          tmp.push(arr[i]);
+      } else {obj[arr[i]]++}
+    }
+    console.log(tmp);
+
+
+# <a name="4-"> 数组排序</a>
+1. 冒泡排序： 每次将最小元素推至最前
+>
+    function bubble(arr){
+      if(Array.isArray(arr)){
+        if(arr.length>1){
+          let b,n=0;
+          for(i=0;i<arr.length-1;i++){
+              b=1;
+              for(j=0;j<arr.length-1-i;j++){
+                if(arr[j]>arr[j+1]){
+                  [arr[j],arr[j+1]]=[arr[j+1],arr[j]];
+                  b=0;
+                  n++;
+                }
+              }
+            }
+          if(b){return {arr,n};}
+        }
+      }
+    }
+2. 快速排序：
+>
+    var quickSort = function(arr) {
+      if (arr.length <= 1) { return arr; }
+      //选择"基准"（pivot），并将其与原数组分离，再定义两个空数组，用来存放一左一右的两个子集
+      var pivotIndex = Math.floor(arr.length / 2);
+      var pivot = arr.splice(pivotIndex, 1)[0];
+      var left = [];
+      var right = [];
+      //开始遍历数组，小于"基准"的元素放入左边的子集，大于基准的元素放入右边的子集。
+      for (var i = 0; i < arr.length; i++){
+        if (arr[i] < pivot) {
+          left.push(arr[i]);
+        } else {
+          right.push(arr[i]);
+        }
+      }
+      //用递归不断重复这个过程，就可以得到排序后的数组。
+    　return quickSort(left).concat([pivot], quickSort(right));
+    };
+
+# <a name="4-"> n的阶层（尾调用优化）</a>
+>
+    function factorial(n, total=1) {
+      if (n <= 1) return total;
+      return factorial(n - 1, n * total);
+    }
+    factorial(5) // 120
+
+# <a name="4-">斐波那契数列</a>
+>
+    var arr=[];
+    for(let i=0;i<10;i++){
+      i<=1?arr.push(1):arr.push(arr[i-1]+arr[i-2])
+    }
+* 计算斐波那列数（js语言精粹
+>
+    var  arr=[0,1];
+    var m=0;//计算运行次数
+    function fib(n){
+        var result=arr[n];
+        if(typeof arr[n]!=='number'){
+          m++;
+          result=fib(n-1)+fib(n-2);
+          arr[n]=result;
+        }
+
+        return result
+      }
+    console.log(fib(7),m);
+
+* 输出n个fib数
+1. 
+>
+    let arr=[1];
+    function f(n,a=1,b=1) {
+        arr.push(b);
+        if(n<=2)return arr;
+        return f(n-1,b,a+b);
+    }
+    f(80000)
+    console.log(arr)
+
+2.
+> 
+    const fibonacci = n => Array(n).fill(0).reduce((acc, val, i) => acc.concat(i > 1 ? acc[i - 1] + acc[i - 2] : i), []);console.log(fibonacci(80000))
+
+
+# <a name="4-"></a>
+# <a name="4-"></a>
+# <a name="4-"></a>
+
+
+
+# <a name="5">**JS兼容写法**</a>
+## <a name="5-1">获取节点的兼容</a>
+    firstElementChild || firstChild
+    lastElementChild || lastChild
+    previousElementSibling || previousSibling
+    nextElementChild || nextChild
+
+## <a name="5-2">event获取目标对象</a>
+>
+    IE678  event.srcElement（事件源）
+    其他   event.target（事件源）
+
+    function getTarget(e){   
+      const event = e || window.event; // w3c | IE
+      event.target?e.target:event.srcElement
+    } 
+
+## <a name="5-">阻止冒泡</a>
+>
+    w3c的方法是：（火狐、谷歌、IE11）event.stopPropagation()
+    IE10以下则是使用：event.cancelBubble = true
+
+    function stopPropagation(e){
+      const  event = e || window.event; // w3c | IE
+      event.stopPropagation ? event.stopPropagation() : event.cancelBubble = true;
+    }
+
+## <a name="5-">阻止默认行为</a>
+>
+    function preventDefault(e){ 
+      cosnt event = e || window.event; // w3c | IE
+      event.preventDefault ? event.preventDefault() : event.returnValue = false;
+    }
+
+## <a name="5-">清除选中 </a>
+>
+    window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
+                                              IE9以下
+
+## <a name="5-">滚动事件mouseWheel</a>
+>
+    Firefox：DOMMouseScroll    (detail判断上下滑动)
+      向上滚动：e.detail < 0
+      向下滚动 ：e.detail > 0
+>
+    IE/Chrome/Safari/Opera：mousewheel  (wheelDelta判断鼠标上下滑动)
+      向上滚动：  e.wheelDelta == -120
+      向下滚动 ： e.wheelDelta == 120
+
+## <a name="事件监听的兼容">事件监听的兼容</a>
+  //eventListen.addEvent(btn,"click",fn)
+
+eventListen={
+  addEvent: function (target, type, fn) {
+    if (target.addEventListener) {
+      target.addEventListener(type,fn);
+    } else if(target.attachEvent) {
+      target.attachEvent("on" + type, fn);
+    } else {
+      target["on" + type] = fn;
+    }
+  },
+  removeEvent: function(target, type, fn) { 
+    if (target.removeEventListener) {
+      target.removeEventListener(type, fn);
+    } else if(target.removeEvent) {
+      target.detachEvent("on" + type, fn);
+    } else {
+      target["on" + type] = null;
+    }
+  }
+}
+
+
+## <a name="5-"></a>
+
+
+
+# <a name="6">**其他**</a>
+## <a name="6-1">取消选择，防止复制，禁止剪切、粘贴</a>
+取消选择 obj.onselectstart = () => return false
+CSS: -moz-user-select:none  仅对FF有效
+
+禁止复制 obj.oncopy= () => return false
+禁止剪切 obj.oncut= () => return false
+禁止粘贴 obj.onpaste= () => return false
+
+## <a name="6-2">网页是否可编辑</a>
+网页最后编辑时间  document.lastModified  
+网页是否可编辑
+document.body.contentEditable=true | false  控制当前文档是否可编辑 ，权限比designMode高
+document.designMode='on'  | 'off'  控制当前文档是否可编辑 
+
+## <a name="6-3">逗号操作符</a>
+
+ 对它的每个操作对象求值（从左至右），返回最后一个操作对象的值
+var f = (function f(){ return '1'; }, function g(){ return 2; })();
+console.log(f) //2
+
+## 
+>
+    function Foo() {
+        getName = function () {
+            alert(1);
+        }
+        return this;
+    }
+    Foo.getName = function () {
+        alert(2)
+    }
+    Foo.prototype.getName = function () {
+        alert(3)
+    }
+    var getName = function () {
+        alert(4)
+    }
+    function getName() {
+        alert(5)
+    }
+    Foo.getName();
+    getName();
+    Foo().getName();
+    getName();
+    new Foo.getName();
+    new Foo().getName();
+    new new Foo().getName()
+
+>
+    function Foo(){
+        getName = function () { console.log(1); };//赋值语句，全局方法
+        return this;
+    }
+    Foo.getName = function () { console.log(2);};//静态方法
+    Foo.prototype.getName = function () { console.log(3);};//公有方法
+    var getName = function () {console.log(4);};//全局方法
+    function getName() { console.log(5);} //全局函数
+
+    Foo.getName();  //2 ;Foo函数上存储的静态方法 
+    getName();  //4   函数表达式不提升，所以getName = function () {console.log(4);}在function getName() { console.log(5);}之后定义
+    Foo().getName(); // 1  先执行了Foo函数，然后调用Foo函数的返回值对象的getName属性函数.Foo函数返回的是window对象，相当于执行 window.getName() ，而window中的getName已经被修改为console.log(1)，所以最终会输出1
+    getName();// 1   直接调用getName函数，相当于 window.getName() ,因为这个变量已经被Foo函数执行时修改了，遂结果与第三问相同，为1
+    new Foo.getName();//2  考察的是js的运算符优先级问题  点(.)的优先级高于new。相当于new (Foo.getName)();
+      https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence
+    new Foo().getName();  //3 括号()优先级高于new相当于 (new Foo()).getName()
+    new new Foo().getName();// 4  相当于 new ((new Foo()).getName)();
