@@ -1,4 +1,16 @@
-# 
+# 滚动
+* document.documentElement.scrollTop = 380 //不需要加单位
+* 
+    this.$nextTick(() => {
+      <!-- this.$refs.DOM.scrollBy(0, 300) -->
+      this.$refs.DOM.scrollTo(0, 300)
+    })
+* 
+document.getElementById('ID').scrollIntoView()
+
+
+# keep-alive
+如果使用了keep-alive对组件进行了缓存，组件不会销毁，destroyed不执行
 
 
 
@@ -354,7 +366,15 @@ dist包不是服务器跟目录，在index.htm里手动给js和css添加dist目�
 mode: 'history',之后添加
 base: '/dist/'
 
-
+## nginx
+* 基本命令
+    启动服务：start nginx
+    退出服务：nginx -s quit
+    强制关闭服务：nginx -s stop
+    重载服务：nginx -s reload　　（重载服务配置文件，类似于重启，服务不会中止）
+    验证配置文件：nginx -t
+    使用配置文件：nginx -c "配置文件路径"
+    使用帮助：nginx -h
 
 # 引入外部js文件的方法和常量
 ## 方法
