@@ -61,6 +61,10 @@
 * <a href="#从浏览器地址栏输入url到显示页面的步骤">从浏览器地址栏输入url到显示页面的步骤</a>
 * <a href="#JS执行机制">JS执行机制</a>
 * <a href="#设计模式">设计模式</a>
+* <a href="#web安全">web安全</a>
+* <a href="#get与post区别">get与post区别</a>
+
+
 
 * <a href="#常用">**常用**</a>
 
@@ -78,8 +82,6 @@
 * <a href="#数组排序">数组排序</a>
 * <a href="#n的阶层（尾调用优化）">n的阶层（尾调用优化）</a>
 * <a href="#斐波那契数列">斐波那契数列</a>
-* <a href="#"></a>
-
 
 
 * <a href="#JS兼容写法">**JS兼容写法**</a>
@@ -101,7 +103,11 @@
 * <a href="#取消选择，防止复制，禁止剪切、粘贴">取消选择，防止复制，禁止剪切、粘贴</a>
 * <a href="#网页是否可编辑">网页是否可编辑</a>
 * <a href="#逗号操作符">逗号操作符</a>
+* <a href="#css动画和j 动画的差异">css 动画和 js 动画的差异</a>
+
+
 * <a href="#题">题</a>
+* <a href="#map(parseInt) 原理解析">['1','2','3'].map(parseInt) 原理解析</a>
 
 # ===、==、Object.is()判断
 ![===、==、Object.is()](/img/===.png)
@@ -795,8 +801,10 @@ detachEvent("eventType","handler" )
 
 
 ## <a name="事件委托">事件委托(代理)</a>
-1. 事件注册在父级元素上，依靠事件冒泡机制与事件捕获机制，子级元素的事件将委托给父级元素。可以减少事件注册数量，节约内存开销，提高性能。
-2. 对js动态添加的子元素可自动绑定事件
+
+事件注册在父级元素上，依靠事件冒泡机制与事件捕获机制，子级元素的事件将委托给父级元素。可以减少事件注册数量，节约内存开销，提高性能。
+
+对js动态添加的子元素可自动绑定事件
 >
     function agent(){
       let ul=document.getElementsByTagName("ul");
@@ -954,7 +962,9 @@ JS的执行上下文可以理解为当前代码的执行环境，在执行JS程�
 https://juejin.im/post/5bd5509851882543e82f5564
 
 http://www.cnblogs.com/pssp/p/5216085.html?tdsourcetag=s_pctim_aiomsg
->
+
+* this
+> 
     this 始终指向最后调用它的对象
     箭头函数”的this，总是指向定义时所在的对象，而不是运行时所在的对象。
 
@@ -971,16 +981,40 @@ http://www.cnblogs.com/pssp/p/5216085.html?tdsourcetag=s_pctim_aiomsg
 2. 如果一个函数中有this，这个函数有被上一级的对象所调用，那么this指向的就是上一级的对象。
 3. 如果一个函数中有this，这个函数中包含多个对象，尽管这个函数是被最外层的对象所调用，this指向的也只是它上一级的对象
 
+可通过call、apply和 bind 等方法来改变函数的 this 指向，其中，call 和 apply 主动执行函数，bind一般在事件回调中使用，而 call 和 apply的区别只是参数的传递方式不同。
 
-箭头函数的this指向
+
+* 箭头函数的this指向
+    箭头函数没有 this/super/arguments/new.target 的绑定，这些值是由外围最近一层非箭头函数决定。
+
 1. 箭头函数不绑定this,箭头函数中的this相当于普通变量。
 2. 箭头函数的this寻值行为与普通变量相同，在作用域中逐级寻找。
 3. 箭头函数的this无法通过bind，call，apply来直接修改。
 4. 改变作用域中this的指向可以改变箭头函数的this
-5. eg. `function closure(){()=>{//code }}`，在此例中，我们通过改变封包环境`closure.bind(another)()`，来改变箭头函数this的指向。
+5. 可通过改变封包环境，来改变箭头函数this的指向。
+
+>
+    var name = "window";
+    var obj = {
+      name: 'netease',
+      print1: () => {
+        console.log(this.name);
+      },
+      print2: function () {
+        return ()=>{
+            console.log(this.name);
+        }
+      }
+    }
+    obj.print1();// window
+    obj.print2()();// netease 注意是返回闭包函数
+
+    如果不用function（function有自己的函数作用域）将其包裹起来，那么默认绑定的父级作用域就是window。
+
+    用function包裹的目的就是将箭头函数绑定到当前的对象上。 匿名函数的作用域是当前这个对象，所以之后箭头函数会自动绑定到此函数所在作用域的this，即obj 。
 
 
-可通过call、apply和 bind 等方法来改变函数的 this 指向，其中，call 和 apply 主动执行函数，bind一般在事件回调中使用，而 call 和 apply的区别只是参数的传递方式不同。
+
 
 ## <a name="apply call bind">apply call bind</a>
 
@@ -1036,9 +1070,9 @@ bind是返回对应函数，便于稍后调用；apply、call则是立即调用 
 ## <a name="js延迟加载：defer,async">js延迟加载：defer,async</a>
 
 1. defer 属性  \<script src="file.js" defer>\</script>
-  让js并行加载。defer是在HTML解析完之后才会执行，按加载的顺序执行
+  让js并行加载。defer是在HTML解析完之后才会执行，defer脚本按加载的顺序执行
 2. async 属性  \<script src="file.js" async>\</script>
-  让js并行加载，async是在加载完成后立即执行，执行顺序和加载顺序无关。它们将在onload 事件之前完成。对于支持async属性的浏览器，动态插入的外链脚本, 相当于默认具有async=true；
+  让js并行加载，async是在加载完成后立即执行，async脚本执行顺序和加载顺序无关。它们将在onload 事件之前完成。对于支持async属性的浏览器，动态插入的外链脚本, 相当于默认具有async=true；
 
 可以同时使用 async 和 defer。
 
@@ -1227,11 +1261,27 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
     函数节流，在一段连续操作中，每一段时间只执行一次，频率较高的事件中使用来提高性能。
     函数防抖是一定时间连续触发，只在最后执行一次，而函数节流侧重于一段时间内只执行一次。
 
-* 防抖:不管你触发多少次，都等到 最后触发后过一段时间 才触发。
+* 防抖: 触发高频事件后 n 秒内函数只会执行一次，如果 n 秒内高频事件再次被触发，则重新计算时间；
 
 调用定时器执行某个函数之前首先清除这个定时器。当函数多次被调用时, 
 每一次都会将之前的定时器清除, 即只有在执行函数的请求停止了一段时间之后才会真正执行函数。
 >
+    function debounce(fn, delay = 500) {
+      let timeout = null; // 创建一个标记用来存放定时器的返回值
+      return function () {
+        clearTimeout(timeout); // 每当用户输入的时候把前一个 setTimeout clear 掉
+        timeout = setTimeout(() => { // 然后又创建一个新的 setTimeout, 这样就能保证输入字符后的 interval 间隔内如果还有字符输入的话，就不会执行 fn 函数
+          fn.apply(this, arguments);
+        }, 500);
+      };
+    }
+    function sayHi() {
+      console.log('防抖成功');
+    }
+    let ipt = document.getElementById('ipt');
+    ipt.addEventListener('input', debounce(sayHi)); // 防抖
+
+
     function debounce(func, delay = 500, context) {
       clearTimeout(func.setTime);
       func.setTime = setTimeout(() => {
@@ -1239,20 +1289,26 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
       }, delay);
     }
 
-* 节流:不管怎么触发，都是按照指定的间隔来执行
+* 节流: 高频事件触发，但在 n 秒内只会执行一次，所以节流会稀释函数的执行频率。
 
 设置一个执行函数间隔时间time, 当多次触发某个事件时便将执行函数的频率降低到time 
 >
-    function throttle(func, time = 1000, context) {
-      var start = Date.now();
-      return function() {
-        console.log(Date.now() - start > time)
-        if (Date.now() - start > time && time > 0) {
-            func.call(context);
-            start = Date.now();
-        }
-      }
+    function throttle(fn, delay = 500) {
+      let canRun = true; // 通过闭包保存一个标记
+      return function () {
+        if (!canRun) return; // 在函数开头判断标记是否为 true，不为 true 则 return
+        canRun = false; // 立即设置为 false
+        setTimeout(() => { // 将外部传入的函数的执行放在 setTimeout 中
+          fn.apply(this, arguments);
+          // 最后在 setTimeout 执行完毕后再把标记设置为 true(关键) 表示可以执行下一次循环了。当定时器没有执行的时候标记永远是 false，在开头被 return 掉
+          canRun = true;
+        }, delay);
+      };
     }
+    function sayHi(e) {
+      console.log(e.target.innerWidth, e.target.innerHeight);
+    }
+    window.addEventListener('resize', throttle(sayHi, 1000));
 
 ## <a name="柯里化">柯里化</a>
 >
@@ -1405,7 +1461,7 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
 
 
 ## <a name="JS执行机制">JS执行机制</a>
-
+https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/7
 #### 浏览器的渲染进程是多线程的
 
 1. GUI渲染线程
@@ -1464,7 +1520,7 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
     当前宏任务执行完成后，会查看微任务的“事件队列”，依次执行所有微任务
     执行完毕，开始检查渲染，然后GUI线程接管渲染
     渲染完毕后，JS线程继续接管，开始下一个宏任务（从事件队列中获取）
-
+[img](/img/JS的执行机制.jpg)
 
 #### 进程、线程
 >
@@ -1670,8 +1726,21 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
     EventCenter.fire('hello', 1) // 1[出现两次]
 
 
+## <a name="web安全">web安全</a>
 
-# <a name="常用">**常用**</a>
+## <a name="get与post区别">get与post区别</a>
+>
+
+    Get 请求能缓存，Post 不能
+
+    Post 相对 Get 安全一点点，因为Get 请求都包含在 URL 里，且会被浏览器保存历史纪录，Post 不会，但是在抓包的情况下都是一样的。
+
+    Post 可以通过 request body来传输比 Get 更多的数据，Get 没有这个技术
+
+    URL有长度限制，会影响 Get 请求，但是这个长度限制是浏览器规定的，不是 RFC 规定的
+
+    Post 支持更多的编码类型且不对数据类型限制
+
 
 ## <a name="移动端点透问题">移动端点透问题(click 300ms延迟) </a>
 https://codepen.io/chenzong24635/pen/jROWmM
@@ -1821,6 +1890,7 @@ Math.random().toFixed(6).slice(-6) / 1
 ## <a name="数组扁平化:n维数组展开成一维数组">数组扁平化:n维数组展开成一维数组  </a>
 var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10]; 
 
+0. foo.flat(Infinity) // Array.prototype.flat()用于将嵌套的数组“拉平”，变成一维的数组。该方法返回一个新数组，对原数据没有影响。默认只会“拉平”一层，如果想要“拉平”多层的嵌套数组，可以将flat()方法的参数写成一个整数，表示想要拉平的层数，默认为1。
 1. 
 >
     const flatten = (ary) => ary.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []);
@@ -1865,8 +1935,9 @@ var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
     }
     console.log(tmp);
 
+## 数组扁平化+去重: Array.from(new Set(arr.flat(Infinity)))
 
-# <a name="数组排序"> 数组排序</a>
+## <a name="数组排序"> 数组排序</a>
 1. 冒泡排序： 每次将最小元素推至最前
 >
     function bubble(arr){
@@ -1908,7 +1979,7 @@ var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
     　return quickSort(left).concat([pivot], quickSort(right));
     };
 
-# <a name="n的阶层（尾调用优化）">n的阶层（尾调用优化）</a>
+## <a name="n的阶层（尾调用优化）">n的阶层（尾调用优化）</a>
 >
     function factorial(n, total=1) {
       if (n <= 1) return total;
@@ -1916,7 +1987,7 @@ var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
     }
     factorial(5) // 120
 
-# <a name="斐波那契数列">斐波那契数列</a>
+## <a name="斐波那契数列">斐波那契数列</a>
 >
     var arr=[];
     for(let i=0;i<10;i++){
@@ -1955,11 +2026,35 @@ var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
     const fibonacci = n => Array(n).fill(0).reduce((acc, val, i) => acc.concat(i > 1 ? acc[i - 1] + acc[i - 2] : i), []);console.log(fibonacci(80000))
 
 
-# <a name="4-"></a>
+
+
+
+## <a name="css动画和js动画的差异">css动画和js动画的差异</a>
+代码复杂度，js 动画代码相对复杂一些
+
+动画运行时，对动画的控制程度上，js 能够让动画，暂停，取消，终止，css动画不能添加事件
+
+动画性能看，js 动画多了一个js 解析的过程，性能不如 css 动画好
+
+## <a name="export import">export import</a>
+#### 方法
+    function func() {　
+      console.log('do something')
+    }
+    const test = 'test'
+
+    export {
+      func,
+      test
+    }
+
+    //调用
+    import {func, test} from 'static/js/public.js'
 
 
 
 # <a name="JS兼容写法">**JS兼容写法**</a>
+
 ## <a name="获取节点的兼容">获取节点的兼容</a>
     firstElementChild || firstChild
     lastElementChild || lastChild
@@ -2063,6 +2158,8 @@ var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
       向下滚动 ： e.wheelDelta == 120
 
 
+
+
 # <a name="其他">**其他**</a>
 ## <a name="取消选择，防止复制，禁止剪切、粘贴">取消选择，防止复制，禁止剪切、粘贴</a>
 取消选择 obj.onselectstart = () => return false
@@ -2084,7 +2181,33 @@ document.designMode='on'  | 'off'  控制当前文档是否可编辑
 var f = (function f(){ return '1'; }, function g(){ return 2; })();
 console.log(f) //2
 
-## <a name="题">题</a>
+
+# <a name="题">**题**</a>
+## <a name="map(parseInt) 原理解析">['1','2','3'].map(parseInt) 原理解析</a>
+https://juejin.im/post/5c6fab02e51d453eb7801914
+https://www.zhihu.com/question/267702014
+
+>
+
+    var new_array = arr.map(function callback(currentValue[, index[, array]]) { 
+      // Return element for new_array 
+    }[, thisArg])
+
+这个 callback 一共可以接收三个参数，其中第一个参数代表当前被处理的元素，而第二个参数代表该元素的索引。
+
+而 parseInt 则是用来解析字符串的，使字符串成为指定基数的整数。
+
+parseInt(string, radix)接收两个参数，第一个表示被处理的值（字符串），第二个表示为解析时的基数。
+
+parseInt('1', 0)  //radix 为 0 时，且 string 参数不以“0x”和“0”开头时，按照 10 为基数处理。这个时候返回 1；
+
+parseInt('2', 1)  // 基数为 1（1 进制）表示的数中，最大值小于 2，所以无法解析，返回 NaN；
+
+parseInt('3', 2)  // 基数为 2（2 进制）表示的数中，最大值小于 3，所以无法解析，返回 NaN。
+
+map 函数返回的是一个数组，所以最后结果为 [1, NaN, NaN]。
+
+## 
 >
     function Foo() {
         getName = function () {

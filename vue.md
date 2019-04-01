@@ -1,4 +1,10 @@
-<<<<<<< HEAD
+# 组件中写 key作用？
+key 的作用是为了在 diff 算法执行时更快的找到对应的节点，提高 diff 速度。
+
+vue 和 react 都是采用 diff 算法来对比新旧虚拟节点，从而更新节点。在 vue 的 diff 函数中。可以先了解一下 diff 算法。
+
+在交叉对比的时候，当新节点跟旧节点头尾交叉对比没有结果的时候，会根据新节点的 key 去对比旧节点数组中的 key，从而找到相应旧节点（这里对应的是一个 key => index 的 map 映射）。如果没找到就认为是一个新增节点。而如果没有 key，那么就会采用一种遍历查找的方式去找到对应的旧节点。一种一个 map 映射，另一种是遍历查找。相比而言。map 映射的速度更快。
+
 # 滚动
 * document.documentElement.scrollTop = 380 //不需要加单位
 * 
@@ -12,8 +18,6 @@ document.getElementById('ID').scrollIntoView()
 
 # keep-alive
 如果使用了keep-alive对组件进行了缓存，组件不会销毁，destroyed不执行
-=======
->>>>>>> 7896b6011d677ab78d37a760f0398b75b8b4dfda
 
 
 
@@ -428,7 +432,6 @@ EventBus、props $emit、Vuex
     base: '/dist/' // 添加路径
 
 
-<<<<<<< HEAD
 ## nginx
 * 基本命令
     启动服务：start nginx
@@ -438,59 +441,6 @@ EventBus、props $emit、Vuex
     验证配置文件：nginx -t
     使用配置文件：nginx -c "配置文件路径"
     使用帮助：nginx -h
-
-# 引入外部js文件的方法和常量
-## 方法
-=======
-
-## 引入外部js文件的方法和常量
-#### 方法
->>>>>>> 7896b6011d677ab78d37a760f0398b75b8b4dfda
-    function func() {　
-      console.log('do something')
-    }
-    const test = 'test'
-
-    export {
-      func,
-      test
-    }
-
-    //调用
-    import {func, test} from 'static/js/public.js'
-
-
-
-
-
-# Vuex
-#### 部分页面隐藏全局组件 --如：导航栏
-    // src/store/index.js
-
-    import Vue from 'vue'
-    import Vuex from 'vuex'
-
-    Vue.use(Vuex);
-
-    const store = new Vuex.Store({
-      state: {
-        bottomShow: true,
-      }
-    })
-    export default store
-
-    // App.vue 
-    <Bottom v-if="$store.state.bottomShow"></Bottom>
-
-    //不想显示的页面
-    created () {
-      this.$store.state.bottomShow = false
-    },
-    destroyed () { // 组件销毁销毁后 还原状态，否则所以页面都不会显示
-      this.$store.state.bottomShow = true
-    }
-
-
 
 # 其他
 ## 组件引用路径写法 
