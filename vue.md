@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 滚动
 * document.documentElement.scrollTop = 380 //不需要加单位
 * 
@@ -11,38 +12,94 @@ document.getElementById('ID').scrollIntoView()
 
 # keep-alive
 如果使用了keep-alive对组件进行了缓存，组件不会销毁，destroyed不执行
+=======
+>>>>>>> 7896b6011d677ab78d37a760f0398b75b8b4dfda
 
 
 
-# vux的组件x-number绑定on-change事件不生效， input值绑定必须使用  v-model 而不是 :value
-    有效：<x-number @on-change="changeNumber(index, item.id)" v-model="item.number" ></x-number>
-    无效：<x-number @on-change="changeNumber(index, item.id)" :value="item.number"></x-number>
+# vue-router -- https://router.vuejs.org/zh
+## base
+    {
+      path: '/a/:id',  //访问路径,
+      name: 'a', //名称，vue页面可通过name调用,
+      component: A, //具体vue页面
+      meta: {title: '标题'},  //页面标题
+      children: [
 
-# 解决 Vue 相同路由参数不同不会刷新的问题
-    watch: {
-      '$route' () {
-        if (this.$route.path === 'test') {
-          this.test();
-        }
+      ],
+      redirect: '/b', //{ name: 'foo' } 重定向：当用户访问 /a时，URL 将会被替换成 /b，然后匹配路由为 /b
+      alias:'/b', //别名：/a 的别名是 /b，意味着，当用户访问 /b 时，URL 会保持为 /b，但是路由匹配则为 /a，就像用户访问 /a 一样。
+    }
+
+## this.$route 和 this.$router区别：
+    this.$route 信息参数（query、prams）传参获取 --只读
+    this.$router 功能函数，go()，push()等方法调用 --只写
+
+## push(),replace(),go()
+1. push()
+
+    this.$router.push(location, onComplete?, onAbort?) //页面跳转，且会向 history 栈添加一个新的记录，当用户点击浏览器后退按钮时，则回到之前的 URL。等同于<router-link :to="...">	
+2. replace()
+
+    this.$router.replace(location, onComplete?, onAbort?) //页面跳转，不会向 history 添加新记录，而是替换掉当前的 history 记录。等同于<router-link :to="..." replace> 
+3. go()
+    
+    this.$router.go(n) //的参数是一个整数，意思是在 history 记录中向前或者后退多少步，
+
+## 跳转页面 -- 如果提供了 path，params会被忽略，所以params传参要用name来引入
+    声明式 <router-link :to="...">
+    编程式 router.push(...)
+### 无参数：
+1. (:to动态绑定name 或则 path) 页面自动解析成path地址 
+
+      \<router-link :to="{name:'RouterB'}">去B页面</router-link> 
+
+2. (to="path")，只能指定path值 
+
+      \<router-link to="/RouterB">去B页面</router-link>  
+      
+### 传参:
+1. ：(query传参，参数通过url get方式拼接) --在浏览器地址栏中显示参数 ?id=myid&name=myname
+
+    \<router-link :to="{name:'RouterB', query: {name:'name1', title: 'title'} }">去B页面，传入参数</router-link>
+
+2. (params传参，参数通过路径[/001]形式拼接到url上，如果没有在路径配置种使用参数占位符，url不会拼接，直接展示是具体路由页面)/myid/myname
+
+      \<router-link :to="{name:'RouterB', params: {name:'name2', title: 'title2'}}">去B页面，params传入参数</router-link>
+
+
+## 参数获取
+    var param = this.$route.query; //query传参 获取方法
+    var param = this.$route.params; //params传参 获取方法
+
+## 解决vue多个路由共用一个页面的问题
+1. watch
+>
+    当路由变化时，watch里的路由监听函数都会被触发，可以在这个函数中对页面的数据进行重新加载的操作。
+    watch:{
+      "$route":function(to,from){
+        //to 对象：包含目标地址
+        //from 对象：包含当前地址
+        //其实还有一个next参数的，这个参数是控制路由是否跳转的，如果没写，可以不用写next()来代表允许路由跳转，如果写了就必须写next(),否则路由是不会生效的。
+      }
+    }
+2. beforeRouteUpdate  // 组件内的守卫
+>
+    beforeRouteUpdate (to, from, next) {
+      if (to.name ==== from.name && to.params.id !== from.params.id) {
+        //do something 
+        next() 
       }
     }
 
-# 解决vue多个路由共用一个页面的问题
-  当路由变化时，watch里的路由监听函数都会被触发，可以在这个函数中对页面的数据进行重新加载的操作。
-  watch:{
-    "$route":function(to,from){
-      //to 对象：包含目标地址
-      //from 对象：包含当前地址
-      //其实还有一个next参数的，这个参数是控制路由是否跳转的，如果没写，可以不用写next()来代表允许路由跳转，如果写了就必须写next(),否则路由是不会生效的。
-    }
-  }
-
-# 刷新当前路由方法
-    this.$router.go(0);
+## 刷新当前路由方法
+1. 
+    this.$router.go(0)
     location.reload() 
     //这两种方式都相当于f5刷新，页面会有卡顿的情况
 
-    // 使用页面
+2. 先进入空白页再在空白页跳转回到上一个页面
+    // 要刷新的页面
     refresh () {
       this.$router.replace({
         path: '/refresh',
@@ -52,7 +109,7 @@ document.getElementById('ID').scrollIntoView()
       })
     }
 
-    // refresh.vue
+    // 空白页 
     <script>
     export default {
       beforeRouteEnter(to, from, next) {
@@ -63,23 +120,99 @@ document.getElementById('ID').scrollIntoView()
     }
     </script>
 
+3. 通过改变router-view中的key来达到刷新组件的目的
+    <router-view :key="reload"></router-view>
+    默认让key等于当时的时间戳，当切换当前路由的时候改变时间戳为现在的时间戳，同样也可以达到刷新路由的目的
+    this.reload = new Date().getTime()
 
-# 适配pc端改为适配pc端和移动端，使用2套css
-  ## App.vue
-    created: function () {
-      if(document.documentElement.clientWidth > 640){
-          require('./style/index.scss');
-          this.plaform = 'pc';
-      }else{
-          require('./style/mobile.scss');
-          this.plaform = 'mobile';
+
+## mode: hash | history区别
+1. hash —— 即地址栏 URL 中的 ## 符号（此 hash 不是密码学里的散列运算）。
+比如这个 URL：http://www.abc.com/##/hello，hash 的值为 ##/hello。它的特点在于：hash 虽然出现在 URL 中，但不会被包括在 HTTP 请求中，对后端完全没有影响，因此改变 hash 不会重新加载页面。
+2. history —— 利用了 HTML5 History Interface 中新增的 pushState() 和 replaceState() 方法。（需要特定浏览器支持）
+这两个方法应用于浏览器的历史记录栈，在当前已有的 back、forward、go 的基础之上，它们提供了对历史记录进行修改的功能。只是当它们执行修改时，虽然改变了当前的 URL，但浏览器不会立即向后端发送请求。
+
+#### mode:history缺点
+* 打包存放路径问题
+mode: 'history',
+base: '/dist/'
+
+* 刷新问题
+不怕前进，不怕后退，就怕刷新，f5，（如果后端没有准备的话）,因为刷新是实实在在地去请求服务器的。
+
+在hash模式下，前端路由修改的是##中的信息，而浏览器请求时是不带它玩的，所以没有问题.但是在history下，你可以自由的修改path，当刷新时，如果服务器中没有相应的响应或者资源，页面会404。
+
+#### 如何去除vue项目中的网址的 ## --- History模式
+    const router = new VueRouter({
+      mode: 'history',
+      routes: [...]
+    })
+
+## 切换页面时自动滚动到顶部
+  export default new Router({
+    mode: 'hash',
+    scrollBehavior: () => ({ y: 0 }), //路由跳转后页面回到顶部
+    routes: []
+  })
+
+## 设置页面title 、 切换页面时自动滚动到顶部（另一种）
+    const router = new Router({
+      routes: [
+        {
+          path: '/',
+          name: 'index',
+          meta: { title: "首页" },
+          component: Index
+        },
+        {
+            path:'/',
+            name:'list',
+            meta:{ title:"列表页" },
+            component: List
+        }
+      ]
+    })
+
+    router.beforeEach((to, from, next) => {//beforeEach是router的钩子函数，在进入路由前执行
+      window.scrollTo(0,0)//切换页面时滚动条自动滚动到顶部
+      if (to.meta.title) {//判断是否有标题
+        document.title = to.meta.title
       }
-    }
+      next()//执行进入路由，如果不写就不会进入目标页
+    })
 
-# 父子组件通信 
+    export default router
+
+
+
+    
+# 组件通信方法
+EventBus、props $emit、Vuex
+## EventBus  事件总线
+    // main.js 中定义一个新的eventBus对象，其是一个全新的Vue实例
+    export const eventBus = new Vue()
+    Vue.prototype.eventBus = eventBus
+
+    //接收事件 监听当前实例上的自定义事件
+    eventBus.$on( event, callback )
+
+    //发送事件 触发当前实例上的事件
+    eventBus.$emit( event,  [...args])
+
+    // 移除事件
+    eventBus.$off( [event, callback] )
+    移除所有事件 eventBus.$off() 
+    移除某事件   eventBus.$off('testEvent')
+
+### 注意
+1. $emit时，必须已经$on，否则将无法监听到事件，也就是说对组件是有一定的同时存在的要求的。(注：路由切换时，新路由组件先created，旧路由组件再destoryed，部分情况可以分别写入这两个生命周期，见此问题)。
+2. $on在组件销毁后不会自动解除绑定，若同一组件多次生成则会多次绑定事件，则会一次$emit，多次响应，需额外处理。
+3. 数据非“长效”数据，无法保存，只在$emit后生效
+
+## 父子组件通信 props, $emit
     https://cn.vuejs.org/v2/guide/components-props.html
 
-## 父组件->子组件
+#### 父组件->子组件
   父组件
     <child :child-com="content"></child> //注意这里用驼峰写法
 
@@ -106,7 +239,7 @@ document.getElementById('ID').scrollIntoView()
       }
     }
 
-## 子组件->父组件
+#### 子组件->父组件
   子组件
     <template>
         <div @click="open"></div>
@@ -126,8 +259,275 @@ document.getElementById('ID').scrollIntoView()
       }
     }
 
+
+## 兄弟组件通讯
+1. 通过父组件进行兄弟组件之间通讯
+2. eventBus
+3. vux
+
+
+# token 验证
+#### api/index.js
+    // 请求拦截器
+    axios.interceptors.request.use(
+      config => {
+        if (store.state.accessToken) { // 在请求头中加token
+          config.headers['X-Access-Auth-Token'] = store.state.accessToken
+        }
+        return config
+      }, error => {
+        return Promise.reject(error)
+      }
+    )   
+#### store/index.js
+    const store = new Vuex.Store({
+      state: {
+        accessToken: localStorage.getItem('accessToken') ? localStorage.getItem('accessToken') : '',
+      },
+      mutations: {
+        // 修改token，并将token存入localStorage
+        changeToken (state, user) {
+          state.accessToken = user.accessToken
+          localStorage.setItem('accessToken', user.accessToken)
+        }
+      }
+    })
+#### router/index.js
+  给需要判断是否登录的页面添加参数 requiresAuth
+    const router = new Router({
+      routes: [
+        {
+          path: '/cart',
+          meta: {
+            title: '购物车',
+            requiresAuth: true
+          }
+        },
+        {
+          path: '/login',
+          name: 'login',
+          component: login
+        }
+      ]
+    })
+
+    //  在全局前置守卫中判断
+    router.beforeEach((to, from, next) => {
+      if (to.meta.requiresAuth) { // 是否需要toekn验证
+        let token = localStorage.getItem('accessToken')
+        if (!token) { // toekn是否存在
+          next('/login') 
+        } else {
+          next()
+        }
+      } else {
+        next()
+      }
+    })
+#### 登录页面的token设置
+    import { mapMutations } from 'vuex'
+    methods: {
+      ...mapMutations([
+        // 将 `this.changeToken(args)` 映射为 `this.$store.commit('changeToken', args)`
+        // 对应store/index.js的mutations方法
+        'changeToken'
+      ]),
+      login () { // 登录成功时
+        // // 将用户token保存到vuex中
+        this.changeToken({ accessToken: data.accessToken})
+      }
+    }
+
+
+# 静态资源处理
+
+## 处理静态资源 -- http://vuejs-templates.github.io/webpack/static.html
+  #### 图片路径 
+    1. 相对URL，例如./assets/logo.png将被解释为模块依赖性。它们将替换为基于Webpack输出配置的自动生成的URL。
+
+    2. 未加前缀的URL(同相对URL)，例如，assets/logo.png将被视为与相对URL相同并被翻译成./assets/logo.png。
+
+    3. 带有前缀的URL~被视为模块请求，类似于require('some-module/image.png')。如果要利用Webpack的模块解析配置，则需要使用此前缀。例如，如果您有解析别名assets，则需要使用\<img src="~assets/logo.png" >以确保遵守别名。
+
+    4. 根相对URL，如/assets/logo.png根本不处理。--打包后图片不加载
+
+  #### src/assets和static/区别
+
+      能被 webpack 追踪到的静态资源，如 img 标签引入的图片， 可以放到 assets 里，
+      而webpack无法追踪到的图片，如通过 css backgrount-image 引入的图片，只能放到 static 目录。
+
+      相同点：资源在html中使用，都是可以的。
+
+      不同点：使用assets下面的资源，在js中使用的话，路径要经过webpack中file-loader编译，路径不能直接写。
+
+      assets中的文件会经过webpack打包，重新编译，推荐该方式。而static中的文件，不会经过编译static中的文件只是复制一遍而已。简单来说，static中建议放一些外部第三方，自己的放到assets，别人的放到static中。
+
+      注意：如果把图片放在assets与static中，html页面可以使用；但在动态绑定中，assets路径的图片会加载失败，因为webpack使用的是commenJS规范，必须使用require才可以
+
+1. 图片路径为static
+    \<img class="img-title" src="static/images/index/b-t.jpg" alt="">
+
+    onerror图片
+    * \<img :src="item.pic" alt="" onerror="this.src='static/images/errorImg.jpg'">
+    * \<img :src="item.pic" alt="" :onerror="errorImg'">
+      data下: errorImg: 'this.src="' + require('../../assets/images/common/errorImg.jpg') + '"',
+2. assets
+    \<img class="img-title" src="../assets/images/index/m-t.jpg" alt="">
+    编译后会转为
+    \<img data-v-57509004="" src="/static/img/m-t.f606898.jpg" alt="" class="img-title">
+
+3. 在JavaScript中获取资源路径 使用require对图片路径进行引用，这样通过变量传递的不是字符串而是图片资源。
+    例：\<img :src="imgUrl" alt=""> 
+    data () {
+      return {
+        imgUrl: require('../assets/images/index/m-t.jpg')
+      }
+    }
+
+
+
+
+# 打包
+## vue中打包后出现css中文本超出部分隐藏显示省略号失效
+    这是webpack的锅，webpack打包后-webkit-box-orient被移除，所以导致失效。
+     .content {
+        display: -webkit-box; /*作为弹性伸缩盒子模型显示*/
+        -webkit-line-clamp: 2; /*显示的行数；如果要设置2行加...则设置为2*/
+        overflow: hidden;
+        text-overflow: ellipsis; /* 溢出用省略号*/
+        /*! autoprefixer: off */
+        -webkit-box-orient: vertical;/*伸缩盒子的子元素排列：从上到下*/
+        /* autoprefixer: on */
+      }
+
+## vue-cli2打包后打开 index.html 空白,某些图片字体文件加载不出来解决办法
+
+1. 修改config下面的index.js中bulid模块导出的路径
+    build: {
+      //修改此处路径
+      assetsPublicPath: './',
+    }
+
+2. build下utils.js文件
+    if (options.extract) {
+      return ExtractTextPlugin.extract({
+        use: loaders,
+        fallback: 'vue-style-loader',
+          //此处添加publicPath:'../../'
+        publicPath:'../../'
+      })
+    } else {
+      return ['vue-style-loader'].concat(loaders)
+    }
+
+3. 使用了mode：history
+    src里边router/index.js路由配置里边默认模式是hash，如果你改成了history模式的话，打开也会是一片空白。
+    dist包不是服务器跟目录，在index.htm里手动给js和css添加dist目录即可/dist/；
+
+    mode: 'history',
+    base: '/dist/' // 添加路径
+
+
+<<<<<<< HEAD
+## nginx
+* 基本命令
+    启动服务：start nginx
+    退出服务：nginx -s quit
+    强制关闭服务：nginx -s stop
+    重载服务：nginx -s reload　　（重载服务配置文件，类似于重启，服务不会中止）
+    验证配置文件：nginx -t
+    使用配置文件：nginx -c "配置文件路径"
+    使用帮助：nginx -h
+
+# 引入外部js文件的方法和常量
+## 方法
+=======
+
+## 引入外部js文件的方法和常量
+#### 方法
+>>>>>>> 7896b6011d677ab78d37a760f0398b75b8b4dfda
+    function func() {　
+      console.log('do something')
+    }
+    const test = 'test'
+
+    export {
+      func,
+      test
+    }
+
+    //调用
+    import {func, test} from 'static/js/public.js'
+
+
+
+
+
+# Vuex
+#### 部分页面隐藏全局组件 --如：导航栏
+    // src/store/index.js
+
+    import Vue from 'vue'
+    import Vuex from 'vuex'
+
+    Vue.use(Vuex);
+
+    const store = new Vuex.Store({
+      state: {
+        bottomShow: true,
+      }
+    })
+    export default store
+
+    // App.vue 
+    <Bottom v-if="$store.state.bottomShow"></Bottom>
+
+    //不想显示的页面
+    created () {
+      this.$store.state.bottomShow = false
+    },
+    destroyed () { // 组件销毁销毁后 还原状态，否则所以页面都不会显示
+      this.$store.state.bottomShow = true
+    }
+
+
+
+# 其他
+## 组件引用路径写法 
+    // 在build/webpack.base.conf.js中定义了 @
+    @/commponents/a.vue
+
+
+## Vue 用 axios 调用本地的 json 文件，
+  json 必须存放在 “ static ” 文件夹下，static 目录是 vue-cli 向外暴露的静态文件夹，所有静态数据都应该放到static目录中。
+  #### 调本地json文件
+  import data from '@/assets/json/index/swiper1.json'
+  console.log(data)
+
+## 修改组件css  /deep/ 或 >>>   
+    // less和sass中不管用
+    .wrap /deep/ .vux-header {
+      background-color: ##3cc51f;
+    }
+
+## 修改Vux组件中样式变量（组件颜色）
+    修改build/webpack.base.conf.js
+    module.exports = vuxLoader.merge(webpackConfig, {
+      plugins:[
+        {name: 'vux-ui'},
+        {name: 'less-theme', path: 'src/assets/style/dy.less'}//自定义的Less文件路径
+      ]
+    })
+
+    自定义dy.less内容
+    @tabbar-text-active-color: ##ff0d00;
+
+    最后需要重新启动项目，不然配置不起效果
+
 # 轮播图--VueAwesomeSwiper
+api同swiper
 // notNextTick是一个组件自有属性，如果notNextTick设置为true，组件则不会通过NextTick来实例化swiper，也就意味着你可以在第一时间获取到swiper对象，假如你需要刚加载遍使用获取swiper对象来做什么事，那么这个属性一定要是true
+>
     swiperOption: {
       notNextTick: true,
       swiperOption: { // swiper options 所有的配置同swiper官方api配置
@@ -144,8 +544,8 @@ document.getElementById('ID').scrollIntoView()
           clickable: true, // 点击滑动
           type: 'custom',
           renderCustom: function (swiper, current, total) { // 自定义分页器样式
-            const activeColor = '#168fed'
-            const normalColor = '#aeaeae'
+            const activeColor = '##168fed'
+            const normalColor = '##aeaeae'
             let color = ''
             let paginationStyle = ''
             let html = ''
@@ -188,374 +588,6 @@ document.getElementById('ID').scrollIntoView()
 
 
 
-# token 验证
-  ## api/index.js
-    // 请求拦截器
-    axios.interceptors.request.use(
-      config => {
-        if (store.state.accessToken) { // 在请求头中加token
-          config.headers['X-Access-Auth-Token'] = store.state.accessToken
-        }
-        return config
-      }, error => {
-        return Promise.reject(error)
-      }
-    )   
-  ## store/index.js
-    const store = new Vuex.Store({
-      state: {
-        accessToken: localStorage.getItem('accessToken') ? localStorage.getItem('accessToken') : '',
-      },
-      mutations: {
-        // 修改token，并将token存入localStorage
-        changeToken (state, user) {
-          state.accessToken = user.accessToken
-          localStorage.setItem('accessToken', user.accessToken)
-        }
-      }
-    })
-  ## router/index.js
-  给需要判断是否登录的页面添加参数 requiresAuth
-    const router = new Router({
-      routes: [
-        {
-          path: '/cart',
-          meta: {
-            title: '购物车',
-            requiresAuth: true
-          }
-        },
-        {
-          path: '/login',
-          name: 'login',
-          component: login
-        }
-      ]
-    })
-
-    //  在全局前置守卫中判断
-    router.beforeEach((to, from, next) => {
-      if (to.meta.requiresAuth) { // 是否需要toekn验证
-        let token = localStorage.getItem('accessToken')
-        if (!token) { // toekn是否存在
-          next('/login') 
-        } else {
-          next()
-        }
-      } else {
-        next()
-      }
-    })
-  ## 登录页面的token设置
-    import { mapMutations } from 'vuex'
-    methods: {
-      ...mapMutations([
-        // 将 `this.changeToken(args)` 映射为 `this.$store.commit('changeToken', args)`
-        // 对应store/index.js的mutations方法
-        'changeToken'
-      ]),
-      login () { // 登录成功时
-        // // 将用户token保存到vuex中
-        this.changeToken({ accessToken: data.accessToken})
-      }
-    }
-
-
-
-
-
-# store管理部分页面隐藏全局组件
-  ## store/index.js
-      const store = new Vuex.Store({
-        state: {
-          headerShow: true, // 头部是否显示
-        }
-      })
-  ## 页面
-      destroyed () { //销毁时显示
-        this.$store.state.headerShow = true
-      },
-      created () { //创建时隐藏
-        this.$store.state.headerShow = false
-      },
-
-
-# 处理静态资源 -- http://vuejs-templates.github.io/webpack/static.html
-  ## 图片路径 
-    1. 相对URL，例如./assets/logo.png将被解释为模块依赖性。它们将替换为基于Webpack输出配置的自动生成的URL。
-
-    2. 未加前缀的URL(同相对URL)，例如，assets/logo.png将被视为与相对URL相同并被翻译成./assets/logo.png。
-
-    3. 带有前缀的URL~被视为模块请求，类似于require('some-module/image.png')。如果要利用Webpack的模块解析配置，则需要使用此前缀。例如，如果您有解析别名assets，则需要使用\<img src="~assets/logo.png" >以确保遵守别名。
-
-    4. 根相对URL，如/assets/logo.png根本不处理。--打包后图片不加载
-
-# vue中打包后出现css中文本超出部分隐藏显示省略号失效
-    这是webpack的锅，webpack打包后-webkit-box-orient被移除，所以导致失效。
-     .content {
-        display: -webkit-box; /*作为弹性伸缩盒子模型显示*/
-        -webkit-line-clamp: 2; /*显示的行数；如果要设置2行加...则设置为2*/
-        overflow: hidden;
-        text-overflow: ellipsis; /* 溢出用省略号*/
-        /*! autoprefixer: off */
-        -webkit-box-orient: vertical;/*伸缩盒子的子元素排列：从上到下*/
-        /* autoprefixer: on */
-      }
-
-
-  ## src/assets和static/区别
-
-      能被 webpack 追踪到的静态资源，如 img 标签引入的图片， 可以放到 assets 里，
-      而webpack无法追踪到的图片，如通过 css backgrount-image 引入的图片，只能放到 static 目录。
-
-      相同点：资源在html中使用，都是可以的。
-
-      不同点：使用assets下面的资源，在js中使用的话，路径要经过webpack中file-loader编译，路径不能直接写。
-
-      assets中的文件会经过webpack打包，重新编译，推荐该方式。而static中的文件，不会经过编译static中的文件只是复制一遍而已。简单来说，static中建议放一些外部第三方，自己的放到assets，别人的放到static中。
-
-      注意：如果把图片放在assets与static中，html页面可以使用；但在动态绑定中，assets路径的图片会加载失败，因为webpack使用的是commenJS规范，必须使用require才可以
-
-1. 图片路径为static
-    \<img class="img-title" src="static/images/index/b-t.jpg" alt="">
-
-    onerror图片
-    * \<img :src="item.pic" alt="" onerror="this.src='static/images/errorImg.jpg'">
-    * \<img :src="item.pic" alt="" :onerror="errorImg'">
-      data下: errorImg: 'this.src="' + require('../../assets/images/common/errorImg.jpg') + '"',
-2. assets
-    \<img class="img-title" src="../assets/images/index/m-t.jpg" alt="">
-    编译后会转为
-    \<img data-v-57509004="" src="/static/img/m-t.f606898.jpg" alt="" class="img-title">
-
-3. 在JavaScript中获取资源路径 使用require对图片路径进行引用，这样通过变量传递的不是字符串而是图片资源。
-    例：\<img :src="imgUrl" alt=""> 
-    data () {
-      return {
-        imgUrl: require('../assets/images/index/m-t.jpg')
-      }
-    }
-
-
-# vue-cli2打包后打开 index.html 空白,某些图片字体文件加载不出来解决办法
-
-## 修改config下面的index.js中bulid模块导出的路径
-    build: {
-      //修改此处路径
-      assetsPublicPath: './',  
-    }
-
-## vue-cli2修改build文件夹下边的utils.js文件
-    if (options.extract) {
-      return ExtractTextPlugin.extract({
-        use: loaders,
-        fallback: 'vue-style-loader',
-          //此处添加publicPath:'../../'
-        publicPath:'../../'
-      })
-    } else {
-      return ['vue-style-loader'].concat(loaders)
-    }
-
-## 如果以上方法仍然没有解决你的问题
-    src里边router/index.js路由配置里边默认模式是hash，如果你改成了history模式的话，打开也会是一片空白。所以改为hash或者直接把模式配置删除，让它默认的就行 。如果非要使用history模式的话，需要你在服务端加一个覆盖所有的情况的候选资源：如果URL匹配不到任何静态资源，则应该返回一个index.html
-
-## 使用mode：history
-dist包不是服务器跟目录，在index.htm里手动给js和css添加dist目录即可/dist/；
-
-mode: 'history',之后添加
-base: '/dist/'
-
-## nginx
-* 基本命令
-    启动服务：start nginx
-    退出服务：nginx -s quit
-    强制关闭服务：nginx -s stop
-    重载服务：nginx -s reload　　（重载服务配置文件，类似于重启，服务不会中止）
-    验证配置文件：nginx -t
-    使用配置文件：nginx -c "配置文件路径"
-    使用帮助：nginx -h
-
-# 引入外部js文件的方法和常量
-## 方法
-    function func() {　
-      console.log('do something')
-    }
-    const test = 'test'
-
-    export {
-      func,
-      test
-    }
-
-    //调用
-    import {func, test} from 'static/js/public.js'
-
-# Vue路由 -- https://router.vuejs.org/zh
-
-    {
-      path: '/a/:id',  //访问路径,
-      name: 'a', //名称，vue页面可通过name调用,
-      component: A, //具体vue页面
-      meta: {title: '标题'},  //页面标题
-      children: [
-
-      ],
-      redirect: '/b', //{ name: 'foo' } 重定向：当用户访问 /a时，URL 将会被替换成 /b，然后匹配路由为 /b
-      alias:'/b', //别名：/a 的别名是 /b，意味着，当用户访问 /b 时，URL 会保持为 /b，但是路由匹配则为 /a，就像用户访问 /a 一样。
-    }
-
-
-## this.$route 和 this.$router区别：
-    this.$route 信息参数（query、prams）传参获取 --只读
-    this.$router 功能函数，go()，push()等方法调用 --只写
-
-## push(),replace(),go()
-    this.$router.push(location, onComplete?, onAbort?) //页面跳转，且会向 history 栈添加一个新的记录，当用户点击浏览器后退按钮时，则回到之前的 URL。等同于<router-link :to="...">	
-
-    this.$router.replace(location, onComplete?, onAbort?) //页面跳转，不会向 history 添加新记录，而是替换掉当前的 history 记录。等同于<router-link :to="..." replace> 
-    this.$router.go(n) //的参数是一个整数，意思是在 history 记录中向前或者后退多少步，
-
-## 跳转页面 -- 如果提供了 path，params会被忽略，所以params传参要用name来引入
-    声明式 <router-link :to="...">
-    编程式 router.push(...)
-  ### 无参数：
-      方式一：(:to动态绑定name 或则 path) 页面自动解析成path地址 
-      <router-link :to="{name:'RouterB'}">去B页面</router-link> 
-
-      方式二：(to="path")，只能指定path值 
-      <router-link to="/RouterB">去B页面</router-link>  
-      
-  ### 传参:
-      方式一：(通过query传入参数，参数通过url get方式拼接) --在浏览器地址栏中显示参数
-      <router-link :to="{name:'RouterB', query: {name:'name1', title: 'title'} }">去B页面，传入参数</router-link>
-
-      方式二：(通过params传入参数，参数通过路径[/001]形式拼接到url上，如果没有在路径配置种使用参数占位符，url不会拼接，直接展示是具体路由页面)
-      <router-link :to="{name:'RouterB', params: {name:'name2', title: 'title2'}}">去B页面，params传入参数</router-link>
-
-
-# 参数获取
-    var param = this.$route.query; // var param = this.$route.params;
-    //如果使用query方式传入的参数使用this.$route.query 接收
-    //如果使用params方式传入的参数使用this.$router.params接收
-
-
-
-# vuex store 
-## 部分页面隐藏全局组件 --如：导航栏
-    // src/store/index.js
-
-    import Vue from 'vue'
-    import Vuex from 'vuex'
-
-    Vue.use(Vuex);
-
-    const store = new Vuex.Store({
-      state: {
-        bottomShow: true,
-      }
-    })
-    export default store
-
-    // App.vue 
-    <Bottom v-if="$store.state.bottomShow"></Bottom>
-
-    //不想显示的页面
-    created () {
-      this.$store.state.bottomShow = false
-    },
-    destroyed () { // 组件销毁销毁后 还原状态，否则所以页面都不会显示
-      this.$store.state.bottomShow = true
-    }
-
-# 组件引用路径写法 
-    // 在build/webpack.base.conf.js中定义了 @
-    @/commponents/a.vue
-
-# mode: hash | history区别
-1. hash —— 即地址栏 URL 中的 # 符号（此 hash 不是密码学里的散列运算）。
-比如这个 URL：http://www.abc.com/#/hello，hash 的值为 #/hello。它的特点在于：hash 虽然出现在 URL 中，但不会被包括在 HTTP 请求中，对后端完全没有影响，因此改变 hash 不会重新加载页面。
-2. history —— 利用了 HTML5 History Interface 中新增的 pushState() 和 replaceState() 方法。（需要特定浏览器支持）
-这两个方法应用于浏览器的历史记录栈，在当前已有的 back、forward、go 的基础之上，它们提供了对历史记录进行修改的功能。只是当它们执行修改时，虽然改变了当前的 URL，但浏览器不会立即向后端发送请求。
-
-## mode:history缺点
-* 打包存放路径问题
-mode: 'history',
-base: '/dist/'
-
-* 刷新问题
-不怕前进，不怕后退，就怕刷新，f5，（如果后端没有准备的话）,因为刷新是实实在在地去请求服务器的。
-
-在hash模式下，前端路由修改的是#中的信息，而浏览器请求时是不带它玩的，所以没有问题.但是在history下，你可以自由的修改path，当刷新时，如果服务器中没有相应的响应或者资源，页面会404。
-
-## 如何去除vue项目中的网址的 # --- History模式
-    const router = new VueRouter({
-      mode: 'history',
-      routes: [...]
-    })
-
-# 切换页面时自动滚动到顶部
-  export default new Router({
-    mode: 'hash',
-    scrollBehavior: () => ({ y: 0 }), //路由跳转后页面回到顶部
-    routes: []
-  })
-
-# 设置页面title 、 切换页面时自动滚动到顶部（另一种）
-    const router = new Router({
-      routes: [
-        {
-          path: '/',
-          name: 'index',
-          meta: { title: "首页" },
-          component: Index
-        },
-        {
-            path:'/',
-            name:'list',
-            meta:{ title:"列表页" },
-            component: List
-        }
-      ]
-    })
-
-    router.beforeEach((to, from, next) => {//beforeEach是router的钩子函数，在进入路由前执行
-      window.scrollTo(0,0)//切换页面时滚动条自动滚动到顶部
-      if (to.meta.title) {//判断是否有标题
-        document.title = to.meta.title
-      }
-      next()//执行进入路由，如果不写就不会进入目标页
-    })
-
-    export default router
-
-
-# Vue 用 axios 调用本地的 json 文件，
-  json 必须存放在 “ static ” 文件夹下，static 目录是 vue-cli 向外暴露的静态文件夹，所有静态数据都应该放到static目录中。
-  ## 调本地json文件
-  import data from '@/assets/json/index/swiper1.json'
-  console.log(data)
-
-# 修改组件css  /deep/ 或 >>>   
-    // less和sass中不管用
-    .wrap /deep/ .vux-header {
-      background-color: #3cc51f;
-    }
-
-# 修改Vux组件中样式变量（组件颜色）
-    修改build/webpack.base.conf.js
-    module.exports = vuxLoader.merge(webpackConfig, {
-      plugins:[
-        {name: 'vux-ui'},
-        {name: 'less-theme', path: 'src/assets/style/dy.less'}//自定义的Less文件路径
-      ]
-    })
-
-    自定义dy.less内容
-    @tabbar-text-active-color: #ff0d00;
-
-    最后需要重新启动项目，不然配置不起效果
-
 # rem
     
     npm install lib-flexible --save //安装flexible
@@ -575,19 +607,18 @@ base: '/dist/'
     在generateLoaders修改
     const loaders = options.usePostCSS ? [cssLoader, px2remLoader, postcssLoader] : [cssLoader, px2remLoader]
 
-## px2remLoader用法
+#### px2remLoader用法
     直接写px，编译后会直接转化成rem —- 除开下面两种情况，其他长度用这个
     在px;后面添加/*no*/，不会转化px，原样输出。 — 一般border需用这个
     在px;后面添加/*px*/,会根据dpr的不同，生成三套代码。—- 一般字体需用这个
-    border: 1px solid #ddd; /*no*/
+    border: 1px solid ##ddd; /*no*/
     height: 64px; /*px*/
     font-size: 28px; /*px*/
 
 
-# vue-cli安装
-    npm install --global vue-cli
 
 # 创建项目
+    npm install --global vue-cli //  vue-cli安装
     vue init webpack vuedemo
 
     输入命令后，会跳出几个选项让你回答：
@@ -602,18 +633,17 @@ base: '/dist/'
     > Setup unit tests with Karma + Mocha? (Y/n) 是否安装单元测试，我选择安装y回车
 Setup e2e tests with Nightwatch(Y/n)? 是否安装e2e测试 ，我选择安装y回车
 
-# 生成文件目录后，使用 npm / cnpm安装依赖
+## 生成文件目录后，使用 npm / cnpm安装依赖
 npm install
 > 安装淘宝镜像 npm install -g cnpm --registry=https://registry.npm.taobao.org
 
-# 启动项目
-npm run dev 
+## 启动项目 npm run dev 
 > 如果浏览器打开之后，没有加载出页面，有可能是本地的 8080 端口被占用，需要修改一下配置文件 config里的index.js
->> dev --> port
+dev --> port
 
-# 打包上线 npm run build
-    > 打开config/index.js，将其中build的assetsPublicPath值改为’./’
-    > 组件的路径不能使用@/../static   只能使用../../../static这个时候，打包过后的登陆页面引用图片路径错误，多了一个/static/css
+## 打包上线 npm run build
+    打开config/index.js，将其中build的assetsPublicPath值改为’./’
+    组件的路径不能使用@/../static   只能使用../../../static这个时候，打包过后的登陆页面引用图片路径错误，多了一个/static/css
       修改build文件夹下边的utils.js文件
       if (options.extract) {
         return ExtractTextPlugin.extract({
@@ -625,42 +655,42 @@ npm run dev
         return ['vue-style-loader'].concat(loaders)
       }
 
-    > 在项目开发完成之后，npm run build 来进行打包工作。注意，自己的项目文件都需要放到 src 文件夹下。
-    > 打包完成后，会生成 dist 文件夹，如果已经修改了文件路径，可以直接打开本地文件查看。项目上线时，只需要将 dist 文件夹放到服务器就行了。
+    在项目开发完成之后，npm run build 来进行打包工作。注意，自己的项目文件都需要放到 src 文件夹下。
+    打包完成后，会生成 dist 文件夹，如果已经修改了文件路径，可以直接打开本地文件查看。项目上线时，只需要将 dist 文件夹放到服务器就行了。
 
 
 
 
-    ├── build/                      # webpack 编译任务配置文件: 开发环境与生产环境
+    ├── build/                      ## webpack 编译任务配置文件: 开发环境与生产环境
     │   └── ...
     ├── config/                     
-    │   ├── index.js                # 项目核心配置
+    │   ├── index.js                ## 项目核心配置
     │   └── ...
-    ├ ── node_module/               #项目中安装的依赖模块
+    ├ ── node_module/               ##项目中安装的依赖模块
        ── src/
-    │   ├── main.js                 # 程序入口文件
-    │   ├── App.vue                 # 程序入口vue组件
-    │   ├── components/             # 组件
+    │   ├── main.js                 ## 程序入口文件
+    │   ├── App.vue                 ## 程序入口vue组件
+    │   ├── components/             ## 组件
     │   │   └── ...
-    │   └── assets/                 # 资源文件夹，一般放一些静态资源文件
+    │   └── assets/                 ## 资源文件夹，一般放一些静态资源文件
     │       └── ...
-    ├── static/                     # 纯静态资源 (直接拷贝到dist/static/里面)
+    ├── static/                     ## 纯静态资源 (直接拷贝到dist/static/里面)
     ├── test/
-    │   └── unit/                   # 单元测试
-    │   │   ├── specs/              # 测试规范
-    │   │   ├── index.js            # 测试入口文件
-    │   │   └── karma.conf.js       # 测试运行配置文件
-    │   └── e2e/                    # 端到端测试
-    │   │   ├── specs/              # 测试规范
-    │   │   ├── custom-assertions/  # 端到端测试自定义断言
-    │   │   ├── runner.js           # 运行测试的脚本
-    │   │   └── nightwatch.conf.js  # 运行测试的配置文件
-    ├── .babelrc                    # babel 配置文件
-    ├── .editorconfig               # 编辑配置文件
-    ├── .gitignore                  # 用来过滤一些版本控制的文件，比如node_modules文件夹 
-    ├── index.html                  # index.html 入口模板文件
-    └── package.json                # 项目文件，记载着一些命令和依赖还有简要的项目描述信息 
-    └── README.md                   #介绍自己这个项目的，可参照github上star多的项目。
+    │   └── unit/                   ## 单元测试
+    │   │   ├── specs/              ## 测试规范
+    │   │   ├── index.js            ## 测试入口文件
+    │   │   └── karma.conf.js       ## 测试运行配置文件
+    │   └── e2e/                    ## 端到端测试
+    │   │   ├── specs/              ## 测试规范
+    │   │   ├── custom-assertions/  ## 端到端测试自定义断言
+    │   │   ├── runner.js           ## 运行测试的脚本
+    │   │   └── nightwatch.conf.js  ## 运行测试的配置文件
+    ├── .babelrc                    ## babel 配置文件
+    ├── .editorconfig               ## 编辑配置文件
+    ├── .gitignore                  ## 用来过滤一些版本控制的文件，比如node_modules文件夹 
+    ├── index.html                  ## index.html 入口模板文件
+    └── package.json                ## 项目文件，记载着一些命令和依赖还有简要的项目描述信息 
+    └── README.md                   ##介绍自己这个项目的，可参照github上star多的项目。
     build/
 
 

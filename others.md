@@ -1,47 +1,21 @@
-    function Foo() {
-        getName = function () {
-            alert(1);
-        }
-        return this;
-    }
-    Foo.getName = function () {
-        alert(2)
-    }
-    Foo.prototype.getName = function () {
-        alert(3)
-    }
-    var getName = function () {
-        alert(4)
-    }
-    function getName() {
-        alert(5)
-    }
-    Foo.getName();
-    getName();
-    Foo().getName();
-    getName();
-    new Foo.getName();
-    new Foo().getName();
-    new new Foo().getName()
 
 
 # 获取浏览器屏幕高度
+>
+可见区域宽/高： document.body.clientWidth / clientHeight
+可见区域宽/高(包括边线)： document.body.offsetWidth / offsetHeight
+正文全文宽/高 ： document.body.scrollWidth / scrollHeight;
+滚动条具 头部 / 左侧 距离： document.body.scrollTop / scrollLeft
+正文部分上： window.screenTop;
+正文部分左： window.screenLeft;
 
-    IE中：
-    document.body.clientWidth ==> BODY对象宽度
-    document.body.clientHeight ==> BODY对象高度
-    document.documentElement.clientWidth ==> 可见区域宽度
-    document.documentElement.clientHeight ==> 可见区域高度
-    FireFox中：
-    document.body.clientWidth ==> BODY对象宽度
-    document.body.clientHeight ==> BODY对象高度
-    document.documentElement.clientWidth ==> 可见区域宽度
-    document.documentElement.clientHeight ==> 可见区域高度
-    Opera中：
-    document.body.clientWidth ==> 可见区域宽度
-    document.body.clientHeight ==> 可见区域高度
-    document.documentElement.clientWidth ==> 页面对象宽度（即BODY对象宽度加上Margin宽）
-    document.documentElement.clientHeight ==> 页面对象高度（即BODY对象高度加上Margin高）
+屏幕分辨率的高： window.screen.height;
+屏幕分辨率的宽： window.screen.width;
+屏幕可用工作区高度： window.screen.availHeight;
+
+
+var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+
 
 # 获取当前页面 url 网址信息
 
@@ -186,7 +160,7 @@
 ## 页面重定向和刷新
 
     content内的数字代表时间（秒），既多少时间后刷新。如果加url,则会重定向到指定网页（搜索引擎能够自动检测，也很容易被引擎视作误导而受到惩罚）。
-    <meta http-equiv="refresh" content="0;url=">
+    <meta http-equiv="refresh" content="0; url="">
 
 ## viewport
 ### 基本
