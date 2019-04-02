@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html;" charset="UTF-8" />
+  <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>-->
+  <title></title>
+  <link rel="icon" href="favicon.gif" type="images/gif" />
+  <!-- <link rel="stylesheet" href="./css/base.css" /> -->
+  <style>
+  .click{
+    width: 100px;
+    height: 100px;
+    border:1px solid red;
+  }</style>
+</head>
+
+<body>
+  <div class="click">click</div>
+  <input type="text" id="ipt">
+  <script>
+    function throttle(fn, delay = 500) {
+      let canRun = true; // 通过闭包保存一个标记
+      return function () {
+        if (!canRun) return; // 在函数开头判断标记是否为 true，不为 true 则 return
+        canRun = false; // 立即设置为 false
+        setTimeout(() => { // 将外部传入的函数的执行放在 setTimeout 中
+          fn.apply(this, arguments);
+          // 最后在 setTimeout 执行完毕后再把标记设置为 true(关键) 表示可以执行下一次循环了。当定时器没有执行的时候标记永远是 false，在开头被 return 掉
+          canRun = true;
+        }, delay);
+      };
+    }
+    function sayHi(e) {
+      console.log(e.target.innerWidth, e.target.innerHeight);
+    }
+    window.addEventListener('resize', throttle(sayHi, 1000));
+    let arr = [[1, 2, 2], [3, 4, 5, 5], [6, 7, 8, 9, [11, 12, [12, 13, [14]]]], 10];
+    // let outputArr = [1,2,2,3,4,5,5,6,7,8,9,11,12,12,13,14,10]
+    function flatted(arr) {
+      return arr.reduce((pre, now, index, MyArr) => {
+        // console.log(pre, now, index, MyArr)
+        return pre.concat(Array.isArray(now) ? flatted(now) : now) 
+      }, [])
+    }
+    const flatten = (ary) => ary.reduce((pre, now) => pre.concat(Array.isArray(now) ? flatten(now) : now), []);
+    function func(arr){
+      var arr1 =[].concat(...arr);
+      return arr1.some(item =>Array.isArray(item))?func(arr1):arr1
+    }
+    console.log(func(arr))
+     // [1, 2, 3, "4", 5, "6", 7, 8, 9, 10]
+    // console.log(flatted(arr))
+    // console.log(arr.flat(Infinity))
+  </script>
+</body>
+
+</html>

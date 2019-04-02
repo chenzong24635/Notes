@@ -41,6 +41,7 @@
 * <a href="#事件委托(代理)">事件委托(代理)</a>
 * <a href="#闭包">闭包</a>
 * <a href="#原型、原型链、原型继承">原型、原型链、原型继承</a>
+* <a href="#typeof和instanceof的区别">typeof和instanceof的区别</a>
 * <a href="#作用域、作用域链、执行环境、上下文">作用域、作用域链、执行环境、上下文</a>
 * <a href="#公有、私有、静态、特权方法与属性">公有、私有、静态、特权方法与属性</a>
 * <a href="#this">this</a>
@@ -146,6 +147,12 @@
 **前端页面由哪三层构成：结构层、表示层、行为层。**
 
 # <a name="HTML">**HTML**</a>
+
+网页标题引入图标
+
+\<link rel="shortcut icon" href="favicon.ico" type="images/x-icon" />
+
+\<link rel="icon" href="favicon.gif" type="image/gif" />
 
 ## <a name="XHTML、HTML区别">XHTML、HTML区别</a>
 * HTML是一种基于标准通用标记语言（SGML）的应用，是一种非常灵活的置标语言，
@@ -851,6 +858,15 @@ js里所有的对象都有proto属性(对象，函数)，可称为隐式原型�
 只有函数function才具有prototype属性。这个属性是一个指针，指向一个对象，这个对象的用途就是包含所有实例共享的属性和方法（我们把这个对象叫做原型对象）。
 原型对象也有一个属性，叫做constructor，这个属性包含了一个指针，指回原构造函数。
 
+实例的__proto__属性（原型）等于其构造函数的prototype属性
+function P (){};
+let p = new P();
+p.__proto__ == P.prototype // true
+p instanceof P // true
+
+构造函数不需要显示的返回值。使用new来创建对象(调用构造函数)时，如果return的是非对象(数字、字符串、布尔类型等)会忽而略返回值;如果return的是对象，则返回该对象(注：若return null也会忽略返回值）。
+
+
 * 原型继承：
 原型中的成员可以被和其相关的对象共享这一特性，可以实现继承。这种实现继承的方式，就叫做原型继承。
 
@@ -863,6 +879,15 @@ https://blog.csdn.net/caijixin/article/details/78295676
 4. 原型式继承
 5. 原型式继承
 6. 寄生组合式继承
+
+## <a name="typeof和instanceof的区别">typeof和instanceof的区别</a>
+在 JavaScript 中，判断一个变量的类型尝尝会用 typeof 运算符，在使用 typeof 运算符时采用引用类型存储值会出现一个问题，无论引用的是什么类型的对象，它都返回 “object”。
+
+
+instanceof 运算符用来测试一个对象在其原型链中是否存在一个构造函数的 prototype 属性。
+语法：object instanceof constructor
+参数：object（要检测的对象.）constructor（某个构造函数）
+描述：instanceof 运算符用来检测 constructor.prototype 是否存在于参数 object 的原型链上。
 
 ## <a name="作用域、作用域链、执行环境、上下文">作用域、作用域链、执行环境、上下文</a>
 #### 作用域：
@@ -963,6 +988,7 @@ https://juejin.im/post/5bd5509851882543e82f5564
 
 http://www.cnblogs.com/pssp/p/5216085.html?tdsourcetag=s_pctim_aiomsg
 
+https://juejin.im/post/5c049e6de51d45471745eb98
 * this
 > 
     this 始终指向最后调用它的对象
@@ -1014,14 +1040,16 @@ http://www.cnblogs.com/pssp/p/5216085.html?tdsourcetag=s_pctim_aiomsg
     用function包裹的目的就是将箭头函数绑定到当前的对象上。 匿名函数的作用域是当前这个对象，所以之后箭头函数会自动绑定到此函数所在作用域的this，即obj 。
 
 
-
-
 ## <a name="apply call bind">apply call bind</a>
+>
 
-都是用来改变函数的this对象的指向的；
-第一个参数都是this要指向的对象，也就是想指定的上下文；
-都可以利用后续参数传参；
-bind是返回对应函数，便于稍后调用；apply、call则是立即调用 。
+    都是用来改变函数的this对象的指向的；
+    第一个参数都是this要指向的对象，也就是想指定的上下文；
+    都可以利用后续参数传参；
+    apply、call则是立即调用；bind是返回对应函数，便于稍后调用；
+
+this优先级：
+new绑定 > 显示绑定 > 隐式绑定
 
 ## <a name="深，浅拷贝">深，浅拷贝</a>
 
@@ -1520,7 +1548,7 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
     当前宏任务执行完成后，会查看微任务的“事件队列”，依次执行所有微任务
     执行完毕，开始检查渲染，然后GUI线程接管渲染
     渲染完毕后，JS线程继续接管，开始下一个宏任务（从事件队列中获取）
-[img](/img/JS的执行机制.jpg)
+![img](/img/JS的执行机制.jpg)
 
 #### 进程、线程
 >
@@ -1893,7 +1921,7 @@ var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
 0. foo.flat(Infinity) // Array.prototype.flat()用于将嵌套的数组“拉平”，变成一维的数组。该方法返回一个新数组，对原数据没有影响。默认只会“拉平”一层，如果想要“拉平”多层的嵌套数组，可以将flat()方法的参数写成一个整数，表示想要拉平的层数，默认为1。
 1. 
 >
-    const flatten = (ary) => ary.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []);
+    const flatten = (ary) => ary.reduce((pre, now) => pre.concat(Array.isArray(now) ? flatten(now) : now), []);
     flatten(foo); // [1, 2, 3, "4", 5, "6", 7, 8, 9, 10]
 
 2. 

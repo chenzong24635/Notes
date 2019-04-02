@@ -96,14 +96,23 @@
       }
     ];
 
-* for...in循环遍历对象自身的和继承的可枚举属性（不含 Symbol 属性）。
-* for in更适合遍历对象，不要使用for in遍历数组。
 ## for...in
+>
+    1.遍历的是索引（即键名）
+    2.遍历顺序有可能不是按照实际数组的内部顺序
+    3.for in环遍历对象自身的和继承的可枚举属性（不含 Symbol 属性）。
+for in更适合遍历对象，不要使用for in遍历数组。
+
     for (index in arr) { 
+      if（myObject.hasOwnProperty(index)){ //判断某属性是否是该对象的实例属性
+　　　　console.log(index);
+　　  }
       console.log('index:', index, ';item:', arr[index]);
     }
 
 ## for...of
+for of遍历的只是数组内的元素，而不包括数组的原型属性method和索引name
+
     for (item of arr) {
       console.log('item:', item);
     }
@@ -120,6 +129,15 @@
       return sum
     }, 0);
 
+    //使用reduce进行数组扁平化
+    let givenArr = [[1, 2, 2], [3, 4, 5, 5], [6, 7, 8, 9, [11, 12, [12, 13, [14]]]], 10];
+    // let outputArr = [1,2,2,3,4,5,5,6,7,8,9,11,12,12,13,14,10]
+    function flatted(arr) {
+      return arr.reduce((pre, now, index, array) => {
+        // console.log(pre, now, index, array)
+        return pre.concat(Array.isArray(now) ? flatted(now) : now) 
+      }, [])
+    }
 
 ## map()
     arr.map((item, index) => {
