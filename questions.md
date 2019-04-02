@@ -1,10 +1,8 @@
 **前端页面由哪三层构成：结构层、表示层、行为层。**
 
 
-* <a href="#遍历方法">**遍历方法**</a>
 
-
-* <a href="#常用">**常用**</a>
+ <a href="#常用">**常用**</a>
 
 * <a href="#浏览器判断">浏览器判断navigator.userAgent</a>
 * <a href="#0.1+0.2">0.1+0.2!=0.3</a>
@@ -24,22 +22,8 @@
 * <a href="#斐波那契数列">斐波那契数列</a>
 
 
-* <a href="#JS兼容写法">**JS兼容写法**</a>
 
-* <a href="#浏览器高度">浏览器高度</a>
-* <a href="#获取节点的兼容">获取节点的兼容</a>
-* <a href="#event获取目标对象">event获取目标对象</a>
-* <a href="#阻止冒泡">阻止冒泡</a>
-* <a href="#阻止默认行为">阻止默认行为</a>
-* <a href="#事件监听的兼容">事件监听的兼容</a>
-* <a href="#清除选中">清除选中</a>
-* <a href="#滚动事件mouseWheel">滚动事件mouseWheel</a>
-
-* <a href="#"></a>
-
-
-
-* <a href="#其他">**其他**</a>
+<a href="#其他">**其他**</a>
 
 * <a href="#获取当前页面url网址信息">获取当前页面url网址信息</a>
 * <a href="#unicode转中文">unicode转中文</a>
@@ -49,140 +33,10 @@
 
 
 
-* <a href="#题">题</a>
+<a href="#题">题</a>
+
 * <a href="#map(parseInt) 原理解析">['1','2','3'].map(parseInt) 原理解析</a>
 
-
-# <a name="遍历方法">**遍历方法**</a>
-> 
-    * 
-    let arr = ['a', 'b'];
-    let obj = [
-      {
-        'a1': '1',
-        'b1': '1'
-      },
-      {
-        'a2': '2',
-        'b2': '2'
-      }
-    ];
-
-## for...in
->
-    1.遍历的是索引（即键名）
-    2.遍历顺序有可能不是按照实际数组的内部顺序
-    3.for in环遍历对象自身的和继承的可枚举属性（不含 Symbol 属性）。
-for in更适合遍历对象，不要使用for in遍历数组。
-
-    for (index in arr) { 
-      if（myObject.hasOwnProperty(index)){ //判断某属性是否是该对象的实例属性
-　　　　console.log(index);
-　　  }
-      console.log('index:', index, ';item:', arr[index]);
-    }
-
-## for...of
-for of遍历的只是数组内的元素，而不包括数组的原型属性method和索引name
-
-    for (item of arr) {
-      console.log('item:', item);
-    }
-
-## reduce((sum, item, index, array) => {}) 
-    //接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终为一个值，// reduceRight() (从右到左)
-    //  Accumulator (acc) (累计器 累计回调的返回值; 它是上一次调用回调时返回的累积值)
-    //  Current Value (cur) (当前值)
-    //  Current Index (idx) (当前索引)
-    //  Source Array (src) (源数组)
-    let reduce = arr.reduce((sum, item, index, array) => {
-      sum += index
-      console.log('reduce()-->', '累计器', sum, ';index:', index, ';item:', item, '源数组:', array);
-      return sum
-    }, 0);
-
-    //使用reduce进行数组扁平化
-    let givenArr = [[1, 2, 2], [3, 4, 5, 5], [6, 7, 8, 9, [11, 12, [12, 13, [14]]]], 10];
-    // let outputArr = [1,2,2,3,4,5,5,6,7,8,9,11,12,12,13,14,10]
-    function flatted(arr) {
-      return arr.reduce((pre, now, index, array) => {
-        // console.log(pre, now, index, array)
-        return pre.concat(Array.isArray(now) ? flatted(now) : now) 
-      }, [])
-    }
-
-## map()
-    arr.map((item, index) => {
-      console.log('map()-->', 'index:', index, ';item:', item)
-    });
-
-
-## forEach((item, index, array) => {})遍历所有值并忽略回调函数的返回值 --- 改变原数组
-    // 	item--正在数组中处理的当前元素的值
-    // 	index--数组中正在处理的元素的索引
-    // 	array--源数组
-    //  break不能中断其循环，使用return也不能返回到外层函数。
-    arr.forEach((item, index, array) => {
-      console.log('forEach()-->', 'index:', index, ';item:', item, '源数组:', array)
-    });
-
-## every(),some(),filter()
-    // every() 检测每个元素 是否符合条件（函数提供），全部满足才返回true，不检测空数组
-    // some()                                      一个满足就返回true
-    // filter() 以数组形式返回满足条件的元素，没有返回[]
-    arr.filter((item, index, array) => {
-      if (index >= 1) {console.log('index >= 1的值:',item)}
-      console.log('filter()-->', 'index:', index, ';item:', item, '源数组:', array)
-    });
-
-    // 利用filter去重
-    var arr = [2,3,4,4,5,2,3,6];
-    var arr2 = arr.filter(function(element,index,self){
-    return self.indexOf(element) === index;
-    });
-    console.log(arr2);
-
-## entries()，keys()和values()——用于遍历数组。它们都返回一个遍历器对象
-    for (let [index, item] of arr.entries()) {
-      console.log('entries()-->','index:', index, ';item:', item);
-    }
-    for (let index of arr.values()) {
-      console.log('.values()-->', 'index:', index);
-    }
-    for (let item of arr.keys()) {
-      console.log('.keys()-->', 'item:', item);
-    }
-
-  
-## Object.keys(obj)、Object.keys(obj)、Object.keys(obj)
-#### 返回一个数组，包括对象自身的（不含继承的）所有可枚举属性（不含 Symbol 属性）的键值对数组、键名、键值。  
-    let entries = Object.entries(arr);
-    console.log('Object.entries()-->', entries)
-
-    let keys = Object.keys(arr);
-    console.log('Object.keys()-->', keys)
-
-    let values = Object.values(arr);
-    console.log('Object.values()-->', values)
-
-    // 删除变量
-    var {a,b,...obj} = {
-      d: 'd',
-      e: 'e',
-      a: 1,
-      b: 2,
-      c: 3
-    }
-    console.log(a,b)// 1 2
-    console.log(obj)//{d: "d", e: "e", c: 3}
-
-    // 交换两个变量的值
-    var a = 20, b = 30;
-    a ^= b;
-    b ^= a;
-    a ^= b;
-
-    [a,b]=[b,a]
 
 
 # <a name="常用">**常用**</a>
@@ -552,130 +406,6 @@ var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
 
     //调用
     import {func, test} from 'static/js/public.js'
-
-
-
-# <a name="JS兼容写法">**JS兼容写法**</a>
-
-## <a name="浏览器高度">浏览器高度</a>
->
-    可见区域宽/高： document.body.clientWidth / clientHeight
-    可见区域宽/高(包括边线)： document.body.offsetWidth / offsetHeight
-    正文全文宽/高 ： document.body.scrollWidth / scrollHeight;
-    滚动条具 头部 / 左侧 距离： document.body.scrollTop / scrollLeft
-    正文部分上： window.screenTop;
-    正文部分左： window.screenLeft;
-
-    屏幕分辨率的高： window.screen.height;
-    屏幕分辨率的宽： window.screen.width;
-    屏幕可用工作区高度： window.screen.availHeight;
-
-
-    var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-
-## <a name="获取节点的兼容">获取节点的兼容</a>
-    firstElementChild || firstChild
-    lastElementChild || lastChild
-    previousElementSibling || previousSibling
-    nextElementChild || nextChild
-
-## <a name="event获取目标对象">event获取目标对象</a>
->
-    IE678  event.srcElement（事件源）
-    其他   event.target（事件源）
-
-    function getTarget(e){   
-      const event = e || window.event; // w3c | IE
-      event.target?e.target:event.srcElement
-    } 
-
-## <a name="阻止冒泡">阻止冒泡</a>
->
-    w3c的方法是：（火狐、谷歌、IE11）event.stopPropagation()
-    IE10以下则是使用：event.cancelBubble = true
-
-    function stopPropagation(e){
-      const  event = e || window.event; // w3c | IE
-      event.stopPropagation ? event.stopPropagation() : event.cancelBubble = true;
-    }
-
-## <a name="阻止默认行为">阻止默认行为</a>
->
-    function preventDefault(e){ 
-      cosnt event = e || window.event; // w3c | IE
-      event.preventDefault ? event.preventDefault() : event.returnValue = false;
-    }
-
-
-## <a name="事件监听的兼容">事件监听的兼容</a>
-  //eventListen.addEvent(btn,"click",fn)
->
-    eventListen={
-      addEvent: function (target, type, fn) {
-        if (target.addEventListener) {
-          target.addEventListener(type,fn);
-        } else if(target.attachEvent) {
-          target.attachEvent("on" + type, fn);
-        } else {
-          target["on" + type] = fn;
-        }
-      },
-      removeEvent: function(target, type, fn) { 
-        if (target.removeEventListener) {
-          target.removeEventListener(type, fn);
-        } else if(target.removeEvent) {
-          target.detachEvent("on" + type, fn);
-        } else {
-          target["on" + type] = null;
-        }
-      }
-    }
->
-    Event = {
-    // 参数： 操作的元素,事件名称 ,事件处理程序
-    // 添加事件
-      addEvent : function(ele, type, handler) {
-        ele.addEventListener?ele.addEventListener(type, handler, false):
-        ele.attachEvent?ele.attachEvent('on'+type,function(){handler.call(ele);}):
-        elet['on' + type] = handler;
-      },
-    // 移除事件
-      removeEvent : function(ele, type, handler) {
-        ele.removeEventListener?ele.removeEventListener(type, handler, false):
-        ele.datachEvent?ele.detachEvent('on' + type, handler):
-        ele['on' + type] = null;
-      },
-    // 阻止事件 (主要是事件冒泡，因为IE不支持事件捕获)
-      stopPropagation : function(e) {
-       var e=window.event || e;
-        e.stopPropagation?e.stopPropagation():e.cancelBubble = true;//IE
-      },
-    // 取消事件的默认行为
-      preventDefault : function(e) {
-       var e=window.event || e;
-        e.preventDefault?e.preventDefault():e.returnValue = false;//IE
-      },
-    // 获取事件目标
-      getTarget : function(e) {
-             var e=window.event || e;
-        return e.target || e.srcElement;
-      },
-    };
-
-## <a name="清除选中">清除选中</a>
->
-    window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
-                                              IE9以下
-
-## <a name="滚动事件mouseWheel">滚动事件mouseWheel</a>
->
-    Firefox：DOMMouseScroll    (detail判断上下滑动)
-      向上滚动：e.detail < 0
-      向下滚动 ：e.detail > 0
->
-    IE/Chrome/Safari/Opera：mousewheel  (wheelDelta判断鼠标上下滑动)
-      向上滚动：  e.wheelDelta == -120
-      向下滚动 ： e.wheelDelta == 120
 
 
 
