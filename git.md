@@ -39,6 +39,19 @@
 * git config --global user.name "chenzong24635"
 * git config --global user.email "chenzong24635@163.com"
 
+# 永久保存密码
+1. 
+    git config --global credential.helper store
+    
+2. 
+>
+    C:\Users\Administator目录下生成 .gitconfig配置文件。添加：
+    [user]
+      name = wb-ly409739  //你的用户名
+      email = wb-ly409739@alibaba-inc.com  //你的git邮箱账号
+    [credential]
+        helper = stor
+
 # 重设git用户的名字和邮箱:
 * git config --global user.name "chenzong24635"
 * git config --global user.email ""chenzong24635@163.com"
