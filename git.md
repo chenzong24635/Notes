@@ -39,10 +39,10 @@
 * git config --global user.name "chenzong24635"
 * git config --global user.email "chenzong24635@163.com"
 
-# 永久保存密码
+# 本地永久保存账号密码
 1. 
     git config --global credential.helper store
-    
+
 2. 
 >
     C:\Users\Administator目录下生成 .gitconfig配置文件。添加：
@@ -51,6 +51,10 @@
       email = wb-ly409739@alibaba-inc.com  //你的git邮箱账号
     [credential]
         helper = stor
+
+# 删除或修改本地Git保存的账号密码
+控制面板 -->用户账户 -->管理你的凭据 -->择Windows凭据 -->git保存的用户信息
+
 
 # 重设git用户的名字和邮箱:
 * git config --global user.name "chenzong24635"
