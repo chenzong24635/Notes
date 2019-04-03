@@ -26,6 +26,12 @@
   <input type="text" id="ipt">
   <script>
     var arr = [1, 2, 4, 0, 3, 1, 99]
+document.onkeyup = function (event) {
+  let e = event ? event : window.event
+  if (e.keyCode === 13) {
+    alert('您按了回车键。')
+  }
+}
 
     function bubbleSort(arr) {
       let len = arr.length;
@@ -42,10 +48,10 @@
 
     function bubble(arr) {
       var len = arr.length
-      for (var i = 0;i < len; i++) {
-        for (var j = 0; j<len - i; j++) {
-          if(arr[j+1] <arr[j]){
-            [arr[j], arr[j+1]] = [arr[j+1], arr[j]]
+      for (var i = 0; i < len; i++) {
+        for (var j = 0; j < len - i; j++) {
+          if (arr[j + 1] < arr[j]) {
+            [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]
           }
         }
       }
@@ -53,14 +59,16 @@
     }
     // console.log(bubble(arr))
     function quickSort(arr) {
-      if (arr.length <= 1) { return arr; }
+      if (arr.length <= 1) {
+        return arr;
+      }
       //选择"基准"（pivot），并将其与原数组分离，再定义两个空数组，用来存放一左一右的两个子集
       var pivotIndex = Math.floor(arr.length / 2);
       var pivot = arr.splice(pivotIndex, 1)[0];
       var left = [];
       var right = [];
       //开始遍历数组，小于"基准"的元素放入左边的子集，大于基准的元素放入右边的子集。
-      for (var i = 0; i < arr.length; i++){
+      for (var i = 0; i < arr.length; i++) {
         if (arr[i] < pivot) {
           left.push(arr[i]);
         } else {
@@ -68,86 +76,73 @@
         }
       }
       //用递归不断重复这个过程，就可以得到排序后的数组。
-    　return quickSort(left).concat([pivot], quickSort(right));
+      return quickSort(left).concat([pivot], quickSort(right));
     };
     // console.log(quickSort(arr))
     var obj = {
       number: 1,
       arr: [],
       str: 'str',
-      obj: {a: 'obj a', b: {arr: [1, 2, 5]}},
-      func: function(){console.log('func')}
+      obj: {
+        a: 'obj a',
+        b: {
+          arr: [1, 2, 5]
+        }
+      },
+      func: function () {
+        console.log('func')
+      }
     }
 
 
-function deepClone1(objCloned) {
-  let obj = Array.isArray(objCloned) ? [] : {};
-  if(objCloned && typeof objCloned === "object") {
-    for(key in objCloned) {
-      if(objCloned.hasOwnProperty(key)) {
-        // 判断 obj 子元素是否为对象，如果是，递归复制
-        if(objCloned[key] && typeof objCloned[key] === "object") {
-          obj[key] = deepClone1(objCloned[key]);
+    function deepClone1(objCloned) {
+      let obj = Array.isArray(objCloned) ? [] : {};
+      if (objCloned && typeof objCloned === "object") {
+        for (key in objCloned) {
+          if (objCloned.hasOwnProperty(key)) {
+            // 判断 obj 子元素是否为对象，如果是，递归复制
+            if (objCloned[key] && typeof objCloned[key] === "object") {
+              obj[key] = deepClone1(objCloned[key]);
+            } else {
+              // 如果不是，简单复制
+              obj[key] = objCloned[key];
+            }
+          }
+        }
+      }
+      return obj;
+    }
+
+    function deepClone(objCloned, obj) {
+      var obj = obj || {};
+      for (var key in objCloned) {
+        if (typeof objCloned[key] === 'object') {
+          obj[key] = (objCloned[key].constructor === Array) ? [] : {};
+          deepClone(objCloned[key], obj[key]);
         } else {
-          // 如果不是，简单复制
           obj[key] = objCloned[key];
         }
       }
+      return obj;
     }
-  }
-  return obj;
-}
-function deepClone(objCloned, obj) {
-  var obj = obj || {};
-  for (var key in objCloned) {
-    if (typeof objCloned[key] === 'object') {
-      obj[key] = (objCloned[key].constructor === Array) ? [] : {};
-      deepClone(objCloned[key], obj[key]);
-    } else {
-      obj[key] = objCloned[key];
-    }
-  }
-  return obj;
-}  
 
-let obj1 = deepClone(obj);
-let obj2 = deepClone1(obj)
-obj1.name= 'obj1'
-obj1.obj.a= 'obj1 a'
-obj2.name= 'obj2'
-obj2.obj.a= 'obj2 a'
-console.log(obj);
-console.log(obj1);
-console.log(obj2);
+    let obj1 = deepClone(obj);
+    let obj2 = deepClone1(obj)
+    obj1.name = 'obj1'
+    obj1.obj.a = 'obj1 a'
+    obj2.name = 'obj2'
+    obj2.obj.a = 'obj2 a'
+    console.log(obj);
+    console.log(obj1);
+    console.log(obj2);
 
-function debounce(fn, delay = 500) {
-      let timeout = null; // 创建一个标记用来存放定时器的返回值
-      return function () {
-        clearTimeout(timeout); // 每当调用函数时清除之前的定时器
-        timeout = setTimeout(() => { // 再创建一个新的 setTimeout, 这样就能保证输入字符后的 间隔内再次调用函数，就不会执行
-          fn.apply(this, arguments);
-        }, delay);
-      };
+    function debounce(fn, delay = 500) {
+
     }
+
     function sayHi() {
       console.log('成功');
     }
-
-    function throttle(fn, delay = 500) {
-      let canRun = true; // 通过闭包保存一个标记
-      return function () {
-        if (!canRun) return; // 在函数开头判断标记是否为 true，不为 true 则 return
-        canRun = false; // 立即设置为 false
-        setTimeout(() => { // 将外部传入的函数的执行放在 setTimeout 中
-          fn.apply(this, arguments);
-          // 最后在 setTimeout 执行完毕后再把标记设置为 true(关键) 表示可以执行下一次循环了。当定时器没有执行的时候标记永远是 false，在开头被 return 掉
-          canRun = true;
-        }, delay);
-      };
-    }
-    let ipt = document.getElementById('click');
-    ipt.addEventListener('click', throttle(sayHi, 1000)); 
-    
   </script>
 </body>
 

@@ -1,9 +1,39 @@
+# 链接
+
+[MDN](https://developer.mozilla.org/zh-CN/)
+
+[阮一峰《ECMAScript 6 入门》](http://es6.ruanyifeng.com/)
+
+[ECMAScript 6兼容性表](http://kangax.github.io/compat-table/es6/)
+
+
+[阮一峰《JavaScript 标准参考教程》](http://javascript.ruanyifeng.com/)
+
+[《JavaScript 教程》](https://wangdoc.com/javascript/index.html)
+
+[《TypeScript》](https://www.tslang.cn/docs/home.html)
+
+[《TypeScript》](https://ts.xcatliu.com/introduction/what-is-typescript.html)
+
+[jQueryAPI](https://www.html.cn/jqapi-1.9/)
+
+[jq22-插件库](http://www.jq22.com/)
+
+[jQuery之家-插件库](http://www.htmleaf.com/)
+
+
+[Swiper](https://www.swiper.com.cn/api/index.html) 轮播图
+[]()
+[]()
+
+
 # 目录
 
 * <a href="#===运算符判断">===运算符判断</a>
 * <a href="#==运算符判断">==运算符判断</a>
 * <a href="#比较运算符"><,>,<=,>=的比较规则</a>
 * <a href="#加运算符">+运算符工作流程</a>
+* <a href="#keyCode">keyCode:键盘按键键码</a>
 
 
 * <a href="#JS">**JS**</a>
@@ -80,6 +110,9 @@
     否则：所有操作数都转换为数字并执行加
 
 
+
+#  <a name="keyCode">keyCode:键盘按键键码</a>
+![keyCode](/img/keyCode.png)
 
 # <a name="JS">**JS**</a>
 
@@ -654,12 +687,23 @@ async 属性
       a) 使用DocumentFragment进行缓存操作,引发一次回流和重绘；
       b) 使用display:none技术，只引发两次回流和重绘；
       c) 使用cloneNode(true or false) 和 replaceChild 技术，引发一次回流和重绘
+>
+所有代码都运行在模块作用域，不会污染全局作用域；
+
+模块可以多次加载，但只会在第一次加载的时候运行一次，然后运行结果就被缓存了，以后再加载，就直接读取缓存结果；
+
+模块的加载顺序，按照代码的出现顺序是同步加载的;
 
 
 ## <a name="模块化">模块化CommonJS AMD CMD ES6modules</a>
 * CommonJS
 >
 　  CommonJS的核心思想就是通过 require 方法来<em>同步加载</em>所要依赖的其他模块，然后通过 exports 或者 module.exports 来导出需要暴露的接口
+
+    一个文件就是一个模块，拥有单独的作用域
+    普通方式定义的 变量、函数、对象都属于该模块内
+    通过require来家在模块
+    通过exports和module.exports来暴露模块中的内容
 
 * AMD
 >
@@ -678,6 +722,10 @@ async 属性
 * ES6modules
 >
     import 关键字引入模块，通过 exprot 关键字导出模块
+
+    export 可以导出的是一个对象中包含的多个属性，方法。
+
+    export default  只能导出一个可以不具名的对象。
 
 ## <a name="内存泄漏">内存泄漏</a>
 内存泄漏:是指一块被分配的内存既不能使用，又不能回收，直到浏览器进程结束。浏览器中采用自动垃圾回收方法管理内存，但由于浏览器垃圾回收方法有bug，因此会产生内存泄漏。

@@ -1,4 +1,11 @@
-# http://tool.oschina.net/uploads/apidocs/jquery/regexp.html
+
+
+[]()
+[正则表达式手册](http://www.zjmainstay.cn/regexp-one)
+
+[正则](http://tool.oschina.net/uploads/apidocs/jquery/regexp.html)
+
+[正则调试](https://regex101.com/)
 
 # 元字符
     .	匹配除换行符以外的任意字符

@@ -1,7 +1,63 @@
 **前端页面由哪三层构成：结构层、表示层、行为层。**
 
+## [HTML](HTML.md)
+## [CSS](css.md)
+## [JS](js.md)
+## [Vue](vue.md)
+## [小程序](Applet.md)
+
+## [JS兼容](compatible.md)
+## [遍历方法](Iterate.md)
+## [正则](reg.md)
+
+## [Git](git.md)
+## [console.log](consolelog.md)
+
+## [vscode快捷键](vscode.md)
 
 
+# 论坛、社区、博客、网站
+
+[前端导航网](http://jsdig.com/) 网站收集
+
+[CSDN](https://www.csdn.net/)
+
+[开源中国](https://www.oschina.net/)
+
+[掘金](https://juejin.im/timeline)
+
+[SegmentFault](https://segmentfault.com/) 、
+[stackoverflow](https://stackoverflow.com/) 技术问答
+
+[w3cplus-大漠](https://www.w3cplus.com/)
+
+[张鑫旭](https://www.zhangxinxu.com/)
+
+[技术胖](https://jspang.com/)
+
+[廖雪峰](https://www.liaoxuefeng.com/)
+
+
+
+[Can I Use](https://caniuse.com/#home) 兼容性查询
+
+[W3CSchool](https://www.w3cschool.cn/)
+
+[手册网](http://www.shouce.ren/)
+
+[印记中文](https://www.docschina.org/)
+
+[前端工具集](https://github.com/nieweidong/fetool)
+
+[icomoon](https://icomoon.io/)
+
+[icon-阿里巴巴](https://www.iconfont.cn/home/index?spm=a313x.7781069.1998910419.2)
+
+
+[]()
+
+
+#
  <a href="#常用">**常用**</a>
 
 * <a href="#浏览器判断">浏览器判断navigator.userAgent</a>
@@ -663,3 +719,13 @@ map 函数返回的是一个数组，所以最后结果为 [1, NaN, NaN]。
 
     new new Foo().getName();// 4  
       相当于 new ((new Foo()).getName)();
+
+# <a name="其他面试题跳转">**其他面试题跳转**</a>
+https://github.com/LiangJunrong/document-library/blob/master/other-library/Interview/PersonalExperience/2019-InterviewPreparation.md#chapter-two-one
+
+https://github.com/markyun/My-blog/tree/master/Front-end-Developer-Questions/Questions-and-Answers
+
+https://github.com/qiu-deqing/FE-interview
+
+https://github.com/foru17/front-end-collect
+

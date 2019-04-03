@@ -1,4 +1,49 @@
-﻿# 目录
+﻿# 链接
+https://github.com/chokcoco/CSS-Inspiration
+
+[You-Dont-Need-JavaScript](https://github.com/you-dont-need/You-Dont-Need-JavaScript)CSS实现效果而不需要JS
+
+UI框架
+[BootStrap](http://www.bootcss.com/)
+
+动画
+
+[animate.css](https://daneden.github.io/animate.css/) +
+[WOW.js](http://www.dowebok.com/demo/131/)
+
+[AniJS.js](http://anijs.github.io/)基于 CSS3 的动画库
+
+[Vivus](http://maxwellito.github.io/vivus) 一款可以执行SVG路径动画的轻量级JS库
+
+
+[imagehover](http://www.imagehover.io/) 允许您轻松实现可缩放的图像悬停效果。从CSS库中选择超过40种悬停效果类，重量仅为19KB。
+
+
+[CSS tricks](https://css-tricks.com/)
+
+
+CSS布局
+
+[Flex](https://yoksel.github.io/flex-cheatsheet/)
+
+[Flex](http://caibaojian.com/flexbox-guide.html)
+
+[Grid](http://grid.guide/)
+
+[CSS布局](http://zh.learnlayout.com/)
+
+
+[三列布局](http://www.cnblogs.com/xiaohuochai/p/5455905.html)
+
+手册
+
+[css手册](http://css.cuishifeng.cn/)
+
+[css手册](http://css.doyoe.com/)
+
+[雪碧图生成](https://www.toptal.com/developers/css/sprite-generator)
+
+# 目录
 
 * <a href="#CSS">**CSS**</a>
 
@@ -16,6 +61,7 @@
 * <a href="#尺寸单位">像素定义 尺寸单位</a>
 * <a href="#省略号">省略号</a>
 * <a href="#注意事项">注意事项</a>
+* <a href="#CSS hack">CSS hack</a>
 
 
 # <a name="CSS">**CSS**</a>
@@ -445,8 +491,9 @@ vw、vh 与 % 百分比的区别
     }
 
 
+## <a name="CSS hack">CSS hack</a>
 
-
+[CSS hack](https://blog.csdn.net/freshlover/article/details/12132801)
 
 
 
