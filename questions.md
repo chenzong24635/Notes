@@ -94,6 +94,8 @@
 
 
 
+
+
 # <a name="常用">**常用**</a>
 
 ## <a name="浏览器判断">浏览器判断navigator.userAgent</a>
@@ -139,7 +141,7 @@
     } else if(/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)){
       console.log("iOS");
     }
-    
+
 ## <a name="获取当前页面url网址信息">获取当前页面url网址信息</a>
 
 #### window.location.href(设置或获取整个 URL 为字符串)

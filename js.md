@@ -39,8 +39,8 @@
 * <a href="#JS">**JS**</a>
 
 * <a href="#数据类型、内置对象">数据类型、内置对象</a>
+* <a href ="json jsonp">json jsonp</a>
 * <a href="#undefined与null定义、区别">undefined与null定义、区别</a>
-
 * <a href="#BOM 浏览器对象模型">BOM 浏览器对象模型</a>
 * <a href="#DOM 文档对象模型">DOM 文档对象模型</a>
 * <a href="#DOM事件">DOM事件</a>
@@ -60,6 +60,7 @@
 * <a href="#内存泄漏">内存泄漏</a>
 * <a href="#use strict">"use strict"? 用处？</a>
 * <a href="#面向过程和面向对象的异同">面向过程和面向对象的异同</a>
+* <a href =""></a>
 * <a href="#跨域">跨域</a>
 * <a href="#常见的web攻击">常见的web攻击</a>
 * <a href="#URI、URL、URN">URI、URL、URN</a>
@@ -131,6 +132,55 @@ JS的组成：核心( ECMAScript) , 文档对象模型(DOM), 浏览器对象模�
 
     栈内存（连续的存储空间，类似数据结构中的栈）：主要用来存放数值、字符、内存地址等小数据
     堆内存（散列的存储空间，类似数据结构中的链表）：存放可以动态变化的大数据
+
+## <a name="json jsonp">json jsonp</a>
+
+JSON是一种key/value形式的数据格式，
+
+JSONP则是一种跨域数据交互协议。
+
+#### JSON：
+定义:
+>
+
+    JavaScript 对象表示法（JavaScript Object Notation）
+    是轻量级的文本数据交换格式,用于存储和交换文本数据领域，与xml类似但比xml更简洁，更快，更易解析
+    JSON 的网络媒体类型是 application/json。
+
+相比 XML，JSON 的优势如下：
+- 没有结束标签，长度更短，读写更快
+- 能够直接被 JavaScript 解释器解析
+- 可以使用数组
+>
+    JSON：
+    {
+      "name": "Geoff Lui",
+      "age": 26,
+      "friends": ["Lily", "Lucy", "Gwen"]
+    }
+
+方法：
+>
+    JSON.parse(json, (name, value)=>{})  //把json解析为javascript对象
+    可以有第二个参数，是一个函数。此函数有两个参数：name 和 value，分别代表名称和值。当传入一个 JSON 字符串后，JSON 的每一组名称/值对都要调用此函数。该函数有返回值，返回值将赋值给当前的名称（name）。
+
+    JSON.stringify(json, replacer, space) //把javascript对象转换为JSON字符串
+    第二个参数（数组形式| 函数）
+    数组形式：指定需要转成字符串的属性，只对对象的属性有效，对数组无效。
+    函数：每一组名称/值对都会调用此函数，该函数返回一个值，作为名称的值变换到结果字符串中，如果返回 undefined，则该成员被忽略。
+
+    第三个参数（数字| 字符串），用于增加返回的JSON字符串的可读性。
+    数字：表示每个属性前面添加的空格（最多不超过10个）；
+    字符串：（不超过10个字符），该字符串会添加在每行前面。
+
+两种数据结构：1.无序的对象结构；2.有序的数组结构
+>
+
+
+
+#### JSONP: 
+是 json 的一种"使用模式"，是种跨域数据交互协议，可以让网页从别的域名（网站）那获取资料，即跨域读取数据
+
 
 ### 内置对象
     Object 是 JavaScript 中所有对象的父对象
