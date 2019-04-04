@@ -62,18 +62,29 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 总而言之，我们在可替换的元素上使用src，然而把href用于在涉及的文档和外部资源之间建立一个引用关系。
 
 ## <a name="浏览器内核、私有化前缀">浏览器内核、私有化前缀</a>
-* 主要分为：渲染引擎(layout engineer或Rendering Engine)和JS引擎。
-* 渲染引擎：
+#### 主要分为：
+    渲染引擎(layout engineer或Rendering Engine)
+    JS引擎
+    
+#### 渲染引擎：
 >
     负责取得网页的内容（HTML、XML、图像等等）、整理讯息（例如加入CSS等），以及计算网页的显示方式，然后会输出至显示器或打印机。浏览器的内核的不同对于网页的语法解释会有不同，所以渲染的效果也不相同。所有网页浏览器、电子邮件客户端以及其它需要编辑、显示网络内容的应用程序都需要内核。
 
-* JS引擎则：
+#### JS引擎则：
 >
     解析和执行javascript来实现网页的动态效果。
     
 最开始渲染引擎和JS引擎并没有区分的很明确，后来JS引擎越来越独立，内核就倾向于只指渲染引擎。
 
-* 浏览器私有化前缀
+#### 常见浏览器及其内核
+
+| | Chrome | Firefox | Safari | IE | Opera |
+:-:| :-:|:-:|:-:|:-:|:-:|
+| 渲染引擎 | Blink | Gecko | Webkit | Trident | Blink |
+| JS 引擎 | V8 | SpiderMonkey | Nitro | Chakra | V8 |
+
+
+#### 浏览器私有化前缀
     -webkit-:chrome safari 
     -ms-：IE
     -moz-:firefox

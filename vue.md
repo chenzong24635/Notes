@@ -1,3 +1,6 @@
+# 生命周期
+[Vue2.0生命周期](https://segmentfault.com/a/1190000008010666)
+
 # vue双向绑定
 >
    Object.defineProperty() 这个方法重新定义了对象获取属性值(get)和设置属性值(set)的操作来实现的。

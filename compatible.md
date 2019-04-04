@@ -3,6 +3,7 @@
 <a href="#JS兼容写法">**JS兼容写法**</a>
 
 * <a href="#浏览器高度">浏览器高度</a>
+* <a href="#屏幕可视区域的宽高">屏幕可视区域的宽高</a>
 * <a href="#获取节点的兼容">获取节点的兼容</a>
 * <a href="#event获取目标对象">event获取目标对象</a>
 * <a href="#阻止冒泡">阻止冒泡</a>
@@ -18,8 +19,7 @@
 
 ## <a name="浏览器高度">浏览器高度</a>
 >
-    可见区域宽/高： document.body.clientWidth / clientHeight
-    可见区域宽/高(包括边线)： document.body.offsetWidth / offsetHeight
+
     正文全文宽/高 ： document.body.scrollWidth / scrollHeight;
     滚动条具 头部 / 左侧 距离： document.body.scrollTop / scrollLeft
     正文部分上： window.screenTop;
@@ -30,7 +30,89 @@
     屏幕可用工作区高度： window.screen.availHeight;
 
 
-    var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+## <a name="屏幕可视区域的宽高">屏幕可视区域的宽高</a>
+
+ie9及其以上的版本   window.innerWidth/Height  
+
+标准模式（有DTD）（CSS1Compat）
+>
+    document.documentElement.clientWidth / clientHeight
+
+混装模式 （没有DTD）（BackCompat）
+>
+    document.body.clientWidth / clientHeight
+
+兼容写法：
+>
+    clientWidth = window.innerWidth || document.documentElement.clientWidth || document.documentElement.clientWidth
+
+    clientHeight = window.innerHeight || document.documentElement.clientHeight || document.documentElement.clientHeight
+
+封装函数：
+ >
+    function client(){
+      if(window.innerHeight !== undefined){
+        return {
+          "width": window.innerWidth,
+          "height": window.innerHeight
+        }
+      }else if(document.compatMode === "CSS1Compat"){
+        return {
+          "width": document.documentElement.clientWidth,
+          "height": document.documentElement.clientHeight
+        }
+      }else{
+        return {
+          "width": document.body.clientWidth,
+          "height": document.body.clientHeight
+        }
+      }
+    }
+
+## <a name="（滚动条位置）被卷去的左侧和头部：">（滚动条位置）被卷去的左侧和头部：</a>
+
+没有DTD约束 : document.body.scrollTop
+已经声明DTD : document.documentElement.scrollTop
+safair : window.pageYOffset
+ 
+兼容写法：
+>
+    scrollTop = document.documentElement.scrollTop || window.pageYOffset ||  document.body.scrollTop  
+
+    scrollLeft = document.documentElement.scrollLeft ||  window.pageXOffset ||  document.body.scrollLeft 
+
+封装函数：
+>
+    function scroll() { 
+      if(window.pageYOffset != null) {  // ie9+ 高版本浏览器
+        // 因为 window.pageYOffset 默认的是  0  所以这里需要判断
+        return {
+          left: window.pageXOffset,
+          top: window.pageYOffset
+        }
+      }
+      else if(document.compatMode === "CSS1Compat") {    // 标准浏览器   来判断有没有声明DTD
+        return {
+          left: document.documentElement.scrollLeft,
+          top: document.documentElement.scrollTop
+        }
+      }
+      return {   // 未声明 DTD
+        left: document.body.scrollLeft,
+        top: document.body.scrollTop
+      }
+    }
+
+
+## <a name="鼠标在页面的位置">鼠标在页面的位置 = 被卷去的部分+可视区域部分</a>
+>
+
+    event = event || window.event;
+    //scroll()上面封装的scroll函数
+    var pagey = event.pageY || scroll().top + event.clientY;
+    var pagex = event.pageX || scroll().left + event.clientX;
+            
+
 
 ## <a name="获取节点的兼容">获取节点的兼容</a>
     firstElementChild || firstChild
@@ -44,7 +126,7 @@
     其他   event.target（事件源）
 
     function getTarget(e){   
-      const event = e || window.event; // w3c | IE
+      const event = e || window.event // w3c | IE
       event.target?e.target:event.srcElement
     } 
 

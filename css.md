@@ -4,6 +4,7 @@ https://github.com/chokcoco/CSS-Inspiration
 [You-Dont-Need-JavaScript](https://github.com/you-dont-need/You-Dont-Need-JavaScript)CSS实现效果而不需要JS
 
 UI框架
+
 [BootStrap](http://www.bootcss.com/)
 
 动画
@@ -63,6 +64,7 @@ CSS布局
 * <a href="#注意事项">注意事项</a>
 * <a href="#CSS hack">CSS hack</a>
 
+* <a href="#其他">**其他**</a>
 
 # <a name="CSS">**CSS**</a>
 
@@ -492,13 +494,33 @@ vw、vh 与 % 百分比的区别
 
 
 ## <a name="CSS hack">CSS hack</a>
-
 [CSS hack](https://blog.csdn.net/freshlover/article/details/12132801)
 
+//IE6-9
+>
+    <!--[if IE]>
+    <style type="text/css">
+    </style>
+    <![endif]-->
+
+//IE10、11
+>
+    <style type="text/css">
+      @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+
+      }
+    </style>
+
+## input placeholder颜色兼容
+>
+    ::-webkit-input-placeholder { color: ##d3d2d2; }/*WebKit, Blink, Edge*/
+    :-moz-placeholder { color: ##d3d2d2; }/*Mozilla Firefox 4 to 18*/
+    ::-moz-placeholder { color: ##d3d2d2; }/*Mozilla Firefox 19+*/
+    :-ms-input-placeholder { color: ##d3d2d2; }/*Internet Explorer 10-11 */
 
 
 
-# 其他
+# <a name="其他">**其他**</a>
 
 ## el.style.cssText +=
 
@@ -556,21 +578,9 @@ all：当所有内容作为一个整体时可以被选择。如果双击或者�
 
 
 
-//IE6-9
-<!--[if IE]>
-<style type="text/css">
-  .ov2{height: 47px;}
-</style>
-<![endif]-->
 
-//IE10、11
-<style type="text/css">
-  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-    /* .ov2{height: 47px;} */
-  }
-</style>
 
-filter:alpha(opacity=50)
+    filter:alpha(opacity=50)
 
     background: linear-gradient(to left, ##f00, ##f00) left top no-repeat, 
                 linear-gradient(to bottom, ##f00, ##f00) left top no-repeat, 
@@ -607,11 +617,7 @@ box-shadow: 0 6px 0 0 ##eee;
     border-color:  transparent transparent transparent ##f4f4f4;
 
 
-## input placeholder颜色
-    ::-webkit-input-placeholder { color: ##d3d2d2; }/*WebKit, Blink, Edge*/
-    :-moz-placeholder { color: ##d3d2d2; }/*Mozilla Firefox 4 to 18*/
-    ::-moz-placeholder { color: ##d3d2d2; }/*Mozilla Firefox 19+*/
-    :-ms-input-placeholder { color: ##d3d2d2; }/*Internet Explorer 10-11 */
+
 
 
 ## -webkit-text-size-adjust: 100%
