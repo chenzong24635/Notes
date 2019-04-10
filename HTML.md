@@ -9,10 +9,12 @@
 * <a href="#src和href的区别">src和href的区别</a>
 * <a href="#浏览器内核、私有化前缀">浏览器内核、私有化前缀</a>
 * <a href="#web存储">cookies、sessionStorage 、和 localStorage 的区别</a>
+* <a href="#HTML5的离线储存">HTML5的离线储存</a>
 * <a href="#iframe缺点">iframe缺点</a>
 * <a href="#响应式设计-viewport">响应式设计-viewport</a>
 * <a href="#meta">meta</a>
 * <a href="#IE hack">IE hack</a>
+* <a href="#aria与role">aria与role</a>
 * <a href="#CSS和JS的位置会影响页面效率，为什么">CSS和JS的位置会影响页面效率，为什么？</a>
 
 # <a name="HTML">**HTML**</a>
@@ -78,9 +80,9 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 
 #### 常见浏览器及其内核
 
-| | Chrome | Firefox | Safari | IE | Opera |
+| | Chrome | Firefox | IE | Safari | Opera |
 :-:| :-:|:-:|:-:|:-:|:-:|
-| 渲染引擎 | Blink | Gecko | Webkit | Trident | Blink |
+| 渲染引擎(内核) | Blink | Gecko | Trident | Webkit | Blink(原Presto) |
 | JS 引擎 | V8 | SpiderMonkey | Nitro | Chakra | V8 |
 
 
@@ -166,6 +168,13 @@ length 存储空间积累项的数目
 * 如何删除cookie
 在服务器端，以java为例，可以将同名cookie的maxAge属性置0；在客户端，可以将expires属性设置为过去的一个时间。即：document.cookie = ‘name=’+cookie_name+’;expires=’+ passed_date
 
+
+## <a name="HTML5的离线储存">HTML5的离线储存</a>
+[MDN - 介绍](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Using_the_application_cache)
+>
+    离线存储可以将站点的一些文件存储在本地，在没有网络的时候还是可以访问到以缓存的对应的站点页面，其中这些文件可以包括html，js，css，img等等文件，但其实即使在有网络的时候，浏览器也会优先使用已离线存储的文件，返回一个200（from cache）头。这跟HTTP的缓存使用策略是不同的。
+
+    
 
 ## <a name="iframe缺点">iframe缺点</a>
 1. 会阻塞主页面的onload事件
@@ -275,7 +284,7 @@ length 存储空间积累项的数目
     <!-- 启用360浏览器的极速模式(webkit) -->
     <meta name="renderer" content="webkit">
 
-    <!-- 避免IE使用兼容模式 -->
+    <!-- 避免IE使用兼容模式 ,以最高版本IE来渲染页面 -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
@@ -338,6 +347,26 @@ length 存储空间积累项的数目
     <!--[if gte IE 7]> IE7以及IE7以上版本可识别 <![endif]-->
     <!--[if IE 8]> 仅IE8可识别 <![endif]-->
     <!--[if IE 9]> 仅IE9可识别 <![endif]-->
+
+## <a name="aria与role">aria与role</a>
+>
+    这些都是HTML5针对html tag增加的属性，一般是为不方便的人士提供的功能，比如屏幕阅读器。
+
+    role属性作用是告诉Accessibility类应用（比如屏幕朗读程序，为盲人提供的访问网络的便利程序），这个元素所扮演的角色，主要是供残疾人使用。使用role可以增强文本的可读性和语义化。
+
+    role的作用是描述一个非标准的tag的实际作用。比如用div做button，那么设置div 的 role="button"，辅助工具就可以认出这实际上是个button。
+    role属性的应用主要是表单，比如输入密码，对于正常人可以用placaholder提示输入密码，但是对于残障人士是无效的，这个时候就需要role了
+
+
+    aria的意思是Accessible Rich Internet Application，aria-*的作用就是描述这个tag在可视化的情境中的具体信息。比如：
+    <div role="checkbox" aria-checked="checked"></div>
+    辅助工具就会知道，这个div实际上是个checkbox的角色，为选中状态。
+
+
+## <a name=""></a>
+## <a name=""></a>
+
+
 
 ## <a name="CSS和JS的位置会影响页面效率，为什么">CSS和JS的位置会影响页面效率，为什么？</a>
 css在加载过程中不会影响到DOM树的生成，但是会影响到Render树的生成，进而影响到layout，所以一般来说，style的link标签需要尽量放在head里面，因为在解析DOM树的时候是自上而下的，而css样式又是通过异步加载的，这样的话，解析DOM树下的body节点和加载css样式能尽可能的并行，加快Render树的生成的速度。

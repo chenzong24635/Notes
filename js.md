@@ -6,7 +6,6 @@
 
 [ECMAScript 6兼容性表](http://kangax.github.io/compat-table/es6/)
 
-
 [阮一峰《JavaScript 标准参考教程》](http://javascript.ruanyifeng.com/)
 
 [《JavaScript 教程》](https://wangdoc.com/javascript/index.html)
@@ -15,15 +14,8 @@
 
 [《TypeScript》](https://ts.xcatliu.com/introduction/what-is-typescript.html)
 
-[jQueryAPI](https://www.html.cn/jqapi-1.9/)
 
-[jq22-插件库](http://www.jq22.com/)
-
-[jQuery之家-插件库](http://www.htmleaf.com/)
-
-
-[Swiper](https://www.swiper.com.cn/api/index.html) 轮播图
-[]()
+[Swiper-轮播图插件](https://www.swiper.com.cn/api/index.html) 
 []()
 
 
@@ -45,20 +37,23 @@
 * <a href="#DOM 文档对象模型">DOM 文档对象模型</a>
 * <a href="#DOM事件">DOM事件</a>
 * <a href="#DOM操作">DOM操作—怎样添加、移除、移动、复制、创建和查找节点</a>
+* <a href="#变量、函数声明提升">变量、函数声明提升</a>
+* <a href="#自执行函数">自执行函数</a>
+* <a href="#new创建一个对象">new创建一个对象过程</a>
+* <a href="#异步编程有哪几种方法">异步编程有哪几种方法</a>
 * <a href="#事件委托(代理)">事件委托(代理)</a>
 * <a href="#闭包">闭包</a>
 * <a href="#原型、原型链、原型继承">原型、原型链、原型继承</a>
-* <a href="#typeof和instanceof的区别">typeof和instanceof的区别</a>
+* <a href="#typeof instanceof">typeof instanceof</a>
 * <a href="#作用域、作用域链、执行环境、上下文">作用域、作用域链、执行环境、上下文</a>
 * <a href="#公有、私有、静态、特权方法与属性">公有、私有、静态、特权方法与属性</a>
-* <a href="#this">this</a>
+* <a href="#this">this理解</a>
 * <a href="apply call bind">apply call bind</a>
 * <a href="#深，浅拷贝">深，浅拷贝</a>
 * <a href="#js延迟加载：defer,async">js延迟加载：defer,async</a>
 * <a href="#重绘和回流">重绘和回流</a>
 * <a href="#模块化">模块化AMD CMD modules</a>
 * <a href="#内存泄漏">内存泄漏</a>
-* <a href="#use strict">"use strict"? 用处？</a>
 * <a href="#面向过程和面向对象的异同">面向过程和面向对象的异同</a>
 * <a href =""></a>
 * <a href="#跨域">跨域</a>
@@ -74,7 +69,7 @@
 * <a href="#web安全">web安全</a>
 * <a href="#get与post区别">get与post区别</a>
 * <a href="#css和js动画的差异">css和js动画的差异</a>
-
+* <a href="#use strict">"use strict"? 用处？</a>
 
 
 # ===、==、Object.is()判断
@@ -121,9 +116,11 @@ JS的特点：无需编译、弱类型、基于对象、事件驱动
 JS的组成：核心( ECMAScript) , 文档对象模型(DOM), 浏览器对象模型(BOM)
 
 ## <a name="数据类型、内置对象">数据类型、内置对象</a>
+[JavaScript思维导图](https://github.com/lidaguang1989/javascript-knowhow)
+
 ### 数据类型：
-1. 基本数据类型：Undefined、Null、Boolean、Number、String、Symbol  ---值传递
-2. 复杂（引用）数据类型:Object    --地址传递
+1. 基本数据类型：Undefined、Null、Boolean、Number、String、Symbol  ---值传递 --栈内存
+2. 复杂（引用）数据类型:Object    --地址传递--堆内存
 
 * 两类型的区别：存储位置不同；
 >
@@ -220,6 +217,9 @@ JSONP则是一种跨域数据交互协议。
 
     null的类型是object，即 typeof null 返回object
 
+    null == undefined //true
+    null === undefined //false
+
 * undefined 
 1. 变量被声明了，但没有赋值时，就等于undefined。
 2. 调用函数时，应该提供的参数没有提供，该参数等于undefined。
@@ -250,7 +250,7 @@ JSONP则是一种跨域数据交互协议。
   DOM 是 Document Object Model 的缩写，即 文档对象模型，是所有浏览器公共遵守的标准，DOM 将HTML和XML文档映射成一个由不同节点组成的树型结构，俗称DOM树。
   其核心对象是document，用于描述DOM树的状态和属性，并提供对应的DOM操作API。
 
-* DOM 被划分为1级、2级、3级，共3个级别：
+#### DOM 被划分为1级、2级、3级，共3个级别：
 1. 1级DOM -，由DOM核心与DOM HTML两个模块组成。DOM核心能映射以XML为基础的文档结构，允许获取和操作文档的任意部分。DOM HTML通过添加HTML专用的对象与函数对DOM核心进行了扩展。
 2. 2级DOM - 鉴于1级DOM仅以映射文档结构为目标，DOM 2级面向更为宽广。通过对原有DOM的扩展，2级DOM通过对象接口增加了对鼠标和用户界面事件（DHTML长期支持鼠标与用户界面事件）、范围、遍历（重复执行DOM文档）和层叠样式表（CSS）的支持。同时也对DOM 1的核心进行了扩展，从而可支持XML命名空间。
 3. 3级DOM - 通过引入统一方式载入和保存文档和文档验证方法对DOM进行进一步扩展，DOM3包含一个名为“DOM载入与保存”的新模块，DOM核心扩展后可支持XML1.0的所有内容，包括XML Infoset、 XPath、和XML Base。
@@ -263,48 +263,65 @@ JSONP则是一种跨域数据交互协议。
 3. DOM2：对DOM1增加了样式表对象模型
 4. DOM3：对DOM2增加了内容模型 (DTD 、Schemas) 和文档验证。
 
-* 事件流: 捕获事件流、冒泡事件流。
+##### 事件流: 捕获事件流、冒泡事件流。
 1. 捕获事件流从根节点开始执行，一直往子节点查找执行，直到查找执行到目标节点。
 2. 冒泡事件流从目标节点开始执行，一直往父节点冒泡查找执行，直到查到到根节点。
 
 DOM事件流：捕获阶段 -> 目标阶段 -> 冒泡阶段
 DOM事件捕获流程:window > document > documentElement(html标签) > body > ...> 目标对象
 
-　.事件捕获：当某个元素触发某个事件（如onclick），顶层对象document就会发出一个事件流，随着DOM树的节点向目标元素节点流去，直到到达事件真正发生的目标元素。在这个过程中，事件相应的监听函数是不会被触发的。
-　.事件目标：当到达目标元素之后，执行目标元素该事件相应的处理函数。如果没有绑定监听函数，那就不执行。
-　.事件冒泡：从目标元素开始，往顶层元素传播。途中如果有节点绑定了相应的事件处理函数，这些函数都会被一次触发。
+　事件捕获：当某个元素触发某个事件（如onclick），顶层对象document就会发出一个事件流，随着DOM树的节点向目标元素节点流去，直到到达事件真正发生的目标元素。在这个过程中，事件相应的监听函数是不会被触发的。
+
+　事件目标：当到达目标元素之后，执行目标元素该事件相应的处理函数。如果没有绑定监听函数，那就不执行。
+
+　事件冒泡：从目标元素开始，往顶层元素传播。途中如果有节点绑定了相应的事件处理函数，这些函数都会被一次触发。
 
 所有的事件都会捕获但不是所有事件都会冒泡,例如submit事件就不会被冒泡。 
 
 
-* 事件模型：原始事件模型(DOM0级)、DOM2事件模型、IE事件模型。
+#### 事件模型：原始事件模型(DOM0级)、DOM2事件模型、IE事件模型。
 1. DOM0级：没有事件流，事件一旦发生马上进行处理
-* 在html中直接指定属性值：\<button id="demo" type="button" onclick="doSomeTing()" />　　
-* 在js中: document.getElementsById("demo").onclick = doSomeTing()
-　优点：所有浏览器都兼容
-　缺点：逻辑与显示没有分离；相同事件的监听函数只能绑定一个，后绑定的会覆盖掉前面;  无法通过事件的冒泡、委托等机制
+>
+    * 在html中直接指定属性值：\<button id="demo" type="button" onclick="doSomeTing()" />　　
+    * 在js中: document.getElementsById("demo").onclick = doSomeTing()
+    　优点：所有浏览器都兼容
+    　缺点：逻辑与显示没有分离；相同事件的监听函数只能绑定一个，后绑定的会覆盖掉前面;  无法通过事件的冒泡、委托等机制
 
 2. DOM2级：W3C制定的标准模型，现代浏览器（IE6~8除外）都已经遵循这个规范
-* addEventListener("eventType","handler","true|false")    //eventType注意不要加‘on’前缀，handler：函数
-* removeEventListner("eventType","handler","true!false")//事件类型、需要执行的函数、是否捕获，
+>
+    * addEventListener("eventType","handler","true|false")    //eventType注意不要加‘on’前缀，handler：執行函数
+    * removeEventListener("eventType","handler","true!false")//事件类型、需要执行的函数、是否捕获，
 
-2. IE事件模型：IE不把该对象传入事件处理函数,由于在任意时刻只会存在一个事件,所以IE把它作为全局对象window的一个属性.
-attachEvent( "eventType","handler")
-detachEvent("eventType","handler" )
+3. IE事件模型：
+>
+    IE不把该对象传入事件处理函数,由于在任意时刻只会存在一个事件,所以IE把它作为全局对象window的一个属性.
+    attachEvent( "eventType","handler")
+    detachEvent("eventType","handler" )
 
-* event对象常用属性:
-    target：发生事件的节点；
-    currentTarget：当前正在处理的事件的节点，在事件捕获或冒泡阶段；
-    timeStamp：事件发生的时间，时间戳。
-    bubbles：事件是否冒泡。
-    cancelable：事件是否可以用preventDefault()方法来取消默认的动作；
-    keyCode：按下的键的值；
+#### w3c事件与IE事件区别
+事件流
+>
+    w3c事件流:
+    标准的浏览器事件流是 事件捕获流；
+    从根文档(html)开始遍历所有子节点，如果目标事件的父节点设置为捕获时触发，则执行该事件，直到目标被执行，然后再事件冒泡(设置为捕获时触发的事件不再被执行)。
 
-* event对象方法
-    event.preventDefault()，阻止默认行为
-    event.stopPropagation()，阻止事件冒泡
-    event.stopImmediatePropagation()，阻止剩余的事件处理函数执行并且防止事件冒泡到DOM树上，这个方法不接受任何参数。阻止掉同一事件的其他优先级较低的侦听器的处理
-    event.initEvent()//初始化新事件对象的属性，自定义事件会用，不常用
+    IE事件流:
+    IE的事件流是 事件冒泡流，
+    从目标事件被执行，然后再冒泡父节点的事件，直到根文档。
+
+阻止默认行为：
+>
+    event = e || window.event //w3c | IE
+    event.preventDefault() || event.returnValue = false
+
+阻止冒泡：
+>
+    event = e || window.event //w3c | IE
+    event.stopPropagation || event.cancelBubble = true // w3c  | IE
+获取事件目标源：
+>
+    event = e || window.event
+    event.target || event.srcElement
 
 ## <a name="DOM操作">DOM操作—怎样添加、移除、移动、复制、创建和查找节点?</a>
 * 创建新节点
@@ -327,20 +344,135 @@ detachEvent("eventType","handler" )
 >
     document.querySelector() // 查找第一个 （id,className, tgaName)
     document.querySelectorAll() //查找所有 （id,className, tgaName)
-    getElementsByTagName()    //通过标签名称
-    getElementsByName()    //通过元素的Name属性的值(IE容错能力较强，会得到一个数组，其中包括id等于name值的)
     getElementById()    //通过元素Id，唯一性
     getElementsByClassName（）//通过元素classname
+    getElementsByTagName()    //通过标签名称
+    getElementsByName()    //通过元素的Name属性的值(IE容错能力较强，会得到一个数组，其中包括id等于name值的)
 
 
-## <a name="事件委托">事件委托(代理)</a>
+## <a name="变量、函数声明提升">变量、函数声明提升</a>
+>
+    (1) 变量声明提升：变量申明在进入执行上下文就完成了。
+    只要变量在代码中进行了声明，无论它在哪个位置上进行声明， js引擎都会将它的声明放在范围作用域的顶部；
 
-事件注册在父级元素上，依靠事件冒泡机制与事件捕获机制，子级元素的事件将委托给父级元素。可以减少事件注册数量，节约内存开销，提高性能。
+    (2) 函数声明提升：执行代码之前会先读取函数声明，意味着可以把函数申明放在调用它的语句后面。
+    只要函数在代码中进行了声明，无论它在哪个位置上进行声明， js引擎都会将它的声明放在范围作用域的顶部；
+
+    (3) 变量or函数声明：函数声明会覆盖变量声明，但不会覆盖变量赋值。
+    同一个名称标识a，即有变量声明var a，又有函数声明function a() {}，不管二者声明的顺序，函数声明会覆盖变量声明，也就是说，此时a的值是声明的函数function a() {}。注意：如果在变量声明的同时初始化a，或是之后对a进行赋值，此时a的值为变量的值。因为变量、函数声明提升，赋值在其之后才运行； var a; a = 1; function a() { return true; } console.log(a);
+
+
+## <a name="自执行函数">自执行函数</a>
+定义:
+>
+    1、声明一个匿名函数
+    2、马上调用这个匿名函数。
+    (function(){})()
+    ....
+
+作用：创建一个独立的作用域。
+
+好处：
+>
+    防止变量弥散到全局，以免各种js库冲突。隔离作用域避免污染，或者截断作用域链，避免闭包造成引用变量无法释放。利用立即执行特性，返回需要的业务函数或对象，避免每次通过条件判断来处理
+
+场景：一般用于框架、插件等场景
+
+## <a name="new创建一个对象">new创建一个对象过程</a>
+>
+    创建一个空对象，并且 this 变量引用该对象，同时还继承了该函数的原型。 
+    属性和方法被加入到 this 引用的对象中。
+    新创建的对象由 this 所引用，并且最后隐式的返回 this 。
+
+    function Person(){}
+    var p = new Person()
+
+## <a name="异步编程有哪几种方法">异步编程有哪几种方法</a>
+"同步模式"：后一个任务等待前一个任务结束，然后再执行，程序的执行顺序与任务的排列顺序是一致的、同步的；
+
+"异步模式"则完全不同，每一个任务有一个或多个回调函数（callback），前一个任务结束后，不是执行后一个任务，而是执行回调函数，后一个任务则是不等前一个任务结束就执行，所以程序的执行顺序与任务的排列顺序是不一致的、异步的。
+
+
+
+1. 回调函数
+>
+    如果f1是一个很耗时的任务，可以考虑改写f1，把f2写成f1的回调函数。
+    　　function f1(callback){
+    　　　　setTimeout(function () {
+    　　　　　　callback();// f1的任务代码
+    　　　　}, 1000);
+    　　}
+    执行代码就变成下面这样：f1(f2);
+ 
+优点是简单、容易理解和部署
+
+缺点是不利于代码的阅读和维护，各个部分之间高度耦合（Coupling），流程会很混乱，而且每个任务只能指定一个回调函数。
+
+
+2. 事件监听
+>
+
+    采用事件驱动模式。任务的执行不取决于代码的顺序，而取决于某个事件是否发生。
+    $("#clickity").on("click", function (e) { console.log("xxxxx");}
+
+    
+    优点是比较容易理解，可以绑定多个事件，每个事件可以指定多个回调函数，而且可以"去耦合"（Decoupling），有利于实现模块化。
+    
+    缺点是整个程序都要变成事件驱动型，运行流程会变得很不清晰。
+
+3. Promises对象
+>
+
+    fn1(1).then(fn2).then(fn2).then(function(){
+    });
+
+    Promisel对象的两个特点:
+    * 对象状态不受外界影响。
+        Promise对象有三种状态:pending(进行中)，fulfilled(已成功)，rejected(已失败)，当异步操作有结果时可以指定pending状态到fulfilled状态或pending状态到rejected状态的转换，状态一旦变为fulfilled，或rejected则这个Promise对象状态不会在改变。
+
+    * 一旦状态改变，就不再变化，任何时候都可以得到这个结果。
+
+每一个异步任务返回一个Promise对象，该对象有一个then方法，允许指定回调函数
+
+4. async await
+ async function asyncFuns() {
+    await fn1()
+    await fn2()
+    await fn3()
+  }
+
+5. 发布/订阅(观察者模式)
+
+发布订阅模式，有一个事件池，用来给你订阅(注册)事件，当你订阅的事件发生时就会通知你，然后你就可以去处理此事件，模型如下
+
+## <a name=""></a>
+## <a name=""></a>
+
+
+## <a name="事件委托">事件委托(代理)delegate</a>
+
+事件注册在父级元素上，依靠事件冒泡机制与事件捕获机制，子级元素的事件将委托给父级元素。
+
+优点：
+>
+    事件动态绑定，可以减少事件注册数量，节约内存开销，提高性能。
+
+缺点：
+>
+    事件委托基于冒泡，对于不冒泡的事件不支持。
+
+    层级过多，冒泡过程中，可能会被某层阻止掉。
+
+    理论上委托会导致浏览器频繁调用处理函数，虽然很可能不需要处理。所以建议就近委托，比如在table上代理td，而不是在document上代理td。
+
+    把所有事件都用代理就可能会出现事件误判。比如，在document中代理了所有button的click事件，另外的人在引用改js时，可能不知道，造成单击button触发了两个click事件。
+
 
 对js动态添加的子元素可自动绑定事件
 >
+    原生  未兼容IE(IE事件attachEvent)
     function agent(){
-      let ul=document.getElementsByTagName("ul");
+      let ul=document.getElementsByTagName("ul")[0];
       ul.addEventListener('click',function(e){
         let event = e || window.event;
         let target= event.target || event.srcElement;
@@ -350,7 +482,20 @@ detachEvent("eventType","handler" )
       }, false);
     };
 
+> 
+    jquery  
+    $("ul").delegate("li", "click", function(){
+      console.log($(this),$(this).html());
+    });
+
 ## <a name="闭包">闭包</a>
+>
+    function a(i){
+      return function(){
+        return i+1
+      }
+    }
+
 * 闭包：是指有权访问其他函数作用域中变量的函数，创建闭包的最常见的方式就是在一个函数内创建另一个函数，通过另一个函数访问这个函数的局部变量,利用闭包可以突破作用链域，将函数内部的变量和方法传递到外部。
 
 当一个内部函数被其外部函数之外的变量引用时，就形成了一个闭包。
@@ -374,7 +519,7 @@ detachEvent("eventType","handler" )
 
 原型(prototype)：
 >
-    函数本身就是个包含方法与属性的对象，每个对象都有个prototype(原型)属性。可通过原型为对象扩展属性，实现继承
+    函数本身就是个包含方法与属性的对象，每个对象都有个内部属性[[prototype]]属性,称为原型。可通过原型为对象扩展属性，实现继承
 
 原型链：
 >
@@ -418,25 +563,29 @@ https://blog.csdn.net/caijixin/article/details/78295676
 5. 原型式继承
 6. 寄生组合式继承
 
-## <a name="typeof和instanceof的区别">typeof和instanceof的区别</a>
-在 JavaScript 中，判断一个变量的类型尝尝会用 typeof 运算符，在使用 typeof 运算符时采用引用类型存储值会出现一个问题，无论引用的是什么类型的对象，它都返回 “object”。
+## <a name="typeof instanceof">typeof instanceof</a>
+typeof 
+>
+    在 JavaScript 中，判断一个变量的类型尝尝会用 typeof 运算符，在使用 typeof 运算符时采用引用类型存储值会出现一个问题，无论引用的是什么类型的对象，它都返回 “object”。
 
-    typeof 
-    Undefined   "undefined"
-    Null        "object"
-    Boolean     "boolean"
-    Number      "number"
-    String      "string"
-    Symbol      "symbol"
-    Host object Implementation-dependent
-    Function    "function"
-    Object      "object"
+| typeof | |
+:-:| :-:|
+| Boolean    | "boolean"
+| Number     | "number"
+| String     | "string"
+| Object     | "object"
+| Null       | "object"    
+| Undefined  | "undefined" 
+| Symbol     | "symbol"
+| Function   | "function"
 
 
-instanceof 运算符用来测试一个对象在其原型链中是否存在一个构造函数的 prototype 属性。
-语法：object instanceof constructor
-参数：object（要检测的对象.）constructor（某个构造函数）
-描述：instanceof 运算符用来检测 constructor.prototype 是否存在于参数 object 的原型链上。
+instanceof 
+>
+    运算符用来测试一个对象在其原型链中是否存在一个构造函数的 prototype 属性。
+    语法：object instanceof constructor
+    参数：object（要检测的对象.）constructor（某个构造函数）
+    描述：instanceof 运算符用来检测 constructor.prototype 是否存在于参数 object 的原型链上。
 
 ## <a name="作用域、作用域链、执行环境、上下文">作用域、作用域链、执行环境、上下文</a>
 #### 作用域：
@@ -452,6 +601,7 @@ instanceof 运算符用来测试一个对象在其原型链中是否存在一个
 当需要从局部函数查找某一属性或方法时，如果当前作用域没有找到，就会上溯到上层作用域查找，直至全局函数，这种组织形式就是作用域链。
 
 JavaScript中的函数采用静态作用域，也称词法作用域。当在执行函数调用时，不管何时何地执行函数，其中的变量在函数定义时就已经决定了，函数会从自身作用域节点开始，沿着作用域链向上访问变量的值。
+
 注意：作用域链的顶端是全局作用域，作用域链在函数定义时就已经创建了。
 
 #### 上下文：执行上下文就是当前代码的执行环境 / 作用域
@@ -532,7 +682,7 @@ JS的执行上下文可以理解为当前代码的执行环境，在执行JS程�
 
 
 
-## <a name="this">this</a>
+## <a name="this">this理解</a>
 https://juejin.im/post/5bd5509851882543e82f5564
 
 http://www.cnblogs.com/pssp/p/5216085.html?tdsourcetag=s_pctim_aiomsg
@@ -746,6 +896,7 @@ async 属性
 
 
 ## <a name="模块化">模块化CommonJS AMD CMD ES6modules</a>
+把复杂的文件分成一个个独立的模块，比如js文件，分成独立的模块之后有利于代码的重用和维护，但是这样又会引来模块与模块之间的依赖问题
 * CommonJS
 >
 　  CommonJS的核心思想就是通过 require 方法来<em>同步加载</em>所要依赖的其他模块，然后通过 exports 或者 module.exports 来导出需要暴露的接口
@@ -776,16 +927,61 @@ async 属性
       export 可以导出的是一个对象中包含的多个属性，方法。(在一个文件或模块中可存在多个)
       export default  只能导出一个可以不具名的对象。(在一个文件或模块中仅可存在一个)
 
+## <a name="垃圾回收机制">垃圾回收机制</a>
+  Javascript具有自动垃圾回收机制(GC:Garbage Collecation)。
+
+  原理：垃圾收集器会定期（周期性）找出那些不在继续使用的变量，然后释放其内存。
+
+1. 标记清除
+>
+    在函数声明一个变量的时候，就将这个变量标记为“进入环境”。从逻辑上讲，永远都不能释放进入环境的变量作占用的内存，因为只要执行流进入相应的环境，就可能会用到它们。而当变量离开环境时，则将其标记为“离开环境”。
+    垃圾回收器在运行时候会给存储在内存中中的所有变量都加上标记。然后它会去掉环境中的变量以及被环境中的变量引用的变量的标记（闭包）。在此之后再被标记的变量将被视为准备删除的变量，原因是环境中的变量已经无法访问到这些变量了。最后，垃圾回收器完成内存清楚工作，销毁那些带标记的值并回收他们所占用的内存空间。
+
+    function test(){ 
+      var a = 10 ; //被标记 ，进入环境 
+      var b = 20 ; //被标记 ，进入环境 
+    } 
+    test(); //执行完毕 之后 a、b又被标离开环境，被回收。
+
+2. 引用计数法
+>
+        引用计数的含义是跟踪记录每个值被引用的次数。当声明了一个变量并将一个引用类型值赋给该变量时，则这个值的引用次数就是1。如果同一个值又被赋给另一个变量，则该值的引用次数加1。相反，如果包含对这个值引用的变量又取得了另外一个值，则这个值的引用次数减1。当这个值的引用次数变成0时，则说明没有办法再访问这个值了，因而就可以将其占用的内存空间回收回来。这样，当垃圾回收器下次再运行时，它就会释放那些引用次数为0的值所占用的内存。
+
+        但是很重要的一点是当遇到循环引用的时候，函数的引用次数就不会为0，所以不会被垃圾回收器回收内存，会造成内存泄露
+
+    function test(){ 
+      var a = {} ; //a的引用次数为0 
+      var b = a ; //a的引用次数加1，为1 
+      var c =a; //a的引用次数再加1，为2 
+      var b ={}; //a的引用次数减1，为1 
+    }
+
+如何减少JavaScript中的垃圾回收
+
+
 ## <a name="内存泄漏">内存泄漏</a>
-内存泄漏:是指一块被分配的内存既不能使用，又不能回收，直到浏览器进程结束。浏览器中采用自动垃圾回收方法管理内存，但由于浏览器垃圾回收方法有bug，因此会产生内存泄漏。
+内存泄漏:是指一块被分配的内存在使用完毕后未释放，直到浏览器进程结束。
+指任何对象在您不再拥有或需要它之后仍然存在。浏览器中采用自动垃圾回收方法管理内存，但由于浏览器垃圾回收方法有bug，因此会产生内存泄漏。
 
 1. 意外的全局变量引起的内存泄漏（变量未声明，通过this创建,）
 2. 闭包引起的内存泄漏
+    >
+        类似这种
+        var a = 1 
+        var b = function(){ 
+          return function (){return 1+a}
+        }
 3. 没有清理的DOM元素引用
 4. 被遗忘的定时器或者回调
-5. 子元素存在引用引起的内存泄
+5. 子元素存在引用引起的内存泄露
 6. console.log :  在传递给 console.log的对象是不能被垃圾回收 ，因为在代码运行之后需要在开发工具能查看对象信息。所以最好不要在生产环境中 console.log任何对象。
 
+
+如何避免内存泄漏
+>
+    减少不必要的全局变量，使用严格模式避免意外创建全局变量。
+    在你使用完数据后，及时解除引用(闭包中的变量，dom引用，定时器清除)。
+    组织好你的逻辑，避免死循环等造成浏览器卡顿，崩溃的问题。
 
 ## <a name="use strict">"use strict"? 用处？</a>
 
@@ -812,6 +1008,8 @@ https://zhuanlan.zhihu.com/p/55064276
     把复杂业务划分为若干个“Procedure、Function”。
     彻底的理解现实场景，理清其中的逻辑关系和运行顺序，划分为若干个小的处理单元——落实为function
 
+    万物皆对象，把一个对象抽象成类,具体上就是把一个对象的静态特征和动态特征抽象成属性和方法,也就是把一类事物的算法和数据结构封装在一个类之中,程序就是多个对象和互相之间的通信组成的.
+
 面向对象的思维方式：
 >
     
@@ -821,6 +1019,7 @@ https://zhuanlan.zhihu.com/p/55064276
 面向对象就是什么事都交给能做这件事的对象去做。
 
 对象(Object)：现实应用/场景中的某个事物在程序中的体现。对象是无特定顺序的属性的集合。
+
 面向对象的程序需要具备的三个/四个基本特征：
 >
     封装(capsulation)：把零散的多个变量组成一个整体
@@ -1010,7 +1209,8 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
 
 ## <a name="前端性能优化的方法">前端性能优化的方法</a>
 >
-    减少http请求次数：CSS Sprites, 、图片大小控制合适；网页Gzip，CDN托管，data缓存 ，图片服务器。
+    减少http请求次数：CSS Sprites,
+    网页Gzip，CDN托管，data缓存 ，图片服务器。
     JS、CSS源码压缩
     前端模板 JS+数据，减少由于HTML标签导致的带宽浪费，前端用变量保存AJAX请求结果，每次操作本地变量，减少请求次数
     用innerHTML代替DOM操作，减少DOM操作次数，优化javascript性能。
@@ -1020,6 +1220,7 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
     图片预加载，将样式表放在顶部，将脚本放在底部  
     避免在页面的主体布局中使用table，table要等其中的内容完全下载之后才会显示出来，显示比div+css布局慢。
 
+![优化](./img/optimize.jpg)
 
 ## <a name="从浏览器地址栏输入url到显示页面的步骤">从浏览器地址栏输入url到显示页面的步骤(以HTTP为例)</a>
 
@@ -1037,16 +1238,14 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
 第四步和第五步是最耗时的部分，这两步合起来，就是我们通常所说的渲染。
 
 ####  简
-1. 浏览器查找域名的 IP 地址
-2. 这一步包括 DNS 具体的查找过程，包括：浏览器缓存->系统缓存->路由器缓存…
-3. 浏览器向 web 服务器发送一个 HTTP 请求
-4. 服务器的永久重定向响应（从 http://example.com 到 http://www.example.com）
-5. 浏览器跟踪重定向地址
-6. 服务器处理请求
-7. 服务器返回一个 HTTP 响应
-8. 浏览器显示 HTML
-9. 浏览器发送请求获取嵌入在 HTML 中的资源（如图片、音频、视频、CSS、JS等等）
-10. 浏览器发送异步请求
+>
+    输入网址；
+    发送到DNS服务器，并获取域名对应的web服务器对应的ip地址；
+    与web服务器建立TCP连接；
+    浏览器向web服务器发送http请求；
+    web服务器响应请求，并返回指定url的数据（或错误信息，或重定向的新的url地址）；
+    浏览器下载web服务器返回的数据及解析html源文件；
+    生成DOM树，解析css和js，渲染页面，直至显示完成；
 
 #### 具体
 1. 在浏览器地址栏输入URL
@@ -1195,6 +1394,7 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
 
 
 ## <a name="设计模式">设计模式</a>
+https://segmentfault.com/a/1190000014436817
 
    创建对象的几种方式？
     对象字面量：person={firstname:"Mark",lastname:"Yun",age:25};
@@ -1213,7 +1413,7 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
       }
       return person // 返回一个对象
     }
-    let xiaoming = People() // 工厂生产对象
+    let p = People() // 工厂生产对象
 
 * 说明：
     1.在函数中定义对象,并定义对象的各种属性，,虽然属性可以为方法，但是建议将属性为方法的属性定义到函数之外，这样可以避免重复创建该方法
@@ -1230,14 +1430,18 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
 * 例:
     function People() {
       this.name = '人'
+      this.getName=function(){
+        return this.name
+      }
     }
     People.prototype.walk = function () {
       console.log('walk')
     }
-    let xiaoming = new People()
+    let p = new People()
+    console.log(p.getName())  
 * 说明：
   1.与工厂方式相比，使用构造函数方式创建对象，无需再函数内部重建创建对象，而使用this指代，并而函数无需明确return
-  2.同工厂模式一样，虽然属性的值可以为方法，扔建议将该方法定义在函数之外
+  2.同工厂模式一样，虽然属性的值可以为方法，但建议将该方法定义在函数之外
   3.不推荐
 
 #### 原型模式
@@ -1246,7 +1450,7 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
     Parent.prototype.name="john";  
     Parent.prototype.age="30";  
     Parent.prototype.lev=lev;  
-    var x=new Parent();  
+    var p=new Parent();  
  * 说明：
     1.函数中不对属性进行定义
     2.利用prototype属性对属性进行定义
@@ -1344,47 +1548,49 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
     })
 
 * 代码：
-    let EventCenter = (function () {
+    let Event = (function () {
       let events = {}
       function on(evt, handler) {
         // 实现监听效果
         // 使用'或'是为了可以对同一个事件多次进行回调
         events[evt] = events[evt] || []
         events[evt].push({
-            handler: handler
+            handler
         })
       }
 
       function fire(evt, args) {
         if (!events[evt]) {
           // 如果未监听任何事件，直接中断
+          throw evt + '事件未监听'
           return
         }
-        for (let i = 0; i < events[evt].length; i++) {
-          // 遍历，实现对同一个事件的多次回调
-          events[evt][i].handler(args)
-        }
+        events[evt].map((item)=>{
+           // 遍历，实现对同一个事件的多次回调
+          item.handler(args)
+        })
       }
 
-      function off(name) {
-        delete events[name]
+      function off(evt) {
+        delete events[evt]
       }
 
       return {
-        on: on, // 订阅者
-        fire: fire, // 发布者
-        off: off // 取消订阅
+        on, // 订阅者
+        fire, // 发布者
+        off // 取消订阅
       }
     })()
 
-    EventCenter.on('hello', function (num) {
-      console.log(num)
-    })
-    EventCenter.on('hello', function (num) {
-      console.log(num)
-    })
-
-    EventCenter.fire('hello', 1) // 1[出现两次]
+    var number = 1;
+    Event.on('click', function (data) {
+      console.log(data + number++ + '次');
+    });
+    // Event.off('click'); //  取消绑定
+    Event.on('click', function (data) {
+      console.log(data + number++ + '次');
+    });
+    Event.fire('click', 'click 事件绑定');
 
 
 ## <a name="web安全">web安全</a>

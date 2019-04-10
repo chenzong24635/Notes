@@ -1,8 +1,12 @@
+
+[常用网站](website.md)
+
 **前端页面由哪三层构成：结构层、表示层、行为层。**
 
 ## [HTML](HTML.md)
 ## [CSS](css.md)
 ## [JS](js.md)
+## [JQ](jq.md)
 ## [AJAX](Ajax.md)
 ## [Vue](vue.md)
 ## [小程序](Applet.md)
@@ -18,48 +22,7 @@
 ## [vscode快捷键](vscode.md)
 
 
-# 论坛、社区、博客、网站
-
-[前端导航网](http://jsdig.com/) 网站收集
-
-[CSDN](https://www.csdn.net/)
-
-[开源中国](https://www.oschina.net/)
-
-[掘金](https://juejin.im/timeline)
-
-[SegmentFault](https://segmentfault.com/) 、
-[stackoverflow](https://stackoverflow.com/) 技术问答
-
-[w3cplus-大漠](https://www.w3cplus.com/)
-
-[张鑫旭](https://www.zhangxinxu.com/)
-
-[技术胖](https://jspang.com/)
-
-[廖雪峰](https://www.liaoxuefeng.com/)
-
-
-
-[Can I Use](https://caniuse.com/#home) 兼容性查询
-
-[W3CSchool](https://www.w3cschool.cn/)
-
-[手册网](http://www.shouce.ren/)
-
-[印记中文](https://www.docschina.org/)
-
-[前端工具集](https://github.com/nieweidong/fetool)
-
-[icomoon](https://icomoon.io/)
-
-[icon-阿里巴巴](https://www.iconfont.cn/home/index?spm=a313x.7781069.1998910419.2)
-
-
-[]()
-
-
-#
+# 目录
  <a href="#常用">**常用**</a>
 
 * <a href="#浏览器判断">浏览器判断navigator.userAgent</a>
@@ -279,7 +242,25 @@ https://codepen.io/chenzong24635/pen/jROWmM
 
 在移动端开发中，有时会出现click点透的问题
 
-A是遮罩层，B是正常的DOM，C是B上的某个元素，这里是链接。场景是点击A的时候A消失，结果点到了C，页面发生了跳转，
+touch触摸事件
+>
+    touchstart：手指触摸到屏幕会触发
+    touchmove：当手指在屏幕上移动时，会触发
+    touchend：当手指离开屏幕时，会触发
+    touchcancel：可由系统进行的触发，比如手指触摸屏幕的时候，突然alert了一下，或者系统中其他打断了touch的行为，则可以触发该事件
+
+ 
+
+tap触碰事件
+>
+    一般用于代替click事件
+
+    tap: 手指碰一下屏幕会触发
+    longTap: 手指长按屏幕会触发
+    singleTap: 手指碰一下屏幕会触发
+    doubleTap: 手指双击屏幕会触发
+
+A是遮罩层，B是正常的DOM，C是B上的某个元素，是个链接。场景是点击A的时候A消失，结果点到了C，页面发生了跳转，
 
 #### 点透的出现场景：
 1. A/B两个层上下z轴重叠。
@@ -288,11 +269,11 @@ A是遮罩层，B是正常的DOM，C是B上的某个元素，这里是链接。�
 在以上情况下，点击A/B重叠的部分，就会出现点透的现象。
 
 #### 为什么会出现点透
- click延迟，延迟，还是延迟。
+ click延迟
 
 在移动端不使用click而用touch事件代替触摸是因为click事件有着明显的延迟，具体touchstart与click的区别如下：
 
-1.
+1. 
 >
     touchstart：在这个DOM（或冒泡到这个DOM）上手指触摸开始即能立即触发
 2. 
@@ -312,7 +293,7 @@ A是遮罩层，B是正常的DOM，C是B上的某个元素，这里是链接。�
     对于B元素本身没有默认click事件的情况（无a标签等），应统一使用touch事件，统一代码风格，并且由于click事件在移动端的延迟要大很多，不利于用户体验，所以关于触摸事件应尽量使用touch相关事件。
 
 2.
-   对于B元素本身存在默认click事件的情况,应及时取消A元素的默认点击事件，从而阻止click事件的产生。即应在上例的handle函数中添加代码如下：
+   对于B元素本身存在默认click事件的情况,应及时取消A元素的默认点击事件，从而阻止click事件的产生。因为 触发事件顺序：touchstart 早于 touchend 早于 click
 >
     document.querySelector('#A').addEventListener('touchend', function(event) {
       event.preventDefault();
@@ -335,6 +316,8 @@ fastclick库地址 ：https://github.com/ftlabs/fastclick
     window.addEventListener( "load", function() {
       FastClick.attach( document.body );
     }, false )
+
+
 
 
 
@@ -517,6 +500,7 @@ var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
 
 ## <a name="n的阶层（尾调用优化）">n的阶层（尾调用优化）</a>
 >
+    //获取第n个斐波那契数列
     function factorial(n, total=1) {
       if (n <= 1) return total;
       return factorial(n - 1, n * total);
@@ -524,11 +508,23 @@ var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
     factorial(5) // 120
 
 ## <a name="斐波那契数列">斐波那契数列</a>
+F(1)=1，F(2)=1, F(n)=F(n-1)+F(n-2)（n>=3，n∈N*）
 >
-    var arr=[];
-    for(let i=0;i<10;i++){
-      i<=1?arr.push(1):arr.push(arr[i-1]+arr[i-2])
+    //正常递归版 -- 存在大量的重复计算
+    function fib(n){
+      if(n==0)return 0
+      else if(n==1)return 1
+      else return fib(n-1) + fib(n-2)
     }
+    //去除重复计算版
+    function fib(n){
+      function fib_(n,a,b){
+          if(n==0)  return a
+          else return fib_(n-1,b,a+b)
+      }
+      return fib_(n,0,1)
+    }
+
 * 计算斐波那列数（js语言精粹
 >
     var  arr=[0,1];
@@ -548,13 +544,19 @@ var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
 * 输出n个fib数
 1. 
 >
-    let arr=[1];
-    function f(n,a=1,b=1) {
-        arr.push(b);
-        if(n<=2)return arr;
-        return f(n-1,b,a+b);
+    var arr = []
+    function fib(n){
+      function fib_(n, a, b){
+        if(n === 0) {
+          return a
+        } else {
+          arr.push(b)
+          return fib_(n-1, b, a+b)
+        }
+      }
+      return fib_(n, 0, 1)
     }
-    f(80000)
+    console.log(fib(33))
     console.log(arr)
 
 2.
@@ -618,6 +620,33 @@ console.log(f) //2
 
 
 # <a name="题">**题**</a>
+
+## <a name="两位大整数相加">两位大整数相加</a>
+>
+    function sumStrings(a,b){
+      console.log(a);
+      console.log(b);
+      var res='', c=0;
+      console.log()
+      a = a.split('');
+      b =b.split('');
+      while (a.length || b.length || c){
+          c += ~~a.pop() + ~~b.pop();
+          res = c % 10 + res;
+          //console.log(res);
+          c = c>9;
+      }
+      return res.replace(/^0+/,'');
+    }
+    console.log(sumStrings('37486040775460377773700','7669000000000000000000000000000'))
+
+    代码解析：
+    1. 使用split方法，将字符串转换为数组
+    2. 通过判断a,b,c的长度，决定是否还需要就行对应的位进行相加
+    3. 使用~~a.pop()的目的：保证若b的长度大于a的长度，则此时a.pop()=undefined，~~undefined=0
+    4. 将两个位置上的数进行相加，若大于9，则需要进位，即，将c的值存为true，这样当进行相加时，true会进行变量提升为1
+    5. 输出最后结果的时候，由于前面可能存在0，所以使用字符串的replace方法将前面的0去掉。
+
 
 ## <a name="map(parseInt) 原理解析">['1','2','3'].map(parseInt) 原理解析</a>
 https://juejin.im/post/5c6fab02e51d453eb7801914
@@ -708,6 +737,11 @@ map 函数返回的是一个数组，所以最后结果为 [1, NaN, NaN]。
       相当于 new ((new Foo()).getName)();
 
 # <a name="其他面试题跳转">**其他面试题跳转**</a>
+
+https://zhuanlan.zhihu.com/p/28428367 <!-- 1 -->
+
+https://zhuanlan.zhihu.com/p/29469769 <!-- 1 -->
+
 https://github.com/LiangJunrong/document-library/blob/master/other-library/Interview/PersonalExperience/2019-InterviewPreparation.md#chapter-two-one
 
 https://github.com/markyun/My-blog/tree/master/Front-end-Developer-Questions/Questions-and-Answers

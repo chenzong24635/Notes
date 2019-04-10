@@ -1,42 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta http-equiv="content-type" content="text/html;" charset="UTF-8" />
-  <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>-->
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- <meta name="viewport" 
+    content="width=device-width,
+    initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>-->
   <title></title>
-  <!-- <link rel="stylesheet" href="./css/base.css" /> -->
-  <style></style>
+  <!-- <link rel="stylesheet" href="" /> -->
+  <style>
+    .border-1px{
+      position: relative;
+    }
+    .border-1px:after{
+      content: " ";
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      border-top: 1px solid #000;/* height: 1px; background-color: #000;*/
+      color: #000;
+      -webkit-transform-origin: 0 0;
+      transform-origin: 0 0;
+      -webkit-transform: scaleY(0.5);
+      transform: scaleY(0.5);
+    }
+    a:link{color:#000}
+    a:visited{color: green}
+    a:active{color:gold}
+    a:hover{color:red}
+  </style>
 </head>
-
 <body>
+  <a href="#1">link</a>
+  <a href="#2">active</a>
+  <a href="#3">visited</a>
+  <a href="#4">a4</a>
+  <a href="#4">a4</a>
+    <div class="border-1px"></div>
   <script>
-    var json = [
-      {
-        a:'a0'
-      },
-      {
-        b:'b0'
+    let Event = (function () {
+      let events = {}
+      function on(evt, handler) {
+        // 实现监听效果
+        // 使用'或'是为了可以对同一个事件多次进行回调
+        events[evt] = events[evt] || []
+        events[evt].push({
+            handler: handler
+        })
       }
-    ]
-    var json1 = JSON.stringify(json)
-    JSON.parse(json1, (name, value)=>{console.log(name,value)})
 
-    {
-      var a = 1
-      let b =2 
-      const c =3
-    }
-    console.log(a)
-    // console.log(b)
-    // console.log(c)
-    for (var i = 0; i < 10; i++) {
-      a[i] = function () {
-        console.log(i);
-      };
-    }
-    console.log(i)
-    </script>
+      function fire(evt, args) {
+        if (!events[evt]) {
+          // 如果未监听任何事件，直接中断
+          throw evt + '事件未监听'
+          return
+        }
+        events[evt].map((item)=>{
+          // 遍历，实现对同一个事件的多次回调
+          item.handler(args)
+        })
+      }
+
+      function off(evt) {
+        delete events[evt]
+      }
+
+      return {
+        on: on, // 订阅者
+        fire: fire, // 发布者
+        off: off // 取消订阅
+      }
+    })()
+
+    var number = 1;
+    Event.on('click', function (data) {
+      console.log(data + number++ + '次');
+    });
+    Event.off('click'); //  取消绑定
+/*     Event.on('click', function (data) {
+      console.log(data + number++ + '次');
+    }); */
+    Event.fire('click', 'click 事件绑定');
+    
+  </script>
 </body>
-
 </html>

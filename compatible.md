@@ -161,7 +161,7 @@ safair : window.pageYOffset
           target["on" + type] = fn;
         }
       },
-      removeEvent: function(target, type, fn) { 
+      removeEvent: function(target, type, fn) { //IE6~8
         if (target.removeEventListener) {
           target.removeEventListener(type, fn);
         } else if(target.removeEvent) {

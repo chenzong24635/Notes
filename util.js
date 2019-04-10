@@ -206,7 +206,7 @@ function accAdd(arg1, arg2) {
 // 去除字符串所有空格  
 //\s	匹配任何空白字符，包括空格、制表符、换页符等等。等价于[ \f\n\r\t\v]。
 function sTrim(text) {
-  return text.replace(/\s/ig, '');
+  return text.replace(/\s/gi, '');
 }
 
 // 数值千分位
@@ -219,8 +219,7 @@ function thousandth(n){
   }
 }
 
-// 随机6位字符串：[a-zA-Z0-9]
-Math.random().toString(32).slice(2,8)
+
 
 
 

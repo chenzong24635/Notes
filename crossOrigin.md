@@ -1,5 +1,6 @@
 # 链接
-[九种跨域方式实现原理（完整版）](https://mp.weixin.qq.com/s?__biz=MzA5NzkwNDk3MQ==&mid=2650589031&idx=1&sn=3f11022e88e7d4c41592de18087bf6e1&chksm=8891d743bfe65e5545da6c49b2a859d41aab3f672564ac957fda5fe3799644ae1aff350e7683&scene=0&xtrack=1#rd)
+[九种跨域方式实现原理](https://mp.weixin.qq.com/s?__biz=MzA5NzkwNDk3MQ==&mid=2650589031&idx=1&sn=3f11022e88e7d4c41592de18087bf6e1&chksm=8891d743bfe65e5545da6c49b2a859d41aab3f672564ac957fda5fe3799644ae1aff350e7683&scene=0&xtrack=1#rd)
+
 
 [前端解决跨域问题的8种方案](http://web.jobbole.com/88524/)
 
@@ -412,6 +413,17 @@ CORS需要浏览器和服务器同时支持。目前，所有浏览器都支持�
 请求方式为HEAD、POST 或者 GET
 http头信息不超出一下字段：Accept、Accept-Language 、 Content-Language、 Last-Event-ID、 Content-Type(限于三个值：application/x-www-form-urlencoded、multipart/form-data、text/plain)
 为什么要分为简单请求和非简单请求，因为浏览器对这两种请求方式的处理方式是不同的。
+
+>
+    Referer: http://127.0.0.1:8085/
+    Origin: http://127.0.0.1:8085   //值设置为*，则会接受所有域的请求
+    Accept: */*
+    Cache-Control: no-cache
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8
+    Pragma: no-cache
+
+    res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:8085');
+    res.setHeader('Access-Control-Allow-Credentials', true); //允许该请求内包含cookie信息同时，在客户端，还需要在ajax请求中设置withCredentials属性为true。
 
 ## <a name="node代理跨域">node代理跨域</a>
 

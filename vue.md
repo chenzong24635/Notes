@@ -1,3 +1,20 @@
+
+
+# MVVM、MVC
+>
+    MVVM是是Model-View-ViewModel的缩写，
+    Model代表数据模型，定义数据操作的业务逻辑，
+    View代表视图层，负责将数据模型渲染到页面上，
+    ViewModel通过双向绑定把View和Model进行同步交互，不需要手动操作DOM的一种设计思想。
+
+    MVVM和MVC都是一种设计思想，主要就是MVC中的Controller演变成ViewModel,，MVVM主要通过数据来显示视图层而不是操作节点，解决了MVC中大量的DOM操作使页面渲染性能降低，加载速度慢，影响用户体验问题。主要用于数据操作比较多的场景
+# 双向数据绑定原理、实现
+
+
+# 简述Vue的响应式原理
+>
+    当一个Vue实例创建时，vue会遍历data选项的属性，用 Object.defineProperty 将它们转为 getter/setter并且在内部追踪相关依赖，在属性被访问和修改时通知变化。 每个组件实例都有相应的 watcher 程序实例，它会在组件渲染的过程中把属性记录为依赖，之后当依赖项的 setter 被调用时，会通知 watcher 重新计算，从而致使它关联的组件得以更新。
+
 # 生命周期
 [Vue2.0生命周期](https://segmentfault.com/a/1190000008010666)
 
@@ -18,13 +35,64 @@
     数据变化的同时进行异步操作或者是比较大的开销，那么watch为最佳选择
     watch的对象必须事先声明
 
+# Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？
+>
+    示例：
+    <template>
+      <div>
+        <ul>
+          <li v-for="value in obj" :key="value">
+            {{value}}
+          </li>
+        </ul>
+        <button @click="addObjB">添加obj.b</button>
+      </div>
+    </template>
+    <script>
+    export default {
+      data () {
+        return {
+          obj: {
+            a: 'obj.a'
+          }
+        }
+      },
+      methods: {
+        addObjB () {
+          this.obj.b = 'obj.b'
+          console.log(this.obj)
+        }
+      }
+    }
+    </script>
+    <style></style>
+    点击button会发现，obj.b 已经成功添加，但是视图并未刷新：
+    原因在于在Vue实例创建时，obj.b并未声明，因此就没有被Vue转换为响应式的属性，自然就不会触发视图的更新，这时就需要使用Vue的全局api $set()：
+
+    addObjB () {
+          // this.obj.b = 'obj.b'
+          this.$set(this.obj, 'b', 'obj.b')
+          console.log(this.obj)
+        }
+    $set()方法相当于手动的去把obj.b处理成一个响应式的属性，此时视图也会跟着改变了：
+
+# delete和Vue.delete删除数组的区别
+
+delete只是被删除的元素变成了 empty/undefined 其他的元素的键值还是不变。
+Vue.delete直接删除了数组 改变了数组的键值。
 
 # 组件中写 key作用？
-key 的作用是为了在 diff 算法执行时更快的找到对应的节点，提高 diff 速度。
+>
 
-vue 和 react 都是采用 diff 算法来对比新旧虚拟节点，从而更新节点。在 vue 的 diff 函数中。可以先了解一下 diff 算法。
+    key 的作用是为了在 diff 算法执行时更快的找到对应的节点，提高 diff 速度。
 
-在交叉对比的时候，当新节点跟旧节点头尾交叉对比没有结果的时候，会根据新节点的 key 去对比旧节点数组中的 key，从而找到相应旧节点（这里对应的是一个 key => index 的 map 映射）。如果没找到就认为是一个新增节点。而如果没有 key，那么就会采用一种遍历查找的方式去找到对应的旧节点。一种一个 map 映射，另一种是遍历查找。相比而言。map 映射的速度更快。
+    vue 和 react 都是采用 diff 算法来对比新旧虚拟节点，从而更新节点。在 vue 的 diff 函数中。可以先了解一下 diff 算法。
+
+    在交叉对比的时候，当新节点跟旧节点头尾交叉对比没有结果的时候，会根据新节点的 key 去对比旧节点数组中的 key，从而找到相应旧节点（这里对应的是一个 key => index 的 map 映射）。如果没找到就认为是一个新增节点。而如果没有 key，那么就会采用一种遍历查找的方式去找到对应的旧节点。一种一个 map 映射，另一种是遍历查找。相比而言。map 映射的速度更快。
+
+>
+
+    当 Vue.js 用 v-for 正在更新已渲染过的元素列表时，它默认用“就地复用”策略。如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序， 而是简单复用此处每个元素，并且确保它在特定索引下显示已被渲染过的每个元素。key的作用主要是为了高效的更新虚拟DOM
 
 # 滚动
 * document.documentElement.scrollTop = 380 //不需要加单位
@@ -38,9 +106,14 @@ document.getElementById('ID').scrollIntoView()
 
 
 # keep-alive
-如果使用了keep-alive对组件进行了缓存，组件不会销毁，destroyed不执行
+>
+    包裹动态组件时，会缓存不活动的组件实例，主要用于保留组件状态或避免重新渲染；
 
+    使用：
+      缓存： <keep-alive include=”组件名”></keep-alive>
+      不缓存：<keep-alive exclude=”组件名”></keep-alive>
 
+    如果使用了keep-alive对组件进行了缓存，组件不会销毁，destroyed不执行
 
 # vue-router -- https://router.vuejs.org/zh
 ## base

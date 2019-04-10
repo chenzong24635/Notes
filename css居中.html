@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>-->
+  <title>css居中</title>
+  <!-- <link rel="stylesheet" href="" /> -->
+  <style>
+    html,body{padding-left: 60px;}
+    .content{
+      position: relative;
+      /* float: left; */
+      margin-bottom:50px;
+      width:300px;
+      height: 200px;
+      background:red ;
+      border:1px solid #000;
+    }
+    .box{
+      width:100px;
+      height: 100px;
+      background: #fff;
+    }
+
+    /* position: absolute;+margin:auto */
+    .box1{
+      position: absolute;
+      margin: auto;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
+
+    /* position: absolute;+transform */
+    .box2{
+      position:absolute;
+      top: 50%;
+      left: 50%;
+      /* 外边距为自身宽高的一半 */
+      transform:translate(-50%, -50%);/*或 margin: -150px 0 0 -250px;*/
+    }
+
+    /* flex*/
+    .content2 {
+      display: flex;
+      align-items: center; 		
+      justify-content: center;	
+    }
+
+    /* flex*/
+    .content3 {
+    display: flex;
+    }
+    .box3{margin:auto;}
+
+    /* table-cell*/
+    .content4 {
+      text-align: center;
+      display: table-cell;
+      vertical-align: middle;
+    }
+    .box4{ display: inline-block;}
+
+    /* 伪元素 */
+    .content5{text-align: center;}
+    .content5:before {
+      content:"";
+      height:100%;
+      vertical-align: middle;
+      display: inline-block;
+    }
+    .box5 {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  
+  </style>
+</head>
+<body>
+    <h1>水平垂直居中</h1>
+    <h2>absolute+margin:auto</h2>
+    <div class="content">
+      <div class="box box1"></div>
+    </div>
+
+    <h2>absolute+transform/margin-left、top</h2>
+    <div class="content">
+      <div class="box box2"></div>
+    </div>
+
+    <h2>flex+justify-content+align-items</h2>
+    <div class="content content2">
+      <div class="box box2"></div>
+    </div>
+
+    <h2>flex+margin:auto;</h2>
+    <div class="content content3">
+      <div class="box box3"></div>
+    </div>
+
+    <h2>table-cell</h2>
+    <div class="content content4">
+      <div class="box box4"></div>
+    </div>
+    
+    <h2>伪元素</h2>
+    <div class="content content5">
+      <div class="box box5"></div>
+    </div>
+  <script>
+
+  </script>
+</body>
+</html>

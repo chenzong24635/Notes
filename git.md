@@ -1,6 +1,7 @@
 # 链接
 [git](https://git-scm.com/book/zh/v2)
 [git学习](https://learngitbranching.js.org/?demo)
+[猴子都能懂的git入门](https://backlog.com/git-tutorial/cn/contents/)
 
 # vscode-sync-setting ：
 * token: bb7d41e1e039fdd294a6819e7305b73bd066d9a1
