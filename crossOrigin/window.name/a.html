@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>-->
+  <title></title>
+  <!-- <link rel="stylesheet" href="./css/base.css" /> -->
+  <style></style>
+</head>
+<body>
+    <!-- // a.html -->
+    <p>window.name + iframe 跨域</p>
+    <p>a.html</p>
+    <iframe src="http://127.0.0.1:5500/window.name/c.html" frameborder="0" onload="load()" id="iframe"></iframe>
+    <script>
+      let first = true
+      console.log('onload事件会触发2次，第1次加载跨域页，并留存数据于window.name')
+      function load() {
+        if(first){
+          let iframe = document.getElementById('iframe');
+          iframe.src = 'http://localhost:8080/crossOrigin/window.name/b.html';
+          first = false;
+          console.log('第1次onload(跨域页)成功后，切换到同域代理页面b.html')
+        }else{
+          console.log('第2次onload(同域b.html页)成功后，读取同域window.name中数据')
+          console.log(iframe.contentWindow.name);
+        }
+      }
+    </script>
+</body>
+</html>

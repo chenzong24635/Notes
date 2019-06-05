@@ -1,5 +1,5 @@
 # 链接
-[九种跨域方式实现原理](https://mp.weixin.qq.com/s?__biz=MzA5NzkwNDk3MQ==&mid=2650589031&idx=1&sn=3f11022e88e7d4c41592de18087bf6e1&chksm=8891d743bfe65e5545da6c49b2a859d41aab3f672564ac957fda5fe3799644ae1aff350e7683&scene=0&xtrack=1#rd)
+[九种跨域方式实现原理](https://segmentfault.com/a/1190000018017118)
 
 
 [前端解决跨域问题的8种方案](http://web.jobbole.com/88524/)
@@ -16,7 +16,7 @@
 * <a href="#location.hash + iframe 跨域">location.hash + iframe 跨域 只能够实现get请求）</a>
 * <a href="#postMessage跨域">postMessage跨域</a>
 * <a href="#nginx代理跨域">nginx代理跨域 ??</a>
-* <a href="#跨域资源共享 CORS">跨域资源共享 CORS ??</a>
+* <a href="#跨域资源共享 CORS">跨域资源共享 CORS</a>
 * <a href="#node代理跨域">node代理跨域</a>
 * <a href="#WebSocket协议跨域">WebSocket协议跨域 ??</a>
 * <a href="#"></a>
@@ -25,7 +25,8 @@
 # <a name="跨域">**跨域**</a>
 
 
-## base
+## 简介
+### url
 ![URL](/img/crossOrigin.png)
 例：http://www.abc.com:8080/scripts/jquery.js
 
@@ -40,6 +41,8 @@
 ### 定义：
 跨域，是指浏览器不能执行其他网站的脚本。它是由浏览器的同源策略造成的，是浏览器对JavaScript实施的安全限制。
  跨域是指一个域下的文档或脚本试图去请求另一个域下的资源，这里跨域是广义的。
+
+
 
 广义的跨域：
 >
@@ -59,7 +62,8 @@
 
     凡拥有src属性的标签都拥有跨域能力script img iframe
 
-
+跨域通信：
+    js进行DOM操作、通信时如果目标与当前窗口不满足同源条件，浏览器为了安全会阻止跨域操作。
 
 
 ### 常见的跨域场景
@@ -398,6 +402,8 @@ proxy服务器
 
 
 ## <a name="跨域资源共享CORS">跨域资源共享CORS</a>
+[跨域资源共享CORS详解-阮一峰](http://www.ruanyifeng.com/blog/2016/04/cors.html)
+
 简介
 CORS是一个W3C标准，全称是"跨域资源共享"（Cross-origin resource sharing）。 它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制。
 
@@ -424,6 +430,8 @@ http头信息不超出一下字段：Accept、Accept-Language 、 Content-Langua
 
     res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:8085');
     res.setHeader('Access-Control-Allow-Credentials', true); //允许该请求内包含cookie信息同时，在客户端，还需要在ajax请求中设置withCredentials属性为true。
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
 
 ## <a name="node代理跨域">node代理跨域</a>
 
@@ -523,7 +531,7 @@ WebSocket protocol是HTML5一种新的协议。它实现了浏览器与服务器
     <div>user input：<input type="text"></div>
     <script src="./socket.io.js"></script>
     <script>
-    var socket = io('http://www.domain2.com:8080');
+    var socket = io('http://localhost:8080');
 
     // 连接成功处理
     socket.on('connect', function() {
@@ -549,7 +557,7 @@ WebSocket protocol是HTML5一种新的协议。它实现了浏览器与服务器
 >
     var http = require('http');
 
-    var socket = require('socket.io');
+    var socket = require('socket.io');//先安装socket.io
 
     // 启http服务
     var server = http.createServer(function(req, res) {

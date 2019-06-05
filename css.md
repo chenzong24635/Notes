@@ -3,6 +3,10 @@ https://github.com/chokcoco/CSS-Inspiration
 
 [You-Dont-Need-JavaScript](https://github.com/you-dont-need/You-Dont-Need-JavaScript)CSS实现效果而不需要JS
 
+
+
+[常见的CSS图形](https://codepen.io/chenzong24635/pen/xQNyzg)
+
 UI框架
 
 [Bootstrap](http://www.bootcss.com/)
@@ -33,7 +37,7 @@ UI框架
 [CSS tricks](https://css-tricks.com/)
 
 
-[水平垂直居中](http://howtocenterincss.com/) 根据要求生成代码
+[CSS水平垂直居中](http://howtocenterincss.com/) 根据要求生成代码
 
 CSS布局
 
@@ -43,8 +47,14 @@ CSS布局
 [Flex](http://caibaojian.com/flexbox-guide.html)
 
 [Grid](http://grid.guide/)
+[Grid](https://zhuanlan.zhihu.com/p/33030746)
+[Grid](https://www.html.cn/archives/8510)
 
 [CSS布局](http://zh.learnlayout.com/)
+
+[CSS布局-个人笔记](http://htmlpreview.github.com/?https://github.com/chenzong24635/Notes/blob/master/css布局.html)
+
+[CSS居中-个人笔记](http://htmlpreview.github.com/?https://github.com/chenzong24635/Notes/blob/master/css居中.html)
 
 
 [三列布局](http://www.cnblogs.com/xiaohuochai/p/5455905.html)
@@ -64,15 +74,16 @@ CSS布局
 
 * <a href="#概述">概述</a>
 * <a href="#权重、优先级">权重、优先级</a>
-* <a href="#CSS引入的方式">CSS引入的方式有哪些? link和@import的区别是?</a>
+* <a href="#CSS引入的方式">CSS引入的方式有哪些? link和@import的区别是? 如何避免FOUC?</a>
 * <a href="#盒模型">盒模型</a>
 * <a href="#文字、盒子阴影">文字、盒子阴影</a>
-* <a href="#块级元素、行内元素、行内块级元素">块级元素、行内元素、行内块级元素</a>
+
 * <a href="#百分数相对于width">padding/margin-top/bottom的百分数相对于width</a>
 * <a href="#css选择器">css选择器</a>
 * <a href="#哪些属性可继承">哪些属性可继承</a>
 * <a href="#zIndex">堆叠上下文(stacking context )z-index</a>
-* <a href="#BFC">块级格式化上下文(BFC)</a>
+* <a href="#BFC">块级格式化上下文(BFC)、行内格式化上下文(IFC)</a>
+* <a href="#float特性">float特性</a>
 * <a href="#display、visibility、overflow">display、visibility、overflow的隐藏问题</a>
 * <a href="#line-hieght">line-hieght</a>
 * <a href="#文本换行">文本换行</a>
@@ -81,7 +92,10 @@ CSS布局
 * <a href="#移动端1px">移动端1px</a>
 * <a href="#注意事项">注意事项</a>
 * <a href="#用CSS开启硬件加速来提高网站性能">用CSS开启硬件加速来提高网站性能</a>
+* <a href="#@规则">@规则</a>
 * <a href="#CSS hack">CSS hack</a>
+* <a href="#input placeholder颜色兼容">input placeholder颜色兼容</a>
+* <a href="#border:solid">边框</a>
 
 * <a href="#其他">**其他**</a>
 
@@ -101,12 +115,17 @@ CSS的优势
 使用CSS可以减少网页的代码量，增加网页的浏览速度。
 
 ## <a name="权重、优先级">权重、优先级</a>
-优先级就近原则，同权重情况下样式定义最近者为准;
-载入样式以最后载入的定位为准;
 1. 内联样式 > 内部样式表 > 外部样式表
 2. !important > 内联样式 > ID > class > tag
+权值            1000       100   10     1
 
-## <a name="CSS引入的方式">CSS引入的方式? link和@import的区别是?</a>
+max-width、mix-width、max-height、min-height等条件属性是可以覆盖!important的
+
+同权重下样式定义最近者为准
+载入样式以最后载入的定位为准;
+
+
+## <a name="CSS引入的方式">CSS引入的方式? link和@import的区别是? 如何避免FOUC？</a>
 ### CSS引入的方式
 1. 内联样式：直接在 HTML 标签中的 style 属性中添加 \<div style=’color:red’></div>
 2. 内部样式：写在head中style, \<head>\<style> div{color:red;}\</style>\</head>
@@ -118,6 +137,19 @@ CSS的优势
 2. link不只能加载css，还可定义RSS等其；@import属于css范畴，只能加载css。
 3. link引入的css与页面同时加载，而@important则需等页面完全载入后再加载
 4. linnk支持使用javascript控制dom去改变样式；而@import不支持。
+
+### FOUC？
+Flash Of Unstyled Content：文档样式短暂失效; 用户定义样式表加载之前浏览器使用默认样式显示文档，用户样式加载渲染之后再从新显示文档，造成页面闪烁。
+
+原因：
+>
+    使用import方法导入样式表。
+    将样式表放在页面底部
+    有几个样式表，放在html结构的不同位置。其实原理很清楚：当样式表晚于结构性html加载，当加载到此样式表时，页面将停止之前的渲染。此样式表被下载和解析后，将重新渲染页面，也就出现了短暂的花屏现象
+
+解决方法：
+>
+    使用link标签将样式表放在head中
 
 ## <a name="盒模型">盒模型</a>
 * 定义：
@@ -164,26 +196,6 @@ HTML中每个元素都被描绘成一个矩形盒子，这些盒子通过一个�
     color	可选。阴影的颜色。在CSS颜色值寻找颜色值的完整列表
     inset	可选。从外层的阴影（开始时）改变阴影内侧阴影
 
-## <a name="块级元素、行内元素、行内块级元素">块级元素、行内元素、行内块级元素</a>
-
-块级元素：display:block
->
-    会独占一行,默认情况下,其宽度自动填满其父元素宽度.设置了宽度,仍然是独占一行.
-    块级元素可以设置width,height,margin和padding属性.
-
-    div,p,ol,ul,li,...
-
-行内元素：display:inline.
->
-    不会独占一行,相邻的行内元素会排列在同一行里,直到一行排不下,才会换行,其宽度随元素的内容而变化.　
-    行内元素设置width,height属性无效，它的长度高度主要根据内容决定.
-    行 内元素的margin和padding属性,水平方向的padding-left,padding-right,margin-left,margin- right都产生边距效果,但竖直方向的padding-top,padding-bottom,margin-top,margin-bottom无效
-
-    a,span,
-
-行内块级元素：display:inline-block
->
-    让行内元素拥有（除了独占一行）的特性
 
 ## <a name="百分数相对于width">为什么padding/margin-top/bottom的百分数相对于width？</a>
 CSS权威指南中的解释：
@@ -197,10 +209,10 @@ CSS权威指南中的解释：
 * id选择器（ #myid）
 * 类选择器（.myclassname）
 * 标签选择器（div, h1, p）
-* 相邻选择器（h1 + p）
-* 子选择器（ul > li）
-* 后代选择器（li a）
-* 通用兄弟选择器(E ~ F) //E后面所有的兄弟F 
+* 子代选择器（div > p）
+* 后代选择器（div p）
+* 相邻选择器（div + p）紧挨div后面的第一个p（必须紧挨着div，若中间隔着其他标签不生效,包括script、style标签）
+* 通用兄弟选择器(div ~ p) //div后面所有的兄弟p
 * 属性选择器（a[rel = "external"]）
 * 伪类选择器（a:hover, li:nth-child）
 * .....
@@ -216,6 +228,10 @@ E[attr~=val]   //E中带有attr属性 且值具有多个空格分隔的值，其
 E[attr|=val]   //E中带有attr属性 且值具有 val 或以 val- 开始的值，常用于lang（lang='en-us'）
 
 #### 伪类  
+>
+    是基于元素的特征而不是他们的id、class、属性或者内容。一般来说，元素的特征是不可以从DOM树上推断得到的，而且其是动态的，当用户和DOM进行交互的时候，元素可以获得或者失去一个伪类。
+    伪类其实就是基于普通DOM元素而产生的不同状态，他是DOM元素的某一特征
+
 * 结构伪类：子元素序号从1开始算
 >
     E F:first-child        //第一个子元素F
@@ -248,11 +264,12 @@ E[attr|=val]   //E中带有attr属性 且值具有 val 或以 val- 开始的值�
 * 排除伪类：
 >
     E:not(selector) //除selector（任意选择器）外的元素会被选中；
+
 * 动态伪类：
 >
     a:link{...}		选择所有未访问过的超链接
     a:visited{...}	选择所有访问过的超链接
-    a:hover{...} 当鼠标悬停于元素上方时  IE6只支持a:hover
+    a:hover{...} 当鼠标悬停于元素上方时
     a:active{...} 当元素被激活时
     input:foucs{...} 当元素获得输入焦点  IE7前都不支持
 * 语言伪类
@@ -264,11 +281,34 @@ E[attr|=val]   //E中带有attr属性 且值具有 val 或以 val- 开始的值�
     E:disabled  匹配所有禁用的表单元素
 
 #### 伪元素
+>
+    是创造文档树之外的对象。例如文档不能提供访问元素内容第一字或者第一行的机制。伪元素还提供一些在源文档中不存在的内容分配样式，例如:before和:after能够访问产生的内容。伪元素的内容实际上和普通DOM元素是相同的，但是它本身只是基于元素的抽象，并不存在于文档中，所以叫伪元素。
+>
     E::before{content:"";......}
     E::after{content:"";......}
     E::first-letter     //选中第一个单词、字
     E::first-line     //选中第一行的伪元素
     E::selection       //选中的区域 
+    E::placeholder  //设置placeholder样式-- IE不支持
+    //兼容写法
+        ::-webkit-input-placeholder {
+            color: red;
+        }
+        :-ms-input-placeholder { //ie
+            color: red;
+        }
+        ::-moz-placeholder { //ff
+            color: red;
+        }
+
+## <a name="CSS书写顺序">CSS书写顺序</a>
+>
+    1.位置属性(position, top, right, z-index,display, float等)　　
+    2.大小(width, height, padding, margin)
+    3.文字系列(font, line-height, letter-spacing,color- text-align等)
+    4.背景(background, border等)
+    5.其他(animation, transition等)
+
 
 ## <a name="哪些属性可继承">哪些属性可继承</a>
 * 不可继承的样式：
@@ -316,7 +356,7 @@ E[attr|=val]   //E中带有attr属性 且值具有 val 或以 val- 开始的值�
     2. z-index 值不为 "auto"的 flex 项目 (flex item)，即：父元素 display: flex|inline-flex，
     3. opacity值 < 1
     4. transform 属性值不为 none
-    5. position: fixed
+    5. position: fixed | sticky
     6. filter值不为 none
     7. perspective值不为“none”的元素，
     8. isolation 属性被设置为 "isolate"的元素，
@@ -324,13 +364,18 @@ E[attr|=val]   //E中带有attr属性 且值具有 val 或以 val- 开始的值�
     10. 在 will-change 中指定了任意 CSS 属性，即便你没有直接指定这些属性的值
     -webkit-overflow-scrolling 属性被设置 "touch"的元素
 
-在层叠上下文中，其子元素同样也按照上面解释的规则进行层叠。 特别值得一提的是，其子元素的 z-index 值只在父级层叠上下文中有意义。子级层叠上下文被自动视为父级层叠上下文的一个独立单元。
+在层叠上下文中，其子元素同样也按照上面解释的规则进行层叠。 
+<b>其子元素的 z-index 值只在父级层叠上下文中有意义</b>。子级层叠上下文被自动视为父级层叠上下文的一个独立单元。
+
+优先级：
+定位>浮动>
 
 z-index不起作用情况：
 >
     1、父标签 position属性为relative；
     2、问题标签无position属性（不包括static）；
     3、问题标签含有浮动(float)属性。
+
 
 总结:
 >
@@ -339,14 +384,17 @@ z-index不起作用情况：
     每个层叠上下文完全独立于它的兄弟元素：当处理层叠时只考虑子元素。
     每个层叠上下文是自包含的：当元素的内容发生层叠后，整个该元素将会 在父层叠上下文中 按顺序进行层叠。
 
-## <a name="BFC">块级格式化上下文(BFC)</a>
+## <a name="BFC">块级格式化上下文(BFC) 、行内格式化上下文(IFC)</a>
+格式化上下文即Formatting context，它是指页面上的一个局部独立渲染区域，根据Formatting context中包含的是元素类型的不同，分为块级格式上下文BFC和行内格式化上下文IFC，
+
+### BFC
 * 概述：BFC(Block Formatting Context)是Web页面中盒模型布局的CSS渲染模式。它的定位体系属于常规文档流。
 
 * BFC形成条件：
 2. float的值不为none
-3. position的值不为static或relative
+3. position的值不为static或relative或sticky
 4. overflow的值不为visible
-5. display的值为 inline-block | flex | inline-flex | table-cell | table-caption |
+5. display的值为 inline-block | flex | inline-flex | table | table-cell | table-caption |
 
 * BFC的布局规则
 1. 内部的元素会在垂直排列，可以理解为是BFC中的一个常规流
@@ -360,6 +408,7 @@ z-index不起作用情况：
 1. 不和浮动元素重叠：
 >
     如果一个浮动元素后面跟着一个非浮动的元素，那么就会产生一个覆盖的现象。清除元素内部浮动，只要把父元素设为BFC就可以清理子元素的浮动了，最常见的用法就是在父元素上设置overflow: hidden样式，对于IE6加上zoom:1就可以了(IE Haslayout)。
+    
 2. 解决margin边距折叠问题
 >
     按照BFC的定义，只有同属于一个BFC时，两个元素才有可能发生垂直Margin的重叠，这个包括相邻元素，嵌套元素，只要他们之间没有阻挡(例如边框，非空内容，padding等)就会发生margin重叠。
@@ -380,7 +429,82 @@ z-index不起作用情况：
       overflow: hidden;
       visibility: hidden;
     }
-    .clearfix {zoom: 1;}
+
+### IFC 
+行内格式化上下文IFC(Inlinel Formatting context)
+
+布局规则：
+>
+    子元素水平方向横向排列，并且垂直方向起点为元素顶部。
+    在垂直方向上，子元素会以不同形式来对齐（vertical-align）。
+    能把在一行上的框都完全包含进去的一个矩形区域，被称为该行的行框（line box）。行框的宽度是由包含块（containing box）和与其中的浮动来决定。
+    IFC中的“line box”一般左右边贴紧其包含块，但float元素会优先排列。
+    IFC中的“line box”高度由 CSS 行高计算规则来确定，同个IFC下的多个line box高度可能会不同。
+    当 inline-level boxes的总宽度少于包含它们的line box时，其水平渲染规则由 text-align 属性值来决定。
+    当一个“inline box”超过父元素的宽度时，它会被分割成多个boxes，这些 oxes 分布在多个“line box”中。如果子元素未设置强制换行的情况下，“inline box”将不可被分割，将会溢出父元素。
+
+
+
+当一个span里面的内容大于line box的宽度，它的内容自动拆分成两个部分，分布在两行（两个line box）中
+>
+    <style type="text/css">
+        #container{
+        width: 100px;
+        height: 200px;
+        background: gold;
+        }
+        #container span{
+        color: #fff;
+        background:#000;
+        }
+    </style>
+
+    <div id="container">
+        <span>This is a span</span>
+    </div>
+
+两个span元素的宽度总和已经大于line box的宽度了，但是第二个元素没有进行换行布局。
+因为第一个span里面的字符串和第二个span里面的字符串之间不存在空格，因此IFC把他们的内容理解成一个连续的字符串，他们也就成了不可拆分的整体，第二个span也就没有办法进行换行了。
+
+解决方法：
+    span间加空格 
+    span设置强制换行：word-break;break-all; | word-break: break-word; |  word-wrap: break-word;
+>
+    #container{
+    width: 100px;
+    height: 200px;
+    background: gold;
+    }
+    #container span{
+    color: #fff;
+    background:#000;
+    }
+    #container span:last-child{
+    color: #ff0000;
+    background-color: #233;
+    }
+    <div id="container"><span>inlineinline</span><span>inlineinline</span></div>
+
+
+## <a name="float特性">float特性</a>
+由于float意味着使用块布局，所以它会修改元素的display值（block）。
+
+浮动的本意：
+>
+    让文字像流水一样环绕浮动元素。
+
+特性：
+>
+    包裹性
+    高度欺骗
+
+规则：
+
+    不会超越前面的块元素，仅在本行浮动
+    脱离文档流后，下分的块元素会填充
+    两个浮动元素的垂直外边距将不会折叠
+    浮动后的元素不会影响其他块元素的布局，仅会影响被它覆盖的行内元素
+    浮动盒子的顶部不会超出在html文档中早出现的的块级元素(block)或者是浮动元素的顶部
 
 ## <a name="display、visibility、overflow">display、visibility、overflow的隐藏问题</a>
 * display：block | none | inline | table….. 
@@ -436,16 +560,33 @@ white-space:nowrap;
 正常文字的换行(亚洲文字和非亚洲文字)
 white-space:normal;
 
+强制英文单词断行
+word-break:break-all;
+
 自动换行
 word-wrap: break-word; 
 word-break: break-all; 
 white-space:normal;
 
-强制英文单词断行
-word-break:break-all;
+white-space
+>
+    normal: 忽略/合并空白
+    pre: 保留空白，如同<pre>的行为
+    nowrap: 忽略/合并空白，文本不会换行，直到遇到<br/>
+    pre-wrap: 保留空白，但是会正常地进行换行
+     pre-line: 忽略/合并空白，但是会正常地进行换行
+    inherit: 从父元素继承。
 
+word-wrap
+>
+    normal: 只在允许的断字点换行
+    break-word: 在长单词或URL地址内部进行换行
 
-;
+word-break
+>  
+    normal:依照亚洲和非亚洲语言的文本规则，允许在单词内换行。
+    keep-all:让亚洲语言文本如同非亚洲语言文本那样不允许在任意单词内换行。
+    break-all:允许非亚洲语言文本行如同亚洲语言文本那样可以在任意单词内换行。
 
 ## <a name="尺寸单位">像素定义 尺寸单位</a>
 #### 像素
@@ -460,11 +601,11 @@ https://www.cnblogs.com/ranyonsue/p/6795943.html
 >
     一个物理像素是显示器(手机屏幕)上最小的物理显示单元，在操作系统的调度下，每一个设备像素都有自己的颜色值和亮度值。
 
-##### 设备独立像素(density-independent pixel)
+##### 设备独立像素(DIP, DP)(density-independent pixel)
 >
         设备独立像素(也叫密度无关像素)，可以认为是计算机坐标系统中得一个点，这个点代表一个可以由程序使用的虚拟像素(比如: css像素)，然后由相关系统转换为物理像素。
 
-##### 设备像素比DPR(device pixel ratio) 
+##### 设备像素比(DPR)(device pixel ratio) 
 
     定义了物理像素和设备独立像素的对应关系
 >
@@ -486,20 +627,15 @@ https://www.cnblogs.com/ranyonsue/p/6795943.html
 >
     为打印机每英寸可以喷的墨汁点数，用于印刷行业中度量空间点的密度
 
-#####  PPI(pixels per inch)
+#####  PPI(pixels per inch)像素密度
 >
     为屏幕每英寸的像素数量(即在一个对角线长度为1英寸的正方形内所拥有的像素数)，用于度量计算机显示屏上像素的密度。目前PPI(主要是iOS)和DPI(比如在Android中)都会用在计算机显示设备的参数描述中，并且二者的意思是一样的，都是代表像素密度
 
 
-    
-    
+##### CSS像素(CSS Pixels)
+>
 
-    
-
-
-
-
-
+    CSS像素(CSS Pixels)是WEB编程中诞生的概念，用于定于浏览器中每个模型不同CSS的值大小。由于CSS像素（CSS Pixels）是个逻辑性的像素，而非物理性的像素，所以1个CSS像素在不同设备上大小可能会有不同。
 
 #### 尺寸单位
 >
@@ -531,6 +667,63 @@ vw、vh 与 % 百分比的区别
     vw、vh 优势在于能够直接获取高度，而用 % 在没有设置 body 高度的情况下，是无法正确获得可视区域的高度。
 
 
+
+## <a name="css自定义属性">css自定义属性 <b>IE不支持</b></a>
+
+
+>
+    例子
+    :root{
+        --color:green;
+    }
+    div{
+        color:var(--color)
+    }
+特性：
+
+对大小写敏感：
+>
+    --color 与 --COLOR 不同
+    
+自定义属性可作为一个独立属性值的一部分
+>
+
+    div{
+    --myC:gold;
+    --myW:100px;
+    color:var(--myC);
+    width:var(--myW);
+    }
+
+优点：
+
+可以动态修改自定义属性
+
+有DOM结构的概念，可以级联继承
+>
+    :root {
+        --color: red;
+    }
+
+    div {
+        --color: green;
+    }
+
+    p {
+        color: var(--color)
+    }
+
+    <div><p>我是綠色的 继承自div</p></div>
+    <p>我是红色的</p>
+
+可以用JavaScript进行读写
+>
+
+    window.getComputedStyle(element)的getPropertyValue方法获取属性值
+    el.style.setProperty来设置属性值
+
+    window.getComputedStyle(document.querySelector('.p1')).getPropertyValue('--color')
+    document.querySelector('.p1').style.setProperty('--color', '#000')
 
 ## <a name="用CSS开启硬件加速来提高网站性能">用CSS开启硬件加速来提高网站性能</a>
 #### 何为硬件加速
@@ -661,7 +854,7 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
     }
 
 #### 多行省略号
-###### 只适用于webkit内核
+    <!-- 只适用于webkit内核 -->
     .ov2{
       position: relative;
       display: -webkit-box;
@@ -671,33 +864,31 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
       word-break: break-all;
       -webkit-line-clamp: 2;
       -moz-line-clamp: 2;
-      // 防止 打包后出现css中文本超出部分隐藏显示省略号失效
-      // autoprefixer自动移除老式过时的代码
+      /* // 防止 打包后出现css中文本超出部分隐藏显示省略号失效
+      // autoprefixer自动移除老式过时的代码 */
       /*! autoprefixer: off */
         -webkit-box-orient: vertical;/*伸缩盒子的子元素排列：从上到下*/
         -moz-box-orient: vertical;
       /* autoprefixer: on */
     }
 
-###### 火狐
+    <!-- 火狐 -->
     @-moz-document url-prefix() {
-      .ov2{
-        max-height: 40px;//设置最大高度，加上overflowhidden，正好是两行，使超出部分隐藏
-      }
+      .ov2{max-height: 40px;}
       .ov2::after{
         content: "...";
         position: absolute;
         bottom: 0;
         right: 0;
-        padding-left: 40px;//以上三个属性，可以后续调整，看要把...放在哪个位置
-        background: -webkit-linear-gradient(left, transparent, ##fff 55%);
-        background: -o-linear-gradient(right, transparent, ##fff 55%);
-        background: -moz-linear-gradient(right, transparent, ##fff 55%);
-        background: linear-gradient(to right, transparent, ##fff 55%);//背景色可写成渐变也可写成一样的颜色
+        padding-left: 40px;/* //以上三个属性，可以后续调整，看要把...放在哪个位置 */
+        background: -webkit-linear-gradient(left, transparent, #fff 55%);
+        background: -o-linear-gradient(right, transparent, #fff 55%);
+        background: -moz-linear-gradient(right, transparent, #fff 55%);
+        background: linear-gradient(to right, transparent, #fff 55%);/* //背景色可写成渐变也可写成一样的颜色 */
       }
     }
-
-###### IE10、11
+    
+    <!-- IE10、11 -->
     @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
       .ov2{max-height: 36px;}
       .ov2::after{
@@ -705,11 +896,11 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
         position: absolute;
         bottom: 0;
         right: 0;
-        padding-left: 40px;//以上三个属性，可以后续调整，看要把...放在哪个位置
-        background: -webkit-linear-gradient(left, transparent, ##fff 55%);
-        background: -o-linear-gradient(right, transparent, ##fff 55%);
-        background: -moz-linear-gradient(right, transparent, ##fff 55%);
-        background: linear-gradient(to right, transparent, ##fff 55%);//背景色可写成渐变也可写成一样的颜色
+        padding-left: 40px;/* //以上三个属性，可以后续调整，看要把...放在哪个位置 */
+        background: -webkit-linear-gradient(left, transparent, #fff 55%);
+        background: -o-linear-gradient(right, transparent, #fff 55%);
+        background: -moz-linear-gradient(right, transparent, #fff 55%);
+        background: linear-gradient(to right, transparent, #fff 55%);/* //背景色可写成渐变也可写成一样的颜色 */
       }
     }
 
@@ -726,14 +917,71 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
       left: 0;
       top: 0;
       right: 0;
-      border-top: 1px solid #000;/* height: 1px; background-color: #000;*/
-      color: #000;
+      border-top: 1px solid #000;
+      /* height: 1px; background-color: #000;*/
       -webkit-transform-origin: 0 0;
       transform-origin: 0 0;
       -webkit-transform: scaleY(0.5);
       transform: scaleY(0.5);
     }
 
+
+## <a name="@规则">@规则</a>
+@charset 
+>
+    定义样式表中使用的字符编码。它必须写在样式表的最开头且前面不可有别的字符。
+
+    @charset "UTF-8";
+
+@font-face
+>
+    给网页指定文本字体。
+    @font-face {
+        font-family: "Test Font";
+        src: url("test.ttf");
+    }
+    body { font-family: "Test Font"}
+
+@import
+>
+    导入外部CSS样式表文件
+    @import url('a.css')
+
+@media
+>
+    定义在一个或多个设备类型、具体特点和环境的媒体查询来应用样式。
+
+    @media screen and (min-width: 900px) {
+    }
+
+@keyframs
+>
+    通过定义动画序列中的关键帧来控制CSS动画不同步骤的状态。
+    @keyframes name{
+        from{}
+        to{}
+    }
+
+@supports
+>
+    检测规则组的规则是否生效。规则与@media类似
+    @supports (display: flex) {
+        div {
+            display: flex;
+        }
+    }
+
+@viewport
+>
+    设置视口（viewport）的特性。
+
+@page
+>
+    用于在打印文档时修改某些CSS属性。@page规则只能修改margin、orphans、widow 和 page breaks of the document，对其他属性的修改是无效的。
+    @page {
+        size: 10in 20in;
+        margin: 10% 20%;
+    }
 
 ## <a name="CSS hack">CSS hack</a>
 [CSS hack](https://blog.csdn.net/freshlover/article/details/12132801)
@@ -753,14 +1001,68 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
       }
     </style>
 
-## input placeholder颜色兼容
+## <a name="input placeholder颜色兼容">input placeholder颜色兼容</a>
 >
     ::-webkit-input-placeholder { color: ##d3d2d2; }/*WebKit, Blink, Edge*/
     :-moz-placeholder { color: ##d3d2d2; }/*Mozilla Firefox 4 to 18*/
     ::-moz-placeholder { color: ##d3d2d2; }/*Mozilla Firefox 19+*/
     :-ms-input-placeholder { color: ##d3d2d2; }/*Internet Explorer 10-11 */
 
+## <a name="border:solid">边框</a>
+[详情来源](https://www.w3cplus.com/css/css-tips-0904-1.html)
 
+### 其他方法 绘制一个实心边框(border-style:solid)
+>
+    outline:1em solid #000; //不占用盒模型空间
+>    
+    box-shadow: 0 0 0 1em #000; //不占用盒模型空间
+>    
+    {
+      padding: 1em;
+      background: linear-gradient(to right, #fff, #fff), #000;
+      background-clip: content-box, padding-box;
+    }
+>
+    {
+        border: 1em solid transparent;
+        border-image: linear-gradient(to right, #000, #000) 10% round;
+    }    
+
+> 伪元素
+
+
+### 层叠边框
+![层叠边框](/img/border.png)
+>
+    .div1{
+      width: 300px;
+      height: 100px;
+      margin: 20px auto;
+      outline: 10px dashed red;
+      box-shadow: 0 0 0 10px #000;
+    }
+>
+    .div2{
+      margin: 20px auto;
+      width: 300px;
+      height: 100px;
+      border: 10px dashed;
+      background:
+        linear-gradient(to top, red, 10px, transparent 10px),
+        linear-gradient(to right, red, 10px, transparent 10px),
+        linear-gradient(to bottom, red, 10px, transparent 10px),
+        linear-gradient(to left, red, 10px, transparent 10px);
+      background-origin: border-box;
+    }
+>    
+    .div3{
+      margin: 20px auto;
+      width: 300px;
+      height: 100px;
+      border: 10px dashed;
+      background: linear-gradient(to top, #fff, #fff), red;
+      background-clip: padding-box, border-box;
+    }
 
 # <a name="其他">**其他**</a>
 
@@ -898,8 +1200,9 @@ box-shadow: 0 6px 0 0 ##eee;
 
 
 
-## -webkit-text-size-adjust: 100%
-// 关闭字体大小自动调整功能.; 防止iPhone在坚屏转向横屏时放大文字（注意，就算viewport设置了maximum-scale=1.0 文字还是会放大的）
+## -webkit-text-size-adjust: none
+ //Chrome 中文界面下默认会将小于 12px 的文本强制按照 12px 显示；
+// 可关闭字体大小自动调整功能.; 
 //放在body中会导致页面缩放失效,不要把-webkit-text-size-adjust设置为全局或者可继承的
 
 

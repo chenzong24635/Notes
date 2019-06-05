@@ -15,7 +15,7 @@
     //指定回调函数 
     xhr.onreadystatechange = function(){    
       // 服务器端响应的数据发送完毕     请求成功
-      if (xhr.readyState === 4 && xhr.status ==200) {
+      if (xhr.readyState === 4 && xhr.status === 200) {
         // 接收服务器端发送的数据
         var data = xhr.responseText
       } 

@@ -15,22 +15,25 @@
       }
     ];
 
-## for...in --遍历对象
+
+## for...in --遍历对象--遍历的是索引（即键名）
+for in更适合遍历对象，不要使用for in遍历数组。
 >
     1.遍历的是索引（即键名）
     2.遍历顺序有可能不是按照实际数组的内部顺序
     3.for in环遍历对象自身的和继承的可枚举属性（不含 Symbol 属性）。
-for in更适合遍历对象，不要使用for in遍历数组。
 
-    for (index in arr) { 
-      if（myObject.hasOwnProperty(index)){ //判断某属性是否是该对象的实例属性
-　　　　console.log(index);
+
+    for (key in obj) { 
+      if（myObject.hasOwnProperty(key)){ //判断某属性是否是该对象的实例属性
+　　　　console.log(key);
 　　  }
-      console.log('index:', index, ';item:', arr[index]);
+      console.log('key:', key, ';val:', obj[key]);
     }
 
-## for...of
-for of遍历的只是数组内的元素，而不包括数组的原型属性method和索引name
+## for...of--数组--遍历的是键值
+必须部署了 Iterator 接口后才能使用；
+遍历普通对象会报错
 
     for (item of arr) {
       console.log('item:', item);
@@ -42,10 +45,9 @@ for of遍历的只是数组内的元素，而不包括数组的原型属性metho
     //  Current Value (cur) (当前值)
     //  Current Index (idx) (当前索引)
     //  Source Array (src) (源数组)
-    let reduce = arr.reduce((sum, item, index, array) => {
-      sum += index
-      console.log('reduce()-->', '累计器', sum, ';index:', index, ';item:', item, '源数组:', array);
-      return sum
+    arr.reduce((prev, now, index, array) => {
+      console.log('reduce()-->', '前一个值prev', prev, ';当前索引index:', index, ';值now:', now, '源数组array:', array);
+      return prev += now
     }, 0);
 
     //使用reduce进行数组扁平化
@@ -59,12 +61,16 @@ for of遍历的只是数组内的元素，而不包括数组的原型属性metho
     }
 
 ## map()
+遍历数组，返回修改后的数组，不修改原数组，不能中断
+
     arr.map((item, index) => {
       console.log('map()-->', 'index:', index, ';item:', item)
     });
 
 
-## forEach((item, index, array) => {})遍历所有值并忽略回调函数的返回值 --- 改变原数组
+## forEach((item, index, array) => {})
+遍历所有值并忽略回调函数的返回值 --- 改变原数组 、不能中断
+
     // 	item--正在数组中处理的当前元素的值
     // 	index--数组中正在处理的元素的索引
     // 	array--源数组
@@ -85,7 +91,7 @@ for of遍历的只是数组内的元素，而不包括数组的原型属性metho
     // 利用filter去重
     var arr = [2,3,4,4,5,2,3,6];
     var arr2 = arr.filter(function(element,index,self){
-    return self.indexOf(element) === index;
+      return self.indexOf(element) === index;
     });
     console.log(arr2);
 

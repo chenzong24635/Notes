@@ -75,10 +75,35 @@
       display: inline-block;
       vertical-align: middle;
     }
-  
+
+    .content6{
+      text-align: center;
+      line-height: 200px;
+    }
+    .box6{
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+
+    .box7{
+      position: relative;
+      float: left;
+      top: 50%;
+      left:50%;
+      transform: translate(-50%, -50%);/* 向上/左 移动自身一半寬高 */
+      /* margin: -50px 0 0 -50px; */
+    }
+
+    .content8{
+      display: grid;
+    }
+    .box8{margin:auto}
   </style>
 </head>
 <body>
+
+
     <h1>水平垂直居中</h1>
     <h2>absolute+margin:auto</h2>
     <div class="content">
@@ -88,6 +113,11 @@
     <h2>absolute+transform/margin-left、top</h2>
     <div class="content">
       <div class="box box2"></div>
+    </div>
+
+    <h2>float+transform/margin-left、top</h2>
+    <div class="content content7">
+      <div class="box box7"></div>
     </div>
 
     <h2>flex+justify-content+align-items</h2>
@@ -109,6 +139,17 @@
     <div class="content content5">
       <div class="box box5"></div>
     </div>
+
+    <h2>inline-block +  vertical-align + line-height  + text-align</h2>
+    <div class="content content6">
+      <div class="box box6"></div>
+    </div>
+
+    <h2>grid</h2>
+    <div class="content content8">
+      <div class="box box8"></div>
+    </div>
+
   <script>
 
   </script>

@@ -21,6 +21,8 @@
 
 # 目录
 
+* <a href="#运算符优先级">运算符优先级</a>
+* <a href="#===、==、Object.is()判断">===、==、Object.is()判断</a>
 * <a href="#===运算符判断">===运算符判断</a>
 * <a href="#==运算符判断">==运算符判断</a>
 * <a href="#比较运算符"><,>,<=,>=的比较规则</a>
@@ -31,48 +33,59 @@
 * <a href="#JS">**JS**</a>
 
 * <a href="#数据类型、内置对象">数据类型、内置对象</a>
-* <a href ="json jsonp">json jsonp</a>
 * <a href="#undefined与null定义、区别">undefined与null定义、区别</a>
+* <a href ="json jsonp">json jsonp</a>
 * <a href="#BOM 浏览器对象模型">BOM 浏览器对象模型</a>
 * <a href="#DOM 文档对象模型">DOM 文档对象模型</a>
 * <a href="#DOM事件">DOM事件</a>
 * <a href="#DOM操作">DOM操作—怎样添加、移除、移动、复制、创建和查找节点</a>
 * <a href="#变量、函数声明提升">变量、函数声明提升</a>
 * <a href="#自执行函数">自执行函数</a>
+* <a href="#对象属性">对象属性configurable enumerable writable</a>
+* <a href="#创建对象的几种方式">创建对象的几种方式</a>
 * <a href="#new创建一个对象">new创建一个对象过程</a>
 * <a href="#异步编程有哪几种方法">异步编程有哪几种方法</a>
 * <a href="#事件委托(代理)">事件委托(代理)</a>
 * <a href="#闭包">闭包</a>
+* <a href="#内存泄漏">内存泄漏</a>
 * <a href="#原型、原型链、原型继承">原型、原型链、原型继承</a>
-* <a href="#typeof instanceof">typeof instanceof</a>
-* <a href="#作用域、作用域链、执行环境、上下文">作用域、作用域链、执行环境、上下文</a>
-* <a href="#公有、私有、静态、特权方法与属性">公有、私有、静态、特权方法与属性</a>
+* <a href="#设计模式">设计模式</a>
+* <a href="#typeof instanceof">typeof instanceof in</a>
+* <a href="#作用域、作用域链、执行上下文">作用域、作用域链、执行上下文</a>
 * <a href="#this">this理解</a>
 * <a href="apply call bind">apply call bind</a>
+* <a href="#公有、私有、静态、特权方法与属性">公有、私有、静态、特权方法与属性</a>
 * <a href="#深，浅拷贝">深，浅拷贝</a>
 * <a href="#js延迟加载：defer,async">js延迟加载：defer,async</a>
 * <a href="#重绘和回流">重绘和回流</a>
 * <a href="#模块化">模块化AMD CMD modules</a>
-* <a href="#内存泄漏">内存泄漏</a>
+
 * <a href="#面向过程和面向对象的异同">面向过程和面向对象的异同</a>
 * <a href =""></a>
 * <a href="#跨域">跨域</a>
 * <a href="#常见的web攻击">常见的web攻击</a>
 * <a href="#URI、URL、URN">URI、URL、URN</a>
 * <a href="#函数重载">函数重载</a>
-* <a href="#节流、防抖">节流、防抖</a>
+* <a href="#防抖、节流">防抖、节流</a>
 * <a href="#柯里化">柯里化</a>
+* <a href="#promise">promise</a>
+* <a href="#webWorker">webWorker</a>
+* <a href="#浏览器缓存">浏览器缓存</a>
 * <a href="#前端性能优化的方法">前端性能优化的方法</a>
 * <a href="#从浏览器地址栏输入url到显示页面的步骤">从浏览器地址栏输入url到显示页面的步骤</a>
+* <a href="#浏览器渲染">浏览器渲染</a>
 * <a href="#JS执行机制">JS执行机制</a>
-* <a href="#设计模式">设计模式</a>
 * <a href="#web安全">web安全</a>
 * <a href="#get与post区别">get与post区别</a>
 * <a href="#css和js动画的差异">css和js动画的差异</a>
 * <a href="#use strict">"use strict"? 用处？</a>
 
 
-# ===、==、Object.is()判断
+# <a name="运算符优先级">运算符优先级</a>
+![运算符优先级](img/运算符优先级.png)
+[更多-MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence)
+
+# <a name="===、==、Object.is()判断">===、==、Object.is()判断</a>
 ![===、==、Object.is()](/img/===.png)
 
 # <a name="===运算符判断">===运算符判断</a>
@@ -104,7 +117,20 @@
     如果有操作数是对象，转换为原始值
     此时如果有一个操作数是字符串，其他的操作数都转换为字符串并执行连接
     否则：所有操作数都转换为数字并执行加
+# ~
+~，被称为“按位不运算符”，~n等价于 - n - 1。//返回一个整数
+>
+    ~15.5 // -16
+    ~'15.5' // -16
+    ~('daa') // -1
+    ~(NaN)  // -1
 
+
+~~n等价于 - (- n - 1) - 1 = n + 1 - 1 = n 
+>
+
+    ~~15.5 // 15
+    ~~(NaN) // 0
 
 
 #  <a name="keyCode">keyCode:键盘按键键码</a>
@@ -125,10 +151,71 @@ JS的组成：核心( ECMAScript) , 文档对象模型(DOM), 浏览器对象模�
 * 两类型的区别：存储位置不同；
 >
     基本数据类型直接存储在栈(stack)中的简单数据段，占据空间小、大小固定，属于被频繁使用数据，所以放入栈中存储；
+
     引用数据类型存储在堆(heap)中的对象,占据空间大、大小不固定。如果存储在栈中，将会影响程序运行的性能；引用数据类型在栈中存储了指针，该指针指向堆中该实体的起始地址。当解释器寻找引用值时，会首先检索其在栈中的地址，取得地址后从堆中获得实体
 
     栈内存（连续的存储空间，类似数据结构中的栈）：主要用来存放数值、字符、内存地址等小数据
+    
     堆内存（散列的存储空间，类似数据结构中的链表）：存放可以动态变化的大数据
+### 内置对象
+    Object 是 JavaScript 中所有对象的父对象
+    数据封装类对象：Object、Array、Boolean、Number、String 
+    其他对象：Function、Arguments、Math、Date、RegExp、Error
+
+ window对象是顶层对象，指浏览器打开的窗口。
+ document对象是Documentd对象（HTML 文档对象）的一个只读引用，window对象的一个属性。
+
+### 区分数组对象方法 
+
+>
+    Object.prototype.toString.call([]) // "[object Array]"
+    Object.prototype.toString.call({}) // "[object Object]"
+
+>
+    ([] instanceof Array) // true
+    ({} instanceof Array) // false
+
+    ([].constructor) // ƒ Array() { [native code] }
+    ({}.constructor) // ƒ Object() { [native code] }
+
+## <a name="undefined与null定义、区别">undefined与null定义、区别</a>
+>
+
+    null和undefined只有文字形式，没有构造形式
+
+    undefined:语义：不存在该数据；声明了变量，但未赋值或对象属性不存在
+    null:语义：存在该数据，但未赋值； 表无值、无对象
+
+    只有被定义才有可能为 null，未定义时为 undefined。
+
+    null 用于对象 , undefined 用于变量，属性和方法。
+
+    null表示准备用来保存对象，还没有真正保存对象的值。从逻辑角度看，null值表示一个空对象指针，意思是你定义了它,但它没有分配内存空间。
+
+    null的类型是object，即 typeof null 返回object
+
+    null == undefined //true
+    null === undefined //false
+
+* null
+1. 用来初始化一个变量，这个变量可能被赋值为一个对象。
+2. 用来和一个已经初始化的变量比较，这个变量可以是也可以不是一个对象。
+3. 当函数的参数期望是对象时，被用作参数传入。
+4. 当函数的返回值期望是对象时，被用作返回值传出。
+5. 作为对象原型链的终点
+
+
+* undefined 
+1. 变量被声明了，但没有赋值时，就等于undefined。
+2. 调用函数时，应该提供的参数没有提供，该参数等于undefined。
+3. 对象没有赋值的属性，该属性的值为undefined。
+4. 函数没有返回值时，默认返回undefined。
+
+
+
+
+如果我们想测试对象是否存在，在对象还没定义时将会抛出一个错误。
+要先使用 typeof 来检测对象是否已定义：if (typeof myObj !== "undefined" && myObj !== null) 
 
 ## <a name="json jsonp">json jsonp</a>
 
@@ -179,61 +266,11 @@ JSONP则是一种跨域数据交互协议。
 是 json 的一种"使用模式"，是种跨域数据交互协议，可以让网页从别的域名（网站）那获取资料，即跨域读取数据
 
 
-### 内置对象
-    Object 是 JavaScript 中所有对象的父对象
-    数据封装类对象：Object、Array、Boolean、Number、String 
-    其他对象：Function、Arguments、Math、Date、RegExp、Error
-
- window对象是顶层对象，指浏览器打开的窗口。
- document对象是Documentd对象（HTML 文档对象）的一个只读引用，window对象的一个属性。
-
-### 区分数组对象方法 
-
->
-    Object.prototype.toString.call([]) // "[object Array]"
-    Object.prototype.toString.call({}) // "[object Object]"
-
->
-    ([] instanceof Array) // true
-    ({} instanceof Array) // false
-
-    ([].constructor) // ƒ Array() { [native code] }
-    ({}.constructor) // ƒ Object() { [native code] }
-
-
-## <a name="undefined与null定义、区别">undefined与null定义、区别</a>
->
-
-    null和undefined只有文字形式，没有构造形式
-
-    undefined:语义：不存在该数据；声明了变量，但未赋值或对象属性不存在
-    null:语义：存在该数据，但未赋值； 表无值、无对象
-
-    只有被定义才有可能为 null，未定义时为 undefined。
-
-    null 用于对象 , undefined 用于变量，属性和方法。
-
-    null表示准备用来保存对象，还没有真正保存对象的值。从逻辑角度看，null值表示一个空对象指针，意思是你定义了它,但它没有分配内存空间。
-
-    null的类型是object，即 typeof null 返回object
-
-    null == undefined //true
-    null === undefined //false
-
-* undefined 
-1. 变量被声明了，但没有赋值时，就等于undefined。
-2. 调用函数时，应该提供的参数没有提供，该参数等于undefined。
-3. 对象没有赋值的属性，该属性的值为undefined。
-4. 函数没有返回值时，默认返回undefined。
-
-
-如果我们想测试对象是否存在，在对象还没定义时将会抛出一个错误。
-要先使用 typeof 来检测对象是否已定义：if (typeof myObj !== "undefined" && myObj !== null) 
 
 ## <a name="BOM 浏览器对象模型">BOM 浏览器对象模型</a>
 >
     BOM 是 Browser Object Model 的缩写，即浏览器对象模型。
-    当一个浏览器页面初始化时，会在内存创建一个全局的对象，用以描述当前窗口的属性和状态，这个全局对象被称为浏览器对象模型，即BOM。
+    当一个浏览器页面初始化时，会在内存创建一个全局的对象，用以描述当前窗口的属性和状态，这个全局对象全局对象被称为浏览器对象模型，即BOM。
     BOM的核心对象就是window，window 对象也是BOM的顶级对象，其中包含了浏览器的 6个核心模块：
 
 1. document - 即文档对象，渲染引擎在解析HTML代码时，会为每一个元素生成对应的DOM对象，由于元素之间有层级关系，因此整个HTML代码解析完以后，会生成一个由不同节点组成的树形结构，俗称DOM树，document 用于描述DOM树的状态和属性，并提供了很多操作DOM的API。
@@ -270,7 +307,7 @@ JSONP则是一种跨域数据交互协议。
 DOM事件流：捕获阶段 -> 目标阶段 -> 冒泡阶段
 DOM事件捕获流程:window > document > documentElement(html标签) > body > ...> 目标对象
 
-　事件捕获：当某个元素触发某个事件（如onclick），顶层对象document就会发出一个事件流，随着DOM树的节点向目标元素节点流去，直到到达事件真正发生的目标元素。在这个过程中，事件相应的监听函数是不会被触发的。
+　事件捕获：当某个元素触发某个事件（如onclick），顶层对象document就会发出一个事件流，随着DOM树的节点向目标元素节点流去，直到到达事件真正发生的目标元素。在这个过程中，事件相应的监听函数是不会被触发的。window => document => html => body => ... => 目标元素
 
 　事件目标：当到达目标元素之后，执行目标元素该事件相应的处理函数。如果没有绑定监听函数，那就不执行。
 
@@ -292,11 +329,22 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
     * addEventListener("eventType","handler","true|false")    //eventType注意不要加‘on’前缀，handler：執行函数
     * removeEventListener("eventType","handler","true!false")//事件类型、需要执行的函数、是否捕获，
 
-3. IE事件模型：
+    addEventListener（'click', func)
+
+3. IE事件模型：不支持事件捕获 . (IE11以下)
 >
     IE不把该对象传入事件处理函数,由于在任意时刻只会存在一个事件,所以IE把它作为全局对象window的一个属性.
-    attachEvent( "eventType","handler")
-    detachEvent("eventType","handler" )
+    attachEvent( "onclick",func) 
+    detachEvent("onclick",func)
+
+#### 自定义事件：
+>
+    // new Event()定义事件；dispatchEvent()触发事件
+    var look = new Event('look', {"bubbles":true, "cancelable":false});
+    document.addEventListener('look', function(){
+        console.log('lootEvent_document 触发');
+    });
+    document.dispatchEvent(look);
 
 #### w3c事件与IE事件区别
 事件流
@@ -362,6 +410,20 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
     同一个名称标识a，即有变量声明var a，又有函数声明function a() {}，不管二者声明的顺序，函数声明会覆盖变量声明，也就是说，此时a的值是声明的函数function a() {}。注意：如果在变量声明的同时初始化a，或是之后对a进行赋值，此时a的值为变量的值。因为变量、函数声明提升，赋值在其之后才运行； var a; a = 1; function a() { return true; } console.log(a);
 
 
+函数，形参，变量同名时优先级：函数形参>函数声明>变量变量
+>
+
+    var foo = {n:1};
+    (function (foo) {
+        var foo;
+        console.log(foo.n);//1 --形参
+        foo.n=3; // --改变形参的n赋值
+        var foo = {n:2};//重新声明定义foo 
+        console.log(foo.n);// 2
+    })(foo); //存入全局的foo变量 作为 形参
+    console.log(foo.n); //3
+    var num1 = 1;  
+
 ## <a name="自执行函数">自执行函数</a>
 定义:
 >
@@ -380,12 +442,90 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
 
 ## <a name="new创建一个对象">new创建一个对象过程</a>
 >
-    创建一个空对象，并且 this 变量引用该对象，同时还继承了该函数的原型。 
-    属性和方法被加入到 this 引用的对象中。
-    新创建的对象由 this 所引用，并且最后隐式的返回 this 。
+    创建一个空对象，并将这个空对象的 __proto__，指向构造函数的原型对象 [prototype] ，使其继承构造函数原型上的属性。
+    改变构造函数内部 this 指针为这个空对象(如果有传参，需要将参数也导入构造函数)
+    执行构造函数中的代码，使其具有构造函数 this 指针的属性。
 
-    function Person(){}
-    var p = new Person()
+new 操作返回的实例对象具有两个特征：
+>
+    具有构造函数中定义的 this 指针的属性和方法
+    具有构造函数原型上的属性和方法
+
+function Person(){}
+
+var p = new Person()
+
+## <a name="对象属性">对象属性configurable enumerable writable</a>
+configurable
+>
+    能否使用delete、能否需改属性特性、或能否修改访问器属性、，false为不可重新定义，默认值为true 
+    简单的说 ，设置这个为false之后，就不能删除这个属性或修改这个属性（属性值不影响），这个属性就是这个对象固有的，如果删除，则不成功
+
+    var obj = Object.create({},{
+        "a":{value :1,configurable :false,enumerable :true,writable:true},
+    });
+
+    delete obj.a// 删除失败，普通模式没有提示或错误，严格模式会有TypeError
+    obj.a = 2;
+    console.log(obj.a);//正常使用，输出结果为 2
+
+
+enumerable
+>    
+    可枚举性 
+    对象属性是否可通过for-in循环，flase为不可循环，默认值为true 
+    简单的说，当你想用 for-in 遍历这个对象的时候，正常会输出每一个属性，但当你设置false时，这个属性就不会被for-in 遍历读到
+
+    var obj = {
+        a: 1,
+        b: 2,
+        c: 3
+    };
+    obj = Object.create(obj, {
+        "a": {
+            value: 1,
+            configurable: false,
+            enumerable: false,
+            writable: false
+        }
+    });
+
+    for(var i in obj) {
+        console.log(i); //输出b，c 不会输出a，a已经设置不被枚举
+    }
+
+writable
+>
+    对象属性是否可修改,flase为不可修改，默认值为true 
+    设置不可修改后，可以理解为常量，不能对属性值进行修改
+
+    var obj = Object.create({},{
+        "a":{value :1,configurable :false,enumerable :true,writable:false},
+    });
+    obj.a = 2;//普通模式不会抛异常，严格模式会抛出TypeError
+    console.log(obj.a);//输出1 ，不可被修改
+
+## <a name="创建对象的几种方式">创建对象的几种方式</a>
+
+对象字面量：
+  p = {name:'jack'}
+
+new Object()
+  p = new Object({name:'jack'})
+
+Object.create:
+>
+    Object.create 允许你创建一个对象，只要该对象上的属性查找失败，它就可以查询另一个对象以查看该另一个对象是否具有该属性。
+    p = Object.create({name:'jack'})
+    p = Object.create({},{name:{value:'jack'})
+
+
+构造函数：
+>
+
+    function P(name){this.name = name}
+    p = new P('jack')
+
 
 ## <a name="异步编程有哪几种方法">异步编程有哪几种方法</a>
 "同步模式"：后一个任务等待前一个任务结束，然后再执行，程序的执行顺序与任务的排列顺序是一致的、同步的；
@@ -404,9 +544,11 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
     　　}
     执行代码就变成下面这样：f1(f2);
  
-优点是简单、容易理解和部署
+优点：简单、容易理解和部署
 
-缺点是不利于代码的阅读和维护，各个部分之间高度耦合（Coupling），流程会很混乱，而且每个任务只能指定一个回调函数。
+
+缺点：
+回调地狱，不能用 try catch 捕获错误，不能 return；
 
 
 2. 事件监听
@@ -422,7 +564,7 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
 
 3. Promises对象
 >
-
+    Promise 实现了链式调用，也就是说每次 then 后返回的都是一个全新 Promise，如果我们在 then 中 return ，return 的结果会被 Promise.resolve() 包装。
     fn1(1).then(fn2).then(fn2).then(function(){
     });
 
@@ -432,14 +574,32 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
 
     * 一旦状态改变，就不再变化，任何时候都可以得到这个结果。
 
-每一个异步任务返回一个Promise对象，该对象有一个then方法，允许指定回调函数
+  每一个异步任务返回一个Promise对象，该对象有一个then方法，允许指定回调函数
 
 4. async await
+
  async function asyncFuns() {
     await fn1()
     await fn2()
     await fn3()
   }
+
+  优点是：代码清晰，不用像 Promise 写一大堆 then 链，处理了回调地狱的问题
+
+  缺点：await 将异步代码改造成同步代码，如果多个异步操作没有依赖性而使用 await 会导致性能上的降低。
+
+>
+    let a = 0
+    let b = async () => { 
+      a = a + await 10
+      console.log('2', a) // -> '2' 10
+    }
+    b()
+    a++
+    console.log('1', a) // -> '1' 1
+
+    首先函数 b 先执行，在执行到 await 10 之前变量 a 还是 0，因为 await 内部实现了 generator ，generator会保留堆栈中东西，所以这时候a = 0被保存了下来；
+    因为 await 是异步操作，后来的表达式不返回 Promise 的话，就会包装成 Promise.reslove(返回值)，然后会去执行函数外的同步代码；
 
 5. 发布/订阅(观察者模式)
 
@@ -479,7 +639,7 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
         if(target.tagName.toLowerCase() =='li'){
           alert(event.target.innerHTML);
         }
-      }, false);
+      });
     };
 
 > 
@@ -515,37 +675,85 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
 2. 避免全局变量的污染
 3. 私有成员的存在
 
+>
+    for (var i = 0; i < 5; i++) {
+      setTimeout(function() {
+          console.log(new Date, i);
+      }, 1000);
+    }
+    console.log(new Date, i);
+   立即输出5
+   大约一秒后输出5个5
+
+## <a name="内存泄漏">内存泄漏</a>
+内存泄漏:是指一块被分配的内存在使用完毕后未释放，直到浏览器进程结束。
+指任何对象在您不再拥有或需要它之后仍然存在。浏览器中采用自动垃圾回收方法管理内存，但由于浏览器垃圾回收方法有bug，因此会产生内存泄漏。
+
+1. 意外的全局变量引起的内存泄漏（变量未声明，通过this创建,）
+    >
+        function foo(arg) {
+          bar = "this is a hidden global variable";
+        }
+2. 闭包引起的内存泄漏
+    >
+        var a = 1 
+        var b = function(){ 
+          return function (){return 1+a}
+        }
+3. 没有清理的DOM元素引用
+4. 被遗忘的定时器或者回调
+    >
+        setInterval(function() {
+            var node = document.getElementById('Node');
+            if(node) {
+                // 处理 node 和 someResource
+                node.innerHTML = JSON.stringify(someResource));
+            }
+        }, 1000);
+5. 子元素存在引用引起的内存泄露
+6. console.log :  在传递给 console.log的对象是不能被垃圾回收 ，因为在代码运行之后需要在开发工具能查看对象信息。所以最好不要在生产环境中 console.log任何对象。
+
+
+如何避免内存泄漏
+>
+    减少不必要的全局变量，使用严格模式避免意外创建全局变量。
+    在你使用完数据后，及时解除引用(闭包中的变量，dom引用，定时器清除)。
+    组织好你的逻辑，避免死循环等造成浏览器卡顿，崩溃的问题。
+
 ## <a name="原型、原型链、原型继承">原型、原型链、原型继承</a>
 
 原型(prototype)：
 >
-    函数本身就是个包含方法与属性的对象，每个对象都有个内部属性[[prototype]]属性,称为原型。可通过原型为对象扩展属性，实现继承
+    函数本身就是个包含方法与属性的对象，每个对象都有个__proto__属性,称为原型。可通过原型为对象扩展属性，实现继承
 
 原型链：
 >
     当我们访问一个对象的属性时，如果这个对象内部不存在这个属性，那么他就会去prototype里找这个属性，这个prototype又会有自己的prototype，直至undefined（Object的Prototype就是undefined）从而形成了所谓的“原型链”。
 
-_proto_,prototype区别：
+__proto__,prototype区别：
 >
-    js里所有的对象都有proto属性(对象，函数)，可称为隐式原型，指向构造该对象的构造函数的原型。
+    js里所有的对象都有__proto__属性(对象，函数)，可称为隐式原型，指向构造该对象的构造函数的原型。
 
-    只有函数function才具有prototype属性。这个属性是一个指针，指向一个对象，这个对象的用途就是包含所有实例共享的属性和方法（我们把这个对象叫做原型对象）。
+    只有函数function才具有prototype(显示原型)属性。这个属性是一个指针，指向一个对象，这个对象的用途就是包含所有实例共享的属性和方法（我们把这个对象叫做原型对象）。
+
     原型对象也有一个属性，叫做constructor，这个属性包含了一个指针，指回原构造函数。
 
 >
+    function P(){}
+    var p = new P()
 
-    实例的 __proto__ 属性（原型）等于其构造函数的 prototype 属性。
-    Object.proto === Function.prototype
-    Function.prototype.proto === Object.prototype
-    Object.prototype.proto === null
-
-    function P (){};
-    let p = new P();
-    p.__proto__ == P.prototype // true
+    // 实例的 __proto__ 属性（原型）等于其构造函数的 prototype 属性。
+    p.__proto__ === P.prototype // true
     p instanceof P // true
+    
+    Object.__proto__ === Function.prototype //true
+    Function.prototype.__proto__ === Object.prototype //true
+    Object.prototype.__proto__ === null //true
+    
 
 构造函数不需要显示的返回值。使用new来创建对象(调用构造函数)时，如果return的是非对象(数字、字符串、布尔类型等)会忽而略返回值;如果return的是对象，则返回该对象(注：若return null也会忽略返回值）。
 
+![prototype](/img/prototype0.png)
 ![prototype](/img/prototype.png)
 
 * 原型继承：
@@ -554,19 +762,206 @@ _proto_,prototype区别：
 
 
 #### 如何实现继承？
-https://blog.csdn.net/hhthwx/article/details/78095944
-https://blog.csdn.net/caijixin/article/details/78295676
-1. 构造继承
-2. 原型链继承
-3. 组合继承：构造继承和原型链组合
-4. 原型式继承
-5. 原型式继承
-6. 寄生组合式继承
+[详情](details/inherit.md)
 
-## <a name="typeof instanceof">typeof instanceof</a>
+## <a name="设计模式">设计模式</a>
+https://segmentfault.com/a/1190000014436817
+
+
+#### 工厂模式 -- Factory
+* 核心:
+    1.return一个对象
+    2.创建不同的引用类型
+* 例子:    
+    function People () {
+      let person = {
+        name: '人',
+        walk: function () {console.log('walk')}
+      }
+      return person // 返回一个对象
+    }
+    let p = People() // 工厂生产对象
+
+* 说明：
+    1.在函数中定义对象,并定义对象的各种属性，,虽然属性可以为方法，但是建议将属性为方法的属性定义到函数之外，这样可以避免重复创建该方法
+    2.引用该对象的时候，这里使用的是 var x = Parent()而不是 var x = new Parent();因为后者会可能出现很多问题（前者也成为工厂经典方式,后者称之为混合工厂方式），不推荐使用new的方式使用该对象
+    3.在函数的最后返回该对象
+    4.不推荐
+
+
+#### 构造函数模式 -- Constructor
+* 核心：
+    1.将属性绑定到this上
+    2.将方法绑定到prototype上
+    3.用new 创建实例
+* 例:
+    function People() {
+      this.name = '人'
+      this.getName=function(){
+        return this.name
+      }
+    }
+    People.prototype.walk = function () {
+      console.log('walk')
+    }
+    let p = new People()
+    console.log(p.getName())  
+* 说明：
+  1.与工厂方式相比，使用构造函数方式创建对象，无需再函数内部重建创建对象，而使用this指代，并而函数无需明确return
+  2.同工厂模式一样，虽然属性的值可以为方法，但建议将该方法定义在函数之外
+  3.不推荐
+
+#### 原型模式
+* 例：
+    function Parent(){};  
+    Parent.prototype.name="john";  
+    Parent.prototype.age="30";  
+    Parent.prototype.lev=lev;  
+    var p=new Parent();  
+ * 说明：
+    1.函数中不对属性进行定义
+    2.利用prototype属性对属性进行定义
+    3.同样的，不推荐使用这样方式创建对象
+
+#### 混合模式 —— Mixin (原型模式+构造函数模式)
+* 核心
+    1.在JS中，一般我们实现继承的过程就是混合模式
+    2.其概念就是提供能够被一个或者一组子类简单继承功能的类
+* 例子
+    function People(name, age) {
+      this.name = name
+      this.age = age
+    }
+
+    People.prototype.sayName = function () {
+      console.log(this.name)
+    }
+
+    function Student(name, age, score) {
+      People.call(this, name, age) 
+      this.score = score
+    }
+
+    //Student.prototype = new People()
+    // 这样写 实例化时构造函数会执行2次，（其中改变this指向时执行了1次）
+
+    //优化：只执行1次，但改变了实例的constructor，即new Student().constuctor --> People；由此无法判断实例的构造函数(实例由谁直接实例化的)
+     Student.prototype = People.prototype
+
+    //手动改变constructor指向
+     Student.prototype.constructor = Student 
+
+
+* 说明：
+    1.该模式是指混合搭配使用构造函数方式和原型方式
+    2.将所有属性不是方法的属性定义在函数中（构造函数方式）
+    将所有属性值为方法的属性利用prototype在函数之外定义（原型方式）
+
+
+#### 单例模式 —— Singleton
+* 核心
+    1.产生一个类的唯一实例
+    2.好处就是节约内存
+
+* 案例
+    function createPeople() {
+      let name
+      return function (userName) {
+          return name || (name = userName)
+      }
+    }
+
+    let single = createPeople()
+    console.log(single('人')) // '人'
+    // 不管再传递任何值，也只会返回 '人'
+    console.log(single('马')) // '马'
+
+
+#### 模块模式 —— Module
+* 核心
+    在js中，常常使用闭包的形式来实现
+
+* 案例
+    let Person = (function () {
+      let name = '小明'
+      function sayName() {
+        console.log(name)
+      }
+
+      return {
+        name: name,
+        sayName: sayName
+      }
+    })()
+
+
+#### 发布订阅模式 —— Publish/Subscribe
+* 核心
+    比如我【订阅者】现在订阅了一个公众号，公众号【发布者】向我发布消息
+
+* 案例
+    实现一个jQuery的发布订阅案例
+
+    // 订阅者
+    $('div').on('click',function () {})
+
+    // 发布者
+    $('header').on('click',function () {
+        $('div').trigger('click')
+    })
+
+* 代码：
+    let Event = (function () {
+      let events = {}
+      function on(evt, handler) {
+        // 实现监听效果
+        // 使用'或'是为了可以对同一个事件多次进行回调
+        events[evt] = events[evt] || []
+        events[evt].push({
+            handler
+        })
+      }
+
+      function fire(evt, args) {
+        if (!events[evt]) {
+          // 如果未监听任何事件，直接中断
+          throw evt + '事件未监听'
+          return
+        }
+        events[evt].map((item)=>{
+           // 遍历，实现对同一个事件的多次回调
+          item.handler(args)
+        })
+      }
+
+      function off(evt) {
+        delete events[evt]
+      }
+
+      return {
+        on, // 订阅者
+        fire, // 发布者
+        off // 取消订阅
+      }
+    })()
+
+    var number = 1;
+    Event.on('click', function (data) {
+      console.log(data + number++ + '次');
+    });
+    // Event.off('click'); //  取消绑定
+    Event.on('click', function (data) {
+      console.log(data + number++ + '次');
+    });
+    Event.fire('click', 'click 事件绑定');
+
+
+
+## <a name="typeof instanceof">typeof instanceof in</a>
 typeof 
 >
-    在 JavaScript 中，判断一个变量的类型尝尝会用 typeof 运算符，在使用 typeof 运算符时采用引用类型存储值会出现一个问题，无论引用的是什么类型的对象，它都返回 “object”。
+    typeof 能够正确的判断基本数据类型，但是除了 null, typeof null输出的是对象
+    在使用 typeof 运算符时采用引用类型存储值会出现一个问题，无论引用的是什么类型的对象，它都返回 “object”。
 
 | typeof | |
 :-:| :-:|
@@ -582,20 +977,50 @@ typeof
 
 instanceof 
 >
-    运算符用来测试一个对象在其原型链中是否存在一个构造函数的 prototype 属性。
+    instanceof 是通过原型链判断的，判断实例对象在其原型链中是否存在一个构造函数的 prototype 属性。A instanceof B, 在A的原型链中层层查找，是否有原型等于 B.__proto__，如果一直找到A的原型链的顶端(null;即 Object.prototype.__proto__),仍然不等于B.prototype，那么返回false，否则返回true.
+
     语法：object instanceof constructor
     参数：object（要检测的对象.）constructor（某个构造函数）
     描述：instanceof 运算符用来检测 constructor.prototype 是否存在于参数 object 的原型链上。
 
-## <a name="作用域、作用域链、执行环境、上下文">作用域、作用域链、执行环境、上下文</a>
+>
+    function P(){}
+    p = new P()
+    console.log(p instanceof P) //true    
+
+in 
+>
+    操作符会检查属性是否存在对象及其 [[Prototype]] 原型链中。检查的是某个属性名是否存在
+    var obj = {a:1}
+    Object.prototype.b = 2
+    'a' in obj // true
+    'b' in obj // true
+
+
+    对于数组来说，4 in [2, 4, 6] 结果返回 false，因为 [2, 4, 6] 这个数组中包含的属性名是0，1，2 ，没有4。
+
+
+    hasOwnProperty()
+>
+    只会检查属性是否存在对象中，不会向上检查其原型链。
+    var obj = {a:1}
+    Object.prototype.b = 2
+    obj.hasOwnProperty('a') // true
+    obj.hasOwnProperty('b') // false
+
+    所有普通对象都可以通过 Object.prototype 的委托来访问 hasOwnProperty(...)，但是对于一些特殊对象（ Object.create(null) 创建）没有连接到 Object.prototype，这种情况必须使用 Object.prototype.hasOwnProperty.call(obj, "a")，显示绑定到 obj 上。
+
+## <a name="作用域、作用域链、执行上下文">作用域、作用域链、执行上下文(执行环境)</a>
 #### 作用域：
 作用域就是变量和函数的可访问范围，控制着变量和函数的可见性与生命周期，
 
 作用域分类：
-1. 全局作用域
-2. 函数作用域
-3. eval作用域
-4. 块级作用域。
+>
+    全局作用域:
+    局部作用域:
+      函数作用域
+      块级作用域
+      eval作用域
 
 #### 作用域链：
 当需要从局部函数查找某一属性或方法时，如果当前作用域没有找到，就会上溯到上层作用域查找，直至全局函数，这种组织形式就是作用域链。
@@ -604,30 +1029,159 @@ JavaScript中的函数采用静态作用域，也称词法作用域。当在执�
 
 注意：作用域链的顶端是全局作用域，作用域链在函数定义时就已经创建了。
 
-#### 上下文：执行上下文就是当前代码的执行环境 / 作用域
-在相同作用域下的This值
-JS的执行上下文可以理解为当前代码的执行环境，在执行JS程序时，每遇到一段JS可执行代码，都会创建一个可执行上下文。JS当中可执行代码分为三种：全局代码、函数代码、eval代码。所以一段JS程序必定会产生多个执行上下文，而JavaScript引擎则是以堆栈的形式来对其进行管理，也就是常说的函数调用栈。栈底是全局上下文，栈顶则是当前正在执行的上下文.执行上下文在函数调用栈中的顺序为:自底向上
+#### 执行上下文（Execution Context）：
+[详情](https://segmentfault.com/a/1190000018550118?utm_medium=hao.caibaojian.com&utm_source=hao.caibaojian.com&share_user=1030000000178452)
 
-* 特性：
-1. 单线程
-2. 同步执行
-3. 只有一个全局上下文
-4. 可有无数个函数上下文
-5. 每个函数调用都会创建一个新的执行上下文，哪怕是递归调用
+[详情](https://github.com/ZengLingYong/Blog/issues/1)
 
-#### 执行环境：
-定义了变量和函数有权访问的其他数据，决定了他们的各自行为。
-每个函数都有自己的执行环境，当代码在一个环境中执行时，会创建变量对象的作用域链。
-执行环境(Execution context)指的是作用域而不是上下文。每个函数都会创建他自身的context
+执行上下文可以理解为当前代码被解析和执行时所在环境，
+在执行JS程序时，每遇到一段JS可执行代码，都会创建一个可执行上下文。
 
-执行环境有两个阶段：创建和执行阶段
-* 创建阶段（函数刚被调用但未执行的时候）
-创建变量对象
-创建作用域链
-设置上下文值
+分类：
+>
+    全局代码、
+    函数代码、
+    eval代码
 
-* 执行阶段：
-执行环境的第二个阶段就是代码执行阶段，进行其他赋值操作并且代码最终被执行。
+    所以一段JS程序必定会产生多个执行上下文，而JavaScript引擎则是以堆栈的形式来对其进行管理，也就是常说的函数调用栈。栈底是全局上下文，栈顶则是当前正在执行的上下文.执行上下文在函数调用栈中的顺序为:自底向上
+
+特性：
+>
+    单线程
+    同步执行
+    只有一个全局上下文
+    可有无数个函数上下文
+    每个函数调用都会创建一个新的执行上下文，哪怕是递归调用
+
+
+生命周期:
+
+ 创建阶段（函数刚被调用但未执行的时候）:
+>
+
+    创建变量对象
+    创建作用域链
+    确定this指向
+        this的值是在执行的时候才能确认，定义的时候不能确认.因为this是执行上下文环境的一部分，而执行上下文需要在代码执行之前确定，而不是定义的时候
+
+执行阶段：
+>
+
+    进行其他赋值操作并且代码最终被执行
+
+
+
+## <a name="this">this理解</a>
+https://juejin.im/post/5bd5509851882543e82f5564
+
+http://www.cnblogs.com/pssp/p/5216085.html?tdsourcetag=s_pctim_aiomsg
+
+https://juejin.im/post/5c049e6de51d45471745eb98
+
+[5种this绑定全面解析](https://github.com/yygmind/blog/issues/20)
+
+#### this绑定
+![this](img/this.png)
+
+* this的绑定规则总共有下面5种
+
+  1. 默认绑定（严格/非严格模式）
+  2. 隐式绑定
+  3. 显式绑定
+  4. new绑定
+  5. 箭头函数绑定
+
+this优先级：
+new绑定 > 显示绑定 > 隐式绑定
+>
+
+    对于普通函数，this始终指向全局对象window；严格模式下为undefined (默认绑定)
+
+    对于构造函数，this则指向新创建的对象；(new绑定)
+
+    对于对象方法，this指向调用该方法的对象（隐式绑定）//当函数是否在某个上下文对象中调用，函数的this被隐式绑定到该对象: obj.func()
+
+    在对象方法内部再次定义一个方法，该方法的this关键字又会重新指向全局对象(隐式丢失): var a = obj.func; a();
+
+    通过call、apply和 bind 等方法来改变函数的 this 指向(显式绑定).其中，call 和 apply 主动执行函数，bind一般在事件回调中使用，call和apply的区别只是参数的传递方式不同：func.call(obj, arg1,arg2);func.apply(obj, [arg1,arg2]) ；
+    如果把 null 或者 undefined 作为 this 的绑定对象传入 call、apply 或者 bind, 这些值在调用时会被忽略，为默认绑定。
+
+    本质上，this 均指向触发函数运行时的那个对象。而在函数运行时，this 的值是不能被改变的。
+    如果函数返回值是一个对象，那么this指向的就是那个返回的对象，如果返回值不是一个对象那么this还是指向函数的实例。
+    常规函数的this 始终指向最后调用它的对象
+
+    箭头函数的this，总是指向定义时所在的对象，而不是运行时所在的对象。
+      箭头函数this的作用域继承自执行上下文，自身不绑定 this，因此 this 的值将在调用堆栈中查找
+
+    this 指针存在于函数中，用以标识函数运行时所处的上下文。
+
+1. 如果一个函数中有this，这个函数未被上一级的对象所调用，那么this指向的就是window，(在js的严格模式中this指向的不是window，
+2. 如果一个函数中有this，这个函数有被上一级的对象所调用，那么this指向的就是上一级的对象。
+3. 如果一个函数中有this，这个函数中包含多个对象，尽管这个函数是被最外层的对象所调用，this指向的也只是它上一级的对象
+
+
+
+#### 箭头函数的this
+[深入之重新认识箭头函数的this](https://github.com/yygmind/blog/issues/21)
+
+[箭头函数与普通函数区别](https://mp.weixin.qq.com/s?__biz=MzA5NzkwNDk3MQ==&mid=2650589501&idx=1&sn=9b88f96265ce3fe5ebd9df9e11dba42d&chksm=8891d919bfe6500f8d128d9ac230911117bbb0021430f2385b0a769909fe643d415da0d9bb16&scene=0&xtrack=1#rd)
+
+箭头函数没有prototype(原型)，所以箭头函数本身没有this;
+
+箭头函数没有constructor,所以不能用new调用箭头函数；
+
+箭头函数没有 this/super/arguments/new.target 的绑定，这些值继承自外层第一个普通函数；
+>
+    function bar() {
+      a = () => {
+        console.log(this, 'this指向定义的时候外层第一个普通函数'); //
+      }; // 在bar中定义 this继承于bar函数的this指向
+    }
+
+箭头函数不绑定this,箭头函数中的this相当于普通变量。
+
+箭头函数的this寻值行为与普通变量相同，在作用域中逐级寻找。
+
+箭头函数的this无法通过bind，call，apply来直接修改。(可间接改变：修改被继承的普通函数的this指向)
+
+改变作用域中this的指向可以改变箭头函数的this
+
+ 箭头函数外层没有普通函数，严格模式和非严格模式下它的this都会指向window(全局对象)
+
+
+
+
+>
+    var name = "window";
+    var obj = {
+      name: 'netease',
+      print1: () => {
+        console.log(this.name);
+      },
+      print2: function () {
+        return ()=>{
+            console.log(this.name);
+        }
+      }
+    }
+    obj.print1();// window
+    obj.print2()();// netease 注意是返回闭包函数
+
+    如果不用function（function有自己的函数作用域）将其包裹起来，那么默认绑定的父级作用域就是window。
+
+    用function包裹的目的就是将箭头函数绑定到当前的对象上。 匿名函数的作用域是当前这个对象，所以之后箭头函数会自动绑定到此函数所在作用域的this，即obj 。
+
+
+## <a name="apply call bind">apply call bind</a>
+https://github.com/yygmind/blog/issues/22
+>
+
+    都是用来改变函数的this对象的指向的；
+    第一个参数都是this要指向的对象，也就是想指定的上下文；
+    都可以利用后续参数传参；
+    apply、call则是立即调用；bind是返回对应函数，便于稍后调用；
+      foo.apply(obj,[arg1,arg2]),foo.call(obj,arg1,arg2)
+
 
 
 ## <a name="公有、私有、静态、特权方法与属性">公有、私有、静态、特权方法与属性</a>
@@ -682,117 +1236,79 @@ JS的执行上下文可以理解为当前代码的执行环境，在执行JS程�
 
 
 
-## <a name="this">this理解</a>
-https://juejin.im/post/5bd5509851882543e82f5564
-
-http://www.cnblogs.com/pssp/p/5216085.html?tdsourcetag=s_pctim_aiomsg
-
-https://juejin.im/post/5c049e6de51d45471745eb98
-* this
-> 
-    this 始终指向最后调用它的对象
-    箭头函数”的this，总是指向定义时所在的对象，而不是运行时所在的对象。
-
-    this 指针存在于函数中，用以标识函数运行时所处的上下文。
-    对于普通函数，this始终指向全局对象window；严格模式下为undefined
-    对于构造函数，this则指向新创建的对象；
-    对于对象方法，this指向调用该方法的对象，//当函数被一个对象“包含”的时候，我们称函数的this被隐式绑定到这个对象里面了
-    在对象方法内部再次定义一个方法，该方法的this关键字又会重新指向全局对象
- 
-    本质上，this 均指向触发函数运行时的那个对象。而在函数运行时，this 的值是不能被改变的。
-    如果函数返回值是一个对象，那么this指向的就是那个返回的对象，如果返回值不是一个对象那么this还是指向函数的实例。
-
-1. 如果一个函数中有this，这个函数未被上一级的对象所调用，那么this指向的就是window，(在js的严格模式中this指向的不是window，
-2. 如果一个函数中有this，这个函数有被上一级的对象所调用，那么this指向的就是上一级的对象。
-3. 如果一个函数中有this，这个函数中包含多个对象，尽管这个函数是被最外层的对象所调用，this指向的也只是它上一级的对象
-
-可通过call、apply和 bind 等方法来改变函数的 this 指向，其中，call 和 apply 主动执行函数，bind一般在事件回调中使用，而 call 和 apply的区别只是参数的传递方式不同。
-
-
-* 箭头函数的this指向
-    箭头函数没有 this/super/arguments/new.target 的绑定，这些值是由外围最近一层非箭头函数决定。
-
-1. 箭头函数不绑定this,箭头函数中的this相当于普通变量。
-2. 箭头函数的this寻值行为与普通变量相同，在作用域中逐级寻找。
-3. 箭头函数的this无法通过bind，call，apply来直接修改。
-4. 改变作用域中this的指向可以改变箭头函数的this
-5. 可通过改变封包环境，来改变箭头函数this的指向。
-
->
-    var name = "window";
-    var obj = {
-      name: 'netease',
-      print1: () => {
-        console.log(this.name);
-      },
-      print2: function () {
-        return ()=>{
-            console.log(this.name);
-        }
-      }
-    }
-    obj.print1();// window
-    obj.print2()();// netease 注意是返回闭包函数
-
-    如果不用function（function有自己的函数作用域）将其包裹起来，那么默认绑定的父级作用域就是window。
-
-    用function包裹的目的就是将箭头函数绑定到当前的对象上。 匿名函数的作用域是当前这个对象，所以之后箭头函数会自动绑定到此函数所在作用域的this，即obj 。
-
-
-## <a name="apply call bind">apply call bind</a>
->
-
-    都是用来改变函数的this对象的指向的；
-    第一个参数都是this要指向的对象，也就是想指定的上下文；
-    都可以利用后续参数传参；
-    apply、call则是立即调用；bind是返回对应函数，便于稍后调用；
-
-this优先级：
-new绑定 > 显示绑定 > 隐式绑定
-
 ## <a name="深，浅拷贝">深，浅拷贝</a>
 
 * 浅拷贝： 浅拷贝只复制指向某个对象的指针，即复制对象地址
 >
-    Object.assign(a, b) 是一种可以对非嵌套对象进行深拷贝的方法,如果对象中出现嵌套情况,那么其对被嵌套对象的行为就成了普通的浅拷贝.
+    Object.assign(a, b, c) 第一个参数是目标对象，后面的参数都是源对象
+    是一种可以对非嵌套对象进行深拷贝的方法,如果对象中出现嵌套情况,那么其对被嵌套对象的行为就成了普通的浅拷贝.
+
+    b = {...a,...b} //扩展运算符
+
+    b = a.slice(0)  //数组一层深拷贝
+    b = a.concat([])//数组一层深拷贝
 
 * 深拷贝：开辟新的栈
-    b=a.slice(0)  //数组一层深拷贝
-    b=a.concat([])//数组一层深拷贝
 1. 
 >
     JSON.parse(JSON.stringify(obj));
-    只能正确处理的对象只有 Number, String, Boolean, Array, 扁平对象 即那些能够被 json 直接表示的  数据结构。当遇到层级较深，且序列化对象不完全符合JSON格式时会出现问题，像function没办法转成JSON。
-2. 
->    
-    function deepClone(objCloned, obj) {
-      var obj = obj || {};
-      for (var key in objCloned) {
-        if (typeof objCloned[key] === 'object') {
-          obj[key] = (objCloned[key].constructor === Array) ? [] : {};
-          deepClone(objCloned[key], obj[key]);
-        } else {
-          obj[key] = objCloned[key];
+    只能正确处理的对象只有 Number, String, Boolean, Array，扁平对象 即那些能够被json直接表示的数据结构。
+    会忽略 undefined、会忽略 symbol、NaN会转化为null。
+    不能处理循环引用的对象,报错。
+    不能正确处理new Date()。(转换结果不正确)
+    不能处理正则。(直接解析为空对象{})
+    不能序列化函数。
+
+    循环引用情况：
+    let obj = {
+        a: 1,
+        b: {
+          c: 2,
         }
+    }
+    obj.a = obj.b;
+    obj.b.c = obj.a;
+
+    let b = JSON.parse(JSON.stringify(obj));
+    //Uncaught TypeError:Converting circular structure to JSON
+
+    序列化函数：通过操作JSON.parse,JSON.stringify的第二个参数
+    let obj = {
+        a: 1,
+        func:function(){return this.a}
+    }
+
+    let b = JSON.parse(JSON.stringify(obj, function(key, val) {
+      if (typeof val === 'function') {
+        return val + '';
       }
-      return obj;
-    }    
-3. 
+      return val;
+    }),function(key, val){
+      if(val.indexOf && val.indexOf('function')>-1){
+        return eval("(function(){return "+ val +" })()")
+      }
+      return val;
+    });
+    console.log(obj,b,b.func())    
+
+2. 
+ 
 >
     function deepClone(objCloned) {
       let obj = Array.isArray(objCloned) ? [] : {};
-      if(objCloned && typeof objCloned === "object") {
+      //if(objCloned && typeof objCloned === "object") {
         for(key in objCloned) {
-          if(objCloned.hasOwnProperty(key)) {
+          //判断是否为自身属性
+          //if(objCloned.hasOwnProperty(key)) {
             // 判断 obj 子元素是否为对象，如果是，递归复制
             if(objCloned[key] && typeof objCloned[key] === "object") {
               obj[key] = deepClone(objCloned[key]);
             } else { // 否则，简单复制
               obj[key] = objCloned[key];
             }
-          }
+          //}
         }
-      }
+      //}
       return obj;
     }
 
@@ -821,12 +1337,16 @@ new绑定 > 显示绑定 > 隐式绑定
 defer 属性 
 >
     <script src="file.js" defer></script>
-    让js并行加载, defer是在HTML解析完之后才会执行，defer脚本按加载的顺序执行
+    让js并行加载, 
+    在页面渲染完后才会执行，
+    脚本按加载的顺序执行
 
 async 属性 
 >
     <script src="file.js" async></script>
-    让js并行加载, async是在其加载完成后立即执行，async脚本执行顺序和加载顺序无关。它们将在onload 事件之前完成。对于支持async属性的浏览器，动态插入的外链脚本, 相当于默认具有async=true；
+    让js并行加载, 
+    加载完成后立即执行，
+    脚本执行顺序和加载顺序无关。它们将在onload 事件之前完成。对于支持async属性的浏览器，动态插入的外链脚本, 相当于默认具有async=true；
 
 可以同时使用 async 和 defer。
 
@@ -959,29 +1479,6 @@ async 属性
 如何减少JavaScript中的垃圾回收
 
 
-## <a name="内存泄漏">内存泄漏</a>
-内存泄漏:是指一块被分配的内存在使用完毕后未释放，直到浏览器进程结束。
-指任何对象在您不再拥有或需要它之后仍然存在。浏览器中采用自动垃圾回收方法管理内存，但由于浏览器垃圾回收方法有bug，因此会产生内存泄漏。
-
-1. 意外的全局变量引起的内存泄漏（变量未声明，通过this创建,）
-2. 闭包引起的内存泄漏
-    >
-        类似这种
-        var a = 1 
-        var b = function(){ 
-          return function (){return 1+a}
-        }
-3. 没有清理的DOM元素引用
-4. 被遗忘的定时器或者回调
-5. 子元素存在引用引起的内存泄露
-6. console.log :  在传递给 console.log的对象是不能被垃圾回收 ，因为在代码运行之后需要在开发工具能查看对象信息。所以最好不要在生产环境中 console.log任何对象。
-
-
-如何避免内存泄漏
->
-    减少不必要的全局变量，使用严格模式避免意外创建全局变量。
-    在你使用完数据后，及时解除引用(闭包中的变量，dom引用，定时器清除)。
-    组织好你的逻辑，避免死循环等造成浏览器卡顿，崩溃的问题。
 
 ## <a name="use strict">"use strict"? 用处？</a>
 
@@ -1044,37 +1541,46 @@ https://zhuanlan.zhihu.com/p/55064276
 
 
 ## <a name="跨域">跨域</a>
-[详情看这里](crossOrigin)
-
-同源：
-协议相同
-域名相同
-端口相同
-跨域通信：js进行DOM操作、通信时如果目标与当前窗口不满足同源条件，浏览器为了安全会阻止跨域操作。
-
-
- “同源政策”越来越严格。目前，如果非同源，共有三种行为受到限制。
-1. Cookie、LocalStorage 和 IndexedDB 无法读取。
-2. DOM 无法获得。
-3. AJAX 请求不能发送。、
-
-
-跨域方法
-1. 通过jsonp跨域
-2. document.domain + iframe跨域
-3. location.hash + iframe
-4. window.name + iframe跨域
-5. postMessage跨域
-6. 跨域资源共享（CORS）
-7. nginx代理跨域
-8. nodejs中间件代理跨域
-9. WebSocket协议跨域
-
+[详情](crossOrigin)
 
 ## <a name="常见的web攻击">常见的web攻击</a>
-1. XSS（Cross-Site Scripting，跨站脚本攻击）：指通过存在安全漏洞的Web网站注册用户的浏览器内运行非法的HTML标签或者JavaScript进行的一种攻击。
-2. SQL注入攻击
-3. CSRF（Cross-Site Request Forgeries，跨站点请求伪造）：指攻击者通过设置好的陷阱，强制对已完成的认证用户进行非预期的个人信息或设定信息等某些状态更新。
+[详情](https://mp.weixin.qq.com/s?__biz=MzA3NTUzNjk1OA==&mid=2651562103&idx=1&sn=0b52850e0ca268918928629bdb80499f&chksm=84900f26b3e78630bfd3cc5c5d8f02de909b8a27f366c3855a8adf4e0c660819d88689a39f39&scene=0#rd)
+
+#### XSS（Cross-Site Scripting，跨站脚本攻击）
+概念
+>
+    通过在目标网站上注入恶意脚本并运行，获取用户的敏感信息如 Cookie、SessionID 等，影响网站与用户数据安全。
+
+防御
+>
+    1、编码
+    对用户输入的数据进行HTML Entity编码
+
+    2、过滤
+    移除用户上传的DOM属性，如onerror等
+    移除用户上传的Style节点、Script节点、Iframe节点等
+
+    3、校正
+    避免直接对HTML Entity解码
+    使用DOM Parse转换，校正不配对的DOM标签
+
+#### CSRF（Cross-Site Request Forgeries，跨站点请求伪造）
+概念
+>
+    指攻击者通过设置好的陷阱，强制对已完成的认证用户进行非预期的个人信息或设定信息等某些状态更新。
+![CSFR](img/CSFR.png)
+
+防御
+>
+    token验证
+    Referer验证（来源验证）
+    隐藏令牌
+
+#### SQL注入攻击
+概念
+>
+    SQL 注入就是通过给 web 应用接口传入一些特殊字符，达到欺骗服务器执行恶意的 SQL 命令。
+    
 
 
 ## <a name="URI、URL、URN">URI、URL、URN</a>
@@ -1111,12 +1617,16 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
 
 函数名称一样，但是输入输出不一样。或者说，允许某个函数有各种不同输入，根据不同的输入，调用不同的函数，然后返回不同的结果。
 
-## <a name="节流、防抖">节流、防抖</a>
-* 同：
+## <a name="防抖、节流">防抖、节流</a>
+
+[详情点击](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/5)
+
+同：
+>
     都可以通过使用 setTimeout 实现。
     目的都是，降低回调执行频率。节省计算资源。
 
-* 异
+异
 >
     函数防抖，在一段连续操作结束后，处理回调，利用 clearTimeout 和 setTimeout 实现。
 
@@ -1124,20 +1634,30 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
 
     函数防抖是一定时间连续触发，只在最后执行一次，而函数节流侧重于一段时间内只执行一次。
 
-* 防抖: 触发高频事件后 n 秒内函数只会执行一次，如果 n 秒内高频事件再次被触发，则重新计算时间；
+#### 防抖: 触发高频事件后 n 秒内函数只会执行一次，如果 n 秒内高频事件再次被触发，则重新计算时间；
 
 调用定时器执行某个函数之前首先清除这个定时器。当函数多次被调用时, 
 每一次都会将之前的定时器清除, 即只有在执行函数的请求停止了一段时间之后才会真正执行函数。
+
+应用场景
+>
+    resize/scroll 触发统计事件
+
+    文本输入的验证（连续输入文字后发送 AJAX 请求进行验证，验证一次就好）
+
 >
     function debounce(fn, delay = 500) {
       let timeout = null; // 创建一个标记用来存放定时器的返回值
       return function () {
+        let _this = this
         clearTimeout(timeout); // 每当调用函数时清除之前的定时器
         timeout = setTimeout(() => { // 再创建一个新的 setTimeout, 这样就能保证输入字符后的 间隔内再次调用函数，就不会执行
-          fn.apply(this, arguments);
+          fn.apply(_this, arguments);//把this及event还有参数传给回调函数
         }, delay);
       };
     }
+
+    
     function sayHi() {
       console.log('防抖成功');
     }
@@ -1145,33 +1665,57 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
     ipt.addEventListener('input', debounce(sayHi)); // 防抖
 
 
+//或
+>
     function debounce(func, delay = 500, context) {
       clearTimeout(func.setTime);
       func.setTime = setTimeout(() => {
-        func.call(context); 
+        func.apply(context); 
       }, delay);
     }
 
-* 节流: 高频事件触发，但在 n 秒内只会执行一次，所以节流会稀释函数的执行频率。
+#### 节流: 高频事件触发，但在 n 秒内只会执行一次，所以节流会稀释函数的执行频率。
 
 设置一个执行函数间隔时间time, 当多次触发某个事件时便将执行函数的频率降低到time 
 >
-    function throttle(fn, delay = 500) {
-      let canRun = true; // 通过闭包保存一个标记
-      return function () {
-        if (!canRun) return; // 在函数开头判断标记是否为 true，不为 true 则 return
-        canRun = false; // 立即设置为 false
-        setTimeout(() => { // 将外部传入的函数的执行放在 setTimeout 中
-          fn.apply(this, arguments);
-          // 最后在 setTimeout 执行完毕后再把标记设置为 true(关键) 表示可以执行下一次循环了。当定时器没有执行的时候标记永远是 false，在开头被 return 掉
-          canRun = true;
-        }, delay);
-      };
+    //当触发事件的时候，我们设置一个定时器，再触发事件的时候，如果定时器存在，就不执行，直到定时器执行，然后执行函数，清空定时器，这样就可以设置下个定时器。
+    function throttle(func, delay=1000){
+      let timer = null
+      return function(){
+        let _this = this
+        if(timer) return false
+        timer = setTimeout(()=>{
+          func.apply(_this, arguments)
+          timer = null
+        }, delay)
+      }
     }
     function sayHi(e) {
       console.log(e.target.innerWidth, e.target.innerHeight);
     }
     window.addEventListener('resize', throttle(sayHi, 1000));
+
+// ：使用时间戳，当触发事件的时候，我们取出当前的时间戳，然后减去之前的时间戳(最一开始值设为 0 )，如果大于设置的时间周期，就执行函数，然后更新时间戳为当前的时间戳，如果小于，就不执行。
+    function throttle (func, delay = 500) {
+      let prevTime = 0
+      return function () {
+        let nowTime = +new Date()
+        if (nowTime-prevTime > delay) {
+          func.apply(this, arguments)
+          prevTime = nowTime
+        }
+      }
+    }
+
+#### 解析：
+>
+
+    不加apply，sayHi里面this肯定是指向window的，因为sayHi 函数定义在全局中，所以调用时里面this指向window；所以才需要加上 apply，显示绑定 this 值(input对象)到 sayH 函数里面去。
+    但是加上apply后，fn.apply(this, arguments)这段代码里面的this的指向就要分情况讨论了，而且这个this就是sayHi里面的this。
+    这里的情况其实指的就是setTimeout里面的回调函数是普通函数还是箭头函数。如果是箭头函数，则这里的this最终指向的是input对象，如果为普通函数，this则指向window。由此：回调函数开始先绑定this： let _this = this
+
+![throttle](./img/throttle.png)
+
 
 ## <a name="柯里化">柯里化</a>
 >
@@ -1184,6 +1728,8 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
   参数够了就执行，参数不够就返回一个函数，之前的参数存起来，直到够了为止。
   它与函数绑定紧密相关, 用于创建已经设置好了一个或多个参数的函数, 其具体做法时使用一个闭包返回一个函数, 当函数被调用时, 返回的函数还需要设置一些传入的参数。
   柯里化的三个作用 : 1.参数复用 2. 提前返回 3.延迟计算
+
+例  
 >  
     function curry(func) {
       var l = func.length
@@ -1207,18 +1753,147 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
     curried(1, 2)(3) // => [1, 2, 3]
     curried(1, 2, 3) // => [1, 2, 3]
 
-## <a name="前端性能优化的方法">前端性能优化的方法</a>
+## <a name="promise">promise</a>
+http://www.html-js.com/article/5890
+
+https://zhuanlan.zhihu.com/p/52714698
+
+
+## <a name="webWorker">webWorker</a>
+
+[详情](http://www.ruanyifeng.com/blog/2018/07/web-worker.html)
+
 >
-    减少http请求次数：CSS Sprites,
-    网页Gzip，CDN托管，data缓存 ，图片服务器。
-    JS、CSS源码压缩
-    前端模板 JS+数据，减少由于HTML标签导致的带宽浪费，前端用变量保存AJAX请求结果，每次操作本地变量，减少请求次数
-    用innerHTML代替DOM操作，减少DOM操作次数，优化javascript性能。
-    设置样式时使用className（或el.style.cssText +=）而不是直接操作style。
-    少用全局变量、缓存DOM节点查找的结果。
-    避免使用CSS Expression（css表达式)又称Dynamic properties(动态属性)。不使用@import
-    图片预加载，将样式表放在顶部，将脚本放在底部  
-    避免在页面的主体布局中使用table，table要等其中的内容完全下载之后才会显示出来，显示比div+css布局慢。
+    web worker就是在js单线程执行的基础上开启一个子线程，进行程序处理，而不影响主线程的执行，当子线程执行完之后再回到主线程上，在这个过程中不影响主线程的执行。
+
+    Worker 线程一旦新建成功，就会始终运行，不会被主线程上的活动（比如用户点击按钮、提交表单）打断。这样有利于随时响应主线程的通信。但是，这也造成了 Worker 比较耗费资源，不应该过度使用，而且一旦使用完毕，就应该关闭。
+
+    子线程与主线程之间提供了数据交互的接口postMessage和onmessage，来进行数据发送和接收;
+    通过error捕捉错误信息；
+    使用terminate()可结束线程;
+
+
+    Web Worker无法访问DOM节点；子线程完全受主线程控制并且不能操作dom，只有主线程可以操作dom
+    Web Worker无法访问全局变量或是全局函数；
+    Web Worker无法调用alert()或者confirm之类的函数,但可以使用 XMLHttpRequest 对象发出 AJAX 请求
+    Web Worker无法访问window、document之类的浏览器全局变量
+    但是可以访问navigator、location 
+
+API：
+
+主线程
+
+>
+    new Worker('js地址', { name : '指定 Worker 的名称' });
+    Worker.onerror：指定 error 事件的监听函数。
+    Worker.onmessage：指定 message 事件的监听函数，发送过来的数据在Event.data属性中。
+    Worker.onmessageerror：指定 messageerror 事件的监听函数。发送的数据无法序列化成字符串时，会触发这个事件。
+    Worker.postMessage()：向 Worker 线程发送消息。
+    Worker.terminate()：立即终止 Worker 线程。
+
+
+子线程：(self.可省略)
+
+    self.name： Worker 的名字。该属性只读，由构造函数指定。
+    self.onmessage：指定message事件的监听函数。
+    self.onmessageerror：指定 messageerror 事件的监听函数。发送的数据无法序列化成字符串时，会触发这个事件。
+    self.close()：关闭 Worker 线程。
+    self.postMessage()：向产生这个 Worker 线程发送消息。
+    self.importScripts()：加载 JS 脚本。
+
+
+分类：专用线程 Dedicated Worker，一个是共享线程 Shared Worker
+
+>
+    var worker = new Worker('./work.js'); //创建一个子线程
+    worker.postMessage('Hello');
+    worker.onmessage = function (e) {
+        console.log(e.data); //接收信息：Hi
+        worker.terminate(); //结束线程
+    };
+    worker.onerror = function (err) {
+      console.log(err)
+    }
+
+    //worker.js
+    onmessage = function (e) {
+      console.log(e.data); //接收的信息：Hello
+      postMessage("Hi"); //向主进程发送消息
+    }
+
+## <a name="浏览器缓存">浏览器缓存</a>
+[深入理解浏览器的缓存机制](https://mp.weixin.qq.com/s?__biz=MzA5NzkwNDk3MQ==&mid=2650589430&idx=1&sn=f8d78a5cff1ac08900942974f07a75ea&chksm=8891d8d2bfe651c425ed78b26de5a865bbb408c1a565f05fe353d26b2270cb4b706e62ab4c23&scene=0&xtrack=1#rd)
+
+[浏览器缓存看这一篇就够了](https://mp.weixin.qq.com/s?__biz=MzA3NTUzNjk1OA==&mid=2651562189&idx=1&sn=1aece422b2a6d019903b909ca75cd975&chksm=84900f9cb3e7868ac5c1c7642dd7353cb9d4069c9605f2d5accb22f4bbeeeebe992939515a9e&scene=0&xtrack=1#rd)
+
+
+## <a name="前端性能优化的方法">前端性能优化的方法</a>
+[详情](https://mp.weixin.qq.com/s?__biz=MzUzOTM0MTE4OQ==&mid=2247485489&idx=1&sn=053398c3f26f13924b27a1877fa0a2c4&chksm=fac8b0dbcdbf39cdfb4320aa76c0802ef320792a63b7bf64b4613258d15746592511726be50e&scene=0&xtrack=1#rd)
+
+
+content方面:
+>
+    减少HTTP请求：合并文件、CSS Sprites、Gzip压缩，CDN托管，data缓存
+    减少DNS查询：DNS查询完成之前浏览器不能从这个主机下载任何任何文件。方法：DNS缓存、将资源分布到恰当数量的主机名，平衡并行下载和DNS查询
+    避免重定向：多余的中间访问
+    延迟加载，预加载
+    缓存AJAX请求结果，每次操作本地变量，减少了请求次数
+    非必须组件延迟加载
+    未来所需组件预加载
+    减少DOM元素数量
+    将资源放到不同的域下：浏览器同时从一个域下载资源的数目有限，增加域可以提高并行下载量
+    减少iframe使用（frame 完全加载以后，页面才会触发 load 事件）
+    避免在页面的主体布局中使用table，table要等其中的内容完全下载之后才会显示出来，显示比div+css布局慢
+    不要404
+
+Server方面:
+>
+    使用CDN
+    添加Expires或者Cache-Control响应头
+    对组件使用Gzip压缩
+    配置ETag
+    尽早输出缓存
+    Ajax使用GET进行请求
+
+Cookie方面:
+>
+    减小cookie大小
+    引入资源的域名不要包含cookie
+
+css方面:
+>
+    将样式表放到页面顶部（<head>里）
+    避免使用CSS Expression（css表达式)又称Dynamic properties(动态属性)
+    不使用@import；使用<link>
+    不使用IE的Filter
+    值为0时无需写单位
+
+JS方面:
+>
+    将脚本放到页面底部
+    使用外部javascript和css
+    压缩javascript和css
+    删除不需要的、重复的脚本
+    少用全局变量、缓存DOM节点查找的结果
+    用innerHTML代替DOM操作，减少DOM操作次数，优化javascript性能
+    合理设计事件监听器
+    设置样式时使用className（或el.style.cssText +=）而不是直接操作style
+
+图片方面
+>
+
+    优化图片:根据实际颜色需要选择色深、压缩
+    尽可能使用css、svg 、iconfont代替图片
+    优化css Sprite
+    不要在HTML中拉伸图片
+    避免图片src为空（src属性为空，但浏览器仍然会向服务器发起一个HTTP请求）
+    保证favicon.ico小并且可缓存
+
+移动端方面：
+>
+    保持单个组件小于25k
+
+![雅虎35条军规——前端性能优化](./img/optimize1.png)
 
 ![优化](./img/optimize.jpg)
 
@@ -1273,7 +1948,7 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
 9. 服务器检查HTTP请求头是否包含缓存验证信息如果验证缓存新鲜，返回304等对应状态码
 10. 处理程序读取完整请求并准备HTTP响应，可能需要查询数据库等操作
 11. 服务器将响应报文通过TCP连接发送回浏览器
-12. 浏览器接收HTTP响应，然后根据情况选择关闭TCP连接或者保留重用，关闭TCP连接的四次握手如下：
+12. 浏览器接收HTTP响应，然后根据情况选择关闭TCP连接或者保留重用，关闭TCP连接的四次挥手如下：
     * 主动方发送Fin=1， Ack=Z， Seq= X报文
     * 被动方发送ACK=X+1， Seq=Z报文
     * 被动方发送Fin=1， ACK=X， Seq=Y报文
@@ -1320,8 +1995,25 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
 第四步和第五步是最耗时的部分，这两步合起来，就是我们通常所说的渲染。
 
 
+## <a name="浏览器渲染">浏览器渲染</a>
+![render](img/render.png)
+![render](img/render1.png)
+
+页面渲染可分为下面5个步骤：
+>
+    处理HTML来创建DOM tree；
+
+    处理CSS来创建CSSOM tree；
+
+    根据DOM跟CSSOM来合并render tree；
+
+    根据render tree来布局；
+
+    绘制render tree。
+
 ## <a name="JS执行机制">JS执行机制</a>
 https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/7
+
 #### 浏览器的渲染进程是多线程的
 
 1. GUI渲染线程
@@ -1353,33 +2045,38 @@ https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/7
     将检测到状态变更时，如果设置有回调函数，异步线程就产生状态变更事件，将这个回调再放入事件队列中。再由JavaScript引擎执行。
     看到这里，如果觉得累了，可以先休
 
-
+#### JS任务分类
 JS里的一种分类方式，就是将任务分为：同步任务和异步任务。
 
-按照这种分类方式:JS的执行机制是：
-1. 首先判断JS是同步还是异步，同步就进入主进程，异步就进入event table
-2.  异步任务在event table中注册函数，当满足触发条件后，被推入event queue
-3. 同步任务进入主线程后一直执行，直到主线程空闲时，才会去event queue中查看是否有可执行的异步任务，如果有就推入主进程中
-以上三步循环执行，这就是event loop。
+按照这种分类方式 JS的执行机制是：
+>
+    1. 首先判断JS是同步还是异步，同步就进入主进程，异步就进入event table
+    2. 异步任务在event table中注册函数，当满足触发条件后，被推入event queue
+    3. 同步任务进入主线程后一直执行，直到主线程空闲时，才会去event queue中查看是否有可执行的异步任务，如果有就推入主进程中
+    以上三步循环执行，这就是event loop。
 
 而准确的划分方式是：
-1. macro-task(宏任务)：包括整体代码script，setTimeout，setInterval
-2. micro-task(微任务)：Promise，process.nextTick
-* macrotask（宏任务），可以理解是每次执行栈执行的代码就是一个宏任务（包括每次从事件队列中获取一个事件回调并放到执行栈中执行）
-每一个task会从头到尾将这个任务执行完毕，不会执行其它
-浏览器为了能够使得JS内部task与DOM任务能够有序的执行，会在一个task执行结束后，在下一个 task 执行开始前，对页面进行重新渲染
+1. macro-task(宏任务)：script(整体代码)，setTimeout、setInterval、I/O、UI交互事件、postMessage、MessageChannel、setImmediate(Node.js 环境)
+2. micro-task(微任务)：Promise、process.nextTick、MutaionObserver
+>
 
-* microtask（微任务），可以理解是在当前 task 执行结束后立即执行的任务
-也就是说，在当前task任务后，下一个task之前，在渲染之前
-所以它的响应速度相比setTimeout（setTimeout是task）会更快，因为无需等渲染
-也就是说，在某一个macrotask执行完后，就会将在它执行期间产生的所有microtask都执行完毕（在渲染前）
+    * macrotask（宏任务），可以理解是每次执行栈执行的代码就是一个宏任务（包括每次从事件队列中获取一个事件回调并放到执行栈中执行）
+    每一个task会从头到尾将这个任务执行完毕，不会执行其它
+    浏览器为了能够使得JS内部task与DOM任务能够有序的执行，会在一个task执行结束后，在下一个 task 执行开始前，对页面进行重新渲染
+
+    * microtask（微任务），可以理解是在当前 task 执行结束后立即执行的任务
+    也就是说，在当前task任务后，下一个task之前，在渲染之前
+    所以它的响应速度相比setTimeout（setTimeout是task）会更快，因为无需等渲染
+    也就是说，在某一个macrotask执行完后，就会将在它执行期间产生的所有microtask都执行完毕（在渲染前）
 
 #### JS的执行机制是：
 >
-    执行一个宏任务，过程中如果遇到微任务，就将其放到微任务的“事件队列”里
-    当前宏任务执行完成后，会查看微任务的“事件队列”，依次执行所有微任务
+    执行一个宏任务，
+    过程中如果遇到微任务，就将其放到微任务的“事件队列”里
+    当前宏任务执行完成后，立即执行当前微任务队列中的所有微任务（依次执行）
     执行完毕，开始检查渲染，然后GUI线程接管渲染
     渲染完毕后，JS线程继续接管，开始下一个宏任务（从事件队列中获取）
+
 ![img](/img/JS的执行机制.jpg)
 
 #### 进程、线程
@@ -1392,205 +2089,28 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
     进程是能拥有资源和独立运行的最小单位
     线程是建立在进程的基础上的一次程序运行单位
 
-
-## <a name="设计模式">设计模式</a>
-https://segmentfault.com/a/1190000014436817
-
-   创建对象的几种方式？
-    对象字面量：person={firstname:"Mark",lastname:"Yun",age:25};
-    Object.create（）//o=Object.create({},{name:{value:’joo’}});
-    构造函数：p=new Object();
-
-#### 工厂模式 -- Factory
-* 核心:
-    1.return一个对象
-    2.创建不同的引用类型
-* 例子:    
-    function People () {
-      let person = {
-        name: '人',
-        walk: function () {console.log('walk')}
-      }
-      return person // 返回一个对象
+>
+    async function async1() {
+      console.log('async1 start') 
+      await async2() 
+      console.log('async1 end')
     }
-    let p = People() // 工厂生产对象
-
-* 说明：
-    1.在函数中定义对象,并定义对象的各种属性，,虽然属性可以为方法，但是建议将属性为方法的属性定义到函数之外，这样可以避免重复创建该方法
-    2.引用该对象的时候，这里使用的是 var x = Parent()而不是 var x = new Parent();因为后者会可能出现很多问题（前者也成为工厂经典方式,后者称之为混合工厂方式），不推荐使用new的方式使用该对象
-    3.在函数的最后返回该对象
-    4.不推荐
-
-
-#### 构造函数模式 -- Constructor
-* 核心：
-    1.将属性绑定到this上
-    2.将方法绑定到prototype上
-    3.用new 创建实例
-* 例:
-    function People() {
-      this.name = '人'
-      this.getName=function(){
-        return this.name
-      }
+    async function async2() {
+      console.log('async2')
     }
-    People.prototype.walk = function () {
-      console.log('walk')
-    }
-    let p = new People()
-    console.log(p.getName())  
-* 说明：
-  1.与工厂方式相比，使用构造函数方式创建对象，无需再函数内部重建创建对象，而使用this指代，并而函数无需明确return
-  2.同工厂模式一样，虽然属性的值可以为方法，但建议将该方法定义在函数之外
-  3.不推荐
+    console.log('script start') 
+    setTimeout(function () {
+      console.log('settimeout')
+    }) 
+    async1() 
+    new Promise(function (resolve) {
+      console.log('promise1')
+      resolve()
+    }).then(function () {
+      console.log('promise2')
+    }) 
+    console.log('script end')
 
-#### 原型模式
-* 例：
-    function Parent(){};  
-    Parent.prototype.name="john";  
-    Parent.prototype.age="30";  
-    Parent.prototype.lev=lev;  
-    var p=new Parent();  
- * 说明：
-    1.函数中不对属性进行定义
-    2.利用prototype属性对属性进行定义
-    3.同样的，不推荐使用这样方式创建对象
-
-#### 混合模式 —— Mixin (原型模式+构造函数模式)
-* 核心
-    1.在JS中，一般我们实现继承的过程就是混合模式
-    2.其概念就是提供能够被一个或者一组子类简单继承功能的类
-* 例子
-    function People(name, age) {
-      this.name = name
-      this.age = age
-    }
-
-    People.prototype.sayName = function () {
-      console.log(this.name)
-    }
-
-    function Student(name, age, score) {
-      People.call(this, name, age)
-      this.score = score
-    }
-
-    function create(prototypeObj) {
-      let empty = function () {}
-      empty.prototype = prototypeObj
-      return new empty()
-      // return值如下
-      // {
-      //   __proto__:prototypeObj
-      // }
-    }
-    Student.prototype = create(People.prototype)
-
-    Student.prototype.work = function () {
-      console.log('work')
-    }
-
-* 说明：
-    1.该模式是指混合搭配使用构造函数方式和原型方式
-    2.将所有属性不是方法的属性定义在函数中（构造函数方式）
-    将所有属性值为方法的属性利用prototype在函数之外定义（原型方式）
-
-#### 单例模式 —— Singleton
-* 核心
-    1.产生一个类的唯一实例
-    2.好处就是节约内存
-
-* 案例
-    function createPeople() {
-      let name
-      return function (userName) {
-          return name || (name = userName)
-      }
-    }
-
-    let single = createPeople()
-    console.log(single('人')) // '人'
-    // 不管再传递任何值，也只会返回 '人'
-    console.log(single('马')) // '马'
-
-
-#### 模块模式 —— Module
-* 核心
-    在js中，常常使用闭包的形式来实现
-
-* 案例
-    let Person = (function () {
-      let name = '小明'
-      function sayName() {
-        console.log(name)
-      }
-
-      return {
-        name: name,
-        sayName: sayName
-      }
-    })()
-
-
-#### 发布订阅模式 —— Publish/Subscribe
-* 核心
-    比如我【订阅者】现在订阅了一个公众号，公众号【发布者】向我发布消息
-
-* 案例
-    实现一个jQuery的发布订阅案例
-
-    // 订阅者
-    $('div').on('click',function () {})
-
-    // 发布者
-    $('header').on('click',function () {
-        $('div').trigger('click')
-    })
-
-* 代码：
-    let Event = (function () {
-      let events = {}
-      function on(evt, handler) {
-        // 实现监听效果
-        // 使用'或'是为了可以对同一个事件多次进行回调
-        events[evt] = events[evt] || []
-        events[evt].push({
-            handler
-        })
-      }
-
-      function fire(evt, args) {
-        if (!events[evt]) {
-          // 如果未监听任何事件，直接中断
-          throw evt + '事件未监听'
-          return
-        }
-        events[evt].map((item)=>{
-           // 遍历，实现对同一个事件的多次回调
-          item.handler(args)
-        })
-      }
-
-      function off(evt) {
-        delete events[evt]
-      }
-
-      return {
-        on, // 订阅者
-        fire, // 发布者
-        off // 取消订阅
-      }
-    })()
-
-    var number = 1;
-    Event.on('click', function (data) {
-      console.log(data + number++ + '次');
-    });
-    // Event.off('click'); //  取消绑定
-    Event.on('click', function (data) {
-      console.log(data + number++ + '次');
-    });
-    Event.fire('click', 'click 事件绑定');
 
 
 ## <a name="web安全">web安全</a>
@@ -1627,15 +2147,6 @@ CSRF(攻击跨站请求伪造)
 ![getpost](/img/getpost.png)
 >
 
-    Get 请求能缓存，Post 不能
-
-    Post 相对 Get 安全一点点，因为Get 请求都包含在 URL 里，且会被浏览器保存历史纪录，Post 不会，但是在抓包的情况下都是一样的。
-
-    Post 可以通过 request body来传输比 Get 更多的数据，Get 没有这个技术
-
-    URL有长度限制，会影响 Get 请求，但是这个长度限制是浏览器规定的，不是 RFC 规定的
-
-    Post 支持更多的编码类型且不对数据类型限制
 
 ## <a name="css和js动画的差异">css和js动画的差异</a>
 >

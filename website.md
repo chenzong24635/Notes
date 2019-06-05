@@ -8,8 +8,9 @@
 
 [掘金](https://juejin.im/timeline)
 
-[SegmentFault](https://segmentfault.com/) 、
-[stackoverflow](https://stackoverflow.com/) 技术问答
+[SegmentFault](https://segmentfault.com/) 
+
+[stackoverflow](https://stackoverflow.com/)
 
 [w3cplus-大漠](https://www.w3cplus.com/)
 

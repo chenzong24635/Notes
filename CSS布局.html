@@ -11,10 +11,10 @@
       padding-bottom: 100px;
     }
     .p20{padding: 0 20px;}
-    .m10{margin: 10px 0;}
+    .m10{margin: 10px 0;    overflow: hidden;}
     h1{text-align: center;margin-top: 50px;}
     h2{margin: 20px 0;}
-
+    div{min-height: 100px;}
 /* 两栏布局 */
 /* 1. flex*/
     .two-a{
@@ -86,7 +86,6 @@
 
 /* 2.margin */
     .twoH-b{
-      height: 50px;
       overflow: hidden;
     }
     .twoH-b1{
@@ -95,6 +94,7 @@
       background-color: red;
     }
     .twoH-b2{
+      float: left;
       margin-bottom:-9999px; 
       padding-bottom: 9999px;
       background-color: gold;
@@ -253,7 +253,18 @@
     .three1-h2{
       background-color: gold;
     } 
-
+/* 9.table */
+    .three1-i{
+      display:table;
+      width: 100%;
+    }
+    .three1-i1,
+    .three1-i3,
+    .three1-i2{
+      display:table-cell;
+      background-color: red;
+    }
+    .three1-i2{background-color: gold;}
 /* 中间定宽，两边自适应 */
 /* 1.flex */
     .three2-a{ 
@@ -276,12 +287,12 @@
       float: left;
     }
     .three2-b3{
-      /* float: right; */
+      overflow: hidden;
       background-color: red;
     }
     .three2-b2{
       float: left;
-      overflow: hidden;
+      
       width: 300px;
       background-color: gold;
     } 
@@ -374,6 +385,12 @@
           <div class="twoH-b1">1</div>
           <div class="twoH-b2">2<br>2<br></div>
       </div>
+      <div>
+          利用padding-bottom|margin-bottom正负值相抵；
+          设置父容器设置超出隐藏（overflow:hidden），这样子父容器的高度就还是它里面的列没有设定padding-bottom时的高度，
+          当它里面的任 一列高度增加了，则父容器的高度被撑到里面最高那列的高度，
+          其他比这列矮的列会用它们的padding-bottom补偿这部分高度差。
+      </div>
     </div>
 
     <div class="m10">
@@ -393,11 +410,14 @@
       <h2>1. flex</h2>
       <div class="three1-a">
           <div class='three1-a1'>1</div>
-          <div class='three1-a2'>2</div>
+          <div class='three1-a2'>
+            <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>
+          </div>
           <div class='three1-a3'>3</div>
+          
       </div>
       <div class="p20">
-        
+        &lt;=IE9不支持
       </div> 
     </div>
     <div class="m10">
@@ -405,7 +425,7 @@
       <div class="three1-b">
           <div class='three1-b1'>1</div>
           <div class='three1-b3'>3</div>
-          <div class='three1-b2'>2</div>
+          <div class='three1-b2'><p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p></div>
       </div>
       <div class="p20">
         缺点：<br>
@@ -418,7 +438,7 @@
       <h2>3. 左右两栏position:absolute，中间栏margin撑开</h2>
       <div class="three1-c">
           <div class='three1-c1'>1</div>
-          <div class='three1-c2'>2</div>
+          <div class='three1-c2'><p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p></div>
           <div class='three1-c3'>3</div>
       </div>
       <div class="p20">
@@ -429,7 +449,7 @@
       <h2>4. 三栏position:absolute，中间栏left/right:左/右宽度</h2>
       <div class="three1-d">
           <div class='three1-d1'>1</div>
-          <div class='three1-d2'>2</div>
+          <div class='three1-d2'><p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p></div>
           <div class='three1-d3'>3</div>
       </div>
       <div class="p20">
@@ -439,7 +459,7 @@
     <div class="m10">
       <h2>5. 圣杯布局</h2>
       <div class="three1-e">
-        <div class='three1-e2'>2</div>
+        <div class='three1-e2'><p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p></div>
         <div class='three1-e1'>1</div>
         <div class='three1-e3'>3</div>
       </div>
@@ -462,7 +482,7 @@
       <div class="three1-f">
         <div class='three1-f2'>
             <div class="three1-f2-box">
-                2  three1-f2-box
+              <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>
             </div>
         </div>
         <div class='three1-f1'>1</div>
@@ -485,7 +505,7 @@
       <h2>7. 三栏float:left，中间栏宽度cacl计算</h2>
       <div class="three1-g">
         <div class='three1-g1'>1</div>
-        <div class='three1-g2'>2</div>
+        <div class='three1-g2'><p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p></div>
         <div class='three1-g3'>3</div>
       </div>
       <div class="p20">
@@ -498,13 +518,23 @@
       <h2>8. grid</h2>
       <div class="three1-h">
         <div class='three1-h1'>1</div>
-        <div class='three1-h2'>2</div>
+        <div class='three1-h2'><p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p></div>
         <div class='three1-h3'>3</div>
       </div>
       <div class="p20">
         兼容性
       </div> 
     </div>
+    <section class="m10">
+      <h2>9. table</h2>
+      <div class="three1-i">
+        <div class='three1-i1'>1</div>
+        <div class='three1-i2'><p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p></div>
+        <div class='three1-i3'>3</div>
+      </div>
+      <div class="p20">
+      </div> 
+    </section>
   </div>
   <br>
   <h2>三栏布局: 中间定宽，两边自适应</h2>
@@ -513,7 +543,7 @@
       <h2>1. flex</h2>
       <div class="three2-a">
         <div class='three2-a1'>1</div>
-        <div class='three2-a2'>2</div>
+        <div class='three2-a2'><p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p></div>
         <div class='three2-a3'>3</div>
       </div>
       <div class="p20">
@@ -524,7 +554,7 @@
       <h2>2. 左边、中间左浮动，中间定宽,右边overflow:hidden</h2>
       <div class="three2-b">
         <div class='three2-b1'>1</div>
-        <div class='three2-b2'>2</div>
+        <div class='three2-b2'><p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p></div>
         <div class='three2-b3'>3</div>
       </div>
       <div class="p20">
@@ -535,7 +565,7 @@
       <h2>3. grid</h2>
       <div class="three2-c">
         <div class='three2-c1'>1</div>
-        <div class='three2-c2'>2</div>
+        <div class='three2-c2'><p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p>           <p>2</p></div>
         <div class='three2-c3'>3</div>
       </div>
       <div class="p20">

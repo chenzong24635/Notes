@@ -37,6 +37,23 @@
     jQuery对象转原生DOM对象：
     var $box = $('#box');
     var box = $box[0];
+## <a name="Jq中如何实现多库并存">Jq中如何实现多库并存</a>
+>
+    Noconfict 多库共存就是“$ ”符号的冲突。 
+
+    方法一： 利用jQuery的实用函数$.noConflict();这个函数归还$的名称控制权给另一个库，因此可以在页面上使用其他库。这时，我们可以用"jQuery "这个名称调用jQuery的功能。 $.noConflict(); 
+    jQuery('#id').hide(); 
+    .....
+    //或者给jQuery一个别名 
+    var $j=jQuery 
+    $j('#id').hide(); 
+    .....
+
+    方法二： (function($){})(jQuery) 
+
+    方法三： jQuery(function($){}) 
+    通过传递一个函数作为jQuery的参数，因此把这个函数声明为就绪函数。 我们声明$为就绪函数的参数，因为jQuery总是吧jQuery对象的引用作为第一个参数传递，所以就保证了函数的执行。
+
 ## <a name="jQuery如何扩展自定义方法">jQuery如何扩展自定义方法</a>
 >
     (jQuery.fn.myMethod=function () {

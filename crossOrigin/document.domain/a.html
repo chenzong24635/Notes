@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>-->
+  <title></title>
+  <!-- <link rel="stylesheet" href="./css/base.css" /> -->
+  <style></style>
+</head>
+<body>
+    <!-- // a.html -->
+    <p>document.domain + iframe 跨域</p>
+    <p>a.html</p>
+    <iframe src="http://b.test.com:3000/b.html" frameborder="0" onload="load()" id="frame"></iframe>
+    <script>
+      document.domain = 'test.com'
+      function load() {
+        console.log(frame.contentWindow.mes);
+      }
+    </script>
+</body>
+</html>

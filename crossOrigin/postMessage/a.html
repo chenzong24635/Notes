@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>-->
+  <title></title>
+  <!-- <link rel="stylesheet" href="./css/base.css" /> -->
+  <style></style>
+</head>
+<body>
+    <p>postMessage + iframe跨域</p>
+    <p>a.html</p>
+    <p>http://127.0.0.1:5500/postMessage/a.html</p>
+    <iframe src="http://localhost:8080/crossOrigin/postMessage/b.html" frameborder="0" id="frame" onload="load()"></iframe> 
+    <!--   //等它加载完触发一个事件  -->
+    <script>
+      function load() {
+        let frame = document.getElementById('frame')
+        frame.contentWindow.postMessage('我发个数据你看看', 'http://localhost:8080/crossOrigin/postMessage/b.html') //发送数据
+        window.onmessage = function(e) { //接受返回的数据
+          console.log('打印返回的数据：',e.data) //
+        }
+      }
+    </script>
+</body>
+</html>

@@ -2,10 +2,13 @@
 
 * <a href="#HTML">**HTML**</a>
 
+* <a href="#语义化">语义化</a>
 * <a href="#XHTML、HTML区别">XHTML、HTML区别</a>
 * <a href="#Doctype作用 标准模式、兼任模式区别">Doctype作用？标准模式、兼任模式区别</a>
 * <a href="#HTML5 为什么只需要写">HTML5 为什么只需要写 \<!DOCTYPE HTML\></a>
 * <a href="#渐进增强与优雅降级">渐进增强与优雅降级-----开发方式，设计理念</a>
+* <a href="#块级元素、行内元素、行内块级元素">块级元素、行内元素、行内块级元素</a>
+* <a href="#HTML全局属性有哪些">HTML全局属性有哪些</a>
 * <a href="#src和href的区别">src和href的区别</a>
 * <a href="#浏览器内核、私有化前缀">浏览器内核、私有化前缀</a>
 * <a href="#web存储">cookies、sessionStorage 、和 localStorage 的区别</a>
@@ -19,27 +22,56 @@
 
 # <a name="HTML">**HTML**</a>
 
-网页标题引入图标
+## <a name="语义化">语义化及好处</a>
 
-    <link rel="shortcut icon" href="favicon.ico" type="images/x-icon" />
+语义化是指通过HTML标记表示页面包含的信息，包含了HTML标签的语义化和css命名的语义化。
 
-    <link rel="icon" href="favicon.gif" type="image/gif" />
+ HTML标签的语义化是指：通过使用包含语义的标签（如h1-h6）恰当地表示文档结构 ；
+
+ css命名的语义化是指：为html标签添加有意义的class，id补充未表达的语义，如Microformat通过添加符合规则的class描述信息
+
+好处:
+>
+    去掉样式后页面呈现清晰的结构
+    搜索引擎更好地理解页面，有利于收录
+    便团队项目的可持续运作及维护
+    盲人使用读屏器更好地阅读
 
 ## <a name="XHTML、HTML区别">XHTML、HTML区别</a>
-* HTML是一种基于标准通用标记语言（SGML）的应用，是一种非常灵活的置标语言，
-  而XHTML则基于可扩展标记语言（XML），XML是SGML的一个子集。
+HTML是一种基于标准通用标记语言（SGML）的应用，是一种非常灵活的置标语言，
+
+而XHTML则基于可扩展标记语言（XML），XML是SGML的一个子集。
+
 * XHTML 与 HTML4 几乎是相同的
 * XHTML是更为严格纯净的HTML版
 * XHTML是作为一种xml应用被重新定义的HTML
 * XHTML文档必须拥有根元素、元素必须被关闭、元素必须被正确地嵌套、标签应该使用小写
 
 ## <a name="Doctype作用 标准模式、混杂模式区别">Doctype作用？标准模式、混杂模式区别</a>
-* documnet type(文档类型的简写),位于HTML文档的第一行，告知浏览器用什么规范解析
+
+documnet type(文档类型的简写),位于HTML文档的第一行，告知浏览器用什么规范解析
 DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
-* 在标准模式中，浏览器根据规范呈现页面；在混杂模式中，页面以一种比较宽松的向后兼容的方式显示。
-  >判断方法：document.compatMode 
+
+在标准模式中，浏览器根据规范呈现页面；在混杂模式中，页面以一种比较宽松的向后兼容的方式显示。
+>
+    判断方法：document.compatMode 
     1. 标准模式：CSS1Compat
     2. 混杂模式：BackCompat	
+
+常见dotype：
+>
+    HTML 5: <!DOCTYPE html>
+
+    HTML4.01 strict：不允许使用表现性、废弃元素（如font）以及frameset。
+    声明：<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+    HTML4.01 Transitional:允许使用表现性、废弃元素（如font），不允许使用frameset。
+    声明：<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+    HTML4.01 Frameset:允许表现性元素，废气元素以及frameset。
+    声明：<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+
+    
 
 ## <a name="HTML5 为什么只需要写">HTML5 为什么只需要写 \<!DOCTYPE HTML\></a>
 * HTML5 不基于 SGML，因此不需要对DTD进行引用，但是需要doctype来规范浏览器的行为（让浏览器按照它们应该的方式来运行）
@@ -55,13 +87,55 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
     渐进增强则从基础的的版本开始，并不断扩充，以适应未来环境的需要。
     优雅降级意味着往回看；而渐进增强则意味着朝前看，同时保证其根基处于安全地带
 
+## <a name="块级元素、行内元素、行内块级元素">块级元素、行内元素、行内块级元素</a>
+
+块级元素：display:block
+>
+    会独占一行,默认情况下,其宽度自动填满其父元素宽度.设置了宽度,仍然是独占一行.
+    块级元素可以设置width,height,margin和padding属性.
+
+    div,p,ol,ul,li,h1-h6,dl,dt,dd,
+    main,header,footer,section,aside,nav,...
+
+行内元素：display:inline.
+>
+    不会独占一行,相邻的行内元素会排列在同一行里,直到一行排不下,才会换行,其宽度随元素的内容而变化.　
+    行内元素设置width,height属性无效，它的长度高度主要根据内容决定.
+    行 内元素的margin和padding属性,水平方向的padding-left,padding-right,margin-left,margin- right都产生边距效果,但竖直方向的padding-top,padding-bottom,margin-top,margin-bottom无效
+
+    a,span,img,select,input
+
+行内块级元素：display:inline-block
+>
+    让行内元素拥有（除了独占一行）的特性
+
+空元素：
+没有内容的 HTML 元素被称为空元素。
+空元素是在开始标签中关闭的
+>
+    <br> <hr> <img> <input> <link> <meta>
+
+## <a name="HTML全局属性有哪些">HTML全局属性有哪些</a>
+
+    id: 元素id，文档内唯一
+    class:为元素设置类标识
+    data-*: 为元素增加自定义属性
+    draggable: 设置元素是否可拖拽
+    lang: 元素内容的的语言
+    style: 行内css样式
+    title: 元素相关的建议信息
+
 ## <a name="src和href的区别">src和href的区别</a>
-* href指向网络资源所在的位置, 用于在当前文档和引用资源间确定联系, 加载css。表达的是超链接。比如a元素、link元素。
+href（Hypertext Reference）
+>
+    指向网络资源所在的位置, 用于在当前文档和引用资源间确定联系, 加载css。表达的是超链接。比如a元素、link元素。
 
-* src是指向外部资源的位置，指向的内容将会嵌入到文档中当前标签所在位置；在请求src资源时会将其指向的资源下载并应用到文档内，例如js脚本，img图片和frame等元素。
-当浏览器解析到该元素时，会暂停其他资源的下载和处理，直到将该资源加载、编译、执行完毕，图片和框架等元素也如此，类似于将所指向资源嵌入当前标签内。这也是为什么将js脚本放在底部而不是头部。
+src（source）
+>
+    是指向外部资源的位置，指向的内容将会嵌入到文档中当前标签所在位置；在请求src资源时会将其指向的资源下载并应用到文档内，例如js脚本，img图片和frame等元素。
+    当浏览器解析到该元素时，会暂停其他资源的下载和处理，直到将该资源加载、编译、执行完毕，图片和框架等元素也如此，类似于将所指向资源嵌入当前标签内。这也是为什么将js脚本放在底部而不是头部。
 
-总而言之，我们在可替换的元素上使用src，然而把href用于在涉及的文档和外部资源之间建立一个引用关系。
+总而言之，src用于替换当前元素；href用于在当前文档和引用资源之间建立联系。
 
 ## <a name="浏览器内核、私有化前缀">浏览器内核、私有化前缀</a>
 #### 主要分为：
@@ -93,37 +167,44 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
     -o-：opera
 
 ## <a name="web存储">cookies、sessionStorage 、和 localStorage 的区别</a>
-### cookie
-cookie是存储在浏览器端，并且随浏览器的请求一起发送到服务器端的，它有一定的过期时间，到了过期时间自动会消失。sessionStorage和localeStorage也是存储在客户端的，同属于web Storage，比cookie的存储大小要大有8m，cookie只有4kb，localeStorage是持久化的存储在客户端，如果用户不手动清除的话，不会自动消失，会一直存在，sessionStorage也是存储在客户端，但是它的存活时间是在一个回话期间，只要浏览器的回话关闭了就会自动消失。
+https://zhuanlan.zhihu.com/p/61704951
 
-客户端可以设置cookie 的下列选项：expires、domain、path、secure（有条件：只有在https协议的网页中，客户端设置secure类型的 cookie 才能成功），但无法设置HttpOnly选项。
-读取：document.cookie
+
 
 ### 区别
-cookie是网站为了标示用户身份而储存在用户本地终端（Client Side）上的数据（通常经过加密）。 cookie数据始终在同源的http请求中携带（即使不需要），记会在浏览器和服务器间来回传递。
-sessionStorage和localStorage不会自动把数据发给服务器，仅在本地保存。
+>
+
+    cookie是网站为了标示用户身份而储存在用户本地终端（Client Side）上的数据（通常经过加密）。cookie数据始终在同源的http请求中携带（即使不需要），记会在浏览器和服务器间来回传递。
+
+    sessionStorage和localStorage不会自动把数据发给服务器，仅在本地保存。
 
 * 存储大小：
+>
   	cookie数据大小不能超过4k。
   	sessionStorage，localStorage  达到5M甚至更多
+
 * 有期时间：
+>
     localStorage   浏览器关闭后数据不丢失除非主动删除数据；多窗口数据共享
     sessionStorage 数据在当前浏览器窗口关闭后自动删除。同窗口数据共享
     cookie         设置的cookie过期时间之前一直有效，即使窗口或浏览器关闭
+
 * 作用域:
+>
     sessionStorage不在不同的浏览器窗口中共享，即使是同一个页面；
     localStorage 在所有同源窗口中都是共享的；cookie也是在所有同源窗口中都是共享的。
 
 * Storage方法
-setItem(key, value) 保存数据
-getItem(key) 读取数据
-removeItem(key) 删除键值为key的存储内容
-clear() 清空所有数据
-key(n) 以索引值来获取键值key的数据
-length 存储空间积累项的数目
+>
+    setItem(key, value) 保存数据
+    getItem(key) 读取数据
+    removeItem(key) 删除键值为key的存储内容
+    clear() 清空所有数据
+    key(n) 以索引值来获取键值key的数据
+    length 存储空间积累项的数目
 
-保存数据：sessionStorage.setItem('key','value');/sessionStroge.key='value';
-读取数据：sessionStorage.getItem('key'); /sessionStroge.key(n)
+    保存数据：sessionStorage.setItem('key','value');/sessionStroge.key='value';
+    读取数据：sessionStorage.getItem('key'); /sessionStroge.key(n)
 
 * cookie方法
 >
@@ -132,7 +213,6 @@ length 存储空间积累项的数目
         let date = new Date() // 获取当前时间
         let expiresDays = time // 将date设置为n天以后的时间
         date.setTime(date.getTime() + expiresDays * 24 * 3600 * 1000) // 格式化为cookie识别的时间
-        // document.cookie = key + '=' + val + ';expires=' + date.toGMTString();  //设置cookie
         document.cookie = key + '=' + val + ';expires=' + date.toGMTString() + '; path=/' // 设置cookie
       },
       get: function (key) { // 获取cookie方法
@@ -149,24 +229,73 @@ length 存储空间积累项的数目
         }
         return tips
       },
-      remove: function (key) { // 删除cookie方法
+      delete: function (key) { // 删除cookie方法
         let date = new Date() // 获取当前时间
         date.setTime(date.getTime() - 10000) // 将date设置为过去的时间
         document.cookie = key + '=v; expires =' + date.toGMTString() // 设置cookie
       }
     }
 
-### cookie有什么作用？
-* cookie可以解决http的无状态的问题，与服务器进行交互，作为http规范存在。它具有极高的简便性、可扩展性和可用性，也可以通过加密和SSL技术来提高其安全性。因此推荐使用cookie作为标识而不是身份验证的工具。
+### cookie
+https://segmentfault.com/a/1190000011295587
+
+>
+    cookie是存储在浏览器端，并且随浏览器的请求一起发送到服务器端的，它有一定的过期时间，到了过期时间自动会消失。
+
+
+    浏览器默认情况下无法主动跨域向后端发送cookie，需要在前端请求时加入配置项{withCredentials:true}。
+    jquery:  $.ajax({url:'myurl',method:'GET', xhrFields:{withCredentials:true},success:function(){}});
+
+    axios:axios.defaults.withCredentials = true
+
+    还需后端配置：在response header里面添加配置项
+    "Access-Control-Allow-Credentials", "true"
+    "Access-Control-Allow-Origin", "允许跨域的域名" //或设为 "*" 
+
+* Cookie 隔离？（或者说：请求资源的时候不要让它带cookie怎么做）
+
+  如果静态文件都放在主域名下，那静态文件请求的时候都带有的cookie的数据提交给server的，非常浪费流量，
+  所以不如隔离开。
+
+  因为cookie有域的限制，因此不能跨域提交请求，故使用非主要域名的时候，请求头中就不会带有cookie数据，
+  这样可以降低请求头的大小，降低请求时间，从而达到降低整体请求延时的目的。
+
+  同时这种方式不会将cookie传入Web Server，也减少了Web Server对cookie的处理分析环节，
+  提高了webserver的http请求的解析速度
+
+* cookie方法、属性
+>
+    客户端可以设置cookie 的下列选项：expires、domain、path、secure（有条件：只有在https协议的网页中，客户端设置secure类型的 cookie 才能成功），但无法设置HttpOnly选项。
+    读取：document.cookie
+>
+    
+    document.cookie = 'key=value;max-age=10000;domain=eoitek.com;path=/;secure'
+
+    max-age：cookie的过期时间,是一个相对时间，单位是秒；优先级高于expires。
+    expires：值为日期对象的toUTCString()格式，即Thu, 21 Sep 2018 06:10:38 GMT，指cookie过期的绝对时间。
+    domain： 设置cookie存放的域，如果没有设置则为当前主机的域。
+    path：指cookie存储的目录，默认为当前文件的存储目录。
+    secure：加入此配置项，则指定该cookie只能通过https协议进行传输。
+
+    
+
+* cookie作用
+>
+    cookie可以解决http的无状态的问题，与服务器进行交互，作为http规范存在。它具有极高的简便性、可扩展性和可用性，也可以通过加密和SSL技术来提高其安全性。因此推荐使用cookie作为标识而不是身份验证的工具。
+
 * cookie的缺点
+
 1. 大小和数目受限制。浏览器对一个域cookie的条目数有上限要求，且每个cookie的大小不得超过4kb。
 2. 存在安全性问题，易被人拦截。
 3. 需要指定域，不可以跨域
 4. 浪费带宽，因为我每次请求一个新的页面，cookie都会被自动发送过去。
 5. 有的移动端浏览器不支持cookie或浏览器禁用cookie
 6. 有些状态不可能保存在客户端。例如，为了防止重复提交表单，我们需要在服务器端保存一个计数器。如果我们把这个计数器保存在客户端，那么它起不到任何作用。
+
 * 如何删除cookie
-在服务器端，以java为例，可以将同名cookie的maxAge属性置0；在客户端，可以将expires属性设置为过去的一个时间。即：document.cookie = ‘name=’+cookie_name+’;expires=’+ passed_date
+>
+    在客户端，可以将expires属性设置为过去的一个时间。即：document.cookie = ‘name=’+cookie_name+’;expires=’+ passed_date
+    或设置该cookie的max-age=0
 
 
 ## <a name="HTML5的离线储存">HTML5的离线储存</a>
@@ -372,3 +501,18 @@ length 存储空间积累项的数目
 css在加载过程中不会影响到DOM树的生成，但是会影响到Render树的生成，进而影响到layout，所以一般来说，style的link标签需要尽量放在head里面，因为在解析DOM树的时候是自上而下的，而css样式又是通过异步加载的，这样的话，解析DOM树下的body节点和加载css样式能尽可能的并行，加快Render树的生成的速度。
 
 js脚本应该放在底部，原因在于js线程与GUI渲染线程是互斥的关系，如果js放在首部，当下载执行js的时候，会影响渲染行程绘制页面，js的作用主要是处理交互，而交互必须得先让页面呈现才能进行，所以为了保证用户体验，尽量让页面先绘制出来。
+
+
+## <base>标签
+
+<base href="www.aaa.com" target="_blank"/>
+
+<base> 标签为页面上的所有链接(img、a、script等)规定默认地址或默认目标。
+<base>设置的target属性 ，a链接也会继承
+
+
+## 网页标题引入图标
+
+    <link rel="shortcut icon" href="favicon.ico" type="images/x-icon" />
+
+    <link rel="icon" href="favicon.gif" type="image/gif" />

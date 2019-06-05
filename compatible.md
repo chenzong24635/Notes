@@ -20,66 +20,66 @@
 ## <a name="浏览器高度">浏览器高度</a>
 >
 
-    正文全文宽/高 ： document.body.scrollWidth / scrollHeight;
-    滚动条具 头部 / 左侧 距离： document.body.scrollTop / scrollLeft
-    正文部分上： window.screenTop;
-    正文部分左： window.screenLeft;
+    页面宽/高(包括滚动的部分) ： document.documentElement.scrollWidth / scrollHeight | 
+    $(document).height()
 
-    屏幕分辨率的高： window.screen.height;
-    屏幕分辨率的宽： window.screen.width;
-    屏幕可用工作区高度： window.screen.availHeight;
+    正文部分上： window.screenTop
+    正文部分左： window.screenLeft
 
+    屏幕分辨率的宽： window.screen.width
+    屏幕分辨率的高： window.screen.height
+    屏幕可用工作区高度： window.screen.availHeight
+
+
+    offsetWidth/offsetHeight：包含content + padding + border，效果与e.getBoundingClientRect()相同
+    clientWidth/clientHeight：只包含content + padding，不包含滚动条
+    scrollWidth/scrollHeight：包含content + padding + 包含滚动条
+
+![a](img/element-size.png)
 
 ## <a name="屏幕可视区域的宽高">屏幕可视区域的宽高</a>
 
-ie9及其以上的版本   window.innerWidth/Height  
+标准模式(有DTD)(CSS1Compat)： document.documentElement.clientWidth / clientHeight
 
-标准模式（有DTD）（CSS1Compat）
->
-    document.documentElement.clientWidth / clientHeight
+ie9及其以上的版本   window.innerWidth / innerHeight  
 
-混装模式 （没有DTD）（BackCompat）
->
-    document.body.clientWidth / clientHeight
+
+混杂模式 (没有DTD)(BackCompat)： document.body.clientWidth / clientHeight
+
+jquery方法: $(window).width() / height()
 
 兼容写法：
 >
-    clientWidth = window.innerWidth || document.documentElement.clientWidth || document.documentElement.clientWidth
+    clientWidth = 
+      document.documentElement.clientWidth || 
+      window.innerWidth || 
+      document.documentElement.clientWidth
 
-    clientHeight = window.innerHeight || document.documentElement.clientHeight || document.documentElement.clientHeight
+    clientHeight =
+     document.documentElement.clientHeight || 
+     window.innerHeight || 
+     document.body.clientHeight
+     
 
-封装函数：
- >
-    function client(){
-      if(window.innerHeight !== undefined){
-        return {
-          "width": window.innerWidth,
-          "height": window.innerHeight
-        }
-      }else if(document.compatMode === "CSS1Compat"){
-        return {
-          "width": document.documentElement.clientWidth,
-          "height": document.documentElement.clientHeight
-        }
-      }else{
-        return {
-          "width": document.body.clientWidth,
-          "height": document.body.clientHeight
-        }
-      }
-    }
+## <a name="滚动条滚动的距离">滚动条滚动的距离</a>
 
-## <a name="（滚动条位置）被卷去的左侧和头部：">（滚动条位置）被卷去的左侧和头部：</a>
+标准模式 (有DTD)(CSS1Compat): window.pageYOffset
 
-没有DTD约束 : document.body.scrollTop
-已经声明DTD : document.documentElement.scrollTop
-safair : window.pageYOffset
- 
+IE低版本(ie<=8)的标准模式 (有DTD)(CSS1Compat): document.documentElement.scrollTop
+
+混杂模式 (没有DTD)(BackCompat): document.body.scrollTop
+
+jquery方法：$(document).scrollTop(); 
+
 兼容写法：
 >
-    scrollTop = document.documentElement.scrollTop || window.pageYOffset ||  document.body.scrollTop  
+    scrollTop = 
+      window.pageYOffset || 
+      document.documentElement.scrollTop ||  document.body.scrollTop  
 
-    scrollLeft = document.documentElement.scrollLeft ||  window.pageXOffset ||  document.body.scrollLeft 
+    scrollLeft = 
+      window.pageXOffset ||  
+      document.documentElement.scrollLeft ||  document.body.scrollLeft 
 
 封装函数：
 >
@@ -104,15 +104,28 @@ safair : window.pageYOffset
     }
 
 
-## <a name="鼠标在页面的位置">鼠标在页面的位置 = 被卷去的部分+可视区域部分</a>
+## <a name="鼠标在页面的位置">鼠标在页面的位置 = 被卷去的部分+鼠标在当前屏幕的坐标</a>
 >
 
     event = event || window.event;
-    //scroll()上面封装的scroll函数
-    var pagey = event.pageY || scroll().top + event.clientY;
-    var pagex = event.pageX || scroll().left + event.clientX;
-            
+    // pageX、Y 鼠标在页面的位置
+    //scrollLeft、scrollTop为上面 滚动条滚动的距离的兼容写法
+    //event.clientX、Y 鼠标点击的位置相对于文档的左边距，上边距
+    var mouseX = event.pageX || (scrollLeft + event.clientX)
+    var mouseY = event.pageY || (scrollTop + event.clientY)
 
+>
+    document.querySelector('html').addEventListener('click',function(e){
+      scrollTop = window.pageYOffset || document.documentElement.scrollTop ||  document.body.scrollTop  
+      scrollLeft = window.pageXOffset || document.documentElement.scrollLeft ||  document.body.scrollLeft 
+      var event = e || window.event
+      console.log(event)
+      console.log('event.pageX,event.clientX，scrollLeft',event.pageX , event.clientX,scrollLeft)
+      console.log('event.pageY,event.clientY，scrollTop',event.pageY, event.clientY,scrollTop)
+      var pagex = event.pageX || (scrollLeft + event.clientX);
+      var pagey = event.pageY || (scrollTop + event.clientY);
+      console.log('pagex,y',pagex,pagey)
+    })
 
 ## <a name="获取节点的兼容">获取节点的兼容</a>
     firstElementChild || firstChild
@@ -122,8 +135,8 @@ safair : window.pageYOffset
 
 ## <a name="event获取目标对象">event获取目标对象</a>
 >
-    IE678  event.srcElement（事件源）
-    其他   event.target（事件源）
+    IE678  event.srcElement(事件源)
+    其他   event.target(事件源)
 
     function getTarget(e){   
       const event = e || window.event // w3c | IE
@@ -132,7 +145,7 @@ safair : window.pageYOffset
 
 ## <a name="阻止冒泡">阻止冒泡</a>
 >
-    w3c的方法是：（火狐、谷歌、IE11）event.stopPropagation()
+    w3c的方法是：(火狐、谷歌、IE11)event.stopPropagation()
     IE10以下则是使用：event.cancelBubble = true
 
     function stopPropagation(e){

@@ -30,6 +30,12 @@
       <img src="/pics/index.png" height="300" width="300" >
     </div>
     
+# 如何在github上预览html文件
+
+    直接在你github地址中的html文件前面加上http://htmlpreview.github.com/?
+
+    如：http://htmlpreview.github.io/?https://github.com/djz917/Game/blob/master/2048/index.html
+
 # git基本命令：
 * git init  --初始化git 将当前目录变为仓库
 * git clone url   --获取  git clone http://chenzong@git/仓库名.git
@@ -52,8 +58,8 @@
 >
     C:\Users\Administator目录下生成 .gitconfig配置文件。添加：
     [user]
-      name = wb-ly409739  //你的用户名
-      email = wb-ly409739@alibaba-inc.com  //你的git邮箱账号
+      name = chenzong24635  //你的用户名
+      email = chenzong24635@163.com  //你的git邮箱账号
     [credential]
         helper = stor
 

@@ -25,17 +25,20 @@
 # 目录
  <a href="#常用">**常用**</a>
 
-* <a href="#浏览器判断">浏览器判断navigator.userAgent</a>
+* <a href="#浏览器判断">浏览器、手机类型判断navigator.userAgent</a>
 * <a href="#获取当前页面url网址信息">获取当前页面url网址信息</a>
+* <a href="#判断字符串长度">判断字符串长度</a>
 * <a href="#0.1+0.2">0.1+0.2!=0.3</a>
 * <a href="#移动端点透问题">移动端点透问题(click 300ms延迟)</a>
 * <a href="#随机字符串">随机字符串</a>
 * <a href="#随机6个数字">随机6个数字</a>
+* <a href="#数字千分位">数字千分位</a>
 * <a href="#范围内随机数，包括两个数在内">范围内随机数，包括两个数在内</a>
 * <a href="#统计字符串中同一字符出现次数">统计字符串中同一字符出现次数</a>
-* <a href="#argruments对象转换成数组">argruments对象转换成数组</a>
+* <a href="#类数组转化为数组">类数组转化为数组</a>
 * <a href="#判断是否回文、实现回文">判断是否回文、实现回文</a>
 * <a href="#实现f(a)(b)与f(a,b)一样的效果">实现f(a)(b)与f(a,b)一样的效果</a>
+* <a href="无限累加的函数 add">实现一个无限累加的函数add(1)(2)(3)...</a>
 * <a href="#数组无序排列">数组无序排列</a>
 * <a href="#数组扁平化:n维数组展开成一维数组">数组扁平化:n维数组展开成一维数组</a>
 * <a href="#数组去重">数组去重</a>
@@ -50,18 +53,20 @@
 * <a href="#逗号操作符">逗号操作符</a>
 
 
-
-<a href="#题">题</a>
-
+* <a href="两位大整数相加">两位大整数相加</a>
+* <a href="一道setTimeout面试题">一道setTimeout面试题</a>
 * <a href="#map(parseInt) 原理解析">['1','2','3'].map(parseInt) 原理解析</a>
+* <a href="Array.apply(null,Array(3))与Array(3)区别">Array.apply(null,Array(3))与Array(3)区别</a>
 
 
+
+ <a href="#面试题">**面试题**</a>
 
 
 
 # <a name="常用">**常用**</a>
 
-## <a name="浏览器判断">浏览器判断navigator.userAgent</a>
+## <a name="浏览器判断">浏览器、手机类型判断navigator.userAgent</a>
 使用navigator.userAgent属性 PC端、手机端、iPad判断 ，ie、火狐、其他浏览器判断， 微信浏览器判断， Android、IOS判断
 
 * navigator为Window对象的一个属性，指向了一个包含浏览器相关信息的对象。
@@ -99,11 +104,18 @@
     }
 
 * Android、IOS
-    if(/android/i.test(navigator.userAgent)){
+    if(/android/ig.test(navigator.userAgent)){
       console.log("Android");
     } else if(/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)){
       console.log("iOS");
     }
+
+var obj = {
+    userAgent: navigator.userAgent.toLowerCase()
+    isAndroid: Boolean(navigator.userAgent.match(/android/ig)),
+    isIphone: Boolean(navigator.userAgent.match(/(iPhone|iPad|iPod|iOS)/ig)),
+    isWeixin: Boolean(navigator.userAgent.match(/MicroMessenger/ig)),
+}
 
 ## <a name="获取当前页面url网址信息">获取当前页面url网址信息</a>
 
@@ -222,6 +234,20 @@
     }
 
 
+## <a name="判断字符串长度">判断字符串长度</a>
+    function strLength(str) {
+      var a = 0;
+      for (var i = 0; i < str.length; i++) {
+        if (str.charCodeAt(i) > 255) {
+          a += 2;//按照预期计数增加2
+        }
+        else {
+          a++;
+        }  
+      }
+      return a;
+    }
+
 ## <a name="0.1+0.2">0.1+0.2!=0.3</a>
 * 解决：
 >
@@ -230,6 +256,8 @@
 
 * 原因：
 >
+    在进制转换和进阶运算的过程中出现精度损失。
+    
     JavaScript 中的 number 类型就是浮点型，数字和浮点精度的处理相同，JavaScript 中的浮点数采用IEEE-754 格式的规定，这是一种二进制表示法，可以精确地表示分数，比如1/2，1/8，1/1024，每个浮点数占64位。但是，二进制浮点数表示法并不能精确的表示类似0.1这样 的简单的数字，会有舍入误差。
     由于采用二进制，JavaScript 也不能有限表示 1/10、1/2 等这样的分数。在二进制中，1/10(0.1)被表示为0.00110011001100110011…… 注意 0011 是无限重复的，这是舍入误差造成的，所以对于 0.1 + 0.2 这样的运算，操作数会先被转成二进制，然后再计算：
     0.1 => 0.0001 1001 1001 1001…（无限循环）
@@ -349,6 +377,62 @@ Math.floor(Math.random() * 999999)
 Math.random().toString().slice(-6) / 1
 Math.random().toFixed(6).slice(-6) / 1
 
+## <a name="数字千分位">数字千分位 </a>
+1.toLocaleString()
+>   
+    var a = 123456;
+    a.toLocaleString() //'123,456'
+
+2.正则
+>
+
+    function thousandth(num){
+      return num && num
+        .toString()
+        .replace(/(\d)(?=(\d{3})+\.)/g, function($1, $2){
+          return $2 + ',';
+        });
+    }
+
+3.reduce
+>
+    function thousandth(num) {//12345678
+      var str = num + '';
+      str = str.split("").reverse()
+      // ["8", "7", "6", "5", "4", "3", "2", "1"]
+      return str.reduce((prev, next, index) => {
+        return ((index % 3) ? next : (next + ',')) + prev;
+      })
+    }
+
+4.for
+>
+    function thousand(num) {
+      var str = ''
+      num = (num + '').split('')
+      for(var i = num.length-1,j=0; i>=0 ; i--, j++) {
+        //每隔三位加逗号，过滤数组的最后一位  
+        if(j%3 === 0 && j!=0){
+          num.splice(i,1,num[i],',')////当前索引后 添加','
+        }
+      }
+      return num.join('')
+    }
+4.for
+>
+    function format(num){  
+      var str="";//字符串累加  
+      num = num+'';//数字转字符串
+      for(var i=num.length- 1,j=1;i>=0;i--,j++){  
+        if(j%3==0 && i!=0){//每隔三位加逗号，过滤正好在第一个数字的情况  
+          str+=num[i]+",";//加千分位逗号  
+          continue;  
+        }  
+        str+=num[i];//倒着累加数字
+      }  
+      return str.split('').reverse().join("");//字符串=>数组=>反转=>字符串  
+    }
+
 ## <a name="范围内随机数，包括两个数在内">范围内随机数，包括两个数在内</a>
 >
     const number =(min, max) => Math.random() * (max - min + 1) + min
@@ -359,9 +443,10 @@ Math.random().toFixed(6).slice(-6) / 1
 >
     str.split('').reduce((val, count) => (val[count]++ || (val[count] = 1), val), {});
 
-## <a name="argruments对象转换成数组">argruments对象转换成数组</a>
+## <a name="类数组转化为数组">类数组转化为数组</a>
 >
-    Array.prototype.slice.call(arguments) //  [].slice.call(arguments)
+    Array.prototype.slice.call(arguments)
+    [].slice.call(arguments)
     Array.from(arguments)
     [...arguments]
 
@@ -398,6 +483,66 @@ Math.random().toFixed(6).slice(-6) / 1
       else return function(x){ return  Number(...arg.join(''))+x}
     }
 
+## <a name="无限累加的函数 add">实现一个无限累加的函数add(1)(2)(3)...</a>
+
+1. 
+>
+    打印函数时会自动调用 toString()方法，函数 add(a) 返回一个闭包 s(b)，函数 s() 中累加计算 a = a + b，只需要重写sum.toString()方法返回变量 a 就可以了。
+    alert()会调用valueOf或toString方法
+
+    function add(a){
+      function s(b){
+        a =   a+b;
+        return s;
+      }
+      s.toString = function(){return a;}//重写toString
+      return s;
+    }
+    add(1)(2)(3)
+
+    执行add(1);   
+    返回的是里面的  s  函数， 通过闭包，s 函数里面可以访问到 变量 a=1;  所以 当我们 alert(add(1)); 的时候， 调用的 toSting（）方法会将作用域（原型链）里面的 a = 1 弹出来。
+
+    执行add(1)(2);
+    等价于s(2);  这里面相当于 把 2 传递给 s()函数里面的 b , 让作用域（原型链）里面的 a = a+b ,此时 a = 3， 继续保存在作用域中了。 然后还是返回 s 函数。
+
+    执行 add(1)(2)(3); 
+    等价于s(3);和上面 b) 中的分析一样，只是更新了作用域中的 a = 6 了，然后同样是返回 s 函数
+
+
+    console.log(add(1)(2)(3)); // f 6 --输出函数
+    alert(add(1)(2)(3)); //6 -- 输出字符串
+    
+1. 
+>
+    function add(x) {
+      var c = 0; 
+      return function(x) {
+        c = c + x ; arguments.callee.toString = function(){
+          return c;
+        }; 
+        return arguments.callee;
+      }(x);
+    }; 
+   add(1)(2)(3)
+
+2. 
+>
+    function add (a){
+        if(!isFinite(add.i)){
+          add.i = a
+        }else {
+          add.i += a;
+        }
+        add.valueOf = add.toString = function(){
+          return add.i
+        }
+        return add;
+    }
+    add(1)(2)(3)
+
+
+
 ## <a name="数组无序排列">数组无序排列</a>
   arr.sort(function(){ return Math.random() - 0.5});
 
@@ -413,7 +558,7 @@ var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
 
 2. 
 >
-    function func(arr){
+    function flatten(arr){
       var arr1 =[].concat(...arr);
       return arr1.some(item =>Array.isArray(item))?func(arr1):arr1
     }
@@ -425,10 +570,24 @@ var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
     }
     flatten(foo); // [1, 2, 3, "4", 5, "6", 7, 8, 9, 10]
 
+4. 
+>
+    function flatten(arr) {
+      let res = []
+      for(let i = 0; i < arr.length; i++) {
+        if(Array.isArray(arr[i])){
+          res = res.concat(flatted(arr[i]))
+        } else {
+          res.push(arr[i])
+        }
+      }
+      return res
+    }
+
 ## <a name="数组去重">数组去重</a>
 1. 
     [...new Set([1,2,2,3,4,1])]  --> [1,2,3,4]
-
+    Array.from(new Set([1,2,2,3,4,1]))
 2. 
 >
     var arr = [2,3,4,4,5,2,3,6];
@@ -615,11 +774,11 @@ document.designMode='on'  | 'off'  控制当前文档是否可编辑
 ## <a name="逗号操作符">逗号操作符</a>
 
  对它的每个操作对象求值（从左至右），返回最后一个操作对象的值
-var f = (function f(){ return '1'; }, function g(){ return 2; })();
-console.log(f) //2
+ >
+    var f = (function f(){ return '1'; }, function g(){ return 2; })();
+    console.log(f) //2
 
 
-# <a name="题">**题**</a>
 
 ## <a name="两位大整数相加">两位大整数相加</a>
 >
@@ -648,6 +807,37 @@ console.log(f) //2
     5. 输出最后结果的时候，由于前面可能存在0，所以使用字符串的replace方法将前面的0去掉。
 
 
+>
+    function func(a,b){
+      a = a + ''
+      b = b + ''
+      var len1 = a.length
+      var len2 = b.length
+      for(var i = 0;i < Math.abs(len1-len2); i++){
+        if(len1>len2) b = '0' + b
+        if(len1<len2) a = '0' + a
+      }
+      a = a.split('').reverse()
+      b = b.split('').reverse()
+      var n = Math.max(len1,len2)
+      var result = new Array(n).fill(0)
+      // var result = Array.apply(this, Array(n)).map(()=>{return 0})
+      for(var j = 0;j < n; j++){
+        var temp = Number.parseInt(a[j]) + Number.parseInt(b[j])
+        if(temp > 9){
+          result[j] += temp-10
+          result[j+1] = 1
+        } else {
+          result[j] += temp
+        }
+      }
+      return result.reverse().join('').toString()
+    }
+
+
+## <a name="一道setTimeout面试题">一道setTimeout面试题</a>
+https://zhuanlan.zhihu.com/p/25407758
+
 ## <a name="map(parseInt) 原理解析">['1','2','3'].map(parseInt) 原理解析</a>
 https://juejin.im/post/5c6fab02e51d453eb7801914
 https://www.zhihu.com/question/267702014
@@ -672,25 +862,156 @@ parseInt('3', 2)  // 基数为 2（2 进制）表示的数中，最大值小于 
 
 map 函数返回的是一个数组，所以最后结果为 [1, NaN, NaN]。
 
+
+
+## <a name="比较两个对象是否相等">比较两个对象是否相等</a>
+[链接](https://segmentfault.com/a/1190000008187911)
+
+>
+JSON.stringify()
+
+//深度
+    function deepCompare(x, y) {
+      var i, l, leftChain, rightChain;
+      function compare2Objects(x, y) {
+        var p;
+        // remember that NaN === NaN returns false
+        // and isNaN(undefined) returns true
+        if (isNaN(x) && isNaN(y) && typeof x === 'number' && typeof y === 'number') {
+          return true;
+        }
+
+        // Compare primitives and functions.     
+        // Check if both arguments link to the same object.
+        // Especially useful on the step where we compare prototypes
+        if (x === y) {
+          return true;
+        }
+
+        // Works in case when functions are created in constructor.
+        // Comparing dates is a common scenario. Another built-ins?
+        // We can even handle functions passed across iframes
+        if ((typeof x === 'function' && typeof y === 'function') ||
+          (x instanceof Date && y instanceof Date) ||
+          (x instanceof RegExp && y instanceof RegExp) ||
+          (x instanceof String && y instanceof String) ||
+          (x instanceof Number && y instanceof Number)) {
+          return x.toString() === y.toString();
+        }
+
+        // At last checking prototypes as good as we can
+        if (!(x instanceof Object && y instanceof Object)) {
+          return false;
+        }
+
+        if (x.isPrototypeOf(y) || y.isPrototypeOf(x)) {
+          return false;
+        }
+
+        if (x.constructor !== y.constructor) {
+          return false;
+        }
+
+        if (x.prototype !== y.prototype) {
+          return false;
+        }
+
+        // Check for infinitive linking loops
+        if (leftChain.indexOf(x) > -1 || rightChain.indexOf(y) > -1) {
+          return false;
+        }
+
+        // Quick checking of one object being a subset of another.
+        // todo: cache the structure of arguments[0] for performance
+        for (p in y) {
+          if (y.hasOwnProperty(p) !== x.hasOwnProperty(p)) {
+            return false;
+          } else if (typeof y[p] !== typeof x[p]) {
+            return false;
+          }
+        }
+
+        for (p in x) {
+          if (y.hasOwnProperty(p) !== x.hasOwnProperty(p)) {
+            return false;
+          } else if (typeof y[p] !== typeof x[p]) {
+            return false;
+          }
+          switch (typeof (x[p])) {
+            case 'object':
+            case 'function':
+              leftChain.push(x);
+              rightChain.push(y);
+              if (!compare2Objects(x[p], y[p])) {
+                return false;
+              }
+              leftChain.pop();
+              rightChain.pop();
+              break;
+            default:
+              if (x[p] !== y[p]) {
+                return false;
+              }
+              break;
+          }
+        }
+        return true;
+      }
+
+      if (arguments.length < 1) {
+        return true; //Die silently? Don't know how to handle such case, please help...
+        // throw "Need two or more arguments to compare";
+      }
+
+      for (i = 1, l = arguments.length; i < l; i++) {
+        leftChain = []; //Todo: this can be cached
+        rightChain = [];
+        if (!compare2Objects(arguments[0], arguments[i])) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+
+
+## <a name="Array.apply(null,Array(3))与Array(3)区别">Array.apply(null,Array(3))与Array(3)区别</a>
+https://www.jianshu.com/p/6c7d0b18d4ca
+
+>
+
+    Array.apply(null, Array(3)) | Array.apply(null, { length: 3 })
+    实际上等同于Array.apply(null,[undefined,undefined,undefined]),也就等同于Array(undefined,undefined,undefined)
+    // 结果 [undefined, undefined, undefined]
+
+    Array(3) //是一个只有length,没有元素和索引的空数组
+    //结果 [empty × 3] // [,,]
+
+>  如何设为[0,0,0]
+
+    Array.apply(null, Array(n)).map(()=>{return 0}) // n个0 [0,0,0,....]
+    Array.apply(null, {length: n}).map(()=>{return 0})
+    ES6方法：new Array(n).fill(0)
+
 ## 
 >
     function Foo() {
         getName = function () {
-            alert(1);
+            console.log(1);
         }
         return this;
     }
     Foo.getName = function () {
-        alert(2)
+        console.log(2)
     }
     Foo.prototype.getName = function () {
-        alert(3)
+        console.log(3)
     }
     var getName = function () {
-        alert(4)
+        console.log(4)
     }
     function getName() {
-        alert(5)
+        console.log(5)
     }
     Foo.getName();
     getName();
@@ -700,25 +1021,27 @@ map 函数返回的是一个数组，所以最后结果为 [1, NaN, NaN]。
     new Foo().getName();
     new new Foo().getName()
 
+上面的代码编译后如下(函数声明的优先级先于变量声明):
 >
     function Foo(){
         getName = function () { console.log(1); };//赋值语句，全局方法
         return this;
     }
+    function getName() {console.log(5)}; //全局函数(函数首先被提升)
+    var getName //变量重复声明， 忽略
     Foo.getName = function () { console.log(2);};//静态方法
-    Foo.prototype.getName = function () { console.log(3);};//公有方法
-    var getName = function () {console.log(4);};//全局方法
-    function getName() { console.log(5);} //全局函数
+    Foo.prototype.getName = function () { console.log(3);};//原型方法
+    getName = function () {console.log(4);};//getName重新赋值
+
+
+解析：
+>
 
     Foo.getName();  //2 
       Foo函数上存储的静态方法 
 
     getName();  //4   
-      函数表达式不提升，
-      所以getName = function () {
-        console.log(4);
-      }
-      在function getName() { console.log(5);}之后定义
+      函数表达式不提升，getName重新赋值
 
     Foo().getName(); // 1  
       先执行了Foo函数，然后调用Foo函数的返回值对象的getName属性函数.Foo函数返回的是window对象，相当于执行 window.getName() ，而window中的getName已经被修改为console.log(1)，所以最终会输出1
@@ -727,20 +1050,25 @@ map 函数返回的是一个数组，所以最后结果为 [1, NaN, NaN]。
       直接调用getName函数，相当于 window.getName() ,因为这个变量已经被Foo函数执行时修改了，遂结果与第三问相同，为1
 
     new Foo.getName();//2  
-      考察的是js的运算符优先级问题  点(.)的优先级高于new。相当于new (Foo.getName)();
-      https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence
+      考察的是js的运算符优先级问题 ，new 无参数列表，对应的优先级是18；成员访问操作符(.) , 对应的优先级是19。.优先级大于new，相当于new (Foo.getName)();
+      （https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence）
 
     new Foo().getName();  //3 
-      括号()优先级高于new相当于 (new Foo()).getName()
+      new 带参数列表，对应的优先级是19，和成员访问操作符.优先级相同。同级运算符，按照从左到右的顺序依次计算。new Foo()先初始化 Foo 的实例化对象，实例上没有getName方法，因此需要原型上去找，即找到了 Foo.prototype.getName，
 
-    new new Foo().getName();// 4  
-      相当于 new ((new Foo()).getName)();
+    new new Foo().getName();// 3  
+      new 带参数列表，优先级19，因此相当于是 new (new Foo()).getName()；先初始化 Foo 的实例化对象，然后将其原型上的 getName 函数作为构造函数再次 new ，相当于 new ((new Foo()).getName)();
+      
 
-# <a name="其他面试题跳转">**其他面试题跳转**</a>
+# <a name="面试题">**面试题**</a>
 
-https://zhuanlan.zhihu.com/p/28428367 <!-- 1 -->
+[前端基础面试题(JS部分)](https://zhuanlan.zhihu.com/p/28428367) <!-- 1 -->
 
-https://zhuanlan.zhihu.com/p/29469769 <!-- 1 -->
+[前端进阶系列](https://github.com/yygmind/blog)
+
+[web前端大厂10道经典面试题汇总](https://zhuanlan.zhihu.com/p/57200821)
+
+https://github.com/yygmind/blog 
 
 https://github.com/LiangJunrong/document-library/blob/master/other-library/Interview/PersonalExperience/2019-InterviewPreparation.md#chapter-two-one
 

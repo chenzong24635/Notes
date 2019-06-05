@@ -1,6 +1,51 @@
+* <a href="#MVVM、MVC">MVVM、MVC</a>
+* <a href="#vue优点">vue优点</a>
+* <a href="#双向数据绑定原理、实现">双向数据绑定原理、实现</a>
+* <a href="#Vue的响应式原理">Vue的响应式原理</a>
+* <a href="#生命周期">生命周期</a>
+* <a href="#computed watch methods">computed watch methods</a>
+* <a href="#Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？">Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？</a>
+* <a href="#slot">slot插槽</a>
+* <a href="#组件中key作用">组件中key作用</a>
+* <a href="#$nextTick">$nextTick</a>
+* <a href="#页面滚动">页面滚动</a>
+* <a href="#keep-alive">keep-alive</a>
+* <a href="#路由vue-router">路由vue-router</a>
+* <a href="#组件通信方法">组件通信方法</a>
+* <a href="#token验证">如何添加token验证</a>
+* <a href="#静态资源处理">静态资源处理：图片等</a>
+* <a href="#打包">打包时常见问题及解决</a>
+* <a href="#其他">其他</a>
+* <a href="#轮播图--VueAwesomeSwiper">轮播图--VueAwesomeSwiper使用</a>
+* <a href="#rem">rem</a>
+* <a href="#创建项目">创建项目</a>
+* <a href="#npm">npm</a>
+* <a href="#"></a>
+* <a href="#"></a>
 
 
-# MVVM、MVC
+# <a name=""></a>
+设置路径别名
+>
+    build -- webpack.base.conf.js
+    module.exports -- resolve --a>lias
+
+    'vue$': 'vue/dist/vue.esm.js',
+    '@': resolve('src'),
+    'styles': resolve('src/assets/styles'), // 自己配置
+
+    在main.js直接 styles，其他地方需要加波浪线 ‘ ~ ’
+
+dependencies 与 devdependencies 区别
+>
+    –save会把依赖包名称添加到package.json文件dependencies键下
+    –save-dev则添加到package.json文件devDependencies键下
+
+    devDependencies -- 开发时用的依赖项，它们不会被部署到生产环境。
+    Dependencies -- 生产环境中需要的依赖，即正常运行该包时所需要的依赖项。
+
+
+# <a name="MVVM、MVC">MVVM、MVC</a>
 >
     MVVM是是Model-View-ViewModel的缩写，
     Model代表数据模型，定义数据操作的业务逻辑，
@@ -8,34 +53,124 @@
     ViewModel通过双向绑定把View和Model进行同步交互，不需要手动操作DOM的一种设计思想。
 
     MVVM和MVC都是一种设计思想，主要就是MVC中的Controller演变成ViewModel,，MVVM主要通过数据来显示视图层而不是操作节点，解决了MVC中大量的DOM操作使页面渲染性能降低，加载速度慢，影响用户体验问题。主要用于数据操作比较多的场景
-# 双向数据绑定原理、实现
+
+# <a name="vue优点">vue优点</a>
+>
+    低耦合。视图（View）可以独立于Model变化和修改，一个ViewModel可以绑定到不同的"View"上，当View变化的时候Model可以不变，当Model变化的时候View也可以不变。
+
+    可重用性。你可以把一些视图逻辑放在一个ViewModel里面，让很多view重用这段视图逻辑。
+
+    独立开发。开发人员可以专注于业务逻辑和数据的开发（ViewModel），设计人员可以专注于页面设计。
+    可测试。界面素来是比较难于测试的，而现在测试可以针对ViewModel来写。
+
+# <a name="双向数据绑定原理、实现">双向数据绑定原理、实现:Object.defineProperty、proxy</a>    
+Vue2.x 使用 Object.defineProperty 实现数据双向绑定，V3.0 则使用了 Proxy
+
+### 区别：
+>
+    Object.definedProperty 的作用是劫持一个对象的属性，劫持属性的getter和setter方法，在对象的属性发生变化时进行特定的操作。而 Proxy 劫持的是整个对象。
+
+    Proxy 会返回一个代理对象，我们只需要操作新对象即可，而 Object.defineProperty 只能遍历对象属性直接修改。
+
+    Object.definedProperty 不支持数组，更准确的说是不支持数组的各种API，因为如果仅仅考虑arry[i] = value 这种情况，是可以劫持的，但是这种劫持意义不大。而 Proxy 可以支持数组的各种API。
+
+    尽管 Object.defineProperty 有诸多缺陷，但是其兼容性要好于 Prox
 
 
-# 简述Vue的响应式原理
+### Object.defineProperty:
+
+Object.defineProperty 定义出来的属性，默认是不可枚举，不可更改，不可配置【无法delete】
+>
+    let obj = {};
+    let temp = 'base';
+    Object.defineProperty(obj, 'name', {
+        get() {
+            console.log("读取成功");
+            return temp
+        },
+        set(value) {
+            console.log("设置成功");
+            temp = value;
+        }
+    });
+    obj.name = 'change';
+    console.log(obj.name);
+
+### proxy
+Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值，那么就会被劫持。但是有点需要注意，复杂数据类型，监控的是引用地址，而不是值，如果引用地址没有改变，那么不会触发set。
+>
+    let obj = {name: 'Yvette', hobbits: ['travel', 'reading'], info: {
+        age: 20,
+        job: 'engineer'
+    }};
+    let p = new Proxy(obj, {
+        get(target, key) { //第三个参数是 proxy， 一般不使用
+            console.log('读取成功');
+            return Reflect.get(target, key);
+        },
+        set(target, key, value) {
+            if(key === 'length') return true; //如果是数组长度的变化，返回。
+            console.log('设置成功');
+            return Reflect.set([target, key, value]);
+        }
+    });
+    p.name = 20; //设置成功
+    p.age = 20; //设置成功; 不需要事先定义此属性
+    p.hobbits.push('photography'); //读取成功;注意不会触发设置成功
+    p.info.age = 18; //读取成功;不会触发设置成功    
+
+
+# <a name="Vue的响应式原理">Vue的响应式原理</a>
+
 >
     当一个Vue实例创建时，vue会遍历data选项的属性，用 Object.defineProperty 将它们转为 getter/setter并且在内部追踪相关依赖，在属性被访问和修改时通知变化。 每个组件实例都有相应的 watcher 程序实例，它会在组件渲染的过程中把属性记录为依赖，之后当依赖项的 setter 被调用时，会通知 watcher 重新计算，从而致使它关联的组件得以更新。
 
-# 生命周期
+# <a name="生命周期">生命周期</a>
 [Vue2.0生命周期](https://segmentfault.com/a/1190000008010666)
 
-# vue双向绑定
+生命周期：
 >
-   Object.defineProperty() 这个方法重新定义了对象获取属性值(get)和设置属性值(set)的操作来实现的。
-    缺点：双向数据流是自动管理状态的, 但是在实际应用中会有很多不得不手动处理状态变化的逻辑, 使得程序复杂度上升, 难以调试。
+    创建前/后： 
+    beforeCreated阶段: vue实例的挂载元素$el和数据对象data都为undefined，还未初始化。
+    created阶段: 完成data初始化，$el还没有。
+
+    载入前/后：
+    beforeMount阶段：完成了$el和data初始化，但还是挂载之前为虚拟的dom节点，data.message还未替换。
+    mounted阶段：vue实例挂载完成，data.message成功渲染。
+
+    更新前/后：当data变化时，会触发beforeUpdate和updated方法。
+
+    销毁前/后：在执行destroy方法后，对data的改变不会再触发周期函数，说明此时vue实例已经解除了事件监听以及和dom的绑定，但是dom结构依然存在
 
 
-# computed watch methods
+生命周期钩子的一些使用方法：
+>
+
+    beforecreate : 可以在这加个loading事件，在加载实例时触发
+
+    created : 初始化完成时的事件写在这里，如在这结束loading事件，异步请求也适宜在这里调用
+
+    mounted : 挂载元素，获取到DOM节点
+    
+    updated : 如果对数据统一处理，在这里写上相应函数
+
+    beforeDestroy : 可以做一个确认停止事件的确认框 
+
+![lifecycle](img/lifecycle.png)
+
+# <a name="computed watch methods">computed watch methods</a>
+
 用法、区别：
+>
+    computed watch前两者自动追踪数据，执行相关函数，methods需手动调用；
 
-    前两者自动追踪数据，执行相关函数，最后一个手动调用；
-    computed是计算属性，用法与data一致
-    watch像事件监听，对象发生变化时，执行相关操作
-    methods与js中执行方法类似
-    computed通常只有get属性
+    watch 监听某个数据(需在data定义)的变化，执行相关操作
+    computed 是计算属性，用法与data一致, 计算后返回新值
+
     数据变化的同时进行异步操作或者是比较大的开销，那么watch为最佳选择
     watch的对象必须事先声明
 
-# Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？
+# <a name="Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？">Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？</a>
 >
     示例：
     <template>
@@ -76,12 +211,62 @@
         }
     $set()方法相当于手动的去把obj.b处理成一个响应式的属性，此时视图也会跟着改变了：
 
-# delete和Vue.delete删除数组的区别
 
-delete只是被删除的元素变成了 empty/undefined 其他的元素的键值还是不变。
-Vue.delete直接删除了数组 改变了数组的键值。
 
-# 组件中写 key作用？
+# <a name="slot">slot插槽</a>
+插槽显不显示、怎样显示是由父组件来控制的，而插槽在哪里显示就由子组件来进行控制
+
+
+>
+    //父组件
+    <template>
+      <div>
+        我是父组件
+        <slot-one>
+          <p style="color:red">我是父组件插槽内容</p>
+        </slot-one>
+      </div>
+    </template>
+
+    //子组件
+    <template>
+      <div class="slotOne">
+        <div>我是slotOne组件</div>
+        <slot></slot>
+      </div>
+    </template>
+
+具名插槽
+>
+    //父组件
+    <template>
+      <div>
+        我是父组件
+        <slot-two>
+          <p>我是普通插槽</p>
+          <template slot="header">
+            <p>我是name为header的slot</p>
+          </template>
+          <p slot="footer">我是name为footer的slot</p>
+        </slot-two>
+      </div>
+    </template>
+
+    //子组件
+    <template>
+      <div class="slotTwo">
+        <div>slottwo</div>
+        <slot name="header"></slot>
+        <slot></slot>
+        <slot name="footer"></slot>
+      </div>
+    </template>
+
+
+# <a name="组件中key作用">组件中key作用</a>
+>
+
+    当 Vue.js 用 v-for 正在更新已渲染过的元素列表时，它默认用“就地复用”策略。如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序， 而是简单复用此处每个元素，并且确保它在特定索引下显示已被渲染过的每个元素。key的作用主要是为了高效的更新虚拟DOM
 >
 
     key 的作用是为了在 diff 算法执行时更快的找到对应的节点，提高 diff 速度。
@@ -90,11 +275,14 @@ Vue.delete直接删除了数组 改变了数组的键值。
 
     在交叉对比的时候，当新节点跟旧节点头尾交叉对比没有结果的时候，会根据新节点的 key 去对比旧节点数组中的 key，从而找到相应旧节点（这里对应的是一个 key => index 的 map 映射）。如果没找到就认为是一个新增节点。而如果没有 key，那么就会采用一种遍历查找的方式去找到对应的旧节点。一种一个 map 映射，另一种是遍历查找。相比而言。map 映射的速度更快。
 
+
+# <a name="$nextTick">$nextTick</a>
+作用：
 >
+    Vue中DOM更新是异步的
+    $nextTick是DOM更新完成后执行的
 
-    当 Vue.js 用 v-for 正在更新已渲染过的元素列表时，它默认用“就地复用”策略。如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序， 而是简单复用此处每个元素，并且确保它在特定索引下显示已被渲染过的每个元素。key的作用主要是为了高效的更新虚拟DOM
-
-# 滚动
+# <a name="页面滚动">页面滚动</a>
 * document.documentElement.scrollTop = 380 //不需要加单位
 * 
     this.$nextTick(() => {
@@ -104,8 +292,8 @@ Vue.delete直接删除了数组 改变了数组的键值。
 * 
 document.getElementById('ID').scrollIntoView()
 
+# <a name="keep-alive">keep-alive</a>
 
-# keep-alive
 >
     包裹动态组件时，会缓存不活动的组件实例，主要用于保留组件状态或避免重新渲染；
 
@@ -115,7 +303,8 @@ document.getElementById('ID').scrollIntoView()
 
     如果使用了keep-alive对组件进行了缓存，组件不会销毁，destroyed不执行
 
-# vue-router -- https://router.vuejs.org/zh
+# <a name="路由vue-router">路由vue-router</a>
+https://router.vuejs.org/zh
 ## base
     {
       path: '/a/:id',  //访问路径,
@@ -225,9 +414,16 @@ document.getElementById('ID').scrollIntoView()
 
 
 ## mode: hash | history区别
-1. hash —— 即地址栏 URL 中的 ## 符号（此 hash 不是密码学里的散列运算）。
-比如这个 URL：http://www.abc.com/##/hello，hash 的值为 ##/hello。它的特点在于：hash 虽然出现在 URL 中，但不会被包括在 HTTP 请求中，对后端完全没有影响，因此改变 hash 不会重新加载页面。
-2. history —— 利用了 HTML5 History Interface 中新增的 pushState() 和 replaceState() 方法。（需要特定浏览器支持）
+hash
+>
+    即地址栏 URL 中的 # 符号。
+    比如这个 URL：http://www.abc.com/#/hello，hash 的值为#/hello。它的特点在于：hash 虽然出现在 URL 中，但不会被包括在 HTTP 请求中，对后端完全没有影响，因此改变 hash 不会重新加载页面。
+    通过 hashchange 事件监听 URL 的变化，改变 URL 的方式只有这几种：通过浏览器前进后退改变 URL、通过<a>标签改变 URL、通过window.location改变URL
+
+history 
+>
+    利用了 HTML5 History Interface 中新增的 pushState() 和 replaceState() 方法。（需要特定浏览器支持）
+
 这两个方法应用于浏览器的历史记录栈，在当前已有的 back、forward、go 的基础之上，它们提供了对历史记录进行修改的功能。只是当它们执行修改时，虽然改变了当前的 URL，但浏览器不会立即向后端发送请求。
 
 #### mode:history缺点
@@ -241,6 +437,7 @@ base: '/dist/'
 在hash模式下，前端路由修改的是##中的信息，而浏览器请求时是不带它玩的，所以没有问题.但是在history下，你可以自由的修改path，当刷新时，如果服务器中没有相应的响应或者资源，页面会404。
 
 #### 如何去除vue项目中的网址的 ## --- History模式
+    //router/index.js
     const router = new VueRouter({
       mode: 'history',
       routes: [...]
@@ -284,7 +481,8 @@ base: '/dist/'
 
 
     
-# 组件通信方法
+
+# <a name="组件通信方法">组件通信方法</a>
 EventBus、props $emit、Vuex
 ## EventBus  事件总线
     // main.js 中定义一个新的eventBus对象，其是一个全新的Vue实例
@@ -364,7 +562,8 @@ EventBus、props $emit、Vuex
 3. vux
 
 
-# token 验证
+# <a name="token验证">如何添加token验证</a>
+
 #### api/index.js
     // 请求拦截器
     axios.interceptors.request.use(
@@ -437,7 +636,7 @@ EventBus、props $emit、Vuex
     }
 
 
-# 静态资源处理
+# <a name="静态资源处理">静态资源处理</a>
 
 ## 处理静态资源 -- http://vuejs-templates.github.io/webpack/static.html
   #### 图片路径 
@@ -485,7 +684,8 @@ EventBus、props $emit、Vuex
 
 
 
-# 打包
+
+# <a name="打包">打包时常见问题及解决</a>
 ## vue中打包后出现css中文本超出部分隐藏显示省略号失效
     这是webpack的锅，webpack打包后-webkit-box-orient被移除，所以导致失效。
      .content {
@@ -536,7 +736,7 @@ EventBus、props $emit、Vuex
     使用配置文件：nginx -c "配置文件路径"
     使用帮助：nginx -h
 
-# 其他
+# <a name="其他">其他</a>
 ## 组件引用路径写法 
     // 在build/webpack.base.conf.js中定义了 @
     @/commponents/a.vue
@@ -568,7 +768,8 @@ EventBus、props $emit、Vuex
 
     最后需要重新启动项目，不然配置不起效果
 
-# 轮播图--VueAwesomeSwiper
+
+# <a name="轮播图--VueAwesomeSwiper">轮播图--VueAwesomeSwiper</a>
 https://segmentfault.com/a/1190000014609379
 
 api同swiper
@@ -634,8 +835,8 @@ api同swiper
 
 
 
-# rem
-    
+# <a name="rem">rem</a>
+>    
     npm install lib-flexible --save //安装flexible
     import 'lib-flexible' //在main.js中引入flexible
 
@@ -662,8 +863,8 @@ api同swiper
     font-size: 28px; /*px*/
 
 
-
-# 创建项目
+# <a name="创建项目">vue-cli快速创建项目</a>
+>
     npm install --global vue-cli //  vue-cli安装
     vue init webpack vuedemo
 
@@ -741,7 +942,8 @@ dev --> port
 
 
 
-# npm
+# <a name="npm ">npm</a>
+>
     npm init 在此目录生成package.json文件，可以添加-y | --yes 参数则默认所有配置为默认yes
 
     npm install <package> -g 全局安装依赖包
