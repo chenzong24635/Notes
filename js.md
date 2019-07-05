@@ -43,7 +43,7 @@
 * <a href="#自执行函数">自执行函数</a>
 * <a href="#对象属性">对象属性configurable enumerable writable</a>
 * <a href="#创建对象的几种方式">创建对象的几种方式</a>
-* <a href="#new创建一个对象">new创建一个对象过程</a>
+* <a href="#new的实现原理">new的实现原理</a>
 * <a href="#异步编程有哪几种方法">异步编程有哪几种方法</a>
 * <a href="#事件委托(代理)">事件委托(代理)</a>
 * <a href="#闭包">闭包</a>
@@ -440,11 +440,12 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
 
 场景：一般用于框架、插件等场景
 
-## <a name="new创建一个对象">new创建一个对象过程</a>
+## <a name="new的实现原理">new的实现原理</a>
 >
     创建一个空对象，并将这个空对象的 __proto__，指向构造函数的原型对象 [prototype] ，使其继承构造函数原型上的属性。
     改变构造函数内部 this 指针为这个空对象(如果有传参，需要将参数也导入构造函数)
     执行构造函数中的代码，使其具有构造函数 this 指针的属性。
+    如果构造函数中没有返回其它对象，那么返回this，即创建的这个的新对象，否则，返回构造函数中返回的对象。
 
 new 操作返回的实例对象具有两个特征：
 >
@@ -1245,8 +1246,8 @@ https://github.com/yygmind/blog/issues/22
 
     b = {...a,...b} //扩展运算符
 
-    b = a.slice(0)  //数组一层深拷贝
-    b = a.concat([])//数组一层深拷贝
+    b = a.slice(0)
+    b = a.concat([])
 
 * 深拷贝：开辟新的栈
 1. 
@@ -1302,7 +1303,15 @@ https://github.com/yygmind/blog/issues/22
           //if(objCloned.hasOwnProperty(key)) {
             // 判断 obj 子元素是否为对象，如果是，递归复制
             if(objCloned[key] && typeof objCloned[key] === "object") {
-              obj[key] = deepClone(objCloned[key]);
+              if(objCloned[key] instanceof RegExp) { //判断正则
+                obj[key] = new RegExp(objCloned[key])
+              } else if(objCloned[key] instanceof Date) { //判断时间
+                obj[key] = new Date(objCloned[key])
+              } else if(objCloned[key] instanceof Error) { //判断错误
+                obj[key] = new Error(objCloned[key])
+              } else {
+                obj[key] = deepClone(objCloned[key]);
+              }
             } else { // 否则，简单复制
               obj[key] = objCloned[key];
             }
@@ -1728,25 +1737,28 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
   参数够了就执行，参数不够就返回一个函数，之前的参数存起来，直到够了为止。
   它与函数绑定紧密相关, 用于创建已经设置好了一个或多个参数的函数, 其具体做法时使用一个闭包返回一个函数, 当函数被调用时, 返回的函数还需要设置一些传入的参数。
   柯里化的三个作用 : 1.参数复用 2. 提前返回 3.延迟计算
+例 
+>
+  const curry = (fn,...args) => args.length < fn.length ? (...arguments) => curry(fn,...args,...arguments) : fn(...args)
 
-例  
+ 
 >  
-    function curry(func) {
-      var l = func.length
+    function curry(fn) {
+      var len = fn.length
       return function curried() {
         var args = [].slice.call(arguments)
-        if(args.length < l) {
+        if(args.length < len) {
           return function() {
             var argsInner = [].slice.call(arguments)
             return curried.apply(this, args.concat(argsInner))
           }
         } else {
-          return func.apply(this, args)
+          return fn.apply(this, args)
         }
       }
     }
     var f = function(a, b, c) {
-      return console.log([a, b, c])
+      return a+b+c
     };
     var curried = curry(f)
     curried(1)(2)(3) // => [1, 2, 3]

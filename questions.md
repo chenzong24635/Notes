@@ -27,6 +27,7 @@
 
 * <a href="#浏览器判断">浏览器、手机类型判断navigator.userAgent</a>
 * <a href="#获取当前页面url网址信息">获取当前页面url网址信息</a>
+* <a href="#base64数据导出文件">base64数据导出文件，文件下载</a>
 * <a href="#判断字符串长度">判断字符串长度</a>
 * <a href="#0.1+0.2">0.1+0.2!=0.3</a>
 * <a href="#移动端点透问题">移动端点透问题(click 300ms延迟)</a>
@@ -232,6 +233,31 @@ var obj = {
         alert(strs[1]);     //直接弹出第一个参数 （如果有多个参数 还要进行循环的）
       }
     }
+
+
+## <a name="base64数据导出文件">base64数据导出文件，文件下载</a>
+downloadFile('dsd','./tets.md')
+function downloadFile(filename, data){
+  let DownloadLink = document.createElement('a');
+  if ( DownloadLink ){
+    document.body.appendChild(DownloadLink);
+    DownloadLink.style = 'display: none';
+    DownloadLink.download = filename;
+    DownloadLink.href = data;
+    if ( document.createEvent ){
+      let DownloadEvt = document.createEvent('MouseEvents');
+      DownloadEvt.initEvent('click', true, false);
+      DownloadLink.dispatchEvent(DownloadEvt);
+    }
+    else if ( document.createEventObject ){
+      DownloadLink.fireEvent('onclick');
+    }
+    else if (typeof DownloadLink.onclick == 'function' ){
+      DownloadLink.onclick();
+    }
+    document.body.removeChild(DownloadLink);
+  }
+}
 
 
 ## <a name="判断字符串长度">判断字符串长度</a>
@@ -466,9 +492,7 @@ Math.random().toFixed(6).slice(-6) / 1
 
 ## <a name="范围内随机数，包括两个数在内">范围内随机数，包括两个数在内</a>
 >
-    const number =(min, max) => Math.random() * (max - min + 1) + min
-    --->小数 
-    --->整数： Math.floor(number) 
+    const number =(min, max) => Math.random() * (max - min) + min
 
 ## <a name="统计字符串中同一字符出现次数">统计字符串中同一字符出现次数</a>
 >
@@ -781,11 +805,20 @@ F(1)=1，F(2)=1, F(n)=F(n-1)+F(n-2)（n>=3，n∈N*）
 
 ## <a name="取消选择，防止复制，禁止剪切、粘贴">取消选择，防止复制，禁止剪切、粘贴</a>
 取消选择 obj.onselectstart = () => return false
-CSS: -moz-user-select:none  仅对FF有效
+  CSS: -moz-user-select:none  仅对FF有效
 
-禁止复制 obj.oncopy= () => return false
-禁止剪切 obj.oncut= () => return false
-禁止粘贴 obj.onpaste= () => return false
+禁止右键 document.oncontextmenu= () =>  false
+禁止复制 document.oncopy= () =>  false
+禁止粘贴 document.onpaste= () =>  false
+禁止剪切 document.oncut= () =>  false
+
+
+['selectstart', 'contextmenu', 'copy', 'paste' ,'cut'].forEach(function(ev){
+    document.addEventListener(ev, function(e){
+      let event = e || window.event;
+      return event.preventDefault ? event.preventDefault() : event.returnValue = false;
+    })
+})
 
 ## <a name="网页是否可编辑">网页是否可编辑</a>
 网页最后编辑时间  document.lastModified  

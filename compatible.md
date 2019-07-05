@@ -158,6 +158,7 @@ jquery方法：$(document).scrollTop();
     function preventDefault(e){ 
       cosnt event = e || window.event; // w3c | IE
       event.preventDefault ? event.preventDefault() : event.returnValue = false;
+                                                     // w3c
     }
 
 
