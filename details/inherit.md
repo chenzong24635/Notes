@@ -56,7 +56,7 @@ https://blog.csdn.net/caijixin/article/details/78295676
     优点:
       简单明了，直接继承父类构造函数的属性和方法
       创建子类实例时可向构造函数传参
-      可实现多继承（call多个父类对象） 
+      可实现多继承（call多个父类对象
     缺点:
       无法继承原型链上的属性和方法
 
@@ -151,3 +151,29 @@ https://blog.csdn.net/caijixin/article/details/78295676
       完美实现继承，解决了组合式继承带两份属性的问题
     缺点：
       过于繁琐，故不如组合继承
+
+
+# ES6 继承
+>
+    
+    class F{
+      constructor (name, age){
+        this.name = name
+        this.age = age
+      }
+      static walk(){
+        console.log('F 的静态方法walk')
+      }
+      sayName(){
+        console.log(this.name)
+      }
+    }
+    class S extends F{
+      constructor(name,age){ //这个方法会被默认添加,可省略
+        super(name,age)//调用父类的constructor()
+        //子类必须在constructor方法中调用super方法，否则新建实例时会报错。这是因为子类自己的this对象，必须先通过父类的构造函数完成塑造，得到与父类同样的实例属性和方法，然后再对其进行加工，加上子类自己的实例属性和方法。如果不调用super方法，子类就得不到this对象。
+      }
+    }
+    s = new S('我是s', 22)
+    console.log(S.walk()) //F 的静态方法walk
+    console.log(s.sayName())//我是s      

@@ -1,12 +1,5 @@
 * <a href="#预加载">预加载</a>
 * <a href="#懒加载(延迟加载)">懒加载(延迟加载)</a>
-* <a href="#"></a>
-* <a href="#"></a>
-
-
-# <a name=""></a>
-# <a name=""></a>
-
 
 # <a name="预加载">预加载</a>
  
@@ -36,7 +29,7 @@
 
 ### JS实现预加载
 >
-    <div class="hidden"> //display:none;隐藏该标签
+    <div style="display:none">
       <script type="text/javascript">
       var images = []
       function preload(args) {

@@ -11,7 +11,21 @@
 * <a href="#页面滚动">页面滚动</a>
 * <a href="#keep-alive">keep-alive</a>
 * <a href="#路由vue-router">路由vue-router</a>
+  * <a href="#base">base</a>
+  * <a href="#this.$route 和 this.$router区别">this.$route 和 this.$router区别</a>
+  * <a href="#push(),replace(),go()">push(),replace(),go()</a>
+  * <a href="#页面跳转方法">页面跳转方法</a>
+  * <a href="#页面url参数获取">页面url参数获取</a>
+  * <a href="#解决vue多个路由共用一个页面的问题">解决vue多个路由共用一个页面的问题</a>
+  * <a href="#刷新当前路由方法">刷新当前路由方法</a>
+  * <a href="#mode">mode: hash | history区别</a>
+  * <a href="#切换页面时自动滚动到顶部">切换页面时自动滚动到顶部</a>
+  * <a href="#设置页面title">设置页面title</a>
+
 * <a href="#组件通信方法">组件通信方法</a>
+* <a href="#监听组件的生命周期">监听组件的生命周期</a>
+
+
 * <a href="#token验证">如何添加token验证</a>
 * <a href="#静态资源处理">静态资源处理：图片等</a>
 * <a href="#打包">打包时常见问题及解决</a>
@@ -305,7 +319,9 @@ document.getElementById('ID').scrollIntoView()
 
 # <a name="路由vue-router">路由vue-router</a>
 https://router.vuejs.org/zh
-## base
+
+##  <a name="base">base</a>
+
     {
       path: '/a/:id',  //访问路径,
       name: 'a', //名称，vue页面可通过name调用,
@@ -317,49 +333,58 @@ https://router.vuejs.org/zh
       redirect: '/b', //{ name: 'foo' } 重定向：当用户访问 /a时，URL 将会被替换成 /b，然后匹配路由为 /b
       alias:'/b', //别名：/a 的别名是 /b，意味着，当用户访问 /b 时，URL 会保持为 /b，但是路由匹配则为 /a，就像用户访问 /a 一样。
     }
+##  <a name="this.$route 和 this.$router区别">this.$route 和 this.$router区别</a>
 
-## this.$route 和 this.$router区别：
     this.$route 信息参数（query、prams）传参获取 --只读
     this.$router 功能函数，go()，push()等方法调用 --只写
 
-## push(),replace(),go()
+##  <a name="push(),replace(),go()">push(),replace(),go()</a>
 1. push()
 
     this.$router.push(location, onComplete?, onAbort?) //页面跳转，且会向 history 栈添加一个新的记录，当用户点击浏览器后退按钮时，则回到之前的 URL。等同于<router-link :to="...">	
+
 2. replace()
 
     this.$router.replace(location, onComplete?, onAbort?) //页面跳转，不会向 history 添加新记录，而是替换掉当前的 history 记录。等同于<router-link :to="..." replace> 
+
 3. go()
     
     this.$router.go(n) //的参数是一个整数，意思是在 history 记录中向前或者后退多少步，
 
-## 跳转页面 -- 如果提供了 path，params会被忽略，所以params传参要用name来引入
+##  <a name="页面跳转方法">页面跳转方法</a>
+如果提供了 path，params会被忽略，所以params传参要用name来引入
+
     声明式 <router-link :to="...">
     编程式 router.push(...)
+
 ### 无参数：
 1. (:to动态绑定name 或则 path) 页面自动解析成path地址 
-
-      \<router-link :to="{name:'RouterB'}">去B页面</router-link> 
+>
+    <router-link :to="{name:'RouterB'}">去B页面</router-link> 
 
 2. (to="path")，只能指定path值 
-
-      \<router-link to="/RouterB">去B页面</router-link>  
+>
+    <router-link to="/RouterB">去B页面</router-link>  
       
 ### 传参:
-1. ：(query传参，参数通过url get方式拼接) --在浏览器地址栏中显示参数 ?id=myid&name=myname
+1. query
+>
+    (query传参，参数通过url get方式拼接) --在浏览器地址栏中显示参数 ?id=myid&name=myname
 
-    \<router-link :to="{name:'RouterB', query: {name:'name1', title: 'title'} }">去B页面，传入参数</router-link>
+    <router-link :to="{path:'/Ajax.mdRouterB', query: {name:'name1', title: 'title'} }">去B页面，传入参数</router-link>
 
-2. (params传参，参数通过路径[/001]形式拼接到url上，如果没有在路径配置种使用参数占位符，url不会拼接，直接展示是具体路由页面)/myid/myname
+2. params传参
+>
+    (params传参，参数通过路径[/001]形式拼接到url上，如果没有在路径配置种使用参数占位符，url不会拼接，直接展示是具体路由页面)/myid/myname
 
-      \<router-link :to="{name:'RouterB', params: {name:'name2', title: 'title2'}}">去B页面，params传入参数</router-link>
+    <router-link :to="{name:'RouterB', params: {name:'name2', title: 'title2'}}">去B页面，params传入参数</router-link>
 
-
-## 参数获取
+##  <a name="页面url参数获取">页面url参数获取</a>
+>
     var param = this.$route.query; //query传参 获取方法
     var param = this.$route.params; //params传参 获取方法
 
-## 解决vue多个路由共用一个页面的问题
+##  <a name="解决vue多个路由共用一个页面的问题">解决vue多个路由共用一个页面的问题</a>
 1. watch
 >
     当路由变化时，watch里的路由监听函数都会被触发，可以在这个函数中对页面的数据进行重新加载的操作。
@@ -372,6 +397,7 @@ https://router.vuejs.org/zh
     }
 2. beforeRouteUpdate  // 组件内的守卫
 >
+    //设置id参数 判断是否相同
     beforeRouteUpdate (to, from, next) {
       if (to.name ==== from.name && to.params.id !== from.params.id) {
         //do something 
@@ -379,7 +405,8 @@ https://router.vuejs.org/zh
       }
     }
 
-## 刷新当前路由方法
+##  <a name="刷新当前路由方法">刷新当前路由方法</a>
+
 1. 
     this.$router.go(0)
     location.reload() 
@@ -412,8 +439,7 @@ https://router.vuejs.org/zh
     默认让key等于当时的时间戳，当切换当前路由的时候改变时间戳为现在的时间戳，同样也可以达到刷新路由的目的
     this.reload = new Date().getTime()
 
-
-## mode: hash | history区别
+##  <a name="mode">mode: hash | history区别</a>
 hash
 >
     即地址栏 URL 中的 # 符号。
@@ -442,15 +468,28 @@ base: '/dist/'
       mode: 'history',
       routes: [...]
     })
+##  <a name="切换页面时自动滚动到顶部">切换页面时自动滚动到顶部</a>
+>
+    export default new Router({
+      scrollBehavior: () => ({ y: 0 }), //路由跳转后页面回到顶部
+      routes: [...]
+    })
 
-## 切换页面时自动滚动到顶部
-  export default new Router({
-    mode: 'hash',
-    scrollBehavior: () => ({ y: 0 }), //路由跳转后页面回到顶部
-    routes: []
-  })
+>
 
-## 设置页面title 、 切换页面时自动滚动到顶部（另一种）
+    const router = new Router({
+      routes:[...]
+    })
+
+    router.beforeEach((to, from, next) => {//beforeEach是router的钩子函数，在进入路由前执行
+      window.scrollTo(0,0)//切换页面时滚动条自动滚动到顶部
+      next()//执行进入路由，如果不写就不会进入目标页
+    })
+
+    export default router
+
+##  <a name="设置页面title">设置页面title </a>
+>
     const router = new Router({
       routes: [
         {
@@ -458,12 +497,6 @@ base: '/dist/'
           name: 'index',
           meta: { title: "首页" },
           component: Index
-        },
-        {
-            path:'/',
-            name:'list',
-            meta:{ title:"列表页" },
-            component: List
         }
       ]
     })
@@ -478,16 +511,16 @@ base: '/dist/'
 
     export default router
 
-
-
     
 
 # <a name="组件通信方法">组件通信方法</a>
-EventBus、props $emit、Vuex
+https://zhuanlan.zhihu.com/p/66189674
+
 ## EventBus  事件总线
+
     // main.js 中定义一个新的eventBus对象，其是一个全新的Vue实例
     export const eventBus = new Vue()
-    Vue.prototype.eventBus = eventBus
+    Vue.prototype.eventBus = eventBus //绑定为全局对象
 
     //接收事件 监听当前实例上的自定义事件
     eventBus.$on( event, callback )
@@ -502,10 +535,12 @@ EventBus、props $emit、Vuex
 
 ### 注意
 1. $emit时，必须已经$on，否则将无法监听到事件，也就是说对组件是有一定的同时存在的要求的。(注：路由切换时，新路由组件先created，旧路由组件再destoryed，部分情况可以分别写入这两个生命周期，见此问题)。
+
 2. $on在组件销毁后不会自动解除绑定，若同一组件多次生成则会多次绑定事件，则会一次$emit，多次响应，需额外处理。
+
 3. 数据非“长效”数据，无法保存，只在$emit后生效
 
-## 父子组件通信 props, $emit
+## props, $emit -- 父子组件通信 
     https://cn.vuejs.org/v2/guide/components-props.html
 
 #### 父组件->子组件
@@ -556,10 +591,34 @@ EventBus、props $emit、Vuex
     }
 
 
-## 兄弟组件通讯
-1. 通过父组件进行兄弟组件之间通讯
-2. eventBus
-3. vux
+## $attrs/$listeners
+## $parent / $children & ref
+## provide/inject
+>
+    允许一个祖先组件向其所有子孙后代注入一个依赖，不论组件层次有多深，并在起上下游关系成立的时间里始终生效。一言而蔽之：祖先组件中通过 provider 来提供变量，然后在子孙组件中通过 inject 来注入变量。 provide / inject API 主要解决了跨级组件间的通信问题，不过它的使用场景，主要是子组件获取上级组件的状态，跨级组件间建立了一种主动提供与依赖注入的关系。
+
+
+
+# <a name="监听组件的生命周期">监听组件的生命周期</a>
+
+比如有父组件 Parent和子组件 Child，如果父组件监听到子组件挂载 mounted就做一些逻辑处理
+
+常规的写法可能如下：
+>
+    // Parent.vue
+    <Child @mounted="doSomething"/>
+
+    // Child.vue
+    mounted() {
+      this.$emit("mounted");
+    }
+
+
+通过 @hook来监听，子组件不需要任何处理，只需要在父组件引用的时候即可：
+>
+    <Child @hook:mounted="doSomething"/>
+
+    其它的生命周期事件，例如： created， updated等都可监听
 
 
 # <a name="token验证">如何添加token验证</a>

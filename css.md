@@ -207,7 +207,7 @@ CSS权威指南中的解释：
 #### 
 * 通配符选择器(*)
 * id选择器（ #myid）
-* 类选择器（.myclassname）
+* class选择器（.myclassname）
 * 标签选择器（div, h1, p）
 * 子代选择器（div > p）
 * 后代选择器（div p）
@@ -261,6 +261,7 @@ E[attr|=val]   //E中带有attr属性 且值具有 val 或以 val- 开始的值�
 * 目标伪类：
 >
     E:target   //表示元素被激活的状态  配合锚点使用
+    
 * 排除伪类：
 >
     E:not(selector) //除selector（任意选择器）外的元素会被选中；
@@ -271,7 +272,8 @@ E[attr|=val]   //E中带有attr属性 且值具有 val 或以 val- 开始的值�
     a:visited{...}	选择所有访问过的超链接
     a:hover{...} 当鼠标悬停于元素上方时
     a:active{...} 当元素被激活时
-    input:foucs{...} 当元素获得输入焦点  IE7前都不支持
+    input:foucs{...} 当元素获得输入焦点  
+
 * 语言伪类
 >
     E：lang（language） 匹配E的所有指定lang值为language的元素
@@ -291,15 +293,19 @@ E[attr|=val]   //E中带有attr属性 且值具有 val 或以 val- 开始的值�
     E::selection       //选中的区域 
     E::placeholder  //设置placeholder样式-- IE不支持
     //兼容写法
-        ::-webkit-input-placeholder {
-            color: red;
-        }
-        :-ms-input-placeholder { //ie
-            color: red;
-        }
-        ::-moz-placeholder { //ff
-            color: red;
-        }
+			::-webkit-input-placeholder {//chrome
+				color: red;
+			}
+			:-ms-input-placeholder { //ie
+				color: red;
+			}
+			::-moz-placeholder { //ff
+				color: red;
+			}
+
+css2伪类和伪元素都是用单冒号，所有的浏览器都兼容，
+但是css3伪类为单冒号如:hover ，伪元素为双冒号::before；但是双冒号IE8以下不兼容
+
 
 ## <a name="CSS书写顺序">CSS书写顺序</a>
 >
@@ -352,16 +358,16 @@ E[attr|=val]   //E中带有attr属性 且值具有 val 或以 val- 开始的值�
 
 满足以下任一条件即可形成：
 >
-    1. z-index 值不为 "auto"的 绝对/相对定位，
-    2. z-index 值不为 "auto"的 flex 项目 (flex item)，即：父元素 display: flex|inline-flex，
-    3. opacity值 < 1
-    4. transform 属性值不为 none
-    5. position: fixed | sticky
-    6. filter值不为 none
-    7. perspective值不为“none”的元素，
-    8. isolation 属性被设置为 "isolate"的元素，
-    9. mix-blend-mode 属性值不为 normal
-    10. 在 will-change 中指定了任意 CSS 属性，即便你没有直接指定这些属性的值
+    z-index 值不为 "auto"的 绝对/相对定位，
+    z-index 值不为 "auto"的 flex 项目 (flex item)，即：父元素 display: flex|inline-flex，
+    opacity值 < 1
+    transform 属性值不为 none
+    position: fixed | sticky
+    filter值不为 none
+    perspective值不为“none”的元素，
+    isolation 属性被设置为 "isolate"的元素，
+    mix-blend-mode 属性值不为 normal
+    在 will-change 中指定了任意 CSS 属性，即便你没有直接指定这些属性的值
     -webkit-overflow-scrolling 属性被设置 "touch"的元素
 
 在层叠上下文中，其子元素同样也按照上面解释的规则进行层叠。 
