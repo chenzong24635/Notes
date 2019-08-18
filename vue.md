@@ -10,6 +10,7 @@
 * <a href="#$nextTick">$nextTick</a>
 * <a href="#页面滚动">页面滚动</a>
 * <a href="#keep-alive">keep-alive</a>
+* <a href="#proxy跨域设置">proxy跨域设置</a>
 * <a href="#路由vue-router">路由vue-router</a>
   * <a href="#base">base</a>
   * <a href="#this.$route 和 this.$router区别">this.$route 和 this.$router区别</a>
@@ -316,6 +317,18 @@ document.getElementById('ID').scrollIntoView()
       不缓存：<keep-alive exclude=”组件名”></keep-alive>
 
     如果使用了keep-alive对组件进行了缓存，组件不会销毁，destroyed不执行
+
+# <a name="proxy跨域设置">proxy跨域设置</a>
+    config/index.js
+    proxyTable: {
+      '/api': {
+        target: '要跨域的域名',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    },
 
 # <a name="路由vue-router">路由vue-router</a>
 https://router.vuejs.org/zh

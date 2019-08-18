@@ -1009,10 +1009,10 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
 
 ## <a name="input placeholder颜色兼容">input placeholder颜色兼容</a>
 >
-    ::-webkit-input-placeholder { color: ##d3d2d2; }/*WebKit, Blink, Edge*/
-    :-moz-placeholder { color: ##d3d2d2; }/*Mozilla Firefox 4 to 18*/
-    ::-moz-placeholder { color: ##d3d2d2; }/*Mozilla Firefox 19+*/
-    :-ms-input-placeholder { color: ##d3d2d2; }/*Internet Explorer 10-11 */
+    ::-webkit-input-placeholder { color: ; }/*WebKit, Blink, Edge*/
+    :-moz-placeholder { color: ; }/*Mozilla Firefox 4 to 18*/
+    ::-moz-placeholder { color: ; }/*Mozilla Firefox 19+*/
+    :-ms-input-placeholder { color: ; }/*Internet Explorer 10-11 */
 
 ## <a name="border:solid">边框</a>
 [详情来源](https://www.w3cplus.com/css/css-tips-0904-1.html)

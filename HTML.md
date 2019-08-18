@@ -19,6 +19,9 @@
 * <a href="#IE hack">IE hack</a>
 * <a href="#aria与role">aria与role</a>
 * <a href="#CSS和JS的位置会影响页面效率，为什么">CSS和JS的位置会影响页面效率，为什么？</a>
+* <a href="#未使用自适应写的PC页面在手机上显示不全的问题">未使用自适应写的PC页面在手机上显示不全的问题</a>
+* <a href="base标签">base标签</a>
+* <a href="网页标题引入图标">网页标题引入图标</a>
 
 # <a name="HTML">**HTML**</a>
 
@@ -502,8 +505,19 @@ css在加载过程中不会影响到DOM树的生成，但是会影响到Render�
 
 js脚本应该放在底部，原因在于js线程与GUI渲染线程是互斥的关系，如果js放在首部，当下载执行js的时候，会影响渲染行程绘制页面，js的作用主要是处理交互，而交互必须得先让页面呈现才能进行，所以为了保证用户体验，尽量让页面先绘制出来。
 
+##<a name="未使用自适应写的PC页面在手机上显示不全的问题">未使用自适应写的PC页面在手机上显示不全的问题</a>
+原因：
+>
+    由于html样式的宽度只有980px，而实际需要是1200px
 
-## <base>标签
+解决方法
+>
+    html,body{min-width: 1200px;} //(具体多少按实际情况
+    
+    或
+	<meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=0.3, maximum-scale=1.0, minimum-scale=0.3">
+
+## <a name="base标签">base标签</a>
 
 <base href="www.aaa.com" target="_blank"/>
 
@@ -511,7 +525,7 @@ js脚本应该放在底部，原因在于js线程与GUI渲染线程是互斥的�
 <base>设置的target属性 ，a链接也会继承
 
 
-## 网页标题引入图标
+## <a name="网页标题引入图标">网页标题引入图标</a>
 
     <link rel="shortcut icon" href="favicon.ico" type="images/x-icon" />
 

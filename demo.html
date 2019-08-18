@@ -20,56 +20,28 @@
 </head>
 <body>
 <div></div>
-
+dadda
 <input type="text" id="ipt">
-  <script>
-// JSON.parse(JSON.stringify(obj))
-function create(obj){
-  var newobj = Array.isArray(obj)?[]:{}
-  for(var key in obj){
-    // if(newobj.hasOwnProperty)
-    if(obj[key] && typeof obj[key] === 'object'){
-      newobj[key] = create(obj[key])
-    } else{
-      newobj[key] = obj[key]
-    }
-  }
-  return newobj
-}
-var obj = {
-  a:[1,[43]],
-  b:{
-    a:[34,{a:1}]
-  },
-  c:function(){console.log(this.a)}
-}
-var obj1 = create(obj)
-console.log(obj)
-console.log(obj1)
-function bb(arr){
-  let len = arr.length;
-  for(var i = 0;i < len;i++){
-    for(var j =0;j<len-i;j++){
-      if(arr[j]>arr[j+1]){
-        [arr[j],arr[j+1]] = [arr[j+1],arr[j]]
+  <script >
+    function curry(fn) {
+      var len = fn.length
+      return function curried() {
+        var args = [].slice.call(arguments)
+        if(args.length < len) {
+          return function() {
+            var argsInner = [].slice.call(arguments)
+            return curried.apply(this, args.concat(argsInner))
+          }
+        } else {
+          return fn.apply(this, args)
+        }
       }
     }
-  }
-  return arr
-}
-function bubble(arr) {
-  let n = 0; //计算循环次数
-  let len = arr.length - 1;
-  for (i = 0; i < len; i++) {
-    for (j = 0; j < len - i; j++) {
-      if (arr[j] > arr[j + 1]) { //相邻元素两两对比
-        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
-        n++;
-      }
-    }
-  }
-  return {arr, n};
-}
+    var f = function(a, b, c) {
+      return a+b+c
+    };
+    var add = curry(f)
+    add(1)(2,3)
   </script>
 </body>
 </html>
