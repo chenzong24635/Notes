@@ -169,21 +169,48 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
     
     updated : 如果对数据统一处理，在这里写上相应函数
 
-    beforeDestroy : 可以做一个确认停止事件的确认框 
+    beforeDestroy : 可以做一个确认停止事件的确认框 (如：确认是否退出登录)
 
 ![lifecycle](img/lifecycle.png)
 
 # <a name="computed watch methods">computed watch methods</a>
+[computed和watch的细节全面分析](https://segmentfault.com/a/1190000012948175)
 
+[watch](https://cn.vuejs.org/v2/api/#watch)
+[computed](https://cn.vuejs.org/v2/api/#computed)
 用法、区别：
 >
     computed watch前两者自动追踪数据，执行相关函数，methods需手动调用；
 
-    watch 监听某个数据(需在data定义)的变化，执行相关操作
-    computed 是计算属性，用法与data一致, 计算后返回新值
+    watch 监听某个数据的变化，执行相关操作;无缓存性，页面重新渲染时值不变化也会执行;watch的对象必须事先声明
+   
+    computed 是计算属性,基于它的依赖缓存;只有在它的相关依赖发生改变时才会重新取值; computed的对象无需声明
 
     数据变化的同时进行异步操作或者是比较大的开销，那么watch为最佳选择
-    watch的对象必须事先声明
+
+    // watch
+      data: {
+        firstName: 'Foo',
+        lastName: 'Bar',
+        fullName: 'Foo Bar'
+      },
+      watch: {
+        firstName: function (val) {
+          this.fullName = val + ' ' + this.lastName
+        },
+        lastName: function (val) {
+          this.fullName = this.firstName + ' ' + val
+        }
+
+      //computed
+      data: {
+        firstName: 'Foo',
+        lastName: 'Bar'
+      },
+      computed: {
+        fullName: function () {
+          return this.firstName + ' ' + this.lastName
+        }
 
 # <a name="Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？">Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？</a>
 >
@@ -231,7 +258,7 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
 # <a name="slot">slot插槽</a>
 插槽显不显示、怎样显示是由父组件来控制的，而插槽在哪里显示就由子组件来进行控制
 
-
+普通插槽
 >
     //父组件
     <template>
@@ -242,6 +269,14 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
         </slot-one>
       </div>
     </template>
+    import slotOne from '@/pages/slotOne.vue'
+
+    export default {
+      components:{
+        slotOne
+      }
+    }
+
 
     //子组件
     <template>
@@ -281,7 +316,8 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
 # <a name="组件中key作用">组件中key作用</a>
 >
 
-    当 Vue.js 用 v-for 正在更新已渲染过的元素列表时，它默认用“就地复用”策略。如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序， 而是简单复用此处每个元素，并且确保它在特定索引下显示已被渲染过的每个元素。key的作用主要是为了高效的更新虚拟DOM
+    当 Vue.js 用 v-for 正在更新已渲染过的元素列表时，它默认用“就地复用”策略。如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序， 而是简单复用此处每个元素，并且确保它在特定索引下显示已被渲染过的每个元素。key的作用主要是为了高效的更新虚拟DOM  
+    
 >
 
     key 的作用是为了在 diff 算法执行时更快的找到对应的节点，提高 diff 速度。

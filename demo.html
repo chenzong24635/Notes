@@ -21,27 +21,32 @@
 <body>
 <div></div>
 dadda
+<div class="a">dadada</div>
 <input type="text" id="ipt">
   <script >
-    function curry(fn) {
-      var len = fn.length
-      return function curried() {
-        var args = [].slice.call(arguments)
-        if(args.length < len) {
-          return function() {
-            var argsInner = [].slice.call(arguments)
-            return curried.apply(this, args.concat(argsInner))
-          }
-        } else {
-          return fn.apply(this, args)
-        }
+    document.querySelector('.a').onclick=function(){
+      if(confirm('a')){
+        console.log(1)
+      }else{
+        console.log(2)
       }
+      console.log(prompt('daad'))
     }
-    var f = function(a, b, c) {
-      return a+b+c
-    };
-    var add = curry(f)
-    add(1)(2,3)
+
+    let obj ={}
+    let temp = 'base'
+    Object.defineProperty(obj, 'name', {
+      get() {
+        console.log('get')
+        return temp
+      },
+      set(val) {
+        console.log('set')
+        temp = val
+      }
+    })
+    obj.name = 'c'
+    console.log(obj.name)
   </script>
 </body>
 </html>
