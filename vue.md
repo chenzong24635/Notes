@@ -143,6 +143,8 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
 # <a name="生命周期">生命周期</a>
 [Vue2.0生命周期](https://segmentfault.com/a/1190000008010666)
 
+
+
 生命周期：
 >
     创建前/后： 
@@ -317,45 +319,51 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
 >
 
     当 Vue.js 用 v-for 正在更新已渲染过的元素列表时，它默认用“就地复用”策略。如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序， 而是简单复用此处每个元素，并且确保它在特定索引下显示已被渲染过的每个元素。key的作用主要是为了高效的更新虚拟DOM  
-    
+
 >
 
     key 的作用是为了在 diff 算法执行时更快的找到对应的节点，提高 diff 速度。
 
     vue 和 react 都是采用 diff 算法来对比新旧虚拟节点，从而更新节点。在 vue 的 diff 函数中。可以先了解一下 diff 算法。
 
-    在交叉对比的时候，当新节点跟旧节点头尾交叉对比没有结果的时候，会根据新节点的 key 去对比旧节点数组中的 key，从而找到相应旧节点（这里对应的是一个 key => index 的 map 映射）。如果没找到就认为是一个新增节点。而如果没有 key，那么就会采用一种遍历查找的方式去找到对应的旧节点。一种一个 map 映射，另一种是遍历查找。相比而言。map 映射的速度更快。
-
-
+    在交叉对比的时候，当新节点跟旧节点头尾交叉对比没有结果的时候，会根据新节点的 key 去对比旧节点数组中的 key，从而找到相应旧节点（这里对应的是一个 key => index 的 map 映射）。如果没找到就认为是一个新增节点。而如果没有 key，那么就会采用一种遍历查找的方式去找到对应的旧节点。一种一个 map 映射，另一种是遍历查找。相比而言。map 映射的速度更快。  
+    
 # <a name="$nextTick">$nextTick</a>
 作用：
 >
     Vue中DOM更新是异步的
     $nextTick是DOM更新完成后执行的
 
+什么时候需要用的Vue.nextTick()
+>
+    你在Vue生命周期的created()钩子函数进行的DOM操作一定要放在Vue.nextTick()的回调函数中。原因是在created()钩子函数执行的时候DOM 其实并未进行任何渲染，而此时进行DOM操作无异于徒劳，所以此处一定要将DOM操作的js代码放进Vue.nextTick()的回调函数中。
+    与之对应的就是mounted钩子函数，因为该钩子函数执行时所有的DOM挂载和渲染都已完成，此时在该钩子函数中进行任何DOM操作都不会有问题 。
+
+    在数据变化后要执行的某个操作，而这个操作需要使用随数据改变而改变的DOM结构的时候，这个操作都应该放进Vue.nextTick()的回调函数中。
+
 # <a name="页面滚动">页面滚动</a>
-* document.documentElement.scrollTop = 380 //不需要加单位
+* document.documentElement.scrollTop = 380
 * 
     this.$nextTick(() => {
       <!-- this.$refs.DOM.scrollBy(0, 300) -->
       this.$refs.DOM.scrollTo(0, 300)
     })
-* 
-document.getElementById('ID').scrollIntoView()
+* document.getElementById('ID').scrollIntoView()
 
 # <a name="keep-alive">keep-alive</a>
-
+[keep-alive](https://cn.vuejs.org/v2/api/#keep-alive)
 >
     包裹动态组件时，会缓存不活动的组件实例，主要用于保留组件状态或避免重新渲染；
 
     使用：
-      缓存： <keep-alive include=”组件名”></keep-alive>
-      不缓存：<keep-alive exclude=”组件名”></keep-alive>
+      缓存： <keep-alive include="组件1,组件2"></keep-alive>
+      不缓存：<keep-alive exclude="组件1,组件2"></keep-alive>
+      最大缓存数：<keep-alive :max="10"></keep-alive>
 
     如果使用了keep-alive对组件进行了缓存，组件不会销毁，destroyed不执行
 
 # <a name="proxy跨域设置">proxy跨域设置</a>
-    config/index.js
+   // config/index.js
     proxyTable: {
       '/api': {
         target: '要跨域的域名',
@@ -376,25 +384,28 @@ https://router.vuejs.org/zh
       name: 'a', //名称，vue页面可通过name调用,
       component: A, //具体vue页面
       meta: {title: '标题'},  //页面标题
-      children: [
-
+      children: [ //嵌套路由
       ],
-      redirect: '/b', //{ name: 'foo' } 重定向：当用户访问 /a时，URL 将会被替换成 /b，然后匹配路由为 /b
-      alias:'/b', //别名：/a 的别名是 /b，意味着，当用户访问 /b 时，URL 会保持为 /b，但是路由匹配则为 /a，就像用户访问 /a 一样。
+      redirect: '/b', // { name: 'foo' } 重定向：当用户访问 /a时，URL 将会被替换成 /b，实际访问 /b 
+      alias:'/b',  // 别名：/a 的别名是 /b，意味着，当用户访问 /b 时，URL 会保持为 /b，但是路由匹配则为 /a 
     }
 ##  <a name="this.$route 和 this.$router区别">this.$route 和 this.$router区别</a>
 
-    this.$route 信息参数（query、prams）传参获取 --只读
+    this.$route  信息参数（query、prams）传参获取 --只读
     this.$router 功能函数，go()，push()等方法调用 --只写
 
 ##  <a name="push(),replace(),go()">push(),replace(),go()</a>
 1. push()
 
-    this.$router.push(location, onComplete?, onAbort?) //页面跳转，且会向 history 栈添加一个新的记录，当用户点击浏览器后退按钮时，则回到之前的 URL。等同于<router-link :to="...">	
+    this.$router.push(location, onComplete?, onAbort?) 
+    this.$router.router.push({ name: 'user', params: { userId: '123' }})
+    //页面跳转，且会向 history 栈添加一个新的记录，当用户点击浏览器后退按钮时，则回到之前的 URL。等同于\<router-link :to="...">	
 
 2. replace()
 
-    this.$router.replace(location, onComplete?, onAbort?) //页面跳转，不会向 history 添加新记录，而是替换掉当前的 history 记录。等同于<router-link :to="..." replace> 
+    this.$router.replace(location, onComplete?, onAbort?) 
+    this.$router.router.replace({ name: 'user', params: { userId: '123' }})
+    //页面跳转，不会向 history 添加新记录，而是替换掉当前的 history 记录。等同于\<router-link :to="..." replace> 
 
 3. go()
     
@@ -420,13 +431,13 @@ https://router.vuejs.org/zh
 >
     (query传参，参数通过url get方式拼接) --在浏览器地址栏中显示参数 ?id=myid&name=myname
 
-    <router-link :to="{path:'/Ajax.mdRouterB', query: {name:'name1', title: 'title'} }">去B页面，传入参数</router-link>
+    <router-link :to="{path:'/A', query: {name:'name1', title: 'title'} }">去A页面</router-link>
 
 2. params传参
 >
     (params传参，参数通过路径[/001]形式拼接到url上，如果没有在路径配置种使用参数占位符，url不会拼接，直接展示是具体路由页面)/myid/myname
 
-    <router-link :to="{name:'RouterB', params: {name:'name2', title: 'title2'}}">去B页面，params传入参数</router-link>
+    <router-link :to="{name:'B', params: {name:'name2', title: 'title2'}}">去B页面</router-link>
 
 ##  <a name="页面url参数获取">页面url参数获取</a>
 >
@@ -441,7 +452,7 @@ https://router.vuejs.org/zh
       "$route":function(to,from){
         //to 对象：包含目标地址
         //from 对象：包含当前地址
-        //其实还有一个next参数的，这个参数是控制路由是否跳转的，如果没写，可以不用写next()来代表允许路由跳转，如果写了就必须写next(),否则路由是不会生效的。
+        //还有一个next参数的，这个参数是控制路由是否跳转的，如果没写，可以不用写next()来代表允许路由跳转，如果写了就必须写next(),否则路由是不会生效的。
       }
     }
 2. beforeRouteUpdate  // 组件内的守卫
@@ -457,11 +468,15 @@ https://router.vuejs.org/zh
 ##  <a name="刷新当前路由方法">刷新当前路由方法</a>
 
 1. 
+>
+
     this.$router.go(0)
     location.reload() 
-    //这两种方式都相当于f5刷新，页面会有卡顿的情况
+    这两种方式都相当于f5刷新，页面会有卡顿的情况
 
-2. 先进入空白页再在空白页跳转回到上一个页面
+2. 
+>
+    先进入空白页再在空白页跳转回到上一个页面
     // 要刷新的页面
     refresh () {
       this.$router.replace({
@@ -483,7 +498,10 @@ https://router.vuejs.org/zh
     }
     </script>
 
-3. 通过改变router-view中的key来达到刷新组件的目的
+3. 
+>
+    通过改变router-view中的key来达到刷新组件的目的
+
     <router-view :key="reload"></router-view>
     默认让key等于当时的时间戳，当切换当前路由的时候改变时间戳为现在的时间戳，同样也可以达到刷新路由的目的
     this.reload = new Date().getTime()
@@ -502,14 +520,18 @@ history 
 这两个方法应用于浏览器的历史记录栈，在当前已有的 back、forward、go 的基础之上，它们提供了对历史记录进行修改的功能。只是当它们执行修改时，虽然改变了当前的 URL，但浏览器不会立即向后端发送请求。
 
 #### mode:history缺点
+
 * 打包存放路径问题
-mode: 'history',
-base: '/dist/'
+>
+    mode: 'history',
+    base: '/dist/'
 
 * 刷新问题
-不怕前进，不怕后退，就怕刷新，f5，（如果后端没有准备的话）,因为刷新是实实在在地去请求服务器的。
+>
 
-在hash模式下，前端路由修改的是##中的信息，而浏览器请求时是不带它玩的，所以没有问题.但是在history下，你可以自由的修改path，当刷新时，如果服务器中没有相应的响应或者资源，页面会404。
+    不怕前进，不怕后退，就怕刷新，f5，（如果后端没有准备的话）,因为刷新是实实在在地去请求服务器的。
+    在hash模式下，前端路由修改的是##中的信息，而浏览器请求时是不带它玩的，所以没有问题.
+    但是在history下，你可以自由的修改path，当刷新时，如果服务器中没有相应的响应或者资源，页面会404。
 
 #### 如何去除vue项目中的网址的 ## --- History模式
     //router/index.js
@@ -517,6 +539,7 @@ base: '/dist/'
       mode: 'history',
       routes: [...]
     })
+
 ##  <a name="切换页面时自动滚动到顶部">切换页面时自动滚动到顶部</a>
 >
     export default new Router({
@@ -530,8 +553,9 @@ base: '/dist/'
       routes:[...]
     })
 
-    router.beforeEach((to, from, next) => {//beforeEach是router的钩子函数，在进入路由前执行
-      window.scrollTo(0,0)//切换页面时滚动条自动滚动到顶部
+    router.beforeEach((to, from, next) => {
+      //beforeEach是router的钩子函数，在进入路由前执行
+      window.scrollTo(0, 0)//切换页面时滚动条自动滚动到顶部
       next()//执行进入路由，如果不写就不会进入目标页
     })
 
@@ -551,34 +575,34 @@ base: '/dist/'
     })
 
     router.beforeEach((to, from, next) => {//beforeEach是router的钩子函数，在进入路由前执行
-      window.scrollTo(0,0)//切换页面时滚动条自动滚动到顶部
+      window.scrollTo(0, 0)//切换页面时滚动条自动滚动到顶部
       if (to.meta.title) {//判断是否有标题
         document.title = to.meta.title
       }
       next()//执行进入路由，如果不写就不会进入目标页
     })
 
-    export default router
-
-    
+    export default router 
 
 # <a name="组件通信方法">组件通信方法</a>
-https://zhuanlan.zhihu.com/p/66189674
+[Vue组件间通信6种方式](https://zhuanlan.zhihu.com/p/66189674)
+
+
 
 ## EventBus  事件总线
 
-    // main.js 中定义一个新的eventBus对象，其是一个全新的Vue实例
-    export const eventBus = new Vue()
+    // 可以在main.js中定义一个新的eventBus对象，其是一个全新的Vue实例
+    const eventBus = new Vue()
     Vue.prototype.eventBus = eventBus //绑定为全局对象
 
     //接收事件 监听当前实例上的自定义事件
-    eventBus.$on( event, callback )
+    this.eventBus.$on( event, callback )
 
     //发送事件 触发当前实例上的事件
-    eventBus.$emit( event,  [...args])
+    this.eventBus.$emit( event,  [...args])
 
     // 移除事件
-    eventBus.$off( [event, callback] )
+    this.eventBus.$off( [event, callback] )
     移除所有事件 eventBus.$off() 
     移除某事件   eventBus.$off('testEvent')
 
@@ -590,48 +614,79 @@ https://zhuanlan.zhihu.com/p/66189674
 3. 数据非“长效”数据，无法保存，只在$emit后生效
 
 ## props, $emit -- 父子组件通信 
-    https://cn.vuejs.org/v2/guide/components-props.html
+  [props](https://cn.vuejs.org/v2/guide/components-props.html)
 
-#### 父组件->子组件
-  父组件
-    <child :child-com="content"></child> //注意这里用驼峰写法
-
-  子组件
-    props: ['childCom', 'title']
-
-    //指定值类型
+>
     props: {
+      //指定值类型
       title: String,
-      likes: Number,
-      isPublished: Boolean,
-      commentIds: Array,
-      author: Object
-    }
-    // 设置默认值
-    propD: {
-      type: Number,
-      default: 100
-    },
-    propE: {
-      type: Object,
-      default: function () {  // 对象或数组默认值必须从一个工厂函数获取
-        return { message: 'hello' }
+      phone: Number,
+      isShow: Boolean,
+      lists: Array,
+      author: Object,
+
+      //指定值有多种类型
+      propsA: [String, Number],
+
+      // 设置默认值 、必填
+      propsB: {
+        type: Number,
+        default: 100,
+        required: true
+      },
+
+      //设置带默认值的对象
+      propsD: {
+        type: Object,
+        default: function () {  // 对象或数组默认值必须从一个工厂函数获取
+          return { message: 'hello' }
+        }
+      },
+
+      // 自定义验证函数
+      propE: {
+        validator: function (value) {
+          // 这个值必须匹配下列字符串中的一个
+          return ['success', 'warning', 'danger'].indexOf(value) !== -1
+        }
       }
     }
 
+#### 父组件->子组件
+父组件
+>
+
+    <child :child-com="content"></child> 
+
+    data(){
+      return{
+        content: '父给子组件数据'
+      }
+    }
+
+子组件
+>
+    <p>{{childCom}}</p>
+    
+    props: ['childCom'] 
+
+
 #### 子组件->父组件
-  子组件
+子组件
+>
     <template>
-        <div @click="open"></div>
+      <div @click="open"></div>
     </template>
 
     methods: {
       open() {
-          this.$emit('showbox','msg'); //触发showbox方法，'msg'为向父组件传递的数据
+        this.$emit('showbox','子传给父组件的数据'); //触发父组件showbox方法
       }
     }
-  父组件
-    <child @showbox="toshow" :msg="msg"></child> //监听子组件触发的showbox事件,然后调用toshow方法
+
+父组件
+>
+    \<child @showbox="toshow" :msg="msg"></child> //监听子组件触发的showbox事件,然后调用toshow方法
 
     methods: {
       toshow(msg) {
@@ -639,6 +694,8 @@ https://zhuanlan.zhihu.com/p/66189674
       }
     }
 
+## vuex
+[vuex](https://vuex.vuejs.org/zh/)
 
 ## $attrs/$listeners
 ## $parent / $children & ref
@@ -650,7 +707,7 @@ https://zhuanlan.zhihu.com/p/66189674
 
 # <a name="监听组件的生命周期">监听组件的生命周期</a>
 
-比如有父组件 Parent和子组件 Child，如果父组件监听到子组件挂载 mounted就做一些逻辑处理
+父组件监听到子组件挂载 mounted就做一些逻辑处理
 
 常规的写法可能如下：
 >
@@ -673,6 +730,8 @@ https://zhuanlan.zhihu.com/p/66189674
 # <a name="token验证">如何添加token验证</a>
 
 #### api/index.js
+在请求头添加token
+>
     // 请求拦截器
     axios.interceptors.request.use(
       config => {
@@ -683,8 +742,10 @@ https://zhuanlan.zhihu.com/p/66189674
       }, error => {
         return Promise.reject(error)
       }
-    )   
-#### store/index.js
+    ) 
+#### store/index.js 
+通过vuex获取、修改token 并存在 localStorage
+>
     const store = new Vuex.Store({
       state: {
         accessToken: localStorage.getItem('accessToken') ? localStorage.getItem('accessToken') : '',
@@ -698,7 +759,8 @@ https://zhuanlan.zhihu.com/p/66189674
       }
     })
 #### router/index.js
-  给需要判断是否登录的页面添加参数 requiresAuth
+>
+    //给需要判断是否登录的页面添加参数 requiresAuth
     const router = new Router({
       routes: [
         {
@@ -721,7 +783,7 @@ https://zhuanlan.zhihu.com/p/66189674
       if (to.meta.requiresAuth) { // 是否需要toekn验证
         let token = localStorage.getItem('accessToken')
         if (!token) { // toekn是否存在
-          next('/login') 
+          next('/login') //进入登录页
         } else {
           next()
         }
@@ -730,23 +792,26 @@ https://zhuanlan.zhihu.com/p/66189674
       }
     })
 #### 登录页面的token设置
+>
     import { mapMutations } from 'vuex'
     methods: {
       ...mapMutations([
+        'changeToken'
         // 将 `this.changeToken(args)` 映射为 `this.$store.commit('changeToken', args)`
         // 对应store/index.js的mutations方法
-        'changeToken'
       ]),
       login () { // 登录成功时
         // // 将用户token保存到vuex中
-        this.changeToken({ accessToken: data.accessToken})
+        this.changeToken({ accessToken: this.accessToken})
       }
     }
 
 
 # <a name="静态资源处理">静态资源处理</a>
 
-## 处理静态资源 -- http://vuejs-templates.github.io/webpack/static.html
+## 处理静态资源
+[详情](http://vuejs-templates.github.io/webpack/static.html)
+
   #### 图片路径 
     1. 相对URL，例如./assets/logo.png将被解释为模块依赖性。它们将替换为基于Webpack输出配置的自动生成的URL。
 
@@ -791,17 +856,19 @@ https://zhuanlan.zhihu.com/p/66189674
 
 
 
-
-
 # <a name="打包">打包时常见问题及解决</a>
 ## vue中打包后出现css中文本超出部分隐藏显示省略号失效
-    这是webpack的锅，webpack打包后-webkit-box-orient被移除，所以导致失效。
-     .content {
+>
+    原因：webpack打包后-webkit-box-orient被移除，所以导致失效。
+
+    解决：前后添加/*! autoprefixer: off */ /* autoprefixer: on */
+     .ovh {
         display: -webkit-box; /*作为弹性伸缩盒子模型显示*/
         -webkit-line-clamp: 2; /*显示的行数；如果要设置2行加...则设置为2*/
         overflow: hidden;
         text-overflow: ellipsis; /* 溢出用省略号*/
-        /*! autoprefixer: off */
+
+        /*! autoprefixer: off */ 
         -webkit-box-orient: vertical;/*伸缩盒子的子元素排列：从上到下*/
         /* autoprefixer: on */
       }
@@ -1050,7 +1117,7 @@ dev --> port
 
 
 
-# <a name="npm ">npm</a>
+# <a name="npm ">npm指令</a>
 >
     npm init 在此目录生成package.json文件，可以添加-y | --yes 参数则默认所有配置为默认yes
 
