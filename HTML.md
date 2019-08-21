@@ -41,14 +41,18 @@
     盲人使用读屏器更好地阅读
 
 ## <a name="XHTML、HTML区别">XHTML、HTML区别</a>
-HTML是一种基于标准通用标记语言（SGML）的应用，是一种非常灵活的置标语言，
-
+HTML是一种基于标准通用标记语言（SGML）的应用，是一种非常灵活的置标语言，  
 而XHTML则基于可扩展标记语言（XML），XML是SGML的一个子集。
 
-* XHTML 与 HTML4 几乎是相同的
-* XHTML是更为严格纯净的HTML版
-* XHTML是作为一种xml应用被重新定义的HTML
-* XHTML文档必须拥有根元素、元素必须被关闭、元素必须被正确地嵌套、标签应该使用小写
+XHTML 与 HTML4 几乎是相同的  
+XHTML是更为严格纯净的HTML版  
+XHTML是作为一种xml应用被重新定义的HTML  
+XHTML文档必须拥有根元素、元素必须被关闭、元素必须被正确地嵌套、标签应该使用小写
+
+## <a name="HTML5 为什么只需要写">HTML5 为什么只需要写 \<!DOCTYPE HTML\></a>
+HTML5 不基于 SGML，因此不需要对DTD进行引用，但是需要doctype来规范浏览器的行为（让浏览器按照它们应该的方式来运行）
+
+HTML4.01基于SGML,所以需要对DTD进行引用，才能告知浏览器文档所使用的文档类型。
 
 ## <a name="Doctype作用 标准模式、混杂模式区别">Doctype作用？标准模式、混杂模式区别</a>
 
@@ -76,18 +80,14 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 
     
 
-## <a name="HTML5 为什么只需要写">HTML5 为什么只需要写 \<!DOCTYPE HTML\></a>
-* HTML5 不基于 SGML，因此不需要对DTD进行引用，但是需要doctype来规范浏览器的行为（让浏览器按照它们应该的方式来运行）
-* HTML4.01基于SGML,所以需要对DTD进行引用，才能告知浏览器文档所使用的文档类型。
-
 ## <a name="渐进增强与优雅降级">渐进增强与优雅降级-----开发方式，设计理念</a>
 
 * 渐进增强：针对低版本浏览器构建页面，保证核心功能。再针对高级浏览器进行改进和追加功能以达到更好的用户体验
 * 优雅降级：一开始就构建完整功能，在针对底版本浏览器兼容
 
-    区别：
-    优雅降级是从复杂的现状开始，并试图减少用户体验的供给，
-    渐进增强则从基础的的版本开始，并不断扩充，以适应未来环境的需要。
+    区别：  
+    优雅降级是从复杂的现状开始，并试图减少用户体验的供给，  
+    渐进增强则从基础的的版本开始，并不断扩充，以适应未来环境的需要。  
     优雅降级意味着往回看；而渐进增强则意味着朝前看，同时保证其根基处于安全地带
 
 ## <a name="块级元素、行内元素、行内块级元素">块级元素、行内元素、行内块级元素</a>
@@ -102,9 +102,9 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 
 行内元素：display:inline.
 >
-    不会独占一行,相邻的行内元素会排列在同一行里,直到一行排不下,才会换行,其宽度随元素的内容而变化.　
-    行内元素设置width,height属性无效，它的长度高度主要根据内容决定.
-    行 内元素的margin和padding属性,水平方向的padding-left,padding-right,margin-left,margin- right都产生边距效果,但竖直方向的padding-top,padding-bottom,margin-top,margin-bottom无效
+    不会独占一行,相邻的行内元素会排列在同一行里,直到一行排不下,才会换行,其宽度随元素的内容而变化.  
+    行内元素设置width,height属性无效，它的长度高度主要根据内容决定.  
+    行内元素的margin和padding属性,水平方向(padding-left,padding-right,margin-left,margin- right)产生边距效果,但竖直方向(padding-top,padding-bottom,margin-top,margin-bottom)无效
 
     a,span,img,select,input
 
@@ -113,20 +113,30 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
     让行内元素拥有（除了独占一行）的特性
 
 空元素：
-没有内容的 HTML 元素被称为空元素。
-空元素是在开始标签中关闭的
 >
+    没有内容的 HTML 元素被称为空元素。
+    空元素是在开始标签中关闭的
+
     <br> <hr> <img> <input> <link> <meta>
 
 ## <a name="HTML全局属性有哪些">HTML全局属性有哪些</a>
+    accesskey属性允许你设置一个或者多个键盘快捷键，快速聚焦到页面元素
+        <input type="text" name="name" accesskey="n"/>  
+        chrome：alt + n即可聚焦到该input
+        firefox ctrl + alt + n即可聚焦到该input
+        IE alt + n | ctrl + alt + n
 
     id: 元素id，文档内唯一
     class:为元素设置类标识
+    contenteditable: 指定元素内容是否可编辑(true, false)
     data-*: 为元素增加自定义属性
+    dir: 设置元素文本方向(auto、ltr、rtl)
     draggable: 设置元素是否可拖拽
+    hidden: 隐藏元素
     lang: 元素内容的的语言
     style: 行内css样式
     title: 元素相关的建议信息
+    tabindex: 使用tab键时的访问顺序。当设置为-1的时候，不会被选中。当为0时在所有大于0的之后
 
 ## <a name="src和href的区别">src和href的区别</a>
 href（Hypertext Reference）
@@ -135,7 +145,7 @@ href（Hypertext Reference）
 
 src（source）
 >
-    是指向外部资源的位置，指向的内容将会嵌入到文档中当前标签所在位置；在请求src资源时会将其指向的资源下载并应用到文档内，例如js脚本，img图片和frame等元素。
+    是指向外部资源的位置，指向的内容将会嵌入到文档中当前标签所在位置；在请求src资源时会将其指向的资源下载并应用到文档内，例如js脚本，img图片和frame等元素。 
     当浏览器解析到该元素时，会暂停其他资源的下载和处理，直到将该资源加载、编译、执行完毕，图片和框架等元素也如此，类似于将所指向资源嵌入当前标签内。这也是为什么将js脚本放在底部而不是头部。
 
 总而言之，src用于替换当前元素；href用于在当前文档和引用资源之间建立联系。
@@ -255,7 +265,7 @@ https://segmentfault.com/a/1190000011295587
     "Access-Control-Allow-Credentials", "true"
     "Access-Control-Allow-Origin", "允许跨域的域名" //或设为 "*" 
 
-* Cookie 隔离？（或者说：请求资源的时候不要让它带cookie怎么做）
+* Cookie 隔离？（或者说：请求资源的时候不要让它带cookie）
 
   如果静态文件都放在主域名下，那静态文件请求的时候都带有的cookie的数据提交给server的，非常浪费流量，
   所以不如隔离开。
@@ -268,11 +278,11 @@ https://segmentfault.com/a/1190000011295587
 
 * cookie方法、属性
 >
-    客户端可以设置cookie 的下列选项：expires、domain、path、secure（有条件：只有在https协议的网页中，客户端设置secure类型的 cookie 才能成功），但无法设置HttpOnly选项。
-    读取：document.cookie
+    客户端可以设置cookie 的选项：expires、domain、path、secure
+    读写cookie方法：document.cookie
 >
     
-    document.cookie = 'key=value;max-age=10000;domain=eoitek.com;path=/;secure'
+    document.cookie = 'key=value;max-age=10000;domain=aaa.com;path=/;secure'
 
     max-age：cookie的过期时间,是一个相对时间，单位是秒；优先级高于expires。
     expires：值为日期对象的toUTCString()格式，即Thu, 21 Sep 2018 06:10:38 GMT，指cookie过期的绝对时间。
@@ -297,7 +307,7 @@ https://segmentfault.com/a/1190000011295587
 
 * 如何删除cookie
 >
-    在客户端，可以将expires属性设置为过去的一个时间。即：document.cookie = ‘name=’+cookie_name+’;expires=’+ passed_date
+    在客户端，可以将expires属性设置为过去的一个时间。即：document.cookie = 'key=' + value + ';expires='+ passed_date
     或设置该cookie的max-age=0
 
 
@@ -306,14 +316,13 @@ https://segmentfault.com/a/1190000011295587
 >
     离线存储可以将站点的一些文件存储在本地，在没有网络的时候还是可以访问到以缓存的对应的站点页面，其中这些文件可以包括html，js，css，img等等文件，但其实即使在有网络的时候，浏览器也会优先使用已离线存储的文件，返回一个200（from cache）头。这跟HTTP的缓存使用策略是不同的。
 
-    
 
 ## <a name="iframe缺点">iframe缺点</a>
 1. 会阻塞主页面的onload事件
 2. 不利于搜索引擎的检索，不利于SEO优化
 3. iframe和主页面共享连接池，而浏览器对相同域的连接有限制，所以会影响页面的并行加载.
 
-通过javascript动态给iframe添加src属性值，这样可以绕开以上两个问题。
+通过javascript动态给iframe添加src属性值，这样可以解决1,3两个问题。
 
 ## <a name="响应式设计-viewport">响应式设计-viewport</a>
 >
@@ -332,46 +341,48 @@ https://segmentfault.com/a/1190000011295587
 
 ## <a name="meta">meta</a>
 ###
-    必要属性
-    * content 
-    
+必要属性: content 
 
-    可选属性
-    * http-equiv:content-type / expire / refresh / set-cookie  把content属性关联到HTTP头部
-    * name:author / description / keywords / generator / others  把content属性关联到一个名称
+
+可选属性 
+>
+    http-equiv: content-type | expire | refresh | set-cookie  ;把content属性关联到HTTP头部  
+
+    name: author | description | keywords | robots | format-detection  ;把content属性关联到一个名称
 
 #### 声明文档使用的字符编码
     <meta charset='utf-8'>    
 
-#### 关键词
-
-    描述网页上所提供信息的描述性和代表性关键字及短语。标记不应超过 874 个字符。
+#### 关键词：name="keywords"
+>
+    描述网页上所提供信息的描述性和代表性关键字及短语,逗号隔开。标记不应超过 874 个字符。
     <meta name="keywords" content="关键词1, 关键词2">
 
-#### 页面描述
+#### 页面描述：name="description"
 
     每个网页都应有一个不超过 150 个字符且能准确反映网页内容的描述标签。
     <meta name="description" content="页面描述的内容">
 
-#### 搜索引擎索引方式
+#### 搜索引擎索引方式：name="robots"
 
     <meta name="robots" content="none,noindex,nofollow,all,index,follow">
     robots是一组使用逗号(,)分割的值，通常有如下几种取值：
-    all, 文件将被检索，且页面上的链接可以被查询
-    none, 文件将不被检索，且页面上的链接不可以被查询
-    index, 文件将被检索
-    noindex, 文件将不被检索
-    follow, 页面上的链接可以被查询
-    nofollow, 页面上的链接不可以被查询
+        all, 文件将被检索，且页面上的链接可以被查询
+        none, 文件将不被检索，且页面上的链接不可以被查询
+        index, 文件将被检索
+        noindex, 文件将不被检索
+        follow, 页面上的链接可以被查询
+        nofollow, 页面上的链接不可以被查询
 
-#### 页面重定向和刷新
+#### 页面重定向和刷新 http-equiv="refresh"
+>
+    <meta http-equiv="refresh" content="0; url="">
 
     content内的数字代表时间（秒），既多少时间后刷新。如果加url,则会重定向到指定网页（搜索引擎能够自动检测，也很容易被引擎视作误导而受到惩罚）。
-    <meta http-equiv="refresh" content="0; url="">
 
 ### viewport
 #### 基本
-    <meta name="viewport" content="width=device-width, inital-scale=1.0, maximum-scale=1.0, user-scable=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
 
     1.width：宽度（数值 / device-width）（范围从200 到10,000，默认为980 像素）
 
@@ -385,20 +396,32 @@ https://segmentfault.com/a/1190000011295587
 
     6.user-scalable：用户是否可以手动缩 (no,yes)
 
-#### 忽略数字自动识别为电话号码
-
-    <meta content="telephone=no" name="format-detection">
-
-#### 忽略邮箱识别
-
-    <meta content="email=no" name="format-detection">
 
 #### 其他
+https://segmentfault.com/a/1190000002407912
+
+>
+    <!-- 忽略页面中的数字识别为电话，忽略email识别 -->
+    <meta name="format-detection" content="telephone=no, email=no" />
 
     <!-- 浏览器内核控制 -->
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
 
-    <!-- 禁止浏览器从本地计算机的缓存中访问页面内容：这样设定，访问者将无法脱机浏览 -->
+    <!-- 避免IE使用兼容模式 ,以最高版本IE来渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  
+
+    <!-- IE中，无论是否用DTD声明文档标准，以IE7引擎来渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=7">    
+
+    <!-- windows phone 点击无高光 -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- 设置页面不缓存 -->
+    <meta http-equiv=”pragma” content=”no-cache”>
+    <meta http-equiv=”cache-control” content=”no-cache”>
+    <meta http-equiv=”expires” content=”0″>      
+
+    <!-- 禁止浏览器从本地计算机的缓存中访问页面内容：如此访问者将无法脱机浏览 -->
     <meta http-equiv="Pragma" content="no-cache">
 
     <!-- 用百度打开网页可能会对其进行转码（比如贴广告），避免转码 -->
@@ -410,14 +433,9 @@ https://segmentfault.com/a/1190000011295587
     <!-- 设置苹果工具栏颜色 -->
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
-    <!-- 忽略页面中的数字识别为电话，忽略email识别 -->
-    <meta name="format-detection" content="telphone=no, email=no" />
-
     <!-- 启用360浏览器的极速模式(webkit) -->
     <meta name="renderer" content="webkit">
 
-    <!-- 避免IE使用兼容模式 ,以最高版本IE来渲染页面 -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
     <meta name="HandheldFriendly" content="true">
@@ -443,29 +461,6 @@ https://segmentfault.com/a/1190000011295587
     <!-- QQ应用模式 -->
     <meta name="x5-page-mode" content="app">
 
-    <!-- windows phone 点击无高光 -->
-    <meta name="msapplication-tap-highlight" content="no">
-
-    <!-- 设置页面不缓存 -->
-    <meta http-equiv=”pragma” content=”no-cache”>
-    <meta http-equiv=”cache-control” content=”no-cache”>
-    <meta http-equiv=”expires” content=”0″>
-
-#### IE
-
-    IE中，无论是否用DTD声明文档标准，IE8/9都会以IE7引擎来渲染页面。
-    <meta http-equiv="X-UA-Compatible" content="IE=7">
-
-    IE中，IE8/9都会以IE8引擎来渲染页面。
-    <meta http-equiv="X-UA-Compatible" content="IE=8">
-
-    IE中，IE8/9及以后的版本都会以最高版本IE来渲染页面。
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <meta http-equiv="X-UA-Compatible" content="IE=7,IE=9">
-    <meta http-equiv="X-UA-Compatible" content="IE=7,9">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    IE中最新的引擎渲染网页，chrome=1则可以激活Chrome Frame.
 
 
 ## <a name="IE hack">IE hack</a>
@@ -513,19 +508,19 @@ js脚本应该放在底部，原因在于js线程与GUI渲染线程是互斥的�
 解决方法
 >
     html,body{min-width: 1200px;} //(具体多少按实际情况
-    
-    或
+    或  
 	<meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=0.3, maximum-scale=1.0, minimum-scale=0.3">
 
 ## <a name="base标签">base标签</a>
+>
+    <base href="www.aaa.com" target="_blank"/>
 
-<base href="www.aaa.com" target="_blank"/>
-
-<base> 标签为页面上的所有链接(img、a、script等)规定默认地址或默认目标。
-<base>设置的target属性 ，a链接也会继承
+    <base> 标签为页面上的所有链接(img、a、script等)规定默认地址或默认目标。
+    <base>设置的target属性 ，a链接也会继承
 
 
 ## <a name="网页标题引入图标">网页标题引入图标</a>
+>
 
     <link rel="shortcut icon" href="favicon.ico" type="images/x-icon" />
 

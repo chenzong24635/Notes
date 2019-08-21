@@ -1,7 +1,13 @@
 # 笔记
 
+------
 
-#markdown 语法
+# markdown 语法
+
+## 换行
+两长段落之间没有空行 ，如何换行
+>
+    段落末尾空两格 （space + space）
 
 ## 表格
 | Tables       | Are       | Cool |

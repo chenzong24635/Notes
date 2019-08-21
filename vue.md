@@ -23,6 +23,7 @@
   * <a href="#切换页面时自动滚动到顶部">切换页面时自动滚动到顶部</a>
   * <a href="#设置页面title">设置页面title</a>
 
+* <a href="#vuex">vuex</a>
 * <a href="#组件通信方法">组件通信方法</a>
 * <a href="#监听组件的生命周期">监听组件的生命周期</a>
 
@@ -40,24 +41,6 @@
 
 
 # <a name=""></a>
-设置路径别名
->
-    build -- webpack.base.conf.js
-    module.exports -- resolve --a>lias
-
-    'vue$': 'vue/dist/vue.esm.js',
-    '@': resolve('src'),
-    'styles': resolve('src/assets/styles'), // 自己配置
-
-    在main.js直接 styles，其他地方需要加波浪线 ‘ ~ ’
-
-dependencies 与 devdependencies 区别
->
-    –save会把依赖包名称添加到package.json文件dependencies键下
-    –save-dev则添加到package.json文件devDependencies键下
-
-    devDependencies -- 开发时用的依赖项，它们不会被部署到生产环境。
-    Dependencies -- 生产环境中需要的依赖，即正常运行该包时所需要的依赖项。
 
 
 # <a name="MVVM、MVC">MVVM、MVC</a>
@@ -584,6 +567,10 @@ history 
 
     export default router 
 
+# <a name="vuex">vuex</a>
+[详情](vuex.md)
+
+
 # <a name="组件通信方法">组件通信方法</a>
 [Vue组件间通信6种方式](https://zhuanlan.zhihu.com/p/66189674)
 
@@ -695,7 +682,7 @@ history 
     }
 
 ## vuex
-[vuex](https://vuex.vuejs.org/zh/)
+[详情](vuex.md)
 
 ## $attrs/$listeners
 ## $parent / $children & ref
@@ -857,6 +844,7 @@ history 
 
 
 # <a name="打包">打包时常见问题及解决</a>
+
 ## vue中打包后出现css中文本超出部分隐藏显示省略号失效
 >
     原因：webpack打包后-webkit-box-orient被移除，所以导致失效。
@@ -912,10 +900,18 @@ history 
     使用帮助：nginx -h
 
 # <a name="其他">其他</a>
-## 组件引用路径写法 
-    // 在build/webpack.base.conf.js中定义了 @
-    @/commponents/a.vue
+## 组件引用 自定义路径名
+>
+    build -- webpack.base.conf.js
+    module.exports -- resolve --a>lias
 
+    'vue$': 'vue/dist/vue.esm.js',
+    '@': resolve('src'),
+    'styles': resolve('src/assets/styles'), // 自己配置
+
+    在main.js直接 styles，其他地方需要加波浪线 ‘ ~ ’
+
+    使用：@/commponents/a.vue
 
 ## Vue 用 axios 调用本地的 json 文件，
   json 必须存放在 “ static ” 文件夹下，static 目录是 vue-cli 向外暴露的静态文件夹，所有静态数据都应该放到static目录中。
@@ -1118,6 +1114,7 @@ dev --> port
 
 
 # <a name="npm ">npm指令</a>
+##
 >
     npm init 在此目录生成package.json文件，可以添加-y | --yes 参数则默认所有配置为默认yes
 
@@ -1152,3 +1149,12 @@ dev --> port
     npm prune 移除当前不在package.json中但是存在node_modules中的依赖
 
     npm link 不使用npm install 而连接某个依赖包，通常用作开发本地依赖包 
+
+
+## dependencies 与 devdependencies 区别
+>
+    –save会把依赖包名称添加到package.json文件dependencies键下
+    –save-dev则添加到package.json文件devDependencies键下
+
+    devDependencies -- 开发时用的依赖项，它们不会被部署到生产环境。
+    Dependencies -- 生产环境中需要的依赖，即正常运行该包时所需要的依赖项。

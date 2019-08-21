@@ -6,47 +6,70 @@
   <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>-->
   <title></title>
   <!-- <link rel="stylesheet" href="" /> -->
-  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no ">
   <style>
-    *{padding: 0;margin: 0;}
-    div{
-      width: 100px;
-      height: 1px;
-      background-color: red;
-      transform: scale(.5);
+    :root{
+       --a--b--c--d--e: red
     }
-    
+    div{
+       --a--b--c--d--e: gold
+    }
+    .a{
+      position: relative;
+      padding: 30px;
+      background-color: red;
+      color: var( --a--b--c--d--e, green)
+    }
+    .b{
+      width: 100px;
+      display:-webkit-box;
+      text-overflow: ellipsis;
+      word-wrap: break-word;
+      word-break: break-all;
+      overflow: hidden;
+      background-color: #000;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+    }
+    .aa{
+      -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+      -webkit-user-select: none;
+      -moz-user-focus: none;
+      -moz-user-select: none;
+    }
+    a.bb,a.bb:hover,a.bb:active,a.bb:visited,a.bb:link,a.bb:focus{
+      -webkit-tap-highlight-color:rgba(0,0,0,0);
+      -webkit-tap-highlight-color: transparent;
+      outline:none;
+      background: none;
+      text-decoration: none;
+    }
+    ::selection { 
+        background: #fff; 
+        color: gold; 
+    } 
+    ::-moz-selection { 
+        background: #fff; 
+        color: gold; 
+    } 
+    ::-webkit-selection { 
+        background: #fff; 
+        color: gold; 
+    } 
   </style>
 </head>
 <body>
-<div></div>
-dadda
-<div class="a">dadada</div>
-<input type="text" id="ipt">
-  <script >
-    document.querySelector('.a').onclick=function(){
-      if(confirm('a')){
-        console.log(1)
-      }else{
-        console.log(2)
-      }
-      console.log(prompt('daad'))
-    }
-
-    let obj ={}
-    let temp = 'base'
-    Object.defineProperty(obj, 'name', {
-      get() {
-        console.log('get')
-        return temp
-      },
-      set(val) {
-        console.log('set')
-        temp = val
-      }
-    })
-    obj.name = 'c'
-    console.log(obj.name)
+  <p>das ssdsfdfs</p>
+  <div class="a"><div class="b">const color = styles.getPropertyValue(' --a--b--c--d--e').trim()const color = styles.getPropertyValue(' --a--b--c--d--e').trim()</div></div>
+  <a href="" class="aa">addada</a>
+  <a href="" class="bb"><img src="img/CSFR.png" alt=""></a>
+  <a href="" class=""><img src="img/CSFR.png" alt=""></a>
+  <a href="" class="">addada</a>
+  <script>
+    const div = document.querySelector('.a')
+    const styles = getComputedStyle(div)
+    const color = styles.getPropertyValue(' --a--b--c--d--e').trim()
+    console.log(color) //--> red
+    // div.style.setProperty(' --a--b--c--d--e', 'green')
   </script>
 </body>
 </html>
