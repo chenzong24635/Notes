@@ -8,6 +8,7 @@
 * sync.gist: b3a0bf7bab5419ea91488dcaee403f83
 
 # git
+
 * git init 
 * touch README.md
 * git add README.md
@@ -44,6 +45,7 @@
 * git pull origin   ---从服务器拉取
 * git push origin  ---更新到服务器
 * git status 
+* git rm -r --cached fileName --删除文件/文件夹
 
 # 安装配置：
 * npm install git
@@ -81,6 +83,32 @@
 * git config user.name
 * git config user.email
 
+
+# gitingore
+忽略某些文件提交
+
+规则  作用
+>
+    /mtk    过滤整个文件夹
+    *.zip   过滤所有.zip文件
+    /mtk/do.c   过滤某个具体文件
+    !/mtk/one.txt   追踪（不过滤）某个具体文件
+
+注意：如果你创建.gitignore文件之前就push了某一文件，那么即使你在.gitignore文件中写入过滤该文件的规则，该规则也不会起作用，git仍然会对该文件进行版本管理。
+
+
+配置语法
+>
+    以斜杠“/”开头表示目录；
+    以星号“*”通配多个字符；
+    以问号“?”通配单个字符
+    以方括号“[]”包含单个字符的匹配列表；
+    以叹号“!”表示不忽略(跟踪)匹配到的文件或目录。
+
+注意： git 对于 .gitignore配置文件是按行从上到下进行规则匹配的
+
+
+
 # git命令:
 
 * git init  //初始化git  将当前目录变为仓库
@@ -97,8 +125,7 @@
 * git reflog//记录每次命令查找id
 * git status //查看文件状态
 * git checkout -- readme.txt。//放弃工作区中的内容
-* git rm filename //删除文件
-
+* git rm -r --cached fileName --删除文件/文件夹
 
 查看分支：git branch
 
