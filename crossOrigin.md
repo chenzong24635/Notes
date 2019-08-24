@@ -127,7 +127,7 @@ jsonp产生原因
     //index.html  (http://127.0.0.1:5500/jsonp/index.html)
 
     let script = document.createElement('script');  //动态创建script
-    script.src = 'http://localhost:8080/crossOrigin/jsonp/test.php?callback=callback';//
+    script.src = 'http://localhost:8080/crossOrigin/jsonp/test.php?callback=callback';
     document.body.appendChild(script);
     function callback(json) {  //回调执行函数
       console.log(JSON.stringify(json));

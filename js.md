@@ -1,6 +1,6 @@
 # 链接
 
-[MDN](https://developer.mozilla.org/zh-CN/)
+[MDN-JavaScript 标准内置对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects)
 
 [阮一峰《ECMAScript 6 入门》](http://es6.ruanyifeng.com/)
 
@@ -22,11 +22,11 @@
 # 目录
 
 * <a href="#运算符优先级">运算符优先级</a>
+* <a href="#运算符">运算符</a>
+    * <a href="#加运算符">+运算符</a>
+    * <a href="#~运算符">~运算符</a>
+    * <a href="#比较运算符"><,>,<=,>=的比较规则</a>
 * <a href="#===、==、Object.is()判断">===、==、Object.is()判断</a>
-* <a href="#===运算符判断">===运算符判断</a>
-* <a href="#==运算符判断">==运算符判断</a>
-* <a href="#比较运算符"><,>,<=,>=的比较规则</a>
-* <a href="#加运算符">+运算符工作流程</a>
 * <a href="#keyCode">keyCode:键盘按键键码</a>
 
 
@@ -42,15 +42,15 @@
 * <a href="#变量、函数声明提升">变量、函数声明提升</a>
 * <a href="#自执行函数">自执行函数</a>
 * <a href="#对象属性">对象属性configurable enumerable writable</a>
-* <a href="#创建对象的几种方式">创建对象的几种方式</a>
+* <a href="#typeof instanceof">typeof instanceof in</a>
 * <a href="#new的实现原理">new的实现原理</a>
 * <a href="#异步编程有哪几种方法">异步编程有哪几种方法</a>
 * <a href="#事件委托(代理)">事件委托(代理)</a>
 * <a href="#闭包">闭包</a>
 * <a href="#内存泄漏">内存泄漏</a>
 * <a href="#原型、原型链、原型继承">原型、原型链、原型继承</a>
+* <a href="#创建对象的几种方式">创建对象的几种方式</a>
 * <a href="#设计模式">设计模式</a>
-* <a href="#typeof instanceof">typeof instanceof in</a>
 * <a href="#作用域、作用域链、执行上下文">作用域、作用域链、执行上下文</a>
 * <a href="#this">this理解</a>
 * <a href="apply call bind">apply call bind</a>
@@ -85,10 +85,40 @@
 ![运算符优先级](img/运算符优先级.png)
 [更多-MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence)
 
+#  <a name="运算符">运算符</a>
+##  <a name="加运算符">+运算符</a>
+>
+    如果有操作数是对象，转换为原始值  
+    此时如果有一个操作数是字符串，其他的操作数都转换为字符串并执行连接  
+    否则：所有操作数都转换为数字并执行加
+##  <a name="~运算符">~运算符</a>
+~，被称为“按位不运算符”，~n等价于 - n - 1。//返回一个整数
+>
+    ~15.5 // -16
+    ~'15.5' // -16
+    ~('daa') // -1
+    ~(NaN)  // -1
+
+~~n：可用于取整;
+~~n 等价于  - (- n - 1) - 1 = n + 1 - 1 = n
+>
+
+    ~~15.5 // 15
+    ~~(NaN) // 0
+
+## <a name="比较运算符"><,>,<=,>=的比较规则</a>
+
+所有比较运算符都支持任意类型，但是比较只支持数字和字符串，所以需要执行必要的转换然后进行比较  
+转换规则如下:
+>
+    如果操作数是对象，转换为原始值：如果valueOf方法返回原始值，则使用这个值，否则使用toString方法的结果，如果转换失败则报错  
+    经过必要的对象到原始值的转换后，如果两个操作数都是字符串，按照字母顺序进行比较（他们的16位unicode值的大小）  
+    否则，如果有一个操作数不是字符串，将两个操作数转换为数字进行比较
+
 # <a name="===、==、Object.is()判断">===、==、Object.is()判断</a>
 ![===、==、Object.is()](/img/===.png)
 
-# <a name="===运算符判断">===运算符判断</a>
+## ===运算符判断
     如果两个值不是相同类型，它们不相等
     如果两个值都是null或者都是undefined，它们相等
     如果两个值都是布尔类型true或者都是false，它们相等
@@ -97,7 +127,8 @@
     如果他们都是字符串并且在相同位置包含相同的16位值，他它们相等；如果在长度或者内容上不等，它们不相等；两个字符串显示结果相同但是编码不同==和===都认为他们不相等
     如果他们指向相同对象、数组、函数，它们相等；如果指向不同对象，他们不相等
     
-# <a name="==运算符判断">==运算符判断</a>
+## ==运算符判断
+>
     如果两个值类型相同，按照===比较方法进行比较
     如果类型不同，使用如下规则进行比较
     如果其中一个值是null，另一个是undefined，它们相等
@@ -106,31 +137,23 @@
     如果一个值是对象，另一个是数字或字符串，将对象转换为原始值然后用==规则继续比较
     其他所有情况都认为不相等
 
-# <a name="比较运算符"><,>,<=,>=的比较规则</a>
+##  Object.is()
 
-    所有比较运算符都支持任意类型，但是比较只支持数字和字符串，所以需要执行必要的转换然后进行比较，转换规则如下:
-    如果操作数是对象，转换为原始值：如果valueOf方法返回原始值，则使用这个值，否则使用toString方法的结果，如果转换失败则报错
-    经过必要的对象到原始值的转换后，如果两个操作数都是字符串，按照字母顺序进行比较（他们的16位unicode值的大小）
-    否则，如果有一个操作数不是字符串，将两个操作数转换为数字进行比较
-
-#  <a name="加运算符">+运算符工作流程</a>
-    如果有操作数是对象，转换为原始值
-    此时如果有一个操作数是字符串，其他的操作数都转换为字符串并执行连接
-    否则：所有操作数都转换为数字并执行加
-# ~
-~，被称为“按位不运算符”，~n等价于 - n - 1。//返回一个整数
 >
-    ~15.5 // -16
-    ~'15.5' // -16
-    ~('daa') // -1
-    ~(NaN)  // -1
+    两个值都是 undefined
+    两个值都是 null
+    两个值都是 true 或者都是 false
+    两个值是由相同个数的字符按照相同的顺序组成的字符串
+    两个值指向同一个对象
+    两个值都是数字并且
+    都是正零 +0 (Object.is(0,+0) ==>true)
+    都是负零 -0 (Object.is(0,-0) ==>false)
+    都是 NaN
+    都是除零和 NaN 外的其它同一个数字
 
+    这种相等性判断逻辑和传统的 == 运算不同，== 运算符会对它两边的操作数做隐式类型转换（如果它们类型不同），然后才进行相等性比较，（所以才会有类似 "" == false 等于 true 的现象），但 Object.is 不会做这种类型转换。
 
-~~n等价于 - (- n - 1) - 1 = n + 1 - 1 = n 
->
-
-    ~~15.5 // 15
-    ~~(NaN) // 0
+    这与 === 运算符的判定方式也不一样。=== 运算符（和== 运算符）将数字值 -0 和 +0 视为相等，并认为 Number.NaN 不等于 NaN。
 
 
 #  <a name="keyCode">keyCode:键盘按键键码</a>
@@ -138,7 +161,7 @@
 
 # <a name="JS">**JS**</a>
 
-JS的特点：无需编译、弱类型、基于对象、事件驱动
+JS的特点：无需编译、弱类型、基于对象、事件驱动  
 JS的组成：核心( ECMAScript) , 文档对象模型(DOM), 浏览器对象模型(BOM)
 
 ## <a name="数据类型、内置对象">数据类型、内置对象</a>
@@ -157,12 +180,13 @@ JS的组成：核心( ECMAScript) , 文档对象模型(DOM), 浏览器对象模�
     栈内存（连续的存储空间，类似数据结构中的栈）：主要用来存放数值、字符、内存地址等小数据
     
     堆内存（散列的存储空间，类似数据结构中的链表）：存放可以动态变化的大数据
+
 ### 内置对象
     Object 是 JavaScript 中所有对象的父对象
     数据封装类对象：Object、Array、Boolean、Number、String 
     其他对象：Function、Arguments、Math、Date、RegExp、Error
 
- window对象是顶层对象，指浏览器打开的窗口。
+ window对象是顶层对象，指浏览器打开的窗口。  
  document对象是Documentd对象（HTML 文档对象）的一个只读引用，window对象的一个属性。
 
 ### 区分数组对象方法 
@@ -186,8 +210,7 @@ JS的组成：核心( ECMAScript) , 文档对象模型(DOM), 浏览器对象模�
     undefined:语义：不存在该数据；声明了变量，但未赋值或对象属性不存在
     null:语义：存在该数据，但未赋值； 表无值、无对象
 
-    只有被定义才有可能为 null，未定义时为 undefined。
-
+    只有被定义才有可能为 null，未定义时为 undefined。  
     null 用于对象 , undefined 用于变量，属性和方法。
 
     null表示准备用来保存对象，还没有真正保存对象的值。从逻辑角度看，null值表示一个空对象指针，意思是你定义了它,但它没有分配内存空间。
@@ -197,7 +220,7 @@ JS的组成：核心( ECMAScript) , 文档对象模型(DOM), 浏览器对象模�
     null == undefined //true
     null === undefined //false
 
-* null
+### null
 1. 用来初始化一个变量，这个变量可能被赋值为一个对象。
 2. 用来和一个已经初始化的变量比较，这个变量可以是也可以不是一个对象。
 3. 当函数的参数期望是对象时，被用作参数传入。
@@ -205,16 +228,14 @@ JS的组成：核心( ECMAScript) , 文档对象模型(DOM), 浏览器对象模�
 5. 作为对象原型链的终点
 
 
-* undefined 
+### undefined 
 1. 变量被声明了，但没有赋值时，就等于undefined。
 2. 调用函数时，应该提供的参数没有提供，该参数等于undefined。
 3. 对象没有赋值的属性，该属性的值为undefined。
 4. 函数没有返回值时，默认返回undefined。
 
 
-
-
-如果我们想测试对象是否存在，在对象还没定义时将会抛出一个错误。
+如果我们想测试对象是否为空，在对象还没定义时将会抛出一个错误。
 要先使用 typeof 来检测对象是否已定义：if (typeof myObj !== "undefined" && myObj !== null) 
 
 ## <a name="json jsonp">json jsonp</a>
@@ -231,34 +252,36 @@ JSONP则是一种跨域数据交互协议。
     是轻量级的文本数据交换格式,用于存储和交换文本数据领域，与xml类似但比xml更简洁，更快，更易解析
     JSON 的网络媒体类型是 application/json。
 
-相比 XML，JSON 的优势如下：
+相比XML，JSON的优势如下：
 - 没有结束标签，长度更短，读写更快
 - 能够直接被 JavaScript 解释器解析
 - 可以使用数组
+
+两种数据结构：1.无序的对象结构；2.有序的数组结构
+
 >
-    JSON：
     {
-      "name": "Geoff Lui",
-      "age": 26,
-      "friends": ["Lily", "Lucy", "Gwen"]
+      "name": "a",
+      "friends": ["b", "c"]
     }
+
+    [
+      {a:1},{b:2}
+    ]
 
 方法：
 >
-    JSON.parse(json, (name, value)=>{})  //把json解析为javascript对象
-    可以有第二个参数，是一个函数。此函数有两个参数：name 和 value，分别代表名称和值。当传入一个 JSON 字符串后，JSON 的每一组名称/值对都要调用此函数。该函数有返回值，返回值将赋值给当前的名称（name）。
+    JSON.parse(json, (name, value)=>{})  //把json解析为javascript对象  
+    第二个参数，是一个函数。此函数有两个参数：name 和 value，分别代表名称和值。当传入一个 JSON 字符串后，JSON 的每一组名称/值对都要调用此函数。该函数有返回值，返回值将赋值给当前的名称（name）。
 
-    JSON.stringify(json, replacer, space) //把javascript对象转换为JSON字符串
-    第二个参数（数组形式| 函数）
-    数组形式：指定需要转成字符串的属性，只对对象的属性有效，对数组无效。
+    JSON.stringify(json, replacer, space) //把javascript对象转换为JSON字符串  
+    第二个参数（数组形式| 函数） 
+    数组形式：指定需要转成字符串的属性，只对对象的属性有效，对数组无效。  
     函数：每一组名称/值对都会调用此函数，该函数返回一个值，作为名称的值变换到结果字符串中，如果返回 undefined，则该成员被忽略。
 
-    第三个参数（数字| 字符串），用于增加返回的JSON字符串的可读性。
-    数字：表示每个属性前面添加的空格（最多不超过10个）；
-    字符串：（不超过10个字符），该字符串会添加在每行前面。
-
-两种数据结构：1.无序的对象结构；2.有序的数组结构
->
+    第三个参数（数字| 字符串），用于增加返回的JSON字符串的可读性。  
+    数字：表示每个属性前面添加的空格（最多不超过10个）；  
+    字符串：（不超过10个字符），该字符串会添加在每行前面。  
 
 
 
@@ -279,9 +302,10 @@ JSONP则是一种跨域数据交互协议。
 4. location - 表示该窗口中当前显示的文档的URL.。
 5. navigator - 用来描述浏览器本身，包括浏览器的名称、版本、语言、系统平台、用户特性字符串等信息。
 6. screen - 提供了浏览器显示屏幕的相关属性，比如显示屏幕的宽度和高度，可用宽度和高度。
+
 常用的对话框也属于挂载在window对象上的方法：alert(); confirm(); prompt();
 
-## <a name="DOM 文档对象模型">DOM 文档对象模型</a>
+## <a name="DOM 文档对象模型">DOM-文档对象模型</a>
 >
 
   DOM 是 Document Object Model 的缩写，即 文档对象模型，是所有浏览器公共遵守的标准，DOM 将HTML和XML文档映射成一个由不同节点组成的树型结构，俗称DOM树。
@@ -304,14 +328,14 @@ JSONP则是一种跨域数据交互协议。
 1. 捕获事件流从根节点开始执行，一直往子节点查找执行，直到查找执行到目标节点。
 2. 冒泡事件流从目标节点开始执行，一直往父节点冒泡查找执行，直到查到到根节点。
 
-DOM事件流：捕获阶段 -> 目标阶段 -> 冒泡阶段
+DOM事件流：捕获阶段 -> 目标阶段 -> 冒泡阶段  
 DOM事件捕获流程:window > document > documentElement(html标签) > body > ...> 目标对象
+>
+    事件捕获：当某个元素触发某个事件（如onclick），顶层对象document就会发出一个事件流，随着DOM树的节点向目标元素节点流去，直到到达事件真正发生的目标元素。在这个过程中，事件相应的监听函数是不会被触发的。window => document => html => body => ... => 目标元素
 
-　事件捕获：当某个元素触发某个事件（如onclick），顶层对象document就会发出一个事件流，随着DOM树的节点向目标元素节点流去，直到到达事件真正发生的目标元素。在这个过程中，事件相应的监听函数是不会被触发的。window => document => html => body => ... => 目标元素
+    事件目标：当到达目标元素之后，执行目标元素该事件相应的处理函数。如果没有绑定监听函数，那就不执行。
 
-　事件目标：当到达目标元素之后，执行目标元素该事件相应的处理函数。如果没有绑定监听函数，那就不执行。
-
-　事件冒泡：从目标元素开始，往顶层元素传播。途中如果有节点绑定了相应的事件处理函数，这些函数都会被一次触发。
+    事件冒泡：从目标元素开始，往顶层元素传播。途中如果有节点绑定了相应的事件处理函数，这些函数都会被一次触发。
 
 所有的事件都会捕获但不是所有事件都会冒泡,例如submit事件就不会被冒泡。 
 
@@ -319,25 +343,29 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
 #### 事件模型：原始事件模型(DOM0级)、DOM2事件模型、IE事件模型。
 1. DOM0级：没有事件流，事件一旦发生马上进行处理
 >
-    * 在html中直接指定属性值：\<button id="demo" type="button" onclick="doSomeTing()" />　　
-    * 在js中: document.getElementsById("demo").onclick = doSomeTing()
-    　优点：所有浏览器都兼容
-    　缺点：逻辑与显示没有分离；相同事件的监听函数只能绑定一个，后绑定的会覆盖掉前面;  无法通过事件的冒泡、委托等机制
+    在html中直接指定属性值：\<button id="demo" type="button" onclick="doSomeTing()" />　　
+    在js中: document.getElementsById("demo").onclick = doSomeTing()
+
+    优点：所有浏览器都兼容
+    缺点：逻辑与显示没有分离；相同事件的监听函数只能绑定一个，后绑定的会覆盖掉前面;  无法通过事件的冒泡、委托等机制
 
 2. DOM2级：W3C制定的标准模型，现代浏览器（IE6~8除外）都已经遵循这个规范
 >
-    * addEventListener("eventType","handler","true|false")    //eventType注意不要加‘on’前缀，handler：執行函数
-    * removeEventListener("eventType","handler","true!false")//事件类型、需要执行的函数、是否捕获，
+                    //事件类型、需要执行的函数、是否捕获，(默认false)
+    addEventListener(eventType,handler,useCapture)
+    removeEventListener(eventType,handler,useCapture)
 
-    addEventListener（'click', func)
+    addEventListener（'click', func)//事件不加on
 
 3. IE事件模型：不支持事件捕获 . (IE11以下)
 >
-    IE不把该对象传入事件处理函数,由于在任意时刻只会存在一个事件,所以IE把它作为全局对象window的一个属性.
-    attachEvent( "onclick",func) 
-    detachEvent("onclick",func)
+    attachEvent(eventType,handler) 
+    detachEvent(eventType,handler)
+    
+    attachEvent("onclick",func)//事件加on
 
-#### 自定义事件：
+#### 自定义事件
+https://www.jianshu.com/p/5f9027722204
 >
     // new Event()定义事件；dispatchEvent()触发事件
     var look = new Event('look', {"bubbles":true, "cancelable":false});
@@ -349,11 +377,11 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
 #### w3c事件与IE事件区别
 事件流
 >
-    w3c事件流:
+    w3c事件流:  
     标准的浏览器事件流是 事件捕获流；
     从根文档(html)开始遍历所有子节点，如果目标事件的父节点设置为捕获时触发，则执行该事件，直到目标被执行，然后再事件冒泡(设置为捕获时触发的事件不再被执行)。
 
-    IE事件流:
+    IE事件流:  
     IE的事件流是 事件冒泡流，
     从目标事件被执行，然后再冒泡父节点的事件，直到根文档。
 
@@ -369,33 +397,32 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
 获取事件目标源：
 >
     event = e || window.event
-    event.target || event.srcElement
+    event.target || event.srcElement // w3c  | IE
 
 ## <a name="DOM操作">DOM操作—怎样添加、移除、移动、复制、创建和查找节点?</a>
 * 创建新节点
 >
-    createDocumentFragment()    //创建一个DOM片段
-    createElement()   //创建一个具体的元素
-    createTextNode()   //创建一个文本节点
+    document.createDocumentFragment()    //创建一个DOM片段
+    document.createElement()   //创建一个具体的元素
+    document.createTextNode()   //创建一个文本节点
 
-* 添加、移除、替换、插入
+* 添加、移除、替换、插入、克隆
 >
     appendChlid(childNode)  添加节点
     insertBefore(newChild,oldChild) 添加节点
     removeChild(childNode) 删除节点    
     replaceChild(newNode,oldNode）替换节点
-    cloneNode()     复制节点：
-  	newNode=node.cloneNode(boolean) ; 不写默认是false
-    参数可选复制节点,接受一个布尔值参数， true 表示深复制（复制节点及其所有子节点），  false 表示浅复制（复制节点本身，不复制子节点）
+    cloneNode(boolean)复制节点： newNode=oldNode.cloneNode(boolean) ; 
+      参数可选复制节点,接受一个布尔值参数， true表示深复制（复制节点及其所有子节点），  false表示浅复制（复制节点本身，不复制子节点）;默认是false 。
 
 * 查找节点
 >
     document.querySelector() // 查找第一个 （id,className, tgaName)
     document.querySelectorAll() //查找所有 （id,className, tgaName)
-    getElementById()    //通过元素Id，唯一性
-    getElementsByClassName（）//通过元素classname
-    getElementsByTagName()    //通过标签名称
-    getElementsByName()    //通过元素的Name属性的值(IE容错能力较强，会得到一个数组，其中包括id等于name值的)
+    document.getElementById()    //通过元素Id，唯一性
+    document.getElementsByClassName() //通过元素classname
+    document.getElementsByTagName()    //通过标签名称
+    document.getElementsByName()  //通过元素的Name属性的值(IE容错能力较强，会得到一个数组，其中包括id等于name值的)
 
 
 ## <a name="变量、函数声明提升">变量、函数声明提升</a>
@@ -407,10 +434,12 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
     只要函数在代码中进行了声明，无论它在哪个位置上进行声明， js引擎都会将它的声明放在范围作用域的顶部；
 
     (3) 变量or函数声明：函数声明会覆盖变量声明，但不会覆盖变量赋值。
-    同一个名称标识a，即有变量声明var a，又有函数声明function a() {}，不管二者声明的顺序，函数声明会覆盖变量声明，也就是说，此时a的值是声明的函数function a() {}。注意：如果在变量声明的同时初始化a，或是之后对a进行赋值，此时a的值为变量的值。因为变量、函数声明提升，赋值在其之后才运行； var a; a = 1; function a() { return true; } console.log(a);
+        同一个名称标识a，即有变量声明var a，又有函数声明function a() {}，不管二者声明的顺序，函数声明会覆盖变量声明，也就是说，此时a的值是声明的函数function a() {}。注意：如果在变量声明的同时初始化a，或是之后对a进行赋值，此时a的值为变量的值。因为变量、函数声明提升，赋值在其之后才运行；如: var a = 1; function a() { return true; } console.log(a); ==> 1
 
+<b>let 命名不存在变量提升</b>
 
-函数，形参，变量同名时优先级：函数形参>函数声明>变量变量
+### 函数，形参，变量同名时优先级：
+函数形参>函数声明>变量变量
 >
 
     var foo = {n:1};
@@ -422,7 +451,6 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
         console.log(foo.n);// 2
     })(foo); //存入全局的foo变量 作为 形参
     console.log(foo.n); //3
-    var num1 = 1;  
 
 ## <a name="自执行函数">自执行函数</a>
 定义:
@@ -430,6 +458,8 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
     1、声明一个匿名函数
     2、马上调用这个匿名函数。
     (function(){})()
+    (function(){}())
+    +function(){}()
     ....
 
 作用：创建一个独立的作用域。
@@ -440,30 +470,21 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
 
 场景：一般用于框架、插件等场景
 
-## <a name="new的实现原理">new的实现原理</a>
->
-    创建一个空对象，并将这个空对象的 __proto__，指向构造函数的原型对象 [prototype] ，使其继承构造函数原型上的属性。
-    改变构造函数内部 this 指针为这个空对象(如果有传参，需要将参数也导入构造函数)
-    执行构造函数中的代码，使其具有构造函数 this 指针的属性。
-    如果构造函数中没有返回其它对象，那么返回this，即创建的这个的新对象，否则，返回构造函数中返回的对象。
-
-new 操作返回的实例对象具有两个特征：
->
-    具有构造函数中定义的 this 指针的属性和方法
-    具有构造函数原型上的属性和方法
-
-function Person(){}
-
-var p = new Person()
 
 ## <a name="对象属性">对象属性configurable enumerable writable</a>
-configurable
+### configurable
 >
     能否使用delete、能否需改属性特性、或能否修改访问器属性、，false为不可重新定义，默认值为true 
-    简单的说 ，设置这个为false之后，就不能删除这个属性或修改这个属性（属性值不影响），这个属性就是这个对象固有的，如果删除，则不成功
+
+    简单的说 ，设置这个为false之后，就不能删除这个属性或修改这个属性（属性值不影响），这个属性就是这个对象固有的，删除不了
 
     var obj = Object.create({},{
-        "a":{value :1,configurable :false,enumerable :true,writable:true},
+        "a":{
+          value :1,
+          configurable :false,
+          enumerable: true,
+          writable: true
+        },
     });
 
     delete obj.a// 删除失败，普通模式没有提示或错误，严格模式会有TypeError
@@ -471,7 +492,7 @@ configurable
     console.log(obj.a);//正常使用，输出结果为 2
 
 
-enumerable
+### enumerable
 >    
     可枚举性 
     对象属性是否可通过for-in循环，flase为不可循环，默认值为true 
@@ -485,9 +506,9 @@ enumerable
     obj = Object.create(obj, {
         "a": {
             value: 1,
-            configurable: false,
+            configurable: true,
             enumerable: false,
-            writable: false
+            writable: true
         }
     });
 
@@ -495,38 +516,96 @@ enumerable
         console.log(i); //输出b，c 不会输出a，a已经设置不被枚举
     }
 
-writable
+### writable
 >
     对象属性是否可修改,flase为不可修改，默认值为true 
     设置不可修改后，可以理解为常量，不能对属性值进行修改
 
     var obj = Object.create({},{
-        "a":{value :1,configurable :false,enumerable :true,writable:false},
+        "a":{
+          value :1,
+          configurable :true,
+          enumerable :true,
+          writable:false
+        },
     });
     obj.a = 2;//普通模式不会抛异常，严格模式会抛出TypeError
     console.log(obj.a);//输出1 ，不可被修改
 
-## <a name="创建对象的几种方式">创建对象的几种方式</a>
+### value
+值
 
-对象字面量：
-  p = {name:'jack'}
-
-new Object()
-  p = new Object({name:'jack'})
-
-Object.create:
+## <a name="typeof instanceof">typeof 、instanceof 、in</a>
+typeof 
 >
-    Object.create 允许你创建一个对象，只要该对象上的属性查找失败，它就可以查询另一个对象以查看该另一个对象是否具有该属性。
-    p = Object.create({name:'jack'})
-    p = Object.create({},{name:{value:'jack'})
+    typeof 能够正确的判断基本数据类型，但是除了 null, typeof null输出的是对象
+    在使用 typeof 运算符时采用引用类型存储值会出现一个问题，无论引用的是什么类型的对象，它都返回 “object”。
+
+|  | typeof |
+:-:| :-:|
+| Boolean    | "boolean"
+| Number     | "number"
+| String     | "string"
+| Object     | "object"
+| Null       | "object"
+| Undefined  | "undefined"
+| Symbol     | "symbol"
+| Function   | "function"
 
 
-构造函数：
+instanceof
 >
+    语法：object instanceof constructor
+        （要检测的对象）    （某个构造函数）
+    描述：instanceof 运算符用来检测 constructor.prototype 是否存在于参数 object 的原型链上。
 
-    function P(name){this.name = name}
-    p = new P('jack')
+>  
+    instanceof 是通过原型链判断的，判断实例对象在其原型链中是否存在一个构造函数的 prototype 属性。  
+    A instanceof B, 在A的原型链中层层查找，是否有原型等于 B.__proto__，如果一直找到A的原型链的顶端(null;即 Object.prototype.__proto__),仍然不等于B.prototype，那么返回false，否则返回true.
 
+
+>
+    function P(){}
+    p = new P()
+    console.log(p instanceof P) //true    
+
+in
+>
+    操作符会检查属性是否存在对象及其 [[Prototype]] 原型链中。检查的是某个属性名是否存在
+    var obj = {a:1}
+    Object.prototype.b = 2
+    'a' in obj // true
+    'b' in obj // true
+
+
+    对于数组来说，4 in [2, 4, 6] 结果返回 false，因为 [2, 4, 6] 这个数组中包含的属性名是0，1，2 ，没有4。
+
+
+hasOwnProperty()
+>
+    只会检查属性是否存在对象中，不会向上检查其原型链。
+    var obj = {a:1}
+    Object.prototype.b = 2
+    obj.hasOwnProperty('a') // true
+    obj.hasOwnProperty('b') // false
+
+    所有普通对象都可以通过 Object.prototype 的委托来访问 hasOwnProperty(...)，但是对于一些特殊对象（ Object.create(null) 创建）没有连接到 Object.prototype，这种情况必须使用 Object.prototype.hasOwnProperty.call(obj, "a")，显示绑定到 obj 上。
+
+## <a name="new的实现原理">new的实现原理</a>
+>
+    创建一个空对象，并将这个空对象的 __proto__，指向构造函数的原型对象 [prototype] ，使其继承构造函数原型上的属性。  
+    改变构造函数内部 this 指针为这个空对象(如果有传参，需要将参数也导入构造函数)  
+    执行构造函数中的代码，使其具有构造函数 this 指针的属性。  
+    如果构造函数中没有返回其它对象，那么返回this，即创建的这个的新对象，否则，返回构造函数中返回的对象。
+
+new 操作返回的实例对象具有两个特征：
+>
+    具有构造函数中定义的 this 指针的属性和方法  
+    具有构造函数原型上的属性和方法
+
+function Person(){}
+
+var p = new Person()
 
 ## <a name="异步编程有哪几种方法">异步编程有哪几种方法</a>
 "同步模式"：后一个任务等待前一个任务结束，然后再执行，程序的执行顺序与任务的排列顺序是一致的、同步的；
@@ -575,7 +654,7 @@ Object.create:
 
     * 一旦状态改变，就不再变化，任何时候都可以得到这个结果。
 
-  每一个异步任务返回一个Promise对象，该对象有一个then方法，允许指定回调函数
+每一个异步任务返回一个Promise对象，该对象有一个then方法，允许指定回调函数
 
 4. async await
 
@@ -604,10 +683,7 @@ Object.create:
 
 5. 发布/订阅(观察者模式)
 
-发布订阅模式，有一个事件池，用来给你订阅(注册)事件，当你订阅的事件发生时就会通知你，然后你就可以去处理此事件，模型如下
-
-## <a name=""></a>
-## <a name=""></a>
+发布订阅模式，有一个事件池，用来给你订阅(注册)事件，当你订阅的事件发生时就会通知你，然后你就可以去处理此事件
 
 
 ## <a name="事件委托">事件委托(代理)delegate</a>
@@ -712,7 +788,7 @@ Object.create:
             }
         }, 1000);
 5. 子元素存在引用引起的内存泄露
-6. console.log :  在传递给 console.log的对象是不能被垃圾回收 ，因为在代码运行之后需要在开发工具能查看对象信息。所以最好不要在生产环境中 console.log任何对象。
+6. console.log   在传递给 console.log的对象是不能被垃圾回收 ，因为在代码运行之后需要在开发工具能查看对象信息。所以最好不要在生产环境中 console.log任何对象。
 
 
 如何避免内存泄漏
@@ -737,7 +813,7 @@ __proto__,prototype区别：
 
     只有函数function才具有prototype(显示原型)属性。这个属性是一个指针，指向一个对象，这个对象的用途就是包含所有实例共享的属性和方法（我们把这个对象叫做原型对象）。
 
-    原型对象也有一个属性，叫做constructor，这个属性包含了一个指针，指回原构造函数。
+    原型对象有一个属性，叫做constructor，这个属性包含了一个指针，指回原构造函数。
 
 >
     function P(){}
@@ -752,7 +828,7 @@ __proto__,prototype区别：
     Object.prototype.__proto__ === null //true
     
 
-构造函数不需要显示的返回值。使用new来创建对象(调用构造函数)时，如果return的是非对象(数字、字符串、布尔类型等)会忽而略返回值;如果return的是对象，则返回该对象(注：若return null也会忽略返回值）。
+构造函数不需要显示的返回值。使用new来创建对象(调用构造函数)时，如果return的是非对象(数字、字符串、布尔类型、null等)会忽而略返回值;如果return的是对象，则返回该对象。
 
 ![prototype](/img/prototype0.png)
 ![prototype](/img/prototype.png)
@@ -763,7 +839,29 @@ __proto__,prototype区别：
 
 
 #### 如何实现继承？
-[详情](details/inherit.md)
+[inherit.md](details/inherit.md)
+
+## <a name="创建对象的几种方式">创建对象的几种方式</a>
+
+对象字面量：
+  p = {name:'jack'}
+
+new Object(): 
+  p = new Object({name:'jack'})
+
+Object.create:
+>
+    Object.create 允许你创建一个对象，只要该对象上的属性查找失败，它就可以查询另一个对象以查看该另一个对象是否具有该属性。
+    p = Object.create({name:'jack'}) //属性在原型上 
+    p = Object.create({},{name:{value:'jack'}}) //属性在自身上
+
+
+构造函数：
+>
+
+    function P(name){this.name = name}
+    p = new P('jack')
+
 
 ## <a name="设计模式">设计模式</a>
 https://segmentfault.com/a/1190000014436817
@@ -771,9 +869,11 @@ https://segmentfault.com/a/1190000014436817
 
 #### 工厂模式 -- Factory
 * 核心:
-    1.return一个对象
-    2.创建不同的引用类型
-* 例子:    
+>
+    return一个对象
+    创建不同的引用类型
+* 例子:
+> 
     function People () {
       let person = {
         name: '人',
@@ -784,51 +884,59 @@ https://segmentfault.com/a/1190000014436817
     let p = People() // 工厂生产对象
 
 * 说明：
+>
     1.在函数中定义对象,并定义对象的各种属性，,虽然属性可以为方法，但是建议将属性为方法的属性定义到函数之外，这样可以避免重复创建该方法
-    2.引用该对象的时候，这里使用的是 var x = Parent()而不是 var x = new Parent();因为后者会可能出现很多问题（前者也成为工厂经典方式,后者称之为混合工厂方式），不推荐使用new的方式使用该对象
+    2.引用该对象的时候，这里使用的是 var x = Parent()而不是 var x = new Parent();因为后者会可能出现很多问题（前者也成为工厂经典方式,后者为构造函数模式）
     3.在函数的最后返回该对象
     4.不推荐
 
 
 #### 构造函数模式 -- Constructor
 * 核心：
-    1.将属性绑定到this上
-    2.将方法绑定到prototype上
-    3.用new 创建实例
+>
+    将属性绑定到this上
+    用new 创建实例
+
 * 例:
+>
     function People() {
       this.name = '人'
       this.getName=function(){
         return this.name
       }
     }
-    People.prototype.walk = function () {
-      console.log('walk')
-    }
+
     let p = new People()
-    console.log(p.getName())  
+    console.log(p.getName())
+
+
 * 说明：
-  1.与工厂方式相比，使用构造函数方式创建对象，无需再函数内部重建创建对象，而使用this指代，并而函数无需明确return
-  2.同工厂模式一样，虽然属性的值可以为方法，但建议将该方法定义在函数之外
-  3.不推荐
+>
+    1.与工厂方式相比，使用构造函数方式创建对象，无需再函数内部重建创建对象，而使用this指代，并而函数无需明确return
+    2.同工厂模式一样，虽然属性的值可以为方法，但建议将该方法定义在函数之外
 
 #### 原型模式
 * 例：
+>
     function Parent(){};  
     Parent.prototype.name="john";  
     Parent.prototype.age="30";  
     Parent.prototype.lev=lev;  
-    var p=new Parent();  
+    var p=new Parent(); 
+
  * 说明：
+ >
     1.函数中不对属性进行定义
     2.利用prototype属性对属性进行定义
-    3.同样的，不推荐使用这样方式创建对象
+    3.不推荐
 
 #### 混合模式 —— Mixin (原型模式+构造函数模式)
 * 核心
+>
     1.在JS中，一般我们实现继承的过程就是混合模式
     2.其概念就是提供能够被一个或者一组子类简单继承功能的类
 * 例子
+>
     function People(name, age) {
       this.name = name
       this.age = age
@@ -839,32 +947,30 @@ https://segmentfault.com/a/1190000014436817
     }
 
     function Student(name, age, score) {
-      People.call(this, name, age) 
+      People.call(this, name, age) //改变this指向,进行属性拷贝
       this.score = score
     }
 
-    //Student.prototype = new People()
-    // 这样写 实例化时构造函数会执行2次，（其中改变this指向时执行了1次）
-
-    //优化：只执行1次，但改变了实例的constructor，即new Student().constuctor --> People；由此无法判断实例的构造函数(实例由谁直接实例化的)
+    //Student.prototype = new People() // 这样写 实例化时构造函数会执行2次，（其中改变this指向时执行了1次）
+    //优化：  
      Student.prototype = People.prototype
-
-    //手动改变constructor指向
-     Student.prototype.constructor = Student 
-
+     Student.prototype.constructor = Student //手动改变constructor指向
+    //优化后只执行1次，但改变了实例的constructor，即new Student().constuctor --> People；由此无法判断实例的构造函数(实例由谁直接实例化的)，需手动改变constructor
 
 * 说明：
-    1.该模式是指混合搭配使用构造函数方式和原型方式
-    2.将所有属性不是方法的属性定义在函数中（构造函数方式）
-    将所有属性值为方法的属性利用prototype在函数之外定义（原型方式）
+>
+    将所有属性不是方法的属性定义在函数中（构造函数方式）
+    将所有属性是方法的属性利用prototype在函数之外定义（原型方式）
 
 
 #### 单例模式 —— Singleton
 * 核心
+>
     1.产生一个类的唯一实例
     2.好处就是节约内存
 
 * 案例
+>
     function createPeople() {
       let name
       return function (userName) {
@@ -880,9 +986,11 @@ https://segmentfault.com/a/1190000014436817
 
 #### 模块模式 —— Module
 * 核心
+>
     在js中，常常使用闭包的形式来实现
 
 * 案例
+>
     let Person = (function () {
       let name = '小明'
       function sayName() {
@@ -898,20 +1006,11 @@ https://segmentfault.com/a/1190000014436817
 
 #### 发布订阅模式 —— Publish/Subscribe
 * 核心
+>
     比如我【订阅者】现在订阅了一个公众号，公众号【发布者】向我发布消息
 
 * 案例
-    实现一个jQuery的发布订阅案例
-
-    // 订阅者
-    $('div').on('click',function () {})
-
-    // 发布者
-    $('header').on('click',function () {
-        $('div').trigger('click')
-    })
-
-* 代码：
+>
     let Event = (function () {
       let events = {}
       function on(evt, handler) {
@@ -957,60 +1056,6 @@ https://segmentfault.com/a/1190000014436817
     Event.fire('click', 'click 事件绑定');
 
 
-
-## <a name="typeof instanceof">typeof instanceof in</a>
-typeof 
->
-    typeof 能够正确的判断基本数据类型，但是除了 null, typeof null输出的是对象
-    在使用 typeof 运算符时采用引用类型存储值会出现一个问题，无论引用的是什么类型的对象，它都返回 “object”。
-
-| typeof | |
-:-:| :-:|
-| Boolean    | "boolean"
-| Number     | "number"
-| String     | "string"
-| Object     | "object"
-| Null       | "object"    
-| Undefined  | "undefined" 
-| Symbol     | "symbol"
-| Function   | "function"
-
-
-instanceof 
->
-    instanceof 是通过原型链判断的，判断实例对象在其原型链中是否存在一个构造函数的 prototype 属性。A instanceof B, 在A的原型链中层层查找，是否有原型等于 B.__proto__，如果一直找到A的原型链的顶端(null;即 Object.prototype.__proto__),仍然不等于B.prototype，那么返回false，否则返回true.
-
-    语法：object instanceof constructor
-    参数：object（要检测的对象.）constructor（某个构造函数）
-    描述：instanceof 运算符用来检测 constructor.prototype 是否存在于参数 object 的原型链上。
-
->
-    function P(){}
-    p = new P()
-    console.log(p instanceof P) //true    
-
-in 
->
-    操作符会检查属性是否存在对象及其 [[Prototype]] 原型链中。检查的是某个属性名是否存在
-    var obj = {a:1}
-    Object.prototype.b = 2
-    'a' in obj // true
-    'b' in obj // true
-
-
-    对于数组来说，4 in [2, 4, 6] 结果返回 false，因为 [2, 4, 6] 这个数组中包含的属性名是0，1，2 ，没有4。
-
-
-    hasOwnProperty()
->
-    只会检查属性是否存在对象中，不会向上检查其原型链。
-    var obj = {a:1}
-    Object.prototype.b = 2
-    obj.hasOwnProperty('a') // true
-    obj.hasOwnProperty('b') // false
-
-    所有普通对象都可以通过 Object.prototype 的委托来访问 hasOwnProperty(...)，但是对于一些特殊对象（ Object.create(null) 创建）没有连接到 Object.prototype，这种情况必须使用 Object.prototype.hasOwnProperty.call(obj, "a")，显示绑定到 obj 上。
-
 ## <a name="作用域、作用域链、执行上下文">作用域、作用域链、执行上下文(执行环境)</a>
 #### 作用域：
 作用域就是变量和函数的可访问范围，控制着变量和函数的可见性与生命周期，
@@ -1031,9 +1076,9 @@ JavaScript中的函数采用静态作用域，也称词法作用域。当在执�
 注意：作用域链的顶端是全局作用域，作用域链在函数定义时就已经创建了。
 
 #### 执行上下文（Execution Context）：
-[详情](https://segmentfault.com/a/1190000018550118?utm_medium=hao.caibaojian.com&utm_source=hao.caibaojian.com&share_user=1030000000178452)
+[深入理解JavaScript执行上下文和执行栈](https://segmentfault.com/a/1190000018550118?utm_medium=hao.caibaojian.com&utm_source=hao.caibaojian.com&share_user=1030000000178452)
 
-[详情](https://github.com/ZengLingYong/Blog/issues/1)
+[执行上下文与执行栈，变量对象](https://github.com/ZengLingYong/Blog/issues/1)
 
 执行上下文可以理解为当前代码被解析和执行时所在环境，
 在执行JS程序时，每遇到一段JS可执行代码，都会创建一个可执行上下文。
@@ -1044,7 +1089,7 @@ JavaScript中的函数采用静态作用域，也称词法作用域。当在执�
     函数代码、
     eval代码
 
-    所以一段JS程序必定会产生多个执行上下文，而JavaScript引擎则是以堆栈的形式来对其进行管理，也就是常说的函数调用栈。栈底是全局上下文，栈顶则是当前正在执行的上下文.执行上下文在函数调用栈中的顺序为:自底向上
+    一段JS程序必定会产生多个执行上下文，而JavaScript引擎则是以堆栈的形式来对其进行管理，也就是常说的函数调用栈。栈底是全局上下文，栈顶则是当前正在执行的上下文.
 
 特性：
 >
@@ -1061,25 +1106,40 @@ JavaScript中的函数采用静态作用域，也称词法作用域。当在执�
 >
 
     创建变量对象
+      函数环境会初始化创建Arguments对象（并赋值）
+      函数声明（并赋值）
+      变量声明，函数表达式声明（未赋值）
+    确定this指向  
+        this的值是在执行的时候才能确认，定义的时候不能确认.因为this是执行上下文环境的一部分，而执行上下文需要在代码执行之前确定，而不是定义的时候  
     创建作用域链
-    确定this指向
-        this的值是在执行的时候才能确认，定义的时候不能确认.因为this是执行上下文环境的一部分，而执行上下文需要在代码执行之前确定，而不是定义的时候
 
 执行阶段：
 >
 
-    进行其他赋值操作并且代码最终被执行
+    变量对象赋值
+      变量赋值
+      函数表达式赋值
+    调用函数
+    按顺序执行其它代码
 
 
+一开始浏览器执行全局的代码时，首先创建全局的执行上下文，压入执行栈的顶部。  
+每当进入一个函数的执行就会创建函数的执行上下文，并且把它压入执行栈的顶部。当前函数执行完成后，当前函数的执行上下文出栈，并等待垃圾回收。  
+浏览器的JS执行引擎总是访问栈顶的执行上下文。  
+全局上下文只有唯一的一个，它在浏览器关闭时出栈。
 
 ## <a name="this">this理解</a>
-https://juejin.im/post/5bd5509851882543e82f5564
+[彻底理解JavaScript中的this](http://www.cnblogs.com/pssp/p/5216085.html?tdsourcetag=s_pctim_aiomsg)
 
-http://www.cnblogs.com/pssp/p/5216085.html?tdsourcetag=s_pctim_aiomsg
 
-https://juejin.im/post/5c049e6de51d45471745eb98
+[彻底理解js中的this](https://juejin.im/post/5c049e6de51d45471745eb98)
 
 [5种this绑定全面解析](https://github.com/yygmind/blog/issues/20)
+
+
+this的值是在执行的时候才能确认，定义的时候不能确认—— 因为this是执行上下文环境的一部分，而执行上下文需要在代码执行之前确定，而不是定义的时候
+
+this永远指向的是最后调用它的对象
 
 #### this绑定
 ![this](img/this.png)
@@ -1092,31 +1152,54 @@ https://juejin.im/post/5c049e6de51d45471745eb98
   4. new绑定
   5. 箭头函数绑定
 
-this优先级：
-new绑定 > 显示绑定 > 隐式绑定
+* this优先级：new绑定 > 显示绑定 > 隐式绑定
+___
+
+对于普通函数，this始终指向全局对象window；严格模式下为undefined (`默认绑定`)
+
+对于构造函数，this则指向新创建的对象；(`new绑定`)
+
+对于对象方法，this指向调用该方法的对象（`隐式绑定`）//当函数是否在某个上下文对象中调用，函数的this被隐式绑定到该对象: obj.func()
+
+在对象方法内部再次定义一个方法，该方法的this关键字又会重新指向全局对象(`隐式丢失`): var a = obj.func; a();
+
+通过call、apply和 bind 等方法来改变函数的 this 指向(`显式绑定`).  
+//call 和 apply 主动执行函数，bind一般在事件回调中使用，call和apply的区别只是参数的传递方式不同：func.call(obj, arg1,arg2);func.apply(obj, [arg1,arg2]);  
+如果把 null 或者 undefined 作为 this 的绑定对象传入 call、apply 或者 bind, 这些值在调用时会被忽略，为`默认绑定`。
+
+箭头函数的this，总是指向定义时所在的对象，而不是运行时所在的对象。
 >
+    function foo(){
+      return (a) => {
+        console.log(this.a);
+      }
+    }
+    var obj1 = {
+      a:'obj1'
+    };
+    var obj2 = {
+      a:'obj2'
+    };
+    foo.call(obj1).call(obj2); //输出obj1
+    //foo绑定obj1的this,call未改变外层作用域
+____
 
-    对于普通函数，this始终指向全局对象window；严格模式下为undefined (默认绑定)
+#### this指向
 
-    对于构造函数，this则指向新创建的对象；(new绑定)
+本质上，this 均指向触发函数运行时的那个对象。而在函数运行时，this 的值是不能被改变的。  
+如果函数返回值是一个对象，那么this指向的就是那个返回的对象，如果返回值不是一个对象那么this还是指向函数的实例。
 
-    对于对象方法，this指向调用该方法的对象（隐式绑定）//当函数是否在某个上下文对象中调用，函数的this被隐式绑定到该对象: obj.func()
+常规函数的this 始终指向最后调用它的对象  
 
-    在对象方法内部再次定义一个方法，该方法的this关键字又会重新指向全局对象(隐式丢失): var a = obj.func; a();
 
-    通过call、apply和 bind 等方法来改变函数的 this 指向(显式绑定).其中，call 和 apply 主动执行函数，bind一般在事件回调中使用，call和apply的区别只是参数的传递方式不同：func.call(obj, arg1,arg2);func.apply(obj, [arg1,arg2]) ；
-    如果把 null 或者 undefined 作为 this 的绑定对象传入 call、apply 或者 bind, 这些值在调用时会被忽略，为默认绑定。
+箭头函数的this，总是指向定义时所在的对象，而不是运行时所在的对象。  
+箭头函数this的作用域继承自执行上下文，自身不绑定 this，因此 this 的值将在调用堆栈中查找
 
-    本质上，this 均指向触发函数运行时的那个对象。而在函数运行时，this 的值是不能被改变的。
-    如果函数返回值是一个对象，那么this指向的就是那个返回的对象，如果返回值不是一个对象那么this还是指向函数的实例。
-    常规函数的this 始终指向最后调用它的对象
+___
 
-    箭头函数的this，总是指向定义时所在的对象，而不是运行时所在的对象。
-      箭头函数this的作用域继承自执行上下文，自身不绑定 this，因此 this 的值将在调用堆栈中查找
+this 指针存在于函数中，用以标识函数运行时所处的上下文。
 
-    this 指针存在于函数中，用以标识函数运行时所处的上下文。
-
-1. 如果一个函数中有this，这个函数未被上一级的对象所调用，那么this指向的就是window，(在js的严格模式中this指向的不是window，
+1. 如果一个函数中有this，这个函数未被上一级的对象所调用，那么this指向的就是window，(在js的严格模式中this指向undefined,不是window)
 2. 如果一个函数中有this，这个函数有被上一级的对象所调用，那么this指向的就是上一级的对象。
 3. 如果一个函数中有this，这个函数中包含多个对象，尽管这个函数是被最外层的对象所调用，this指向的也只是它上一级的对象
 
@@ -1127,62 +1210,105 @@ new绑定 > 显示绑定 > 隐式绑定
 
 [箭头函数与普通函数区别](https://mp.weixin.qq.com/s?__biz=MzA5NzkwNDk3MQ==&mid=2650589501&idx=1&sn=9b88f96265ce3fe5ebd9df9e11dba42d&chksm=8891d919bfe6500f8d128d9ac230911117bbb0021430f2385b0a769909fe643d415da0d9bb16&scene=0&xtrack=1#rd)
 
+**特点**
+
 箭头函数没有prototype(原型)，所以箭头函数本身没有this;
 
 箭头函数没有constructor,所以不能用new调用箭头函数；
 
 箭头函数没有 this/super/arguments/new.target 的绑定，这些值继承自外层第一个普通函数；
+
+箭头函数的this，总是指向定义时所在的对象，而不是运行时所在的对象。
+
+箭头函数不能直接通过call、aaply、bind、new等修改其this指向(可间接改变：修改被继承的普通函数的this指向)
+
+箭头函数绑定中，this指向外层作用域，并不一定是第一层，也不一定是第二层。因为没有自身的this，所以只能根据作用域链往上层查找，直到找到一个绑定了this的函数作用域，并指向调用该普通函数的对象。
+
+箭头函数外层没有普通函数，严格模式和非严格模式下它的this都会指向window(全局对象)
+
 >
     function bar() {
       a = () => {
-        console.log(this, 'this指向定义的时候外层第一个普通函数'); //
+        console.log(this, 'this指向定义的时候外层第一个普通函数'); 
       }; // 在bar中定义 this继承于bar函数的this指向
     }
 
-箭头函数不绑定this,箭头函数中的this相当于普通变量。
-
-箭头函数的this寻值行为与普通变量相同，在作用域中逐级寻找。
-
-箭头函数的this无法通过bind，call，apply来直接修改。(可间接改变：修改被继承的普通函数的this指向)
-
-改变作用域中this的指向可以改变箭头函数的this
-
- 箭头函数外层没有普通函数，严格模式和非严格模式下它的this都会指向window(全局对象)
-
-
-
 
 >
-    var name = "window";
-    var obj = {
-      name: 'netease',
-      print1: () => {
-        console.log(this.name);
+
+    var name = 'window'
+
+    var person1 = {
+      name: 'person1',
+      show1: function () {
+        console.log(this.name)
       },
-      print2: function () {
-        return ()=>{
-            console.log(this.name);
+      show2: () => console.log(this.name),
+      show3: function () {
+        return function () {
+          console.log(this.name)
         }
+      },
+      show4: function () {
+        return () => console.log(this.name)
       }
     }
-    obj.print1();// window
-    obj.print2()();// netease 注意是返回闭包函数
+    var person2 = { name: 'person2' }
 
-    如果不用function（function有自己的函数作用域）将其包裹起来，那么默认绑定的父级作用域就是window。
+    person1.show1()// person1
+    person1.show1.call(person2)// person2
 
-    用function包裹的目的就是将箭头函数绑定到当前的对象上。 匿名函数的作用域是当前这个对象，所以之后箭头函数会自动绑定到此函数所在作用域的this，即obj 。
+    person1.show2()// window
+    person1.show2.call(person2)// window
 
+    person1.show3()()// window
+    person1.show3().call(person2)// person2
+    person1.show3.call(person2)()// window
+
+    person1.show4()()// person1
+    person1.show4().call(person2)// person1  
+      //先执行show() 绑定this指向person1
+      //call并没有改变外层作用域
+    person1.show4.call(person2)()// person2
+      //再this未绑定时 改变其指向
+
+
+    不用function（function有自己的函数作用域）将其包裹起来，那么默认绑定的父级作用域就是window。（如show2）
+
+    用function包裹的目的就是将箭头函数绑定到当前的对象上。 匿名函数的作用域是当前这个对象，所以之后箭头函数会自动绑定到此函数所在作用域的this，。（如show4）
 
 ## <a name="apply call bind">apply call bind</a>
 https://github.com/yygmind/blog/issues/22
+
+
 >
 
     都是用来改变函数的this对象的指向的；
+
     第一个参数都是this要指向的对象，也就是想指定的上下文；
     都可以利用后续参数传参；
+
     apply、call则是立即调用；bind是返回对应函数，便于稍后调用；
       foo.apply(obj,[arg1,arg2]),foo.call(obj,arg1,arg2)
 
+
+把null或者undefined作为this的绑定对象传入call、apply或者bind，这些值在调用时会被忽略，实际应用的是默认规则。
+
+下面两种情况下会传入null
+
+使用apply(..)来“展开”一个数组，并当作参数传入一个函数  
+bind(..)可以对参数进行柯里化（预先设置一些参数）
+>
+    function foo(a, b) {
+        console.log( "a:" + a + "，b:" + b );
+    }
+
+    // 把数组”展开“成参数
+    foo.apply( null, [2, 3] ); // a:2，b:3
+
+    // 使用bind(..)进行柯里化
+    var bar = foo.bind( null, 2 );
+    bar( 3 ); // a:2，b:3 
 
 
 ## <a name="公有、私有、静态、特权方法与属性">公有、私有、静态、特权方法与属性</a>
@@ -1194,6 +1320,7 @@ https://github.com/yygmind/blog/issues/22
 静态变量和静态函数：
 >
     当定义一个函数后通过点号 “.”为其添加的属性和函数，通过对象本身仍然可以访问得到，但是其实例却访问不到
+
 
 实例变量和实例函数：
 
@@ -1212,8 +1339,8 @@ https://github.com/yygmind/blog/issues/22
       var age = age;//私有属性
       function getAge(){}//私有方法
     }
-    var user = new User(26);
- 
+
+
 3. 静态方法、属性：无需实例化就可以调用的方法、属性
 >
     //静态方法无法调用公有属性、公有方法、私有方法、私有属性、特权方法和原型属性
@@ -1250,9 +1377,9 @@ https://github.com/yygmind/blog/issues/22
     b = a.concat([])
 
 * 深拷贝：开辟新的栈
-1. 
+1. JSON.parse(JSON.stringify(obj))
 >
-    JSON.parse(JSON.stringify(obj));
+
     只能正确处理的对象只有 Number, String, Boolean, Array，扁平对象 即那些能够被json直接表示的数据结构。
     会忽略 undefined、会忽略 symbol、NaN会转化为null。
     不能处理循环引用的对象,报错。
@@ -1297,11 +1424,12 @@ https://github.com/yygmind/blog/issues/22
 >
     function deepClone(objCloned) {
       let obj = Array.isArray(objCloned) ? [] : {};
-      //if(objCloned && typeof objCloned === "object") {
+      if(objCloned && typeof objCloned === "object") {
         for(key in objCloned) {
-          //判断是否为自身属性
-          //if(objCloned.hasOwnProperty(key)) {
+          //if(objCloned.hasOwnProperty(key)) {//判断是否为自身属性
+
             // 判断 obj 子元素是否为对象，如果是，递归复制
+            // 添加objCloned[key]作为判断条件是防止当值为null时当做对象处理
             if(objCloned[key] && typeof objCloned[key] === "object") {
               if(objCloned[key] instanceof RegExp) { //判断正则
                 obj[key] = new RegExp(objCloned[key])
@@ -1315,15 +1443,20 @@ https://github.com/yygmind/blog/issues/22
             } else { // 否则，简单复制
               obj[key] = objCloned[key];
             }
-          //}
+        //}
         }
-      //}
+      }
       return obj;
     }
 
 
 >
     var obj = {
+      nl: null,
+      und: undefined,
+      error: new Error('e error'),
+      date: +new Date(),
+      reg: /[1-9]/,
       number: 1,
       arr: [],
       str: 'str',
@@ -1342,6 +1475,12 @@ https://github.com/yygmind/blog/issues/22
 
 
 ## <a name="js延迟加载：defer,async">js延迟加载：defer,async</a>
+async 属性 
+>
+    <script src="file.js" async></script>
+    让js并行加载, 
+    加载完成后立即执行，
+    脚本执行顺序和加载顺序无关。它们将在onload 事件之前完成。对于支持async属性的浏览器，动态插入的外链脚本, 相当于默认具有async=true；
 
 defer 属性 
 >
@@ -1350,27 +1489,23 @@ defer 属性
     在页面渲染完后才会执行，
     脚本按加载的顺序执行
 
-async 属性 
->
-    <script src="file.js" async></script>
-    让js并行加载, 
-    加载完成后立即执行，
-    脚本执行顺序和加载顺序无关。它们将在onload 事件之前完成。对于支持async属性的浏览器，动态插入的外链脚本, 相当于默认具有async=true；
 
 可以同时使用 async 和 defer。
 
-* 动态创建DOM方式
+* 动态创建script
 >
     function downloadJSAtOnload() {
-      varelement = document.createElement("script");
+      var element = document.createElement("script");
       element.src = "defer.js";
       document.body.appendChild(element);
     }
-    if (window.addEventListener)
+    if (window.addEventListener) {
       window.addEventListener("load",downloadJSAtOnload, false);
-    else if (window.attachEvent)
-        window.attachEvent("onload",downloadJSAtOnload);
-    else window.onload =downloadJSAtOnload;
+    } else if (window.attachEvent){
+      window.attachEvent("onload",downloadJSAtOnload);
+    } else{
+      window.onload =downloadJSAtOnload;
+    }
 
 
 ## <a name="重绘和回流">重绘和回流</a>

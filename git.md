@@ -5,9 +5,9 @@
 
 # vscode-sync-setting ：
 * token: bb7d41e1e039fdd294a6819e7305b73bd066d9a1
-* sync.gist: b3a0bf7bab5419ea91488dcaee403f83
-
+* sync.gist: 0e3b4eb383f938cbacac6b443dd818a0
 # git
+
 
 * git init 
 * touch README.md
@@ -125,7 +125,8 @@
 * git reflog//记录每次命令查找id
 * git status //查看文件状态
 * git checkout -- readme.txt。//放弃工作区中的内容
-* git rm -r --cached fileName --删除文件/文件夹
+* git rm -r fileName --删除本地文件/文件夹
+* git rm -r --cached fileName --删除缓存文件/文件夹
 
 查看分支：git branch
 
