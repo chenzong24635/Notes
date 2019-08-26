@@ -72,10 +72,9 @@
 * <a href="#webWorker">webWorker</a>
 * <a href="#浏览器缓存">浏览器缓存</a>
 * <a href="#前端性能优化的方法">前端性能优化的方法</a>
-* <a href="#从浏览器地址栏输入url到显示页面的步骤">从浏览器地址栏输入url到显示页面的步骤</a>
 * <a href="#浏览器渲染">浏览器渲染</a>
+* <a href="#从浏览器地址栏输入url到显示页面的步骤">从浏览器地址栏输入url到显示页面的步骤</a>
 * <a href="#JS执行机制">JS执行机制</a>
-* <a href="#web安全">web安全</a>
 * <a href="#get与post区别">get与post区别</a>
 * <a href="#css和js动画的差异">css和js动画的差异</a>
 * <a href="#use strict">"use strict"? 用处？</a>
@@ -1270,7 +1269,7 @@ this 指针存在于函数中，用以标识函数运行时所处的上下文。
       //先执行show() 绑定this指向person1
       //call并没有改变外层作用域
     person1.show4.call(person2)()// person2
-      //再this未绑定时 改变其指向
+      //call改变其指向
 
 
     不用function（function有自己的函数作用域）将其包裹起来，那么默认绑定的父级作用域就是window。（如show2）
@@ -1518,10 +1517,10 @@ defer 属性
 会引起重绘和回流的操作如下：
 >
     添加、删除元素(回流+重绘)
-    隐藏元素，display:none(回流+重绘)，visibility:hidden(重绘)
+    隐藏元素，display:none(回流+重绘);visibility:hidden(重绘)
     移动元素，比如改变top,left的值，或者移动元素到另外一个父元素中。(重绘+回流)
     对style的操作(对不同的属性操作，影响不一样)
-    用户的操作，比如改变浏览器大小，改变浏览器的字体大小等(回流+重绘)
+    用户的操作，比如改变浏览器大小，改变浏览器的字体大小等(重绘+回流)
     transform 操作不会引起重绘和回流，是一种高效率的渲染。因为transform属于合成属性，进行动画时将会创建一个合成层，在一个独立的层中进行渲染。
 
 
@@ -1529,7 +1528,7 @@ defer 属性
 >
     添加或者删除可见的DOM元素；
     增加或者移除样式表
-    元素尺寸改变——边距、填充、边框、宽度和高度
+    元素尺寸改变(边距、填充、边框、宽度和高度)  
     调整窗口大小
     改变字体
     内容变化，比如用户在input框中输入文字
@@ -1551,29 +1550,32 @@ defer 属性
       a) 使用DocumentFragment进行缓存操作,引发一次回流和重绘；
       b) 使用display:none技术，只引发两次回流和重绘；
       c) 使用cloneNode(true or false) 和 replaceChild 技术，引发一次回流和重绘
->
-所有代码都运行在模块作用域，不会污染全局作用域；
-
-模块可以多次加载，但只会在第一次加载的时候运行一次，然后运行结果就被缓存了，以后再加载，就直接读取缓存结果；
-
-模块的加载顺序，按照代码的出现顺序是同步加载的;
 
 
 ## <a name="模块化">模块化CommonJS AMD CMD ES6modules</a>
 把复杂的文件分成一个个独立的模块，比如js文件，分成独立的模块之后有利于代码的重用和维护，但是这样又会引来模块与模块之间的依赖问题
+
 * CommonJS
 >
-　  CommonJS的核心思想就是通过 require 方法来<em>同步加载</em>所要依赖的其他模块，然后通过 exports 或者 module.exports 来导出需要暴露的接口
+　  CommonJS的核心思想就是通过 require 方法来同步加载所要依赖的其他模块，然后通过 exports 或者 module.exports 来导出需要暴露的接口
 
     一个文件就是一个模块，拥有单独的作用域
     普通方式定义的 变量、函数、对象都属于该模块内
-    通过require来家在模块
+    通过require来引入模块
     通过exports和module.exports来暴露模块中的内容
+
+>
+    所有代码都运行在模块作用域，不会污染全局作用域；
+
+    模块可以多次加载，但只会在第一次加载的时候运行一次，然后运行结果就被缓存了，以后再加载，就直接读取缓存结果；
+
+    模块的加载顺序，按照代码的出现顺序是同步加载的;
+
 
 * AMD
 >
     AMD规范则是非同步加载模块，允许指定回调函数
-    require.js 在使用 require.js 的时候，必须提前加载所有模块。
+    在使用 require.js 的时候，必须提前加载所有模块。
 
     API：
     require([module], callback)
@@ -1581,8 +1583,8 @@ defer 属性
 
 * CMD 
 >
-    通过按需加载的方式，而不是必须在模块开始就加载所有的依赖
-    sea.js
+    通过按需加载的方式，而不是必须在模块开始就加载所有的依赖。
+    库：sea.js
 
 * ES6modules
 >
@@ -1590,6 +1592,22 @@ defer 属性
     exprot 导出模块
       export 可以导出的是一个对象中包含的多个属性，方法。(在一个文件或模块中可存在多个)
       export default  只能导出一个可以不具名的对象。(在一个文件或模块中仅可存在一个)
+
+    import、export时可以使用as关键字重命名
+>
+    export {
+      a,
+      b as bbb
+    }
+
+    export default a
+
+    import {a, b} from './index'
+
+    除了指定加载某个输出值，还可以使用整体加载，即用星号（*）指定一个对象，所有输出值都加载在这个对象上面。
+    import  * as name  from './index'
+
+
 
 ## <a name="垃圾回收机制">垃圾回收机制</a>
   Javascript具有自动垃圾回收机制(GC:Garbage Collecation)。
@@ -1602,8 +1620,9 @@ defer 属性
     垃圾回收器在运行时候会给存储在内存中中的所有变量都加上标记。然后它会去掉环境中的变量以及被环境中的变量引用的变量的标记（闭包）。在此之后再被标记的变量将被视为准备删除的变量，原因是环境中的变量已经无法访问到这些变量了。最后，垃圾回收器完成内存清楚工作，销毁那些带标记的值并回收他们所占用的内存空间。
 
     function test(){ 
-      var a = 10 ; //被标记 ，进入环境 
-      var b = 20 ; //被标记 ，进入环境 
+      //a,b被标记 ，进入环境 
+      var a = 10 ; 
+      var b = 20 ; 
     } 
     test(); //执行完毕 之后 a、b又被标离开环境，被回收。
 
@@ -1631,15 +1650,13 @@ defer 属性
 1. 使JS编码更加规范化的模式,消除语法中的一些不合理、不严谨之处，减少怪异行为。
 2. 默认支持的糟糕特性都会被禁用，比如不能用with，也不能在意外的情况下给全局变量赋值
 3. 全局变量的显示声明,函数必须声明在顶层，不允许在非函数代码块内声明函数,arguments.callee也不允许使用；
-4. 消除代码运行的一些不安全之处，保证代码运行的安全,限制函数中的arguments修改，严格模式下的eval函数的行为和非严格模式的也不相同;
-提高编译器效率，增加运行速度；
+4. 消除代码运行的一些不安全之处，保证代码运行的安全,限制函数中的arguments修改。提高编译器效率，增加运行速度；
 5. 使调试更加容易。那些被忽略或默默失败了的代码错误，会产生错误或抛出异常，因此尽早提醒你代码中的问题，你才能更快地指引到它们的源代码。
 防止意外的全局变量。
-6. 消除 this 强制。如果没有严格模式，引用null或未定义的值到 this 值会自动强制到全局变量。这可能会导致许多令人头痛的问题和让人恨不得拔自己头发的bug。在严格模式下，引用 null或未定义的 this 值会抛出错误。
-7. 不允许重复的属性名称或参数值。当检测到对象（例如，var object = {foo: "bar", foo: "baz"};）中重复命名的属性，或检测到函数中（例如，function foo(val1, val2, val1){}）重复命名的参数时，严格模式会抛出错误，因此捕捉几乎可以肯定是代码中的bug可以避免浪费大量的跟踪时间。
+6. 消除 this 强制。如果没有严格模式，引用null或未定义的值到 this 值会自动强制到全局变量。这可能会有bug。在严格模式下，引用 null或未定义的 this 值会抛出错误。
+7. 不允许重复的属性名称或参数值。当检测到对象（例如，var object = {foo: "bar", foo: "baz"};）中重复命名的属性，或检测到函数中（例如，function foo(val1, val2, val1){}）重复命名的参数时，严格模式会抛出错误。  
 8. 使eval() 更安全。在严格模式和非严格模式下，eval() 的行为方式有所不同。最显而易见的是，在严格模式下，变量和声明在 eval() 语句内部的函数不会在包含范围内创建（它们会在非严格模式下的包含范围中被创建，这也是一个常见的问题源）。
 9. 在 delete使用无效时抛出错误。delete操作符（用于从对象中删除属性）不能用在对象不可配置的属性上。当试图删除一个不可配置的属性时，非严格代码将默默地失败，而严格模式将在这样的情况下抛出异常。
-
 
 
 ## <a name="面向过程和面向对象的异同">面向过程和面向对象的异同？</a>
@@ -1681,9 +1698,6 @@ https://zhuanlan.zhihu.com/p/55064276
     简单来说，就是增加代码的可复用性，减少咱们的工作，使代码更加流畅。
 
 
-
-
-
 ## <a name="跨域">跨域</a>
 [详情](crossOrigin)
 
@@ -1691,11 +1705,15 @@ https://zhuanlan.zhihu.com/p/55064276
 [详情](https://mp.weixin.qq.com/s?__biz=MzA3NTUzNjk1OA==&mid=2651562103&idx=1&sn=0b52850e0ca268918928629bdb80499f&chksm=84900f26b3e78630bfd3cc5c5d8f02de909b8a27f366c3855a8adf4e0c660819d88689a39f39&scene=0#rd)
 
 #### XSS（Cross-Site Scripting，跨站脚本攻击）
-概念
+* 概念
 >
     通过在目标网站上注入恶意脚本并运行，获取用户的敏感信息如 Cookie、SessionID 等，影响网站与用户数据安全。
 
-防御
+* 特点：
+>
+    能注入恶意的HTML/JavaScript代码到用户浏览的网页上，从而达到Cookie资料窃取、会话劫持、钓鱼欺骗等攻击
+
+* 防御
 >
     1、编码
     对用户输入的数据进行HTML Entity编码
@@ -1709,22 +1727,26 @@ https://zhuanlan.zhihu.com/p/55064276
     使用DOM Parse转换，校正不配对的DOM标签
 
 #### CSRF（Cross-Site Request Forgeries，跨站点请求伪造）
-概念
+* 概念
 >
     指攻击者通过设置好的陷阱，强制对已完成的认证用户进行非预期的个人信息或设定信息等某些状态更新。
 ![CSFR](img/CSFR.png)
 
-防御
+* 特点：
 >
-    token验证
-    Referer验证（来源验证）
-    隐藏令牌
+    重要操作的所有参数都是可以被攻击者猜测到的。攻击者预测出URL的所有参数与参数值，才能成功地构造一个伪造的请求。
+
+* 防御
+>
+
+    token验证机制，比如请求数据字段中添加一个token，响应请求时校验其有效性  
+    用户操作限制，比如验证码（繁琐，用户体验差）  
+    请求来源限制，比如限制HTTP Referer才能完成操作（防御效果相比较差）
 
 #### SQL注入攻击
-概念
+* 概念
 >
     SQL 注入就是通过给 web 应用接口传入一些特殊字符，达到欺骗服务器执行恶意的 SQL 命令。
-    
 
 
 ## <a name="URI、URL、URN">URI、URL、URN</a>
@@ -1760,6 +1782,55 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
 ## <a name="函数重载">函数重载</a>
 
 函数名称一样，但是输入输出不一样。或者说，允许某个函数有各种不同输入，根据不同的输入，调用不同的函数，然后返回不同的结果。
+
+重载其实是把多个功能相近的函数合并为一个函数，重复利用了函数名
+
+>
+    //第一个为要绑定方法的对象，第二个为绑定的方法名称，第三个为需要绑定的方法（匿名函数）
+    function addMethod(object, name, fn) {
+    　　var old = object[name]; //把前一次添加的方法存在一个临时变量old里面
+    　　object[name] = function() { // 重写了object[name]的方法
+    　　　　// 如果调用object[name]方法时，传入的参数个数跟预期的一致，则直接调用
+    　　　　if(fn.length === arguments.length) {
+    　　　　　　return fn.apply(this, arguments);
+    　　　　// 否则，判断old是否是函数，如果是，就调用old
+    　　　　} else if(typeof old === "function") {
+    　　　　　　return old.apply(this, arguments);
+    　　　　}
+    　　}
+    }
+
+    var people = {
+    　　values: ["Dean Edwards", "Alex Russell", "Dean Tom"]
+    };
+
+    /* 下面开始通过addMethod来实现对people.find方法的重载 */
+
+    // 不传参数时，返回people.values里面的所有元素
+    addMethod(people, "find", function() {
+    　　return this.values;
+    });
+
+    // 传一个参数时，按first-name的匹配进行返回
+    addMethod(people, "find", function(firstName) {
+      return this.values.filter((item)=>{
+        return item.indexOf(firstName) === 0
+      })
+    });
+
+    // 传两个参数时，返回first-name和last-name都匹配的元素
+    addMethod(people, "find", function(firstName, lastName) {
+      return this.values.filter((item)=>{
+        return item === (firstName + lastName)
+      })
+    });
+
+    // 测试：
+    console.log(people)
+    console.log(people.find()); //["Dean Edwards", "Alex Russell", "Dean Tom"]
+    console.log(people.find("Dean")); //["Dean Edwards", "Dean Tom"]
+    console.log(people.find("Dean Edwards")); //["Dean Edwards"]
+
 
 ## <a name="防抖、节流">防抖、节流</a>
 
@@ -1802,10 +1873,10 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
     }
 
     
+    let ipt = document.getElementById('ipt');
     function sayHi() {
       console.log('防抖成功');
     }
-    let ipt = document.getElementById('ipt');
     ipt.addEventListener('input', debounce(sayHi)); // 防抖
 
 
@@ -1901,9 +1972,137 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
     curried(1, 2, 3) // => [1, 2, 3]
 
 ## <a name="promise">promise</a>
-http://www.html-js.com/article/5890
 
-https://zhuanlan.zhihu.com/p/52714698
+[【2019 前端进阶之路】站住，你这个Promise！](https://zhuanlan.zhihu.com/p/52714698)
+
+[ES6 Promise](http://es6.ruanyifeng.com/#docs/promise)
+
+
+Promise是一个构造函数（或者类），接受一个函数作为参数，该函数接受resolve，reject两个参数。
+
+Promise 对象代表一个异步操作，有三种状态：pending（进行中）、fulfilled（已成功） 和 rejected（已失败）。只有异步操作的结果，可以决定当前是哪一种状态，任何其他操作都无法改变这个状态。  
+
+Promise 对象的状态改变，只有两种可能：从 pending 变为 fulfilled 和 从 pending 变为 rejected。只要这两种情况发生，状态就凝固了，不会再变了，就称为 resolved（已定型）。
+
+调用resolve或reject并不会终结 Promise 的参数函数的执行。一般来说，调用resolve或reject以后，Promise 的使命就完成了，可return resolve()
+
+
+* 基本用法：  
+>
+    new Promise((resolve, reject) => {
+      resolve()
+      console.log(2)
+    })
+
+    调用resolve(1)以后，后面的console.log(2)还是会执行，并且会首先打印出来。这是因为立即 resolved 的 Promise 是在本轮事件循环的末尾执行，总是晚于本轮循环的同步任务
+
+* Promise.prototype.then()  
+then 方法返回新的Promise实例  
+then 方法的第一个参数是 resolved 状态的回调函数，第二个参数（可选）是 rejected 状态的回调函数。
+>
+    new Promise((resolve, reject) => {
+      if(Math.random()>=0.5){
+        resolve('成功')
+      }else{
+        reject('失败')
+      }
+    }).then((data) => {
+      console.log(data) //成功
+    }, (error) => {
+      console.log(error) //失败
+    })
+
+* Promise.prototype.catch()  
+
+catch方法 是.then(null, rejection) 或 .then(undefined, rejection)别名 用于指定发生错误时的回调函数
+
+catch方法返回Promise 对象，因此后面还可以接着调用 then 方法。
+
+如果异步操作抛出错误，状态就会变为 rejected，就会调用 catch 方法指定的回调函数，处理这个错误。 then 方法指定的回调函数，如果运行中抛出错误，也会被 catch 方法捕获。 catch 方法的写法更接近同步的写法（try/catch）。  
+因此，建议总是使用 catch 方法，而不使用 then 方法的第二个参数。
+
+>
+    new Promise((resolve, reject) => {
+      <!--  -->
+    }).
+    then((data) => {
+      
+    }).
+    catch((err) => {
+
+    })
+
+    等价于
+
+    new Promise((resolve, reject) => {
+      <!--  -->
+    }).
+    then((data) => {
+
+    },(err) => {
+      
+    })
+
+如果没有使用 catch 方法或者 then 第二个参数指定错误处理的回调函数，Promise 对象抛出的错误不会传递到外层代码，即不会有任何反应
+
+* Promise.prototype.finally()  
+
+finally 方法用于指定不管 Promise 对象最后状态如何，都会执行的操作。  
+不接收任何参数
+
+* Promise.all()    
+
+将多个Promise实例，包装成一个新的Promise实例
+>
+    var p1 = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (Math.random() >= 0.5) {
+            resolve('P1');
+        } else {
+            reject('error');
+        }
+      }, 500);
+    });
+    var p2 = new Promise((resolve, reject) => {
+      setTimeout(resolve, 600, 'P2');
+    });
+
+    var p = Promise.all([p1, p2]).
+      then((results) => {
+        console.log(results); // 输出：['P1', 'P2']
+      }).
+      catch((error) => {
+          console.log(error); // 如果p1执行失败，则输出：error
+      });
+
+Promise.all 方法接受一个数组作为参数，p1、p2 都是 Promise 实例，如果不是，就会先调用下面讲到的 Promise.resolve 方法，将参数转为 Promise 实例，再进一步处理。（Promise.all方法的参数可以不是数组，但必须具有 Iterator 接口，且返回的每个成员都是 Promise 实例。）
+
+p的状态由p1、p2决定，分成两种情况:
+>
+
+    只有 p1、p2 的状态都变成 fulfilled，p 的状态才会变成 fulfilled，此时 p1、p2 的返回值组成一个数组，传递给 p 的回调函数。
+
+    只要 p1、p2 之中有一个被 rejected，p 的状态就变成 rejected，此时第一个被 reject 的实例的返回值，会传递给 p 的回调函数。
+
+* Promise.race()    
+
+var p = Promise.race([p1, p2]);
+
+race方法 类似于all方法同样是将多个Promise实例，包装成一个新的 Promise 实例。
+ 
+不同的是 只要 p1、p2 之中有一个实例率先改变状态，p 的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给 p 的回调函数。
+
+
+* Promise.resolve()
+将现有对象转为 Promise 对象，Promise.resolve方法就起到这个作用。  
+Promise.resolve(obj);
+
+Promise.resolve('foo')
+// 等价于
+new Promise(resolve => resolve('foo'))
+
+* Promise.reject()
+* Promise.try()
 
 
 ## <a name="webWorker">webWorker</a>
@@ -1915,7 +2114,7 @@ https://zhuanlan.zhihu.com/p/52714698
 
     Worker 线程一旦新建成功，就会始终运行，不会被主线程上的活动（比如用户点击按钮、提交表单）打断。这样有利于随时响应主线程的通信。但是，这也造成了 Worker 比较耗费资源，不应该过度使用，而且一旦使用完毕，就应该关闭。
 
-    子线程与主线程之间提供了数据交互的接口postMessage和onmessage，来进行数据发送和接收;
+    子线程与主线程之间提供了数据交互的接口postMessage和onmessage，来进行数据发送和接收;  
     通过error捕捉错误信息；
     使用terminate()可结束线程;
 
@@ -1975,110 +2174,176 @@ API：
 
 
 ## <a name="前端性能优化的方法">前端性能优化的方法</a>
-[详情](https://mp.weixin.qq.com/s?__biz=MzUzOTM0MTE4OQ==&mid=2247485489&idx=1&sn=053398c3f26f13924b27a1877fa0a2c4&chksm=fac8b0dbcdbf39cdfb4320aa76c0802ef320792a63b7bf64b4613258d15746592511726be50e&scene=0&xtrack=1#rd)
+[前端性能优化之雅虎35条军规](https://mp.weixin.qq.com/s?__biz=MzUzOTM0MTE4OQ==&mid=2247485489&idx=1&sn=053398c3f26f13924b27a1877fa0a2c4&chksm=fac8b0dbcdbf39cdfb4320aa76c0802ef320792a63b7bf64b4613258d15746592511726be50e&scene=0&xtrack=1#rd)
 
 
 content方面:
 >
     减少HTTP请求：合并文件、CSS Sprites、Gzip压缩，CDN托管，data缓存
-    减少DNS查询：DNS查询完成之前浏览器不能从这个主机下载任何任何文件。方法：DNS缓存、将资源分布到恰当数量的主机名，平衡并行下载和DNS查询
+
+    减少DNS查询：DNS查询完成之前浏览器不能从这个主机下载任何任何文件。方法：DNS缓存、将资源分布到恰当数量的主机名，平衡并行下载和DNS查询  
+
     避免重定向：多余的中间访问
+
     延迟加载，预加载
-    缓存AJAX请求结果，每次操作本地变量，减少了请求次数
-    非必须组件延迟加载
-    未来所需组件预加载
-    减少DOM元素数量
+
+    缓存AJAX请求结果：每次操作本地变量，减少了请求次数   
+
+    减少DOM元素数量：计算页面 DOM元素 document.getElementsByTagName('*').length
+
     将资源放到不同的域下：浏览器同时从一个域下载资源的数目有限，增加域可以提高并行下载量
-    减少iframe使用（frame 完全加载以后，页面才会触发 load 事件）
-    避免在页面的主体布局中使用table，table要等其中的内容完全下载之后才会显示出来，显示比div+css布局慢
-    不要404
 
-Server方面:
->
-    使用CDN
-    添加Expires或者Cache-Control响应头
-    对组件使用Gzip压缩
-    配置ETag
-    尽早输出缓存
-    Ajax使用GET进行请求
+    减少iframe使用:frame完全加载以后，页面才会触发load事件(动态加载可解决)  
 
-Cookie方面:
->
-    减小cookie大小
-    引入资源的域名不要包含cookie
+    避免在页面的主体布局中使用table，
+      table要等其中的内容完全下载之后才会显示出来,显示比div+css布局慢;
+
+      标签较多，增加文件大小；
+
+      不易维护，无法适应响应式设计；
+
+      默认的表格布局算法会产生大量重绘
+
+    避免404
+
 
 css方面:
 >
     将样式表放到页面顶部（<head>里）
-    避免使用CSS Expression（css表达式)又称Dynamic properties(动态属性)
+
     不使用@import；使用<link>
-    不使用IE的Filter
+
+    避免使用css表达式(CSS Expression)又称动态属性(Dynamic properties)
+
+    不使用IE的filter(不是 CSS3 Filter)
+
     值为0时无需写单位
 
 JS方面:
 >
-    将脚本放到页面底部
-    使用外部javascript和css
-    压缩javascript和css
-    删除不需要的、重复的脚本
+    将脚本放到页面底部  
+
+    使用外部javascript和css 
+
+    压缩javascript和css  
+
+    删除不需要的、重复的脚本  
+
     少用全局变量、缓存DOM节点查找的结果
-    用innerHTML代替DOM操作，减少DOM操作次数，优化javascript性能
-    合理设计事件监听器
-    设置样式时使用className（或el.style.cssText +=）而不是直接操作style
+
+    减少DOM操作次数: 
+      设置样式时使用className（或el.style.cssText +=）而不是直接操作style;
+
+      缓存已经访问过的元素;
+
+      使用DocumentFragment暂存DOM，整理好以后再插入DOM树;
+
 
 图片方面
 >
 
     优化图片:根据实际颜色需要选择色深、压缩
-    尽可能使用css、svg 、iconfont代替图片
+
+    尽可能使用css、svg、base64、iconfont代替图片
+
     优化css Sprite
-    不要在HTML中拉伸图片
+
+    不要在HTML中拉伸缩放图片
+
     避免图片src为空（src属性为空，但浏览器仍然会向服务器发起一个HTTP请求）
+
     保证favicon.ico小并且可缓存
+
+Server方面:
+>
+    使用CDN(静态内容分发网络)：可以以较低的投入，有效提升加载速度  
+
+    添加Expires或者Cache-Control响应头  
+
+    使用Gzip压缩: 图片和PDF文件不要使用gzip,它们本身已经压缩过
+
+    配置ETag
+    
+    尽早输出缓存
+
+    Ajax使用GET进行请求
+
+Cookie方面:
+>
+    减小cookie大小:提高响应速度。
+
+    静态资源使用无cookie域名:低Cookie传送的造成的流量浪费，提高响应速度。
+
+    设置合适的过期时间
+
 
 移动端方面：
 >
     保持单个组件小于25k
 
-![雅虎35条军规——前端性能优化](./img/optimize1.png)
+## <a name="浏览器渲染">浏览器渲染</a>
+![render](img/render.png)
+![render](img/render1.png)
 
-![优化](./img/optimize.jpg)
 
-## <a name="从浏览器地址栏输入url到显示页面的步骤">从浏览器地址栏输入url到显示页面的步骤(以HTTP为例)</a>
+页面渲染可分为下面5个步骤：
+1. HTML被HTML解析器解析成DOM树
+2. css则被css解析器解析成CSSOM树
+3. 结合DOM树和CSSOM树，生成一棵渲染树(Render Tree)
+4. 生成布局（flow），即将所有渲染树的所有节点进行平面合成
+5. 将布局绘制（paint）在屏幕上
+
+4、5是最耗时的部分，这两步合起来即 渲染。
+
+
+## <a name="从浏览器地址栏输入url到显示页面的步骤">从浏览器地址栏输入url到显示页面的步骤</a>
 
 #### 浏览器工作原理
-1.用户界面 2.网络 3.UI后端 4.数据存储 5.浏览器引擎 6.渲染引擎 7.js解释器
-浏览器解析过程：
-流程：解析html以构建dom树->构建render树->布局render树->绘制render树
+1.用户界面 2.网络 3.UI后端 4.数据存储 5.浏览器引擎 6.渲染引擎 7.js解释器  
+
+浏览器解析过程：解析html以构建dom树->构建render树->布局render树->绘制render树
 
 #### 网页生成过程：
-1.HTML被HTML解析器解析成DOM 树
-2.css则被css解析器解析成CSSOM 树
-3.结合DOM树和CSSOM树，生成一棵渲染树(Render Tree)
-4.生成布局（flow），即将所有渲染树的所有节点进行平面合成
-5.将布局绘制（paint）在屏幕上
-第四步和第五步是最耗时的部分，这两步合起来，就是我们通常所说的渲染。
+1. HTML被HTML解析器解析成DOM树
+2. css则被css解析器解析成CSSOM树
+3. 结合DOM树和CSSOM树，生成一棵渲染树(Render Tree)
+4. 生成布局（flow），即将所有渲染树的所有节点进行平面合成
+5. 将布局绘制（paint）在屏幕上
+
+4、5是最耗时的部分，这两步合起来即 渲染。
 
 ####  简
 >
     输入网址；
+
     发送到DNS服务器，并获取域名对应的web服务器对应的ip地址；
+
     与web服务器建立TCP连接；
+
     浏览器向web服务器发送http请求；
+
     web服务器响应请求，并返回指定url的数据（或错误信息，或重定向的新的url地址）；
+
     浏览器下载web服务器返回的数据及解析html源文件；
+
     生成DOM树，解析css和js，渲染页面，直至显示完成；
 
 #### 具体
 1. 在浏览器地址栏输入URL
+
 2. 浏览器查看缓存，如果请求资源在缓存中并且新鲜，跳转到转码步骤
     * 如果资源未缓存，发起新请求
+
     * 如果已缓存，检验是否足够新鲜，足够新鲜直接提供给客户端，否则与服务器进行验证。
+
     * 检验新鲜通常有两个HTTP头进行控制Expires和Cache-Control：
         * HTTP1.0提供Expires，值为一个绝对时间表示缓存新鲜日期
         * HTTP1.1增加了Cache-Control: max-age=,值为以秒为单位的最大新鲜时间
+
 3. 浏览器解析URL获取协议，主机，端口，path
+
 4. 浏览器组装一个HTTP（GET）请求报文
+
 5. 浏览器获取主机ip地址，过程如下：
     * 浏览器缓存
     * 本机缓存
@@ -2086,77 +2351,78 @@ JS方面:
     * 路由器缓存
     * ISP DNS缓存
     * DNS递归查询（可能存在负载均衡导致每次IP不一样）
+
 6. 打开一个socket与目标IP地址，端口建立TCP链接，三次握手如下：
     * 客户端发送一个TCP的SYN=1，Seq=X的包到服务器端口
     * 服务器发回SYN=1， ACK=X+1， Seq=Y的响应包
     * 客户端发送ACK=Y+1， Seq=Z
+
 7. TCP链接建立后发送HTTP请求
+
 8. 服务器接受请求并解析，将请求转发到服务程序，如虚拟主机使用HTTP Host头部判断请求的服务程序
+
 9. 服务器检查HTTP请求头是否包含缓存验证信息如果验证缓存新鲜，返回304等对应状态码
+
 10. 处理程序读取完整请求并准备HTTP响应，可能需要查询数据库等操作
+
 11. 服务器将响应报文通过TCP连接发送回浏览器
+
 12. 浏览器接收HTTP响应，然后根据情况选择关闭TCP连接或者保留重用，关闭TCP连接的四次挥手如下：
     * 主动方发送Fin=1， Ack=Z， Seq= X报文
     * 被动方发送ACK=X+1， Seq=Z报文
     * 被动方发送Fin=1， ACK=X， Seq=Y报文
     * 主动方发送ACK=Y， Seq=X报文
+
 13. 浏览器检查响应状态吗：是否为1XX，3XX， 4XX， 5XX，这些情况处理与2XX不同
+
 14. 如果资源可缓存，进行缓存
+
 15. 对响应进行解码（例如gzip压缩）
+
 16. 根据资源类型决定如何处理（假设资源为HTML文档）
+
 17. 解析HTML文档，构件DOM树，下载资源，构造CSSOM树，执行js脚本，这些操作没有严格的先后顺序，以下分别解释
+
 18. 构建DOM树：
     * Tokenizing：根据HTML规范将字符流解析为标记
+
     * Lexing：词法分析将标记转换为对象并定义属性和规则
+
     * DOM construction：根据HTML标记关系将对象组成DOM树
+
 19. 解析过程中遇到图片、样式表、js文件，启动下载
+
 20. 构建CSSOM树：
     * Tokenizing：字符流转换为标记流
+
     * Node：根据标记创建节点
+
     * CSSOM：节点创建CSSOM树
+    
 21. 根据DOM树和CSSOM树构建渲染树:
     * 从DOM树的根节点遍历所有可见节点，不可见节点包括：1）script,meta这样本身不可见的标签。2)被css隐藏的节点，如display: none
+
     * 对每一个可见节点，找到恰当的CSSOM规则并应用
+
     * 发布可视节点的内容和计算样式
+
 22. js解析如下：
     * 浏览器创建Document对象并解析HTML，将解析到的元素和文本节点添加到文档中，此时document.readystate为loading
+
     * HTML解析器遇到没有async和defer的script时，将他们添加到文档中，然后执行行内或外部脚本。这些脚本会同步执行，并且在脚本下载和执行时解析器会暂停。这样就可以用document.write()把文本插入到输入流中。同步脚本经常简单定义函数和注册事件处理程序，他们可以遍历和操作script和他们之前的文档内容
+
     * 当解析器遇到设置了async属性的script时，开始下载脚本并继续解析文档。脚本会在它下载完成后尽快执行，但是解析器不会停下来等它下载。异步脚本禁止使用document.write()，它们可以访问自己script和之前的文档元素
+
     * 当文档完成解析，document.readState变成interactive
+
     * 所有defer脚本会按照在文档出现的顺序执行，延迟脚本能访问完整文档树，禁止使用document.write()
+
     * 浏览器在Document对象上触发DOMContentLoaded事件
+
     * 此时文档完全解析完成，浏览器可能还在等待如图片等内容加载，等这些内容完成载入并且所有异步脚本完成载入和执行，document.readState变为* complete,window触发load事件
+
 23. 显示页面（HTML解析过程中会逐步显示页面）
 
-#### 浏览器工作原理
-1.用户界面 2.网络 3.UI后端 4.数据存储 5.浏览器引擎 6.渲染引擎 7.js解释器
-浏览器解析过程：
-流程：解析html以构建dom树->构建render树->布局render树->绘制render树
-
-#### 网页生成过程：
-1. HTML被HTML解析器解析成DOM 树
-2. css则被css解析器解析成CSSOM 树
-3. 结合DOM树和CSSOM树，生成一棵渲染树(Render Tree)
-4. 生成布局（flow），即将所有渲染树的所有节点进行平面合成
-5. 将布局绘制（paint）在屏幕上
-第四步和第五步是最耗时的部分，这两步合起来，就是我们通常所说的渲染。
-
-
-## <a name="浏览器渲染">浏览器渲染</a>
-![render](img/render.png)
-![render](img/render1.png)
-
-页面渲染可分为下面5个步骤：
->
-    处理HTML来创建DOM tree；
-
-    处理CSS来创建CSSOM tree；
-
-    根据DOM跟CSSOM来合并render tree；
-
-    根据render tree来布局；
-
-    绘制render tree。
 
 ## <a name="JS执行机制">JS执行机制</a>
 https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/7
@@ -2190,7 +2456,6 @@ https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/7
 >
     在XMLHttpRequest在连接后是通过浏览器新开一个线程请求
     将检测到状态变更时，如果设置有回调函数，异步线程就产生状态变更事件，将这个回调再放入事件队列中。再由JavaScript引擎执行。
-    看到这里，如果觉得累了，可以先休
 
 #### JS任务分类
 JS里的一种分类方式，就是将任务分为：同步任务和异步任务。
@@ -2204,27 +2469,55 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
 
 而准确的划分方式是：
 1. macro-task(宏任务)：script(整体代码)，setTimeout、setInterval、I/O、UI交互事件、postMessage、MessageChannel、setImmediate(Node.js 环境)
-2. micro-task(微任务)：Promise、process.nextTick、MutaionObserver
+2. micro-task(微任务)：Promise.then、process.nextTick(Node.js 环境)、MutaionObserver
 >
 
-    * macrotask（宏任务），可以理解是每次执行栈执行的代码就是一个宏任务（包括每次从事件队列中获取一个事件回调并放到执行栈中执行）
-    每一个task会从头到尾将这个任务执行完毕，不会执行其它
-    浏览器为了能够使得JS内部task与DOM任务能够有序的执行，会在一个task执行结束后，在下一个 task 执行开始前，对页面进行重新渲染
+    * macrotask（宏任务），可以理解是每次执行栈执行的代码就是一个宏任务（包括每次从事件队列中获取一个事件回调并放到执行栈中执行）  
+    每一个macrotask会从头到尾将这个任务执行完毕，不会执行其它；
+    浏览器为了能够使得JS内部macrotask与DOM任务能够有序的执行，会在一个macrotask执行结束后，在下一个 macrotask 执行开始前，对页面进行重新渲染
 
-    * microtask（微任务），可以理解是在当前 task 执行结束后立即执行的任务
-    也就是说，在当前task任务后，下一个task之前，在渲染之前
-    所以它的响应速度相比setTimeout（setTimeout是task）会更快，因为无需等渲染
+    * microtask（微任务），可以理解是在当前 macrotask 执行结束后立即执行的任务  
+    也就是说，在当前macrotask任务后，下一个macrotask之前，在渲染之前。
+
+    所以它的响应速度相比setTimeout会更快，因为无需等渲染
     也就是说，在某一个macrotask执行完后，就会将在它执行期间产生的所有microtask都执行完毕（在渲染前）
 
 #### JS的执行机制是：
 >
-    执行一个宏任务，
-    过程中如果遇到微任务，就将其放到微任务的“事件队列”里
-    当前宏任务执行完成后，立即执行当前微任务队列中的所有微任务（依次执行）
-    执行完毕，开始检查渲染，然后GUI线程接管渲染
+    执行一个宏任务
+    过程中如果遇到微任务，就将其放到微任务的“事件队列”里  
+    当前宏任务执行完成后，立即执行当前微任务队列中的所有微任务（依次执行）  
+    执行完毕后，开始检查渲染，然后GUI线程接管渲染  
     渲染完毕后，JS线程继续接管，开始下一个宏任务（从事件队列中获取）
 
 ![img](/img/JS的执行机制.jpg)
+
+
+* Promise和async中的立即执行
+我们知道Promise中的异步体现在then和catch中，所以写在Promise中的代码是被当做同步任务立即执行的。而在async/await中，在出现await出现之前，其中的代码也是立即执行的。那么出现了await时候发生了什么呢？
+
+* async await 
+从字面意思上看await就是等待，await 等待的是一个表达式，这个表达式的返回值可以是一个promise对象也可以是其他值。
+
+很多人以为await会一直等待之后的表达式执行完之后才会继续执行后面的代码，实际上await是一个让出线程的标志。await后面的表达式会先执行一遍，同时将await后面的代码加入到microtask中，然后就会跳出整个async函数来执行后面的代码。
+
+由于因为async await 本身就是promise+generator的语法糖。所以await后面的代码是microtask。 
+
+>
+    async function async1() {
+      console.log('async1 start');
+      await async2();
+      console.log('async1 end');
+    }
+
+    等价于
+
+    async function async1() {
+      console.log('async1 start');
+      Promise.resolve(async2()).then(() => {
+        console.log('async1 end');
+      })
+    }
 
 #### 进程、线程
 >
@@ -2258,36 +2551,17 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
     }) 
     console.log('script end')
 
-
-
-## <a name="web安全">web安全</a>
-    XSS CSRF
-
-XSS(跨站脚本攻击)，恶意的注入html代码，其他用户访问时，会被执行
-
-* 特点：
+______
 >
-    能注入恶意的HTML/JavaScript代码到用户浏览的网页上，从而达到Cookie资料窃取、会话劫持、钓鱼欺骗等攻击
 
-* 防御手段：
->
-    浏览器禁止页面的JS访问带有HttpOnly属性的Cookie
-    两端进行输入格式检查
-    通过编码转义的方式进行输出检查
-
-
-CSRF(攻击跨站请求伪造)
-
-* 特点：
->
-    重要操作的所有参数都是可以被攻击者猜测到的。攻击者预测出URL的所有参数与参数值，才能成功地构造一个伪造的请求。
-
-* 防御手段：
->
-    token验证机制，比如请求数据字段中添加一个token，响应请求时校验其有效性
-    用户操作限制，比如验证码（繁琐，用户体验差）
-    请求来源限制，比如限制HTTP Referer才能完成操作（防御效果相比较差）
-    实践中常用第一种
+    //script start
+    //async1 start
+    //async2
+    //promise1
+    //script end
+    //async1 end
+    //promise2
+    //settimeout
 
 
 ## <a name="get与post区别">get与post区别</a>
@@ -2299,6 +2573,7 @@ CSRF(攻击跨站请求伪造)
 >
     css性能好
     css代码逻辑相对简单
+    
     js动画控制好
     js兼容性好
     js可实现的动画多

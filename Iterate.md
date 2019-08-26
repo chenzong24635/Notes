@@ -107,18 +107,45 @@ for in更适合遍历对象，不要使用for in遍历数组。
     }
 
   
-## Object.keys(obj)、Object.keys(obj)、Object.keys(obj)
-#### 返回一个数组，包括对象自身的（不含继承的）所有可枚举属性（不含 Symbol 属性）的键值对数组、键名、键值。  
-    let entries = Object.entries(arr);
+## Object.entries(obj)、Object.keys(obj)、Object.keys(obj)
+#### 返回一个数组，包括对象自身的（不含继承的）所有可枚举属性（不含 Symbol 属性）的键值对数组、键名、键值。 
+
+> 
+    let entries = Object.entries(obj);
     console.log('Object.entries()-->', entries)
 
-    let keys = Object.keys(arr);
+    let keys = Object.keys(obj);
     console.log('Object.keys()-->', keys)
 
-    let values = Object.values(arr);
+    let values = Object.values(obj);
     console.log('Object.values()-->', values)
 
-    // 删除变量
+
+Object.entrires //可以将对象转换为数组
+Object.fromEntries //可以将数组转换为对象 -->数组格式：[[key,val],[key1,val1]]
+>
+    //key重复时，取后面的值
+    let arr = [
+      [ 'a', 22 ],
+      [ 'b', 22 ],
+      [ 'c', 21],
+      [ 'a', 20 ]
+    ]
+    let obj = Object.fromEntries(arr);
+    // { a: 20, b: 20, c: 21 }
+
+
+>
+    let obj = {
+      a: 20,
+      b: 22
+    }
+  
+    var arr = Object.entrires(obj) //[[a,20],[b,22]]
+    Object.fromEntries(arr) //{a: 20,b: 22}
+
+>  
+    // 
     var {a,b,...obj} = {
       d: 'd',
       e: 'e',
