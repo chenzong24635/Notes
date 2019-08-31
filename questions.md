@@ -1,5 +1,5 @@
 
-[常用网站](website.md)
+[**常用网站**](website.md)
 
 **前端页面由哪三层构成：结构层、表示层、行为层。**
 
@@ -8,12 +8,14 @@
 ## [JS](js.md)
 ## [JQ](jq.md)
 ## [AJAX](Ajax.md)
+## [跨域](crossOrigin.md)
+
 ## [Vue](vue.md)
 ## [小程序](Applet.md)
 
-## [HTTP](HTTP.md)
+## [JS遍历方法](Iterate.md)
 ## [JS兼容](compatible.md)
-## [遍历方法](Iterate.md)
+## [HTTP](HTTP.md)
 ## [正则](reg.md)
 
 ## [Git](git.md)
@@ -21,9 +23,10 @@
 
 ## [vscode快捷键](vscode.md)
 
+## [其他](others.md)
 
 # 目录
- <a href="#常用">**常用**</a>
+<a href="#常用">**常用**</a>
 
 * <a href="#浏览器判断">浏览器、手机类型判断navigator.userAgent</a>
 * <a href="#获取当前页面url网址信息">获取当前页面url网址信息</a>
@@ -39,9 +42,9 @@
 * <a href="#类数组转化为数组">类数组转化为数组</a>
 * <a href="#判断是否回文、实现回文">判断是否回文、实现回文</a>
 * <a href="#实现f(a)(b)与f(a,b)一样的效果">实现f(a)(b)与f(a,b)一样的效果</a>
-* <a href="无限累加的函数 add">实现一个无限累加的函数add(1)(2)(3)...</a>
+* <a href="#无限累加的函数 add">实现一个无限累加的函数add(1)(2)(3)...</a>
 * <a href="#数组无序排列">数组无序排列</a>
-* <a href="#数组扁平化:n维数组展开成一维数组">数组扁平化:n维数组展开成一维数组</a>
+* <a href="#数组扁平化">数组扁平化:n维数组展开成一维数组</a>
 * <a href="#数组去重">数组去重</a>
 * <a href="#数组排序">数组排序</a>
 * <a href="#n的阶层（尾调用优化）">n的阶层（尾调用优化）</a>
@@ -55,13 +58,12 @@
 
 
 * <a href="两位大整数相加">两位大整数相加</a>
-* <a href="一道setTimeout面试题">一道setTimeout面试题</a>
+* <a href="#一道setTimeout面试题">一道setTimeout面试题</a>
 * <a href="#map(parseInt) 原理解析">['1','2','3'].map(parseInt) 原理解析</a>
-* <a href="Array.apply(null,Array(3))与Array(3)区别">Array.apply(null,Array(3))与Array(3)区别</a>
+* <a href="#Array.apply(null,Array(3))与Array(3)区别">Array.apply(null,Array(3))与Array(3)区别</a>
 
 
-
- <a href="#面试题">**面试题**</a>
+<a href="#面试题">**面试题**</a>
 
 
 
@@ -80,6 +82,7 @@
 
 
 * PC端、手机端、iPad
+>
     if (/Android|Windows Phone|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
       console.log("手机端");
     } else if (/iPad/i.test(navigator.userAgent)) {
@@ -89,6 +92,7 @@
     }
 
 * 微信内置浏览器
+>
     if (navigator.userAgent.toLowerCase().match(/MicroMessenger/i) === "micromessenger") {
       console.log("微信")
     } else { 
@@ -96,6 +100,7 @@
     } 
 
 * IE 、火狐、其他
+>
     if (navigator.userAgent.toLowerCase().indexOf("firefox") >=0) { // 若-1为其他，否则火狐
       console.log("firefox");
     } else if(window.addEventListener){
@@ -105,6 +110,7 @@
     }
 
 * Android、IOS
+>
     if(/android/ig.test(navigator.userAgent)){
       console.log("Android");
     } else if(/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)){
@@ -119,48 +125,39 @@ var obj = {
 }
 
 ## <a name="获取当前页面url网址信息">获取当前页面url网址信息</a>
+http://www.aaa.com/bbb.aspx?name=1
 
+### 属性
 #### window.location.href(设置或获取整个 URL 为字符串)
 
-    var test = window.location.href;
-    alert(test);
-    返回：http://i.cnblogs.com/EditPosts.aspx?opt=1
+    // http://www.aaa.com/bbb.aspx?name=1
 
 #### window.location.protocol(设置或获取 URL 的协议部分)
 
-    var test = window.location.protocol;
-    alert(test);
-    返回：http:
+    // http:
 
 #### window.location.host(设置或获取 URL 的主机部分)
 
-    var test = window.location.host;
-    alert(test);
-    返回：i.cnblogs.com
+    // www.aaa.com
 
 #### window.location.port(设置或获取与 URL 关联的端口号码)
 
-    var test = window.location.port;
-    alert(test);
-    返回：空字符(如果采用默认的80端口(update:即使添加了:80)，那么返回值并不是默认的80而是空字符)
+    // 空字符(采用默认的80端口返回空字符)
 
 #### window.location.pathname(设置或获取与 URL 的路径部分（就是文件地址）)
 
-    var test = window.location.pathname;
-    alert(test);
-    返回：/EditPosts.aspx
+    // bbb.aspx
 
 #### window.location.search(设置或获取 href 属性中跟在问号后面的部分)
 
-    var test = window.location.search;
-    alert(test);
-    返回：?opt=1
+    // ?name=1 
 
 #### window.location.hash(设置或获取 href 属性中在井号“##”后面的分段)
 
-    var test = window.location.hash;
-    alert(test);
-    返回：空字符(因为url中没有)
+    // 空字符
+
+
+### 获取 url 中的参数值
 
 #### js 获取 url 中的参数值
 >
@@ -236,58 +233,82 @@ var obj = {
 
 
 ## <a name="base64数据导出文件">base64数据导出文件，文件下载</a>
-downloadFile('dsd','./tets.md')
-function downloadFile(filename, data){
-  let DownloadLink = document.createElement('a');
-  if ( DownloadLink ){
-    document.body.appendChild(DownloadLink);
-    DownloadLink.style = 'display: none';
-    DownloadLink.download = filename;
-    DownloadLink.href = data;
-    if ( document.createEvent ){
-      let DownloadEvt = document.createEvent('MouseEvents');
-      DownloadEvt.initEvent('click', true, false);
-      DownloadLink.dispatchEvent(DownloadEvt);
+>
+    downloadFile('dsd','./tets.md')
+    function downloadFile(filename, data){
+      let DownloadLink = document.createElement('a');
+      if ( DownloadLink ){
+        document.body.appendChild(DownloadLink);
+        DownloadLink.style = 'display: none';
+        DownloadLink.download = filename;
+        DownloadLink.href = data;
+        if ( document.createEvent ){
+          let DownloadEvt = document.createEvent('MouseEvents');
+          DownloadEvt.initEvent('click', true, false);
+          DownloadLink.dispatchEvent(DownloadEvt);
+        }
+        else if ( document.createEventObject ){
+          DownloadLink.fireEvent('onclick');
+        }
+        else if (typeof DownloadLink.onclick == 'function' ){
+          DownloadLink.onclick();
+        }
+        document.body.removeChild(DownloadLink);
+      }
     }
-    else if ( document.createEventObject ){
-      DownloadLink.fireEvent('onclick');
-    }
-    else if (typeof DownloadLink.onclick == 'function' ){
-      DownloadLink.onclick();
-    }
-    document.body.removeChild(DownloadLink);
-  }
-}
 
 
-## <a name="判断字符串长度">判断字符串长度</a>
+## <a name="判断字符串长度">判断字符串长度(英文占1个字符，中文汉字占2个字符)</a>
+    
+>
     function strLength(str) {
-      var a = 0;
-      for (var i = 0; i < str.length; i++) {
-        if (str.charCodeAt(i) > 255) {
-          a += 2;//按照预期计数增加2
+      var len = 0;
+      for (var i = 0, strLen = str.length; i < strLen ; i++) {
+        if (str.charCodeAt(i)>=128) {
+          len += 2;
         }
         else {
-          a++;
+          len ++;
         }  
       }
-      return a;
+      return len;
     }
+>
+    //通过正则将所有双字节字符替换为2个单字节字符，在去取长度
+    function getStrLength(str){
+        return str.replace(/[\u0391-\uFFE5]/g,"aa").length; 
+    }
+
+ASCII码由一个字节中的7位表示，范围共128个字符。而且ASCII码只能表示英文，数字和常用标点符号，编码在1-127之间。  
+Unicode码可以表示所有字符，编码范围很大，能表示65000多个字符，其中汉字占40000多个。Unicode码包含ASCII码  
+
+汉字转换为Unicode码后，其编码值都是大于127的; unicode双字节字符编码范围:\u0391-\uFFE5;    
+一个汉字占两个字节，其余语言占一个字节。
+
 
 ## <a name="0.1+0.2">0.1+0.2!=0.3</a>
 * 解决：
 >
     先升幂再降幂
+
     使用内置的 toPrecision() 和 toFixed() 方法，注意，返回值字符串。
+
+    Number.EPSILON(极小的常量; === Math.pow(2, -52))
+        //设置“能够接受的误差范围”。
+        function withinErrorMargin (left, right) {
+          return Math.abs(left - right) < Number.EPSILON;
+        }
+
+        withinErrorMargin(0.1 + 0.2, 0.3) // true
 
 * 原因：
 >
     在进制转换和进阶运算的过程中出现精度损失。
     
-    JavaScript 中的 number 类型就是浮点型，数字和浮点精度的处理相同，JavaScript 中的浮点数采用IEEE-754 格式的规定，这是一种二进制表示法，可以精确地表示分数，比如1/2，1/8，1/1024，每个浮点数占64位。但是，二进制浮点数表示法并不能精确的表示类似0.1这样 的简单的数字，会有舍入误差。
-    由于采用二进制，JavaScript 也不能有限表示 1/10、1/2 等这样的分数。在二进制中，1/10(0.1)被表示为0.00110011001100110011…… 注意 0011 是无限重复的，这是舍入误差造成的，所以对于 0.1 + 0.2 这样的运算，操作数会先被转成二进制，然后再计算：
-    0.1 => 0.0001 1001 1001 1001…（无限循环）
-    0.2 => 0.0011 0011 0011 0011…（无限循环）
+    JavaScript 中的 number 类型就是浮点型，数字和浮点精度的处理相同，JavaScript 中的浮点数采用IEEE-754 格式的规定，这是一种二进制表示法，可以精确地表示分数，比如1/2，1/8，1/1024，每个浮点数占64位。但是，二进制浮点数表示法并不能精确的表示类似0.1这样 的简单的数字，会有舍入误差。  
+    由于采用二进制，JavaScript 也不能有限表示 1/10、1/2 等这样的分数。在二进制中，1/10(0.1)被表示为0.00110011001100110011…… 注意 0011 是无限重复的，这是舍入误差造成的，所以对于 0.1 + 0.2 这样的运算，操作数会先被转成二进制，然后再计算：  
+    0.1 => 0.0001 1001 1001 1001…（无限循环）  
+    0.2 => 0.0011 0011 0011 0011…（无限循环）  
     双精度浮点数的小数部分最多支持 52 位，所以两者相加之后得到这么一串 0.0100110011001100110011001100110011001100...因浮点数小数位的限制而截断的二进制数字，这时候，再把它转换为十进制，就成了 0.30000000000000004。
 
 
@@ -338,7 +359,7 @@ A是遮罩层，B是正常的DOM，C是B上的某个元素，是个链接。场�
 
     事件的触发时间按由早到晚排列为：touchstart 早于 touchend 早于 click。亦即click的触发是有延迟的，这个时间大概在300ms左右。
 
-    由于我们在touchstart阶段就已经隐藏了罩层A，当click被触发时候，能够被点击的元素则是其下的B元素，根据click事件的触发规则：只有在被触发时，当前有click事件的元素显示，且在面朝用户的最前端时，才触发click事件。
+    由于我们在touchstart阶段就已经隐藏了罩层A，当click被触发时候，能够被点击的元素则是其下的B元素，根据click事件的触发规则：只有在被触发时，当前有click事件的元素显示，且在面朝用户的最前端时，才触发click事件。  
     由于B绑定了click事件（或者B本身默认存在click事件），所以B的click事件被触发，产生了点透的情况。
 
 #### 解决方案
@@ -355,13 +376,6 @@ A是遮罩层，B是正常的DOM，C是B上的某个元素，是个链接。场�
     或
     html {
       touch-action: manipulation;
-    }
-
-    
-    IE on Windows Phone
-
-    html {
-      touch-action: manipulation; // IE11+
       -ms-touch-action: manipulation; // IE10
     }
 
@@ -414,7 +428,7 @@ Math.random().toString(36).slice(2)
     toString(radix) 方法以指定的基数返回该对象的字符串表示。
     radix-->用于数字到字符串的转换的基数(从2到36)。
     如果转换的基数大于10，则会使用字母来表示大于9的数字，比如基数为16的情况，则使用a到f的字母来表示10到15。
-    如果基数没有指定，则使用 10
+    如果基数没有指定，则默认使用 10
 
 2. 随机生成n个字符串
 >
@@ -422,9 +436,9 @@ Math.random().toString(36).slice(2)
       let str = 'abcdefghijklmnopqrstuvwxyz9876543210';
       let tmp = '',
           i = 0,
-          l = str.length;
+          len = str.length;
       for (i = 0; i < n; i++) {
-        tmp += str.charAt(Math.floor(Math.random() * l));
+        tmp += str.charAt(Math.floor(Math.random() * len));
       }
       return tmp;
     }
@@ -496,12 +510,22 @@ Math.random().toFixed(6).slice(-6) / 1
 
 ## <a name="统计字符串中同一字符出现次数">统计字符串中同一字符出现次数</a>
 >
-    str.split('').reduce((val, count) => (val[count]++ || (val[count] = 1), val), {});
-
+    str.split('').reduce((val, count) => (val[count]++ || (val[count] = 1), val), {})
+    //
+    function thousand(str){
+      return str.split('').reduce((val, count) => {
+        if(val[count]){
+          val[count]++
+        }else{
+          val[count] = 1
+        }
+        return val
+      }, {})
+    }
 ## <a name="类数组转化为数组">类数组转化为数组</a>
 >
-    Array.prototype.slice.call(arguments)
-    [].slice.call(arguments)
+    
+    [].slice.call(arguments) | Array.prototype.slice.call(arguments)
     Array.from(arguments)
     [...arguments]
 
@@ -514,6 +538,7 @@ Math.random().toFixed(6).slice(-6) / 1
     line=line.replace(/\W/g, '').toLowerCase();   //替换非单词字符串，转换为小写  
     return line === line.split("").reverse().join("");  
     }
+
 * 实现回文
 >
     let arr=[1,2,3,4];
@@ -531,6 +556,7 @@ Math.random().toFixed(6).slice(-6) / 1
       if (m!==undefined&&n!==undefined) { return m + n}
       else{ return function(a){  return m+a;} }
     }
+
 2.  
 >
     function f(...arg){
@@ -573,7 +599,8 @@ Math.random().toFixed(6).slice(-6) / 1
     function add(x) {
       var c = 0; 
       return function(x) {
-        c = c + x ; arguments.callee.toString = function(){
+        c = c + x ;
+        arguments.callee.toString = function(){
           return c;
         }; 
         return arguments.callee;
@@ -599,10 +626,10 @@ Math.random().toFixed(6).slice(-6) / 1
 
 
 ## <a name="数组无序排列">数组无序排列</a>
-  arr.sort(function(){ return Math.random() - 0.5});
+  arr.sort(()=>Math.random() - 0.5)
 
 
-## <a name="数组扁平化:n维数组展开成一维数组">数组扁平化:n维数组展开成一维数组  </a>
+## <a name="数组扁平化">数组扁平化:n维数组展开成一维数组  </a>
 var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10]; 
 
 0. foo.flat(Infinity) // Array.prototype.flat()用于将嵌套的数组“拉平”，变成一维的数组。该方法返回一个新数组，对原数据没有影响。默认只会“拉平”一层，如果想要“拉平”多层的嵌套数组，可以将flat()方法的参数写成一个整数，表示想要拉平的层数，默认为1。
@@ -669,19 +696,21 @@ var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
 ## <a name="数组排序"> 数组排序</a>
 1. 冒泡排序： 每次将最小元素推至最前
 >
-function bubble(arr) {
-  let n = 0; //计算循环次数
-  let len = arr.length - 1;
-  for (i = 0; i < len; i++) {
-    for (j = 0; j < len - i; j++) {
-      if (arr[j] > arr[j + 1]) { //相邻元素两两对比
-        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
-        n++;
+    function bubble(arr) {
+      if(arr.length <= 1)return arr
+      let n = 0; //计算循环次数
+      let len = arr.length;
+      for (i = 0; i < len - 1; i++) {
+        for (j = 0; j < len - i - 1; j++) {
+          if (arr[j] > arr[j + 1]) { //相邻元素两两对比
+            [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+            n++;
+          }
+        }
       }
+      return {arr, n};
     }
-  }
-  return {arr, n};
-}
+
 2. 快速排序：
 >
     var quickSort = function(arr) {
@@ -692,7 +721,7 @@ function bubble(arr) {
       var left = [];
       var right = [];
       //开始遍历数组，小于"基准"的元素放入左边的子集，大于基准的元素放入右边的子集。
-      for (var i = 0; i < arr.length; i++){
+      for (var i = 0, len = arr.length; i < len; i++){
         if (arr[i] < pivot) {
           left.push(arr[i]);
         } else {
@@ -704,6 +733,7 @@ function bubble(arr) {
     };
 
 ## <a name="n的阶层（尾调用优化）">n的阶层（尾调用优化）</a>
+1 1 2 3 5 8 13....
 >
     //获取第n个斐波那契数列
     function factorial(n, total=1) {
@@ -741,7 +771,6 @@ F(1)=1，F(2)=1, F(n)=F(n-1)+F(n-2)（n>=3，n∈N*）
           result=fib(n-1)+fib(n-2);
           arr[n]=result;
         }
-
         return result
       }
     console.log(fib(7),m);
@@ -767,16 +796,6 @@ F(1)=1，F(2)=1, F(n)=F(n-1)+F(n-2)（n>=3，n∈N*）
 2.
 > 
     const fibonacci = n => Array(n).fill(0).reduce((acc, val, i) => acc.concat(i > 1 ? acc[i - 1] + acc[i - 2] : i), []);console.log(fibonacci(80000))
-
-
-
-
-
-
-
-
-
-
 
 
 ##  <a name="自动触发onclick事件">自动触发onclick事件</a>
@@ -822,6 +841,7 @@ F(1)=1，F(2)=1, F(n)=F(n-1)+F(n-2)（n>=3，n∈N*）
 
 ## <a name="网页是否可编辑">网页是否可编辑</a>
 网页最后编辑时间  document.lastModified  
+
 网页是否可编辑
 document.body.contentEditable=true | false  控制当前文档是否可编辑 ，权限比designMode高
 document.designMode='on'  | 'off'  控制当前文档是否可编辑 
@@ -1042,10 +1062,10 @@ https://www.jianshu.com/p/6c7d0b18d4ca
     Array(3) //是一个只有length,没有元素和索引的空数组
     //结果 [empty × 3] // [,,]
 
->  如何设为[0,0,0]
+>  如何设为[0,0,0...]
 
-    Array.apply(null, Array(n)).map(()=>{return 0}) // n个0 [0,0,0,....]
-    Array.apply(null, {length: n}).map(()=>{return 0})
+    Array.apply(null, Array(n)).map(()=>0) // n个0 [0,0,0,....]
+    Array.apply(null, {length: n}).map(()=>0)
     ES6方法：new Array(n).fill(0)
 
 ## 

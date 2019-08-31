@@ -1,4 +1,16 @@
-<a href="#遍历方法">**遍历方法**</a>
+* <a href="#遍历方法">**遍历方法**</a>
+  * <a href="#for in">for in</a>
+  * <a href="#for of">for of</a>
+  * <a href="#reduce()">reduce()</a>
+  * <a href="#map()">map()</a>
+  * <a href="#forEach()">forEach()</a>
+  * <a href="#every()、some()、filter()">every()、some()、filter()</a>
+  * <a href="#entries()、keys()、values()">entries()、keys()、values()</a>
+  * <a href="#Object.entries()、Object.keys()、Object.values()">Object.entries()、Object.keys()、Object.values()、Object.fromEntries()</a>
+  * <a href="#Object.getOwnPropertyNames()">Object.getOwnPropertyNames()</a>
+  * <a href="#Object.getOwnPropertySymbols()">Object.getOwnPropertySymbols()</a>
+  * <a href="#Reflect.ownKeys()">Reflect.ownKeys()</a>
+  * <a href="#"></a>
 
 # <a name="遍历方法">**遍历方法**</a>
 > 
@@ -15,12 +27,13 @@
       }
     ];
 
+  
 
-## for...in --遍历对象--遍历的是索引（即键名）
+## <a name="for in">for...in --遍历对象--遍历的是索引（即键名）</a>
 for in更适合遍历对象，不要使用for in遍历数组。
 >
     1.遍历的是索引（即键名）
-    2.遍历顺序有可能不是按照实际数组的内部顺序
+    2.遍历顺序有可能不是按照实际的内部顺序
     3.for in环遍历对象自身的和继承的可枚举属性（不含 Symbol 属性）。
 
 
@@ -31,7 +44,7 @@ for in更适合遍历对象，不要使用for in遍历数组。
       console.log('key:', key, ';val:', obj[key]);
     }
 
-## for...of--数组--遍历的是键值
+## <a name="for of">for...of--遍历数组--遍历的是键值</a>
 必须部署了 Iterator 接口后才能使用；
 遍历普通对象会报错
 
@@ -39,7 +52,7 @@ for in更适合遍历对象，不要使用for in遍历数组。
       console.log('item:', item);
     }
 
-## reduce((sum, item, index, array) => {}) 
+## <a name="reduce()">reduce((sum, item, index, array) => {})</a>
     //接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终为一个值，// reduceRight() (从右到左)
     //  Accumulator (acc) (累计器 累计回调的返回值; 它是上一次调用回调时返回的累积值)
     //  Current Value (cur) (当前值)
@@ -60,15 +73,15 @@ for in更适合遍历对象，不要使用for in遍历数组。
       }, [])
     }
 
-## map()
+##  <a name="map()">map()</a>
 遍历数组，返回修改后的数组，不修改原数组，不能中断
 
     arr.map((item, index) => {
       console.log('map()-->', 'index:', index, ';item:', item)
     });
 
-
-## forEach((item, index, array) => {})
+ 
+##  <a name="forEach">forEach((item, index, array) => {})</a>
 遍历所有值并忽略回调函数的返回值 --- 改变原数组 、不能中断
 
     // 	item--正在数组中处理的当前元素的值
@@ -78,8 +91,8 @@ for in更适合遍历对象，不要使用for in遍历数组。
     arr.forEach((item, index, array) => {
       console.log('forEach()-->', 'index:', index, ';item:', item, '源数组:', array)
     });
+##  <a name="every()、some()、filter()">every()、some()、filter()</a>
 
-## every(),some(),filter()
     // every() 检测每个元素 是否符合条件（函数提供），全部满足才返回true，不检测空数组
     // some()                                      一个满足就返回true
     // filter() 以数组形式返回满足条件的元素，没有返回[]
@@ -95,7 +108,7 @@ for in更适合遍历对象，不要使用for in遍历数组。
     });
     console.log(arr2);
 
-## entries()，keys()和values()——用于遍历数组。它们都返回一个遍历器对象
+## <a name="entries()、keys()、values()">entries()、keys()、values()——用于遍历数组。它们都返回一个遍历器对象</a>
     for (let [index, item] of arr.entries()) {
       console.log('entries()-->','index:', index, ';item:', item);
     }
@@ -106,8 +119,9 @@ for in更适合遍历对象，不要使用for in遍历数组。
       console.log('.keys()-->', 'item:', item);
     }
 
-  
-## Object.entries(obj)、Object.keys(obj)、Object.keys(obj)
+    
+## <a name="Object.entries()、Object.keys()、Object.values()">Object.entries()、Object.keys()、Object.values()</a>
+
 #### 返回一个数组，包括对象自身的（不含继承的）所有可枚举属性（不含 Symbol 属性）的键值对数组、键名、键值。 
 
 > 
@@ -164,6 +178,16 @@ Object.fromEntries //可以将数组转换为对象 -->数组格式：[[key,val]
 
     [a,b]=[b,a]
 
-## <a name=""></a>
+## <a name="Object.getOwnPropertyNames()">Object.getOwnPropertyNames()</a>
+返回一个数组，包含对象自身的所有属性（包括不可枚举属性,不含 Symbol 属性）的键名
+
+
+## <a name="#Object.getOwnPropertySymbols()">#Object.getOwnPropertySymbols()</a>
+返回一个数组，包含对象自身的所有 Symbol 属性的键名。
+
+## <a name="Reflect.ownKeys()">Reflect.ownKeys()</a>
+返回一个数组，包含对象自身的所有键名，(包括Symbol、不可枚举属性)
+
+
 ## <a name=""></a>
 ## <a name=""></a>

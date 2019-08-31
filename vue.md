@@ -17,7 +17,9 @@
   * <a href="#push(),replace(),go()">push(),replace(),go()</a>
   * <a href="#页面跳转方法">页面跳转方法</a>
   * <a href="#页面url参数获取">页面url参数获取</a>
-  * <a href="#解决vue多个路由共用一个页面的问题">解决vue多个路由共用一个页面的问题</a>
+  * <a href="#导航守卫">导航守卫</a>
+  * <a href="#多个路由共用一个页面操作">多个路由共用一个页面操作</a>
+  * <a href="#单页面多路由区域操作">单页面多路由区域操作</a>
   * <a href="#刷新当前路由方法">刷新当前路由方法</a>
   * <a href="#mode">mode: hash | history区别</a>
   * <a href="#切换页面时自动滚动到顶部">切换页面时自动滚动到顶部</a>
@@ -62,6 +64,8 @@
     可测试。界面素来是比较难于测试的，而现在测试可以针对ViewModel来写。
 
 # <a name="双向数据绑定原理、实现">双向数据绑定原理、实现:Object.defineProperty、proxy</a>    
+[](https://juejin.im/post/5acd0c8a6fb9a028da7cdfaf)
+
 Vue2.x 使用 Object.defineProperty 实现数据双向绑定，V3.0 则使用了 Proxy
 
 ### 区别：
@@ -72,12 +76,15 @@ Vue2.x 使用 Object.defineProperty 实现数据双向绑定，V3.0 则使用了
 
     Object.definedProperty 不支持数组，更准确的说是不支持数组的各种API，因为如果仅仅考虑arry[i] = value 这种情况，是可以劫持的，但是这种劫持意义不大。而 Proxy 可以支持数组的各种API。
 
-    尽管 Object.defineProperty 有诸多缺陷，但是其兼容性要好于 Prox
+    尽管 Object.defineProperty 有诸多缺陷，但是其兼容性要好于 Proxy
 
 
-### Object.defineProperty:
+### [Object.defineProperty:](https://www.w3cplus.com/vue/vue-two-way-binding-object-defineproperty.html)
+Object.defineProperty(obj, prop, descriptor)
 
-Object.defineProperty 定义出来的属性，默认是不可枚举，不可更改，不可配置【无法delete】
+定义出来的属性，默认是不可枚举，不可更改，不可配置【无法delete】
+
+基本用法
 >
     let obj = {};
     let temp = 'base';
@@ -94,8 +101,33 @@ Object.defineProperty 定义出来的属性，默认是不可枚举，不可更�
     obj.name = 'change';
     console.log(obj.name);
 
-### proxy
-Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值，那么就会被劫持。但是有点需要注意，复杂数据类型，监控的是引用地址，而不是值，如果引用地址没有改变，那么不会触发set。
+//双向绑定
+>
+    const obj = {};
+    Object.defineProperty(obj, 'text', {
+      get: function() {
+        console.log('get')
+      },
+      set: function(newVal) {
+        console.log('set:' + newVal);
+        document.getElementById('input').value = newVal;
+        document.getElementById('span').innerHTML = newVal;
+      }
+    });
+
+    const ipt = document.getElementById('input');
+    ipt.addEventListener('keyup', function(e){
+      obj.text = e.target.value;
+    })
+
+
+### [proxy](http://es6.ruanyifeng.com/#docs/proxy)
+new Proxy(target, handler)
+
+Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值，那么就会被劫持。  
+但是有点需要注意，复杂数据类型，监控的是引用地址，而不是值，如果引用地址没有改变，那么不会触发set。
+
+
 >
     let obj = {name: 'Yvette', hobbits: ['travel', 'reading'], info: {
         age: 20,
@@ -106,17 +138,36 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
             console.log('读取成功');
             return Reflect.get(target, key);
         },
-        set(target, key, value) {
+        set(target, key, value,receiver) {
             if(key === 'length') return true; //如果是数组长度的变化，返回。
             console.log('设置成功');
-            return Reflect.set([target, key, value]);
+            return Reflect.set(target, key, value,receiver);
         }
     });
     p.name = 20; //设置成功
     p.age = 20; //设置成功; 不需要事先定义此属性
-    p.hobbits.push('photography'); //读取成功;注意不会触发设置成功
-    p.info.age = 18; //读取成功;不会触发设置成功    
+    p.hobbits.push('photography'); //读取成功;注意不会触发 set
+    p.info.age = 18; //读取成功;不会触发 set
 
+双向绑定
+>
+    const obj = new Proxy({text:''},{
+      get: function(target,key) {
+        console.log('get ');
+        // return Reflect.get(target,key)
+      },
+      set: function(target,key,val) {
+        console.log('set :' + val);
+        document.getElementById('input').value = val;
+        document.getElementById('span').innerHTML = val;
+        // return Reflect.set([target,key,val])
+      }
+    });
+
+    const input = document.getElementById('input');
+    input.addEventListener('keyup', function(e){
+      obj.text = e.target.value;
+    })
 
 # <a name="Vue的响应式原理">Vue的响应式原理</a>
 
@@ -325,6 +376,28 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
     在数据变化后要执行的某个操作，而这个操作需要使用随数据改变而改变的DOM结构的时候，这个操作都应该放进Vue.nextTick()的回调函数中。
 
 # <a name="页面滚动">页面滚动</a>
+
+切换路由时
+>
+    const router = new Router({
+      routes: [...],
+      scrollBehavior (to, from, savedPosition) {
+        // return 期望滚动到哪个的位置
+
+        if (to.hash) { //模拟“滚动到锚点”的行为：
+          return {
+            selector: to.hash
+          }
+        }
+        if (savedPosition) {
+          return savedPosition
+        } else {
+          return { x: 0, y: 0 }
+        }
+      }
+    })
+
+
 * document.documentElement.scrollTop = 380
 * 
     this.$nextTick(() => {
@@ -332,6 +405,7 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
       this.$refs.DOM.scrollTo(0, 300)
     })
 * document.getElementById('ID').scrollIntoView()
+
 
 # <a name="keep-alive">keep-alive</a>
 [keep-alive](https://cn.vuejs.org/v2/api/#keep-alive)
@@ -371,6 +445,12 @@ https://router.vuejs.org/zh
       ],
       redirect: '/b', // { name: 'foo' } 重定向：当用户访问 /a时，URL 将会被替换成 /b，实际访问 /b 
       alias:'/b',  // 别名：/a 的别名是 /b，意味着，当用户访问 /b 时，URL 会保持为 /b，但是路由匹配则为 /a 
+        用在 path: '/',中，不起作用，如：
+        {
+          path: '/',
+          component: Hello,
+          alias:'/home'
+        }
     }
 ##  <a name="this.$route 和 this.$router区别">this.$route 和 this.$router区别</a>
 
@@ -379,26 +459,34 @@ https://router.vuejs.org/zh
 
 ##  <a name="push(),replace(),go()">push(),replace(),go()</a>
 1. push()
-
+>
     this.$router.push(location, onComplete?, onAbort?) 
-    this.$router.router.push({ name: 'user', params: { userId: '123' }})
+    this.$router.push({ name: 'user', params: { userId: '123' }})
+
     //页面跳转，且会向 history 栈添加一个新的记录，当用户点击浏览器后退按钮时，则回到之前的 URL。等同于\<router-link :to="...">	
 
 2. replace()
-
+>
     this.$router.replace(location, onComplete?, onAbort?) 
-    this.$router.router.replace({ name: 'user', params: { userId: '123' }})
+    this.$router.replace({ name: 'user', params: { userId: '123' }})
+
     //页面跳转，不会向 history 添加新记录，而是替换掉当前的 history 记录。等同于\<router-link :to="..." replace> 
 
 3. go()
-    
+>
     this.$router.go(n) //的参数是一个整数，意思是在 history 记录中向前或者后退多少步，
 
 ##  <a name="页面跳转方法">页面跳转方法</a>
 如果提供了 path，params会被忽略，所以params传参要用name来引入
+>
 
     声明式 <router-link :to="...">
+           <router-link :to="{name:'',params:{}}">
+           <router-link :to="{path:'',query:{}}">
+
     编程式 router.push(...)
+          router.push({name:'',params:{}})
+          router.push({path:'',query:{}})
 
 ### 无参数：
 1. (:to动态绑定name 或则 path) 页面自动解析成path地址 
@@ -427,7 +515,89 @@ https://router.vuejs.org/zh
     var param = this.$route.query; //query传参 获取方法
     var param = this.$route.params; //params传参 获取方法
 
-##  <a name="解决vue多个路由共用一个页面的问题">解决vue多个路由共用一个页面的问题</a>
+## <a name="导航守卫">导航守卫</a>
+
+### 全局前置守卫:beforeEach
+>
+    router = new Router({})
+    router.beforeEach((to, from, next)={
+      //to: 即将进入的路由
+      //from: 当前离开的路由
+          //to from 包含属性
+          {
+            fullPath: ""
+            hash: ""
+            matched: []
+            meta: {}
+            name: null
+            params: {}
+            path: ""
+            query: {}
+          }
+      //next:
+          next(): 进行管道中的下一个钩子。如果全部钩子执行完了，则导航的状态就是 confirmed (确认的)。
+
+          next(false): 中断当前的导航。如果浏览器的 URL 改变了 (可能是用户手动或者浏览器后退按钮)，那么 URL 地址会重置到 from 路由对应的地址。
+
+          next('/') 或者 next({ path: '/' }): 跳转到一个不同的地址。当前的导航被中断，然后进行一个新的导航。你可以向 next 传递任意位置对象，且允许设置诸如 replace: true、name: 'home' 之类的选项以及任何用在 router-link 的 to prop 或 router.push 中的选项。
+
+          next(error): (2.4.0+) 如果传入 next 的参数是一个 Error 实例，则导航会被终止且该错误会被传递给 router.onError() 注册过的回调。
+
+确保要调用 next 方法，否则钩子就不会被 resolved。
+
+
+————————
+
+判断页面是否需要登录、修改页面title
+>
+    router.beforeEach((to, from, next) => {
+      if (to.meta.requiresAuth) {
+        let token = localStorage.getItem('accessToken')
+        if (!token) {
+          next('/login')
+        } else {
+          next()
+        }
+      } else {
+        next()
+      }
+      if (to.meta.title) {
+        /* 路由发生变化修改页面title */
+        document.title = to.meta.title
+      }
+    })
+
+
+### 全局解析守卫:beforeResolve
+与beforeEach 类似，区别是在导航被确认之前，同时在所有组件内守卫和异步路由组件被解析之后，解析守卫就被调用
+
+### 全局后置钩子 
+
+不会接受 next 函数也不会改变导航本身：
+>
+    router.afterEach((to, from) => {
+      // ...
+    })
+
+### 组件内的守卫
+
+>
+    beforeRouteEnter (to, from, next) {
+      // 在渲染该组件的对应路由被 confirm 前调用
+      // 不！能！获取组件实例 `this`
+      // 因为当守卫执行前，组件实例还没被创建
+    },
+    beforeRouteUpdate (to, from, next) {
+      // 在当前路由改变，但是该组件被复用时调用
+      // 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，
+      // 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
+      // 可以访问组件实例 `this`
+    },
+    beforeRouteLeave (to, from, next) {
+      // 导航离开该组件的对应路由时调用
+    }
+    
+##  <a name="多个路由共用一个页面操作">多个路由共用一个页面操作</a>
 1. watch
 >
     当路由变化时，watch里的路由监听函数都会被触发，可以在这个函数中对页面的数据进行重新加载的操作。
@@ -447,6 +617,43 @@ https://router.vuejs.org/zh
         next() 
       }
     }
+
+
+##  <a name="单页面多路由区域操作">单页面多路由区域操作</a>
+router.js
+>
+    export default new Router({
+      routes: [
+        {
+          path: '/',
+          components: {
+            default:Hello,
+            left:Hi1,
+            right:Hi2
+          }
+        },{
+          path: '/Hi',
+          components: {
+            default:Hello,
+            left:Hi2,
+            right:Hi1
+          }
+        }
+    
+      ]
+    })
+
+
+App.vue
+>
+    <router-link to="/">首页</router-link> | 
+    <router-link to="/hi">Hi页面</router-link> 
+
+    <router-view ></router-view>
+    <router-view name="left" style="float:left;width:50%;background-color:#ccc;height:300px;"></router-view>
+
+    <router-view name="right" style="float:right;width:50%;background-color:#c0c;height:300px;"></router-view>
+
 
 ##  <a name="刷新当前路由方法">刷新当前路由方法</a>
 
@@ -518,18 +725,43 @@ history 
 
 #### 如何去除vue项目中的网址的 ## --- History模式
     //router/index.js
-    const router = new VueRouter({
+    const router = new Router({
       mode: 'history',
       routes: [...]
     })
 
+#### 找不到页面时的配置 路由   
+>
+    {
+      path:'*',
+      component:Error
+    }
+
+
 ##  <a name="切换页面时自动滚动到顶部">切换页面时自动滚动到顶部</a>
 >
-    export default new Router({
+    new Router({
       scrollBehavior: () => ({ y: 0 }), //路由跳转后页面回到顶部
       routes: [...]
     })
 
+    new Router({
+      routes: [...],
+      scrollBehavior (to, from, savedPosition) {
+        // return 期望滚动到哪个的位置
+
+        if (to.hash) { //模拟“滚动到锚点”的行为：
+          return {
+            selector: to.hash
+          }
+        }
+        if (savedPosition) {
+          return savedPosition
+        } else {
+          return { x: 0, y: 0 }
+        }
+      }
+    })
 >
 
     const router = new Router({

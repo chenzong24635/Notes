@@ -20,20 +20,18 @@
 ## <a name="浏览器高度">浏览器高度</a>
 >
 
-    页面宽/高(包括滚动的部分) ： document.documentElement.scrollWidth / scrollHeight | 
-    $(document).height()
+    页面宽/高(包括滚动的部分) ： document.documentElement.scrollWidth / scrollHeight | $(document).width() / height()
 
-    正文部分上： window.screenTop
-    正文部分左： window.screenLeft
+    窗口相对于屏幕的X和Y坐标： window.screenTop / window.screenLeft
 
     屏幕分辨率的宽： window.screen.width
     屏幕分辨率的高： window.screen.height
     屏幕可用工作区高度： window.screen.availHeight
 
 
-    offsetWidth/offsetHeight：包含content + padding + border，效果与e.getBoundingClientRect()相同
-    clientWidth/clientHeight：只包含content + padding，不包含滚动条
-    scrollWidth/scrollHeight：包含content + padding + 包含滚动条
+    el.offsetWidth/offsetHeight：包含content + padding + border，效果与el.getBoundingClientRect()相同
+    el.clientWidth/clientHeight：只包含content + padding，不包含滚动条
+    el.scrollWidth/scrollHeight：包含content + padding + 包含滚动条
 
 ![a](img/element-size.png)
 
@@ -128,6 +126,7 @@ jquery方法：$(document).scrollTop();
     })
 
 ## <a name="获取节点的兼容">获取节点的兼容</a>
+>
     firstElementChild || firstChild
     lastElementChild || lastChild
     previousElementSibling || previousSibling
@@ -149,16 +148,18 @@ jquery方法：$(document).scrollTop();
     IE10以下则是使用：event.cancelBubble = true
 
     function stopPropagation(e){
-      const  event = e || window.event; // w3c | IE
+      const  event = e || window.event;
       event.stopPropagation ? event.stopPropagation() : event.cancelBubble = true;
     }
 
 ## <a name="阻止默认行为">阻止默认行为</a>
 >
+    w3c:preventDefault()
+    IE:returnValue = false
+
     function preventDefault(e){ 
-      cosnt event = e || window.event; // w3c | IE
+      cosnt event = e || window.event;
       event.preventDefault ? event.preventDefault() : event.returnValue = false;
-                                                     // w3c
     }
 
 
@@ -203,12 +204,12 @@ jquery方法：$(document).scrollTop();
     // 阻止事件 (主要是事件冒泡，因为IE不支持事件捕获)
       stopPropagation : function(e) {
        var e=window.event || e;
-        e.stopPropagation?e.stopPropagation():e.cancelBubble = true;//IE
+        e.stopPropagation?e.stopPropagation():e.cancelBubble = true;
       },
     // 取消事件的默认行为
       preventDefault : function(e) {
        var e=window.event || e;
-        e.preventDefault?e.preventDefault():e.returnValue = false;//IE
+        e.preventDefault?e.preventDefault():e.returnValue = false;
       },
     // 获取事件目标
       getTarget : function(e) {

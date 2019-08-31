@@ -94,6 +94,9 @@ CSS布局、居中
 * <a href="#CSS hack">CSS hack</a>
 * <a href="#input placeholder颜色兼容">input placeholder颜色兼容</a>
 * <a href="#border:solid">边框</a>
+* <a href="#渐变">linear-gradient </a>
+
+
 
 * <a href="#其他">**其他**</a>
 
@@ -948,10 +951,11 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
 ## <a name="移动端1px">移动端1px</a>
 >
 
-    .border-1px{
+    .border-1px,
+    .border-t-1px{
       position: relative;
     }
-    .border-1px:after{
+    .border-t-1px:after{
       content: " ";
       position: absolute;
       left: 0;
@@ -965,7 +969,19 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
       transform: scaleY(0.5);
     }
 
-
+    .border-1px:after{
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        border: 1px solid #000;
+        width: 200%;
+        height: 200%;
+        transform: scale(.5);
+        -webkit-transform: scale(.5);
+        transform-origin: 0 0;
+        -webkit-transform-origin: 0 0;
+    }
 ## <a name="@规则">@规则</a>
 @charset 
 >
@@ -1103,6 +1119,9 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
       background: linear-gradient(to top, #fff, #fff), red;
       background-clip: padding-box, border-box;
     }
+
+## <a name="渐变">linear-gradient</a>
+[你真的理解CSS的linear-gradient？](https://www.w3cplus.com/css3/do-you-really-understand-css-linear-gradients.html)
 
 # <a name="其他">**其他**</a>
 

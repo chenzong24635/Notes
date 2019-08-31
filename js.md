@@ -1533,10 +1533,24 @@ defer 属性
     改变字体
     内容变化，比如用户在input框中输入文字
     激活 CSS 伪类，比如 :hover 
-    操作 class 属性
     操作 DOM
     计算 offsetWidth 和 offsetHeight 属性
     设置 style 属性的值 
+
+
+常用且会导致回流的属性和方法 (浏览器会立刻清空队列：)
+>
+
+    clientWidth、clientHeight、clientTop、clientLeft
+
+    offsetWidth、offsetHeight、offsetTop、offsetLeft
+
+    scrollWidth、scrollHeight、scrollTop、scrollLeft
+
+    width、height
+
+    getComputedStyle()、getBoundingClientRect()
+
 
 避免方法：
 >

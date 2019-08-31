@@ -39,11 +39,14 @@
 * console.groupCollapsed方法与console.group方法很类似，唯一的区别是该组的内容，在第一次显示时是收起的（collapsed），而不是展开的。
 
 * console.log还提供了一个的API：第一个参数可以带一些格式化指令，
->> 比如%c,n;看下面这个炫酷的效果：
->> console.log('%chello world', 'background-image:-webkit-gradient( linear, left top, right top, color-stop(0, #f22), color-stop(0.15, #f2f), color-stop(0.3, #22f), color-stop(0.45, #2ff), color-stop(0.6, #2f2),color-stop(0.75, #2f2), color-stop(0.9, #ff2), color-stop(1, #f22) );color:transparent;-webkit-background-clip: text;font-size:5em;');
+>
+    比如%c;看下面这个炫酷的效果：
+    console.log('%c hello world', 'background-image:-webkit-gradient( linear, left top, right top, color-stop(0, #f22), color-stop(0.15, #f2f), color-stop(0.3, #22f), color-stop(0.45, #2ff), color-stop(0.6, #2f2),color-stop(0.75, #2f2), color-stop(0.9, #ff2), color-stop(1, #f22) );color:transparent;-webkit-background-clip: text;font-size:5em;');
 
 * 另外，console.log() 接收不定参数，参数间用逗号分隔，最终会输出会将它们以空白字符连接。
->> console.log('%cHello','color:red;','World')-->输出的Hello为红色
+>
+
+    console.log('%cHello','color:red;','World')-->输出的Hello为红色
 
 # $
 * $_属性返回上一个表达式的值。
@@ -96,11 +99,12 @@ console.log(a.host)
 
 # 快速查找要调试的函数:
 假设你要在函数中打断点，最常用的两种方式是：
-在控制台查找行并添加断点 .//debug(funcName)，当到达传入的函数时，代码将停止。
+在控制台查找行并添加断点 .//debug(funcName)，当到达传入的函数时，代码将停止。 
 在代码中添加debugger
 
 # 获取函数的堆栈跟踪信息:console.trace (仅仅只是在控制台中跟踪) 可以方便地调试JavaScript.
-> var car;
+> 
+    var car;
     var func1 = function() {
       func2();
     }

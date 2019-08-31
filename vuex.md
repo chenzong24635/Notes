@@ -20,10 +20,10 @@ https://vuex.vuejs.org/zh/guide/state.html
 ## state
 >
     store.state 来获取状态对象
-      store.state.count --> 0
+      this.$store.state.count --> 0
 
     store.commit 方法触发状态变更
-      store.commit('increment') -->1
+      this.$store.commit('increment') -->1
 
     通过提交 mutation 的方式，而非直接改变 store.state.count，是因为我们想要更明确地追踪到状态的变化。
 
@@ -57,6 +57,7 @@ https://vuex.vuejs.org/zh/guide/state.html
 
 当映射的计算属性的名称与 state 的子节点名称相同时，我们也可以给 mapState 传一个字符串数组。
 >
+    
     computed: mapState([
       // 映射 this.count 为 store.state.count
       'count'
@@ -144,9 +145,9 @@ mutation是更改state的唯一方法
     })
 
     //触发方式
-    store.commit('increment', 10) //载荷形式
-    store.commit('increment1', {n: 100}) //载荷形式 ，载荷为对象
-    store.commit({type: 'increment1',n: 100}) //对象形式
+    $store.commit('increment', 10) //载荷形式
+    $store.commit('increment1', {n: 100}) //载荷形式 ，载荷为对象
+    $store.commit({type: 'increment1',n: 100}) //对象形式
 
 注意：
  Vuex 的 store 中的状态是响应式的，那么当我们变更状态时，监视状态的 Vue 组件也会自动更新
