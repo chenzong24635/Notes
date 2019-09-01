@@ -1,7 +1,5 @@
-* <a href="#MVVM、MVC">MVVM、MVC</a>
-* <a href="#vue优点">vue优点</a>
-* <a href="#双向数据绑定原理、实现">双向数据绑定原理、实现</a>
-* <a href="#Vue的响应式原理">Vue的响应式原理</a>
+* <a href="#MVC、MVP、MVVM">MVC、MVP、MVVM</a>
+* <a href="#双向数据绑定原理、实现">双向数据绑定原理、实现:Object.defineProperty、proxy</a>
 * <a href="#生命周期">生命周期</a>
 * <a href="#computed watch methods">computed watch methods</a>
 * <a href="#Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？">Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？</a>
@@ -10,7 +8,6 @@
 * <a href="#$nextTick">$nextTick</a>
 * <a href="#页面滚动">页面滚动</a>
 * <a href="#keep-alive">keep-alive</a>
-* <a href="#proxy跨域设置">proxy跨域设置</a>
 * <a href="#路由vue-router">路由vue-router</a>
   * <a href="#base">base</a>
   * <a href="#this.$route 和 this.$router区别">this.$route 和 this.$router区别</a>
@@ -29,7 +26,7 @@
 * <a href="#组件通信方法">组件通信方法</a>
 * <a href="#监听组件的生命周期">监听组件的生命周期</a>
 
-
+* <a href="#proxy跨域设置">proxy跨域设置</a>
 * <a href="#token验证">如何添加token验证</a>
 * <a href="#静态资源处理">静态资源处理：图片等</a>
 * <a href="#打包">打包时常见问题及解决</a>
@@ -45,28 +42,77 @@
 # <a name=""></a>
 
 
-# <a name="MVVM、MVC">MVVM、MVC</a>
+# <a name="MVC、MVP、MVVM">MVC、MVP、MVVM</a>
+[MVC、MVP、MVVM三种区别及适用场合](https://blog.csdn.net/victoryzn/article/details/78392128)
+
+
+[MVC,MVP,MVVM浅析](https://segmentfault.com/a/1190000006840458)
+
+### MVC(Model-view-Controller)
+<img src="img/mvc.png" width="50%"/>
+
+<!-- ![MVC](img/mvc.png) -->
 >
-    MVVM是是Model-View-ViewModel的缩写，
-    Model代表数据模型，定义数据操作的业务逻辑，
-    View代表视图层，负责将数据模型渲染到页面上，
-    ViewModel通过双向绑定把View和Model进行同步交互，不需要手动操作DOM的一种设计思想。
 
-    MVVM和MVC都是一种设计思想，主要就是MVC中的Controller演变成ViewModel,，MVVM主要通过数据来显示视图层而不是操作节点，解决了MVC中大量的DOM操作使页面渲染性能降低，加载速度慢，影响用户体验问题。主要用于数据操作比较多的场景
+    View（视图）：用户界面。
+    Controller（控制器）：业务逻辑
+    Model（模型）：数据保存
 
-# <a name="vue优点">vue优点</a>
+>
+    View 传送指令到 Controller
+    Controller 完成业务逻辑后，要求 Model 改变状态
+    Model 将新的数据发送到 View，用户得到反馈
+
+<!-- 
+<img src="img/mvc1.png" width="30%"/>
+<img src="img/mvc2.png" width="30%"/> -->
+
+
+
+### MVP(Model-View-Presenter)
+<img src="img/mvp.png" width="50%"/>
+<!-- ![MVP](img/mvp.png) -->
+>
+
+    Presenter: 负责完成View于Model间的交互和业务逻辑
+
+>
+    各部分之间的通信，都是双向的。
+
+    View 与 Model 不发生联系，都通过 Presenter 传递。
+
+    View 非常薄，不部署任何业务逻辑，称为"被动视图"（Passive View），即没有任何主动性，而 Presenter非常厚，所有逻辑都部署在那里。
+
+### MVVM(Model-View-ViewModel)
+<img src="img/mvvm.png" width="50%"/>
+<!-- ![MVVM](img/mvvm.png) -->
+>
+    基本上与 MVP 模式完全一致。  
+    唯一的区别是，它采用双向绑定（data-binding）：View的变动，自动反映在 ViewModel，反之亦然。
+
+>
+    View: 代表视图层，负责将数据模型渲染到页面上，  
+    Model:代表数据模型，定义数据操作的业务逻辑，  
+    ViewModel:通过双向绑定把View和Model进行同步交互，不需要手动操作DOM的一种设计思想。
+
+    MVVM主要通过数据来显示视图层而不是操作节点，解决了MVC中大量的DOM操作使页面渲染性能降低，加载速度慢，影响用户体验问题。主要用于数据操作比较多的场景
+
+
+MVVM优点:
 >
     低耦合。视图（View）可以独立于Model变化和修改，一个ViewModel可以绑定到不同的"View"上，当View变化的时候Model可以不变，当Model变化的时候View也可以不变。
 
     可重用性。你可以把一些视图逻辑放在一个ViewModel里面，让很多view重用这段视图逻辑。
 
     独立开发。开发人员可以专注于业务逻辑和数据的开发（ViewModel），设计人员可以专注于页面设计。
+
     可测试。界面素来是比较难于测试的，而现在测试可以针对ViewModel来写。
 
 # <a name="双向数据绑定原理、实现">双向数据绑定原理、实现:Object.defineProperty、proxy</a>    
 [](https://juejin.im/post/5acd0c8a6fb9a028da7cdfaf)
 
-Vue2.x 使用 Object.defineProperty 实现数据双向绑定，V3.0 则使用了 Proxy
+Vue2 使用 Object.defineProperty 实现数据双向绑定，  
+V3.0 则使用了 Proxy
 
 ### 区别：
 >
@@ -169,8 +215,7 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
       obj.text = e.target.value;
     })
 
-# <a name="Vue的响应式原理">Vue的响应式原理</a>
-
+## Vue的响应式原理
 >
     当一个Vue实例创建时，vue会遍历data选项的属性，用 Object.defineProperty 将它们转为 getter/setter并且在内部追踪相关依赖，在属性被访问和修改时通知变化。 每个组件实例都有相应的 watcher 程序实例，它会在组件渲染的过程中把属性记录为依赖，之后当依赖项的 setter 被调用时，会通知 watcher 重新计算，从而致使它关联的组件得以更新。
 
@@ -181,17 +226,18 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
 
 生命周期：
 >
-    创建前/后： 
-    beforeCreated阶段: vue实例的挂载元素$el和数据对象data都为undefined，还未初始化。
+    beforeCreated阶段: vue实例的挂载元素$el和数据对象data都为undefined，还未初始化。 
     created阶段: 完成data初始化，$el还没有。
 
-    载入前/后：
-    beforeMount阶段：完成了$el和data初始化，但还是挂载之前为虚拟的dom节点，data.message还未替换。
+    beforeMount阶段：完成了$el和data初始化，但还是挂载之前为虚拟的dom节点，data.message还未替换。 
     mounted阶段：vue实例挂载完成，data.message成功渲染。
 
-    更新前/后：当data变化时，会触发beforeUpdate和updated方法。
+    beforeUpdate 、updated:当data变化时，会触发
 
-    销毁前/后：在执行destroy方法后，对data的改变不会再触发周期函数，说明此时vue实例已经解除了事件监听以及和dom的绑定，但是dom结构依然存在
+    activated: keep-alive组件被激活时调用
+    deactivated: keep-alive组件被停用时调用
+
+    beforeDestroy 、destroyed：在执行destroyed方法后，对data的改变不会再触发周期函数，说明此时vue实例已经解除了事件监听以及和dom的绑定，但是dom结构依然存在
 
 
 生命周期钩子的一些使用方法：
@@ -207,48 +253,66 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
 
     beforeDestroy : 可以做一个确认停止事件的确认框 (如：确认是否退出登录)
 
-![lifecycle](img/lifecycle.png)
+<img src="img/lifecycle.png" width="60%" />
+<!-- ![lifecycle](img/lifecycle.png) -->
 
 # <a name="computed watch methods">computed watch methods</a>
 [computed和watch的细节全面分析](https://segmentfault.com/a/1190000012948175)
 
 [watch](https://cn.vuejs.org/v2/api/#watch)
+
 [computed](https://cn.vuejs.org/v2/api/#computed)
+
 用法、区别：
 >
     computed watch前两者自动追踪数据，执行相关函数，methods需手动调用；
 
-    watch 监听某个数据的变化，执行相关操作;无缓存性，页面重新渲染时值不变化也会执行;watch的对象必须事先声明
+    watch 监听某个数据的变化，执行相关操作;无缓存性，页面重新渲染时值不变化也会执行; watch的对象必须事先声明
    
-    computed 是计算属性,基于它的依赖缓存;只有在它的相关依赖发生改变时才会重新取值; computed的对象无需声明
+    computed 是计算属性,基于它的依赖缓存;只有在它的相关依赖发生改变时才会重新取值; computed的对象无需声明（声明会报错）
 
     数据变化的同时进行异步操作或者是比较大的开销，那么watch为最佳选择
 
     // watch
-      data: {
-        firstName: 'Foo',
-        lastName: 'Bar',
-        fullName: 'Foo Bar'
+    data: {
+      firstName: 'Foo',
+      lastName: 'Bar',
+      fullName: 'Foo Bar'
+    },
+    watch: {
+      firstName(val) {
+        this.fullName = val + ' ' + this.lastName
       },
-      watch: {
-        firstName: function (val) {
-          this.fullName = val + ' ' + this.lastName
+      lastName(val) {
+        this.fullName = this.firstName + ' ' + val
+      }
+    }
+
+    //computed
+    data: {
+      firstName: 'Foo',
+      lastName: 'Bar'
+    },
+    computed: {
+      fullName() {
+        return this.firstName + ' ' + this.lastName
+      }
+    }
+
+watch：深度监听
+
+//最初绑定的时候是不会执行的，要等到 监听值 改变时才执行监听计算;但当immediate: true 时绑定就立即执行
+>
+    watch: {
+      'obj.a': {
+        handler(newName, oldName) {
+          console.log('obj.a changed');
         },
-        lastName: function (val) {
-          this.fullName = this.firstName + ' ' + val
-        }
-
-      //computed
-      data: {
-        firstName: 'Foo',
-        lastName: 'Bar'
-      },
-      computed: {
-        fullName: function () {
-          return this.firstName + ' ' + this.lastName
-        }
-
-# <a name="Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？">Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？</a>
+        immediate: true,//立即执行
+        deep: true //深度监听
+      }
+    }    
+# <a name="Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？">Vue中给data中的对象属性添加一个新的属性时 视图不更新，如何解决？</a>
 >
     示例：
     <template>
@@ -280,7 +344,7 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
     </script>
     <style></style>
     点击button会发现，obj.b 已经成功添加，但是视图并未刷新：
-    原因在于在Vue实例创建时，obj.b并未声明，因此就没有被Vue转换为响应式的属性，自然就不会触发视图的更新，这时就需要使用Vue的全局api $set()：
+    原因在于在Vue实例创建时，obj.b并未声明，因此就没有被Vue转换为响应式的属性，自然就不会触发视图的更新，这时就需要使用Vue的全局api: Vue.set() 、 $set() 
 
     addObjB () {
           // this.obj.b = 'obj.b'
@@ -292,7 +356,9 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
 
 
 # <a name="slot">slot插槽</a>
-插槽显不显示、怎样显示是由父组件来控制的，而插槽在哪里显示就由子组件来进行控制
+父组件来控制 插槽显示状态、内容  
+子组件控制 插槽位置
+
 
 普通插槽
 >
@@ -313,10 +379,9 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
       }
     }
 
-
-    //子组件
+    //子组件：slotOne.vue
     <template>
-      <div class="slotOne">
+      <div>
         <div>我是slotOne组件</div>
         <slot></slot>
       </div>
@@ -337,10 +402,16 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
         </slot-two>
       </div>
     </template>
+    import slotTwo from '@/pages/slotTwo.vue'
+    export default {
+      components:{
+        slotTwo
+      }
+    }
 
-    //子组件
+    //slotTwo.vue
     <template>
-      <div class="slotTwo">
+      <div>
         <div>slottwo</div>
         <slot name="header"></slot>
         <slot></slot>
@@ -350,30 +421,38 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
 
 
 # <a name="组件中key作用">组件中key作用</a>
+https://www.zhihu.com/question/61064119
 >
 
-    当 Vue.js 用 v-for 正在更新已渲染过的元素列表时，它默认用“就地复用”策略。如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序， 而是简单复用此处每个元素，并且确保它在特定索引下显示已被渲染过的每个元素。key的作用主要是为了高效的更新虚拟DOM  
+    当 Vue.js 用 v-for 正在更新已渲染过的元素列表时，它默认用“就地复用”策略。如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序， 而是简单复用此处每个元素，并且确保它在特定索引下显示已被渲染过的每个元素。
 
->
-
-    key 的作用是为了在 diff 算法执行时更快的找到对应的节点，提高 diff 速度。
+    key 的作用是为了在 diff 算法执行时更快的找到对应的节点，提高 diff 速度，高效的更新虚拟DOM  
 
     vue 和 react 都是采用 diff 算法来对比新旧虚拟节点，从而更新节点。在 vue 的 diff 函数中。可以先了解一下 diff 算法。
 
     在交叉对比的时候，当新节点跟旧节点头尾交叉对比没有结果的时候，会根据新节点的 key 去对比旧节点数组中的 key，从而找到相应旧节点（这里对应的是一个 key => index 的 map 映射）。如果没找到就认为是一个新增节点。而如果没有 key，那么就会采用一种遍历查找的方式去找到对应的旧节点。一种一个 map 映射，另一种是遍历查找。相比而言。map 映射的速度更快。  
     
+
+* 为什么不能用 index 作为 key
+>
+
+    如果你用 index 作为 key，那么在删除第二项的时候，index 就会从 1 2 3 变成 1 2（而不是 1 3），那么 Vue 依然会认为你删除的是第三项。
+
+
 # <a name="$nextTick">$nextTick</a>
-作用：
+https://www.jianshu.com/p/a7550c0e164f
+
 >
     Vue中DOM更新是异步的
     $nextTick是DOM更新完成后执行的
 
-什么时候需要用的Vue.nextTick()
+* 什么时候需要用的$nextTick()
 >
-    你在Vue生命周期的created()钩子函数进行的DOM操作一定要放在Vue.nextTick()的回调函数中。原因是在created()钩子函数执行的时候DOM 其实并未进行任何渲染，而此时进行DOM操作无异于徒劳，所以此处一定要将DOM操作的js代码放进Vue.nextTick()的回调函数中。
-    与之对应的就是mounted钩子函数，因为该钩子函数执行时所有的DOM挂载和渲染都已完成，此时在该钩子函数中进行任何DOM操作都不会有问题 。
+    你在Vue生命周期的created()钩子函数进行的DOM操作一定要放在Vue.nextTick()的回调函数中。原因是在created()钩子函数执行的时候DOM 其实并未进行任何渲染，而此时进行DOM操作无异于徒劳，所以此处一定要将DOM操作的js代码放进Vue.nextTick()的回调函数中。  
 
-    在数据变化后要执行的某个操作，而这个操作需要使用随数据改变而改变的DOM结构的时候，这个操作都应该放进Vue.nextTick()的回调函数中。
+    而在mounted钩子函数中，因为该钩子函数执行时所有的DOM挂载和渲染都已完成，此时在该钩子函数中进行任何DOM操作都不会有问题，无需Vue.nextTick() 。
+
+    总之，在数据变化后要执行的某个操作，而这个操作需要使用随数据改变而改变的DOM结构的时候，这个操作都应该放进Vue.nextTick()的回调函数中。
 
 # <a name="页面滚动">页面滚动</a>
 
@@ -383,13 +462,14 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
       routes: [...],
       scrollBehavior (to, from, savedPosition) {
         // return 期望滚动到哪个的位置
-
+        // savedPosition当且仅当在浏览器前进后退按钮触发时才可用
         if (to.hash) { //模拟“滚动到锚点”的行为：
           return {
             selector: to.hash
           }
         }
         if (savedPosition) {
+          //如果返回savedPosition,那么在点击后退按钮时就会表现的像原生浏览器一样，返回的页面会滚动过到之前按钮点击跳转的位置
           return savedPosition
         } else {
           return { x: 0, y: 0 }
@@ -397,39 +477,65 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
       }
     })
 
+>
 
-* document.documentElement.scrollTop = 380
-* 
+    document.documentElement.scrollTop = 300
+
     this.$nextTick(() => {
+      // ref绑定元素不能是display:none;
+      // 在this.$nextTick里执行
       <!-- this.$refs.DOM.scrollBy(0, 300) -->
       this.$refs.DOM.scrollTo(0, 300)
     })
-* document.getElementById('ID').scrollIntoView()
+
+    document.getElementById('ID').scrollIntoView()
+
+   window.scrollTo(0, 0)
 
 
 # <a name="keep-alive">keep-alive</a>
 [keep-alive](https://cn.vuejs.org/v2/api/#keep-alive)
 >
-    包裹动态组件时，会缓存不活动的组件实例，主要用于保留组件状态或避免重新渲染；
+    包裹动态组件时，会缓存不活动的组件实例，主要用于保留组件状态或避免重新渲染；被包裹在keep-alive中的组件的状态将会被保留
 
     使用：
       缓存： <keep-alive include="组件1,组件2"></keep-alive>
       不缓存：<keep-alive exclude="组件1,组件2"></keep-alive>
       最大缓存数：<keep-alive :max="10"></keep-alive>
 
-    如果使用了keep-alive对组件进行了缓存，组件不会销毁，destroyed不执行
+    如果使用了keep-alive对组件进行了缓存，组件不会销毁，destroyed不执行  
+    当组件在keep-alive内被切换时组件的activated、deactivated这两个生命周期钩子函数会被执行
 
-# <a name="proxy跨域设置">proxy跨域设置</a>
-   // config/index.js
-    proxyTable: {
-      '/api': {
-        target: '要跨域的域名',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api': ''
-        }
-      }
-    },
+
+* 利用meta属性 设置组件是否缓存
+>
+
+    export default[
+      {
+        path:'/',
+        name:'home',
+        components:Home,
+        meta:{
+          keepAlive:true //需要被缓存的组件
+      },
+      {
+        path:'/book',
+        name:'book',
+        components:Book,
+        meta:{
+          keepAlive:false //不需要被缓存的组件
+      } 
+    ]
+
+    <keep-alive>
+      <router-view v-if="this.$route.meat.keepAlive"></router-view>
+      <!--这里是会被缓存的组件-->
+    </keep-alive>
+
+    <keep-alive v-if="!this.$router.meta.keepAlive">
+    </keep-alive>
+    <!--这里是不会被缓存的组件-->
+
 
 # <a name="路由vue-router">路由vue-router</a>
 https://router.vuejs.org/zh
@@ -463,21 +569,26 @@ https://router.vuejs.org/zh
     this.$router.push(location, onComplete?, onAbort?) 
     this.$router.push({ name: 'user', params: { userId: '123' }})
 
-    //页面跳转，且会向 history 栈添加一个新的记录，当用户点击浏览器后退按钮时，则回到之前的 URL。等同于\<router-link :to="...">	
+    等同于\<router-link :to="...">	
+    页面跳转，且会向 history 栈添加一个新的记录，当用户点击浏览器后退按钮时，则回到之前的 URL。  
 
 2. replace()
 >
     this.$router.replace(location, onComplete?, onAbort?) 
     this.$router.replace({ name: 'user', params: { userId: '123' }})
 
-    //页面跳转，不会向 history 添加新记录，而是替换掉当前的 history 记录。等同于\<router-link :to="..." replace> 
+    等同于\<router-link :to="..." replace>  
+    页面跳转，不会向 history 添加新记录，而是替换掉当前的 history 记录。
 
 3. go()
 >
-    this.$router.go(n) //的参数是一个整数，意思是在 history 记录中向前或者后退多少步，
+    this.$router.go(n) //参数n是一个整数，意思是在 history 记录中向前或者后退多少步，
+
+    this.$router.go(1)  等同于 history.forward()
+    this.$router.go(-1) 等同于 history.back()
 
 ##  <a name="页面跳转方法">页面跳转方法</a>
-如果提供了 path，params会被忽略，所以params传参要用name来引入
+`如果提供了 path，params会被忽略，所以用params方式传参要用name来引入`
 >
 
     声明式 <router-link :to="...">
@@ -500,13 +611,13 @@ https://router.vuejs.org/zh
 ### 传参:
 1. query
 >
-    (query传参，参数通过url get方式拼接) --在浏览器地址栏中显示参数 ?id=myid&name=myname
+    (query传参，参数通过url get方式拼接) --在浏览器地址栏中显示参数：?id=myid&name=myname
 
-    <router-link :to="{path:'/A', query: {name:'name1', title: 'title'} }">去A页面</router-link>
+    <router-link :to="{path:'/A', query: {name:'name1', title: 'title1'} }">去A页面</router-link>
 
 2. params传参
 >
-    (params传参，参数通过路径[/001]形式拼接到url上，如果没有在路径配置种使用参数占位符，url不会拼接，直接展示是具体路由页面)/myid/myname
+    (params传参，参数通过路径[/001]形式拼接到url上，如果没有在路径配置种使用参数占位符，url不会拼接，直接展示是具体路由页面)：/myid/myname
 
     <router-link :to="{name:'B', params: {name:'name2', title: 'title2'}}">去B页面</router-link>
 
@@ -523,7 +634,7 @@ https://router.vuejs.org/zh
     router.beforeEach((to, from, next)={
       //to: 即将进入的路由
       //from: 当前离开的路由
-          //to from 包含属性
+          //to from 包含属性：
           {
             fullPath: ""
             hash: ""
@@ -543,16 +654,18 @@ https://router.vuejs.org/zh
 
           next(error): (2.4.0+) 如果传入 next 的参数是一个 Error 实例，则导航会被终止且该错误会被传递给 router.onError() 注册过的回调。
 
-确保要调用 next 方法，否则钩子就不会被 resolved。
+`确保要调用 next 方法，否则钩子就不会被 resolved。`
 
+------
 
-————————
-
-判断页面是否需要登录、修改页面title
+* 判断页面是否需要登录、修改页面title
 >
     router.beforeEach((to, from, next) => {
+      // 判断即将进入的页面是否需要登录
       if (to.meta.requiresAuth) {
+        //获取token
         let token = localStorage.getItem('accessToken')
+        //不存在跳到登录页，否则不变
         if (!token) {
           next('/login')
         } else {
@@ -579,13 +692,18 @@ https://router.vuejs.org/zh
       // ...
     })
 
-### 组件内的守卫
+### 组件内的守卫：beforeRouteEnter 、beforeRouteUpdate、beforeRouteLeave
 
 >
     beforeRouteEnter (to, from, next) {
       // 在渲染该组件的对应路由被 confirm 前调用
       // 不！能！获取组件实例 `this`
       // 因为当守卫执行前，组件实例还没被创建
+
+      //不过，你可以通过传一个回调给 next来访问组件实例。在导航被确认的时候执行回调，并且把组件实例作为回调方法的参数。
+      next(vm => {
+        // 通过 `vm` 访问组件实例
+      })
     },
     beforeRouteUpdate (to, from, next) {
       // 在当前路由改变，但是该组件被复用时调用
@@ -605,7 +723,7 @@ https://router.vuejs.org/zh
       "$route":function(to,from){
         //to 对象：包含目标地址
         //from 对象：包含当前地址
-        //还有一个next参数的，这个参数是控制路由是否跳转的，如果没写，可以不用写next()来代表允许路由跳转，如果写了就必须写next(),否则路由是不会生效的。
+        //next 控制路由是否跳转的，如果没写，可以不用写next()来代表允许路由跳转，如果写了就必须写next(),否则路由是不会生效的。
       }
     }
 2. beforeRouteUpdate  // 组件内的守卫
@@ -662,7 +780,7 @@ App.vue
 
     this.$router.go(0)
     location.reload() 
-    这两种方式都相当于f5刷新，页面会有卡顿的情况
+    都相当于f5刷新，页面会有卡顿的情况
 
 2. 
 >
@@ -681,7 +799,7 @@ App.vue
     <script>
     export default {
       beforeRouteEnter(to, from, next) {
-        next(vm => {
+        next(vm => {//
           vm.$router.replace(from.path)
         })
       }
@@ -714,23 +832,17 @@ history 
 * 打包存放路径问题
 >
     mode: 'history',
-    base: '/dist/'
+    base: '/dist/' 
 
 * 刷新问题
 >
 
-    不怕前进，不怕后退，就怕刷新，f5，（如果后端没有准备的话）,因为刷新是实实在在地去请求服务器的。
+    不怕前进，不怕后退，就怕刷新（f5），（如果后端没有准备的话）,因为刷新是实实在在地去请求服务器的。
     在hash模式下，前端路由修改的是##中的信息，而浏览器请求时是不带它玩的，所以没有问题.
     但是在history下，你可以自由的修改path，当刷新时，如果服务器中没有相应的响应或者资源，页面会404。
 
-#### 如何去除vue项目中的网址的 ## --- History模式
-    //router/index.js
-    const router = new Router({
-      mode: 'history',
-      routes: [...]
-    })
 
-#### 找不到页面时的配置 路由   
+#### 404的配置  
 >
     {
       path:'*',
@@ -738,7 +850,7 @@ history 
     }
 
 
-##  <a name="切换页面时自动滚动到顶部">切换页面时自动滚动到顶部</a>
+##  <a name="切换页面时自动滚动到顶部">切换页面时自动滚动到顶部, 设置页面title</a>
 >
     new Router({
       scrollBehavior: () => ({ y: 0 }), //路由跳转后页面回到顶部
@@ -769,35 +881,18 @@ history 
     })
 
     router.beforeEach((to, from, next) => {
-      //beforeEach是router的钩子函数，在进入路由前执行
       window.scrollTo(0, 0)//切换页面时滚动条自动滚动到顶部
+
+      if (to.meta.title) {//判断是否有标题
+        //设置页面title
+        document.title = to.meta.title
+      }
+
       next()//执行进入路由，如果不写就不会进入目标页
     })
 
     export default router
 
-##  <a name="设置页面title">设置页面title </a>
->
-    const router = new Router({
-      routes: [
-        {
-          path: '/',
-          name: 'index',
-          meta: { title: "首页" },
-          component: Index
-        }
-      ]
-    })
-
-    router.beforeEach((to, from, next) => {//beforeEach是router的钩子函数，在进入路由前执行
-      window.scrollTo(0, 0)//切换页面时滚动条自动滚动到顶部
-      if (to.meta.title) {//判断是否有标题
-        document.title = to.meta.title
-      }
-      next()//执行进入路由，如果不写就不会进入目标页
-    })
-
-    export default router 
 
 # <a name="vuex">vuex</a>
 [详情](vuex.md)
@@ -905,11 +1000,11 @@ history 
 
 父组件
 >
-    \<child @showbox="toshow" :msg="msg"></child> //监听子组件触发的showbox事件,然后调用toshow方法
+    \<child @showbox="toshow" ></child> //监听子组件触发的showbox事件,然后调用toshow方法
 
     methods: {
       toshow(msg) {
-        this.msg = msg;
+        console.log(msg)
       }
     }
 
@@ -917,10 +1012,167 @@ history 
 [详情](vuex.md)
 
 ## $attrs/$listeners
+attrs 包含了父作用域中不作为 prop(子组件的props) 被识别 (且获取) 的特性绑定 (class 和 style 除外)。当一个组件没有声明任何 prop 时，这里会包含所有父作用域的绑定 (class 和 style 除外)，并且可以通过 v-bind="$attrs" 传入内部组件——在创建高级别的组件时非常有用。
+
+$listeners包含了父作用域中的 (不含 .native 修饰器的) v-on 事件监听器。它可以通过 v-on="$listeners" 传入内部组件——在创建更高层次的组件时非常有用。
+
+
+父组件A下面有子组件B，组件B下面有组件C，   
+如果组件A直接想传递数据给组件C , 只能是组件A将数据传给组件B，然后组件B将数据传给组件C  
+A -> B -> C
+
+>
+    //A.vue
+    <template>
+      <div>
+        <h2 >A</h2>
+        <B
+          :foo="foo"
+          :boo="boo"
+          :coo="coo"
+          :doo="doo"
+          title="前端工匠"
+          @toB="toB"></B>
+      </div>
+    </template>
+    <script>
+    import B from "./B.vue";
+    export default {
+      components: { B },
+      data() {
+        return {
+          foo: "foo",
+          boo: "boo",
+          coo: "coo",
+          doo: "doo"
+        };
+      },
+      methods:{
+        toB(val){
+          console.log('toB',val)
+        }
+      }
+    };
+    </script>
+
+    //B.vue
+    <template>
+      <div>
+        <p>------</p>
+        <p>B</p>
+        <p>我是B的props属性boo: {{ boo }}</p>
+        <p>我是A的$attrs: {{ $attrs }}</p>
+        <p @click="setToB">setToB</p>
+        <C v-bind="$attrs" v-on="$listeners"></C>
+
+      </div>
+    </template>
+    <script>
+    const C = () => import("./C.vue");
+    export default {
+      components: {
+        C
+      },
+      inheritAttrs: false, // 可以关闭自动挂载到组件根元素上的没有在props声明的属性
+      props: ['boo'],
+      mounted() {
+        console.log('this.$attrs',this.$attrs);
+        //{ "foo": "foo", "coo": "coo", "doo": "doo", "title": "前端工匠" }
+
+        this.$emit('toB','B 触发A的toB方法')
+        //B 触发A的toB方法
+      },
+      methods:{
+        setToB(){
+          this.$emit('toB','B 触发A的toB方法')
+        }
+      }
+    };
+    </script>
+
+    //C.vue
+    <template>
+      <div>
+        <p>------</p>
+        <p>C</p>
+        <p>我是C的props属性coo: {{ coo }}</p>
+        <p>我是通过B传来的$attrs: {{ $attrs }}</p>
+      </div>
+    </template>
+    <script>
+    export default {
+      inheritAttrs: false,
+      props: ['coo'],
+      mounted() {
+        console.log('this.$attrs',this.$attrs);
+        //{ "foo": "foo", "coo": "coo", "doo": "doo", "title": "前端工匠" }
+
+        this.$emit('toB','C 触发A的toB方法')
+        //C 触发A的toB方法
+      }
+    };
+    </script>
+
+
+
 ## $parent / $children & ref
+>
+
+    this.$parent
+    this.$children[0]
+
+
+ref：如果在普通的 DOM 元素上使用，引用指向的就是 DOM 元素；如果用在子组件上，引用就指向组件实例
+
+>
+    // component-a 子组件
+    export default {
+      data () {
+        return {
+          title: 'Vue.js'
+        }
+      },
+      methods: {
+        sayHello () {
+          window.alert('Hello');
+        }
+      }
+    }
+    // 父组件
+    <template>
+      <component-a ref="comA"></component-a>
+    </template>
+    <script>
+      export default {
+        mounted () {
+          const comA = this.$refs.comA;
+          console.log(comA.title);  // Vue.js
+          comA.sayHello();  // 弹窗
+        }
+      }
+    </script>
+
 ## provide/inject
 >
     允许一个祖先组件向其所有子孙后代注入一个依赖，不论组件层次有多深，并在起上下游关系成立的时间里始终生效。一言而蔽之：祖先组件中通过 provider 来提供变量，然后在子孙组件中通过 inject 来注入变量。 provide / inject API 主要解决了跨级组件间的通信问题，不过它的使用场景，主要是子组件获取上级组件的状态，跨级组件间建立了一种主动提供与依赖注入的关系。
+
+`provide 和 inject 绑定并不是可响应的。这是刻意为之的。然而，如果你传入了一个可监听的对象，那么其对象的属性还是可响应的`
+>
+    //B 是 A 的子组件
+
+    // A.vue
+    export default {
+      provide: {
+        name: '浪里行舟'
+      }
+    }
+    // B.vue
+    export default {
+      inject: ['name'],
+      mounted () {
+        console.log(this.name);  // 浪里行舟
+      }
+    }
 
 
 
@@ -945,6 +1197,19 @@ history 
 
     其它的生命周期事件，例如： created， updated等都可监听
 
+# <a name="proxy跨域设置">proxy跨域设置</a>
+>
+
+    // config/index.js
+    proxyTable: {
+      '/api': {
+        target: '要跨域的域名',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    },
 
 # <a name="token验证">如何添加token验证</a>
 
@@ -962,6 +1227,7 @@ history 
         return Promise.reject(error)
       }
     ) 
+
 #### store/index.js 
 通过vuex获取、修改token 并存在 localStorage
 >
@@ -1054,19 +1320,23 @@ history 
       注意：如果把图片放在assets与static中，html页面可以使用；但在动态绑定中，assets路径的图片会加载失败，因为webpack使用的是commenJS规范，必须使用require才可以
 
 1. 图片路径为static
-    \<img class="img-title" src="static/images/index/b-t.jpg" alt="">
+>
+    <img class="img-title" src="static/images/index/b-t.jpg" alt="">
 
     onerror图片
-    * \<img :src="item.pic" alt="" onerror="this.src='static/images/errorImg.jpg'">
-    * \<img :src="item.pic" alt="" :onerror="errorImg'">
+    * <img :src="item.pic" alt="" onerror="this.src='static/images/errorImg.jpg'">
+    * <img :src="item.pic" alt="" :onerror="errorImg'">
       data下: errorImg: 'this.src="' + require('../../assets/images/common/errorImg.jpg') + '"',
+
 2. assets
-    \<img class="img-title" src="../assets/images/index/m-t.jpg" alt="">
+>
+    <img class="img-title" src="../assets/images/index/m-t.jpg" alt="">
     编译后会转为
-    \<img data-v-57509004="" src="/static/img/m-t.f606898.jpg" alt="" class="img-title">
+    <img data-v-57509004="" src="/static/img/m-t.f606898.jpg" alt="" class="img-title">
 
 3. 在JavaScript中获取资源路径 使用require对图片路径进行引用，这样通过变量传递的不是字符串而是图片资源。
-    例：\<img :src="imgUrl" alt=""> 
+>
+    例：<img :src="imgUrl" alt=""> 
     data () {
       return {
         imgUrl: require('../assets/images/index/m-t.jpg')
@@ -1081,7 +1351,7 @@ history 
 >
     原因：webpack打包后-webkit-box-orient被移除，所以导致失效。
 
-    解决：前后添加/*! autoprefixer: off */ /* autoprefixer: on */
+    解决：该属性前后添加/*! autoprefixer: off */ /* autoprefixer: on */
      .ovh {
         display: -webkit-box; /*作为弹性伸缩盒子模型显示*/
         -webkit-line-clamp: 2; /*显示的行数；如果要设置2行加...则设置为2*/
@@ -1096,12 +1366,14 @@ history 
 ## vue-cli2打包后打开 index.html 空白,某些图片字体文件加载不出来解决办法
 
 1. 修改config下面的index.js中bulid模块导出的路径
+>
     build: {
       //修改此处路径
       assetsPublicPath: './',
     }
 
 2. build下utils.js文件
+>
     if (options.extract) {
       return ExtractTextPlugin.extract({
         use: loaders,
@@ -1114,15 +1386,18 @@ history 
     }
 
 3. 使用了mode：history
+>
     src里边router/index.js路由配置里边默认模式是hash，如果你改成了history模式的话，打开也会是一片空白。
     dist包不是服务器跟目录，在index.htm里手动给js和css添加dist目录即可/dist/；
 
     mode: 'history',
-    base: '/dist/' // 添加路径
+    base: '/dist/', 
+    //base: process.env.BASE_URL
 
 
 ## nginx
 * 基本命令
+>
     启动服务：start nginx
     退出服务：nginx -s quit
     强制关闭服务：nginx -s stop
@@ -1258,6 +1533,7 @@ api同swiper
     const loaders = options.usePostCSS ? [cssLoader, px2remLoader, postcssLoader] : [cssLoader, px2remLoader]
 
 #### px2remLoader用法
+>
     直接写px，编译后会直接转化成rem —- 除开下面两种情况，其他长度用这个
     在px;后面添加/*no*/，不会转化px，原样输出。 — 一般border需用这个
     在px;后面添加/*px*/,会根据dpr的不同，生成三套代码。—- 一般字体需用这个
@@ -1267,31 +1543,42 @@ api同swiper
 
 
 # <a name="创建项目">vue-cli快速创建项目</a>
->
-    npm install --global vue-cli //  vue-cli安装
-    vue init webpack vuedemo
 
-    输入命令后，会跳出几个选项让你回答：
+npm install --global vue-cli //  vue-cli安装  
+vue init webpack vuedemo  
+输入命令后，会跳出几个选项让你回答：  
+>
     Project name (baoge)： -----项目名称，直接回车，按照括号中默认名字（注意这里的名字不能有大写字母，如果有会报错Sorry, name can no longer contain capital letters）
+
     Project description (A Vue.js project)： ----项目描述，也可直接点击回车，使用默认名字
+
     Author ()： ----作者名
+
     Runtime + Compiler: recommended for most users 运行加编译，既然已经说了推荐，就选它了
+
     Runtime-only: about 6KB lighter min+gzip, but templates (or any Vue-specificHTML) are ONLY allowed in .vue files - render functions are required elsewhere 仅运行时，已经有推荐了就选择第一个了
+
     Install vue-router? (Y/n) 是否安装vue-router，这是官方的路由，大多数情况下都使用，这里就输入“y”后回车即可。
+
     Use ESLint to lint your code? (Y/n) 是否使用ESLint管理代码，ESLint是个代码风格管理工具，是用来统一代码风格的，一般项目中都会使用。
-    > Pick an ESLint preset (Use arrow keys) 选择一个ESLint预设，编写vue项目时的代码风格，直接y回车
-    > Setup unit tests with Karma + Mocha? (Y/n) 是否安装单元测试，我选择安装y回车
-Setup e2e tests with Nightwatch(Y/n)? 是否安装e2e测试 ，我选择安装y回车
+      > Pick an ESLint preset (Use arrow keys) 选择一个ESLint预设，编写vue项目时的代码风格，直接y回车
+      
+      > Setup unit tests with Karma + Mocha? (Y/n) 是否安装单元测试，选择安装y回车
+
+    Setup e2e tests with Nightwatch(Y/n)? 是否安装e2e测试 ，选择安装y回车
 
 ## 生成文件目录后，使用 npm / cnpm安装依赖
 npm install
-> 安装淘宝镜像 npm install -g cnpm --registry=https://registry.npm.taobao.org
+
+安装淘宝镜像 npm install -g cnpm --registry=https://registry.npm.taobao.org
 
 ## 启动项目 npm run dev 
-> 如果浏览器打开之后，没有加载出页面，有可能是本地的 8080 端口被占用，需要修改一下配置文件 config里的index.js
+如果浏览器打开之后，没有加载出页面，有可能是本地的 8080 端口被占用，需要修改一下配置文件 config里的index.js  
+
 dev --> port
 
 ## 打包上线 npm run build
+>
     打开config/index.js，将其中build的assetsPublicPath值改为’./’
     组件的路径不能使用@/../static   只能使用../../../static这个时候，打包过后的登陆页面引用图片路径错误，多了一个/static/css
       修改build文件夹下边的utils.js文件
@@ -1309,7 +1596,7 @@ dev --> port
     打包完成后，会生成 dist 文件夹，如果已经修改了文件路径，可以直接打开本地文件查看。项目上线时，只需要将 dist 文件夹放到服务器就行了。
 
 
-
+>
 
     ├── build/                      ## webpack 编译任务配置文件: 开发环境与生产环境
     │   └── ...
@@ -1351,11 +1638,15 @@ dev --> port
     npm init 在此目录生成package.json文件，可以添加-y | --yes 参数则默认所有配置为默认yes
 
     npm install <package> -g 全局安装依赖包
+
     npm install <package> 默认使用–save 参数，如果不想保存到package.json中，可以添加--no-save参数；还可以指定–save-dev 或 -g参数
+
     npm install --production 安装dependencies，不包含devDependencies
 
     npm uninstall <package> 卸载依赖包， 默认使用–save参数，即从package.json中移除
+
     npm update <package> 升级依赖包版本
+
     npm outdated 查看当前过期依赖，其中current显示当前安装版本，latest显示依赖包的最新版本，wanted显示我们可以升级到可以不破坏当前代码的版本
 
     npm ls [-g] [--depth=0] 查看当前目录或全局的依赖包，可指定层级为0
@@ -1388,5 +1679,5 @@ dev --> port
     –save会把依赖包名称添加到package.json文件dependencies键下
     –save-dev则添加到package.json文件devDependencies键下
 
+    dependencies ----- 生产环境中需要的依赖，即正常运行该包时所需要的依赖项。 
     devDependencies -- 开发时用的依赖项，它们不会被部署到生产环境。
-    Dependencies -- 生产环境中需要的依赖，即正常运行该包时所需要的依赖项。
