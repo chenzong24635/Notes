@@ -36,8 +36,8 @@
 * <a href="#移动端点透问题">移动端点透问题(click 300ms延迟)</a>
 * <a href="#随机字符串">随机字符串</a>
 * <a href="#随机6个数字">随机6个数字</a>
+* <a href="#范围内随机数，包括两个数在内">范围内随机数</a>
 * <a href="#数字千分位">数字千分位</a>
-* <a href="#范围内随机数，包括两个数在内">范围内随机数，包括两个数在内</a>
 * <a href="#统计字符串中同一字符出现次数">统计字符串中同一字符出现次数</a>
 * <a href="#类数组转化为数组">类数组转化为数组</a>
 * <a href="#判断是否回文、实现回文">判断是否回文、实现回文</a>
@@ -125,7 +125,7 @@ var obj = {
 }
 
 ## <a name="获取当前页面url网址信息">获取当前页面url网址信息</a>
-http://www.aaa.com/bbb.aspx?name=1
+    http://www.aaa.com/bbb.aspx?name=1
 
 ### 属性
 #### window.location.href(设置或获取整个 URL 为字符串)
@@ -167,22 +167,21 @@ http://www.aaa.com/bbb.aspx?name=1
     var arr= url.split("&");       //将结果用&符分隔
     var a = arr[0].split("=")[1]; //参数1
 
-##### 一、正则法
+##### 正则
 
-    function getQueryString(name) {
+    function getQueryString(name, url) {
       var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
-      var r = window.location.search.substr(1).match(reg);
+      var r = (url || window.location).search.substr(1).match(reg);
       if (r != null) {
         return unescape(r[2]);
       }
       return null;
     }
-    // 这样调用：
-    alert(GetQueryString("参数名1"));
-    alert(GetQueryString("参数名2"));
-    alert(GetQueryString("参数名3"));
+    console.log(getQueryString("参数名1"));
+    console.log(getQueryString("参数名2"));
+    console.log(getQueryString("参数名3"));
 
-##### 二、split 拆分法
+##### split
 
     function GetRequest() {
       var url = location.search; //获取url中"?"符后的字串
@@ -197,39 +196,8 @@ http://www.aaa.com/bbb.aspx?name=1
       return theRequest;
     }
     var Request = new Object();
-    Request = GetRequest();<br>// var id=Request["id"];
-    // var 参数1,参数2,参数3,参数N;
-    // 参数1 = Request['参数1'];
-    // 参数2 = Request['参数2'];
-    // 参数3 = Request['参数3'];
-    // 参数N = Request['参数N'];
-
-##### 三、指定取
-
-    比如说一个url：http://i.cnblogs.com/?j=js,我们想得到参数j的值，可以通过以下函数调用。
-
-    function GetQueryString(name) {
-      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-      var r = window.location.search.substr(1).match(reg); //获取url中"?"符后的字符串并正则匹配
-      var context = "";
-      if (r != null)
-        context = r[2];
-      reg = null;
-      r = null;
-      return context == null || context == "" || context == "undefined" ? "" : context;
-    }
-    alert(GetQueryString("j"));
-
-##### 四、单个参数的获取方法
-
-    function GetRequest() {
-      var url = location.search; //获取url中"?"符后的字串
-      if (url.indexOf("?") != -1) {  //判断是否有参数
-        var str = url.substr(1); //从第一个字符开始 因为第0个是?号 获取所有除问号的所有符串
-        strs = str.split("=");  //用等号进行分隔 （因为知道只有一个参数 所以直接用等号进分隔 如果有多个参数 要用&号分隔 再用等号进行分隔）
-        alert(strs[1]);     //直接弹出第一个参数 （如果有多个参数 还要进行循环的）
-      }
-    }
+    Request = GetRequest();
+    // Request['参数1'];
 
 
 ## <a name="base64数据导出文件">base64数据导出文件，文件下载</a>
@@ -421,16 +389,17 @@ fastclick库地址 ：https://github.com/ftlabs/fastclick
 
 
 ## <a name="随机字符串">随机字符串</a>
-1. 
-Math.random().toString(36).slice(2)
 >
+    Math.random().toString(36).slice(2)
+
+    Math.random().toString(36).slice(-6)// 随机6位字符串
+
     由于：number.toString(36) -> 0-9 a-z的字符串
     toString(radix) 方法以指定的基数返回该对象的字符串表示。
     radix-->用于数字到字符串的转换的基数(从2到36)。
     如果转换的基数大于10，则会使用字母来表示大于9的数字，比如基数为16的情况，则使用a到f的字母来表示10到15。
     如果基数没有指定，则默认使用 10
 
-2. 随机生成n个字符串
 >
     function a(n) {  
       let str = 'abcdefghijklmnopqrstuvwxyz9876543210';
@@ -444,9 +413,15 @@ Math.random().toString(36).slice(2)
     }
 
 ## <a name="随机6个数字">随机6个数字 </a>
-Math.floor(Math.random() * 999999)
-Math.random().toString().slice(-6) / 1
+Math.floor(Math.random() * 999999)  
+
+Math.random().toString().slice(-6) / 1  
+
 Math.random().toFixed(6).slice(-6) / 1
+
+## <a name="范围内随机数，包括两个数在内">范围内随机数</a>
+>
+    const number =(min, max) => Math.random() * (max - min) + min
 
 ## <a name="数字千分位">数字千分位 </a>
 1.toLocaleString()
@@ -480,15 +455,16 @@ Math.random().toFixed(6).slice(-6) / 1
 >
     function thousand(num) {
       var str = ''
-      num = (num + '').split('')
+      num = (num + '').split('') //数组
       for(var i = num.length-1,j=0; i>=0 ; i--, j++) {
         //每隔三位加逗号，过滤数组的最后一位  
         if(j%3 === 0 && j!=0){
-          num.splice(i,1,num[i],',')////当前索引后 添加','
+          num.splice(i,1,num[i],',')//当前索引后 添加','
         }
       }
       return num.join('')
     }
+
 4.for
 >
     function format(num){  
@@ -504,9 +480,6 @@ Math.random().toFixed(6).slice(-6) / 1
       return str.split('').reverse().join("");//字符串=>数组=>反转=>字符串  
     }
 
-## <a name="范围内随机数，包括两个数在内">范围内随机数，包括两个数在内</a>
->
-    const number =(min, max) => Math.random() * (max - min) + min
 
 ## <a name="统计字符串中同一字符出现次数">统计字符串中同一字符出现次数</a>
 >
@@ -525,8 +498,8 @@ Math.random().toFixed(6).slice(-6) / 1
 ## <a name="类数组转化为数组">类数组转化为数组</a>
 >
     
-    [].slice.call(arguments) | Array.prototype.slice.call(arguments)
-    Array.from(arguments)
+    [].slice.call(arguments) | Array.prototype.slice.call(arguments)  
+    Array.from(arguments)  
     [...arguments]
 
 
@@ -550,14 +523,12 @@ Math.random().toFixed(6).slice(-6) / 1
 
 ## <a name="实现f(a)(b)与f(a,b)一样的效果">实现f(a)(b)与f(a,b)一样的效果</a>
 
-1. 
 >
     function f(m,n){
       if (m!==undefined&&n!==undefined) { return m + n}
       else{ return function(a){  return m+a;} }
     }
 
-2.  
 >
     function f(...arg){
       if(arg.length == 2){ return arg[0]+arg[1];}
@@ -626,16 +597,24 @@ Math.random().toFixed(6).slice(-6) / 1
 
 
 ## <a name="数组无序排列">数组无序排列</a>
-  arr.sort(()=>Math.random() - 0.5)
+arr.sort(()=>Math.random() - 0.5)
+
+arr.sort((a-b)=>a-b) 升序  
+arr.sort((a-b)=>b-a) 降序
+>
+    如果调用该方法时没有使用参数，将按字母顺序对数组中的元素进行排序，说得更精确点，是按照字符编码的顺序进行排序。要实现这一点，首先应把数组的元素都转换成字符串（如有必要），以便进行比较。
 
 
 ## <a name="数组扁平化">数组扁平化:n维数组展开成一维数组  </a>
 var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10]; 
 
-0. foo.flat(Infinity) // Array.prototype.flat()用于将嵌套的数组“拉平”，变成一维的数组。该方法返回一个新数组，对原数据没有影响。默认只会“拉平”一层，如果想要“拉平”多层的嵌套数组，可以将flat()方法的参数写成一个整数，表示想要拉平的层数，默认为1。
+0. 
+>
+    foo.flat(Infinity) // Array.prototype.flat()用于将嵌套的数组“拉平”，变成一维的数组。该方法返回一个新数组，对原数据没有影响。默认只会“拉平”一层，如果想要“拉平”多层的嵌套数组，可以将flat()方法的参数写成一个整数，表示想要拉平的层数，默认为1。
 1. 
 >
     const flatten = (ary) => ary.reduce((pre, now) => pre.concat(Array.isArray(now) ? flatten(now) : now), []);
+
     flatten(foo); // [1, 2, 3, "4", 5, "6", 7, 8, 9, 10]
 
 2. 
@@ -647,9 +626,7 @@ var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
 
 3. 
 >
-    function flatten(a) {
-      return Array.isArray(a) ? [].concat(...a.map(flatten)) : a;
-    }
+    flatten= (arr)=>Array.isArray(arr) ? [].concat(...arr.map(flatten)) : arr;
     flatten(foo); // [1, 2, 3, "4", 5, "6", 7, 8, 9, 10]
 
 4. 
@@ -668,8 +645,9 @@ var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
 
 ## <a name="数组去重">数组去重</a>
 1. 
-    [...new Set([1,2,2,3,4,1])]  --> [1,2,3,4]
-    Array.from(new Set([1,2,2,3,4,1]))
+>
+    [...new Set([1,2,2,3,4,1])]        --> [1,2,3,4]  
+    Array.from(new Set([1,2,2,3,4,1])) --> [1,2,3,4]  
 2. 
 >
     var arr = [2,3,4,4,5,2,3,6];
@@ -823,26 +801,28 @@ F(1)=1，F(2)=1, F(n)=F(n-1)+F(n-2)（n>=3，n∈N*）
     unescape(str.replace(/\\u/g, '%u'))
 
 ## <a name="取消选择，防止复制，禁止剪切、粘贴">取消选择，防止复制，禁止剪切、粘贴</a>
-取消选择 obj.onselectstart = () => return false
-  CSS: -moz-user-select:none  仅对FF有效
+取消选择 obj.onselectstart = () => return false  
+    CSS: -moz-user-select:none  仅对FF有效
 
-禁止右键 document.oncontextmenu= () =>  false
-禁止复制 document.oncopy= () =>  false
-禁止粘贴 document.onpaste= () =>  false
-禁止剪切 document.oncut= () =>  false
+禁止右键 document.oncontextmenu= () =>  false  
+禁止复制 document.oncopy= () =>  false  
+禁止粘贴 document.onpaste= () =>  false  
+禁止剪切 document.oncut= () =>  false  
 
 
-['selectstart', 'contextmenu', 'copy', 'paste' ,'cut'].forEach(function(ev){
-    document.addEventListener(ev, function(e){
-      let event = e || window.event;
-      return event.preventDefault ? event.preventDefault() : event.returnValue = false;
+>
+
+    ['selectstart', 'contextmenu', 'copy', 'paste' ,'cut'].forEach(function(ev){
+        document.addEventListener(ev, function(e){
+          let event = e || window.event;
+          return event.preventDefault ? event.preventDefault() : event.returnValue = false;
+        })
     })
-})
 
 ## <a name="网页是否可编辑">网页是否可编辑</a>
 网页最后编辑时间  document.lastModified  
 
-网页是否可编辑
+网页是否可编辑  
 document.body.contentEditable=true | false  控制当前文档是否可编辑 ，权限比designMode高
 document.designMode='on'  | 'off'  控制当前文档是否可编辑 
 
@@ -945,7 +925,8 @@ map 函数返回的是一个数组，所以最后结果为 [1, NaN, NaN]。
 >
 JSON.stringify()
 
-//深度
+//深度判断
+>
     function deepCompare(x, y) {
       var i, l, leftChain, rightChain;
       function compare2Objects(x, y) {

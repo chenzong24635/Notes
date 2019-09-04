@@ -3,6 +3,7 @@
 * <a href="#生命周期">生命周期</a>
 * <a href="#computed watch methods">computed watch methods</a>
 * <a href="#Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？">Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？</a>
+* <a href="#样式绑定">样式绑定：class、style</a>
 * <a href="#slot">slot插槽</a>
 * <a href="#组件中key作用">组件中key作用</a>
 * <a href="#$nextTick">$nextTick</a>
@@ -354,6 +355,114 @@ watch：深度监听
     $set()方法相当于手动的去把obj.b处理成一个响应式的属性，此时视图也会跟着改变了：
 
 
+
+# <a name="样式绑定">样式绑定：class、style</a>
+
+### class绑定
+普通绑定
+>
+    <div class="static" :class="{ active: isActive, 'text-danger': hasError }"></div>
+
+    data() {
+      return {
+        isActive: true,
+        hasError: false
+      }
+    }
+
+绑定数据里的一个对象
+> 
+
+    <div v-bind:class="classObject"></div>
+    data() {
+      return {
+        classObject: {
+          active: true,
+          'text-danger': false
+        }
+      }
+    }
+
+    绑定返回对象的计算属性
+    data() {
+      return {
+        isActive: true,
+        error: null
+      }
+    },
+    computed: {
+      classObject: function () {
+        return {
+          active: this.isActive && !this.error,
+          'text-danger': this.error && this.error
+        }
+      }
+    }
+
+数组方式绑定
+>
+    <div v-bind:class="[activeClass, errorClass]">
+    data() {
+      return {
+        activeClass: 'active',
+        errorClass: 'text-danger'
+      }
+    }
+
+    根据条件切换class， 三元表达式 
+    <div v-bind:class="[isActive ? activeClass : '', errorClass]">
+
+### style绑定
+CSS 属性名可以用驼峰式（camelCase）或短横分隔命名（kebab-case）
+
+>
+    <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
+    data() {
+      return {
+        activeColor: 'red',
+        fontSize: 30
+      }
+    }
+
+绑定到一个样式对象
+>
+
+    <div v-bind:style="styleObject"></div>
+    data() {
+      return {
+        styleObject: {
+          color: 'red',
+          fontSize: '13px'
+        }
+      }
+    }
+
+    绑定计算属性
+    data() {
+      return {
+        color: 'red',
+        fontSize: '13px'
+      }
+    },
+    computed: {
+      styleObject: function () {
+        return {
+          fontSize: '1' + this.fontSize,
+          color: this.red
+        }
+      }
+    }
+
+数组绑定
+>
+    <div v-bind:style="[baseStyles, overridingStyles]">
+
+    data() {
+      return {
+        baseStyles:{},
+        overridingStyles:{}
+      }
+    }
 
 # <a name="slot">slot插槽</a>
 父组件来控制 插槽显示状态、内容  
@@ -1637,11 +1746,14 @@ dev --> port
 >
     npm init 在此目录生成package.json文件，可以添加-y | --yes 参数则默认所有配置为默认yes
 
-    npm install <package> -g 全局安装依赖包
+    npm install <package> -g 全局安装依赖包  
+        npm install -g cnpm --registry=https://registry.npm.taobao.org
 
     npm install <package> 默认使用–save 参数，如果不想保存到package.json中，可以添加--no-save参数；还可以指定–save-dev 或 -g参数
 
     npm install --production 安装dependencies，不包含devDependencies
+
+    npm cache clean --force 清缓存
 
     npm uninstall <package> 卸载依赖包， 默认使用–save参数，即从package.json中移除
 
