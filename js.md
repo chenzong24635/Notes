@@ -818,16 +818,26 @@ __proto__,prototype区别：
     function P(){}
     var p = new P()
 
+    //p是否为P的实例
+    p instanceof P // true
+
     // 实例的 __proto__ 属性（原型）等于其构造函数的 prototype 属性。
     p.__proto__ === P.prototype // true
-    p instanceof P // true
+
+    //prototype对象的constructor属性，直接指向“类”的本身
+    P === P.prototype.constructor //true
+
+    //p是P类的实例，它的constructor方法就是P类原型的constructor方法
+    p.constructor === P.prototype.constructor //true
     
+
+
     Object.__proto__ === Function.prototype //true
     Function.prototype.__proto__ === Object.prototype //true
     Object.prototype.__proto__ === null //true
     
 
-构造函数不需要显示的返回值。使用new来创建对象(调用构造函数)时，如果return的是非对象(数字、字符串、布尔类型、null等)会忽而略返回值;如果return的是对象，则返回该对象。
+构造函数不需要显示的返回值。使用new来创建对象(调用构造函数)时，如果return的是非对象(数字、字符串、布尔类型、null、undefined等)会忽而略返回值;如果return的是对象，则返回该对象。
 
 ![prototype](/img/prototype0.png)
 ![prototype](/img/prototype.png)
@@ -845,7 +855,7 @@ __proto__,prototype区别：
 对象字面量：
   p = {name:'jack'}
 
-new Object(): 
+new Object():  
   p = new Object({name:'jack'})
 
 Object.create:
@@ -884,6 +894,7 @@ https://segmentfault.com/a/1190000014436817
 
 * 说明：
 >
+
     1.在函数中定义对象,并定义对象的各种属性，,虽然属性可以为方法，但是建议将属性为方法的属性定义到函数之外，这样可以避免重复创建该方法
     2.引用该对象的时候，这里使用的是 var x = Parent()而不是 var x = new Parent();因为后者会可能出现很多问题（前者也成为工厂经典方式,后者为构造函数模式）
     3.在函数的最后返回该对象
@@ -898,6 +909,7 @@ https://segmentfault.com/a/1190000014436817
 
 * 例:
 >
+
     function People() {
       this.name = '人'
       this.getName=function(){
@@ -911,6 +923,7 @@ https://segmentfault.com/a/1190000014436817
 
 * 说明：
 >
+
     1.与工厂方式相比，使用构造函数方式创建对象，无需再函数内部重建创建对象，而使用this指代，并而函数无需明确return
     2.同工厂模式一样，虽然属性的值可以为方法，但建议将该方法定义在函数之外
 
@@ -976,12 +989,29 @@ https://segmentfault.com/a/1190000014436817
           return name || (name = userName)
       }
     }
-
     let single = createPeople()
     console.log(single('人')) // '人'
     // 不管再传递任何值，也只会返回 '人'
     console.log(single('马')) // '马'
 
+>
+
+    var Person1  = (function () {
+      var _this = null;
+      return function (name,age) {
+        if(!_this){
+          _this = this;
+        }
+        _this.name = name;
+        _this.age = age;
+        return _this
+      }
+    })();
+    var person11 = new Person1("A",18);
+    console.log("姓名:"+person11.name,"年龄:"+person11.age);
+    var person22 = new Person1("B",19);
+    console.log("姓名:"+person22.name,"年龄:"+person22.age);
+    console.log(person11===person22); //==>true
 
 #### 模块模式 —— Module
 * 核心
@@ -1079,7 +1109,7 @@ JavaScript中的函数采用静态作用域，也称词法作用域。当在执�
 
 [执行上下文与执行栈，变量对象](https://github.com/ZengLingYong/Blog/issues/1)
 
-执行上下文可以理解为当前代码被解析和执行时所在环境，
+执行上下文可以理解为当前代码被解析和执行时所在环境，  
 在执行JS程序时，每遇到一段JS可执行代码，都会创建一个可执行上下文。
 
 分类：
@@ -1088,7 +1118,8 @@ JavaScript中的函数采用静态作用域，也称词法作用域。当在执�
     函数代码、
     eval代码
 
-    一段JS程序必定会产生多个执行上下文，而JavaScript引擎则是以堆栈的形式来对其进行管理，也就是常说的函数调用栈。栈底是全局上下文，栈顶则是当前正在执行的上下文.
+    一段JS程序必定会产生多个执行上下文，而JavaScript引擎则是以堆栈的形式来对其进行管理，也就是常说的函数调用栈。  
+    栈底是全局上下文，栈顶则是当前正在执行的上下文.
 
 特性：
 >
@@ -1123,7 +1154,8 @@ JavaScript中的函数采用静态作用域，也称词法作用域。当在执�
 
 
 一开始浏览器执行全局的代码时，首先创建全局的执行上下文，压入执行栈的顶部。  
-每当进入一个函数的执行就会创建函数的执行上下文，并且把它压入执行栈的顶部。当前函数执行完成后，当前函数的执行上下文出栈，并等待垃圾回收。  
+每当进入一个函数的执行就会创建函数的执行上下文，并且把它压入执行栈的顶部。当前函数执行完成后，当前函数的执行上下文出栈，并等待垃圾回收。
+
 浏览器的JS执行引擎总是访问栈顶的执行上下文。  
 全局上下文只有唯一的一个，它在浏览器关闭时出栈。
 
@@ -1227,8 +1259,8 @@ this 指针存在于函数中，用以标识函数运行时所处的上下文。
 
 >
     function bar() {
-      a = () => {
-        console.log(this, 'this指向定义的时候外层第一个普通函数'); 
+      let a = () => {
+        console.log(this, 'this指向定义的时候外层第一个普通函数')
       }; // 在bar中定义 this继承于bar函数的this指向
     }
 
@@ -1272,7 +1304,7 @@ this 指针存在于函数中，用以标识函数运行时所处的上下文。
       //call改变其指向
 
 
-    不用function（function有自己的函数作用域）将其包裹起来，那么默认绑定的父级作用域就是window。（如show2）
+    箭头函数不用function（function有自己的函数作用域）将其包裹起来，那么默认绑定的父级作用域就是window。（如show2）
 
     用function包裹的目的就是将箭头函数绑定到当前的对象上。 匿名函数的作用域是当前这个对象，所以之后箭头函数会自动绑定到此函数所在作用域的this，。（如show4）
 
@@ -1293,7 +1325,7 @@ https://github.com/yygmind/blog/issues/22
 
 把null或者undefined作为this的绑定对象传入call、apply或者bind，这些值在调用时会被忽略，实际应用的是默认规则。
 
-下面两种情况下会传入null
+下面两种情况下会传入null：
 
 使用apply(..)来“展开”一个数组，并当作参数传入一个函数  
 bind(..)可以对参数进行柯里化（预先设置一些参数）
@@ -1312,9 +1344,25 @@ bind(..)可以对参数进行柯里化（预先设置一些参数）
 
 ## <a name="公有、私有、静态、特权方法与属性">公有、私有、静态、特权方法与属性</a>
 
+>
+    function P(age){
+      var name = '私有变量';
+      var fun = function(){console.log('私有方法')}
+
+      this.age = age //实例变量
+      this.func = function(){console.log('实例方法')}
+    }
+    P.fun = function(){console.log('静态方法')}
+    P.age = '静态变量'
+    
+    console.log(P.age,P.fun())
+
+
 私有变量和函数：
 >
     在函数内部定义的变量和函数，如果不对外提供接口，外部是无法访问到的，也就是该函数的私有的变量和函数。
+
+
     
 静态变量和静态函数：
 >
@@ -1350,13 +1398,11 @@ bind(..)可以对参数进行柯里化（预先设置一些参数）
     
 4. 特权方法：
 >
-    //通过this调用公有方法、公有属性，
-    通过对象本身调用静态方法和属性，
-    在方法体内直接调用私有属性和私有方法
+    //用来访问私有变量和私有方法的 公有方法
     function User(age){
       var age = age;//私有属性
       this.getAge = function(){ //特权方法
-        return age;//私有属性和方法不能使用this调用
+        return age; //特权方法调用私有属性
       }
     }
     var user = new User(26);

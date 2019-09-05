@@ -52,7 +52,6 @@
 ### MVC(Model-view-Controller)
 <img src="img/mvc.png" width="50%"/>
 
-<!-- ![MVC](img/mvc.png) -->
 >
 
     View（视图）：用户界面。
@@ -60,6 +59,7 @@
     Model（模型）：数据保存
 
 >
+
     View 传送指令到 Controller
     Controller 完成业务逻辑后，要求 Model 改变状态
     Model 将新的数据发送到 View，用户得到反馈
@@ -72,12 +72,13 @@
 
 ### MVP(Model-View-Presenter)
 <img src="img/mvp.png" width="50%"/>
-<!-- ![MVP](img/mvp.png) -->
+
 >
 
     Presenter: 负责完成View于Model间的交互和业务逻辑
 
 >
+
     各部分之间的通信，都是双向的。
 
     View 与 Model 不发生联系，都通过 Presenter 传递。
@@ -86,12 +87,13 @@
 
 ### MVVM(Model-View-ViewModel)
 <img src="img/mvvm.png" width="50%"/>
-<!-- ![MVVM](img/mvvm.png) -->
 >
+
     基本上与 MVP 模式完全一致。  
     唯一的区别是，它采用双向绑定（data-binding）：View的变动，自动反映在 ViewModel，反之亦然。
 
 >
+
     View: 代表视图层，负责将数据模型渲染到页面上，  
     Model:代表数据模型，定义数据操作的业务逻辑，  
     ViewModel:通过双向绑定把View和Model进行同步交互，不需要手动操作DOM的一种设计思想。
@@ -101,6 +103,7 @@
 
 MVVM优点:
 >
+
     低耦合。视图（View）可以独立于Model变化和修改，一个ViewModel可以绑定到不同的"View"上，当View变化的时候Model可以不变，当Model变化的时候View也可以不变。
 
     可重用性。你可以把一些视图逻辑放在一个ViewModel里面，让很多view重用这段视图逻辑。
