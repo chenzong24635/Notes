@@ -165,19 +165,14 @@ src（source）
     
 最开始渲染引擎和JS引擎并没有区分的很明确，后来JS引擎越来越独立，内核就倾向于只指渲染引擎。
 
-#### 常见浏览器及其内核
+#### 常见浏览器及其内核、私有化前缀
 
 | | Chrome | Firefox | IE | Safari | Opera |
 :-:| :-:|:-:|:-:|:-:|:-:|
 | 渲染引擎(内核) | Blink | Gecko | Trident | Webkit | Blink(原Presto) |
 | JS 引擎 | V8 | SpiderMonkey | Nitro | Chakra | V8 |
+| 私有化前缀 | -webkit- | -moz- | -ms- | -webkit- | -webkit- |
 
-
-#### 浏览器私有化前缀
-    -webkit-:chrome safari 
-    -ms-：IE
-    -moz-:firefox
-    -o-：opera
 
 ## <a name="web存储">cookies、sessionStorage 、和 localStorage 的区别</a>
 https://zhuanlan.zhihu.com/p/61704951

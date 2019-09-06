@@ -820,11 +820,14 @@ F(1)=1，F(2)=1, F(n)=F(n-1)+F(n-2)（n>=3，n∈N*）
     })
 
 ## <a name="网页是否可编辑">网页是否可编辑</a>
-网页最后编辑时间  document.lastModified  
+网页最后编辑时间：  document.lastModified  
 
-网页是否可编辑  
+控制、查看网页是否可编辑  
 document.body.contentEditable=true | false  控制当前文档是否可编辑 ，权限比designMode高
+document.body.isContentEditable //查看
+
 document.designMode='on'  | 'off'  控制当前文档是否可编辑 
+document.designMode // 查看
 
 ## <a name="逗号操作符">逗号操作符</a>
 
