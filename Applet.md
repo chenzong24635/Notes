@@ -3,7 +3,12 @@
 [微信小程序开发文档](https://developers.weixin.qq.com/miniprogram/dev/component/)
 
 [wepy-基于Vue框架](https://wepyjs.github.io/wepy-docs/2.x/#/base/intro)
+
 [mpvue-基于Vue框架](http://mpvue.com/mpvue/)
+
+
+[uni-app](https://uniapp.dcloud.io/README)
+[](https://dcloud.io/doc.html)
 
 
 [微信小程序开发资源汇总](https://github.com/justjavac/awesome-wechat-weapp)
@@ -14,86 +19,11 @@
 * <a href="#"></a>
 * <a href="#"></a>
 
-#  <a name="mpvue">mpvue</a>
-## 安装
->
 
-    npm set registry https://registry.npm.taobao.org/  //切换源为 taobao 源
-
-    npm install --global vue-cli@2.9 //全局安装 vue-cli
-
-    创建一个基于 mpvue-quickstart 模板的新项目
-    新手一路回车选择默认就可以了
-
-    vue init mpvue/mpvue-quickstart my-project
-
-   安装依赖
-    cd my-project
-    npm install
-    npm run dev
-
-    更新依赖
-    npm i mpvue -S
-    npm i mpvue-template-compiler mpvue-loader mpvue-webpack-target postcss-mpvue-wxss webpack-dev-middleware-hard-disk -S-D
-
-## 生命周期
-同vue,不同的是我们会在小程序 onReady 后，再去触发mounted
->
-    beforeCreate
-    created
-    beforeMount
-    mounted
-    beforeUpdate
-    updated
-    activated
-    deactivated
-    beforeDestroy
-    destroyed
-
-app 部分：
->
-    onLaunch，初始化
-    onShow，当小程序启动，或从后台进入前台显示
-    onHide，当小程序从前台进入后台
-
-page 部分：
->
-    onLoad，监听页面加载
-    onShow，监听页面显示
-    onReady，监听页面初次渲染完成
-    onHide，监听页面隐藏
-    onUnload，监听页面卸载
-
-    onPullDownRefresh，监听用户下拉动作
-    onReachBottom，页面上拉触底事件的处理函数
-    onShareAppMessage，用户点击右上角分享
-    onPageScroll，页面滚动
-    onTabItemTap, 当前是 tab 页时，点击 tab 时触发 （mpvue 0.0.16 支持）
-
-
-<!-- ![生命周期](./img/mpvue-lifecycle.jpg) -->
-<img src="./img/mpvue-lifecycle.jpg" width="50%" />
-
-
-## 不支持
-不支持vue-router，因为小程序无法动态的插入和控制节点，几乎无法实现 
-
-小程序里所有的 BOM／DOM 都不能用，也就是说 v-html 指令不能用
-
-不支持部分复杂的 JavaScript 渲染表达式  
->
-    目前可用的有 + - * % ?: ! == === > < [] .
-
-不支持过滤器
-
-
-
-------
-<a name=""></a>
-<a name=""></a>
 
 --------
-#<a name="微信小程序">微信小程序</a>
+
+# <a name="微信小程序">微信小程序</a>
 
 # <a name="生命周期">生命周期</a>
 [App 注册小程序](https://developers.weixin.qq.com/miniprogram/dev/reference/api/App.html)
@@ -301,3 +231,82 @@ page 部分：
 # <a name=""></a>
 
 # <a name="微信公众号">微信公众号</a>
+
+
+#  <a name="mpvue">mpvue</a>
+## 安装
+>
+
+    npm set registry https://registry.npm.taobao.org/  //切换源为 taobao 源
+
+    npm install --global vue-cli@2.9 //全局安装 vue-cli
+
+    创建一个基于 mpvue-quickstart 模板的新项目
+    新手一路回车选择默认就可以了
+
+    vue init mpvue/mpvue-quickstart my-project
+
+   安装依赖
+    cd my-project
+    npm install
+    npm run dev
+
+    更新依赖
+    npm i mpvue -S
+    npm i mpvue-template-compiler mpvue-loader mpvue-webpack-target postcss-mpvue-wxss webpack-dev-middleware-hard-disk -S-D
+
+## 生命周期
+同vue,不同的是我们会在小程序 onReady 后，再去触发mounted
+>
+    beforeCreate
+    created
+    beforeMount
+    mounted
+    beforeUpdate
+    updated
+    activated
+    deactivated
+    beforeDestroy
+    destroyed
+
+app 部分：
+>
+    onLaunch，初始化
+    onShow，当小程序启动，或从后台进入前台显示
+    onHide，当小程序从前台进入后台
+
+page 部分：
+>
+    onLoad，监听页面加载
+    onShow，监听页面显示
+    onReady，监听页面初次渲染完成
+    onHide，监听页面隐藏
+    onUnload，监听页面卸载
+
+    onPullDownRefresh，监听用户下拉动作
+    onReachBottom，页面上拉触底事件的处理函数
+    onShareAppMessage，用户点击右上角分享
+    onPageScroll，页面滚动
+    onTabItemTap, 当前是 tab 页时，点击 tab 时触发 （mpvue 0.0.16 支持）
+
+
+<!-- ![生命周期](./img/mpvue-lifecycle.jpg) -->
+<img src="./img/mpvue-lifecycle.jpg" width="50%" />
+
+
+## 不支持
+不支持vue-router，因为小程序无法动态的插入和控制节点，几乎无法实现 
+
+小程序里所有的 BOM／DOM 都不能用，也就是说 v-html 指令不能用
+
+不支持部分复杂的 JavaScript 渲染表达式  
+>
+    目前可用的有 + - * % ?: ! == === > < [] .
+
+不支持过滤器
+
+
+
+------
+<a name=""></a>
+<a name=""></a>

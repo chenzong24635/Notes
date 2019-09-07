@@ -49,6 +49,55 @@ XHTML是更为严格纯净的HTML版
 XHTML是作为一种xml应用被重新定义的HTML  
 XHTML文档必须拥有根元素、元素必须被关闭、元素必须被正确地嵌套、标签应该使用小写
 
+## <a name="HTML5新标签">[HTML5新标签](https://www.w3cschool.cn/html5/html5-new-element.html)</a>
+>
+
+    <canvas> 
+
+    <audio>	
+    <video>	
+    <source> 定义多媒体资源 <video> 和 <audio>
+    <embed>	 定义嵌入的内容，比如插件。
+    <track>  为<video> 和 <audio> 元素之类的媒介规定外部文本轨道。
+    
+    <datalist>	定义选项列表。与input配合使用来定义input可能的值。
+        <input list="browsers" name="browser">
+        <datalist id="browsers">
+        <option value="Internet Explorer">
+        <option value="Firefox">
+        <option value="Chrome">
+        <option value="Opera">
+        <option value="Safari">
+        </datalist>
+
+    <keygen>	规定用于表单的密钥对生成器字段。
+
+    <output>	定义不同类型的输出，比如脚本的输出。
+
+    <article>	定义页面独立的内容区域。
+
+    <aside>	定义页面的侧边栏内容。
+
+    <bdi>	允许您设置一段文本，使其脱离其父元素的文本方向设置。
+    <command>	定义命令按钮，比如单选按钮、复选框或按钮
+    <details>	用于描述文档或文档某个部分的细节
+    <dialog>	定义对话框，比如提示框
+    <summary>	标签包含 details 元素的标题
+    <figure>	规定独立的流内容（图像、图表、照片、代码等等）。
+    <figcaption>	定义 <figure> 元素的标题
+    <footer>	定义 section 或 document 的页脚。
+    <header>	定义了文档的头部区域
+    <mark>	定义带有记号的文本。
+    <meter>	定义度量衡。仅用于已知最大和最小值的度量。
+    <nav>	定义导航链接的部分。
+    <progress>	定义任何类型的任务的进度。
+    <ruby>	定义 ruby 注释（中文注音或字符）。
+    <rt>	定义字符（中文注音或字符）的解释或发音。
+    <rp>	在 ruby 注释中使用，定义不支持 ruby 元素的浏览器所显示的内容。
+    <section>	定义文档中的节（section、区段）。
+    <time>	定义日期或时间。
+    <wbr>	规定在文本中的何处适合添加换行符。
+
 ## <a name="HTML5 为什么只需要写">HTML5 为什么只需要写 \<!DOCTYPE HTML\></a>
 HTML5 不基于 SGML，因此不需要对DTD进行引用，但是需要doctype来规范浏览器的行为（让浏览器按照它们应该的方式来运行）
 
@@ -82,10 +131,12 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 
 ## <a name="渐进增强与优雅降级">渐进增强与优雅降级-----开发方式，设计理念</a>
 
-* 渐进增强：针对低版本浏览器构建页面，保证核心功能。再针对高级浏览器进行改进和追加功能以达到更好的用户体验
-* 优雅降级：一开始就构建完整功能，在针对底版本浏览器兼容
+渐进增强：针对低版本浏览器构建页面，保证核心功能。再针对高级浏览器进行改进和追加功能以达到更好的用户体验
 
-    区别：  
+优雅降级：一开始就构建完整功能，在针对底版本浏览器兼容
+
+区别：  
+>
     优雅降级是从复杂的现状开始，并试图减少用户体验的供给，  
     渐进增强则从基础的的版本开始，并不断扩充，以适应未来环境的需要。  
     优雅降级意味着往回看；而渐进增强则意味着朝前看，同时保证其根基处于安全地带
@@ -104,13 +155,13 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 >
     不会独占一行,相邻的行内元素会排列在同一行里,直到一行排不下,才会换行,其宽度随元素的内容而变化.  
     行内元素设置width,height属性无效，它的长度高度主要根据内容决定.  
-    行内元素的margin和padding属性,水平方向(padding-left,padding-right,margin-left,margin- right)产生边距效果,但竖直方向(padding-top,padding-bottom,margin-top,margin-bottom)无效
+    行内元素的margin和padding属性,水平方向(padding-left,padding-right,margin-left,margin- right)产生边距效果,但定义竖直方向(padding-top,padding-bottom,margin-top,margin-bottom)无效
 
     a,span,img,select,input
 
 行内块级元素：display:inline-block
 >
-    让行内元素拥有（除了独占一行）的特性
+    让行内元素拥有块级元素（除了独占一行）的特性
 
 空元素：
 >
@@ -148,7 +199,7 @@ src（source）
     是指向外部资源的位置，指向的内容将会嵌入到文档中当前标签所在位置；在请求src资源时会将其指向的资源下载并应用到文档内，例如js脚本，img图片和frame等元素。 
     当浏览器解析到该元素时，会暂停其他资源的下载和处理，直到将该资源加载、编译、执行完毕，图片和框架等元素也如此，类似于将所指向资源嵌入当前标签内。这也是为什么将js脚本放在底部而不是头部。
 
-总而言之，src用于替换当前元素；href用于在当前文档和引用资源之间建立联系。
+`总而言之，src用于替换当前元素；href用于在当前文档和引用资源之间建立联系。`
 
 ## <a name="浏览器内核、私有化前缀">浏览器内核、私有化前缀</a>
 #### 主要分为：
@@ -199,11 +250,13 @@ https://zhuanlan.zhihu.com/p/61704951
 
 * 作用域:
 >
+
     sessionStorage不在不同的浏览器窗口中共享，即使是同一个页面；
     localStorage 在所有同源窗口中都是共享的；cookie也是在所有同源窗口中都是共享的。
 
 * Storage方法
 >
+
     setItem(key, value) 保存数据
     getItem(key) 读取数据
     removeItem(key) 删除键值为key的存储内容
@@ -216,6 +269,7 @@ https://zhuanlan.zhihu.com/p/61704951
 
 * cookie方法
 >
+
     let cookie = {
       set: function (key, val, time) { // 设置cookie方法
         let date = new Date() // 获取当前时间
@@ -248,6 +302,7 @@ https://zhuanlan.zhihu.com/p/61704951
 https://segmentfault.com/a/1190000011295587
 
 >
+
     cookie是存储在浏览器端，并且随浏览器的请求一起发送到服务器端的，它有一定的过期时间，到了过期时间自动会消失。
 
 
@@ -261,15 +316,15 @@ https://segmentfault.com/a/1190000011295587
     "Access-Control-Allow-Origin", "允许跨域的域名" //或设为 "*" 
 
 * Cookie 隔离？（或者说：请求资源的时候不要让它带cookie）
+>
+    如果静态文件都放在主域名下，那静态文件请求的时候都带有的cookie的数据提交给server的，非常浪费流量，
+    所以不如隔离开。
 
-  如果静态文件都放在主域名下，那静态文件请求的时候都带有的cookie的数据提交给server的，非常浪费流量，
-  所以不如隔离开。
+    因为cookie有域的限制，因此不能跨域提交请求，故使用非主要域名的时候，请求头中就不会带有cookie数据，
+    这样可以降低请求头的大小，降低请求时间，从而达到降低整体请求延时的目的。
 
-  因为cookie有域的限制，因此不能跨域提交请求，故使用非主要域名的时候，请求头中就不会带有cookie数据，
-  这样可以降低请求头的大小，降低请求时间，从而达到降低整体请求延时的目的。
-
-  同时这种方式不会将cookie传入Web Server，也减少了Web Server对cookie的处理分析环节，
-  提高了webserver的http请求的解析速度
+    同时这种方式不会将cookie传入Web Server，也减少了Web Server对cookie的处理分析环节，
+    提高了webserver的http请求的解析速度
 
 * cookie方法、属性
 >
@@ -314,10 +369,10 @@ https://segmentfault.com/a/1190000011295587
 
 ## <a name="iframe缺点">iframe缺点</a>
 1. 会阻塞主页面的onload事件
-2. 不利于搜索引擎的检索，不利于SEO优化
-3. iframe和主页面共享连接池，而浏览器对相同域的连接有限制，所以会影响页面的并行加载.
+2. iframe和主页面共享连接池，而浏览器对相同域的连接有限制，所以会影响页面的并行加载.
+3. 不利于搜索引擎的检索，不利于SEO优化
 
-通过javascript动态给iframe添加src属性值，这样可以解决1,3两个问题。
+通过javascript动态给iframe添加src属性值，这样可以解决1,2两个问题。
 
 ## <a name="响应式设计-viewport">响应式设计-viewport</a>
 >
@@ -335,31 +390,32 @@ https://segmentfault.com/a/1190000011295587
     user-scalable：用户是否可以手动缩放
 
 ## <a name="meta">meta</a>
-###
-必要属性: content 
+
+* 必要属性: content 
 
 
-可选属性 
+* 可选属性 
 >
     http-equiv: content-type | expire | refresh | set-cookie  ;把content属性关联到HTTP头部  
 
     name: author | description | keywords | robots | format-detection  ;把content属性关联到一个名称
 
-#### 声明文档使用的字符编码
+* 声明文档使用的字符编码
+>
     <meta charset='utf-8'>    
 
-#### 关键词：name="keywords"
+* 关键词：name="keywords"
 >
     描述网页上所提供信息的描述性和代表性关键字及短语,逗号隔开。标记不应超过 874 个字符。
     <meta name="keywords" content="关键词1, 关键词2">
 
-#### 页面描述：name="description"
-
+* 页面描述：name="description"
+>
     每个网页都应有一个不超过 150 个字符且能准确反映网页内容的描述标签。
     <meta name="description" content="页面描述的内容">
 
-#### 搜索引擎索引方式：name="robots"
-
+* 搜索引擎索引方式：name="robots"
+>
     <meta name="robots" content="none,noindex,nofollow,all,index,follow">
     robots是一组使用逗号(,)分割的值，通常有如下几种取值：
         all, 文件将被检索，且页面上的链接可以被查询
@@ -369,31 +425,32 @@ https://segmentfault.com/a/1190000011295587
         follow, 页面上的链接可以被查询
         nofollow, 页面上的链接不可以被查询
 
-#### 页面重定向和刷新 http-equiv="refresh"
+* 页面重定向和刷新 http-equiv="refresh"
 >
     <meta http-equiv="refresh" content="0; url="">
 
     content内的数字代表时间（秒），既多少时间后刷新。如果加url,则会重定向到指定网页（搜索引擎能够自动检测，也很容易被引擎视作误导而受到惩罚）。
 
-### viewport
-#### 基本
+* viewport
+>
     <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
 
-    1.width：宽度（数值 / device-width）（范围从200 到10,000，默认为980 像素）
+    width：宽度（数值 / device-width）（范围从200 到10,000，默认为980 像素）
 
-    2.height：高度（数值 / device-height）（范围从223 到10,000）
+    height：高度（数值 / device-height）（范围从223 到10,000）
 
-    3.initial-scale：初始的缩放比例 （范围从>0 到10）
+    initial-scale：初始的缩放比例 （范围从>0 到10）
 
-    4.minimum-scale：允许用户缩放到的最小比例
+    minimum-scale：允许用户缩放到的最小比例
 
-    5.maximum-scale：允许用户缩放到的最大比例
+    maximum-scale：允许用户缩放到的最大比例
 
-    6.user-scalable：用户是否可以手动缩 (no,yes)
+    user-scalable：用户是否可以手动缩 (no,yes)
 
 
-#### 其他
-https://segmentfault.com/a/1190000002407912
+* 其他
+
+[参考](https://segmentfault.com/a/1190000002407912)
 
 >
     <!-- 忽略页面中的数字识别为电话，忽略email识别 -->
@@ -459,6 +516,7 @@ https://segmentfault.com/a/1190000002407912
 
 
 ## <a name="IE hack">IE hack</a>
+>
     <!--[if !IE]>除IE外都可识别<![endif]-->
     <!--[if IE]> 所有的IE可识别 <![endif]-->
     <!--[if IE 6]> 仅IE6可识别 <![endif]-->
@@ -484,18 +542,15 @@ https://segmentfault.com/a/1190000002407912
     <div role="checkbox" aria-checked="checked"></div>
     辅助工具就会知道，这个div实际上是个checkbox的角色，为选中状态。
 
-
 ## <a name=""></a>
 ## <a name=""></a>
-
-
 
 ## <a name="CSS和JS的位置会影响页面效率，为什么">CSS和JS的位置会影响页面效率，为什么？</a>
 css在加载过程中不会影响到DOM树的生成，但是会影响到Render树的生成，进而影响到layout，所以一般来说，style的link标签需要尽量放在head里面，因为在解析DOM树的时候是自上而下的，而css样式又是通过异步加载的，这样的话，解析DOM树下的body节点和加载css样式能尽可能的并行，加快Render树的生成的速度。
 
 js脚本应该放在底部，原因在于js线程与GUI渲染线程是互斥的关系，如果js放在首部，当下载执行js的时候，会影响渲染行程绘制页面，js的作用主要是处理交互，而交互必须得先让页面呈现才能进行，所以为了保证用户体验，尽量让页面先绘制出来。
 
-##<a name="未使用自适应写的PC页面在手机上显示不全的问题">未使用自适应写的PC页面在手机上显示不全的问题</a>
+## <a name="未使用自适应写的PC页面在手机上显示不全的问题">未使用自适应写的PC页面在手机上显示不全的问题</a>
 原因：
 >
     由于html样式的宽度只有980px，而实际需要是1200px
@@ -520,3 +575,7 @@ js脚本应该放在底部，原因在于js线程与GUI渲染线程是互斥的�
     <link rel="shortcut icon" href="favicon.ico" type="images/x-icon" />
 
     <link rel="icon" href="favicon.gif" type="image/gif" />
+
+
+## <a name=""></a>
+## <a name=""></a>

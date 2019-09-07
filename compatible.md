@@ -15,7 +15,80 @@
 * <a href="#"></a>
 
 
+# offset、scroll、client
+![img](./img/offset_scroll_client.png)
+
+### offset  自身
+
+* offsetParent
+>
+    返回一个对象的引用，这个对象是距离调用 offsetParent的父级元素中最近的（在包含层次中最靠近的），并且是已进行过CSS定位的容器元素。如果这个容器元素未进行CSS定位, 则 offsetParent属性的取值为根元素的引用。
+
+    如果当前元素的父级元素中没有进行CSS定位（position为 absolute/relative）， offsetParent 为 body
+
+    如果当前元素的父级元素中有CSS定位（ position 为 absolute/relative）， offsetParent 取父级中最近的元素
+
+* offsetWidth(自身宽度)= border+ width+ padding (不包括滚动条)
+
+* offsetHeight(自身高度) = border+ height+ padding (不包括滚动条)
+
+* offsetTop  相对于版面或由 offsetParent 属性指定的父坐标的上侧
+
+* offsetLeft 相对于版面或由 offsetParent 属性指定的父坐标的左侧
+
+
+### scroll 滚动
+
+* scrollWidth 对象的滚动宽度
+
+* scrollHeight 对象的滚动高度
+
+* scrollLeft 位于对象左边界和窗口中目前可见内容的最左端之间的距离
+
+* scrollTop 位于对象最顶端和窗口中可见内容的最顶端之间的距离
+
+
+### client 可视 
+
+* clientWidth(可见的宽度) = padding+width (不包括滚动条)，会随窗口的显示大小改变
+
+* clientHeight(可见的高度) = padding+height (不包括滚动条)，会随窗口的显示大小改变
+
+* clientTop、clientLeft 
+>
+    这两个返回的是元素周围边框的厚度，一般它的值就是0。因为滚动条不会出现在顶部或者左侧
+
+
+# getBoundingClientRect()
+
+## 返回值
+>
+
+    width: 自身宽
+    height: 自身高
+
+    top:   元素上边到视窗上边的距离
+    bottom:元素下边到视窗上边的距离
+    left:  元素左边到视窗左边的距离
+    right: 元素右边到视窗左边的距离
+
+    x: 同left (IE不支持
+    y: 同top   (IE不支持
+
+    可知：
+    right - left = width
+    bottom - top = height
+
+## 兼容性
+![getBoundingClientRect](img/getBoundingClientRect.png)
+
+![a](img/element-size.png)    
+
+
+
 # <a name="JS兼容写法">**JS兼容写法**</a>
+
+
 
 ## <a name="浏览器高度">浏览器高度</a>
 >
@@ -28,12 +101,6 @@
     屏幕分辨率的高： window.screen.height
     屏幕可用工作区高度： window.screen.availHeight
 
-
-    el.offsetWidth/offsetHeight：包含content + padding + border，效果与el.getBoundingClientRect()相同
-    el.clientWidth/clientHeight：只包含content + padding，不包含滚动条
-    el.scrollWidth/scrollHeight：包含content + padding + 包含滚动条
-
-![a](img/element-size.png)
 
 ## <a name="屏幕可视区域的宽高">屏幕可视区域的宽高</a>
 

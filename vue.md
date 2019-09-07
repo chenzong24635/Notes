@@ -4,6 +4,7 @@
 * <a href="#computed watch methods">computed watch methods</a>
 * <a href="#Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？">Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？</a>
 * <a href="#样式绑定">样式绑定：class、style</a>
+* <a href="#v-if和v-show 的区别">v-if 和 v-show 的区别</a>
 * <a href="#slot">slot插槽</a>
 * <a href="#组件中key作用">组件中key作用</a>
 * <a href="#$nextTick">$nextTick</a>
@@ -87,18 +88,16 @@
 
 ### MVVM(Model-View-ViewModel)
 <img src="img/mvvm.png" width="50%"/>
->
-
-    基本上与 MVP 模式完全一致。  
-    唯一的区别是，它采用双向绑定（data-binding）：View的变动，自动反映在 ViewModel，反之亦然。
 
 >
-
     View: 代表视图层，负责将数据模型渲染到页面上，  
-    Model:代表数据模型，定义数据操作的业务逻辑，  
     ViewModel:通过双向绑定把View和Model进行同步交互，不需要手动操作DOM的一种设计思想。
+    Model:代表数据模型，定义数据操作的业务逻辑，  
 
-    MVVM主要通过数据来显示视图层而不是操作节点，解决了MVC中大量的DOM操作使页面渲染性能降低，加载速度慢，影响用户体验问题。主要用于数据操作比较多的场景
+View 和 Model 之间并没有直接的联系，而是通过ViewModel进行交互，Model 和 ViewModel 之间的交互是双向的， 因此View 数据的变化会同步到Model中，而Model 数据的变化也会立即反应到View 上。
+
+
+MVVM主要通过数据来显示视图层而不是操作节点，解决了MVC中大量的DOM操作使页面渲染性能降低，加载速度慢，影响用户体验问题。主要用于数据操作比较多的场景
 
 
 MVVM优点:
@@ -112,15 +111,22 @@ MVVM优点:
 
     可测试。界面素来是比较难于测试的，而现在测试可以针对ViewModel来写。
 
-# <a name="双向数据绑定原理、实现">双向数据绑定原理、实现:Object.defineProperty、proxy</a>    
+# <a name="双向数据绑定原理、实现">双向数据绑定原理、实现:Object.defineProperty、proxy</a>  
+
+Vue2 采用数据劫持结合发布—订阅模式的方法，通过 Object.defineProperty() 来劫持各个属性的 setter，getter，在数据变动时发布消息给订阅者，触发相应的监听回调。实现数据双向绑定
+
+Vue3 则使用 Proxy
+
+![img](./img/vuexys.png)
+
 [](https://juejin.im/post/5acd0c8a6fb9a028da7cdfaf)
 
-Vue2 使用 Object.defineProperty 实现数据双向绑定，  
-V3.0 则使用了 Proxy
 
 ### 区别：
 >
     Object.definedProperty 的作用是劫持一个对象的属性，劫持属性的getter和setter方法，在对象的属性发生变化时进行特定的操作。而 Proxy 劫持的是整个对象。
+
+    Proxy 可以直接监听对象而非属性
 
     Proxy 会返回一个代理对象，我们只需要操作新对象即可，而 Object.defineProperty 只能遍历对象属性直接修改。
 
@@ -151,7 +157,10 @@ Object.defineProperty(obj, prop, descriptor)
     obj.name = 'change';
     console.log(obj.name);
 
-//双向绑定
+
+https://juejin.im/post/5acc17cb51882555745a03f8  
+
+//双向绑定-简
 >
     const obj = {};
     Object.defineProperty(obj, 'text', {
@@ -174,6 +183,8 @@ Object.defineProperty(obj, prop, descriptor)
 ### [proxy](http://es6.ruanyifeng.com/#docs/proxy)
 new Proxy(target, handler)
 
+target参数表示所要拦截的目标对象，handler参数也是一个对象，用来定制拦截行为。
+
 Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值，那么就会被劫持。  
 但是有点需要注意，复杂数据类型，监控的是引用地址，而不是值，如果引用地址没有改变，那么不会触发set。
 
@@ -186,6 +197,7 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
     let p = new Proxy(obj, {
         get(target, key) { //第三个参数是 proxy， 一般不使用
             console.log('读取成功');
+            //Reflect.get方法查找并返回target对象的key属性，如果没有该属性，则返回undefined。
             return Reflect.get(target, key);
         },
         set(target, key, value,receiver) {
@@ -199,7 +211,7 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
     p.hobbits.push('photography'); //读取成功;注意不会触发 set
     p.info.age = 18; //读取成功;不会触发 set
 
-双向绑定
+双向绑定-简
 >
     const obj = new Proxy({text:''},{
       get: function(target,key) {
@@ -466,6 +478,12 @@ CSS 属性名可以用驼峰式（camelCase）或短横分隔命名（kebab-case
         overridingStyles:{}
       }
     }
+
+# <a name="v-if和v-show 的区别">v-if和v-show 的区别</a>
+>
+    v-if 切换状态时会造成 dom 的销毁和重建，初始渲染条件为 false 时，将不会渲染元素；
+    v-show 只是简单的控制显隐藏，不管初始条件如何，元素总会被渲染；
+    v-if适用于很少改变条件的场景，v-show适用于频繁切换条件的场景。
 
 # <a name="slot">slot插槽</a>
 父组件来控制 插槽显示状态、内容  

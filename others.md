@@ -378,27 +378,4 @@
     }
 
 
-# getBoundingClientRect()
-## 用法
-    obj.getBoundingClientRect()
-
-## 返回值
->
-
-    width: 自身宽
-    height: 自身高
-
-    top:   元素上边到视窗上边的距离
-    bottom:元素下边到视窗上边的距离
-    left:  元素左边到视窗左边的距离
-    right: 元素右边到视窗左边的距离
-
-    x: 同left (IE不支持
-    y: 同top   (IE不支持
-
-    可知：
-    right - left = width
-    bottom - top = height
-
-## 兼容性
-![getBoundingClientRect](img/getBoundingClientRect.png)    
+    

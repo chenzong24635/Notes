@@ -37,7 +37,11 @@ UI框架
 
 CSS布局、居中
 
+[Flex](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
+
 [Flex](https://yoksel.github.io/flex-cheatsheet/)
+
+[Flex](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
 
 [Flex](http://caibaojian.com/flexbox-guide.html)
 
@@ -162,11 +166,12 @@ HTML中每个元素都被描绘成一个矩形盒子，这些盒子通过一个�
 
 * 区  别：box-sizing:content-box | border-box 
 1. 标准盒子模型(W3C):  
-    宽度 = 内容的宽度（content）+ border + padding + margin;  
-    box-sizing: content-box; 默认值，border和padding不计算入width之内
+    宽高 不包含border和padding  
+    box-sizing: content-box; 默认值  
+
 2. 怪异盒模型（IE）: 
-    宽度 = 内容宽度（content+border+padding）+ margin  
-    box-sizing: border-box; border和padding计算入width之内
+    宽高 包含border和padding  
+    box-sizing: border-box;   
     
 ![盒模型](/img/box.png)
 
@@ -526,6 +531,7 @@ z-index只适用于已经定位的元素
 因为第一个span里面的字符串和第二个span里面的字符串之间不存在空格，因此IFC把他们的内容理解成一个连续的字符串，他们也就成了不可拆分的整体，第二个span也就没有办法进行换行了。
 
 解决方法：
+>
     span间加空格 
     span设置强制换行：word-break;break-all; | word-break: break-word; |  word-wrap: break-word;
 >
@@ -594,16 +600,18 @@ z-index只适用于已经定位的元素
 
 
 ## <a name="line-hieght">line-hieght</a>
+![line-height](./img/lineheight.png)
+
 定义：两行文字基线之间的距离。//不同字体之间的基线是不同的。
 >
     line-height:normal  | <number>  | <lenght>  |  <percent>  |  inherit;
       
 >
-|父元素设行高   | 子元素行高 font-size |
+|父元素行高单位   | 子元素行高大小 (子元素未设置行高情况下) |
 |:---|:---|
-|行高单位px     | 行高=父元素行高
-|行高单位em、%  | 行高=父元素文字大小*行高值（与子元素文字大小无关）
-|行高单位无     | 行高=子元素大小*行高值
+| px  | 行高=父元素行高
+| em、% | 行高=父元素字体大小*行高值（与子元素字体大小无关）
+| 无 | 行高=子元素字体大小*行高值
 
 ## <a name="文本换行">文本换行</a>
 强制不换行
