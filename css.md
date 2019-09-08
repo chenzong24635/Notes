@@ -88,9 +88,9 @@ CSS布局、居中
 * <a href="#display、visibility、overflow">display、visibility、overflow的隐藏问题</a>
 * <a href="#line-hieght">line-hieght</a>
 * <a href="#文本换行">文本换行</a>
+* <a href="#文字超出省略">文字超出省略</a>
 * <a href="#尺寸单位">像素定义 尺寸单位</a>
 * <a href="#css自定义属性">css自定义属性:root</a>
-* <a href="#省略号">省略号</a>
 * <a href="#移动端1px">移动端1px</a>
 * <a href="#注意事项">注意事项</a>
 * <a href="#用CSS开启硬件加速来提高网站性能">用CSS开启硬件加速来提高网站性能</a>
@@ -652,6 +652,68 @@ word-break
     keep-all:让亚洲语言文本如同非亚洲语言文本那样不允许在任意单词内换行。
     break-all:允许非亚洲语言文本行如同亚洲语言文本那样可以在任意单词内换行。
 
+## <a name="文字超出省略">文字超出省略</a>
+
+#### 单行省略
+    .ov1{
+      white-space: nowrap; //强制文本在一行内输出
+      overflow: hidden; //隐藏溢出部分
+      text-overflow: ellipsis; //对溢出部分加上...
+    }
+
+#### 多行省略
+    <!-- 只适用于webkit内核 -->
+    .ov2( @clamp:2 ){
+      position: relative;
+      display: -webkit-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-wrap: break-word;
+      word-break: break-all; 
+      -webkit-line-clamp: @clamp;
+      /* 防止打包后出现css中文本超出部分隐藏显示省略号失效
+         autoprefixer自动移除老式过时的代码 */
+      /*! autoprefixer: off */
+        -webkit-box-orient: vertical;/*伸缩盒子的子元素排列：从上到下*/
+      /* autoprefixer: on */
+    }
+
+    <!-- 火狐 -->
+    @-moz-document url-prefix() {
+      .ov2{max-height: 40px;}
+      .ov2::after{
+        content: "...";
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        padding-left: 40px;
+        /* //以上三个属性，可以后续调整，看要把...放在哪个位置 */
+        background: -webkit-linear-gradient(left, transparent, #fff 55%);
+        background: -o-linear-gradient(right, transparent, #fff 55%);
+        background: -moz-linear-gradient(right, transparent, #fff 55%);
+        background: linear-gradient(to right, transparent, #fff 55%);
+        /* 背景色可写成渐变也可写成一样的颜色 */
+      }
+    }
+    
+    <!-- IE10、11 -->
+    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+      .ov2{max-height: 36px;}
+      .ov2::after{
+        content: "...";
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        padding-left: 40px;
+        /* 以上三个属性，可以后续调整，看要把...放在哪个位置 */
+        background: -webkit-linear-gradient(left, transparent, #fff 55%);
+        background: -o-linear-gradient(right, transparent, #fff 55%);
+        background: -moz-linear-gradient(right, transparent, #fff 55%);
+        background: linear-gradient(to right, transparent, #fff 55%);
+      }
+    }
+
+
 ## <a name="尺寸单位">像素定义 尺寸单位</a>
 #### 像素
 https://blog.csdn.net/qq_42704649/article/details/86507883
@@ -891,86 +953,44 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
 5. 使用calc时运算符之间要有空格 ，否则可能无效 
 
 
-## <a name="省略号">省略号</a>
-
-#### 单行省略号
-    .ov1{
-      white-space: nowrap; //强制文本在一行内输出
-      overflow: hidden; //隐藏溢出部分
-      text-overflow: ellipsis; //对溢出部分加上...
-    }
-
-#### 多行省略号
-    <!-- 只适用于webkit内核 -->
-    .ov2{
-      position: relative;
-      display: -webkit-box;
-      display: -moz-box;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      word-wrap: break-word;
-      word-break: break-all; 
-      -webkit-line-clamp: 2;
-      -moz-line-clamp: 2;
-      /* 防止打包后出现css中文本超出部分隐藏显示省略号失效
-         autoprefixer自动移除老式过时的代码 */
-      /*! autoprefixer: off */
-        -webkit-box-orient: vertical;/*伸缩盒子的子元素排列：从上到下*/
-        -moz-box-orient: vertical;
-      /* autoprefixer: on */
-    }
-
-    <!-- 火狐 -->
-    @-moz-document url-prefix() {
-      .ov2{max-height: 40px;}
-      .ov2::after{
-        content: "...";
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        padding-left: 40px;
-        /* //以上三个属性，可以后续调整，看要把...放在哪个位置 */
-        background: -webkit-linear-gradient(left, transparent, #fff 55%);
-        background: -o-linear-gradient(right, transparent, #fff 55%);
-        background: -moz-linear-gradient(right, transparent, #fff 55%);
-        background: linear-gradient(to right, transparent, #fff 55%);
-        /* 背景色可写成渐变也可写成一样的颜色 */
-      }
-    }
-    
-    <!-- IE10、11 -->
-    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-      .ov2{max-height: 36px;}
-      .ov2::after{
-        content: "...";
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        padding-left: 40px;
-        /* 以上三个属性，可以后续调整，看要把...放在哪个位置 */
-        background: -webkit-linear-gradient(left, transparent, #fff 55%);
-        background: -o-linear-gradient(right, transparent, #fff 55%);
-        background: -moz-linear-gradient(right, transparent, #fff 55%);
-        background: linear-gradient(to right, transparent, #fff 55%);
-      }
-    }
-
 
 ## <a name="移动端1px">移动端1px</a>
+[参考](https://juejin.im/post/5d70a030f265da03a715f3fd)
+
+[参考](https://juejin.im/entry/584e427361ff4b006cd22c7c)
+
+
+造成边框变粗的原因
+>
+    因为css中的1px并不等于移动设备的1px，这些由于不同的手机有不同的像素密度。在window对象中有一个devicePixelRatio属性，他可以反应css中的像素与设备的像素比。
+
+devicePixelRatio：设备物理像素和设备独立像素的比例   devicePixelRatio = 物理像素 / 独立像素。
+
+### box-shadow
+>
+    .box-shadow-1px {
+        box-shadow: inset 0px -1px 1px -1px #c8c7cc;
+    }
+
+    边框颜色变浅
+
+### 伪类 + transform
 >
 
     .border-1px,
-    .border-t-1px{
+    .border-top-1px{
       position: relative;
     }
-    .border-t-1px:after{
+
+    .border-top-1px:after{
       content: " ";
       position: absolute;
       left: 0;
       top: 0;
-      right: 0;
-      border-top: 1px solid #000;
-      /* height: 1px; background-color: #000;*/
+      width:100%;
+      height: 1px;
+      /* border-top: 1px solid #000; */
+      background-color: #000;
       -webkit-transform-origin: 0 0;
       transform-origin: 0 0;
       -webkit-transform: scaleY(0.5);
@@ -982,14 +1002,72 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
         position: absolute;
         left: 0;
         top: 0;
-        border: 1px solid #000;
         width: 200%;
         height: 200%;
-        transform: scale(.5);
-        -webkit-transform: scale(.5);
+        border: 1px solid #000;
+        background-color: #000;
         transform-origin: 0 0;
         -webkit-transform-origin: 0 0;
+        transform: scale(.5);
+        -webkit-transform: scale(.5);
     }
+
+各种dpr兼容 
+>
+    .min-device-pixel-ratio(@scale2, @scale3) {
+        @media screen and (min-device-pixel-ratio: 2), (-webkit-min-device-pixel-ratio: 2) {
+            transform: @scale2;
+        }
+        @media screen and (min-device-pixel-ratio: 3), (-webkit-min-device-pixel-ratio: 3) {
+            transform: @scale3;
+        }
+    }
+
+    //border
+    .border-1px(@color: #000, @radius: 2px, @style: solid) {
+        &::before {
+            content: "";
+            pointer-events: none;
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 0;
+            transform-origin: 0 0;
+            border: 1px @style @color;
+            border-radius: @radius;
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            @media screen and (min-device-pixel-ratio: 2), (-webkit-min-device-pixel-ratio: 2) {
+                width: 200%;
+                height: 200%;
+                border-radius: @radius * 2;
+                transform: scale(.5);
+            }
+            @media screen and (min-device-pixel-ratio: 3), (-webkit-min-device-pixel-ratio: 3) {
+                width: 300%;
+                height: 300%;
+                border-radius: @radius * 3;
+                transform: scale(.33);
+            }
+        }
+    }
+
+    //border-top
+    .border-top-1px(@color: #000, @style: solid) {
+        &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            border-top: 1px @style @color;
+            transform-origin: 0 0;
+            .min-device-pixel-ratio(scaleY(.5), scaleY(.33));
+        }
+    }
+
+
 ## <a name="@规则">@规则</a>
 @charset 
 >
@@ -1073,7 +1151,7 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
     :-ms-input-placeholder { color: ; }/*Internet Explorer 10-11 */
 
 ## <a name="border:solid">边框</a>
-[详情来源](https://www.w3cplus.com/css/css-tips-0904-1.html)
+[参考](https://www.w3cplus.com/css/css-tips-0904-1.html)
 
 ### 其他方法 绘制一个实心边框(border-style:solid)
 >

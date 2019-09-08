@@ -30,6 +30,7 @@
 
 * <a href="#浏览器判断">浏览器、手机类型判断navigator.userAgent</a>
 * <a href="#获取当前页面url网址信息">获取当前页面url网址信息</a>
+* <a href="#时间格式优化">时间格式优化</a>
 * <a href="#base64数据导出文件">base64数据导出文件，文件下载</a>
 * <a href="#判断字符串长度">判断字符串长度</a>
 * <a href="#0.1+0.2">0.1+0.2!=0.3</a>
@@ -199,6 +200,9 @@ var obj = {
     Request = GetRequest();
     // Request['参数1'];
 
+
+## <a name="时间格式优化">时间格式优化</a>
+>
 
 ## <a name="base64数据导出文件">base64数据导出文件，文件下载</a>
 >

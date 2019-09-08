@@ -1,10 +1,16 @@
+[](https://juejin.im/post/5d59f2a451882549be53b170)
+
 * <a href="#MVC、MVP、MVVM">MVC、MVP、MVVM</a>
+* <a href="#SPA">SPA 单页面的理解，它的优缺点分别是什么</a>
 * <a href="#双向数据绑定原理、实现">双向数据绑定原理、实现:Object.defineProperty、proxy</a>
 * <a href="#生命周期">生命周期</a>
+* <a href="#监听组件的生命周期">监听组件的生命周期</a>
 * <a href="#computed watch methods">computed watch methods</a>
+* <a href="#Vue 不能检测以下数组的变动">Vue 不能检测以下数组的变动</a>
 * <a href="#Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？">Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？</a>
 * <a href="#样式绑定">样式绑定：class、style</a>
-* <a href="#v-if和v-show 的区别">v-if 和 v-show 的区别</a>
+* <a href="#v-if和v-show 的区别">v-if和v-show 的区别</a>
+* <a href="#v-for 遍历避免同时使用 v-if">v-for 遍历避免同时使用 v-if</a>
 * <a href="#slot">slot插槽</a>
 * <a href="#组件中key作用">组件中key作用</a>
 * <a href="#$nextTick">$nextTick</a>
@@ -26,7 +32,13 @@
 
 * <a href="#vuex">vuex</a>
 * <a href="#组件通信方法">组件通信方法</a>
-* <a href="#监听组件的生命周期">监听组件的生命周期</a>
+
+
+* <a href="#vue项目性能优化">vue项目性能优化</a>
+  * <a href="#事件的销毁">事件的销毁</a>
+  * <a href="#图片资源懒加载">图片资源懒加载</a>
+  * <a href="#路由懒加载">路由懒加载</a>
+  * <a href="#"></a>
 
 * <a href="#proxy跨域设置">proxy跨域设置</a>
 * <a href="#token验证">如何添加token验证</a>
@@ -91,8 +103,10 @@
 
 >
     View: 代表视图层，负责将数据模型渲染到页面上，  
-    ViewModel:通过双向绑定把View和Model进行同步交互，不需要手动操作DOM的一种设计思想。
-    Model:代表数据模型，定义数据操作的业务逻辑，  
+
+    ViewModel:通过双向绑定把View和Model进行同步交互，不需要手动操作DOM的一种设计思想。前端开发者对从后端获取的 Model 数据进行转换处理，做二次封装，以生成符合 View 层使用预期的视图数据模型
+
+    Model:代表数据模型，泛指后端进行的各种业务逻辑处理和数据操控，对于前端来说就是后端提供的 api 接口。
 
 View 和 Model 之间并没有直接的联系，而是通过ViewModel进行交互，Model 和 ViewModel 之间的交互是双向的， 因此View 数据的变化会同步到Model中，而Model 数据的变化也会立即反应到View 上。
 
@@ -110,6 +124,24 @@ MVVM优点:
     独立开发。开发人员可以专注于业务逻辑和数据的开发（ViewModel），设计人员可以专注于页面设计。
 
     可测试。界面素来是比较难于测试的，而现在测试可以针对ViewModel来写。
+
+# <a name="SPA">SPA 单页面的理解，它的优缺点分别是什么</a>  
+SPA（ single-page application ）仅在 Web 页面初始化时加载相应的 HTML、JavaScript 和 CSS。一旦页面加载完成，SPA 不会因为用户的操作而进行页面的重新加载或跳转；取而代之的是利用路由机制实现 HTML 内容的变换，UI 与用户的交互，避免页面的重新加载。
+
+优点：
+>
+    用户体验好、快，内容的改变不需要重新加载整个页面，避免了不必要的跳转和重复渲染；
+    基于上面一点，SPA 相对对服务器压力小；
+    前后端职责分离，架构清晰，前端进行交互逻辑，后端负责数据处理；
+
+缺点：
+>
+    初次加载耗时多：为实现单页 Web 应用功能及显示效果，需要在加载页面的时候将 JavaScript、CSS 统一加载，部分页面按需加载；
+    前进后退路由管理：由于单页应用在一个页面中显示所有的内容，所以不能使用浏览器的前进后退功能，所有的页面切换需要自己建立堆栈管理；
+    SEO 难度较大：由于所有的内容都在一个页面中动态替换显示，所以在 SEO 上其有着天然的弱势。
+
+
+
 
 # <a name="双向数据绑定原理、实现">双向数据绑定原理、实现:Object.defineProperty、proxy</a>  
 
@@ -238,9 +270,9 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
 # <a name="生命周期">生命周期</a>
 [Vue2.0生命周期](https://segmentfault.com/a/1190000008010666)
 
+Vue 实例有一个完整的生命周期，也就是从开始创建、初始化数据、编译模版、挂载 Dom -> 渲染、更新 -> 渲染、卸载等一系列过程，我们称这是 Vue 的生命周期。
 
-
-生命周期：
+## 各个生命周期作用：
 >
     beforeCreated阶段: vue实例的挂载元素$el和数据对象data都为undefined，还未初始化。 
     created阶段: 完成data初始化，$el还没有。
@@ -256,7 +288,7 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
     beforeDestroy 、destroyed：在执行destroyed方法后，对data的改变不会再触发周期函数，说明此时vue实例已经解除了事件监听以及和dom的绑定，但是dom结构依然存在
 
 
-生命周期钩子的一些使用方法：
+## 生命周期钩子的一些使用方法：
 >
 
     beforecreate : 可以在这加个loading事件，在加载实例时触发
@@ -272,6 +304,65 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
 <img src="img/lifecycle.png" width="60%" />
 <!-- ![lifecycle](img/lifecycle.png) -->
 
+
+## 父子组件生命周期钩子函数执行顺序？
+
+加载渲染过程
+>
+    父 beforeCreate -> 父 created -> 父 beforeMount -> 子 beforeCreate -> 子 created -> 子 beforeMount -> 子 mounted -> 父 mounted
+
+
+子组件更新过程
+>
+    父 beforeUpdate -> 子 beforeUpdate -> 子 updated -> 父 updated
+
+
+父组件更新过程
+>
+    父 beforeUpdate -> 父 updated
+
+
+销毁过程
+>
+    父 beforeDestroy -> 子 beforeDestroy -> 子 destroyed -> 父 destroyed
+
+
+
+# <a name="监听组件的生命周期">监听组件的生命周期</a>
+
+父组件监听到子组件挂载 mounted就做一些逻辑处理
+
+常规的写法可能如下：
+>
+    // Parent.vue
+    <Child @mounted="doSomething"/>
+
+    // Child.vue
+    mounted() {
+      this.$emit("mounted");
+    }
+
+
+通过 @hook来监听，子组件不需要任何处理，只需要在父组件引用的时候即可：
+>
+    //  Parent.vue
+    <Child @hook:mounted="doSomething" ></Child>
+
+    doSomething() {
+      console.log('父组件监听到 mounted 钩子函数 ...');
+    },
+        
+    //  Child.vue
+    mounted(){
+      console.log('子组件触发 mounted 钩子函数 ...');
+    },    
+        
+    // 以上输出顺序为：
+    // 子组件触发 mounted 钩子函数 ...
+    // 父组件监听到 mounted 钩子函数 ...     
+
+其它的生命周期事件，例如： created， updated等都可监听
+
 # <a name="computed watch methods">computed watch methods</a>
 [computed和watch的细节全面分析](https://segmentfault.com/a/1190000012948175)
 
@@ -285,7 +376,7 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
 
     watch 监听某个数据的变化，执行相关操作;无缓存性，页面重新渲染时值不变化也会执行; watch的对象必须事先声明
    
-    computed 是计算属性,基于它的依赖缓存;只有在它的相关依赖发生改变时才会重新取值; computed的对象无需声明（声明会报错）
+    computed 是计算属性,依赖其它属性值，并且值有缓存;只有在它的相关依赖发生改变时才会重新取值; computed的对象无需声明（声明会报错）
 
     数据变化的同时进行异步操作或者是比较大的开销，那么watch为最佳选择
 
@@ -328,6 +419,39 @@ watch：深度监听
         deep: true //深度监听
       }
     }    
+
+# <a name="Vue 不能检测以下数组的变动">[Vue 不能检测以下数组的变动](https://cn.vuejs.org/v2/guide/list.html#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)</a>
+* 当你利用索引直接设置一个数组项时，例如：vm.items[indexOfItem] = newValue
+
+* 当你修改数组的长度时，例如：vm.items.length = newLength
+
+>
+    举例：
+
+    var vm = new Vue({
+      data: {
+        items: ['a', 'b', 'c']
+      }
+    })
+    vm.items[1] = 'x' // 不是响应性的
+    vm.items.length = 2 // 不是响应性的
+
+解决第一个问题：
+>
+
+    Vue.set(vm.items, indexOfItem, newValue) 
+    // vm.$set，Vue.set的一个别名
+    vm.$set(vm.items, indexOfItem, newValue)
+
+    vm.items.splice(indexOfItem, 1, newValue)
+
+
+
+解决第二类问题：
+
+    vm.items.splice(newLength)
+
+
 # <a name="Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？">Vue中给data中的对象属性添加一个新的属性时 视图不更新，如何解决？</a>
 >
     示例：
@@ -482,8 +606,43 @@ CSS 属性名可以用驼峰式（camelCase）或短横分隔命名（kebab-case
 # <a name="v-if和v-show 的区别">v-if和v-show 的区别</a>
 >
     v-if 切换状态时会造成 dom 的销毁和重建，初始渲染条件为 false 时，将不会渲染元素；
+
     v-show 只是简单的控制显隐藏，不管初始条件如何，元素总会被渲染；
+    
     v-if适用于很少改变条件的场景，v-show适用于频繁切换条件的场景。
+
+# <a name="v-for 遍历避免同时使用 v-if">v-for 遍历避免同时使用 v-if</a>
+>
+    v-for 比 v-if 优先级高，如果每一次都需要遍历整个数组，将会影响速度，尤其是当之需要渲染很小一部分的时候，必要情况下应该替换成 computed 属性。
+
+推荐：
+>
+    <ul>
+      <li
+        v-for="user in activeUsers"
+        :key="user.id">
+        {{ user.name }}
+      </li>
+    </ul>
+    computed: {
+      activeUsers: function () {
+        return this.users.filter(function (user) {
+          return user.isActive
+        })
+      }
+    }
+
+不推荐：
+>
+    <ul>
+      <li
+        v-for="user in users"
+        v-if="user.isActive"
+        :key="user.id">
+        {{ user.name }}
+      </li>
+    </ul>
+
 
 # <a name="slot">slot插槽</a>
 父组件来控制 插槽显示状态、内容  
@@ -556,8 +715,9 @@ https://www.zhihu.com/question/61064119
 
     当 Vue.js 用 v-for 正在更新已渲染过的元素列表时，它默认用“就地复用”策略。如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序， 而是简单复用此处每个元素，并且确保它在特定索引下显示已被渲染过的每个元素。
 
-    key 的作用是为了在 diff 算法执行时更快的找到对应的节点，提高 diff 速度，高效的更新虚拟DOM  
+key 的作用是为了在 diff 算法执行时更快的找到对应的节点，提高 diff 速度，高效的更新虚拟DOM  
 
+>
     vue 和 react 都是采用 diff 算法来对比新旧虚拟节点，从而更新节点。在 vue 的 diff 函数中。可以先了解一下 diff 算法。
 
     在交叉对比的时候，当新节点跟旧节点头尾交叉对比没有结果的时候，会根据新节点的 key 去对比旧节点数组中的 key，从而找到相应旧节点（这里对应的是一个 key => index 的 map 映射）。如果没找到就认为是一个新增节点。而如果没有 key，那么就会采用一种遍历查找的方式去找到对应的旧节点。一种一个 map 映射，另一种是遍历查找。相比而言。map 映射的速度更快。  
@@ -944,16 +1104,27 @@ App.vue
     默认让key等于当时的时间戳，当切换当前路由的时候改变时间戳为现在的时间戳，同样也可以达到刷新路由的目的
     this.reload = new Date().getTime()
 
-##  <a name="mode">mode: hash | history区别</a>
+##  <a name="mode">前端路由、 hash | history区别</a>
+[参考](https://juejin.im/post/5cd8d609e51d456e7b372155#heading-9)
+
+什么是前端路由：
+>
+    路由的概念来源于服务端，在服务端中路由描述的是 URL 与处理函数之间的映射关系。
+    在 Web 前端单页应用 SPA(Single Page Application)中，路由描述的是 URL 与 UI 之间的映射关系，这种映射是单向的，即 URL 变化引起 UI 更新（无需刷新页面）。
+
+
+
 hash
 >
-    即地址栏 URL 中的 # 符号。
+    URL 中 hash (#) 及后面的那部分，常用作锚点在页面内进行导航，改变 URL 中的 hash 部分不会引起页面刷新
+
     比如这个 URL：http://www.abc.com/#/hello，hash 的值为#/hello。它的特点在于：hash 虽然出现在 URL 中，但不会被包括在 HTTP 请求中，对后端完全没有影响，因此改变 hash 不会重新加载页面。
+
     通过 hashchange 事件监听 URL 的变化，改变 URL 的方式只有这几种：通过浏览器前进后退改变 URL、通过<a>标签改变 URL、通过window.location改变URL
 
 history 
 >
-    利用了 HTML5 History Interface 中新增的 pushState() 和 replaceState() 方法。（需要特定浏览器支持）
+    利用了H5 history的 pushState() 和 replaceState() 方法。（需要特定浏览器支持）
 
 这两个方法应用于浏览器的历史记录栈，在当前已有的 back、forward、go 的基础之上，它们提供了对历史记录进行修改的功能。只是当它们执行修改时，虽然改变了当前的 URL，但浏览器不会立即向后端发送请求。
 
@@ -1029,12 +1200,13 @@ history 
 
 
 # <a name="组件通信方法">组件通信方法</a>
-[Vue组件间通信6种方式](https://zhuanlan.zhihu.com/p/66189674)
+[参考](https://zhuanlan.zhihu.com/p/66189674)
 
 
+## EventBus 事件总线 -- 兄弟|父子|隔代
+通过创建了一个空的 vue 实例，当做 $emit 事件的处理中心（事件总线），$emit触发事件，$on接收事件
 
-## EventBus  事件总线
-
+>
     // 可以在main.js中定义一个新的eventBus对象，其是一个全新的Vue实例
     const eventBus = new Vue()
     Vue.prototype.eventBus = eventBus //绑定为全局对象
@@ -1058,7 +1230,10 @@ history 
 3. 数据非“长效”数据，无法保存，只在$emit后生效
 
 ## props, $emit -- 父子组件通信 
-  [props](https://cn.vuejs.org/v2/guide/components-props.html)
+[props-api](https://cn.vuejs.org/v2/guide/components-props.html)
+
+父组件向子组件传值：通过绑定属性来向子组件传入数据，子组件通过 Props 属性获取对应数据。  
+子组件向父组件传值：通过 $emit传入，父组件通过绑定相应方法触发获取
 
 >
     props: {
@@ -1138,15 +1313,15 @@ history 
       }
     }
 
-## vuex
+## vuex -- 兄弟|父子|隔代
 [详情](vuex.md)
 
-## $attrs/$listeners
-attrs 包含了父作用域中不作为 prop(子组件的props) 被识别 (且获取) 的特性绑定 (class 和 style 除外)。当一个组件没有声明任何 prop 时，这里会包含所有父作用域的绑定 (class 和 style 除外)，并且可以通过 v-bind="$attrs" 传入内部组件——在创建高级别的组件时非常有用。
+## $attrs/$listeners -- 父子|隔代
+$attrs 包含了父作用域中不作为 prop(子组件的props) 被识别 (且获取) 的特性绑定 (class 和 style 除外)。当一个组件没有声明任何 prop 时，这里会包含所有父作用域的绑定 (class 和 style 除外)，并且可以通过 v-bind="$attrs" 传入内部组件——在创建高级别的组件时非常有用。
 
 $listeners包含了父作用域中的 (不含 .native 修饰器的) v-on 事件监听器。它可以通过 v-on="$listeners" 传入内部组件——在创建更高层次的组件时非常有用。
 
-
+例：  
 父组件A下面有子组件B，组件B下面有组件C，   
 如果组件A直接想传递数据给组件C , 只能是组件A将数据传给组件B，然后组件B将数据传给组件C  
 A -> B -> C
@@ -1245,9 +1420,10 @@ A -> B -> C
 
 
 
-## $parent / $children & ref
+## $parent / $children & ref --- 父子
+$parent / $children 
 >
-
+    指定已创建的实例之父实例，在两者之间建立父子关系。子实例可以用 this.$parent 访问父实例，子实例被推入父实例的 $children 数组中。 
     this.$parent
     this.$children[0]
 
@@ -1282,7 +1458,7 @@ ref：如果在普通的 DOM 元素上使用，引用指向的就是 DOM 元素�
       }
     </script>
 
-## provide/inject
+## provide/inject -- 父子 | 隔代
 >
     允许一个祖先组件向其所有子孙后代注入一个依赖，不论组件层次有多深，并在起上下游关系成立的时间里始终生效。一言而蔽之：祖先组件中通过 provider 来提供变量，然后在子孙组件中通过 inject 来注入变量。 provide / inject API 主要解决了跨级组件间的通信问题，不过它的使用场景，主要是子组件获取上级组件的状态，跨级组件间建立了一种主动提供与依赖注入的关系。
 
@@ -1306,26 +1482,59 @@ ref：如果在普通的 DOM 元素上使用，引用指向的就是 DOM 元素�
 
 
 
-# <a name="监听组件的生命周期">监听组件的生命周期</a>
 
-父组件监听到子组件挂载 mounted就做一些逻辑处理
+# <a name="vue项目性能优化">vue项目性能优化</a>
 
-常规的写法可能如下：
+## <a name="事件的销毁">事件的销毁</a>
+Vue 组件销毁时，会自动清理它与其它实例的连接，解绑它的全部指令及事件监听器，但是仅限于组件本身的事件。  
+如果在 js 内使用addEventListene 等方式是不会自动销毁的，我们需要在组件销毁时手动移除这些事件的监听，以免造成内存泄露
 >
-    // Parent.vue
-    <Child @mounted="doSomething"/>
-
-    // Child.vue
-    mounted() {
-      this.$emit("mounted");
+    created() {
+      addEventListener('click', this.func, false)
+    },
+    beforeDestroy() {
+      removeEventListener('click', this.func, false)
     }
 
 
-通过 @hook来监听，子组件不需要任何处理，只需要在父组件引用的时候即可：
->
-    <Child @hook:mounted="doSomething"/>
+## <a name="图片资源懒加载">图片资源懒加载</a>
+对于图片过多的页面，为了加速页面加载速度，所以很多时候我们需要将页面内未出现在可视区域内的图片先不做加载， 等到滚动到可视区域后再去加载。这样对于页面加载性能上会有很大的提升，也提高了用户体验。我们在项目中使用 Vue 的 vue-lazyload 插件：
 
-    其它的生命周期事件，例如： created， updated等都可监听
+>
+    //安装插件
+    npm install vue-lazyload --save-dev
+
+    //man.js 中引入并使用
+    import VueLazyload from 'vue-lazyload'
+    
+    //直接使用
+    Vue.use(VueLazyload)
+
+    //或者添加自定义选项
+    Vue.use(VueLazyload, {
+      preLoad: 1.3,
+      error: 'dist/error.png',
+      loading: 'dist/loading.gif',
+      attempt: 1
+    })
+
+    //将 img 标签的 src 属性直接改为 v-lazy 
+    <img v-lazy="/static/img/1.png">
+
+## <a name="路由懒加载">路由懒加载</a>
+Vue  是单页面应用，会有很多的路由引入 ，打包后的文件很大，当进入首页时，加载的资源过多，页面会出现白屏的情况，不利于用户体验。如果我们能把不同路由对应的组件分割成不同的代码块，然后当路由被访问的时候才加载对应的组件，这样就更加高效了。这样会大大提高首屏显示的速度，但是可能其他的页面的速度就会降下来。
+
+>
+    //import Foo from './Foo.vue'
+    const Foo = () => import('./Foo.vue')
+    const router = new VueRouter({
+      routes: [
+        { path: '/foo', component: Foo }
+      ]
+    })
+
+## <a name=""></a>
+
 
 # <a name="proxy跨域设置">proxy跨域设置</a>
 >
@@ -1425,7 +1634,7 @@ ref：如果在普通的 DOM 元素上使用，引用指向的就是 DOM 元素�
 # <a name="静态资源处理">静态资源处理</a>
 
 ## 处理静态资源
-[详情](http://vuejs-templates.github.io/webpack/static.html)
+[参考](http://vuejs-templates.github.io/webpack/static.html)
 
   #### 图片路径 
     1. 相对URL，例如./assets/logo.png将被解释为模块依赖性。它们将替换为基于Webpack输出配置的自动生成的URL。

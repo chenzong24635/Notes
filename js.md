@@ -75,10 +75,11 @@
 * <a href="#前端性能优化的方法">前端性能优化的方法</a>
 * <a href="#浏览器渲染">浏览器渲染</a>
 * <a href="#从浏览器地址栏输入url到显示页面的步骤">从浏览器地址栏输入url到显示页面的步骤</a>
-* <a href="#JS执行机制">JS执行机制</a>
+* <a href="#事件执行机制">事件执行机制</a>
 * <a href="#get与post区别">get与post区别</a>
 * <a href="#css和js动画的差异">css和js动画的差异</a>
 * <a href="#use strict">"use strict"? 用处？</a>
+* <a href="#DOMContentLoaded、$(function(){})、window.onload事件、执行顺序">DOMContentLoaded、$(function(){})、window.onload事件、执行顺序</a>
 
 
 # <a name="运算符优先级">运算符优先级</a>
@@ -805,7 +806,7 @@ var p = new Person()
 
 原型链：
 >
-    当我们访问一个对象的属性时，如果这个对象内部不存在这个属性，那么他就会去prototype里找这个属性，这个prototype又会有自己的prototype，直至undefined（Object的Prototype就是undefined）从而形成了所谓的“原型链”。
+    当我们访问一个对象的属性时，如果这个对象内部不存在这个属性，就从其原型找这个属性，原型对象也是对象也拥有原型，一层层寻找，直至null（Object.prototype.__proto__）从而形成了所谓的“原型链”。
 
 __proto__,prototype区别：
 >
@@ -815,23 +816,25 @@ __proto__,prototype区别：
 
     原型对象有一个属性，叫做constructor，这个属性包含了一个指针，指回原构造函数。
 
+
 >
     function P(){}
     var p = new P()
 
-    //p是否为P的实例
-    p instanceof P // true
+//p是否为P的实例  
+p instanceof P // true
 
-    // 实例的 __proto__ 属性（原型）等于其构造函数的 prototype 属性。
-    p.__proto__ === P.prototype // true
+`实例的__proto__属性（原型）等于其构造函数的prototype属性`  
+p.__proto__ === P.prototype // true  
 
-    //prototype对象的constructor属性，直接指向“类”的本身
-    P === P.prototype.constructor //true
+`函数的prototype对象的constructor属性，指向其本身`  
+P.prototype.constructor === P //true
 
-    //p是P类的实例，它的constructor方法就是P类原型的constructor方法
-    p.constructor === P.prototype.constructor //true
-    
+//p是P类的实例，它的constructor方法就是P类原型的constructor方法  
+p.constructor === P //true  
+p.constructor === P.prototype.constructor //true
 
+>
 
     Object.__proto__ === Function.prototype //true
     Function.prototype.__proto__ === Object.prototype //true
@@ -1752,6 +1755,8 @@ defer 属性
 
 
 ## <a name="模块化">模块化CommonJS AMD CMD ES6modules</a>
+[参考](https://juejin.im/post/5c17ad756fb9a049ff4e0a62#comment)
+
 把复杂的文件分成一个个独立的模块，比如js文件，分成独立的模块之后有利于代码的重用和维护，但是这样又会引来模块与模块之间的依赖问题
 
 * CommonJS
@@ -1842,22 +1847,6 @@ defer 属性
 
 
 
-## <a name="use strict">"use strict"? 用处？</a>
-
-严格运行模式,这种模式使得 Javascript 在更严格的条件下运行,
-
-1. 使JS编码更加规范化的模式,消除语法中的一些不合理、不严谨之处，减少怪异行为。
-2. 默认支持的糟糕特性都会被禁用，比如不能用with，也不能在意外的情况下给全局变量赋值
-3. 全局变量的显示声明,函数必须声明在顶层，不允许在非函数代码块内声明函数,arguments.callee也不允许使用；
-4. 消除代码运行的一些不安全之处，保证代码运行的安全,限制函数中的arguments修改。提高编译器效率，增加运行速度；
-5. 使调试更加容易。那些被忽略或默默失败了的代码错误，会产生错误或抛出异常，因此尽早提醒你代码中的问题，你才能更快地指引到它们的源代码。
-防止意外的全局变量。
-6. 消除 this 强制。如果没有严格模式，引用null或未定义的值到 this 值会自动强制到全局变量。这可能会有bug。在严格模式下，引用 null或未定义的 this 值会抛出错误。
-7. 不允许重复的属性名称或参数值。当检测到对象（例如，var object = {foo: "bar", foo: "baz"};）中重复命名的属性，或检测到函数中（例如，function foo(val1, val2, val1){}）重复命名的参数时，严格模式会抛出错误。  
-8. 使eval() 更安全。在严格模式和非严格模式下，eval() 的行为方式有所不同。最显而易见的是，在严格模式下，变量和声明在 eval() 语句内部的函数不会在包含范围内创建（它们会在非严格模式下的包含范围中被创建，这也是一个常见的问题源）。
-9. 在 delete使用无效时抛出错误。delete操作符（用于从对象中删除属性）不能用在对象不可配置的属性上。当试图删除一个不可配置的属性时，非严格代码将默默地失败，而严格模式将在这样的情况下抛出异常。
-
-
 ## <a name="面向过程和面向对象的异同">面向过程和面向对象的异同？</a>
 https://zhuanlan.zhihu.com/p/55064276
 
@@ -1899,10 +1888,10 @@ https://zhuanlan.zhihu.com/p/55064276
 
 
 ## <a name="跨域">跨域</a>
-[详情](crossOrigin)
+[详情](crossOrigin.md)
 
 ## <a name="常见的web攻击">常见的web攻击</a>
-[详情](https://mp.weixin.qq.com/s?__biz=MzA3NTUzNjk1OA==&mid=2651562103&idx=1&sn=0b52850e0ca268918928629bdb80499f&chksm=84900f26b3e78630bfd3cc5c5d8f02de909b8a27f366c3855a8adf4e0c660819d88689a39f39&scene=0#rd)
+[参考](https://mp.weixin.qq.com/s?__biz=MzA3NTUzNjk1OA==&mid=2651562103&idx=1&sn=0b52850e0ca268918928629bdb80499f&chksm=84900f26b3e78630bfd3cc5c5d8f02de909b8a27f366c3855a8adf4e0c660819d88689a39f39&scene=0#rd)
 
 #### XSS（Cross-Site Scripting，跨站脚本攻击）
 * 概念
@@ -2034,7 +2023,7 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
 
 ## <a name="防抖、节流">防抖、节流</a>
 
-[详情点击](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/5)
+[参考](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/5)
 
 同：
 >
@@ -2111,6 +2100,7 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
     window.addEventListener('resize', throttle(sayHi, 1000));
 
 // ：使用时间戳，当触发事件的时候，我们取出当前的时间戳，然后减去之前的时间戳(最一开始值设为 0 )，如果大于设置的时间周期，就执行函数，然后更新时间戳为当前的时间戳，如果小于，就不执行。
+>
     function throttle (func, delay = 500) {
       let prevTime = 0
       return function () {
@@ -2127,7 +2117,8 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
 
     不加apply，sayHi里面this肯定是指向window的，因为sayHi 函数定义在全局中，所以调用时里面this指向window；所以才需要加上 apply，显示绑定 this 值(input对象)到 sayH 函数里面去。
     但是加上apply后，fn.apply(this, arguments)这段代码里面的this的指向就要分情况讨论了，而且这个this就是sayHi里面的this。
-    这里的情况其实指的就是setTimeout里面的回调函数是普通函数还是箭头函数。如果是箭头函数，则这里的this最终指向的是input对象，如果为普通函数，this则指向window。由此：回调函数开始先绑定this： let _this = this
+    这里的情况其实指的就是setTimeout里面的回调函数是普通函数还是箭头函数。如果是箭头函数，则这里的this最终指向的是input对象，如果为普通函数，this则指向window。  
+    由此：回调函数开始先绑定this： let _this = this
 
 ![throttle](./img/throttle.png)
 
@@ -2491,8 +2482,10 @@ Cookie方面:
 23. 显示页面（HTML解析过程中会逐步显示页面）
 
 
-## <a name="JS执行机制">JS执行机制</a>
-https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/7
+## <a name="事件执行机制">事件执行机制</a>
+[参考](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/7)
+
+[参考](https://juejin.im/post/59e85eebf265da430d571f89)
 
 #### 浏览器的渲染进程是多线程的
 
@@ -2501,24 +2494,28 @@ https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/7
     负责渲染浏览器界面，解析HTML，CSS，构建DOM树和RenderObject树，布局和绘制等。
     当界面需要重绘（Repaint）或由于某种操作引发回流(reflow)时，该线程就会执行
     注意，GUI渲染线程与JS引擎线程是互斥的，当JS引擎执行时GUI线程会被挂起（相当于被冻结了），GUI更新会被保存在一个队列中等到JS引擎空闲时立即被执行。
+
 2. JS引擎线程
 >
     也称为JS内核，负责处理Javascript脚本程序。（例如V8引擎）
     JS引擎线程负责解析Javascript脚本，运行代码。
     JS引擎一直等待着任务队列中任务的到来，然后加以处理，浏览器无论什么时候都只有一个JS线程在运行JS程序
     同样注意，GUI渲染线程与JS引擎线程是互斥的，所以如果JS执行的时间过长，这样就会造成页面的渲染不连贯，导致页面渲染加载阻塞。
+
 3. 事件触发线程
 >
     归属于浏览器而不是JS引擎，用来控制事件循环（可以理解，JS引擎自己都忙不过来，需要浏览器另开线程协助）
     当JS引擎执行代码块如setTimeOut时（也可来自浏览器内核的其他线程,如鼠标点击、AJAX异步请求等），会将对应任务添加到事件线程中
     当对应的事件符合触发条件被触发时，该线程会把事件添加到待处理队列的队尾，等待JS引擎的处理
     注意，由于JS的单线程关系，所以这些待处理队列中的事件都得排队等待JS引擎处理（当JS引擎空闲时才会去执行）
+
 4. 定时触发器线程
 >
     传说中的 setInternal与 setTimeout所在线程
     浏览器定时计数器并不是由JavaScript引擎计数的,（因为JavaScript引擎是单线程的, 如果处于阻塞线程状态就会影响记计时的准确）
     因此通过单独线程来计时并触发定时（计时完毕后，添加到事件队列中，等待JS引擎空闲后执行）
     注意，W3C在HTML标准中规定，规定要求setTimeout中低于4ms的时间间隔算为4ms。
+
 5. 异步http请求线程
 >
     在XMLHttpRequest在连接后是通过浏览器新开一个线程请求
@@ -2534,6 +2531,8 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
     3. 同步任务进入主线程后一直执行，直到主线程空闲时，才会去event queue中查看是否有可执行的异步任务，如果有就推入主进程中
     以上三步循环执行，这就是event loop。
 
+<img src="./img/event.png" width="50%" />
+
 而准确的划分方式是：
 1. macro-task(宏任务)：script(整体代码)，setTimeout、setInterval、I/O、UI交互事件、postMessage、MessageChannel、setImmediate(Node.js 环境)
 2. micro-task(微任务)：Promise.then、process.nextTick(Node.js 环境)、MutaionObserver
@@ -2548,6 +2547,7 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
 
     所以它的响应速度相比setTimeout会更快，因为无需等渲染
     也就是说，在某一个macrotask执行完后，就会将在它执行期间产生的所有microtask都执行完毕（在渲染前）
+
 
 #### JS的执行机制是：
 >
@@ -2568,7 +2568,7 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
 
 很多人以为await会一直等待之后的表达式执行完之后才会继续执行后面的代码，实际上await是一个让出线程的标志。await后面的表达式会先执行一遍，同时将await后面的代码加入到microtask中，然后就会跳出整个async函数来执行后面的代码。
 
-由于因为async await 本身就是promise+generator的语法糖。所以await后面的代码是microtask。 
+`由于因为async await 本身就是promise+generator的语法糖。所以await后面的代码是microtask。` 
 
 >
     async function async1() {
@@ -2620,6 +2620,21 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
 
 ______
 >
+    整体script作为第一个宏任务进入主线程，遇到console.log，输出'script start'
+
+    遇到setTimeout，分发到宏任务中
+
+    遇到async1() 立即执行，输出'async1 start'；遇到await，立即执行其后面表达式，执行async() 输出'async2'; 然后将其后代码console.log('async1 end')加到微任务队列
+
+    遇到promise,立即执行，输出'promise1'；然后将.then添加到微任务队列
+
+    遇到console.log，输出'script end'；全局任务执行完毕
+
+    执行完一个宏任务之后，查看微任务队列，依次输出，'async1 end'，'promise2'
+
+    第一轮事件循环正式结束,再次执行宏任务，执行setTimeout，输出'settimeout'
+
+>
 
     //script start
     //async1 start
@@ -2646,3 +2661,41 @@ ______
     js可实现的动画多
     js可以添加事件
 
+
+## <a name="use strict">"use strict"? 用处？</a>
+
+严格运行模式,这种模式使得 Javascript 在更严格的条件下运行,
+
+1. 使JS编码更加规范化的模式,消除语法中的一些不合理、不严谨之处，减少怪异行为。
+2. 默认支持的糟糕特性都会被禁用，比如不能用with，也不能在意外的情况下给全局变量赋值
+3. 全局变量的显示声明,函数必须声明在顶层，不允许在非函数代码块内声明函数,arguments.callee也不允许使用；
+4. 消除代码运行的一些不安全之处，保证代码运行的安全,限制函数中的arguments修改。提高编译器效率，增加运行速度；
+5. 使调试更加容易。那些被忽略或默默失败了的代码错误，会产生错误或抛出异常，因此尽早提醒你代码中的问题，你才能更快地指引到它们的源代码。
+防止意外的全局变量。
+6. 消除 this 强制。如果没有严格模式，引用null或未定义的值到 this 值会自动强制到全局变量。这可能会有bug。在严格模式下，引用 null或未定义的 this 值会抛出错误。
+7. 不允许重复的属性名称或参数值。当检测到对象（例如，var object = {foo: "bar", foo: "baz"};）中重复命名的属性，或检测到函数中（例如，function foo(val1, val2, val1){}）重复命名的参数时，严格模式会抛出错误。  
+8. 使eval() 更安全。在严格模式和非严格模式下，eval() 的行为方式有所不同。最显而易见的是，在严格模式下，变量和声明在 eval() 语句内部的函数不会在包含范围内创建（它们会在非严格模式下的包含范围中被创建，这也是一个常见的问题源）。
+9. 在 delete使用无效时抛出错误。delete操作符（用于从对象中删除属性）不能用在对象不可配置的属性上。当试图删除一个不可配置的属性时，非严格代码将默默地失败，而严格模式将在这样的情况下抛出异常。
+
+## <a name="DOMContentLoaded、$(function(){})、window.onload事件、执行顺序">DOMContentLoaded、$(function(){})、window.onload事件、执行顺序</a>
+>
+    window.onload = function (){console.log('window.onload');}
+
+    $(function(){
+      console.log('$(function{})')
+    })
+
+    document.addEventListener( "DOMContentLoaded", function(){
+      console.log('DOMContentLoaded')
+    }, false );
+
+    //DOMContentLoaded
+    //$(function{})
+    //window.onload
+
+## <a name=""></a>
+## <a name=""></a>
+## <a name=""></a>
+## <a name=""></a>
+## <a name=""></a>
+## <a name=""></a>
