@@ -71,7 +71,7 @@ CSS布局、居中
 
 # 目录
 
-* <a href="#CSS">**CSS**</a>
+* <a href="#CSS">**`CSS`**</a>
 
 * <a href="#概述">概述</a>
 * <a href="#权重、优先级">权重、优先级</a>
@@ -97,6 +97,7 @@ CSS布局、居中
 
 
 * <a href="#一些css属性及其他">**一些css属性及其他**</a>
+
   * <a href="#多方法描绘一个边框">多方法描绘一个边框</a>
   * <a href="#渐变">渐变linear-gradient</a>
   * <a href="#移动端1px">移动端1px</a>
@@ -109,9 +110,11 @@ CSS布局、居中
   * <a href="#-webkit-text-size-adjust">-webkit-text-size-adjust</a>
   * <a href="#-webkit-scrollbar">-webkit-scrollbar 自定义滚动条样式</a>
   * <a href="#纯css横向、垂直滑动">纯css横向、垂直滑动</a>
+  * <a href="#纯css页面滚动进度条">纯css页面滚动进度条</a>
   * <a href="#为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"</a>
   * <a href="#css矩阵matrix">css矩阵matrix</a>
   * <a href="#图片缩放">图片缩放transform+transition</a>
+  * <a href="#filter滤镜">filter滤镜</a>
   * <a href="#background-blend-mode和mix-blend-mode">background-blend-mode和mix-blend-mode</a>
   * <a href="#"></a>
   * <a href="#"></a>
@@ -1337,7 +1340,7 @@ IE
     scrollbar-track-color: color; /*立体滚动条背景颜色*/
     scrollbar-base-color:color; /*滚动条的基色*/
 
-firefox  
+firefox    
 [插件](https://github.com/malihu/malihu-custom-scrollbar-plugin)
 
 ## <a name="纯css横向、垂直滑动">纯css横向、竖直滑动</a>
@@ -1402,6 +1405,85 @@ firefox
     }    
 
 
+## <a name="纯css页面滚动进度条">纯css页面滚动进度条</a>
+>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    html{
+      height: 3000px;
+    }
+    body {
+      /* 添加从左下到到右上角的线性渐变 */
+      background-image: linear-gradient(to right top, red 50%, #eee 50%);
+      /* 减去一个屏幕的高度，这样渐变刚好在滑动到底部的时候与右上角贴合。 */
+      background-size: 100% calc(100% - 100vh + 5px);
+      background-repeat: no-repeat;
+    }
+    /* 用一个伪元素，遮住多余部分 */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 1px;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      width:100%;
+      background: #fff;
+      z-index: -1;
+    }
+
+缺点：
+>
+    页面内容不能有背景色或背景图！
+    body自身也不能有背景图！
+    他们都会覆盖进度条
+
+
+
+优化：ix-blend-mode:darken;  
+>
+    传统CSS滚动指示器为了防止对角渐变（也就是滚动进度条）的覆盖页面上的元素内容，因此写在了最底层的body元素上，这就导致如果body元素内的普通元素内容有背景色，或者背景图之类的，就会覆盖进度条，产生致命缺陷。
+
+    我的优化方法是把对角渐变（也就是滚动进度条）连同里面的白色覆盖层写在了普通元素的上面，这样避开被覆盖的致命缺陷。但是这样实现带来另外一个问题，页面的内容都被白色图层覆盖了，那页面内容岂不是都看不见了？不要担心，有CSS声明可以让白色的图层变成透明，那就是mix-blend-mode:darken，也就是darken混合模式。darken混合模式的混合方式很好理解，两个颜色进行混合，哪个颜色深就使用哪个颜色？
+
+    要知道所有的颜色里面最浅的就是白色，于是我们只要把我们的白色覆盖层的混合模式设置为darken，那必然最终呈现出来的颜色一定是覆盖层下面元素内容的颜色，换句话说我们的白色透明覆盖层变透明了。
+
+
+[来源](https://www.zhangxinxu.com/wordpress/2019/06/better-css-scroll-indicator/)
+>
+    *{
+      margin:0;
+      padding: 0;
+    }
+    body {
+      position: relative;
+      height: 2000px;
+    }
+    .indicator {
+      position: absolute;
+      top: 0; right: 0; left: 0; bottom: 0;
+      background: linear-gradient(to right top, teal 50%, transparent 50%) no-repeat;
+      background-size: 100% calc(100% - 100vh);
+      z-index: 1;
+      pointer-events: none;
+      mix-blend-mode: darken;
+    }
+    .indicator::after {
+      content: '';
+      position: fixed;
+      top: 1px; bottom: 0; right: 0; left: 0;
+      background: #fff;
+      z-index: 1;
+    }
+
+缺点：
+>
+    进度条的颜色尽量取深色，因为本身包含darken混合模式，如果颜色过浅，很容易被底部的内容颜色给混合。
+
+    需要在页面滚动高度超过一屏的时候才出现。原因有两方面：一是如果滚动高度过小，没有必要使用滚动指示器；二是滚动指示器本质上是一个渐变，如果滚动高度不足，则进度条的边缘会过于倾斜而导致显示效果不完美。
+
 ## <a name="为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"</a>
 
 >
@@ -1465,28 +1547,7 @@ firefox
       transition-delay: 0.4s;
     }
 
-
-
-
-
-
-
-
-
-
-    filter:alpha(opacity=50)
-
-    background: linear-gradient(to left, ##f00, ##f00) left top no-repeat, 
-                linear-gradient(to bottom, ##f00, ##f00) left top no-repeat, 
-                linear-gradient(to left, ##f00, ##f00) right top no-repeat,
-                linear-gradient(to bottom, ##f00, ##f00) right top no-repeat, 
-                linear-gradient(to left, ##f00, ##f00) left bottom no-repeat,
-                linear-gradient(to bottom, ##f00, ##f00) left bottom no-repeat,
-                linear-gradient(to left, ##f00, ##f00) right bottom no-repeat,
-                linear-gradient(to left, ##f00, ##f00) right bottom no-repeat;
-    background-size: 1px 20px, 20px 1px, 1px 20px, 20px 1px;  
-
-
+## <a name="filter滤镜">filter滤镜（不是IE的filter:alpha(opacity=50)）</a>
 
 
 ## <a name="background-blend-mode和mix-blend-mode">background-blend-mode和mix-blend-mode</a>
