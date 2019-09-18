@@ -1,7 +1,7 @@
 [](https://juejin.im/post/5d59f2a451882549be53b170)
 
 * <a href="#MVC、MVP、MVVM">MVC、MVP、MVVM</a>
-* <a href="#SPA">SPA 单页面的理解，它的优缺点分别是什么</a>
+* <a href="#SPA">SPA SSR</a>
 * <a href="#双向数据绑定原理、实现">双向数据绑定原理、实现:Object.defineProperty、proxy</a>
 * <a href="#生命周期">生命周期</a>
 * <a href="#监听组件的生命周期">监听组件的生命周期</a>
@@ -53,8 +53,12 @@
 * <a href="#"></a>
 
 
-# <a name=""></a>
+# <a name="vue-element-admin">手摸手 vue-element-admin</a>
+后台页面模板，基于 vue 和 element-ui实现
 
+[vue-element-admin](https://panjiachen.github.io/vue-element-admin-site/zh/guide/)
+
+[文章](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
 
 # <a name="MVC、MVP、MVVM">MVC、MVP、MVVM</a>
 [MVC、MVP、MVVM三种区别及适用场合](https://blog.csdn.net/victoryzn/article/details/78392128)
@@ -125,22 +129,52 @@ MVVM优点:
 
     可测试。界面素来是比较难于测试的，而现在测试可以针对ViewModel来写。
 
-# <a name="SPA">SPA 单页面的理解，它的优缺点分别是什么</a>  
-SPA（ single-page application ）仅在 Web 页面初始化时加载相应的 HTML、JavaScript 和 CSS。一旦页面加载完成，SPA 不会因为用户的操作而进行页面的重新加载或跳转；取而代之的是利用路由机制实现 HTML 内容的变换，UI 与用户的交互，避免页面的重新加载。
+# <a name="SPA">SPA SSR</a>  
+### SPA
+>
+    SPA（ single-page application ）仅在 Web 页面初始化时加载相应的 HTML、JavaScript 和 CSS。一旦页面加载完成，SPA 不会因为用户的操作而进行页面的重新加载或跳转；取而代之的是利用路由机制实现 HTML 内容的变换，UI 与用户的交互，避免页面的重新加载。
 
-优点：
+* 优点：
 >
     用户体验好、快，内容的改变不需要重新加载整个页面，避免了不必要的跳转和重复渲染；
-    基于上面一点，SPA 相对对服务器压力小；
+    一定程度上减少了后端服务器的压力（不用管页面逻辑和渲染）；
     前后端职责分离，架构清晰，前端进行交互逻辑，后端负责数据处理；
 
-缺点：
+* 缺点：
 >
     初次加载耗时多：为实现单页 Web 应用功能及显示效果，需要在加载页面的时候将 JavaScript、CSS 统一加载，部分页面按需加载；
     前进后退路由管理：由于单页应用在一个页面中显示所有的内容，所以不能使用浏览器的前进后退功能，所有的页面切换需要自己建立堆栈管理；
     SEO 难度较大：由于所有的内容都在一个页面中动态替换显示，所以在 SEO 上其有着天然的弱势。
+* 常见框架
+>
+    AngularJS
+    React
+    Vue.js
 
+### SSR
+>
+    SSR是 Server-Side Rendering(服务器端渲染)的缩写，在普通的SPA中，一般是将框架及网站页面代码发送到浏览器，然后在浏览器中生成和操作DOM（这里也是第一次访问SPA网站在同等带宽及网络延迟下比传统的在后端生成HTML发送到浏览器要更慢的主要原因），但其实也可以将SPA应用打包到服务器上，在服务器上渲染出HTML，发送到浏览器，这样的HTML页面还不具备交互能力，所以还需要与SPA框架配合，在浏览器上“混合”成可交互的应用程序。所以，只要能合理地运用SSR技术，不仅能一定程度上解决首屏慢的问题，还能获得更好的SEO。
 
+* SSR的优点
+>
+    更快的响应时间，不用等待所有的JS都下载完成，浏览器便能显示比较完整的页面了。
+
+    更好的SSR，我们可以将SEO的关键信息直接在后台就渲染成HTML，而保证搜索引擎的爬虫都能爬取到关键数据。
+
+* SSR缺点
+>
+    相对于仅仅需要提供静态文件的服务器，SSR中使用的渲染程序自然会占用更多的CPU和内存资源
+
+    一些常用的浏览器API可能无法正常使用，比如window、docment和alert等，如果使用的话需要对运行的环境加以判断
+
+    开发调试会有一些麻烦，因为涉及了浏览器及服务器，对于SPA的一些组件的生命周期的管理会变得复杂
+
+    可能会由于某些因素导致服务器端渲染的结果与浏览器端的结果不一致
+
+* SSR常用框架
+
+Vue.js 的 [Nuxt](https://nuxtjs.org/guide/installation)  
+React 的 [Next](https://nextjs.org/)
 
 
 # <a name="双向数据绑定原理、实现">双向数据绑定原理、实现:Object.defineProperty、proxy</a>  
@@ -1011,9 +1045,10 @@ https://router.vuejs.org/zh
     当路由变化时，watch里的路由监听函数都会被触发，可以在这个函数中对页面的数据进行重新加载的操作。
     watch:{
       "$route":function(to,from){
-        //to 对象：包含目标地址
-        //from 对象：包含当前地址
-        //next 控制路由是否跳转的，如果没写，可以不用写next()来代表允许路由跳转，如果写了就必须写next(),否则路由是不会生效的。
+        if (to.name ==== from.name && to.params.id !== from.params.id) {
+          //do something 
+          next() 
+        }
       }
     }
 2. beforeRouteUpdate  // 组件内的守卫
@@ -1026,6 +1061,19 @@ https://router.vuejs.org/zh
       }
     }
 
+3.  router-view上加上一个唯一的key
+简单的在 router-view上加上一个唯一的key，来保证路由切换时都会重新渲染触发钩子了
+>
+
+    <router-view :key="key"></router-view>
+
+    computed: {
+      key() {
+        // 只要保证 key 唯一性就可以了，保证不同页面的 key 不相同
+        return this.$route.fullPath
+        // return this.$route.name !== undefined? this.$route.name + +new Date(): this.$route + +new Date()
+      }
+    }
 
 ##  <a name="单页面多路由区域操作">单页面多路由区域操作</a>
 router.js
