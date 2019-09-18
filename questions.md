@@ -175,9 +175,56 @@
       return c
     }
 
+## <a name="倒计时">倒计时</a>
+>
+    function countdown(endTime){
+      //月份默认30天
+      //年份默认365天
+      const s = 1000; //秒
+      const m = 60 * s; // 分
+      const h = 60 * m; // 时
+      const D = 24 * h; // 天
+      const M = 30 * D; // 月
+      const Y = 365 * D; // 年
+      endTime = + new Date(endTime);
+      let now = + new Date();
+      let time = endTime- now;
+      const years = (Math.floor(time / Y) + '').padStart(2,0);
+      const months = (Math.floor(time % Y / M) + '').padStart(2,0);
+      const days = (Math.floor(time % M / D) + '').padStart(2,0);
+      const hours = (Math.floor(time % D / h) + '').padStart(2,0);
+      const minutes = (Math.floor(time % h / m) + '').padStart(2,0);
+      const seconds = (Math.floor(time % m / s) + '').padStart(2,0);
+      const milliseconds = (Math.floor(time % s) + '').padStart(3,0);
+      let str = (years + '' === '00' ? '': years + '年')
+              + (months + '' === '00' ? '': months + '月')
+              + (days + '' === '00' ? '': days + '天')
+              + (hours + '' === '00' ? '' :  hours + '时')
+              + (minutes + '' === '00' ?'' :  minutes + '分')
+              + (seconds + '' === '00' ? '' :  seconds + '秒') 
+              // + (milliseconds + '' === '000'  ? '毫秒' :  milliseconds) 
+      // let str = days + '天' + hours + '时' + minutes + '分' + seconds + '秒';
+      return str
+    }
+
+
 ## <a name="时间戳、日期 的转换">时间戳、日期 的转换</a>
 * [new Date()](https://www.runoob.com/jsref/jsref-obj-date.html)
 >
+    new Date()
+
+    new Date(milliseconds)
+      new Date(1568093648697)
+
+    new Date(dateString) 
+      new Date("October 13, 1975 11:13:00")
+
+    new Date(year, month, day, hours, minutes, seconds, milliseconds)
+      new Date(79,5,24,11,33,0)//
+
+>
+
+
     new Date().getFullYear(); //获取完整的年份(4位,1970-????)  -- 2019
         
     new Date().getMonth(); //获取当前月份(0-11,0代表1月) -- 8
@@ -238,9 +285,44 @@
     }
     console.log(timestampToTime(+new Date()))
 
+* 把日期格式化为指定格式
+>
+    function format(date, fmt) {
+      date = new Date(date)
+      var o = {
+        "M+" : date.getMonth()+1,                 //月份
+        "d+" : date.getDate(),                    //日
+        "h+" : date.getHours(),                   //小时
+        "m+" : date.getMinutes(),                 //分
+        "s+" : date.getSeconds(),                 //秒
+        "q+" : Math.floor((date.getMonth()+3)/3), //季度
+        "S"  : date.getMilliseconds()             //毫秒
+      };
+
+      if(/(y+)/.test(fmt)){
+        fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+      }
+
+      for(let k in o){
+        if(new RegExp("("+ k +")").test(fmt)){
+          fmt = fmt.replace(
+            RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));  
+        }       
+      }
+
+      return fmt;
+    }
+
+    console.log(
+      format(new Date(44222222222),"yyyy年MM月"),
+      format(new Date(),"yyyy年MM月dd日"),
+      format(new Date(2179,5,24,11,33,0),"yyyy/MM/dd hh:mm:ss")
+    )
+
 
 * 时间戳 --> 距当前时间 多久
-    >
+>
+
     function formatMsgTime(timestamp) {
       if (!timestamp) return ''
       if ((timestamp + '').length === 10) {
@@ -249,12 +331,12 @@
       }
       timestamp = timestamp / 1;
       let s = 1000 // 秒
-      let m = 60 * 1000 // 分
-      let h = 60 * 60 * 1000 // 时
-      let D = 24 * 60 * 60 * 1000 // 天
-      // let W = 7 * 24 * 60 * 60 * 1000 // 周
-      let M = 30 * 24 * 60 * 60 * 1000 // 月
-      let Y = 365 * 24 * 60 * 60 * 1000 // 年 
+      let m = 60 * s // 分
+      let h = 60 * m // 时
+      let D = 24 * h // 天
+      // let W = 7 * D // 周
+      let M = 30 * D // 月
+      let Y = 365 * M // 年 
 
       let time = new Date().getTime() - new Date(timestamp).getTime() //现在的时间-传入的时间 = 相差的时间（单位 = 毫秒）
       if (time < 0) {
@@ -732,9 +814,9 @@ Math.random().toFixed(6).slice(-6) / 1
 ## <a name="实现f(a)(b)与f(a,b)一样的效果">实现f(a)(b)与f(a,b)一样的效果</a>
 
 >
-    function f(m,n){
-      if (m!==undefined&&n!==undefined) { return m + n}
-      else{ return function(a){  return m+a;} }
+    function f(m, n){
+      if (m !== undefined && n !== undefined) { return m + n}
+      else { return function(a){  return m + a;} }
     }
 
 >
