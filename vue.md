@@ -1,5 +1,7 @@
 [](https://juejin.im/post/5d59f2a451882549be53b170)
 
+[vue代码风格](https://github.com/Jouryjc/blog/issues/1)
+
 * <a href="#MVC、MVP、MVVM">MVC、MVP、MVVM</a>
 * <a href="#SPA">SPA SSR</a>
 * <a href="#双向数据绑定原理、实现">双向数据绑定原理、实现:Object.defineProperty、proxy</a>
@@ -41,6 +43,8 @@
   * <a href="#路由懒加载">路由懒加载</a>
   * <a href="#"></a>
 
+* <a href="#vue-cli3">vue-cli3配置</a>
+
 * <a href="#proxy跨域设置">proxy跨域设置</a>
 * <a href="#token验证">如何添加token验证</a>
 * <a href="#静态资源处理">静态资源处理：图片等</a>
@@ -60,6 +64,8 @@
 [vue-element-admin](https://panjiachen.github.io/vue-element-admin-site/zh/guide/)
 
 [文章](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
+
+
 
 # <a name="MVC、MVP、MVVM">MVC、MVP、MVVM</a>
 [MVC、MVP、MVVM三种区别及适用场合](https://blog.csdn.net/victoryzn/article/details/78392128)
@@ -316,6 +322,11 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
 [Vue2.0生命周期](https://segmentfault.com/a/1190000008010666)
 
 Vue 实例有一个完整的生命周期，也就是从开始创建、初始化数据、编译模版、挂载 Dom -> 渲染、更新 -> 渲染、卸载等一系列过程，我们称这是 Vue 的生命周期。
+
+
+调用钩子的顺序按照  
+>
+    name -> components -> extend/mixins -> props -> data -> computed -> watch -> filters -> created -> beforeMount -> mounted -> beforeUpdate -> updated -> activated -> deactivate -> beforeDestroy -> destroyed
 
 ## 各个生命周期作用：
 >
@@ -1618,6 +1629,66 @@ Vue  是单页面应用，会有很多的路由引入 ，打包后的文件很�
 ## <a name=""></a>
 
 
+# <a name="vue-cli3配置">vue-cli3配置</a>
+[参考](https://blog.csdn.net/qq_36407748/article/details/80739787)
+
+[官网](https://cli.vuejs.org/zh/config/#%E5%85%A8%E5%B1%80-cli-%E9%85%8D%E7%BD%AE)
+
+安装更新  
+npm install -g @vue/cli 
+
+创建项目  
+vue create projectName
+
+* vue.config.js
+>
+    module.exports = {
+      publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+      //baseUrl (Vue CLI 3.3已弃用)
+
+      outputDir: "dist", // 在npm run build时 生成文件的目录 
+
+      assetsDir: "assets", // 放置生成的静态资源的目录
+      
+      indexPath: "index.html", // 指定生成的 index.html 的输出路径 (相对于 outputDir)。也可以是一个绝对路径。
+
+      lintOnSave: true, // 保存时检验格式
+
+      productionSourceMap: false, // 生产环境是否生成map文件
+
+      lintOnSave: process.env.NODE_ENV !== 'production', // eslint检验
+
+      devServer:{ // 代理
+        open: true,// 启动服务器后是否打开浏览器
+        host: 'localhost',
+        port: 8080, 
+        https: false, 
+        hotOnly: false,
+        chainWebpack: config => { // 自定义路径名
+          config.resolve.alias
+            .set('@', resolve('src'))
+            .set('_c', resolve('src/components'))
+        },
+        proxy: { // 代理
+          '/api': {
+            target: '<url>',
+            ws: true,
+            changeOrigin: true
+          },
+          '/foo': {
+            target: '<other_url>'
+          }
+        },
+      }  
+    }
+
+* 打包时不生成.map文件，map文件的作用
+>
+    productionSourceMap: false
+
+    作用：项目打包后，代码都是经过压缩加密的，如果运行时报错，输出的错误信息无法准确得知是哪里的代码报错。  
+    有了map就可以像未加密的代码一样，准确的输出是哪一行哪一列有错。
+
 # <a name="proxy跨域设置">proxy跨域设置</a>
 >
 
@@ -1631,6 +1702,12 @@ Vue  是单页面应用，会有很多的路由引入 ，打包后的文件很�
         }
       }
     },
+
+# <a name="axios、api 设计">axios、api 设计</a>
+[参考](https://segmentfault.com/a/1190000018964794?utm_medium=hao.caibaojian.com&utm_source=hao.caibaojian.com&share_user=1030000000178452#articleHeader8)
+
+[参考](https://github.com/chenzong24635/vDemo/blob/master/src/api/index.js)
+
 
 # <a name="token验证">添加token验证</a>
 通过vuex管理token
@@ -1665,6 +1742,7 @@ Vue  是单页面应用，会有很多的路由引入 ，打包后的文件很�
         }
       }
     })
+
 #### router/index.js
 >
     //给需要判断是否登录的页面添加参数 requiresAuth
@@ -1698,6 +1776,7 @@ Vue  是单页面应用，会有很多的路由引入 ，打包后的文件很�
         next()
       }
     })
+
 #### 登录页面的token设置
 >
     import { mapMutations } from 'vuex'

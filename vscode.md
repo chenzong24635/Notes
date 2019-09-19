@@ -1,4 +1,4 @@
-
+[vscode快捷键](chrome-extension://cdonnmffkdaoajfknoeeecmchibpmkmg/static/pdf/web/viewer.html?file=https%3A%2F%2Fcode.visualstudio.com%2Fshortcuts%2Fkeyboard-shortcuts-windows.pdf)
 
 删除空行：
   ctrl+h键进行正则匹配：^\s*(?=\r?$)\n
