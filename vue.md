@@ -1,10 +1,15 @@
-[](https://juejin.im/post/5d59f2a451882549be53b170)
 
-[vue代码风格](https://github.com/Jouryjc/blog/issues/1)
+[Vue官网](http://doc.vue-js.com/v2/guide/)
+
+[Vue.js 技术揭秘](https://ustbhuangyi.github.io/vue-analysis/prepare/flow.html)
+
+
+[Vue资源精选(组件、插件...)](http://vue.awesometiny.com/)
 
 * <a href="#MVC、MVP、MVVM">MVC、MVP、MVVM</a>
 * <a href="#SPA">SPA SSR</a>
 * <a href="#双向数据绑定原理、实现">双向数据绑定原理、实现:Object.defineProperty、proxy</a>
+* <a href="#单向数据流">单向数据流</a>
 * <a href="#生命周期">生命周期</a>
 * <a href="#监听组件的生命周期">监听组件的生命周期</a>
 * <a href="#computed watch methods">computed watch methods</a>
@@ -16,6 +21,7 @@
 * <a href="#v-for 遍历避免同时使用 v-if">v-for 遍历避免同时使用 v-if</a>
 * <a href="#slot">slot插槽</a>
 * <a href="#组件中key作用">组件中key作用</a>
+* <a href="#虚拟DOM">虚拟DOM</a>
 * <a href="#$nextTick">$nextTick</a>
 * <a href="#页面滚动">页面滚动</a>
 * <a href="#keep-alive">keep-alive</a>
@@ -43,19 +49,24 @@
   * <a href="#路由懒加载">路由懒加载</a>
   * <a href="#"></a>
 
+
 * <a href="#vue-cli3">vue-cli3配置</a>
 
 * <a href="#proxy跨域设置">proxy跨域设置</a>
 * <a href="#token验证">如何添加token验证</a>
 * <a href="#静态资源处理">静态资源处理：图片等</a>
 * <a href="#打包">打包时常见问题及解决</a>
+
+
+* <a href="#插件">插件</a>
+
 * <a href="#其他">其他</a>
-* <a href="#轮播图--VueAwesomeSwiper">轮播图--VueAwesomeSwiper使用</a>
-* <a href="#rem">rem</a>
-* <a href="#创建项目">创建项目</a>
-* <a href="#npm">npm</a>
-* <a href="#"></a>
-* <a href="#"></a>
+
+  * <a href="#rem">rem</a>
+  * <a href="#创建项目">创建项目</a>
+  * <a href="#npm">npm</a>
+  * <a href="#"></a>
+  * <a href="#"></a>
 
 
 # <a name="vue-element-admin">手摸手 vue-element-admin</a>
@@ -196,6 +207,7 @@ React 的 [Next](https://nextjs.org/)
 
 
 # <a name="双向数据绑定原理、实现">双向数据绑定原理、实现:Object.defineProperty、proxy</a>  
+[Vue 核心之数据双向绑定](https://juejin.im/post/5d421bcf6fb9a06af23853f1#comment)
 
 Vue2 采用数据劫持结合发布—订阅模式的方法，通过 Object.defineProperty() 来劫持各个属性的 setter，getter，在数据变动时发布消息给订阅者，触发相应的监听回调。实现数据双向绑定
 
@@ -317,6 +329,30 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
 ## Vue的响应式原理
 >
     当一个Vue实例创建时，vue会遍历data选项的属性，用 Object.defineProperty 将它们转为 getter/setter并且在内部追踪相关依赖，在属性被访问和修改时通知变化。 每个组件实例都有相应的 watcher 程序实例，它会在组件渲染的过程中把属性记录为依赖，之后当依赖项的 setter 被调用时，会通知 watcher 重新计算，从而致使它关联的组件得以更新。
+
+# <a name="单向数据流">单向数据流</a>
+父组件可以向子组件传递数据，但是子组件不能直接修改父组件的状态。
+
+如所有的 prop 都使得其父子 prop 之间形成了一个单向下行绑定  
+当你想要在子组件去修改 props 时，两种情况
+1. 定义一个 data 属性，并用 prop 的值初始化它。
+>
+    props: ['initialCounter'],
+    data() {
+      return {
+        counter: this.initialCounter
+      }
+    }
+
+2. 定义一个计算属性，处理 prop 的值并返回。
+>
+    props: ['initialCounter'],
+    data() {
+      return {
+        counter: this.initialCounter
+      }
+    }
+
 
 # <a name="生命周期">生命周期</a>
 [Vue2.0生命周期](https://segmentfault.com/a/1190000008010666)
@@ -794,7 +830,7 @@ https://www.zhihu.com/question/61064119
 
     当 Vue.js 用 v-for 正在更新已渲染过的元素列表时，它默认用“就地复用”策略。如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序， 而是简单复用此处每个元素，并且确保它在特定索引下显示已被渲染过的每个元素。
 
-key 的作用是为了在 diff 算法执行时更快的找到对应的节点，提高 diff 速度，高效的更新虚拟DOM  
+`key 的作用是为了在 diff 算法执行时更快的找到对应的节点，提高 diff 速度，高效的更新虚拟DOM  `
 
 >
     vue 和 react 都是采用 diff 算法来对比新旧虚拟节点，从而更新节点。在 vue 的 diff 函数中。可以先了解一下 diff 算法。
@@ -807,6 +843,11 @@ key 的作用是为了在 diff 算法执行时更快的找到对应的节点，�
 
     如果你用 index 作为 key，那么在删除第二项的时候，index 就会从 1 2 3 变成 1 2（而不是 1 3），那么 Vue 依然会认为你删除的是第三项。
 
+
+# <a name="虚拟DOM">虚拟DOM</a>
+[参考](https://www.jianshu.com/p/af0b398602bc?tdsourcetag=s_pctim_aiomsg)
+
+[参考](https://juejin.im/post/5d36cc575188257aea108a74#heading-1)
 
 # <a name="$nextTick">$nextTick</a>
 https://www.jianshu.com/p/a7550c0e164f
@@ -821,7 +862,7 @@ https://www.jianshu.com/p/a7550c0e164f
 
     而在mounted钩子函数中，因为该钩子函数执行时所有的DOM挂载和渲染都已完成，此时在该钩子函数中进行任何DOM操作都不会有问题，无需Vue.nextTick() 。
 
-    总之，在数据变化后要执行的某个操作，而这个操作需要使用随数据改变而改变的DOM结构的时候，这个操作都应该放进Vue.nextTick()的回调函数中。
+`总之，在数据变化后要执行的某个操作，而这个操作需要使用随数据改变而改变的DOM结构的时候，这个操作都应该放进Vue.nextTick()的回调函数中。`
 
 # <a name="页面滚动">页面滚动</a>
 
@@ -1158,16 +1199,16 @@ App.vue
 
 ##  <a name="刷新当前路由方法">刷新当前路由方法</a>
 
-1. 
+1. 相当于f5刷新，页面会有卡顿的情况
 >
 
     this.$router.go(0)
     location.reload() 
-    都相当于f5刷新，页面会有卡顿的情况
+   
 
-2. 
+2. 先进入空白页再在空白页跳转回到上一个页面，
 >
-    先进入空白页再在空白页跳转回到上一个页面
+    
     // 要刷新的页面
     refresh () {
       this.$router.replace({
@@ -1207,7 +1248,7 @@ App.vue
 
 
 
-hash
+* hash
 >
     URL 中 hash (#) 及后面的那部分，常用作锚点在页面内进行导航，改变 URL 中的 hash 部分不会引起页面刷新
 
@@ -1215,7 +1256,7 @@ hash
 
     通过 hashchange 事件监听 URL 的变化，改变 URL 的方式只有这几种：通过浏览器前进后退改变 URL、通过<a>标签改变 URL、通过window.location改变URL
 
-history 
+* history 
 >
     利用了H5 history的 pushState() 和 replaceState() 方法。（需要特定浏览器支持）
 
@@ -1243,6 +1284,9 @@ history 
       component:Error
     }
 
+* abstract 
+
+ 支持所有 JavaScript 运行环境，如 Node.js 服务器端。如果发现没有浏览器的 API，路由会自动强制进入这个模式.
 
 ##  <a name="切换页面时自动滚动到顶部">切换页面时自动滚动到顶部, 设置页面title</a>
 >
@@ -1793,6 +1837,7 @@ vue create projectName
     }
 
 
+
 # <a name="静态资源处理">静态资源处理</a>
 
 ## 处理静态资源
@@ -1907,49 +1952,21 @@ vue create projectName
     使用配置文件：nginx -c "配置文件路径"
     使用帮助：nginx -h
 
-# <a name="其他">其他</a>
-## 组件引用 自定义路径名
->
-    build -- webpack.base.conf.js
-    module.exports -- resolve --a>lias
+# <a name="插件">插件</a>
+[Vue资源精选(组件、插件...)](http://vue.awesometiny.com/)
 
-    'vue$': 'vue/dist/vue.esm.js',
-    '@': resolve('src'),
-    'styles': resolve('src/assets/styles'), // 自己配置
+## [vue-baidu-map(百度地图)](https://github.com/Dafrok/vue-baidu-map)
 
-    在main.js直接 styles，其他地方需要加波浪线 ‘ ~ ’
+## [vue-amap(高德地图)](https://elemefe.github.io/vue-amap/#/zh-cn/introduction/install)
 
-    使用：@/commponents/a.vue
+## [国际化插件-vue-i18n](https://link.zhihu.com/?target=https%3A//github.com/kazupon/vue-i18n)
 
-## Vue 用 axios 调用本地的 json 文件，
-  json 必须存放在 “ static ” 文件夹下，static 目录是 vue-cli 向外暴露的静态文件夹，所有静态数据都应该放到static目录中。
-  #### 调本地json文件
-  import data from '@/assets/json/index/swiper1.json'
-  console.log(data)
-
-## 修改组件css  /deep/ 或 >>>   
-    // less和sass中不管用
-    .wrap /deep/ .vux-header {
-      background-color: ##3cc51f;
-    }
-
-## 修改Vux组件中样式变量（组件颜色）
-    修改build/webpack.base.conf.js
-    module.exports = vuxLoader.merge(webpackConfig, {
-      plugins:[
-        {name: 'vux-ui'},
-        {name: 'less-theme', path: 'src/assets/style/dy.less'}//自定义的Less文件路径
-      ]
-    })
-
-    自定义dy.less内容
-    @tabbar-text-active-color: ##ff0d00;
-
-    最后需要重新启动项目，不然配置不起效果
-
-
-# <a name="轮播图--VueAwesomeSwiper">轮播图--VueAwesomeSwiper</a>
+## 轮播图--VueAwesomeSwiper
 https://segmentfault.com/a/1190000014609379
+
+https://blog.csdn.net/wcy7916/article/details/87357007
+
+[3.X-API](https://3.swiper.com.cn/api/pagination/2014/1217/70.html)
 
 api同swiper
 // notNextTick是一个组件自有属性，如果notNextTick设置为true，组件则不会通过NextTick来实例化swiper，也就意味着你可以在第一时间获取到swiper对象，假如你需要刚加载遍使用获取swiper对象来做什么事，那么这个属性一定要是true
@@ -2012,6 +2029,46 @@ api同swiper
     // this.swiper.slideTo(3, 1000, false)
     }
 
+
+# <a name="其他">其他</a>
+## 组件引用 自定义路径名
+>
+    build -- webpack.base.conf.js
+    module.exports -- resolve --a>lias
+
+    'vue$': 'vue/dist/vue.esm.js',
+    '@': resolve('src'),
+    'styles': resolve('src/assets/styles'), // 自己配置
+
+    在main.js直接 styles，其他地方需要加波浪线 ‘ ~ ’
+
+    使用：@/commponents/a.vue
+
+## Vue 用 axios 调用本地的 json 文件，
+  json 必须存放在 “ static ” 文件夹下，static 目录是 vue-cli 向外暴露的静态文件夹，所有静态数据都应该放到static目录中。
+  #### 调本地json文件
+  import data from '@/assets/json/index/swiper1.json'
+  console.log(data)
+
+## 修改组件css  /deep/ 或 >>>   
+    // less和sass中不管用
+    .wrap /deep/ .vux-header {
+      background-color: ##3cc51f;
+    }
+
+## 修改Vux组件中样式变量（组件颜色）
+    修改build/webpack.base.conf.js
+    module.exports = vuxLoader.merge(webpackConfig, {
+      plugins:[
+        {name: 'vux-ui'},
+        {name: 'less-theme', path: 'src/assets/style/dy.less'}//自定义的Less文件路径
+      ]
+    })
+
+    自定义dy.less内容
+    @tabbar-text-active-color: ##ff0d00;
+
+    最后需要重新启动项目，不然配置不起效果
 
 
 # <a name="rem">rem</a>

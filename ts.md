@@ -67,6 +67,7 @@
 >
     : Array<number> 
     : Array<boolean> 
+    : Array<any> 
     ...
 
 &nbsp;&nbsp; ReadonlyArray<元素类型> //只读，数组创建后再也不能修改(但可以直接改变整个数组)

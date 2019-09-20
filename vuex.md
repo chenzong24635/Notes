@@ -1,7 +1,8 @@
 # [`vuex 官网`](https://vuex.vuejs.org/zh/)
 
-![img](img/vuex.png)
+[参考](https://juejin.im/post/5cee430bf265da1b94212bf5?utm_medium=hao.caibaojian.com&utm_source=hao.caibaojian.com#heading-12)
 
+![img](img/vuex.png)
 # 基本
 >
     const store = new Vuex.Store({
