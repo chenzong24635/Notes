@@ -6,6 +6,12 @@
 
 # markdown 语法
 
+## 代码折叠、展开
+<details>
+  <summary>内容描述</summary>
+  测试内容
+</details>
+
 ## 文章中添加代码
 1. 使用反引号  
 `<a>我是代码</a>`

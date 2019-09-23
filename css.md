@@ -98,24 +98,24 @@ CSS布局、居中
 
 * <a href="#一些css属性及其他">**一些css属性及其他**</a>
 
-  * <a href="#多方法描绘一个边框">多方法描绘一个边框</a>
-  * <a href="#渐变">渐变linear-gradient</a>
-  * <a href="#移动端1px">移动端1px</a>
-  * <a href="#清除手机端a链接点击高亮">清除手机端a链接点击高亮</a>
-  * <a href="#三角形">三角形</a>
   * <a href="#pointer-events">pointer-events 使用指针事件來控制鼠标事件</a>
+  * <a href="#渐变">渐变linear-gradient</a>
   * <a href="#改变input placeholder颜色">改变input placeholder颜色</a>
   * <a href="#selection">selection 改变选中内容的字体、背景颜色</a>
   * <a href="#user-select">user-select</a>
   * <a href="#-webkit-text-size-adjust">-webkit-text-size-adjust</a>
   * <a href="#-webkit-scrollbar">-webkit-scrollbar 自定义滚动条样式</a>
-  * <a href="#纯css横向、垂直滑动">纯css横向、垂直滑动</a>
-  * <a href="#纯css页面滚动进度条">纯css页面滚动进度条</a>
   * <a href="#为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"</a>
   * <a href="#css矩阵matrix">css矩阵matrix</a>
-  * <a href="#图片缩放">图片缩放transform+transition</a>
+  * <a href="#图片缩放">图片缩放matrix,transform+transition</a>
   * <a href="#filter滤镜">filter滤镜</a>
   * <a href="#background-blend-mode和mix-blend-mode">background-blend-mode和mix-blend-mode</a>
+  * <a href="#多方法描绘一个边框">多方法描绘一个边框</a>
+  * <a href="#移动端1px">移动端1px</a>
+  * <a href="#清除手机端a链接点击高亮">清除手机端a链接点击高亮</a>
+  * <a href="#三角形">三角形</a>
+  * <a href="#纯css横向、垂直滑动">纯css横向、垂直滑动</a>
+  * <a href="#纯css页面滚动进度条">纯css页面滚动进度条</a>
   * <a href="#"></a>
   * <a href="#"></a>
 
@@ -138,8 +138,8 @@ CSS的优势：
 >
 
     内联样式 > 内部样式表 > 外部样式表  
-    !important > 内联样式 > ID > class > tag  
-    权值            1000       100   10     1
+    !important > 内联样式 > ID选择器 > 类选择器/属性选择器/伪类选择器 > 元素选择器/关系选择器/伪元素选择器 > 通配符(*)  
+    权值           1000     100           10                                1                             0
 
     max-width、mix-width、max-height、min-height等条件属性是可以覆盖!important的
 
@@ -1012,6 +1012,8 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
 
 * <a href="#"></a>
 
+## <a name=""></a>
+
 ## <a name="css自定义属性">css自定义属性</a>
 <b>IE不支持</b>
 
@@ -1054,6 +1056,172 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
     </script>
 
 
+
+## <a name="shape-outside">[shape-outside](https://developer.mozilla.org/zh-CN/docs/Web/CSS/shape-outside)</a>
+`IE不支持`  
+定义了一个可以是非矩形的形状，相邻的内联内容应围绕该形状进行包装。 默认情况下，内联内容包围其边距框; shape-outside提供了一种自定义此包装的方法，可以将文本包装在复杂对象周围而不是简单的框中。
+![shape-outside](./img/shape-outside.png)
+
+## <a name="pointer-events">pointer-events 使用指针事件來控制鼠标事件</a>
+
+例如：要禁用按钮上的默认指针事件
+>
+    .button-disabled {
+      opacity: .5;
+      pointer-events: none
+    }
+
+
+
+## <a name="改变input placeholder颜色">改变input placeholder颜色</a>
+>
+    ::-webkit-input-placeholder { color: ; }/*WebKit, Blink, Edge*/
+    :-moz-placeholder { color: ; }/*Mozilla Firefox 4 to 18*/
+    ::-moz-placeholder { color: ; }/*Mozilla Firefox 19+*/
+    :-ms-input-placeholder { color: ; }/*Internet Explorer 10-11 */
+
+## <a name="selection">selection 改变选中内容的字体、背景颜色</a>
+>
+    ::selection { 
+        background: #fff; 
+        color: #333; 
+    } 
+    ::-webkit-selection { 
+        background: #fff; 
+        color: #333; 
+    }
+    ::-moz-selection { 
+        background: #fff; 
+        color: #333; 
+    } 
+
+## <a name="user-select">user-select 文本是否可选中</a>
+user-select:none  
+-webkit-user-select:none
+
+语法
+>
+    user-select:none | text | all | element
+    默认值：text
+    适用范围：除替换元素外的所有元素
+
+取值说明
+>
+    none:文本不能被选择
+    text:可以选择文本
+    all：当所有内容作为一个整体时可以被选择。如果双击或者在 上下文上点击子元素，
+        那么被选择的部分将是以该子元素 向上回溯的最高祖先元素。
+
+## <a name="-webkit-text-size-adjust">-webkit-text-size-adjust: none</a>
+>
+
+    Chrome 中文界面下默认会将小于 12px 的文本强制按照 12px 显示；
+
+    可关闭字体大小自动调整功能; 
+
+    放在body中会导致页面缩放失效,不要把-webkit-text-size-adjust设置为全局或者可继承的
+
+
+## <a name="-webkit-scrollbar">-webkit-scrollbar 自定义滚动条样式</a>
+chrome
+>
+    ::-webkit-scrollbar 滚动条整体部分
+
+    ::-webkit-scrollbar-thumb 滚动条里面的小方块，能向上向下移动（或往左往右移动，取决于是垂直滚动条还是水平滚动条）
+
+    ::-webkit-scrollbar-track 滚动条的轨道（里面装有Thumb）
+
+    ::-webkit-scrollbar-button 滚动条的轨道的两端按钮，允许通过点击微调小方块的位置。
+
+    ::-webkit-scrollbar-track-piece 内层轨道，滚动条中间部分（除去）
+
+    ::-webkit-scrollbar-corner 边角，即两个滚动条的交汇处
+    
+    ::-webkit-resizer 两个滚动条的交汇处上用于通过拖动调整元素大小的小控件
+
+IE
+>
+    scrollbar-arrow-color: color; /*三角箭头的颜色*/
+    scrollbar-face-color: color; /*立体滚动条的颜色（包括箭头部分的背景色）*/
+    scrollbar-3dlight-color: color; /*立体滚动条亮边的颜色*/
+    scrollbar-highlight-color: color; /*滚动条的高亮颜色（左阴影？）*/
+    scrollbar-shadow-color: color; /*立体滚动条阴影的颜色*/
+    scrollbar-darkshadow-color: color; /*立体滚动条外阴影的颜色*/
+    scrollbar-track-color: color; /*立体滚动条背景颜色*/
+    scrollbar-base-color:color; /*滚动条的基色*/
+
+firefox    
+[插件](https://github.com/malihu/malihu-custom-scrollbar-plugin)
+
+## <a name="渐变">渐变 linear-gradient</a>
+[你真的理解CSS的linear-gradient？](https://www.w3cplus.com/css3/do-you-really-understand-css-linear-gradients.html)
+
+## <a name="css矩阵matrix">css矩阵matrix</a>
+
+>
+    transform: matrix(a,b,c,d,e,f)
+    a c e   x   ax + cy + e // ax+cy+e:变换后的水平坐标
+    b d f . y = bx + dy + f // bx+dy+f:变换后的垂直位置 
+    0 0 1   1   0  + 0  + 1
+
+
+    x, y表示转换元素的所有坐标（变量）
+
+    matrix(sx, 0, 0, sy, 0, 0) 等同于scale(sx, sy)
+
+    matrix(0, 0, 0, 0, tx, ty) 等同于translate(tx, ty)
+
+## <a name="图片缩放">图片缩放transform+transition</a>
+>
+    // 先放大1.1倍 ，再还原。一般用于轮播图
+    .img{
+      transform: matrix(1.1, 0, 0, 1.1, 0, 0);/* 等同于transfrom:scale(1.1,1.1) */
+      -webkit-transition: all 0.4s ease 1.2s;
+      -moz-transition: all 0.4s ease 1.2s;
+      -ms-transition: all 0.4s ease 1.2s;
+      -o-transition: all 0.4s ease 1.2s;
+      transition: all 0.4s ease 1.2s;
+    }
+
+    .img.active{
+      transform: matrix(1, 0, 0, 1, 0, 0); /* 等同于transfrom:scale(1,1)*/
+      -webkit-transition: all 7.0s ease;
+      -moz-transition: all 7.0s ease;
+      -ms-transition: all 7.0s ease;
+      -o-transition: all 7.0s ease;
+      transition: all 7.0s ease;  
+      transition-delay: 0.4s;
+    }
+
+## <a name="为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"</a>
+
+>
+    img {
+      display: block;
+      font-family: sans-serif;
+      font-weight: 300;
+      height: auto;
+      line-height: 2;
+      position: relative;
+      text-align: center;
+      width: 100%;
+    }
+
+    img::before {
+      content: "We're sorry, the image below is broken ";
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    img::after {
+      content: "(url:'attr(src)')";
+      display: block;
+      font-size: 12px;
+    }
+    
+## <a name="filter滤镜">filter滤镜（不是IE的filter:alpha(opacity=50)）</a>
+
+## <a name="background-blend-mode和mix-blend-mode">background-blend-mode和mix-blend-mode</a>
 
 ## <a name="多方法描绘一个边框">多方法描绘一个边框</a>
 [参考](https://www.w3cplus.com/css/css-tips-0904-1.html)
@@ -1111,8 +1279,6 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
       background-clip: padding-box, border-box;
     }
 
-## <a name="渐变">渐变 linear-gradient</a>
-[你真的理解CSS的linear-gradient？](https://www.w3cplus.com/css3/do-you-really-understand-css-linear-gradients.html)
 
 ## <a name="移动端1px">移动端1px</a>
 [参考](https://juejin.im/post/5d70a030f265da03a715f3fd)
@@ -1252,96 +1418,6 @@ tap-highlight-color: rgba(0, 0, 0, 0);
 
 
 
-## <a name="pointer-events">pointer-events 使用指针事件來控制鼠标事件</a>
-
-例如：要禁用按钮上的默认指针事件
->
-    .button-disabled {
-      opacity: .5;
-      pointer-events: none
-    }
-
-
-
-## <a name="改变input placeholder颜色">改变input placeholder颜色</a>
->
-    ::-webkit-input-placeholder { color: ; }/*WebKit, Blink, Edge*/
-    :-moz-placeholder { color: ; }/*Mozilla Firefox 4 to 18*/
-    ::-moz-placeholder { color: ; }/*Mozilla Firefox 19+*/
-    :-ms-input-placeholder { color: ; }/*Internet Explorer 10-11 */
-
-## <a name="selection">selection 改变选中内容的字体、背景颜色</a>
->
-    ::selection { 
-        background: #fff; 
-        color: #333; 
-    } 
-    ::-webkit-selection { 
-        background: #fff; 
-        color: #333; 
-    }
-    ::-moz-selection { 
-        background: #fff; 
-        color: #333; 
-    } 
-
-## <a name="user-select">user-select 文本是否可选中</a>
-user-select:none  
--webkit-user-select:none
-
-语法
->
-    user-select:none | text | all | element
-    默认值：text
-    适用范围：除替换元素外的所有元素
-
-取值说明
->
-    none:文本不能被选择
-    text:可以选择文本
-    all：当所有内容作为一个整体时可以被选择。如果双击或者在 上下文上点击子元素，
-        那么被选择的部分将是以该子元素 向上回溯的最高祖先元素。
-
-## <a name="-webkit-text-size-adjust">-webkit-text-size-adjust: none</a>
->
-
-    Chrome 中文界面下默认会将小于 12px 的文本强制按照 12px 显示；
-
-    可关闭字体大小自动调整功能; 
-
-    放在body中会导致页面缩放失效,不要把-webkit-text-size-adjust设置为全局或者可继承的
-
-
-## <a name="-webkit-scrollbar">-webkit-scrollbar 自定义滚动条样式</a>
-chrome
->
-    ::-webkit-scrollbar 滚动条整体部分
-
-    ::-webkit-scrollbar-thumb 滚动条里面的小方块，能向上向下移动（或往左往右移动，取决于是垂直滚动条还是水平滚动条）
-
-    ::-webkit-scrollbar-track 滚动条的轨道（里面装有Thumb）
-
-    ::-webkit-scrollbar-button 滚动条的轨道的两端按钮，允许通过点击微调小方块的位置。
-
-    ::-webkit-scrollbar-track-piece 内层轨道，滚动条中间部分（除去）
-
-    ::-webkit-scrollbar-corner 边角，即两个滚动条的交汇处
-    
-    ::-webkit-resizer 两个滚动条的交汇处上用于通过拖动调整元素大小的小控件
-
-IE
->
-    scrollbar-arrow-color: color; /*三角箭头的颜色*/
-    scrollbar-face-color: color; /*立体滚动条的颜色（包括箭头部分的背景色）*/
-    scrollbar-3dlight-color: color; /*立体滚动条亮边的颜色*/
-    scrollbar-highlight-color: color; /*滚动条的高亮颜色（左阴影？）*/
-    scrollbar-shadow-color: color; /*立体滚动条阴影的颜色*/
-    scrollbar-darkshadow-color: color; /*立体滚动条外阴影的颜色*/
-    scrollbar-track-color: color; /*立体滚动条背景颜色*/
-    scrollbar-base-color:color; /*滚动条的基色*/
-
-firefox    
-[插件](https://github.com/malihu/malihu-custom-scrollbar-plugin)
 
 ## <a name="纯css横向、垂直滑动">纯css横向、竖直滑动</a>
 横向
@@ -1484,73 +1560,9 @@ firefox
 
     需要在页面滚动高度超过一屏的时候才出现。原因有两方面：一是如果滚动高度过小，没有必要使用滚动指示器；二是滚动指示器本质上是一个渐变，如果滚动高度不足，则进度条的边缘会过于倾斜而导致显示效果不完美。
 
-## <a name="为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"</a>
-
->
-    img {
-      display: block;
-      font-family: sans-serif;
-      font-weight: 300;
-      height: auto;
-      line-height: 2;
-      position: relative;
-      text-align: center;
-      width: 100%;
-    }
-
-    img::before {
-      content: "We're sorry, the image below is broken ";
-      display: block;
-      margin-bottom: 10px;
-    }
-
-    img::after {
-      content: "(url:'attr(src)')";
-      display: block;
-      font-size: 12px;
-    }
-
-## <a name="css矩阵matrix">css矩阵matrix</a>
-
->
-    transform: matrix(a,b,c,d,e,f)
-    a c e   x   ax + cy + e // ax+cy+e:变换后的水平坐标
-    b d f . y = bx + dy + f // bx+dy+f:变换后的垂直位置 
-    0 0 1   1   0  + 0  + 1
 
 
-    x, y表示转换元素的所有坐标（变量）
 
-    matrix(sx, 0, 0, sy, 0, 0) 等同于scale(sx, sy)
-
-    matrix(0, 0, 0, 0, tx, ty) 等同于translate(tx, ty)
-
-## <a name="图片缩放">图片缩放transform+transition</a>
->
-    // 先放大1.1倍 ，再还原。一般用于轮播图
-    .img{
-      transform: matrix(1.1, 0, 0, 1.1, 0, 0);/* 等同于transfrom:scale(1.1,1.1) */
-      -webkit-transition: all 0.4s ease 1.2s;
-      -moz-transition: all 0.4s ease 1.2s;
-      -ms-transition: all 0.4s ease 1.2s;
-      -o-transition: all 0.4s ease 1.2s;
-      transition: all 0.4s ease 1.2s;
-    }
-
-    .img.active{
-      transform: matrix(1, 0, 0, 1, 0, 0); /* 等同于transfrom:scale(1,1)*/
-      -webkit-transition: all 7.0s ease;
-      -moz-transition: all 7.0s ease;
-      -ms-transition: all 7.0s ease;
-      -o-transition: all 7.0s ease;
-      transition: all 7.0s ease;  
-      transition-delay: 0.4s;
-    }
-
-## <a name="filter滤镜">filter滤镜（不是IE的filter:alpha(opacity=50)）</a>
-
-
-## <a name="background-blend-mode和mix-blend-mode">background-blend-mode和mix-blend-mode</a>
 ## <a name=""></a>
 ## <a name=""></a>
 

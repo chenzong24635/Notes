@@ -1,12 +1,18 @@
 # 链接
 [git](https://git-scm.com/book/zh/v2)
+
+[使用中遇到问题-解决指南](https://github.com/k88hudson/git-flight-rules/blob/master/README_zh-CN.md)
+
 [git学习](https://learngitbranching.js.org/?demo)
+
 [猴子都能懂的git入门](https://backlog.com/git-tutorial/cn/contents/)
 
 # vscode-sync-setting ：
 >
     token: bb7d41e1e039fdd294a6819e7305b73bd066d9a1
     sync.gist: 0e3b4eb383f938cbacac6b443dd818a0
+
+    Gist ID:372add5a8785e01a4c7850cadd69314f。
 
 # git
 

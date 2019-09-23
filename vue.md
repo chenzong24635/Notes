@@ -564,7 +564,7 @@ watch：深度监听
     })
 
 因为组件是用来复用的，且 JS 里对象是引用关系，如果组件中 data 是一个对象，那么这样作用域没有隔离，子组件中的 data 属性值会相互影响，  
-如果组件中 data 选项是一个函数，那么每个实例可以维护一份被返回对象的独立的拷贝，组件实例之间的 data 属性值不会互相影响；而 new Vue 的实例，是不会被复用的，因此不存在引用对象的问题。
+如果组件中 data 选项是一个函数，每次返回的都是一个新对象，组件实例之间的 data 属性值不会互相影响；而 new Vue 的实例，是不会被复用的，因此不存在引用对象的问题。
 
 
 # <a name="Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？">Vue中给data中的对象属性添加一个新的属性时 视图不更新，如何解决？</a>
@@ -1069,6 +1069,7 @@ https://router.vuejs.org/zh
 ------
 
 * 判断页面是否需要登录、修改页面title
+1. beforeEach
 >
     router.beforeEach((to, from, next) => {
       // 判断即将进入的页面是否需要登录
@@ -1089,6 +1090,24 @@ https://router.vuejs.org/zh
         document.title = to.meta.title
       }
     })
+
+2. vue-wechat-title
+假如title需要读取文章的标题，每次都不一样
+>
+# 安装
+
+    npm i -D vue-wechat-title
+    // 全局引入
+    import Vue from 'vue'
+    import Title from 'vue-wechat-title'
+
+    Vue.use(Title)
+    <template>
+      <!-- 使用 -->
+      <div id="app" v-wechat-title="$route.meta.title" img-set=" ">
+        <router-view/>
+      </div>
+    </template>
 
 
 ### 全局解析守卫:beforeResolve
@@ -1692,7 +1711,7 @@ vue create projectName
 
       outputDir: "dist", // 在npm run build时 生成文件的目录 
 
-      assetsDir: "assets", // 放置生成的静态资源的目录
+      assetsDir: "static", // 放置生成的静态资源的目录
       
       indexPath: "index.html", // 指定生成的 index.html 的输出路径 (相对于 outputDir)。也可以是一个绝对路径。
 
