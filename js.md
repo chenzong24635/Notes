@@ -2,13 +2,16 @@
 
 [MDN-JavaScript 标准内置对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects)
 
-[阮一峰《ECMAScript 6 入门》](http://es6.ruanyifeng.com/)
+[《JavaScript 标准参考教程》- 阮一峰](http://javascript.ruanyifeng.com/)
+
+[《JavaScript 教程》- 网道](https://wangdoc.com/javascript/index.html)
+
+[《JavaScript 教程》](http://zh.javascript.info/)
+
+[《ECMAScript 6 入门》- 阮一峰](http://es6.ruanyifeng.com/)
 
 [ECMAScript 6兼容性表](http://kangax.github.io/compat-table/es6/)
 
-[阮一峰《JavaScript 标准参考教程》](http://javascript.ruanyifeng.com/)
-
-[《JavaScript 教程》](https://wangdoc.com/javascript/index.html)
 
 [《TypeScript》](https://www.tslang.cn/docs/home.html)
 
@@ -16,6 +19,7 @@
 
 
 [Swiper-轮播图插件](https://www.swiper.com.cn/api/index.html) 
+
 []()
 
 

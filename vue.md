@@ -145,6 +145,8 @@ SPA（ single-page application ）仅在 Web 页面初始化时加载相应的 H
 
 # <a name="双向数据绑定原理、实现">双向数据绑定原理、实现:Object.defineProperty、proxy</a>  
 
+[深入浅出Vue响应式原理](https://juejin.im/post/5d229bfc5188252d707f3ac6)
+
 Vue2 采用数据劫持结合发布—订阅模式的方法，通过 Object.defineProperty() 来劫持各个属性的 setter，getter，在数据变动时发布消息给订阅者，触发相应的监听回调。实现数据双向绑定
 
 Vue3 则使用 Proxy

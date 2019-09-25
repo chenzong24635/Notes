@@ -53,11 +53,14 @@ for in更适合遍历对象，不要使用for in遍历数组。
     }
 
 ## <a name="reduce()">reduce((sum, item, index, array) => {})</a>
-    //接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终为一个值，// reduceRight() (从右到左)
-    //  Accumulator (acc) (累计器 累计回调的返回值; 它是上一次调用回调时返回的累积值)
-    //  Current Value (cur) (当前值)
-    //  Current Index (idx) (当前索引)
-    //  Source Array (src) (源数组)
+reduce((sum, item, index, array) => {})  
+接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终为一个值，// reduceRight() (从右到左)  
+
+sum：累计器 累计回调的返回值; 它是上一次调用回调时返回的累积值)  
+item：当前值  
+index：当前索引  
+array：源数组
+>
     arr.reduce((prev, now, index, array) => {
       console.log('reduce()-->', '前一个值prev', prev, ';当前索引index:', index, ';值now:', now, '源数组array:', array);
       return prev += now
@@ -65,10 +68,9 @@ for in更适合遍历对象，不要使用for in遍历数组。
 
     //使用reduce进行数组扁平化
     let givenArr = [[1, 2, 2], [3, 4, 5, 5], [6, 7, 8, 9, [11, 12, [12, 13, [14]]]], 10];
-    // let outputArr = [1,2,2,3,4,5,5,6,7,8,9,11,12,12,13,14,10]
+    // 扁平结果 [1,2,2,3,4,5,5,6,7,8,9,11,12,12,13,14,10]
     function flatted(arr) {
       return arr.reduce((pre, now, index, array) => {
-        // console.log(pre, now, index, array)
         return pre.concat(Array.isArray(now) ? flatted(now) : now) 
       }, [])
     }
