@@ -1112,6 +1112,20 @@ https://router.vuejs.org/zh
     </template>
 
 
+    npm i -D vue-wechat-title
+    // 全局引入
+    import Vue from 'vue'
+    import Title from 'vue-wechat-title'
+
+    Vue.use(Title)
+    <template>
+      <!-- 使用 -->
+      <div id="app" v-wechat-title="$route.meta.title" img-set=" ">
+        <router-view/>
+      </div>
+    </template>
+
+
 ### 全局解析守卫:beforeResolve
 与beforeEach 类似，区别是在导航被确认之前，同时在所有组件内守卫和异步路由组件被解析之后，解析守卫就被调用
 
