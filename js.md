@@ -425,6 +425,10 @@ https://www.jianshu.com/p/5f9027722204
 
     mouseover/mouseout是冒泡事件；mouseenter/mouseleave不冒泡。需要为多个元素监听鼠标移入/出事件时，推荐mouseover/mouseout托管，提高性能
 
+    不论鼠标指针穿过被选元素或其子元素，都会触发 mouseover 事件，对应 mouseout。
+    
+    只有在鼠标指针穿过被选元素时，才会触发 mouseenter 事件，对应 mouseleave。
+
 ## <a name="DOM操作">DOM操作—怎样添加、移除、移动、复制、创建和查找节点?</a>
 * 创建新节点
 >

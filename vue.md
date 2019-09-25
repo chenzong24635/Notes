@@ -1218,14 +1218,14 @@ App.vue
 
 ##  <a name="刷新当前路由方法">刷新当前路由方法</a>
 
-1. 相当于f5刷新，页面会有卡顿的情况
+* 相当于f5刷新，页面会有卡顿的情况
 >
 
     this.$router.go(0)
     location.reload() 
    
 
-2. 先进入空白页再在空白页跳转回到上一个页面，
+* beforeRouteEnter 先进入空白页再在空白页跳转回到上一个页面，
 >
     
     // 要刷新的页面
@@ -1249,9 +1249,53 @@ App.vue
     }
     </script>
 
-3. 
+* 用provide /inject组合实现
 >
-    通过改变router-view中的key来达到刷新组件的目的
+    //在App.vue,声明reload方法，控制router-view的显示或隐藏，从而控制页面的再次加载。
+    <template>
+      <div id="app">
+        <router-view v-if="isRouterAlive"></router-view>
+      </div>
+    </template>
+
+    <script>
+    export default {
+      name: 'App',
+      provide () {
+        return {
+          reload: this.reload
+        }
+      },
+      data () {
+        return {
+          isRouterAlive: true
+        }
+      },
+      methods: {
+        reload () {
+          this.isRouterAlive = false
+          this.$nextTick(function () {
+            this.isRouterAlive = true
+          })
+        }
+      }
+    }
+    </script>
+
+    //组件注入reload方法，在需要刷新的时候调用this.reload()
+    <script>
+    export default {
+      inject:['reload'],
+      data(){
+        return {
+        }
+      }
+    }
+    </script>
+
+* 通过改变router-view中的key来达到刷新组件的目的
+>
+    
 
     <router-view :key="reload"></router-view>
     默认让key等于当时的时间戳，当切换当前路由的时候改变时间戳为现在的时间戳，同样也可以达到刷新路由的目的

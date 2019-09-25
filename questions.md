@@ -36,6 +36,7 @@
 * <a href="#时间戳、日期 的转换">时间戳、日期 的转换</a>
 * <a href="#浏览器判断">浏览器、手机类型判断navigator.userAgent</a>
 * <a href="#获取当前页面url网址信息">获取当前页面url网址信息</a>
+* <a href="#图片转base64">图片转base64</a>
 * <a href="#base64数据导出文件">base64数据导出文件，文件下载</a>
 * <a href="#判断字符串长度">判断字符串长度</a>
 * <a href="#0.1+0.2">0.1+0.2!=0.3 原因，解决</a>
@@ -490,6 +491,42 @@ var obj = {
     Request = GetRequest();
     // Request['参数1'];
 
+
+## <a name="图片转base64">图片转base64</a>
+>
+    getBase64(
+      "http://pt.baicaitianzun.cn/20190925142975943"
+    );
+    function getBase64(imgUrl) {
+      window.URL = window.URL || window.webkitURL;
+      var xhr = new XMLHttpRequest();
+      xhr.open("get", imgUrl, true);
+      // 至关重要
+      xhr.responseType = "blob";
+      xhr.onload = function() {
+        if (this.status == 200) {
+          //得到一个blob对象
+          var blob = this.response;
+          console.log("blob", blob);
+          // 至关重要
+          let oFileReader = new FileReader();
+          oFileReader.onloadend = function(e) {
+            let base64 = e.target.result;
+            console.log("base64:--->", base64);
+          };
+          oFileReader.readAsDataURL(blob);
+          //====为了在页面显示图片，可以删除====
+          var img = document.createElement("img");
+          img.onload = function(e) {
+            window.URL.revokeObjectURL(img.src); // 清除释放
+          };
+          img.src = window.URL.createObjectURL(blob)
+          document.documentElement.appendChild(img);
+          //====为了在页面显示图片，可以删除====
+        }
+      };
+      xhr.send();
+    }
 
 ## <a name="base64数据导出文件">base64数据导出文件，文件下载</a>
 >
