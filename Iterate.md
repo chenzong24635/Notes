@@ -95,12 +95,17 @@ array：源数组
     });
 ##  <a name="every()、some()、filter()">every()、some()、filter()</a>
 
-    // every() 检测每个元素 是否符合条件（函数提供），全部满足才返回true，不检测空数组
-    // some()                                      一个满足就返回true
-    // filter() 以数组形式返回满足条件的元素，没有返回[]
+| |检测每个元素 是否符合条件| 不检测空数组,以数组形式返回满足条件的元素，没有返回[] |
+|:--|:--|:--|
+|every()| 全部满足才返回true| √|
+|some()| 一个满足就返回true|√ |
+|filter()| 一个满足就返回true| √|
+
+
+>
     arr.filter((item, index, array) => {
-      if (index >= 1) {console.log('index >= 1的值:',item)}
       console.log('filter()-->', 'index:', index, ';item:', item, '源数组:', array)
+      return index >= 1
     });
 
     // 利用filter去重

@@ -71,7 +71,7 @@ CSS布局、居中
 
 # 目录
 
-* <a href="#CSS">**CSS**</a>
+* <a href="#CSS">**`CSS`**</a>
 
 * <a href="#概述">概述</a>
 * <a href="#权重、优先级">权重、优先级</a>
@@ -90,19 +90,34 @@ CSS布局、居中
 * <a href="#文本换行">文本换行</a>
 * <a href="#文字超出省略">文字超出省略</a>
 * <a href="#尺寸单位">像素定义 尺寸单位</a>
-* <a href="#css自定义属性">css自定义属性:root</a>
-* <a href="#移动端1px">移动端1px</a>
 * <a href="#注意事项">注意事项</a>
 * <a href="#用CSS开启硬件加速来提高网站性能">用CSS开启硬件加速来提高网站性能</a>
 * <a href="#@规则">@规则</a>
 * <a href="#CSS hack">CSS hack</a>
-* <a href="#input placeholder颜色兼容">input placeholder颜色兼容</a>
-* <a href="#border:solid">边框</a>
-* <a href="#渐变">linear-gradient </a>
 
 
+* <a href="#一些css属性及其他">**一些css属性及其他**</a>
 
-* <a href="#其他">**其他**</a>
+  * <a href="#pointer-events">pointer-events 使用指针事件來控制鼠标事件</a>
+  * <a href="#渐变">渐变linear-gradient</a>
+  * <a href="#改变input placeholder颜色">改变input placeholder颜色</a>
+  * <a href="#selection">selection 改变选中内容的字体、背景颜色</a>
+  * <a href="#user-select">user-select</a>
+  * <a href="#-webkit-text-size-adjust">-webkit-text-size-adjust</a>
+  * <a href="#-webkit-scrollbar">-webkit-scrollbar 自定义滚动条样式</a>
+  * <a href="#为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"</a>
+  * <a href="#css矩阵matrix">css矩阵matrix</a>
+  * <a href="#图片缩放">图片缩放matrix,transform+transition</a>
+  * <a href="#filter滤镜">filter滤镜</a>
+  * <a href="#background-blend-mode和mix-blend-mode">background-blend-mode和mix-blend-mode</a>
+  * <a href="#多方法描绘一个边框">多方法描绘一个边框</a>
+  * <a href="#移动端1px">移动端1px</a>
+  * <a href="#清除手机端a链接点击高亮">清除手机端a链接点击高亮</a>
+  * <a href="#三角形">三角形</a>
+  * <a href="#纯css横向、垂直滑动">纯css横向、垂直滑动</a>
+  * <a href="#纯css页面滚动进度条">纯css页面滚动进度条</a>
+  * <a href="#"></a>
+  * <a href="#"></a>
 
 # <a name="CSS">**CSS**</a>
 
@@ -123,8 +138,8 @@ CSS的优势：
 >
 
     内联样式 > 内部样式表 > 外部样式表  
-    !important > 内联样式 > ID > class > tag  
-    权值            1000       100   10     1
+    !important > 内联样式 > ID选择器 > 类选择器/属性选择器/伪类选择器 > 元素选择器/关系选择器/伪元素选择器 > 通配符(*)  
+    权值           1000     100           10                                1                             0
 
     max-width、mix-width、max-height、min-height等条件属性是可以覆盖!important的
 
@@ -793,47 +808,6 @@ vw、vh 与 % 百分比的区别
     vw、vh 优势在于能够直接获取高度，而用 % 在没有设置 body 高度的情况下，是无法正确获得可视区域的高度。
 
 
-## <a name="css自定义属性">css自定义属性</a>
-<b>IE不支持</b>
-
-* 特点：
->
-    自定义元素的定义由 -- 开头(如：--a,--a--b, ....)，这样浏览器能够区分自定义属性和原生属性，从而将它俩分开处理。 
-
-    可以在:root中定义全局变量; :root{--color:red}
-    也可在别的作用域定义局部变量; div{--color:red}
-
-    对大小写敏感：--color 与 --COLOR 不同
-
-    可以级联继承 
-
-* 获取方式
->
-    css：var() 方法获取值: var(--my--color)
-        支持第二个参数: var(--my-color, green) 当--my--color不存在或不起作用时应用
-
-    js：window.getComputedStyle(element)的getPropertyValue方法获取属性值  
-        el.style.setProperty来设置属性值
->
-    例子
-    :root{
-        --color: green;
-    }
-    div{
-        --div--color: #000;
-    }
-    .a{
-        color: var(--color)
-    }
-    <div class="a">fsffs</div>
-    <script>
-        const div = document.querySelector('.a')
-        const styles = getComputedStyle(div) //获取所有css样式
-        const color = styles.getPropertyValue('--color') //获取属性值
-        console.log(color) //--> red
-        div.style.setProperty('--color', 'green') //设置属性值
-    </script>
-
 
 ## <a name="用CSS开启硬件加速来提高网站性能">用CSS开启硬件加速来提高网站性能</a>
 #### 何为硬件加速
@@ -954,6 +928,358 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
 
 
 
+
+## <a name="@规则">@规则</a>
+@charset 
+>
+    定义样式表中使用的字符编码。它必须写在样式表的最开头且前面不可有别的字符。
+
+    @charset "UTF-8";
+
+@font-face
+>
+    给网页指定文本字体。
+    @font-face {
+        font-family: "Test Font";
+        src: url("test.ttf");
+    }
+    body { font-family: "Test Font"}
+
+@import
+>
+    导入外部CSS样式表文件
+    @import url('a.css')
+
+@media
+>
+    定义在一个或多个设备类型、具体特点和环境的媒体查询来应用样式。
+
+    @media screen and (min-width: 900px) {
+    }
+
+@keyframs
+>
+    通过定义动画序列中的关键帧来控制CSS动画不同步骤的状态。
+    @keyframes name{
+        from{}
+        to{}
+    }
+
+@supports
+>
+    检测规则组的规则是否生效。规则与@media类似
+    @supports (display: flex) {
+        div {
+            display: flex;
+        }
+    }
+
+@viewport
+>
+    设置视口（viewport）的特性。
+
+@page
+>
+    用于在打印文档时修改某些CSS属性。@page规则只能修改margin、orphans、widow 和 page breaks of the document，对其他属性的修改是无效的。
+    @page {
+        size: 10in 20in;
+        margin: 10% 20%;
+    }
+
+## <a name="CSS hack">CSS hack</a>
+[CSS hack](https://blog.csdn.net/freshlover/article/details/12132801)
+
+//IE6-9
+>
+    <!--[if IE]>
+    <style type="text/css">
+    </style>
+    <![endif]-->
+
+//IE10、11
+>
+    <style type="text/css">
+      @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+
+      }
+    </style>
+
+
+
+
+
+# <a name="一些css属性及其他">**一些css属性及其他**</a>
+
+* <a href="#"></a>
+
+## <a name=""></a>
+
+## <a name="css自定义属性">css自定义属性</a>
+<b>IE不支持</b>
+
+* 特点：
+>
+    自定义元素的定义由 -- 开头(如：--a,--a--b, ....)，这样浏览器能够区分自定义属性和原生属性，从而将它俩分开处理。 
+
+    可以在:root中定义全局变量; :root{--color:red}
+    也可在别的作用域定义局部变量; div{--color:red}
+
+    对大小写敏感：--color 与 --COLOR 不同
+
+    可以级联继承 
+
+* 获取方式
+>
+    css：var() 方法获取值: var(--my--color)
+        支持第二个参数: var(--my-color, green) 当--my--color不存在或不起作用时应用
+
+    js：window.getComputedStyle(element)的getPropertyValue方法获取属性值  
+        el.style.setProperty来设置属性值
+>
+    例子
+    :root{
+        --color: green;
+    }
+    div{
+        --div--color: #000;
+    }
+    .a{
+        color: var(--color)
+    }
+    <div class="a">fsffs</div>
+    <script>
+        const div = document.querySelector('.a')
+        const styles = getComputedStyle(div) //获取所有css样式
+        const color = styles.getPropertyValue('--color') //获取属性值
+        console.log(color) //--> red
+        div.style.setProperty('--color', 'green') //设置属性值
+    </script>
+
+
+
+## <a name="shape-outside">[shape-outside](https://developer.mozilla.org/zh-CN/docs/Web/CSS/shape-outside)</a>
+`IE不支持`  
+定义了一个可以是非矩形的形状，相邻的内联内容应围绕该形状进行包装。 默认情况下，内联内容包围其边距框; shape-outside提供了一种自定义此包装的方法，可以将文本包装在复杂对象周围而不是简单的框中。
+![shape-outside](./img/shape-outside.png)
+
+## <a name="pointer-events">pointer-events 使用指针事件來控制鼠标事件</a>
+
+例如：要禁用按钮上的默认指针事件
+>
+    .button-disabled {
+      opacity: .5;
+      pointer-events: none
+    }
+
+
+
+## <a name="改变input placeholder颜色">改变input placeholder颜色</a>
+>
+    ::-webkit-input-placeholder { color: ; }/*WebKit, Blink, Edge*/
+    :-moz-placeholder { color: ; }/*Mozilla Firefox 4 to 18*/
+    ::-moz-placeholder { color: ; }/*Mozilla Firefox 19+*/
+    :-ms-input-placeholder { color: ; }/*Internet Explorer 10-11 */
+
+## <a name="selection">selection 改变选中内容的字体、背景颜色</a>
+>
+    ::selection { 
+        background: #fff; 
+        color: #333; 
+    } 
+    ::-webkit-selection { 
+        background: #fff; 
+        color: #333; 
+    }
+    ::-moz-selection { 
+        background: #fff; 
+        color: #333; 
+    } 
+
+## <a name="user-select">user-select 文本是否可选中</a>
+user-select:none  
+-webkit-user-select:none
+
+语法
+>
+    user-select:none | text | all | element
+    默认值：text
+    适用范围：除替换元素外的所有元素
+
+取值说明
+>
+    none:文本不能被选择
+    text:可以选择文本
+    all：当所有内容作为一个整体时可以被选择。如果双击或者在 上下文上点击子元素，
+        那么被选择的部分将是以该子元素 向上回溯的最高祖先元素。
+
+## <a name="-webkit-text-size-adjust">-webkit-text-size-adjust: none</a>
+>
+
+    Chrome 中文界面下默认会将小于 12px 的文本强制按照 12px 显示；
+
+    可关闭字体大小自动调整功能; 
+
+    放在body中会导致页面缩放失效,不要把-webkit-text-size-adjust设置为全局或者可继承的
+
+
+## <a name="-webkit-scrollbar">-webkit-scrollbar 自定义滚动条样式</a>
+chrome
+>
+    ::-webkit-scrollbar 滚动条整体部分
+
+    ::-webkit-scrollbar-thumb 滚动条里面的小方块，能向上向下移动（或往左往右移动，取决于是垂直滚动条还是水平滚动条）
+
+    ::-webkit-scrollbar-track 滚动条的轨道（里面装有Thumb）
+
+    ::-webkit-scrollbar-button 滚动条的轨道的两端按钮，允许通过点击微调小方块的位置。
+
+    ::-webkit-scrollbar-track-piece 内层轨道，滚动条中间部分（除去）
+
+    ::-webkit-scrollbar-corner 边角，即两个滚动条的交汇处
+    
+    ::-webkit-resizer 两个滚动条的交汇处上用于通过拖动调整元素大小的小控件
+
+IE
+>
+    scrollbar-arrow-color: color; /*三角箭头的颜色*/
+    scrollbar-face-color: color; /*立体滚动条的颜色（包括箭头部分的背景色）*/
+    scrollbar-3dlight-color: color; /*立体滚动条亮边的颜色*/
+    scrollbar-highlight-color: color; /*滚动条的高亮颜色（左阴影？）*/
+    scrollbar-shadow-color: color; /*立体滚动条阴影的颜色*/
+    scrollbar-darkshadow-color: color; /*立体滚动条外阴影的颜色*/
+    scrollbar-track-color: color; /*立体滚动条背景颜色*/
+    scrollbar-base-color:color; /*滚动条的基色*/
+
+firefox    
+[插件](https://github.com/malihu/malihu-custom-scrollbar-plugin)
+
+## <a name="渐变">渐变 linear-gradient</a>
+[你真的理解CSS的linear-gradient？](https://www.w3cplus.com/css3/do-you-really-understand-css-linear-gradients.html)
+
+## <a name="css矩阵matrix">css矩阵matrix</a>
+
+>
+    transform: matrix(a,b,c,d,e,f)
+    a c e   x   ax + cy + e // ax+cy+e:变换后的水平坐标
+    b d f . y = bx + dy + f // bx+dy+f:变换后的垂直位置 
+    0 0 1   1   0  + 0  + 1
+
+
+    x, y表示转换元素的所有坐标（变量）
+
+    matrix(sx, 0, 0, sy, 0, 0) 等同于scale(sx, sy)
+
+    matrix(0, 0, 0, 0, tx, ty) 等同于translate(tx, ty)
+
+## <a name="图片缩放">图片缩放transform+transition</a>
+>
+    // 先放大1.1倍 ，再还原。一般用于轮播图
+    .img{
+      transform: matrix(1.1, 0, 0, 1.1, 0, 0);/* 等同于transfrom:scale(1.1,1.1) */
+      -webkit-transition: all 0.4s ease 1.2s;
+      -moz-transition: all 0.4s ease 1.2s;
+      -ms-transition: all 0.4s ease 1.2s;
+      -o-transition: all 0.4s ease 1.2s;
+      transition: all 0.4s ease 1.2s;
+    }
+
+    .img.active{
+      transform: matrix(1, 0, 0, 1, 0, 0); /* 等同于transfrom:scale(1,1)*/
+      -webkit-transition: all 7.0s ease;
+      -moz-transition: all 7.0s ease;
+      -ms-transition: all 7.0s ease;
+      -o-transition: all 7.0s ease;
+      transition: all 7.0s ease;  
+      transition-delay: 0.4s;
+    }
+
+## <a name="为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"</a>
+
+>
+    img {
+      display: block;
+      font-family: sans-serif;
+      font-weight: 300;
+      height: auto;
+      line-height: 2;
+      position: relative;
+      text-align: center;
+      width: 100%;
+    }
+
+    img::before {
+      content: "We're sorry, the image below is broken ";
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    img::after {
+      content: "(url:'attr(src)')";
+      display: block;
+      font-size: 12px;
+    }
+    
+## <a name="filter滤镜">filter滤镜（不是IE的filter:alpha(opacity=50)）</a>
+
+## <a name="background-blend-mode和mix-blend-mode">background-blend-mode和mix-blend-mode</a>
+
+## <a name="多方法描绘一个边框">多方法描绘一个边框</a>
+[参考](https://www.w3cplus.com/css/css-tips-0904-1.html)
+
+### 其他方法 绘制一个实心边框(border-style:solid)
+>
+    outline:1em solid #000; //不占用盒模型空间
+>    
+    box-shadow: 0 0 0 1em #000; //不占用盒模型空间
+>    
+    {
+      padding: 1em;
+      background: linear-gradient(to right, #fff, #fff), #000;
+      background-clip: content-box, padding-box;
+    }
+>
+    {
+        border: 1em solid transparent;
+        border-image: linear-gradient(to right, #000, #000) 10% round;
+    }    
+
+> 伪元素
+
+
+### 层叠边框
+![层叠边框](/img/border.png)
+>
+    .div1{
+      width: 300px;
+      height: 100px;
+      margin: 20px auto;
+      outline: 10px dashed red;
+      box-shadow: 0 0 0 10px #000;
+    }
+>
+    .div2{
+      margin: 20px auto;
+      width: 300px;
+      height: 100px;
+      border: 10px dashed;
+      background:
+        linear-gradient(to top, red, 10px, transparent 10px),
+        linear-gradient(to right, red, 10px, transparent 10px),
+        linear-gradient(to bottom, red, 10px, transparent 10px),
+        linear-gradient(to left, red, 10px, transparent 10px);
+      background-origin: border-box;
+    }
+>    
+    .div3{
+      margin: 20px auto;
+      width: 300px;
+      height: 100px;
+      border: 10px dashed;
+      background: linear-gradient(to top, #fff, #fff), red;
+      background-clip: padding-box, border-box;
+    }
+
+
 ## <a name="移动端1px">移动端1px</a>
 [参考](https://juejin.im/post/5d70a030f265da03a715f3fd)
 
@@ -1068,298 +1394,175 @@ devicePixelRatio：设备物理像素和设备独立像素的比例   devicePixe
     }
 
 
-## <a name="@规则">@规则</a>
-@charset 
+## <a name="清除手机端a链接点击高亮">清除手机端a链接点击高亮</a>
+tap-highlight-color: rgba(0, 0, 0, 0);  
+-webkit-tap-highlight-color: rgba(0,0,0,0);
 >
-    定义样式表中使用的字符编码。它必须写在样式表的最开头且前面不可有别的字符。
 
-    @charset "UTF-8";
-
-@font-face
->
-    给网页指定文本字体。
-    @font-face {
-        font-family: "Test Font";
-        src: url("test.ttf");
-    }
-    body { font-family: "Test Font"}
-
-@import
->
-    导入外部CSS样式表文件
-    @import url('a.css')
-
-@media
->
-    定义在一个或多个设备类型、具体特点和环境的媒体查询来应用样式。
-
-    @media screen and (min-width: 900px) {
-    }
-
-@keyframs
->
-    通过定义动画序列中的关键帧来控制CSS动画不同步骤的状态。
-    @keyframes name{
-        from{}
-        to{}
-    }
-
-@supports
->
-    检测规则组的规则是否生效。规则与@media类似
-    @supports (display: flex) {
-        div {
-            display: flex;
-        }
-    }
-
-@viewport
->
-    设置视口（viewport）的特性。
-
-@page
->
-    用于在打印文档时修改某些CSS属性。@page规则只能修改margin、orphans、widow 和 page breaks of the document，对其他属性的修改是无效的。
-    @page {
-        size: 10in 20in;
-        margin: 10% 20%;
-    }
-
-## <a name="CSS hack">CSS hack</a>
-[CSS hack](https://blog.csdn.net/freshlover/article/details/12132801)
-
-//IE6-9
->
-    <!--[if IE]>
-    <style type="text/css">
-    </style>
-    <![endif]-->
-
-//IE10、11
->
-    <style type="text/css">
-      @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-
-      }
-    </style>
-
-## <a name="input placeholder颜色兼容">input placeholder颜色兼容</a>
->
-    ::-webkit-input-placeholder { color: ; }/*WebKit, Blink, Edge*/
-    :-moz-placeholder { color: ; }/*Mozilla Firefox 4 to 18*/
-    ::-moz-placeholder { color: ; }/*Mozilla Firefox 19+*/
-    :-ms-input-placeholder { color: ; }/*Internet Explorer 10-11 */
-
-## <a name="border:solid">边框</a>
-[参考](https://www.w3cplus.com/css/css-tips-0904-1.html)
-
-### 其他方法 绘制一个实心边框(border-style:solid)
->
-    outline:1em solid #000; //不占用盒模型空间
->    
-    box-shadow: 0 0 0 1em #000; //不占用盒模型空间
->    
-    {
-      padding: 1em;
-      background: linear-gradient(to right, #fff, #fff), #000;
-      background-clip: content-box, padding-box;
-    }
->
-    {
-        border: 1em solid transparent;
-        border-image: linear-gradient(to right, #000, #000) 10% round;
-    }    
-
-> 伪元素
-
-
-### 层叠边框
-![层叠边框](/img/border.png)
->
-    .div1{
-      width: 300px;
-      height: 100px;
-      margin: 20px auto;
-      outline: 10px dashed red;
-      box-shadow: 0 0 0 10px #000;
-    }
->
-    .div2{
-      margin: 20px auto;
-      width: 300px;
-      height: 100px;
-      border: 10px dashed;
-      background:
-        linear-gradient(to top, red, 10px, transparent 10px),
-        linear-gradient(to right, red, 10px, transparent 10px),
-        linear-gradient(to bottom, red, 10px, transparent 10px),
-        linear-gradient(to left, red, 10px, transparent 10px);
-      background-origin: border-box;
-    }
->    
-    .div3{
-      margin: 20px auto;
-      width: 300px;
-      height: 100px;
-      border: 10px dashed;
-      background: linear-gradient(to top, #fff, #fff), red;
-      background-clip: padding-box, border-box;
-    }
-
-## <a name="渐变">linear-gradient</a>
-[你真的理解CSS的linear-gradient？](https://www.w3cplus.com/css3/do-you-really-understand-css-linear-gradients.html)
-
-# <a name="其他">**其他**</a>
-
-## 使用指针事件來控制鼠标事件
-
-指针事件允許您指定鼠标如何与其触摸的元素进行交互。 
-
-例如：要禁用按钮上的默认指针事件
->
-    .button-disabled {
-      opacity: .5;
-      pointer-events: none;
-    }
-
-## 为破碎图象定义样式
->
-    img {
-      display: block;
-      font-family: sans-serif;
-      font-weight: 300;
-      height: auto;
-      line-height: 2;
-      position: relative;
-      text-align: center;
-      width: 100%;
-    }
-
-    img::before {
-      content: "We're sorry, the image below is broken ";
-      display: block;
-      margin-bottom: 10px;
-    }
-
-    img::after {
-      content: "(url:'attr(src)')";
-      display: block;
-      font-size: 12px;
-    }
-
-## el.style.cssText +=
-
-## 图片缩放
-    // 先放大1.1倍 ，再还原。一般用于轮播图
-    .img{
-      transform: matrix(1.1, 0, 0, 1.1, 0, 0);/* 等同于transfrom:scale(1.1,1.1) */
-      -webkit-transition: all 0.4s ease 1.2s;
-      -moz-transition: all 0.4s ease 1.2s;
-      -ms-transition: all 0.4s ease 1.2s;
-      -o-transition: all 0.4s ease 1.2s;
-      transition: all 0.4s ease 1.2s;
-    }
-
-    .img.active{
-      transform: matrix(1, 0, 0, 1, 0, 0); /* 等同于transfrom:scale(1,1)*/
-      -webkit-transition: all 7.0s ease;
-      -moz-transition: all 7.0s ease;
-      -ms-transition: all 7.0s ease;
-      -o-transition: all 7.0s ease;
-      transition: all 7.0s ease;  
-      transition-delay: 0.4s;
-    }
-
-css矩阵matrix
->
-    transform: matrix(a,b,c,d,e,f)
-    a c e   x   ax + cy + e // ax+cy+e:变换后的水平坐标
-    b d f . y = bx + dy + f // bx+dy+f:变换后的垂直位置 
-    0 0 1   1   0  + 0  + 1
-
-x, y表示转换元素的所有坐标（变量）
-
-matrix(sx, 0, 0, sy, 0, 0) 等同于scale(sx, sy)
-
-matrix(0, 0, 0, 0, tx, ty) 等同于translate(tx, ty)
-
-
-## user-select
-user-select:none
--webkit-user-select:none
-> (1) 语法
-user-select:none | text | all | element
-默认值：text
-适用范围：除替换元素外的所有元素
-
-> (2) 取值说明
-none:文本不能被选择
-text:可以选择文本
-all：当所有内容作为一个整体时可以被选择。如果双击或者在 上下文上点击子元素，
-    那么被选择的部分将是以该子元素 向上回溯的最高祖先元素。
-
-
-
-
-
-    filter:alpha(opacity=50)
-
-    background: linear-gradient(to left, ##f00, ##f00) left top no-repeat, 
-                linear-gradient(to bottom, ##f00, ##f00) left top no-repeat, 
-                linear-gradient(to left, ##f00, ##f00) right top no-repeat,
-                linear-gradient(to bottom, ##f00, ##f00) right top no-repeat, 
-                linear-gradient(to left, ##f00, ##f00) left bottom no-repeat,
-                linear-gradient(to bottom, ##f00, ##f00) left bottom no-repeat,
-                linear-gradient(to left, ##f00, ##f00) right bottom no-repeat,
-                linear-gradient(to left, ##f00, ##f00) right bottom no-repeat;
-    background-size: 1px 20px, 20px 1px, 1px 20px, 20px 1px;  
-
-
-
-## 清除手机端a链接点击高亮：
-    tap-highlight-color: rgba(0, 0, 0, 0);
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-
-    图片作为a标签点击按钮
+    //图片作为a标签点击按钮
     a,a:hover,a:active,a:visited,a:link,a:focus{
-        -webkit-tap-highlight-color:rgba(0,0,0,0);
-        outline:none;
-        background: none;
-        text-decoration: none;
+      tap-highlight-color: rgba(0, 0, 0, 0);
+      -webkit-tap-highlight-color:rgba(0,0,0,0);
+      outline:none;
+      background: none;
+      text-decoration: none;
     }
 
-
-##  改变选中内容的背景颜色
+## <a name="三角形">三角形</a>
 >
-    ::selection { 
-        background: #fff; 
-        color: #333; 
-    } 
-    ::-moz-selection { 
-        background: #fff; 
-        color: #333; 
-    } 
-    ::-webkit-selection { 
-        background: #fff; 
-        color: #333; 
-    } 
-## 三角形
     width:0; 
     height:0; 
     border-style: solid;
     border-width: 30px 10px;
     border-color:  transparent transparent transparent ##f4f4f4;
 
-    
-## -webkit-text-size-adjust: none
- //Chrome 中文界面下默认会将小于 12px 的文本强制按照 12px 显示；
-// 可关闭字体大小自动调整功能.; 
-//放在body中会导致页面缩放失效,不要把-webkit-text-size-adjust设置为全局或者可继承的
+
+
+
+## <a name="纯css横向、垂直滑动">纯css横向、竖直滑动</a>
+横向
+>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .slide-box {
+      display: -webkit-box;
+      overflow: -moz-scrollbars-none;
+      overflow-x: scroll;
+      -webkit-overflow-scrolling: touch;
+      -ms-overflow-style: none;
+    }
+
+    /* 隐藏下方的滚动条 */
+    .slide-box::-webkit-scrollbar {
+      width: 0;
+      background-color: transparent;
+    }
+
+    .slide-item {
+      width:20%;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+    }
+
+    <div class="slide-box">
+      <div class="slide-item">slide1</div>
+      <div class="slide-item">slide2</div>
+      <div class="slide-item">slide3</div>
+      <div class="slide-item">slide4</div>
+      <div class="slide-item">slide5</div>
+      <div class="slide-item">slide6</div>
+    </div>
+
+竖直滑动
+>
+    .slide-box {
+      width: 100px;
+      height: 100vh;
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
+      -ms-overflow-style: none;
+    }
+
+    /* 隐藏滚动条 */
+    .slide-box::-webkit-scrollbar {
+      width: 0;
+      background-color: transparent;
+    }
+
+    .slide-item {
+      width:100%;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+    }    
+
+
+## <a name="纯css页面滚动进度条">纯css页面滚动进度条</a>
+>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    html{
+      height: 3000px;
+    }
+    body {
+      /* 添加从左下到到右上角的线性渐变 */
+      background-image: linear-gradient(to right top, red 50%, #eee 50%);
+      /* 减去一个屏幕的高度，这样渐变刚好在滑动到底部的时候与右上角贴合。 */
+      background-size: 100% calc(100% - 100vh + 5px);
+      background-repeat: no-repeat;
+    }
+    /* 用一个伪元素，遮住多余部分 */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 1px;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      width:100%;
+      background: #fff;
+      z-index: -1;
+    }
+
+缺点：
+>
+    页面内容不能有背景色或背景图！
+    body自身也不能有背景图！
+    他们都会覆盖进度条
+
+
+
+优化：ix-blend-mode:darken;  
+>
+    传统CSS滚动指示器为了防止对角渐变（也就是滚动进度条）的覆盖页面上的元素内容，因此写在了最底层的body元素上，这就导致如果body元素内的普通元素内容有背景色，或者背景图之类的，就会覆盖进度条，产生致命缺陷。
+
+    我的优化方法是把对角渐变（也就是滚动进度条）连同里面的白色覆盖层写在了普通元素的上面，这样避开被覆盖的致命缺陷。但是这样实现带来另外一个问题，页面的内容都被白色图层覆盖了，那页面内容岂不是都看不见了？不要担心，有CSS声明可以让白色的图层变成透明，那就是mix-blend-mode:darken，也就是darken混合模式。darken混合模式的混合方式很好理解，两个颜色进行混合，哪个颜色深就使用哪个颜色？
+
+    要知道所有的颜色里面最浅的就是白色，于是我们只要把我们的白色覆盖层的混合模式设置为darken，那必然最终呈现出来的颜色一定是覆盖层下面元素内容的颜色，换句话说我们的白色透明覆盖层变透明了。
+
+
+[来源](https://www.zhangxinxu.com/wordpress/2019/06/better-css-scroll-indicator/)
+>
+    *{
+      margin:0;
+      padding: 0;
+    }
+    body {
+      position: relative;
+      height: 2000px;
+    }
+    .indicator {
+      position: absolute;
+      top: 0; right: 0; left: 0; bottom: 0;
+      background: linear-gradient(to right top, teal 50%, transparent 50%) no-repeat;
+      background-size: 100% calc(100% - 100vh);
+      z-index: 1;
+      pointer-events: none;
+      mix-blend-mode: darken;
+    }
+    .indicator::after {
+      content: '';
+      position: fixed;
+      top: 1px; bottom: 0; right: 0; left: 0;
+      background: #fff;
+      z-index: 1;
+    }
+
+缺点：
+>
+    进度条的颜色尽量取深色，因为本身包含darken混合模式，如果颜色过浅，很容易被底部的内容颜色给混合。
+
+    需要在页面滚动高度超过一屏的时候才出现。原因有两方面：一是如果滚动高度过小，没有必要使用滚动指示器；二是滚动指示器本质上是一个渐变，如果滚动高度不足，则进度条的边缘会过于倾斜而导致显示效果不完美。
+
+
 
 
 ## <a name=""></a>
-
-
 ## <a name=""></a>
-#<a name=""></a>
-background-blend-mode和mix-blend-mode
+

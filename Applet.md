@@ -76,22 +76,46 @@
 ##  <a name="授权、获取用户信息">授权、获取用户信息</a>
 #### 授权
 >
-    <button  open-type="getUserInfo" form-type="submit"   @getuserinfo="bindGetUserInfo">授权</button>
 
-    bindGetUserInfo(e) {
-      console.log(e)
-      console.log(e.detail.userInfo)
-      /* if (wx.getStorageSync('useInfo')) {
-        tip.alert('已授权')
-        return false
+    <button
+        wx:if="{{canIUse}}"
+        open-type="getUserInfo"
+        bindgetuserinfo="bindGetUserInfo"
+    >授权登录</button>
+    <view wx:else>请升级微信版本</view>
+
+    Page({
+      data: {
+        //判断小程序的API，回调，参数，组件等是否在当前版本可用。
+        canIUse: wx.canIUse('button.open-type.getUserInfo')
+      },
+      onLoad: function() {
+        // 查看是否授权
+        wx.getSetting({
+          success: function(res){
+            if (res.authSetting['scope.userInfo']) {
+              wx.getUserInfo({
+                success: function(res) {
+                  console.log(res.userInfo)
+                  //用户已经授权过
+                }
+              })
+            }
+          }
+        })
+      },
+      bindGetUserInfo: function(e) {
+        console.log(e.detail.userInfo)
+        if (e.detail.userInfo){
+          //用户按了允许授权按钮
+        } else {
+          //用户按了拒绝按钮
+        }
       }
-      if (e.detail.userInfo) {
-        wx.setStorageSync('useInfo', e.detail.userInfo)
-      } */
-    }
+    })
 
 #### 获取用户信息wx.getUserInfo()
-    // 必须是在用户已经授权的情况下调用
+必须是在用户已经授权的情况下调用
 >
 
     wx.getUserInfo({
@@ -308,5 +332,6 @@ page 部分：
 
 
 ------
+
 <a name=""></a>
 <a name=""></a>

@@ -2,7 +2,6 @@
 
 [MDN-JavaScript 标准内置对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects)
 
-[《JavaScript 标准参考教程》- 阮一峰](http://javascript.ruanyifeng.com/)
 
 [《JavaScript 教程》- 网道](https://wangdoc.com/javascript/index.html)
 
@@ -18,9 +17,10 @@
 [《TypeScript》](https://ts.xcatliu.com/introduction/what-is-typescript.html)
 
 
+[axios](https://www.kancloud.cn/yunye/axios/234845)
+
 [Swiper-轮播图插件](https://www.swiper.com.cn/api/index.html) 
 
-[]()
 
 
 # 目录
@@ -42,6 +42,7 @@
 * <a href="#BOM 浏览器对象模型">BOM 浏览器对象模型</a>
 * <a href="#DOM 文档对象模型">DOM 文档对象模型</a>
 * <a href="#DOM事件">DOM事件</a>
+* <a href="#mouseover、mouseout、mouseenter、mouseleave区别与联系">mouseover、mouseout、mouseenter、mouseleave区别与联系</a>
 * <a href="#DOM操作">DOM操作—怎样添加、移除、移动、复制、创建和查找节点</a>
 * <a href="#变量、函数声明提升">变量、函数声明提升</a>
 * <a href="#自执行函数">自执行函数</a>
@@ -168,6 +169,22 @@
 
 JS的特点：无需编译、弱类型、基于对象、事件驱动  
 JS的组成：核心( ECMAScript) , 文档对象模型(DOM), 浏览器对象模型(BOM)
+
+>  
+    任何 JavaScript 语句是可以加标签的，在语句前加冒号即可：
+
+    firstStatement: var i = 1;
+        
+    大部分时候，这个东西类似于注释，没有任何用处。唯一有作用的时候是：与完成记录类型中的 target 相配合，用于跳出多层循环。
+
+        outer: while(true) {
+          inner: while(true) {
+              break outer;
+          }
+        }
+        console.log("finished")
+        
+    break/continue 语句如果后跟了关键字，会产生带 target 的完成记录。一旦完成记录带了 target，那么只有拥有对应 label 的循环语句会消费它。
 
 ## <a name="数据类型、内置对象">数据类型、内置对象</a>
 [JavaScript思维导图](https://github.com/lidaguang1989/javascript-knowhow)
@@ -403,6 +420,16 @@ https://www.jianshu.com/p/5f9027722204
 >
     event = e || window.event
     event.target || event.srcElement // w3c  | IE
+
+## <a name="mouseover、mouseout、mouseenter、mouseleave区别与联系">mouseover、mouseout、mouseenter、mouseleave区别与联系</a>
+>
+    mouseover/mouseout是标准事件，所有浏览器都支持；mouseenter/mouseleave是IE5.5引入的特有事件后来被DOM3标准采纳，现代标准浏览器也支持
+
+    mouseover/mouseout是冒泡事件；mouseenter/mouseleave不冒泡。需要为多个元素监听鼠标移入/出事件时，推荐mouseover/mouseout托管，提高性能
+
+    不论鼠标指针穿过被选元素或其子元素，都会触发 mouseover 事件，对应 mouseout。
+    
+    只有在鼠标指针穿过被选元素时，才会触发 mouseenter 事件，对应 mouseleave。
 
 ## <a name="DOM操作">DOM操作—怎样添加、移除、移动、复制、创建和查找节点?</a>
 * 创建新节点

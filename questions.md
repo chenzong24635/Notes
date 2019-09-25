@@ -26,14 +26,20 @@
 ## [其他](others.md)
 
 # 目录
-<a href="#常用">**常用**</a>
+* <a href="#常用">**`常用`**</a>
 
+* <a href="#手机号验证">手机号验证</a>
+* <a href="#邮箱验证">邮箱验证</a>
+* <a href="#密码验证">密码验证</a>
+* <a href="#保留小数点后两位-不足则补零">保留小数点后两位-不足则补零</a>
+* <a href="#浮点型+-*/">浮点型+-*/</a>
+* <a href="#时间戳、日期 的转换">时间戳、日期 的转换</a>
 * <a href="#浏览器判断">浏览器、手机类型判断navigator.userAgent</a>
 * <a href="#获取当前页面url网址信息">获取当前页面url网址信息</a>
-* <a href="#时间格式优化">时间格式优化</a>
+* <a href="#图片转base64">图片转base64</a>
 * <a href="#base64数据导出文件">base64数据导出文件，文件下载</a>
 * <a href="#判断字符串长度">判断字符串长度</a>
-* <a href="#0.1+0.2">0.1+0.2!=0.3</a>
+* <a href="#0.1+0.2">0.1+0.2!=0.3 原因，解决</a>
 * <a href="#移动端点透问题">移动端点透问题(click 300ms延迟)</a>
 * <a href="#随机字符串">随机字符串</a>
 * <a href="#随机6个数字">随机6个数字</a>
@@ -64,11 +70,296 @@
 * <a href="#Array.apply(null,Array(3))与Array(3)区别">Array.apply(null,Array(3))与Array(3)区别</a>
 
 
+<a href="#页面加载进度条">页面加载进度条</a>
+<a href="#"></a>
+<a href="#"></a>
+
+
 <a href="#面试题">**面试题**</a>
 
 
+<a href="#"></a>
 
 # <a name="常用">**常用**</a>
+
+
+## <a name="手机号验证">手机号验证</a>
+>
+    function isPhone(tel) {
+      tel = tel + '';
+      if(tel.match(/^1[0-9]{10}$/gi)) return true;
+      return false;
+    }
+
+## <a name="邮箱验证">邮箱验证</a>
+>
+    function isEmail(val) {
+      let reg = /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
+      let  res=reg.test(val);
+      if (res) return true;
+      return false;
+    }
+
+## <a name="密码验证">密码验证</a>
+>
+    function pswLen(val) {// -- 6位数 、字母+数字
+      let reg = /^(?!\d+$)(?![a-zA-Z]+$)[a-zA-Z\d]+$/;
+      let bool = reg.test(val);
+      let len = val.length;
+      console.log(val);
+      if (len >= 6 && bool) return true
+      return false
+    }
+## <a name="保留小数点后两位-不足则补零">保留小数点后两位-不足则补零</a>
+>
+    function returnFloat(value) {
+      var value = Math.round(parseFloat(value) * 100) / 100;
+      var xsd = value.toString().split('.');
+      if (xsd.length == 1) {
+        value = value.toString() + '.00';
+        return value;
+      }
+      if (xsd.length > 1) {
+        if (xsd[1].length < 2) {
+          value = value.toString() + '0';
+        }
+        return value;
+      }
+    }
+## <a name="浮点型+-*/">浮点型+-*/</a>
+* 加
+>
+    function accAdd(arg1, arg2) {
+      let r1, r2, m;
+      try {
+        r1 = arg1.toString().split('.')[1].length;
+      } catch (e) {
+        r1 = 0;
+      }
+      try {
+        r2 = arg2.toString().split('.')[1].length;
+      } catch (e) {
+        r2 = 0;
+      }
+      m = Math.pow(10, Math.max(r1, r2));
+      return ((arg1 * m + arg2 * m) / m).toFixed(2);
+    }
+* 减
+>
+
+* 乘
+>
+    function mul(a, b) {
+      var c = 0,
+          d = a.toString(),
+          e = b.toString();
+      try {
+        c += d.split('.')[1].length;
+      } catch (err) {}
+      try {
+        c += e.split('.')[1].length;
+      } catch (err) {}
+      return Number(d.replace('.', '')) * Number(e.replace('.', '')) / Math.pow(10, c);
+    }
+
+* 除
+>
+    function div(a, b) {
+      var c, d, e = 0, f = 0;
+      try {
+        e = a.toString().split('.')[1].length;
+      } catch (err) {}
+      try {
+        f = b.toString().split('.')[1].length;
+      } catch (err) {}
+      c = Number(a.toString().replace('.', '')), d = Number(b.toString().replace('.', '')), mul(c / d, Math.pow(10, f - e));
+      return c
+    }
+
+## <a name="倒计时">倒计时</a>
+>
+    function countdown(endTime){
+      //月份默认30天
+      //年份默认365天
+      const s = 1000; //秒
+      const m = 60 * s; // 分
+      const h = 60 * m; // 时
+      const D = 24 * h; // 天
+      const M = 30 * D; // 月
+      const Y = 365 * D; // 年
+      endTime = + new Date(endTime);
+      let now = + new Date();
+      let time = endTime- now;
+      const years = (Math.floor(time / Y) + '').padStart(2,0);
+      const months = (Math.floor(time % Y / M) + '').padStart(2,0);
+      const days = (Math.floor(time % M / D) + '').padStart(2,0);
+      const hours = (Math.floor(time % D / h) + '').padStart(2,0);
+      const minutes = (Math.floor(time % h / m) + '').padStart(2,0);
+      const seconds = (Math.floor(time % m / s) + '').padStart(2,0);
+      const milliseconds = (Math.floor(time % s) + '').padStart(3,0);
+      let str = (years + '' === '00' ? '': years + '年')
+              + (months + '' === '00' ? '': months + '月')
+              + (days + '' === '00' ? '': days + '天')
+              + (hours + '' === '00' ? '' :  hours + '时')
+              + (minutes + '' === '00' ?'' :  minutes + '分')
+              + (seconds + '' === '00' ? '' :  seconds + '秒') 
+              // + (milliseconds + '' === '000'  ? '毫秒' :  milliseconds) 
+      // let str = days + '天' + hours + '时' + minutes + '分' + seconds + '秒';
+      return str
+    }
+
+
+## <a name="时间戳、日期 的转换">时间戳、日期 的转换</a>
+* [new Date()](https://www.runoob.com/jsref/jsref-obj-date.html)
+>
+    new Date()
+
+    new Date(milliseconds)
+      new Date(1568093648697)
+
+    new Date(dateString) 
+      new Date("October 13, 1975 11:13:00")
+
+    new Date(year, month, day, hours, minutes, seconds, milliseconds)
+      new Date(79,5,24,11,33,0)//
+
+>
+
+
+    new Date().getFullYear(); //获取完整的年份(4位,1970-????)  -- 2019
+        
+    new Date().getMonth(); //获取当前月份(0-11,0代表1月) -- 8
+
+    new Date().getDate(); //获取当前日(1-31)   -- 18
+
+    new Date().getDay(); //获取当前星期X(0-6,0代表星期天)  -- 3
+
+    new Date().getTime(); //获取当前时间(从1970.1.1开始的毫秒数)  -- 1568778089633
+
+    new Date().getHours(); //获取当前小时数(0-23)  -- 11
+
+    new Date().getMinutes(); //获取当前分钟数(0-59)  -- 45
+
+    new Date().getSeconds(); //获取当前秒数(0-59)  -- 30
+
+    new Date().getMilliseconds(); //获取当前毫秒数(0-999)  -- 123
+
+    new Date().toLocaleDateString(); //获取当前日期 - 本地时间格式 -- 2019/9/18
+
+    new Date().toLocaleTimeString(); //获取当前时间 - 本地时间格式 -- 2019/9/18 上午11:47:06
+
+    new Date().toLocaleString( ); //获取日期与时间 - 本地时间格式 -- 上午11:41:29
+      上午11:41:29
+
+    new Date().valueOf( ); //原始值, 获取当前时间(从1970.1.1开始的毫秒数) 等同于getTime() -- 1568778089633
+
+* 日期 --> 时间戳
+>
+    let date = new Date('2014-04-23 18:55:49:123')
+    // 有三种方式获取
+    let time1 = date.getTime();   //--精确到毫秒
+    let time2 = date.valueOf();   //--精确到毫秒
+    let time3 = Date.parse(date); //--精确到秒
+
+    console.log(time1);//1398250549123  
+    console.log(time2);//1398250549123  
+    console.log(time3);//1398250549000
+
+* 时间戳 --> 日期
+>
+    function timestampToTime(timestamp) { //时间戳 转 时间
+      //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+      if ((timestamp + '').length === 10) {
+        timestamp *= 1000;
+      }
+      timestamp = timestamp / 1;
+      let date = new Date(timestamp);
+      let Y = date.getFullYear();
+      // let M = ((date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1));
+      let M = (date.getMonth() + 1 + '').padStart(2,0);
+      let D = (date.getDate() + '').padStart(2,0);
+      let h = (date.getHours() + '').padStart(2,0);
+      let m = (date.getMinutes() + '').padStart(2,0);
+      let s = (date.getSeconds() + '').padStart(2,0);
+      let ms = (date.getMilliseconds() + '').padStart(3,0);
+      return Y + '-' + M + '-' + D + ' ' + h + ':' + m + ':' + s + ':' + ms;
+    }
+    console.log(timestampToTime(+new Date()))
+
+* 把日期格式化为指定格式
+>
+    function format(date, fmt) {
+      date = new Date(date)
+      var o = {
+        "M+" : date.getMonth()+1,                 //月份
+        "d+" : date.getDate(),                    //日
+        "h+" : date.getHours(),                   //小时
+        "m+" : date.getMinutes(),                 //分
+        "s+" : date.getSeconds(),                 //秒
+        "q+" : Math.floor((date.getMonth()+3)/3), //季度
+        "S"  : date.getMilliseconds()             //毫秒
+      };
+
+      if(/(y+)/.test(fmt)){
+        fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+      }
+
+      for(let k in o){
+        if(new RegExp("("+ k +")").test(fmt)){
+          fmt = fmt.replace(
+            RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));  
+        }       
+      }
+
+      return fmt;
+    }
+
+    console.log(
+      format(new Date(44222222222),"yyyy年MM月"),
+      format(new Date(),"yyyy年MM月dd日"),
+      format(new Date(2179,5,24,11,33,0),"yyyy/MM/dd hh:mm:ss")
+    )
+
+
+* 时间戳 --> 距当前时间 多久
+>
+
+    function formatMsgTime(timestamp) {
+      if (!timestamp) return ''
+      if ((timestamp + '').length === 10) {
+        //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        timestamp *= 1000;
+      }
+      timestamp = timestamp / 1;
+      let s = 1000 // 秒
+      let m = 60 * s // 分
+      let h = 60 * m // 时
+      let D = 24 * h // 天
+      // let W = 7 * D // 周
+      let M = 30 * D // 月
+      let Y = 365 * M // 年 
+
+      let time = new Date().getTime() - new Date(timestamp).getTime() //现在的时间-传入的时间 = 相差的时间（单位 = 毫秒）
+      if (time < 0) {
+          return ''
+      } else if ((time / 1000 < 10)) {
+          return '刚刚'
+      } else if (time / s < 60) {
+          return parseInt((time / s)) + '秒前'
+      } else if ((time / m) < 60) {
+          return parseInt((time / m)) + '分钟前'
+      } else if ((time / h) < 24) {
+          return parseInt(time / h) + '小时前'
+      } else if ((time / D) < 30) {
+          return parseInt(time / D) + '天前'
+      } else if ((time / M) < 12) {
+          return parseInt(time / M) + '月前'
+      } else {
+          return parseInt(time / Y) + '年前'
+      }
+      return 'error';
+    }
+    console.log(formatMsgTime(+new Date('2019 4 5') ))
 
 ## <a name="浏览器判断">浏览器、手机类型判断navigator.userAgent</a>
 使用navigator.userAgent属性 PC端、手机端、iPad判断 ，ie、火狐、其他浏览器判断， 微信浏览器判断， Android、IOS判断
@@ -201,8 +492,41 @@ var obj = {
     // Request['参数1'];
 
 
-## <a name="时间格式优化">时间格式优化</a>
+## <a name="图片转base64">图片转base64</a>
 >
+    getBase64(
+      "http://pt.baicaitianzun.cn/20190925142975943"
+    );
+    function getBase64(imgUrl) {
+      window.URL = window.URL || window.webkitURL;
+      var xhr = new XMLHttpRequest();
+      xhr.open("get", imgUrl, true);
+      // 至关重要
+      xhr.responseType = "blob";
+      xhr.onload = function() {
+        if (this.status == 200) {
+          //得到一个blob对象
+          var blob = this.response;
+          console.log("blob", blob);
+          // 至关重要
+          let oFileReader = new FileReader();
+          oFileReader.onloadend = function(e) {
+            let base64 = e.target.result;
+            console.log("base64:--->", base64);
+          };
+          oFileReader.readAsDataURL(blob);
+          //====为了在页面显示图片，可以删除====
+          var img = document.createElement("img");
+          img.onload = function(e) {
+            window.URL.revokeObjectURL(img.src); // 清除释放
+          };
+          img.src = window.URL.createObjectURL(blob)
+          document.documentElement.appendChild(img);
+          //====为了在页面显示图片，可以删除====
+        }
+      };
+      xhr.send();
+    }
 
 ## <a name="base64数据导出文件">base64数据导出文件，文件下载</a>
 >
@@ -228,7 +552,6 @@ var obj = {
         document.body.removeChild(DownloadLink);
       }
     }
-
 
 ## <a name="判断字符串长度">判断字符串长度(英文占1个字符，中文汉字占2个字符)</a>
     
@@ -528,9 +851,9 @@ Math.random().toFixed(6).slice(-6) / 1
 ## <a name="实现f(a)(b)与f(a,b)一样的效果">实现f(a)(b)与f(a,b)一样的效果</a>
 
 >
-    function f(m,n){
-      if (m!==undefined&&n!==undefined) { return m + n}
-      else{ return function(a){  return m+a;} }
+    function f(m, n){
+      if (m !== undefined && n !== undefined) { return m + n}
+      else { return function(a){  return m + a;} }
     }
 
 >
@@ -1064,6 +1387,263 @@ https://www.jianshu.com/p/6c7d0b18d4ca
     Array.apply(null, {length: n}).map(()=>0)
     ES6方法：new Array(n).fill(0)
 
+
+## <a name="页面加载进度条">页面加载进度条</a>
+>
+    首先，咱们要想知道页面是否加载完毕，需要知道以下几点： 
+    1.document.onreadystatechange 页面加载状态改变时的事件 
+    2.document.readyState 页面当前文档的状态 :有四种状态
+        uninitialized 还未开始载入 
+        loading 载入中
+        interactive 已加载，文档和永和可以开始交互 
+        complete 载入完成 
+        
+
+    document.onreadystatechange = function () {//即在加载的过程中执行下面的代码
+        if(document.readyState=="complete"){//complete加载完成
+            
+        }
+    }
+
+
+### 通过css3来制作进度条小动画
+![loading](img/loading.png)
+
+    .loading {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      background-color: #fff;
+    }
+
+    .loading .pic {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      margin: auto;
+    }
+
+    .loading .pic i {
+      display: block;
+      float: left;
+      width: 6px;
+      height: 50px;
+      background-color: #399;
+      margin: 0 2px;
+      transform: scaleY(.4);
+      animation: load .6s infinite;
+    }
+
+    .loading .pic i:nth-child(2) {
+      animation-delay: .1s;
+    }
+
+    .loading .pic i:nth-child(3) {
+      animation-delay: .2s;
+    }
+
+    .loading .pic i:nth-child(4) {
+      animation-delay: .3s;
+    }
+
+    .loading .pic i:nth-child(5) {
+      animation-delay: .4s;
+    }
+
+    @keyframes load {
+      0%,
+      100% {
+        transform: scaleY(.4);
+      }
+      50% {
+        transform: scaleY(1);
+      }
+    }
+
+    <div class="loading">
+        <div class="pic">
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+        </div>
+    </div>
+
+    document.onreadystatechange = function () {
+      if (document.readyState === 'complete') {//加载完成隐藏
+        document.querySelector('.loading').style.display = 'none'
+      }
+    }
+
+
+###  根据当前页面加载图片数/页面所有图片数 实现加载进度条
+    .loading1 {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      background-color: #fff;
+    }
+
+    .loading1 .pic1 {
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      margin: auto;
+      font-size: 30px;
+      text-align: center;
+      line-height: 100px;
+    }
+
+    .loading1 .pic1 span {
+      display: block;
+      width: 80px;
+      height: 80px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      border-radius: 50%;
+      box-shadow: 0 3px 0 #666;
+      animation: rotate 1s infinite linear;
+      -webkit-animation: rotate 1s infinite linear;
+    }
+
+    @-webkit-keyframes rotate {
+      0% {
+        -webkit-transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+    @keyframes rotate {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    <div class="loading1">
+        <div class="pic1">
+        <span></span>
+        <b>0%</b>
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            var imgs = $('img'); // 获取所有图片
+            var num = 0;
+            imgs.each(function (i) {
+                var cImg = new Image();
+                cImg.onload = null;
+                cImg.onload = function () { // 图片加载时
+                    num++;
+                    $('.loading1 b').html(parseInt(num / $('img').length * 100) + '%'); // 更新进度条
+                    if (num >= $('img').length) { // 所有图片加载完毕时
+                        $('.loading1').fadeOut(); // 隐藏 进度条
+                    }
+                }
+                cImg.src = imgs[i].src;
+            });
+        });
+    </script>
+
+###  根据文件加载顺序来 实现加载进度条
+>
+    设置几个加载进度节点,加载到时则实现加载动画
+    .line {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 1px;
+      background-color: #000;
+    }
+
+    <div class="line"></div>
+    <header>
+        <img src='img.jpg'>
+    </header>
+    
+    <script>
+        $('.line').animate({width:'10%'},100);
+    </script>
+    
+    <section class='banner'>
+        <img src='img.jpg'>
+    </section>
+    
+    <script>
+        $('.line').animate({width:'60%'},100);
+    </script>
+    
+    <footer'>
+        <img src='img.jpg'>
+    </footer>
+    
+    <script>
+        $('.line').animate({width:'100%'},100,function(){
+            $('.line').fadeOut(); // 底部加载完成后隐藏进度条
+        });
+    </script>
+
+___
+
+# <a name="面试题">**面试题**</a>
+
+[前端基础面试题(JS部分)](https://zhuanlan.zhihu.com/p/28428367) <!-- 1 -->
+
+[前端进阶系列](https://github.com/yygmind/blog)
+
+[web前端大厂10道经典面试题汇总](https://zhuanlan.zhihu.com/p/57200821)
+
+https://github.com/yygmind/blog 
+
+https://github.com/LiangJunrong/document-library/blob/master/other-library/Interview/PersonalExperience/2019-InterviewPreparation.md#chapter-two-one
+
+https://github.com/markyun/My-blog/tree/master/Front-end-Developer-Questions/Questions-and-Answers
+
+https://github.com/qiu-deqing/FE-interview
+
+https://github.com/foru17/front-end-collect
+
+
+# 定义一个简单的模板类，使用{}作为转义标记，中间的数字表示替换目标，format实参用来替换模板内标记 
+ >   
+    (function (window) {
+        function fn(str) {
+            this.str = str;
+        }
+
+        fn.prototype.format = function () {
+            var arg = Array.prototype.slice.call(arguments, 0);
+            return this.str.replace(/\{\s*(\d+)\s*\}/g, function (a, b) {
+                return arg[b] || '';
+            });
+        };
+
+        window.fn = fn;
+    })(window);
+
+    // use
+    (function () {
+        var t = new fn('<p><a href="{0}">{1}</a><span>{2}</span></p>');
+        console.log(t.format('http://www.alibaba.com', 'Alibaba', 'Welcome'));
+    })();
+
 ## 
 >
     function Foo() {
@@ -1131,21 +1711,4 @@ https://www.jianshu.com/p/6c7d0b18d4ca
       new 带参数列表，优先级19，因此相当于是 new (new Foo()).getName()；先初始化 Foo 的实例化对象，然后将其原型上的 getName 函数作为构造函数再次 new ，相当于 new ((new Foo()).getName)();
       
 
-# <a name="面试题">**面试题**</a>
-
-[前端基础面试题(JS部分)](https://zhuanlan.zhihu.com/p/28428367) <!-- 1 -->
-
-[前端进阶系列](https://github.com/yygmind/blog)
-
-[web前端大厂10道经典面试题汇总](https://zhuanlan.zhihu.com/p/57200821)
-
-https://github.com/yygmind/blog 
-
-https://github.com/LiangJunrong/document-library/blob/master/other-library/Interview/PersonalExperience/2019-InterviewPreparation.md#chapter-two-one
-
-https://github.com/markyun/My-blog/tree/master/Front-end-Developer-Questions/Questions-and-Answers
-
-https://github.com/qiu-deqing/FE-interview
-
-https://github.com/foru17/front-end-collect
 
