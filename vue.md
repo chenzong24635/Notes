@@ -868,7 +868,7 @@ https://www.jianshu.com/p/a7550c0e164f
 
 # <a name="页面滚动">页面滚动</a>
 
-切换路由时
+切换路由时滚到头部
 >
     const router = new Router({
       routes: [...],
@@ -889,6 +889,28 @@ https://www.jianshu.com/p/a7550c0e164f
       }
     })
 
+新增内容，滚到底部（聊天）
+>
+    <div class="scroll-here" ref="scrollHere"></div>
+
+    // 监听lists列表 ，变化就触发滚动
+    watch: {
+      lists(){
+        setTimeout(this.scrollBottom,1000)
+      }
+    },
+    methods: {
+      scrollBottom() {
+        this.$nextTick(() => {
+          /* 无效？？？
+          this.$refs.lists.scrollTop = this.$refs.lists.scrollHeight
+          document.body.scrollTop = this.$refs.lists.scrollHeight
+          ; */
+          // document.querySelector('.scroll-here').scrollIntoView()
+          this.$refs.scrollHere.scrollIntoView()
+        });
+      },
+    }
 >
 
     document.documentElement.scrollTop = 300
