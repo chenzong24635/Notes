@@ -889,7 +889,7 @@ https://www.jianshu.com/p/a7550c0e164f
       }
     })
 
-新增内容，滚到底部（聊天）
+新增内容时，滚到底部（如聊天）
 >
     <div class="scroll-here" ref="scrollHere"></div>
 

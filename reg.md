@@ -1,23 +1,35 @@
 ![a](../marigna.webp)
 
-[]()
+[MDN-正则表达式](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#)
 
 [正则表达式30分钟入门教程](https://deerchao.cn/tutorials/regex/regex.htm#mission)
 
-[正则](http://tool.oschina.net/uploads/apidocs/jquery/regexp.html)
+[正则表达式迷你书](chrome-extension://cdonnmffkdaoajfknoeeecmchibpmkmg/static/pdf/web/viewer.html?file=https%3A%2F%2Fraw.githubusercontent.com%2Fqdlaoyao%2Fjs-regex-mini-book%2Fmaster%2FJavaScript%25E6%25AD%25A3%25E5%2588%2599%25E8%25A1%25A8%25E8%25BE%25BE%25E5%25BC%258F%25E8%25BF%25B7%25E4%25BD%25A0%25E4%25B9%25A6%25EF%25BC%25881.1%25E7%2589%2588%25EF%25BC%2589.pdf)
+
+[正则表达式手册](http://tool.oschina.net/uploads/apidocs/jquery/regexp.html)
 
 [正则调试](https://regex101.com/)
 
-# 元字符
+[正则表达式-图形化工具](https://regexper.com/)
+
+# 创建正则表达式
+字面量形式：
+var re = /abc/gi;
+
+构造函数形式：
+var re = new RegExp("abc",gi);
+
+# 字符
 | 字符| 描述| |
 |:---|:---|:--|
 | .  | 匹配除换行符（\n）以外的任意字符(匹配所有([\d\D]\*)或([\s\S]\*)或([\w\W]\*) 或开启单行模式(s)) | /.ar/g => The `car par`ked in the `gar`age.  |
-| () | 数据分界 |  |
+| () | 数据分界,分组捕获 |  |
+| (?:) |非捕获,  匹配?:后面内容，但是不记住匹配项。这种括号叫作非捕获括号 |  |
 | [] | 匹配方括号内的任意字符 | [abc]会匹配a或b或c |
 | [^] | 匹配除了方括号内的任意字符 | [^abc]会匹配除a或b或c外的字符 |
-| \ | 转义字符| 转义特殊字符为普通字符 \\[\\] |
 | ^ | 匹配字符串的开始| 数字开头^\d|
 | $ | 匹配字符串的结束| 数字结尾\d$|
+| \ | 转义字符| 转义特殊字符为普通字符 \\[\\] |
 | \| | 或运算符, 多选一 匹配符号前或后的字符| /(c\|g\|p)ar/g => The `car` is `par`ked in the `gar`age. |
 | \w | 匹配任何单词字符.等价于[A-Za-z0-9_] ||
 | \W | 匹配任何非单词字符.等价于[^A-Za-z0-9_] ||
@@ -26,7 +38,7 @@
 | \d | 匹配数字 (等价于[0-9] )||
 | \D | 匹配非数字 (等价于[^0-9] [^\d])||
 | \b | 匹配一个单词边界 （单词的开始或结束）| “er\b”可以匹配“never”中的“er”，但不能匹配“verb”中的“er”。|
-| \B | 匹配一个非单词边界 （非单词的开始或结束） | “er\B”能匹配“verb”中的“er”，但不能匹配“never”中的“er”|
+| \B | 匹配一个非单词边界 （非单词的开始或结束）。具体就是\w与\W之间的位置（包括\w与^之间的位置，和\w与$之间的位置）。 | “er\B”能匹配“verb”中的“er”，但不能匹配“never”中的“er”|
 | \f | 匹配一个换页符。等价于\x0c和\cL。 |
 | \n | 匹配一个换行符。等价于\x0a和\cJ。 |
 | \r | 匹配一个回车符。等价于\x0d和\cM。 |
@@ -72,6 +84,7 @@
 | {n,m}? |重复n到m次，但尽可能少重复|
 | {n,}?  |重复n次以上，但尽可能少重复|
 
+
 # 零宽断言
 断言：俗话的断言就是“我断定什么什么”，而正则中的断言，就是说正则可以指明在指定的内容的前面或后面会出现满足指定规则的内容，意思正则也可以像人类那样断定什么什么，比如"ss1aa2bb3",正则可以用断言找出aa2后面有|没有bb3，也可以找出aa2前面有|没有ss1.
 
@@ -100,27 +113,103 @@
 
 #  方法
 
-* test：查询是否存在符合的字符
->
-    reg.test(str) 返回boolean值：true|false
+| 方法 | 描述 | 返回 | 使用 |
+|:--|:--|:--|:--|
+| test( RegExp 对象的方法) | 验证字符串是否匹配 | boolean值：true\|false | reg.test(str)
+| exec ( RegExp 对象的方法) | 捕获匹配的字符串,只捕获首个匹配的 | 数组 \| null |  reg.exec(str)
+| match (String 对象的方法) | 捕获匹配的字符串；若全局搜索（g）则一次性捕获所有，否则返回首个匹配值，与exce方法一致 | 数组 \| null |  str.match(reg)
+| search | 检索字符串是否匹配RegExp | 匹配到字符串首次出现的索引 \| -1 | str.search(reg)
+| replace | 替换匹配的字符串（不改变原字符串） | 替换后的新字符串 |  replace(str|regexp, newStr|callback)
+| split | 分割字符串（不改变原字符串）   | 数组 |  str.split(reg,str1);   date = '2017-11-21 23:40:56';date.split(/-|\s|:/); -->  ["2017", "11", "21", "23", "40", "56"]
 
+* exec --  reg.exec(str)  
+* match(非全局搜索) --  str.match(reg)   
+返回值：  
+匹配的内容 | 捕获分组（括号里匹配）的内容，有几个分组就有几项  
+index：匹配内容的起始索引  
+input：原字符串  
+groups：用于列举 “有名有姓”的捕获
+  >语法为：(?<捕获分组的名字>捕获分组对应的规则)，/(?\<myname>\d))/
+
+>
+    let str = '123'
+    let reg = /(?<first>\d)(?<second>\d)/
+    // 其中的?<first>、?<second>代表捕获的“名字”为first、second 
+    reg.exec(str)
+    //返回：
+    [
+      "12","1","2",
+      index: 0,
+      input: "123",
+      groups:{
+        first: "1"
+        second: "2"
+      }
+    ]
+
+注意：  
+()捕获分组,返回多个匹配内容   
+?:非捕获分组（匹配不捕获）    
+  >不需要捕获分布的内容时，在不需要捕获分组的里面加上?: 
+>
+    var str = "2018ceshi2019";
     
+    var reg = /\d\w/;
+    reg.exec(str);//["20", index: 0, input: "2018ceshi2019",groups:undefined]
+    
+    var reg = /(\d)(\w)/; //捕获分组
+    reg.exec(str);//["20", "2", "0", index: 0, input: "2018ceshi2019",groups:undefined]
+    
+    var reg = /(\d)(?:\w)/; //捕获分组+非捕获分组
+    reg.exec(str);//["20","2", index: 0, input: "2018ceshi2019",groups:undefined]
 
-* match：查询所有符合的字符
+    var reg = /(?:\d)(?:\w)/; //非捕获分组
+    reg.exec(str);//["20", index: 0, input: "2018ceshi2019",groups:undefined]
+
+* replace, str.replace(值类型 | regexp, 值类型 | 回调函数)
 >
-    str.match(reg) //返回数组 | null
+    str.replace(reg, '$0,$1,$2')
+    str.replace(reg, '$&,')
 
-    'bNa '.match(/na/gi) ==> ['Na']
+    str.replace(reg, function ($0,$1,$2,...) {
+      // 第一个形参$0 表示匹配的字符
+      // 若有分组，则从第二个参数开始就是分组的内容
+      // 倒数第二个形参 表示匹配字符的起始索引
+      // 倒数第一个形参 表示原字符串
 
-* replace： 替换所有符合的字符
+      //$& 表示整个被匹配的字符串
+    });
+
+将用户输入转义为正则表达式中的一个字面字符串
 >
-    str.replace(reg,replacedElement) //返回替换后的字符串
+    function escapeRegExp(string) {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); 
+    }
+    escapeRegExp('[].')// '\[\]\.'
 
-    'bNa'.replace(/na/gi, 2) ==> 'b2'
+>
+    let date = '2017-11-21'
+    date.replace(/^(\d{4})-(\d{2})-(\d{2})$/, '$2/$3/$1')
+    //返回："11/21/2017"
 
-
+>
+    var str = "11a22b33c44d";
+    
+    var newStr1 = str.replace(/\d+/g, function ($0,$1,$2) {
+        return $0*2;
+    });
+    console.log(str);//11a22b33c44d
+    console.log(newStr1);//22a44b66c88d
+    
+    // 若有量词，则分组里面的内容是匹配字符的最后一个字符
+    var newStr2 = str.replace(/(\d+)/g, function ($0,$1,$2) {
+        return $0*2;
+    })
+    console.log(str);//11a22b33c44d
+    console.log(newStr2);//22a44b66c88d
 
 # 常用
+
 用户名：
 数字字母下划线 m到n个字符
 >

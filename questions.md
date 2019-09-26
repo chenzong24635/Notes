@@ -143,9 +143,10 @@
       }
       m = Math.pow(10, Math.max(r1, r2));
       return ((arg1 * m + arg2 * m) / m).toFixed(2);
+      //减
+      //return ((arg1 * m - arg2 * m) / m).toFixed(2);
     }
-* 减
->
+
 
 * 乘
 >
@@ -751,23 +752,29 @@ Math.random().toFixed(6).slice(-6) / 1
     const number =(min, max) => Math.random() * (max - min) + min
 
 ## <a name="数字千分位">数字千分位 </a>
-1.toLocaleString()
+1. toLocaleString()
 >   
     var a = 123456;
     a.toLocaleString() //'123,456'
 
-2.正则
+2. reg
 >
 
-    function thousandth(num){
+    function thousandth (num) {
       return num && num
         .toString()
-        .replace(/(\d)(?=(\d{3})+\.)/g, function($1, $2){
-          return $2 + ',';
-        });
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+        //.replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,')
     }
+    //$&  表示整个被匹配的字符串
+    //$&, 所有匹配的字符串后加, '$&,' 等同于 ','
 
-3.reduce
+    //做多只支持 小数点后两位
+    thousandth(16623.67864)//"16,623.67,864" ???
+    thousandth(1662367864) //"1,662,367,864" 
+
+
+3. reduce
 >
     function thousandth(num) {//12345678
       var str = num + '';
@@ -778,7 +785,7 @@ Math.random().toFixed(6).slice(-6) / 1
       })
     }
 
-4.for
+4. for
 >
     function thousand(num) {
       var str = ''
@@ -792,7 +799,7 @@ Math.random().toFixed(6).slice(-6) / 1
       return num.join('')
     }
 
-4.for
+4. for
 >
     function format(num){  
       var str="";//字符串累加  
