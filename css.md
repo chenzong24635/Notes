@@ -1,25 +1,14 @@
 ﻿# 链接
-https://github.com/chokcoco/CSS-Inspiration
 
-[You-Dont-Need-JavaScript](https://github.com/you-dont-need/You-Dont-Need-JavaScript)CSS实现效果而不需要JS
+[You-Dont-Need-JavaScript:用CSS实现效果而不需要JS](https://github.com/you-dont-need/You-Dont-Need-JavaScript)
 
 [CSS tricks](https://css-tricks.com/)
 
+[CSS-Inspiration:在这里找到写 CSS 的灵感](https://github.com/chokcoco/CSS-Inspiration)
+
 [常见的CSS图形](https://codepen.io/chenzong24635/pen/xQNyzg)
 
-UI框架
 
-[Bootstrap](http://www.bootcss.com/)
-
-[vux](https://doc.vux.li/zh-CN/)
-
-[mint-ui](http://mint-ui.github.io/docs/#/)
-
-[Element](http://element-cn.eleme.io/#/zh-CN/component/installation)
-
-[jqweui](http://jqweui.com/components)
-
-[WeUI ](https://weui.io/)
 
 动画
 
@@ -59,7 +48,7 @@ CSS布局、居中
 
 [三列布局](http://www.cnblogs.com/xiaohuochai/p/5455905.html)
 
-手册  
+css手册  
 
 [CSS 教程手册](https://www.html.cn/book/css/)
 

@@ -1,25 +1,30 @@
-# 链接
-
-[MDN-JavaScript 标准内置对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects)
-
-
-[《JavaScript 教程》- 网道](https://wangdoc.com/javascript/index.html)
-
-[《JavaScript 教程》](http://zh.javascript.info/)
-
-[《ECMAScript 6 入门》- 阮一峰](http://es6.ruanyifeng.com/)
-
-[ECMAScript 6兼容性表](http://kangax.github.io/compat-table/es6/)
+<details open>
+  <summary>
+    链接
+  </summary>
+  
+  [MDN-JavaScript 标准内置对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects)
 
 
-[《TypeScript》](https://www.tslang.cn/docs/home.html)
+  [《JavaScript 教程》- 网道](https://wangdoc.com/javascript/index.html)
 
-[《TypeScript》](https://ts.xcatliu.com/introduction/what-is-typescript.html)
+  [现代 JavaScript 教程](http://zh.javascript.info/)
+
+  [《ECMAScript 6 入门》- 阮一峰](http://es6.ruanyifeng.com/)
+
+  [ECMAScript 6兼容性表](http://kangax.github.io/compat-table/es6/)
 
 
-[axios](https://www.kancloud.cn/yunye/axios/234845)
+  [《TypeScript》](https://www.tslang.cn/docs/home.html)
 
-[Swiper-轮播图插件](https://www.swiper.com.cn/api/index.html) 
+  [《TypeScript》](https://ts.xcatliu.com/introduction/what-is-typescript.html)
+
+
+  [axios](https://www.kancloud.cn/yunye/axios/234845)
+
+  [Swiper-轮播图插件](https://www.swiper.com.cn/api/index.html) 
+</details>
+
 
 
 
@@ -71,6 +76,7 @@
 * <a href =""></a>
 * <a href="#跨域">跨域</a>
 * <a href="#常见的web攻击">常见的web攻击</a>
+* <a href="#字符转码、解码">字符转码、解码</a>
 * <a href="#URI、URL、URN">URI、URL、URN</a>
 * <a href="#函数重载">函数重载</a>
 * <a href="#防抖、节流">防抖、节流</a>
@@ -1969,7 +1975,9 @@ https://zhuanlan.zhihu.com/p/55064276
     SQL 注入就是通过给 web 应用接口传入一些特殊字符，达到欺骗服务器执行恶意的 SQL 命令。
 
 
+
 ## <a name="URI、URL、URN">URI、URL、URN</a>
+
 * URI
 > 
     URI，是uniform resource identifier，统一资源标识符，用来唯一的标识一个资源。
@@ -1997,6 +2005,31 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
 在Java的URI中，一个URI实例可以代表绝对的，也可以是相对的，只要它符合URI的语法规则。而URL类则不仅符合语义，还包含了定位该资源的信息，因此它不能是相对的。
 
 在Java类库中，URI类不包含任何访问资源的方法
+
+## <a name="字符转码、解码">字符转码、解码</a>
+* encodeURIComponent()、decodeURIComponent()  
+
+将中文、韩文等特殊字符转换成utf-8格式的url编码   
+传递参数时需要使用encodeURIComponent，这样组合的url才不会被#等特殊字符截断。
+
+>
+    var url = "http://localhost:8080/#/pp?a=1&b=" ;
+    encodeURIComponent(encodeURIComponent(url))
+    "http%3A%2F%2Flocalhost%3A8080%2F%23%2Fpp%3Fa%3D1%26b%3D"
+
+* encodeURI()、decodeURI()  
+用于整个url跳转
+>
+
+    url = "http://localhost:8080/#/pro?a=1&b=张三&c=aaa"
+    encodeURI(url)
+    "http://localhost:8080/#/pro?a=1&b=%E5%BC%A0%E4%B8%89&c=aaa"
+    本例中只是将中文转成%...，传过去再解码就可以拿到中文
+
+* escape() 、unescape()  
+js对字符串进行编码。不常用
+>
+
 
 
 ## <a name="函数重载">函数重载</a>

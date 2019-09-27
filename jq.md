@@ -7,25 +7,9 @@
 
 
 * <a href="#"></a>
-* <a href="#"></a>
-* <a href="#"></a>
-* <a href="#"></a>
-* <a href="#"></a>
-* <a href="#"></a>
-* <a href="#"></a>
-* <a href="#"></a>
 * <a href="#jQuery获取的dom对象和原生的dom对象区别">jQuery获取的dom对象和原生的dom对象区别</a>
 * <a href="#jQuery如何扩展自定义方法">jQuery如何扩展自定义方法</a>
 
-## <a name=""></a>
-## <a name=""></a>
-## <a name=""></a>
-## <a name=""></a>
-## <a name=""></a>
-## <a name=""></a>
-## <a name=""></a>
-## <a name=""></a>
-## <a name=""></a>
 ## <a name=""></a>
 ## <a name="jQuery获取的dom对象和原生的dom对象区别">jQuery获取的dom对象和原生的dom对象区别</a>
 >

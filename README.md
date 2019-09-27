@@ -1,17 +1,16 @@
 # 笔记
 
-
-
-------
+---------------
 
 # markdown 语法
 
 [Markdown 语法说明](https://www.appinn.com/markdown/)
 
 ## 代码折叠、展开
-<details>
+<details open>
   <summary>内容描述</summary>
-  测试内容
+  测试内容,open：展开  
+  IE不支持
 </details>
 
 ## 文章中添加代码
