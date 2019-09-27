@@ -1,10 +1,10 @@
+# 链接
 <details open>
   <summary>
-    链接
+    展开/收缩
   </summary>
-  
-  [MDN-JavaScript 标准内置对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects)
 
+  [MDN-JavaScript 标准内置对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects)
 
   [《JavaScript 教程》- 网道](https://wangdoc.com/javascript/index.html)
 
@@ -13,7 +13,6 @@
   [《ECMAScript 6 入门》- 阮一峰](http://es6.ruanyifeng.com/)
 
   [ECMAScript 6兼容性表](http://kangax.github.io/compat-table/es6/)
-
 
   [《TypeScript》](https://www.tslang.cn/docs/home.html)
 
@@ -29,6 +28,10 @@
 
 
 # 目录
+<details open>
+  <summary>
+    展开/收缩
+  </summary>
 
 * <a href="#运算符优先级">运算符优先级</a>
 * <a href="#运算符">运算符</a>
@@ -92,6 +95,7 @@
 * <a href="#use strict">"use strict"? 用处？</a>
 * <a href="#DOMContentLoaded、$(function(){})、window.onload事件、执行顺序">DOMContentLoaded、$(function(){})、window.onload事件、执行顺序</a>
 
+</details> 
 
 # <a name="运算符优先级">运算符优先级</a>
 ![运算符优先级](img/运算符优先级.png)
@@ -2757,9 +2761,5 @@ ______
     //$(function{})
     //window.onload
 
-## <a name=""></a>
-## <a name=""></a>
-## <a name=""></a>
-## <a name=""></a>
 ## <a name=""></a>
 ## <a name=""></a>

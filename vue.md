@@ -3,9 +3,21 @@
 
 [Vue.js 技术揭秘](https://ustbhuangyi.github.io/vue-analysis/prepare/flow.html)
 
-
 [Vue资源精选(组件、插件...)](http://vue.awesometiny.com/)
 
+# <a name="vue-element-admin">vue-element-admin</a>
+后台页面模板，基于 vue 和 element-ui实现
+
+[vue-element-admin](https://panjiachen.github.io/vue-element-admin-site/zh/guide/)
+
+[手摸手，带你用vue撸后台](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
+
+# 目录
+<details open>
+  <summary>
+    展开/收缩
+  </summary>
+ 
 * <a href="#MVC、MVP、MVVM">MVC、MVP、MVVM</a>
 * <a href="#SPA">SPA SSR</a>
 * <a href="#双向数据绑定原理、实现">双向数据绑定原理、实现:Object.defineProperty、proxy</a>
@@ -68,13 +80,9 @@
   * <a href="#"></a>
   * <a href="#"></a>
 
+</details>
 
-# <a name="vue-element-admin">手摸手 vue-element-admin</a>
-后台页面模板，基于 vue 和 element-ui实现
 
-[vue-element-admin](https://panjiachen.github.io/vue-element-admin-site/zh/guide/)
-
-[文章](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
 
 
 
