@@ -31,13 +31,12 @@
 * <a href="#vscode-sync-setting">vscode-sync-setting</a>
 * <a href="#创建项目提交到仓库">创建项目提交到仓库</a>
 * <a href="#git基本命令">git基本命令</a>
+* <a href="#gitingore">忽略某些文件提交 gitingore</a>
 * <a href="#帐号设置">帐号设置</a>
-  * <a href="#安装配置户名、邮箱">安装配置户名、邮箱</a>
+  * <a href="#设置查看用户名、邮箱">设置查看用户名、邮箱</a>
+  * <a href="#重设用户名、邮箱">重设用户名、邮箱</a>
   * <a href="#本地永久保存账号密码">本地永久保存账号密码</a>
   * <a href="#删除或修改本地保存的账号密码">删除或修改本地保存的账号密码</a>
-  * <a href="#重设用户的名字和邮箱">重设用户的名字和邮箱</a>
-  * <a href="#查看用户名、邮箱">查看用户名、邮箱</a>
-* <a href="#gitingore">忽略某些文件提交 gitingore</a>
 * <a href="#md添加图片">md添加图片</a>
 * <a href="#预览html文件">如何在github的markdown上预览html文件</a>
 * <a href="#"></a>
@@ -67,7 +66,7 @@
 
 
 # <a name="git基本命令">git基本命令</a>
-npm i git --- git安装
+npm i git //git安装
 
 ## TortoiseGit--git命令快捷工具
 [安装及汉化](https://tortoisegit.org/download/)
@@ -77,44 +76,102 @@ npm i git --- git安装
 
 ## 命令
 
-* git init  --初始化git 将当前目录变为仓库
-* git clone url   --获取下载仓库  git clone http://chenzong@git/仓库名.git
-* git add ./  |  git add ./文件名   ---将文件添加到暂存区（添加所有 | 添加某个文件）
-* git commit  -m "这里写备注"  --- 将暂存区文件提交到仓 
-* git pull origin  ---从服务器拉取
-* git push origin  ---更新到服务器
+* git init  //初始化git 将当前目录变为仓库
+* git clone url reName  //获取下载仓库  git clone http://chenzong@git/仓库名.git '仓库重命名为reName(可略)'
+* git add .  |  git add ./文件名  //将文件添加到暂存区（添加所有 | 添加某个文件）
+* git commit  -m "这里写备注"  //将暂存区文件提交到仓库
+* git commit  -a -m "这里写备注"  //git add + git commit
 
-* git status  --- 查看文件状态
-* git rm -r fileName --删除本地文件/文件夹
-* git rm -r --cached fileName --删除缓存文件/文件夹
 
-* git remote add origin http://github.com/仓库名.git --- 关联远端仓库
-* git remote rm origin  --- 删除远端仓库关联
-* git remote -v  --- 查看已关联远端库
-* git push -u origin master  --- 提交到远端仓库 第一次 以后用：git push origin master
+* git pull origin  //从服务器拉取
+* git push origin  //更新到服务器
 
-* git log   --- 查看记录
-* git reset --hard HEAD^  --- 回退版本 HEAD HEAD^  HEAD^^ HEAD~100
-* cat filename  --- 查看文件内容
-* git reflog  --- 记录每次命令查找id
-* git checkout --- readme.txt  --- 放弃工作区中的内容
+* git status  //查看文件状态
+* git status -s // 查看文件状态---紧凑的格式输出
+>
+     M fileName  //在工作区被修改 ,但是还没放入暂存区
+    M  fileName  //在工作区被修改 ,已经放入暂存区
+    MM fileName  //在工作区被修改 ,并提交到暂存区后又在工作区中被修改了
+    A  fileName  //新添加到暂存区中的文件前面
+    ?? fileName  //新添加的未跟踪文件
+
+* git diff //查看修改之后还没有暂存起来的变化内容
+* git diff --cached //查看已暂存的将要添加到下次提交里的内容
+
+* git rm -r fileName //删除本地文件/文件夹
+* git rm -r --cached fileName //删除缓存文件/文件夹
+
+* git remote add origin http://github.com/仓库名.git //关联远端仓库
+* git remote rm origin  //删除远端仓库关联
+* git remote -v  //查看已关联远端库
+* git push -u origin master  //提交到远端仓库 第一次 以后用：git push origin master
+
+* git log   //查看记录
+* git reset --hard HEAD^  //回退版本 HEAD HEAD^  HEAD^^ HEAD~100
+* cat filename  //查看文件内容
+* git reflog  //记录每次命令查找id
+* git checkout //readme.txt  //放弃工作区中的内容
 
 
 `分支`
-* git branch --- 查看分支   
-* git branch <name>  --- 创建分支  
-* git checkout <name> --- 切换分支  
-* git checkout -b <name> --- 创建+切换分支  
-* git merge <name>  --- 合并某分支到当前分支  
-* git branch -D <name>  --- 删除分支  
-* git checkout branch -- file  --- 将你的某个文件还原到某个分支的版本
+* git branch //查看分支   
+* git branch <name>  //创建分支  
+* git checkout <name> //切换分支  
+* git checkout -b <name> //创建+切换分支  
+* git merge <name>  //合并某分支到当前分支  
+* git branch -D <name>  //删除分支  
+* git checkout branch -- file  //将你的某个文件还原到某个分支的版本
+
+退出vim编辑器：ESC + ZZ
+
+# <a name="gitingore">忽略某些文件提交 gitingore</a>
+
+配置语法
+>   
+    所有空行或者以＃开头的行都会被Git忽略(注释)
+    以斜杠"/"开头表示目录；
+    以星号"*"通配多个字符；
+    以问号"?"通配单个字符
+    以方括号"[]"包含单个字符的匹配列表；
+    以叹号"!"表示追踪（不过滤）匹配到的文件或目录。
+
+注意： git 对于 .gitignore配置文件是按行从上到下进行规则匹配的
+
+>
+    /mtk    过滤整个文件夹
+    /mtk1/do.c   过滤某个具体文件
+    !/mtk/one.txt   追踪（不过滤）某个具体文件
+    *.zip   过滤所有.zip文件
+    使用两个星号（*) 表示匹配任意中间目录，比如 a/**/z 可以匹配 a/z , a/b/z 或 a/b/c/z 等。
+
+注意：如果你创建.gitignore文件之前就push了某一文件，那么即使你在.gitignore文件中写入过滤该文件的规则，该规则也不会起作用，git仍然会对该文件进行版本管理。
+
 
 # <a name="帐号设置">帐号设置</a>
-## <a name="安装配置户名、邮箱">安装配置户名、邮箱</a>
+## <a name="设置查看用户名、邮箱">设置查看用户名、邮箱</a>
+设置
 >
 
     git config --global user.name "chenzong24635"
     git config --global user.email "chenzong24635@163.com"
+
+查看
+>
+    git config --list  //查看所有配置信息
+    git config user.name
+    git config user.email 
+
+## <a name="重设用户名、邮箱">重设用户名、邮箱</a>
+>
+
+    git config --global user.name "chenzong24635"
+    git config --global user.email ""chenzong24635@163.com"
+    删除.ssh文件夹下的known_hosts 
+    git Bash下生成ssh，如不设密码，直接回车到底 
+    $ ssh-keygen -t rsa -C "chenzong24635@163.com"
+    拷贝公钥id_rsa.pub到托管服务（github, gitee）的SSH 公钥设置中 
+    git Bash执行（管理员身份） 
+    ssh -T git@github.com 或 ssh -T git@gitee.com 
 
 ## <a name="本地永久保存账号密码">本地永久保存账号密码</a>
 1.   
@@ -132,46 +189,6 @@ npm i git --- git安装
 
 ## <a name="删除或修改本地保存的账号密码">删除或修改本地保存的账号密码</a>
 控制面板 -->用户账户 -->管理你的凭据 -->择Windows凭据 -->git保存的用户信息
-
-## <a name="重设用户的名字和邮箱">重设用户名、邮箱</a>
-
->
-    git config --global user.name "chenzong24635"
-    git config --global user.email ""chenzong24635@163.com"
-    删除.ssh文件夹下的known_hosts 
-    git Bash下生成ssh，如不设密码，直接回车到底 
-    $ ssh-keygen -t rsa -C "chenzong24635@163.com"
-    拷贝公钥id_rsa.pub到托管服务（github, gitee）的SSH 公钥设置中 
-    git Bash执行（管理员身份） 
-    ssh -T git@github.com 或 ssh -T git@gitee.com 
-
-## <a name="查看用户名、邮箱">查看用户名、邮箱</a>
->
-    git config user.name
-    git config user.email
-
-
-# <a name="gitingore">忽略某些文件提交 gitingore</a>
-
-规则  作用
->
-    /mtk    过滤整个文件夹
-    *.zip   过滤所有.zip文件
-    /mtk/do.c   过滤某个具体文件
-    !/mtk/one.txt   追踪（不过滤）某个具体文件
-
-注意：如果你创建.gitignore文件之前就push了某一文件，那么即使你在.gitignore文件中写入过滤该文件的规则，该规则也不会起作用，git仍然会对该文件进行版本管理。
-
-
-配置语法
->
-    以斜杠“/”开头表示目录；
-    以星号“*”通配多个字符；
-    以问号“?”通配单个字符
-    以方括号“[]”包含单个字符的匹配列表；
-    以叹号“!”表示不忽略(跟踪)匹配到的文件或目录。
-
-注意： git 对于 .gitignore配置文件是按行从上到下进行规则匹配的
 
 
 # <a name="md添加图片">md添加图片</a>
