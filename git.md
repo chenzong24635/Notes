@@ -16,7 +16,7 @@
 </details>
 
 # 链接
-[git-官网](https://git-scm.com/book/zh/v2)
+[git-官网文档](https://git-scm.com/book/zh/v2)
 
 [Git飞行规则-问题指南](https://github.com/k88hudson/git-flight-rules/blob/master/README_zh-CN.md)
 
@@ -79,38 +79,41 @@ npm i git //git安装
 * git init  //初始化git 将当前目录变为仓库
 * git clone url reName  //获取下载仓库  git clone http://chenzong@git/仓库名.git '仓库重命名为reName(可略)'
 * git add .  |  git add ./文件名  //将文件添加到暂存区（添加所有 | 添加某个文件）
+
 * git commit  -m "这里写备注"  //将暂存区文件提交到仓库
 * git commit  -a -m "这里写备注"  //git add + git commit
-
+* git commit --amend  // 将暂存区中的文件提交
 
 * git pull origin  //从服务器拉取
 * git push origin  //更新到服务器
 
 * git status  //查看文件状态
 * git status -s // 查看文件状态---紧凑的格式输出
->
-     M fileName  //在工作区被修改 ,但是还没放入暂存区
-    M  fileName  //在工作区被修改 ,已经放入暂存区
-    MM fileName  //在工作区被修改 ,并提交到暂存区后又在工作区中被修改了
-    A  fileName  //新添加到暂存区中的文件前面
-    ?? fileName  //新添加的未跟踪文件
+  >
+      M fileName  //在工作区被修改 ,但是还没放入暂存区
+      M  fileName  //在工作区被修改 ,已经放入暂存区
+      MM fileName  //在工作区被修改 ,并提交到暂存区后又在工作区中被修改了
+      A  fileName  //新添加到暂存区中的文件前面
+      ?? fileName  //新添加的未跟踪文件
 
 * git diff //查看修改之后还没有暂存起来的变化内容
 * git diff --cached //查看已暂存的将要添加到下次提交里的内容
 
 * git rm -r fileName //删除本地文件/文件夹
-* git rm -r --cached fileName //删除缓存文件/文件夹
+* git rm -r --cached fileName //删除缓存文件/文件夹；但仍保留在工作区中
+
+* git mv oldName newName //文件改名
 
 * git remote add origin http://github.com/仓库名.git //关联远端仓库
 * git remote rm origin  //删除远端仓库关联
 * git remote -v  //查看已关联远端库
 * git push -u origin master  //提交到远端仓库 第一次 以后用：git push origin master
 
-* git log   //查看记录
 * git reset --hard HEAD^  //回退版本 HEAD HEAD^  HEAD^^ HEAD~100
-* cat filename  //查看文件内容
-* git reflog  //记录每次命令查找id
-* git checkout //readme.txt  //放弃工作区中的内容
+
+* git log   //查看记录
+* git log -p -2 // -p显示每次提交的内容差异。-2 仅显示最近两次提交
+
 
 
 `分支`
