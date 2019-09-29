@@ -1,3 +1,20 @@
+# vscode 快捷键
+
+<details>
+  <summary>展开/收缩</summary>
+
+[vscode快捷键](chrome-extension://cdonnmffkdaoajfknoeeecmchibpmkmg/static/pdf/web/viewer.html?file=https%3A%2F%2Fcode.visualstudio.com%2Fshortcuts%2Fkeyboard-shortcuts-windows.pdf)
+
+删除空行：
+  ctrl+h键进行正则匹配：^\s*(?=\r?$)\n
+
+格式化代码： Shift + Alt + F
+
+多行光标：Shift + Alt + 鼠标左键
+
+跳到某行： Ctrl+ G 然后在弹出的框中输入行数就可以了
+</details>
+
 # 链接
 [git-官网](https://git-scm.com/book/zh/v2)
 
@@ -7,16 +24,35 @@
 
 [猴子都能懂的git入门](https://backlog.com/git-tutorial/cn/contents/)
 
-# vscode-sync-setting ：
+# 目录
+<details open>
+  <summary>展开/收缩</summary>
+
+* <a href="#vscode-sync-setting">vscode-sync-setting</a>
+* <a href="#创建项目提交到仓库">创建项目提交到仓库</a>
+* <a href="#git基本命令">git基本命令</a>
+* <a href="#帐号设置">帐号设置</a>
+  * <a href="#安装配置户名、邮箱">安装配置户名、邮箱</a>
+  * <a href="#本地永久保存账号密码">本地永久保存账号密码</a>
+  * <a href="#删除或修改本地保存的账号密码">删除或修改本地保存的账号密码</a>
+  * <a href="#重设用户的名字和邮箱">重设用户的名字和邮箱</a>
+  * <a href="#查看用户名、邮箱">查看用户名、邮箱</a>
+* <a href="#gitingore">忽略某些文件提交 gitingore</a>
+* <a href="#md添加图片">md添加图片</a>
+* <a href="#预览html文件">如何在github的markdown上预览html文件</a>
+* <a href="#"></a>
+
+</details>
+
+# <a name=""></a>
+# <a name="vscode-sync-setting">vscode-sync-setting</a>
 >
     token: bb7d41e1e039fdd294a6819e7305b73bd066d9a1
     sync.gist: 0e3b4eb383f938cbacac6b443dd818a0
 
     Gist ID:372add5a8785e01a4c7850cadd69314f。
 
-# git
-
-# 创建项目提交到仓库
+# <a name="创建项目提交到仓库">创建项目提交到仓库</a>
 >
     git init 
     touch README.md
@@ -30,14 +66,24 @@
 
 
 
+# <a name="git基本命令">git基本命令</a>
+npm i git --- git安装
 
-# git基本命令：
+## TortoiseGit--git命令快捷工具
+[安装及汉化](https://tortoisegit.org/download/)
+
+[putty密钥生成](https://jingyan.baidu.com/article/495ba841f2892638b30edefa.html)
+
+
+## 命令
+
 * git init  --初始化git 将当前目录变为仓库
-* git clone url   --获取  git clone http://chenzong@git/仓库名.git
+* git clone url   --获取下载仓库  git clone http://chenzong@git/仓库名.git
 * git add ./  |  git add ./文件名   ---将文件添加到暂存区（添加所有 | 添加某个文件）
 * git commit  -m "这里写备注"  --- 将暂存区文件提交到仓 
 * git pull origin  ---从服务器拉取
 * git push origin  ---更新到服务器
+
 * git status  --- 查看文件状态
 * git rm -r fileName --删除本地文件/文件夹
 * git rm -r --cached fileName --删除缓存文件/文件夹
@@ -54,24 +100,25 @@
 * git checkout --- readme.txt  --- 放弃工作区中的内容
 
 
-* 分支  
-git branch --- 查看分支   
-git branch <name>  --- 创建分支  
-git checkout <name> --- 切换分支  
-git checkout -b <name> --- 创建+切换分支  
-git merge <name>  --- 合并某分支到当前分支  
-git branch -d <name>  --- 删除分支  
-git checkout branch -- file  --- 将你的某个文件还原到某个分支的版本
+`分支`
+* git branch --- 查看分支   
+* git branch <name>  --- 创建分支  
+* git checkout <name> --- 切换分支  
+* git checkout -b <name> --- 创建+切换分支  
+* git merge <name>  --- 合并某分支到当前分支  
+* git branch -D <name>  --- 删除分支  
+* git checkout branch -- file  --- 将你的某个文件还原到某个分支的版本
 
-# 账号密码设置
-## 安装配置：
+# <a name="帐号设置">帐号设置</a>
+## <a name="安装配置户名、邮箱">安装配置户名、邮箱</a>
+>
 
-* npm install git
-* git config --global user.name "chenzong24635"
-* git config --global user.email "chenzong24635@163.com"
+    git config --global user.name "chenzong24635"
+    git config --global user.email "chenzong24635@163.com"
 
-## 本地永久保存账号密码
-1. 
+## <a name="本地永久保存账号密码">本地永久保存账号密码</a>
+1.   
+>
     git config --global credential.helper store
 
 2. 
@@ -83,11 +130,11 @@ git checkout branch -- file  --- 将你的某个文件还原到某个分支的�
     [credential]
         helper = stor
 
-## 删除或修改本地Git保存的账号密码
+## <a name="删除或修改本地保存的账号密码">删除或修改本地保存的账号密码</a>
 控制面板 -->用户账户 -->管理你的凭据 -->择Windows凭据 -->git保存的用户信息
 
+## <a name="重设用户的名字和邮箱">重设用户名、邮箱</a>
 
-## 重设git用户的名字和邮箱:
 >
     git config --global user.name "chenzong24635"
     git config --global user.email ""chenzong24635@163.com"
@@ -98,14 +145,13 @@ git checkout branch -- file  --- 将你的某个文件还原到某个分支的�
     git Bash执行（管理员身份） 
     ssh -T git@github.com 或 ssh -T git@gitee.com 
 
-## 查看用户名、邮箱
+## <a name="查看用户名、邮箱">查看用户名、邮箱</a>
 >
     git config user.name
     git config user.email
 
 
-# gitingore
-忽略某些文件提交
+# <a name="gitingore">忽略某些文件提交 gitingore</a>
 
 规则  作用
 >
@@ -128,9 +174,7 @@ git checkout branch -- file  --- 将你的某个文件还原到某个分支的�
 注意： git 对于 .gitignore配置文件是按行从上到下进行规则匹配的
 
 
-
-
-# md添加图片
+# <a name="md添加图片">md添加图片</a>
     ![这里添加图片的alt属性值](/pics/index.png)
     <img src="/pics/index.png" width="49%" />
 
@@ -140,9 +184,9 @@ git checkout branch -- file  --- 将你的某个文件还原到某个分支的�
       <img src="/pics/index.png" height="300" width="300" >
       <img src="/pics/index.png" height="300" width="300" >
     </div>
-    
-# 如何在github上预览html文件
 
+# <a name="预览html文件">如何在github的markdown上预览html文件</a>    
+>
     直接在你github地址中的html文件前面加上http://htmlpreview.github.com/?
 
-    如：http://htmlpreview.github.io/?https://github.com/djz917/Game/blob/master/2048/index.html
+    http://htmlpreview.github.io/?https://github.com/chenzong24635/Notes/blob/master/文件名.html
