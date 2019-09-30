@@ -1,4 +1,6 @@
 # 目录
+<details open>
+  <summary>展开/收缩</summary>
 
 * <a href="#HTML">**HTML**</a>
 
@@ -14,14 +16,37 @@
 * <a href="#web存储">cookies、sessionStorage 、和 localStorage 的区别</a>
 * <a href="#HTML5的离线储存">HTML5的离线储存</a>
 * <a href="#iframe缺点">iframe缺点</a>
+* <a href="#link标签属性">link标签属性</a>
+  <details >
+    <summary>展开/收缩</summary>
+
+    * <a href="网页标题引入图标">网页标题引入图标</a>
+    * <a href="预加载页面资源prefetch、prefetch">预加载页面资源prefetch、prefetch</a>
+    
+  </details>  
+* <a href="base标签">base标签</a>
 * <a href="#响应式设计-viewport">响应式设计-viewport</a>
-* <a href="#meta">meta</a>
+* <a href="#meta标签属性">meta标签属性</a>
+  <details >
+    <summary>展开/收缩</summary>
+
+    * <a href="必要属性">必要属性</a>
+    * <a href="可选属性">可选属性</a>
+    * <a href="声明文档使用的字符编码">声明文档使用的字符编码</a>
+    * <a href="关键词">关键词 name="keywords"</a>
+    * <a href="页面描述">页面描述 name="description"</a>
+    * <a href="搜索引擎索引方式">搜索引擎索引方式 name="robots"</a>
+    * <a href="页面重定向和刷新">页面重定向和刷新 http-equiv="refresh"</a>
+    * <a href="viewport">viewport</a>
+    * <a href="其他">其他</a>
+    * <a href=""></a>
+      
+  </details> 
 * <a href="#IE hack">IE hack</a>
 * <a href="#aria与role">aria与role</a>
 * <a href="#CSS和JS的位置会影响页面效率，为什么">CSS和JS的位置会影响页面效率，为什么？</a>
 * <a href="#未使用自适应写的PC页面在手机上显示不全的问题">未使用自适应写的PC页面在手机上显示不全的问题</a>
-* <a href="base标签">base标签</a>
-* <a href="网页标题引入图标">网页标题引入图标</a>
+</details>
 
 # <a name="HTML">**HTML**</a>
 
@@ -374,6 +399,26 @@ https://segmentfault.com/a/1190000011295587
 
 通过javascript动态给iframe添加src属性值，这样可以解决1,2两个问题。
 
+## <a name="link标签属性">link标签属性</a>
+### <a name="网页标题引入图标">网页标题引入图标</a>
+>
+
+    <link rel="shortcut icon" href="favicon.ico" type="images/x-icon" />
+
+    <link rel="icon" href="favicon.gif" type="image/gif" />
+
+### <a name="预加载页面资源prefetch、prefetch">预加载页面资源prefetch、prefetch</a>
+
+[参考](https://mp.weixin.qq.com/s?__biz=MzAxODE2MjM1MA==&mid=2651557145&idx=2&sn=275f6a2cd5698993ac37c30d1272b6d9&chksm=80255ad8b752d3ced93788a47c1c0e09b358f520e427095282805ae38568d391ffb841629fc5&scene=0&xtrack=1&key=f7996279e56ff0c926f68429b9d715f81f365434df8bef8ae0fdc0f07356e1153e13ec7efaadcdcee3ee2a269ca1e1d26d64b4456b49e9d4a9470ffdb5dff4e18fb06a01c2606003c0a2f1d538732c1f&ascene=14&uin=MTIxNDM5MTUzOQ%3D%3D&devicetype=Windows+7&version=62060841&lang=zh_CN&pass_ticket=6hbWVbVQi9b8nDPWnQLyNwIhfW%2Fxii%2FBAH6JGd5v7eUzIH49WIfoITbvxT9QEwrs)
+
+## <a name="base标签">base标签</a>
+>
+    <base href="www.aaa.com" target="_blank"/>
+
+    <base> 标签为页面上的所有链接(img、a、script等)规定默认地址或默认目标。
+    <base>设置的target属性 ，a链接也会继承
+
+
 ## <a name="响应式设计-viewport">响应式设计-viewport</a>
 >
     什么是 Viewport?
@@ -389,7 +434,9 @@ https://segmentfault.com/a/1190000011295587
     minimum-scale：允许用户缩放到的最小比例。
     user-scalable：用户是否可以手动缩放
 
-## <a name="meta">meta</a>
+
+
+## <a name="meta标签属性">meta标签属性</a>
 
 * 必要属性: content 
 
@@ -408,6 +455,7 @@ https://segmentfault.com/a/1190000011295587
 >
     描述网页上所提供信息的描述性和代表性关键字及短语,逗号隔开。标记不应超过 874 个字符。
     <meta name="keywords" content="关键词1, 关键词2">
+
 
 * 页面描述：name="description"
 >
@@ -561,20 +609,7 @@ js脚本应该放在底部，原因在于js线程与GUI渲染线程是互斥的�
     或  
 	<meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=0.3, maximum-scale=1.0, minimum-scale=0.3">
 
-## <a name="base标签">base标签</a>
->
-    <base href="www.aaa.com" target="_blank"/>
 
-    <base> 标签为页面上的所有链接(img、a、script等)规定默认地址或默认目标。
-    <base>设置的target属性 ，a链接也会继承
-
-
-## <a name="网页标题引入图标">网页标题引入图标</a>
->
-
-    <link rel="shortcut icon" href="favicon.ico" type="images/x-icon" />
-
-    <link rel="icon" href="favicon.gif" type="image/gif" />
 
 
 ## <a name=""></a>

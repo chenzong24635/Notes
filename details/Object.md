@@ -45,3 +45,42 @@ Object.create 根据指定的原型创建新对象，原型可以是 null；
 Object.getPrototypeOf 获得一个对象的原型；
 Object.setPrototypeOf 设置一个对象的原型。
 Object.assign(obj1, obj2,...)
+
+*  obj
+>
+    obj = {
+      foo: 123,
+      bar() { return 'abc' },
+      syb: Symbol('s')
+    };
+
+## <a name="Object.getOwnPropertyNames()">Object.getOwnPropertyNames()</a>
+返回一个数组，包含对象自身的所有属性（包括不可枚举属性,不含 Symbol 属性）的键名
+
+## <a name="Object.getOwnPropertyDescriptors()">Object.getOwnPropertyDescriptors()</a>
+返回指定对象所有自身属性（非继承属性）的描述对象
+>
+
+    Object.getOwnPropertyDescriptors(obj)
+    //
+      { 
+        foo:{ 
+          value: 123,
+          writable: true,
+          enumerable: true,
+          configurable: true 
+        },
+        bar:{ 
+          value: [Function: bar],
+          set: undefined,
+          enumerable: true,
+          configurable: true 
+        },
+        syb:{ 
+          value: Symbol(s),
+          set: undefined,
+          enumerable: true,
+          configurable: true 
+        },
+        
+      }

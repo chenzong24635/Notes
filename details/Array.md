@@ -132,18 +132,49 @@ fill(value,start,end)
 value: 填充的值 
 start: 填充的起始位置  
 end: 填充的结束位置（不包含）。默认值为 this.length。
-
-let arr = [1, 2, 3, 4];
-console.log(arr.fill(9, 1, 2));    // 输出 [ 1, 9, 3, 4 ]
-console.log(arr.fill(8, 1));      // 输出 [ 1, 8, 8, 8 ]
-console.log(arr.fill(7));          // 输出 [ 7, 7, 7, 7 ]
+>
+    let arr = [1, 2, 3, 4];
+    console.log(arr.fill(9, 1, 2));    // 输出 [ 1, 9, 3, 4 ]
+    console.log(arr.fill(8, 1));      // 输出 [ 1, 8, 8, 8 ]
+    console.log(arr.fill(7));          // 输出 [ 7, 7, 7, 7 ]
 
 # <a name="Array.from">Array.from()</a>
-将两类对象转为真正的数组：类似数组的对象（array-like object）和可遍历（iterable）的对象（包括 ES6 新增的数据结构 Set 和 Map）
->
+将(如: 数组、类数组、可遍历对象、或者是字符串、map 、set 等可迭代对象) 转为数组。
 
-  console.log(Array.from('abcd'));  // 输出 [ "a", "b", "c", "d" ]
-  console.log(Array.from([1, 2, 3], x => x + 1));  // 输出 [ 2, 3, 4 ]
+
+* Array.from(arrayLike[, mapFunction[, thisArg]])
+  >
+      arrayLike：必传参数，想要转换成数组的伪数组对象或可迭代对象。
+
+      mapFunction：可选参数，mapFunction(item，index){…} 是在集合中的每个项目上调用的函数。返回的值将插入到新集合中。
+
+      thisArg：可选参数，执行回调函数 mapFunction 时 this 对象。这个参数很少使用。
+  >
+
+      console.log(Array.from('abcd'));  // 输出 [ "a", "b", "c", "d" ]
+      console.log(Array.from([1, 2, 3], item => item + 1));  // 输出 [ 2, 3, 4 ]
+
+* 使用值填充数组
+  >
+      Array.from({length:3} , () => ({})) // [{},{},{}]
+      Array(3).fill({}) // [{},{},{}]
+      Array(3).map(() => {}) // [undefined, undefined, undefined]
+      //这是因为 Array(length) 创建了一个有3个空项的数组(也称为稀疏数组)，但是 map() 方法会跳过空项。
+
+* 生成数字范围[0,1,2....]
+  >
+      Array.from({ length: 5 }, (item, index) => index)
+      // [0,1,2,3,4]
+
+* 克隆数组
+>
+    // 数组的浅拷贝
+    Array.from([1,2,3]) //[1,2,3]
+
+    // 深拷贝（限于数组嵌套）
+    function clone(val) {
+      return Array.isArray(val) ? Array.from(val, clone) : val;
+    }
 
 
 # <a name="find()、findIndex()">find()、findIndex()</a>

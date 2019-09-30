@@ -53,14 +53,14 @@
 * <a href="#mouseover、mouseout、mouseenter、mouseleave区别与联系">mouseover、mouseout、mouseenter、mouseleave区别与联系</a>
 * <a href="#DOM操作">DOM操作—怎样添加、移除、移动、复制、创建和查找节点</a>
 * <a href="#变量、函数声明提升">变量、函数声明提升</a>
-* <a href="#自执行函数">自执行函数</a>
+* <a href="#立即执行函数">立即执行函数</a>
 * <a href="#对象属性">对象属性configurable enumerable writable</a>
 * <a href="#typeof instanceof">typeof instanceof in</a>
-* <a href="#new的实现原理">new的实现原理</a>
 * <a href="#异步编程有哪几种方法">异步编程有哪几种方法</a>
 * <a href="#事件委托(代理)">事件委托(代理)</a>
 * <a href="#闭包">闭包</a>
 * <a href="#内存泄漏">内存泄漏</a>
+* <a href="#new的实现原理">new的实现原理</a>
 * <a href="#原型、原型链、原型继承">原型、原型链、原型继承</a>
 * <a href="#创建对象的几种方式">创建对象的几种方式</a>
 * <a href="#设计模式">设计模式</a>
@@ -81,9 +81,11 @@
 * <a href="#常见的web攻击">常见的web攻击</a>
 * <a href="#字符转码、解码">字符转码、解码</a>
 * <a href="#URI、URL、URN">URI、URL、URN</a>
+* <a href="#函数式编程">函数式编程</a>
 * <a href="#函数重载">函数重载</a>
 * <a href="#防抖、节流">防抖、节流</a>
 * <a href="#柯里化">柯里化</a>
+* <a href="#函数缓存">函数缓存</a>
 * <a href="#webWorker">webWorker</a>
 * <a href="#浏览器缓存">浏览器缓存</a>
 * <a href="#前端性能优化的方法">前端性能优化的方法</a>
@@ -94,12 +96,13 @@
 * <a href="#css和js动画的差异">css和js动画的差异</a>
 * <a href="#use strict">"use strict"? 用处？</a>
 * <a href="#DOMContentLoaded、$(function(){})、window.onload事件、执行顺序">DOMContentLoaded、$(function(){})、window.onload事件、执行顺序</a>
+* <a href="#WebAssembly">WebAssembly</a>
 
 </details> 
 
 # <a name="运算符优先级">运算符优先级</a>
 ![运算符优先级](img/运算符优先级.png)
-[更多-MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence)
+[查看更多--MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence)
 
 #  <a name="运算符">运算符</a>
 ##  <a name="加运算符">+运算符</a>
@@ -107,6 +110,7 @@
     如果有操作数是对象，转换为原始值  
     此时如果有一个操作数是字符串，其他的操作数都转换为字符串并执行连接  
     否则：所有操作数都转换为数字并执行加
+
 ##  <a name="~运算符">~运算符</a>
 ~，被称为“按位不运算符”，~n等价于 - n - 1。//返回一个整数
 >
@@ -494,7 +498,7 @@ https://www.jianshu.com/p/5f9027722204
     })(foo); //存入全局的foo变量 作为 形参
     console.log(foo.n); //3
 
-## <a name="自执行函数">自执行函数</a>
+## <a name="立即执行函数">立即执行函数IIFE</a>
 定义:
 >
     1、声明一个匿名函数
@@ -633,21 +637,6 @@ hasOwnProperty()
 
     所有普通对象都可以通过 Object.prototype 的委托来访问 hasOwnProperty(...)，但是对于一些特殊对象（ Object.create(null) 创建）没有连接到 Object.prototype，这种情况必须使用 Object.prototype.hasOwnProperty.call(obj, "a")，显示绑定到 obj 上。
 
-## <a name="new的实现原理">new的实现原理</a>
->
-    创建一个空对象，并将这个空对象的 __proto__，指向构造函数的原型对象 [prototype] ，使其继承构造函数原型上的属性。  
-    改变构造函数内部 this 指针为这个空对象(如果有传参，需要将参数也导入构造函数)  
-    执行构造函数中的代码，使其具有构造函数 this 指针的属性。  
-    如果构造函数中没有返回其它对象，那么返回this，即创建的这个的新对象，否则，返回构造函数中返回的对象。
-
-new 操作返回的实例对象具有两个特征：
->
-    具有构造函数中定义的 this 指针的属性和方法  
-    具有构造函数原型上的属性和方法
-
-function Person(){}
-
-var p = new Person()
 
 ## <a name="异步编程有哪几种方法">异步编程有哪几种方法</a>
 "同步模式"：后一个任务等待前一个任务结束，然后再执行，程序的执行顺序与任务的排列顺序是一致的、同步的；
@@ -656,7 +645,7 @@ var p = new Person()
 
 
 
-1. 回调函数
+* 回调函数
 >
     如果f1是一个很耗时的任务，可以考虑改写f1，把f2写成f1的回调函数。
     　　function f1(callback){
@@ -673,38 +662,58 @@ var p = new Person()
 回调地狱，不能用 try catch 捕获错误，不能 return；
 
 
-2. 事件监听
+* 事件监听
 >
 
     采用事件驱动模式。任务的执行不取决于代码的顺序，而取决于某个事件是否发生。
     $("#clickity").on("click", function (e) { console.log("xxxxx");}
 
     
-    优点是比较容易理解，可以绑定多个事件，每个事件可以指定多个回调函数，而且可以"去耦合"（Decoupling），有利于实现模块化。
-    
-    缺点是整个程序都要变成事件驱动型，运行流程会变得很不清晰。
+优点：  
+比较容易理解，可以绑定多个事件，每个事件可以指定多个回调函数，而且可以"去耦合"（Decoupling），有利于实现模块化。
 
-3. Promises对象
+缺点：  
+整个程序都要变成事件驱动型，运行流程会变得很不清晰。
+
+* Promises
 >
-    Promise 实现了链式调用，也就是说每次 then 后返回的都是一个全新 Promise，如果我们在 then 中 return ，return 的结果会被 Promise.resolve() 包装。
-    fn1(1).then(fn2).then(fn2).then(function(){
+
+    function fn(arg) {
+      return new Promise((resolve, reject) => {
+        if(true) {
+          resolve(arg())
+        } else {
+          reject('err')
+        }
+      })
+    }
+    function fn1(){
+      console.log('fn1')
+      return 'fn1'
+    }
+    function fn2(){
+      console.log('fn2')
+      return 'fn2'
+    }
+    fn(fn1).then(fn2).catch((err) => {
+      console.log('err:',err)
     });
 
-    Promisel对象的两个特点:
-    * 对象状态不受外界影响。
-        Promise对象有三种状态:pending(进行中)，fulfilled(已成功)，rejected(已失败)，当异步操作有结果时可以指定pending状态到fulfilled状态或pending状态到rejected状态的转换，状态一旦变为fulfilled，或rejected则这个Promise对象状态不会在改变。
+    
 
     * 一旦状态改变，就不再变化，任何时候都可以得到这个结果。
 
 每一个异步任务返回一个Promise对象，该对象有一个then方法，允许指定回调函数
 
-4. async await
+* Generator
 
- async function asyncFuns() {
-    await fn1()
-    await fn2()
-    await fn3()
-  }
+* async await
+>
+    async function asyncFuns() {
+      await fn1()
+      await fn2()
+      await fn3()
+    }
 
   优点是：代码清晰，不用像 Promise 写一大堆 then 链，处理了回调地狱的问题
 
@@ -723,10 +732,11 @@ var p = new Person()
     首先函数 b 先执行，在执行到 await 10 之前变量 a 还是 0，因为 await 内部实现了 generator ，generator会保留堆栈中东西，所以这时候a = 0被保存了下来；
     因为 await 是异步操作，后来的表达式不返回 Promise 的话，就会包装成 Promise.reslove(返回值)，然后会去执行函数外的同步代码；
 
-5. 发布/订阅(观察者模式)
+* 发布订阅模式
 
 发布订阅模式，有一个事件池，用来给你订阅(注册)事件，当你订阅的事件发生时就会通知你，然后你就可以去处理此事件
 
+[designMode](./details/designMode.md)
 
 ## <a name="事件委托">事件委托(代理)delegate</a>
 
@@ -839,48 +849,92 @@ var p = new Person()
     在你使用完数据后，及时解除引用(闭包中的变量，dom引用，定时器清除)。
     组织好你的逻辑，避免死循环等造成浏览器卡顿，崩溃的问题。
 
+## <a name="new的实现原理">new的实现原理</a>
+>
+    创建一个空对象，并将这个空对象的 __proto__，指向构造函数的原型(prototype)对象 ，使其继承构造函数原型上的属性。  
+
+    改变构造函数内部 this 指针为这个空对象(如果有传参，需要将参数也导入构造函数)  
+
+    执行构造函数中的代码，使其具有构造函数 this 指针的属性。  
+
+    如果构造函数中没有返回其它对象，那么返回this，即创建的这个的新对象，否则，返回构造函数中返回的对象。
+
+new 操作返回的实例对象具有两个特征：
+>
+    具有构造函数中定义的 this 指针的属性和方法  
+    具有构造函数原型上的属性和方法
+
+function Person(x){
+  this.name = x
+}
+Person.prototype.say=()=>{console.log(this.name)}
+var p = new Person()
+
+
 ## <a name="原型、原型链、原型继承">原型、原型链、原型继承</a>
 
-原型(prototype)：
+
+* 原型(prototype)：
 >
     函数本身就是个包含方法与属性的对象，每个对象都有个__proto__属性,称为原型。可通过原型为对象扩展属性，实现继承
 
-原型链：
+* 原型链：
 >
     当我们访问一个对象的属性时，如果这个对象内部不存在这个属性，就从其原型找这个属性，原型对象也是对象也拥有原型，一层层寻找，直至null（Object.prototype.__proto__）从而形成了所谓的“原型链”。
 
-__proto__,prototype区别：
+查找自身属性（不查找原型链）：obj.hasOwnProperty(prop)
+
+* 不要再使用 __proto__
+1. __proto__属性没有写入 ES6 的正文，而是写入了附录。
+
+2. 原因是它本质上是一个内部属性，而不是一个正式的对外的 API，只是由于浏览器广泛支持，才被加入了 ES6。
+
+获取对象的原型方法: Object.getPrototypeOf(target) 替代  target.__proto__
+
+* __proto__,prototype区别：
 >
-    js里所有的对象都有__proto__属性(对象，函数)，可称为隐式原型，指向构造该对象的构造函数的原型。
+    js里所有的对象都有__proto__属性(对象，函数)，可称为隐式原型，指向构造该对象的构造函数的原型(prototype)。
 
     只有函数function才具有prototype(显示原型)属性。这个属性是一个指针，指向一个对象，这个对象的用途就是包含所有实例共享的属性和方法（我们把这个对象叫做原型对象）。
 
     原型对象有一个属性，叫做constructor，这个属性包含了一个指针，指回原构造函数。
 
 
+* 为什么只有函数有prototype属性
 >
-    function P(){}
-    var p = new P()
+    JS通过 new来生成对象，但是仅靠构造函数，每次生成的对象都不一样。
 
-//p是否为P的实例  
-p instanceof P // true
+    有时候需要在两个对象之间共享属性，由于JS在设计之初没有类的概念，所以JS使用函数的prototype来处理这部分需要被共享的属性，通过函数的prototype来模拟类：
+
+    当创建一个函数时，JS会自动为函数添加 prototype属性，值是一个有 constructor的对象。
+
+* 
+>
+    function A(){}
+    var a = new A()
+
+    //a是否为A的实例  
+    a instanceof A // true
 
 `实例的__proto__属性（原型）等于其构造函数的prototype属性`  
-p.__proto__ === P.prototype // true  
+a.__proto__ === A.prototype // true  
 
 `函数的prototype对象的constructor属性，指向其本身`  
-P.prototype.constructor === P //true
+A.prototype.constructor === A === a.constructor //true
 
-//p是P类的实例，它的constructor方法就是P类原型的constructor方法  
-p.constructor === P //true  
-p.constructor === P.prototype.constructor //true
+`原型链的终点：Object.prototype`  
+Object.getPrototypeOf(Function.prototype) === Object.prototype  //true
 
->
+Object.getPrototypeOf(Object.prototype) === null //true
 
-    Object.__proto__ === Function.prototype //true
-    Function.prototype.__proto__ === Object.prototype //true
-    Object.prototype.__proto__ === null //true
-    
+---
+<!-- `Object是Function的实例` -->
+Object.getPrototypeOf(Object) === Function.prototype //true
+
+<!-- `Function的prototype是 Object的实例` -->
+Object.getPrototypeOf(Function.prototype) === Object.prototype //true
+
+
 
 构造函数不需要显示的返回值。使用new来创建对象(调用构造函数)时，如果return的是非对象(数字、字符串、布尔类型、null、undefined等)会忽而略返回值;如果return的是对象，则返回该对象。
 
@@ -890,6 +944,7 @@ p.constructor === P.prototype.constructor //true
 * 原型继承：
 原型中的成员可以被和其相关的对象共享这一特性，可以实现继承。这种实现继承的方式，就叫做原型继承。
 
+[inherit.md](details/inherit.md)
 
 
 #### 如何实现继承？
@@ -918,217 +973,7 @@ Object.create:
 
 
 ## <a name="设计模式">设计模式</a>
-https://segmentfault.com/a/1190000014436817
-
-
-#### 工厂模式 -- Factory
-* 核心:
->
-    return一个对象
-    创建不同的引用类型
-* 例子:
-> 
-    function People () {
-      let person = {
-        name: '人',
-        walk: function () {console.log('walk')}
-      }
-      return person // 返回一个对象
-    }
-    let p = People() // 工厂生产对象
-
-* 说明：
->
-
-    1.在函数中定义对象,并定义对象的各种属性，,虽然属性可以为方法，但是建议将属性为方法的属性定义到函数之外，这样可以避免重复创建该方法
-    2.引用该对象的时候，这里使用的是 var x = Parent()而不是 var x = new Parent();因为后者会可能出现很多问题（前者也成为工厂经典方式,后者为构造函数模式）
-    3.在函数的最后返回该对象
-    4.不推荐
-
-
-#### 构造函数模式 -- Constructor
-* 核心：
->
-    将属性绑定到this上
-    用new 创建实例
-
-* 例:
->
-
-    function People() {
-      this.name = '人'
-      this.getName=function(){
-        return this.name
-      }
-    }
-
-    let p = new People()
-    console.log(p.getName())
-
-
-* 说明：
->
-
-    1.与工厂方式相比，使用构造函数方式创建对象，无需再函数内部重建创建对象，而使用this指代，并而函数无需明确return
-    2.同工厂模式一样，虽然属性的值可以为方法，但建议将该方法定义在函数之外
-
-#### 原型模式
-* 例：
->
-    function Parent(){};  
-    Parent.prototype.name="john";  
-    Parent.prototype.age="30";  
-    Parent.prototype.lev=lev;  
-    var p=new Parent(); 
-
- * 说明：
- >
-    1.函数中不对属性进行定义
-    2.利用prototype属性对属性进行定义
-    3.不推荐
-
-#### 混合模式 —— Mixin (原型模式+构造函数模式)
-* 核心
->
-    1.在JS中，一般我们实现继承的过程就是混合模式
-    2.其概念就是提供能够被一个或者一组子类简单继承功能的类
-* 例子
->
-    function People(name, age) {
-      this.name = name
-      this.age = age
-    }
-
-    People.prototype.sayName = function () {
-      console.log(this.name)
-    }
-
-    function Student(name, age, score) {
-      People.call(this, name, age) //改变this指向,进行属性拷贝
-      this.score = score
-    }
-
-    //Student.prototype = new People() // 这样写 实例化时构造函数会执行2次，（其中改变this指向时执行了1次）
-    //优化：  
-     Student.prototype = People.prototype
-     Student.prototype.constructor = Student //手动改变constructor指向
-    //优化后只执行1次，但改变了实例的constructor，即new Student().constuctor --> People；由此无法判断实例的构造函数(实例由谁直接实例化的)，需手动改变constructor
-
-* 说明：
->
-    将所有属性不是方法的属性定义在函数中（构造函数方式）
-    将所有属性是方法的属性利用prototype在函数之外定义（原型方式）
-
-
-#### 单例模式 —— Singleton
-* 核心
->
-    1.产生一个类的唯一实例
-    2.好处就是节约内存
-
-* 案例
->
-    function createPeople() {
-      let name
-      return function (userName) {
-          return name || (name = userName)
-      }
-    }
-    let single = createPeople()
-    console.log(single('人')) // '人'
-    // 不管再传递任何值，也只会返回 '人'
-    console.log(single('马')) // '马'
-
->
-
-    var Person1  = (function () {
-      var _this = null;
-      return function (name,age) {
-        if(!_this){
-          _this = this;
-        }
-        _this.name = name;
-        _this.age = age;
-        return _this
-      }
-    })();
-    var person11 = new Person1("A",18);
-    console.log("姓名:"+person11.name,"年龄:"+person11.age);
-    var person22 = new Person1("B",19);
-    console.log("姓名:"+person22.name,"年龄:"+person22.age);
-    console.log(person11===person22); //==>true
-
-#### 模块模式 —— Module
-* 核心
->
-    在js中，常常使用闭包的形式来实现
-
-* 案例
->
-    let Person = (function () {
-      let name = '小明'
-      function sayName() {
-        console.log(name)
-      }
-
-      return {
-        name: name,
-        sayName: sayName
-      }
-    })()
-
-
-#### 发布订阅模式 —— Publish/Subscribe
-* 核心
->
-    比如我【订阅者】现在订阅了一个公众号，公众号【发布者】向我发布消息
-
-* 案例
->
-    let Event = (function () {
-      let events = {}
-      function on(evt, handler) {
-        // 实现监听效果
-        // 使用'或'是为了可以对同一个事件多次进行回调
-        events[evt] = events[evt] || []
-        events[evt].push({
-            handler
-        })
-      }
-
-      function fire(evt, args) {
-        if (!events[evt]) {
-          // 如果未监听任何事件，直接中断
-          throw evt + '事件未监听'
-          return
-        }
-        events[evt].map((item)=>{
-           // 遍历，实现对同一个事件的多次回调
-          item.handler(args)
-        })
-      }
-
-      function off(evt) {
-        delete events[evt]
-      }
-
-      return {
-        on, // 订阅者
-        fire, // 发布者
-        off // 取消订阅
-      }
-    })()
-
-    var number = 1;
-    Event.on('click', function (data) {
-      console.log(data + number++ + '次');
-    });
-    // Event.off('click'); //  取消绑定
-    Event.on('click', function (data) {
-      console.log(data + number++ + '次');
-    });
-    Event.fire('click', 'click 事件绑定');
-
+[designMode](./details/designMode.md)
 
 ## <a name="作用域、作用域链、执行上下文">作用域、作用域链、执行上下文(执行环境)</a>
 #### 作用域：
@@ -2035,6 +1880,31 @@ js对字符串进行编码。不常用
 >
 
 
+## <a name="函数式编程">函数式编程</a>
+https://segmentfault.com/a/1190000020302184
+
+函数式编程的核心概念：
+>
+    数据不可变： 它要求你所有的数据都是不可变的，这意味着如果你想修改一个对象，那你应该创建一个新的对象用来修改，而不是修改已有的对象。
+
+    无状态： 主要是强调对于一个函数，不管你何时运行，它都应该像第一次运行一样，给定相同的输入，给出相同的输出，完全不依赖外部状态的变化。
+
+为了实现这个目标，函数式编程提出函数应该具备的特性：没有副作用和纯函数。
+
+------
+
+命令式代码：命令“机器”如何去做事情(how)，这样不管你想要的是什么(what)，它都会按照你的命令实现。
+
+声明式代码：告诉“机器”你想要的是什么(what)，让机器想出如何去做(how)。
+>
+    // 命令式
+    var makes = [];
+    for (var i = 0; i < cars.length; i++) {
+      makes.push(cars[i].make);
+    }
+
+    // 声明式
+    var makes = cars.map(function(car){ return car.make; });
 
 ## <a name="函数重载">函数重载</a>
 
@@ -2230,6 +2100,27 @@ js对字符串进行编码。不常用
     curried(1, 2)(3) // => [1, 2, 3]
     curried(1, 2, 3) // => [1, 2, 3]
 
+
+## <a name="函数缓存">函数缓存</a>
+
+在函数内部用一个对象存储输入的参数，如果下次再输入相同的参数，那就比较一下对象的属性，把值从这个对象里面取出来。
+>
+    const memorize = function(fn) {
+      const cache = {}
+      return function(...args) {
+        // 把传给 adder 函数的参数转为字符串，并且把它当做 cache 的 key
+        const _args = JSON.stringify(args)
+        return cache[_args] || (cache[_args] = fn.apply(fn, args))
+      }
+    }
+    const add = function(a) {
+      console.log(a)
+      return a + 1
+    }
+    const adder = memorize(add)
+    adder(1)    // 2    cache: { '[1]': 2 }
+    adder(1)    // 2    cache: { '[1]': 2 }
+    adder(2)    // 3    cache: { '[1]': 2, '[2]': 3 }
 
 ## <a name="webWorker">webWorker</a>
 
@@ -2761,5 +2652,14 @@ ______
     //$(function{})
     //window.onload
 
-## <a name=""></a>
+## <a name="WebAssembly">[WebAssembly](https://github.com/AssemblyScript/assemblyscript)</a>
+WebAssembly 是一种新的字节码格式，主流浏览器都已经支持 WebAssembly。 和 JS 需要解释执行不同的是，WebAssembly 字节码和底层机器码很相似可快速装载运行，因此性能相对于 JS 解释执行大大提升。  
+也就是说 WebAssembly 并不是一门编程语言，而是一份字节码标准，需要用高级编程语言编译出字节码放到 WebAssembly 虚拟机中才能运行， 浏览器厂商需要做的就是根据 WebAssembly 规范实现虚拟机。
+
+* 相对于 JS，WebAssembly 有如下优点：
+>
+    体积小：由于浏览器运行时只加载编译成的字节码，一样的逻辑比用字符串描述的 JS 文件体积要小很多；
+    加载快：由于文件体积小，再加上无需解释执行，WebAssembly 能更快的加载并实例化，减少运行前的等待时间；
+    兼容性问题少：WebAssembly 是非常底层的字节码规范，制订好后很少变动，就算以后发生变化,也只需在从高级语言编译成字节码过程中做兼容。可能出现兼容性问题的地方在于 JS 和 WebAssembly 桥接的 JS 接口。
+
 ## <a name=""></a>
