@@ -2,6 +2,16 @@ https://segmentfault.com/a/1190000014436817
 
 https://segmentfault.com/a/1190000012422198
 
+<details open>
+  <summary>
+    展开/收缩
+  </summary>
+</details>
+
+* <a href="#"></a>
+#  <a name=""></a>
+
+
 #### 工厂模式 -- Factory
 * 核心:
 >
