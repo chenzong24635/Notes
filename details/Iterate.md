@@ -103,11 +103,17 @@ array：源数组
     let arr = [ 1, 2, 3, 4 ];
     arr.some((item, index, array) => {
       console.log(item, index, array)
+      return index > 1 //某个元素索引大于1返回true，否则false
     })
     //是否存在索引>3
     console.log(arr.some(x => x >3));    // 输出  true
     //是否存在索引>5
     console.log(arr.some(x => x > 5));    // 输出  false
+
+    arr.every((item, index, array) => {
+      console.log(item, index, array)
+      return index>1 //每个元素索引大于1返回true，否则false
+    })
 
 >
     arr.filter((item, index, array) => {

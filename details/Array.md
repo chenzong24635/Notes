@@ -204,7 +204,7 @@ thisArg可选： 执行回调时用作this 的对象。
 indexOf(searchElement[, fromIndex = 0])  
 lastIndexOf(searchElement[, fromIndex = arr.length - 1])
 
-searchElement： 查找的元素  
+searchElement： 查找的元素 （全等查找===）
 fromIndex：表示查找的起始位置。
 
 * indexOf() 查找元素并返回第一个满足的元素索引值，找不到返回-1。  
@@ -443,6 +443,7 @@ array：源数组
     let arr = [ 1, 2, 3, 4 ];
     arr.some((item, index, array) => {
       console.log(item, index, array)
+      return index > 1 //某个元素索引大于1返回true，否则false
     })
     console.log(arr.some(x => x >3));    // 输出  true
     console.log(arr.some(x => x > 5));    // 输出  false
@@ -453,8 +454,9 @@ ____
 检测数组中是否`所有元素`可以通过检测函数验证。返回Boolean值；（某个元素不满足会立即返回false）  
 >
     let arr = [ 1, 2, 3, 4 ];
-    arr.some((item, index, array) => {
+    arr.every((item, index, array) => {
       console.log(item, index, array)
+      return index>1 //每个元素索引大于1返回true，否则false
     })
     console.log(arr.every(x => x < 8));    //输出 true
     console.log(arr.every(x => x < 4));    //输出 false
