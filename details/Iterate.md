@@ -38,12 +38,12 @@
       console.log('key:', i, 'val:', arr[i])
     }
 
-## <a name="for in">for...in --遍历对象--遍历的是索引（即键名）</a>
+## <a name="for in">for...in --遍历对象--遍历的是索引（键名）</a>
 `能被break, continue,  return中断`    
 `for in更适合遍历对象，不要使用for in遍历数组。`
 
 >
-    1.遍历的是索引（即键名）
+    1.遍历的是索引（键名）
     2.遍历顺序有可能不是按照实际的内部顺序
     3.for in环遍历对象自身的和继承的可枚举属性（不含 Symbol 属性）
 

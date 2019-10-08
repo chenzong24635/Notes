@@ -1,83 +1,84 @@
-# vscode 快捷键
 
 <details>
-  <summary>展开/收缩</summary>
+  <summary>vscode 快捷键</summary>
 
-[vscode快捷键](chrome-extension://cdonnmffkdaoajfknoeeecmchibpmkmg/static/pdf/web/viewer.html?file=https%3A%2F%2Fcode.visualstudio.com%2Fshortcuts%2Fkeyboard-shortcuts-windows.pdf)
+  [vscode快捷键](chrome-extension://cdonnmffkdaoajfknoeeecmchibpmkmg/static/pdf/web/viewer.html?file=https%3A%2F%2Fcode.visualstudio.com%2Fshortcuts%2Fkeyboard-shortcuts-windows.pdf)
 
-删除空行：
-  ctrl+h键进行正则匹配：^\s*(?=\r?$)\n
+>
+    删除空行：
+      ctrl+h键进行正则匹配：^\s*(?=\r?$)\n
 
-格式化代码： Shift + Alt + F
+    格式化代码： Shift + Alt + F
 
-多行光标：Shift + Alt + 鼠标左键
+    多行光标：Shift + Alt + 鼠标左键
 
-跳到某行： Ctrl+ G 然后在弹出的框中输入行数就可以了
+    跳到某行： Ctrl+ G 然后在弹出的框中输入行数就可以了
+
 </details>
 
-# markdown 语法
 
 <details >
   <summary>markdown 语法</summary>
 
   [Markdown 语法说明](https://www.appinn.com/markdown/)
 
-  ## 代码折叠、展开
-  <details open>
-    <summary>展开/收缩</summary>
-    测试内容,open：展开  
-    IE不支持
-  </details>
+* 代码折叠、展开
+>  
+    <details open>
+      <summary>伸/缩</summary>
+      open：展开   
+      测试内容,
+      IE不支持
+    </details>
 
-  ## 文章中添加代码
-  1. 使用反引号  
-  `<a>我是代码</a>`
-  2. 使用制表符或者至少4个空格进行缩进的行  
-  >
-      <a>我是代码</a>
-
-
-  ## 换行
-  两长段落之间没有空行 ，如何换行
-  >
-      段落末尾空两格 （space + space）
-
-  ## 表格
-  | Tables       | Are       | Cool |
-  |:-------------|:---------:|----:|
-  | 靠左对齐   | 居中对齐  | 靠右对齐     |
-  | 书写时     | 原始文字  |  可以不用对整齐 |
-  *斜体*      | **加粗**     | `渲染效果`
-
-  >
-      冒号: 在第二行中不同的位置表示对齐方式，在无冒号：的情况下默认靠左对齐
-      标题元件(表头)至少需要3个---来分隔
-      最外面的竖线|可以省略，书写的时候也可以不必需让原始的文字对得很整齐
-
-  ## 强调——粗体和斜体
-
-  *斜体*      _斜体_  
-  **粗体** __粗体__  
-  ~~删除线~~  
-  \*加入反斜线以显示星号\* 
+* 文章中添加代码
+>
+    1. 使用反引号 :`<a>我是代码</a>`
+    2. 使用制表符或者至少4个空格进行缩进的行:  
+    >
+        <a>我是代码</a>
 
 
 
-  ## 链接
-  1. aa<a.com>aa
+* 换行
+两长段落之间没有空行 ，如何换行
+>
+    段落末尾空两格 （space + space）
 
-  2. [链接文字](链接地址)
+* 表格
+>
+    | Tables       | Are       | Cool |
+    |:-------------|:---------:|----:|
+    | 靠左对齐   | 居中对齐  | 靠右对齐     |
+    | 书写时     | 原始文字  |  可以不用对整齐 |
+    *斜体*      | **加粗**     | `渲染效果`
+
+>
+    冒号: 在第二行中不同的位置表示对齐方式，在无冒号：的情况下默认靠左对齐
+    标题元件(表头)至少需要3个---来分隔
+    最外面的竖线|可以省略，书写的时候也可以不必需让原始的文字对得很整齐
+
+* 强调——粗体和斜体
+>
+    *斜体*      _斜体_  
+    **粗体** __粗体__  
+    ~~删除线~~  
+    \*加入反斜线以显示星号\* 
+
+
+
+* 链接
+>
+    1. aa<a.com>aa
+
+    2. [链接文字](链接地址)
 
 </details>
 
 
----
-
-
-# 常用网站：论坛、社区、博客、网站、手册
-<details open>
+<details >
   <summary>
-  展开/收缩
+  常用网站：论坛、社区、博客、网站、手册
   </summary>
 
   [Github](https://github.com/chenzong24635)
@@ -118,21 +119,21 @@
 
   [印记中文](https://www.docschina.org/)
 
-`UI框架:`
+  `UI框架:`
 
-[Bootstrap](http://www.bootcss.com/)
+  [Bootstrap](http://www.bootcss.com/)
 
-[vux](https://doc.vux.li/zh-CN/)
+  [vux](https://doc.vux.li/zh-CN/)
 
-[mint-ui](http://mint-ui.github.io/docs/#/)
+  [mint-ui](http://mint-ui.github.io/docs/#/)
 
-[Element](http://element-cn.eleme.io/#/zh-CN/component/installation)
+  [Element](http://element-cn.eleme.io/#/zh-CN/component/installation)
 
-[jqweui](http://jqweui.com/components)
+  [jqweui](http://jqweui.com/components)
 
-[WeUI ](https://weui.io/)
+  [WeUI ](https://weui.io/)
 
-`图标、图片`：
+  `图标、图片`：
 
   [icomoon](https://icomoon.io/)
 
@@ -144,6 +145,7 @@
   
 </details>
 
+---
 
 **前端页面由哪三层构成：结构层、表示层、行为层。**
 
@@ -155,7 +157,7 @@
   * [Boolean](./details/Boolean.md)
   * [Number](./details/Number.md)
   * [String](./details/String.md)
-  * [Symbol](./details/Symbol.md)
+  * [Symbol??](./details/Symbol.md)
   * [Object](./details/Object.md)
     * [Array](./details/Array.md)
     * [Math](./details/Math.md)
@@ -186,10 +188,10 @@
 
 ## [其他](others.md)
 
-# 目录
+## 常用
 <details open>
   <summary>
-  <a href="#常用">**`常用`**</a>
+  <a href="#常用">**`目录`**</a>
   </summary>
 
   * <a href="#手机号验证">手机号验证</a>
@@ -212,6 +214,7 @@
   * <a href="#统计字符串中同一字符出现次数">统计字符串中同一字符出现次数</a>
   * <a href="#类数组转化为数组">类数组转化为数组</a>
   * <a href="#判断是否回文、实现回文">判断是否回文、实现回文</a>
+  * <a href="#两位大整数相加">两位大整数相加</a>
   * <a href="#实现f(a)(b)与f(a,b)一样的效果">实现f(a)(b)与f(a,b)一样的效果</a>
   * <a href="#无限累加的函数 add">实现一个无限累加的函数add(1)(2)(3)...</a>
   * <a href="#数组无序排列">数组无序排列</a>
@@ -227,7 +230,7 @@
   * <a href="#逗号操作符">逗号操作符</a>
 
 
-  * <a href="#两位大整数相加">两位大整数相加</a>
+  
   * <a href="#一道setTimeout面试题">一道setTimeout面试题</a>
   * <a href="#map(parseInt) 原理解析">['1','2','3'].map(parseInt) 原理解析</a>
   * <a href="#Array.apply(null,Array(3))与Array(3)区别">Array.apply(null,Array(3))与Array(3)区别</a>
@@ -1017,6 +1020,59 @@ Math.random().toFixed(6).slice(-6) / 1
     temp.reverse();
     console.log(arr.concat(temp).join())
 
+## <a name="两位大整数相加">两位大整数相加</a>
+>
+    function sumStrings(a,b){
+      console.log(a);
+      console.log(b);
+      var res='', c=0;
+      console.log()
+      a = a.split('');
+      b =b.split('');
+      while (a.length || b.length || c){
+          c += ~~a.pop() + ~~b.pop();
+          res = c % 10 + res;
+          //console.log(res);
+          c = c>9;
+      }
+      return res.replace(/^0+/,'');
+    }
+    console.log(sumStrings('37486040775460377773700','7669000000000000000000000000000'))
+
+    代码解析：
+    1. 使用split方法，将字符串转换为数组
+    2. 通过判断a,b,c的长度，决定是否还需要就行对应的位进行相加
+    3. 使用~~a.pop()的目的：保证若b的长度大于a的长度，则此时a.pop()=undefined，~~undefined=0
+    4. 将两个位置上的数进行相加，若大于9，则需要进位，即，将c的值存为true，这样当进行相加时，true会进行变量提升为1
+    5. 输出最后结果的时候，由于前面可能存在0，所以使用字符串的replace方法将前面的0去掉。
+
+
+>
+    function func(a,b){
+      a = a + ''
+      b = b + ''
+      var len1 = a.length
+      var len2 = b.length
+      for(var i = 0;i < Math.abs(len1-len2); i++){
+        if(len1>len2) b = '0' + b
+        if(len1<len2) a = '0' + a
+      }
+      a = a.split('').reverse()
+      b = b.split('').reverse()
+      var n = Math.max(len1,len2)
+      var result = new Array(n).fill(0)
+      // var result = Array.apply(this, Array(n)).map(()=>{return 0})
+      for(var j = 0;j < n; j++){
+        var temp = Number.parseInt(a[j]) + Number.parseInt(b[j])
+        if(temp > 9){
+          result[j] += temp-10
+          result[j+1] = 1
+        } else {
+          result[j] += temp
+        }
+      }
+      return result.reverse().join('').toString()
+    }
 
 ## <a name="实现f(a)(b)与f(a,b)一样的效果">实现f(a)(b)与f(a,b)一样的效果</a>
 
@@ -1340,63 +1396,6 @@ document.designMode // 查看
  >
     var f = (function f(){ return '1'; }, function g(){ return 2; })();
     console.log(f) //2
-
-
-
-## <a name="两位大整数相加">两位大整数相加</a>
->
-    function sumStrings(a,b){
-      console.log(a);
-      console.log(b);
-      var res='', c=0;
-      console.log()
-      a = a.split('');
-      b =b.split('');
-      while (a.length || b.length || c){
-          c += ~~a.pop() + ~~b.pop();
-          res = c % 10 + res;
-          //console.log(res);
-          c = c>9;
-      }
-      return res.replace(/^0+/,'');
-    }
-    console.log(sumStrings('37486040775460377773700','7669000000000000000000000000000'))
-
-    代码解析：
-    1. 使用split方法，将字符串转换为数组
-    2. 通过判断a,b,c的长度，决定是否还需要就行对应的位进行相加
-    3. 使用~~a.pop()的目的：保证若b的长度大于a的长度，则此时a.pop()=undefined，~~undefined=0
-    4. 将两个位置上的数进行相加，若大于9，则需要进位，即，将c的值存为true，这样当进行相加时，true会进行变量提升为1
-    5. 输出最后结果的时候，由于前面可能存在0，所以使用字符串的replace方法将前面的0去掉。
-
-
->
-    function func(a,b){
-      a = a + ''
-      b = b + ''
-      var len1 = a.length
-      var len2 = b.length
-      for(var i = 0;i < Math.abs(len1-len2); i++){
-        if(len1>len2) b = '0' + b
-        if(len1<len2) a = '0' + a
-      }
-      a = a.split('').reverse()
-      b = b.split('').reverse()
-      var n = Math.max(len1,len2)
-      var result = new Array(n).fill(0)
-      // var result = Array.apply(this, Array(n)).map(()=>{return 0})
-      for(var j = 0;j < n; j++){
-        var temp = Number.parseInt(a[j]) + Number.parseInt(b[j])
-        if(temp > 9){
-          result[j] += temp-10
-          result[j+1] = 1
-        } else {
-          result[j] += temp
-        }
-      }
-      return result.reverse().join('').toString()
-    }
-
 
 ## <a name="一道setTimeout面试题">一道setTimeout面试题</a>
 https://zhuanlan.zhihu.com/p/25407758
@@ -1773,6 +1772,7 @@ https://www.jianshu.com/p/6c7d0b18d4ca
 ___
 
 # <a name="面试题">**面试题**</a>
+[Daily-Interview-Question](https://github.com/Advanced-Frontend/Daily-Interview-Question/blob/master/datum/summary.md?tdsourcetag=s_pctim_aiomsg)
 
 [前端基础面试题(JS部分)](https://zhuanlan.zhihu.com/p/28428367) <!-- 1 -->
 
@@ -1791,7 +1791,7 @@ https://github.com/qiu-deqing/FE-interview
 https://github.com/foru17/front-end-collect
 
 
-# 定义一个简单的模板类，使用{}作为转义标记，中间的数字表示替换目标，format实参用来替换模板内标记 
+### 定义一个简单的模板类，使用{}作为转义标记，中间的数字表示替换目标，format实参用来替换模板内标记 
  >   
     (function (window) {
         function fn(str) {
@@ -1814,7 +1814,7 @@ https://github.com/foru17/front-end-collect
         console.log(t.format('http://www.alibaba.com', 'Alibaba', 'Welcome'));
     })();
 
-## 
+### 
 >
     function Foo() {
         getName = function () {

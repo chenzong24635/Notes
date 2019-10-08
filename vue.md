@@ -12,10 +12,9 @@
 
 [手摸手，带你用vue撸后台](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
 
-# 目录
 <details open>
   <summary>
-    展开/收缩
+    目录
   </summary>
  
 * <a href="#MVC、MVP、MVVM">MVC、MVP、MVVM</a>
@@ -835,18 +834,20 @@ CSS 属性名可以用驼峰式（camelCase）或短横分隔命名（kebab-case
 
 
 # <a name="组件中key作用">组件中key作用</a>
-https://www.zhihu.com/question/61064119
+[参考](https://www.zhihu.com/question/61064119)
+
+[参考](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/1)
 >
 
     当 Vue.js 用 v-for 正在更新已渲染过的元素列表时，它默认用“就地复用”策略。如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序， 而是简单复用此处每个元素，并且确保它在特定索引下显示已被渲染过的每个元素。
 
-`key 的作用是为了在 diff 算法执行时更快的找到对应的节点，提高 diff 速度，高效的更新虚拟DOM  `
 
 >
     vue 和 react 都是采用 diff 算法来对比新旧虚拟节点，从而更新节点。在 vue 的 diff 函数中。可以先了解一下 diff 算法。
 
     在交叉对比的时候，当新节点跟旧节点头尾交叉对比没有结果的时候，会根据新节点的 key 去对比旧节点数组中的 key，从而找到相应旧节点（这里对应的是一个 key => index 的 map 映射）。如果没找到就认为是一个新增节点。而如果没有 key，那么就会采用一种遍历查找的方式去找到对应的旧节点。一种一个 map 映射，另一种是遍历查找。相比而言。map 映射的速度更快。  
     
+key 的作用是为了在 diff 算法执行时更快的找到对应的节点，提高 diff 速度，高效的更新虚拟DOM  
 
 * 为什么不能用 index 作为 key
 >

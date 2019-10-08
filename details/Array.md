@@ -3,7 +3,7 @@
 
 <details open>
   <summary>
-    展开/收缩
+    图
   </summary>
   
   ![Array](../img/Array.png)

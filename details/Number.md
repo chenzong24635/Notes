@@ -3,15 +3,15 @@
 
 <details open>
   <summary>
-    展开/收缩
+    目录
   </summary>
 
 * <a href="#概述">概述</a>
 * <a href="#数值的表示">数值的表示</a>
 * <a href="#属性">属性</a>
-  * <a href="#Number.EPSILON">Number.EPSILON(JS能够表示的最小精度)</a>
-  * <a href="#Number.MAX_VALUE、Number.MIN_VALUE">>Number.MAX_VALUE、Number.MIN_VALUE(JS 能够表示的最大、小值 )</a>
-  * <a href="#Number.MAX_SAFE_INTEGER、Number.MIN_SAFE_INTEGER">>Number.MAX_SAFE_INTEGER、Number.MIN_SAFE_INTEGER(JS中最大、小的安全整数)</a>
+  * <a href="#Number.EPSILON">Number.EPSILON  能够表示的最小精度</a>
+  * <a href="#Number.MAX_VALUE、Number.MIN_VALUE">>Number.MAX_VALUE、Number.MIN_VALUE  能够表示的最大、小值</a>
+  * <a href="#Number.MAX_SAFE_INTEGER、Number.MIN_SAFE_INTEGER">>Number.MAX_SAFE_INTEGER、Number.MIN_SAFE_INTEGER  最大、小的安全整数</a>
   * <a href="#Number.NaN">Number.NaN 非数字</a>
 
   * <a href="#Number.POSITIVE_INFINITY、Number.NEGATIVE_INFINITY">Number.POSITIVE_INFINITY、Number.NEGATIVE_INFINITY 正、负无穷大</a>
@@ -19,9 +19,12 @@
   * <a href="#valueOf()">valueOf()</a>
   * <a href="#toString()">toString()</a>
   * <a href="#Number()、Number.parseInt()、Number.parseFloat()">Number()、Number.parseInt()、Number.parseFloat()</a>
+  * <a href="#toFixed()">num.toFixed(digits)格式化数值，小数点后数字的个数,返回字符串</a>
+  * <a href="#toPrecision()">num.toPrecision(digits)指定数值的精度,返回字符串</a>
+  * <a href="#toExponential()">num.toExponential(digits)转为指数形式,返回字符串</a>
   * <a href="#Number.isFinite()">Number.isFinite()是否为正常的数值</a>
   * <a href="#Number.isNaN()">Number.isNaN()判断是否为NaN</a>
-  * <a href="#Number.isInteger()">Number.isInteger() 判断是否为整数。</a>
+  * <a href="#Number.isInteger()、Number.isSafeInteger()">Number.isInteger()、Number.isSafeInteger() 判断是否为整数、安全整数。</a>
   * <a href="#"></a>
 
 </details>
@@ -69,18 +72,18 @@ NaN //非数值
 #  <a name="属性">属性</a>
 ##  <a name="Number.property">Number.property</a>
 
-##  <a name="Number.EPSILON">Number.EPSILON(JS能够表示的最小精度)</a>
+##  <a name="Number.EPSILON">Number.EPSILON  能够表示的最小精度</a>
 表示 1 与Number可表示的大于 1 的最小的浮点数之间的差值。
 
 Number.EPSILON === Math.pow(2, -52) //true   
 值接近于2.2204460492503130808472633361816E-16
 
-##  <a name="Number.MAX_VALUE、Number.MIN_VALUE">Number.MAX_VALUE、Number.MIN_VALUE(JS 能够表示的最大、小值 )</a>
+##  <a name="Number.MAX_VALUE、Number.MIN_VALUE">Number.MAX_VALUE、Number.MIN_VALUE  能表示的最大、小值</a>
 
 Number.MIN_VALUE === 5e-324  //true  
 Number.MAX_VALUE === 1.7976931348623157e+308  //true
 
-##  <a name=">Number.MAX_SAFE_INTEGER、Number.MIN_SAFE_INTEGER">Number.MAX_SAFE_INTEGER、Number.MIN_SAFE_INTEGER(JS中最大、小的安全整数)</a>
+##  <a name=">Number.MAX_SAFE_INTEGER、Number.MIN_SAFE_INTEGER">Number.MAX_SAFE_INTEGER、Number.MIN_SAFE_INTEGER  最大、小的安全整数</a>
 
 Number.MAX_SAFE_INTEGER  === Math.pow(2,53) - 1 //true  
 Number.MIN_SAFE_INTEGER  === Math.pow(2,-53) - 1 //true
@@ -225,10 +228,58 @@ Number.parseFloat(string)
     parseFloat('FF2') // NaN
     parseFloat('') // NaN
 
-##  <a name="Number.isFinite()">Number.isFinite()是否为正常的数值</a>
-除了Infinity、-Infinity、NaN和undefined这几个值会返回false，其他的数值都会返回true。
+##  <a name="toFixed()">num.toFixed(digits)格式化数值，小数点后数字的个数,返回字符串</a>
+digits
+>小数点后数字的个数；介于 [0,20]，实现环境可能支持更大范围。如果忽略该参数，则默认为 0。如果数值的位数不够用0填充，在必要时进行四舍五入 
+>>如果数值大于 1e+21，该方法会简单调用 Number.prototype.toString()并返回一个指数记数法格式的字符串。  
+>>如果 digits 太小或太大将会抛出该错误。
 
-##  <a name="Number.isInteger()">Number.isInteger()是否为整数</a>
+在一个非Number类型的对象上调用报错
+
+>
+    77.1.toFixed() // "77"
+    77.1.toFixed(0) // "77"
+    77.1.toFixed(1) // "77.1"
+    77.1.toFixed(2) // "77.10"
+    77.1234.toFixed(2) // '77.12'
+    1e2.toFixed(2) // '100.00'
+
+##  <a name="toPrecision()">num.toPrecision(digits)指定数值的精度,返回字符串</a>
+digits
+>可选。一个用来指定有效数个数的整数。
+>>如果 digits 参数不在 1 和 100 （包括）之间，将会抛出该错误。执行环境也可以支持更大或更小的范围。ECMA-262 只需要最多 21 位显示数字。
+>>如果忽略 digits 参数，则该方法表现类似于 Number.prototype.toString()。如果该参数是一个非整数值，将会向下舍入到最接近的整数。
+
+在一个非Number类型的对象上调用报错
+
+>
+    num = 77.1234;
+    num.toPrecision();  // "77.1234"
+    num.toPrecision(4); // "77.12"
+    num.toPrecision(2); // "77"
+    num.toPrecision(1); // "8e+1"
+
+##  <a name="toExponential()">num.toExponential(digits)转为指数形式,返回字符串</a>
+digits  
+>可选。一个整数，用来指定小数点后有几位数字。默认情况下用尽可能多的位数来显示数字。
+>>如果 digits 太小或太大将会抛出该错误。介于 0 和 20（包括20）之间最安全
+
+>
+    num = 77.1234;
+    num.toExponential(); // 7.71234e+1
+    num.toExponential(4); // 7.7123e+1
+
+##  <a name="Number.isFinite()">Number.isFinite()是否为正常的数值</a>
+除了Infinity、-Infinity、NaN和undefined,字符串这几个值会返回false，其他的数值都会返回true。
+>
+    Number.isFinite(3) // true
+    Number.isFinite() // false
+    Number.isFinite(Infinity) // false
+    Number.isFinite(null) // false
+
+##  <a name="Number.isInteger()、Number.isSafeInteger()">Number.isInteger()、Number.isSafeInteger()是否为整数、安全整数</a>
+* Number.isInteger()  
+
 如果被检测的值是整数(包括0，-0，+0），则返回 true，否则返回 false。注意 NaN 和正负 Infinity 不是整数。
 
 整数和浮点数采用的是同样的储存方法，所以 25 和 25.0 被视为同一个值。
@@ -244,8 +295,8 @@ Number.parseFloat(string)
 
 总之，如果对数据精度的要求较高，不建议使用Number.isInteger()判断一个数值是否为整数。
 
-##  <a name="Number.isSafeInteger()">Number.isSafeInteger()判断是否为安全整数</a>
-Number.isSafeInteger()判断传入的参数值是否是一个“安全整数”
+
+* Number.isSafeInteger()判断传入的参数值是否是一个“安全整数”
 
 安全整数范围为 -(253 - 1)到 253 - 1 之间的整数，包含 -(253 - 1)和 253 - 1。
 
@@ -266,4 +317,4 @@ Number.isSafeInteger()判断传入的参数值是否是一个“安全整数”
     }
 
 
-#  <a name=""></a>
+##  <a name=""></a>

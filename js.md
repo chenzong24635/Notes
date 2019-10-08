@@ -1,7 +1,6 @@
-# 链接
 <details open>
   <summary>
-    展开/收缩
+    链接
   </summary>
 
   [MDN-JavaScript 标准内置对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects)
@@ -25,12 +24,9 @@
 </details>
 
 
-
-
-# 目录
 <details open>
   <summary>
-    展开/收缩
+    目录
   </summary>
 
 * <a href="#运算符优先级">运算符优先级</a>

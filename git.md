@@ -9,9 +9,9 @@
 
 [猴子都能懂的git入门](https://backlog.com/git-tutorial/cn/contents/)
 
-# 目录
+
 <details open>
-  <summary>展开/收缩</summary>
+  <summary>目录</summary>
 
 * <a href="#vscode-sync-setting">vscode-sync-setting</a>
 * <a href="#创建项目提交到仓库">创建项目提交到仓库</a>

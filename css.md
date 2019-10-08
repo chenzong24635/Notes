@@ -1,5 +1,10 @@
-﻿# 链接
+﻿
 
+<details open>
+  <summary>
+    链接
+  </summary>
+  
 [You-Dont-Need-JavaScript:用CSS实现效果而不需要JS](https://github.com/you-dont-need/You-Dont-Need-JavaScript)
 
 [CSS tricks](https://css-tricks.com/)
@@ -7,7 +12,6 @@
 [CSS-Inspiration:在这里找到写 CSS 的灵感](https://github.com/chokcoco/CSS-Inspiration)
 
 [常见的CSS图形](https://codepen.io/chenzong24635/pen/xQNyzg)
-
 
 
 动画
@@ -44,7 +48,7 @@ CSS布局、居中
 
 [CSS居中-个人笔记](http://htmlpreview.github.io/?https://github.com/chenzong24635/Notes/blob/master/css居中.html)
 
-[CSS水平垂直居中](http://howtocenterincss.com/) 根据要求生成代码
+[CSS水平垂直居中- 根据要求生成代码](http://howtocenterincss.com/)
 
 [三列布局](http://www.cnblogs.com/xiaohuochai/p/5455905.html)
 
@@ -58,8 +62,15 @@ css手册
 
 [雪碧图生成](https://www.toptal.com/developers/css/sprite-generator)
 
-# 目录
+</details>
 
+---
+
+<details open>
+  <summary>
+    目录
+  </summary>
+  
 * <a href="#CSS">**`CSS`**</a>
 
 * <a href="#概述">概述</a>
@@ -107,6 +118,7 @@ css手册
   * <a href="#纯css页面滚动进度条">纯css页面滚动进度条</a>
   * <a href="#"></a>
   * <a href="#"></a>
+</details>
 
 # <a name="CSS">**CSS**</a>
 

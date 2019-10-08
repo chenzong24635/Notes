@@ -1,6 +1,6 @@
-# 目录
+
 <details open>
-  <summary>展开/收缩</summary>
+  <summary>目录</summary>
 
 * <a href="#HTML">**HTML**</a>
 
@@ -16,19 +16,16 @@
 * <a href="#web存储">cookies、sessionStorage 、和 localStorage 的区别</a>
 * <a href="#HTML5的离线储存">HTML5的离线储存</a>
 * <a href="#iframe缺点">iframe缺点</a>
-* <a href="#link标签属性">link标签属性</a>
-  <details >
-    <summary>展开/收缩</summary>
-
+* <details >
+    <summary><a href="#link标签属性">link标签属性</a></summary>
     * <a href="网页标题引入图标">网页标题引入图标</a>
     * <a href="预加载页面资源prefetch、prefetch">预加载页面资源prefetch、prefetch</a>
     
   </details>  
 * <a href="base标签">base标签</a>
 * <a href="#响应式设计-viewport">响应式设计-viewport</a>
-* <a href="#meta标签属性">meta标签属性</a>
-  <details >
-    <summary>展开/收缩</summary>
+* <details >
+    <summary><a href="#meta标签属性">meta标签属性</a></summary>
 
     * <a href="必要属性">必要属性</a>
     * <a href="可选属性">可选属性</a>
