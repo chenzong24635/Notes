@@ -46,6 +46,11 @@ TypeScript 非常包容
 
     node里直接执行： ./文件名.ts （./不能省）
 
+# 速查
+| 操作符 | 描述|作用 |使用
+|:--|:--|:--|
+
+
 # <a name="类型">类型</a>
 使用 : 指定变量的类型
 
@@ -57,7 +62,7 @@ TypeScript 非常包容
     let isDone: boolean = Boolean(1); // ok
 
     // 注意，使用构造函数 Boolean 创造的对象不是布尔值：
-    let newBoolean: boolean = new Boolean(1); // error
+    let newBoolean: boolean = new Boolean(1); // error!!!
     // 返回的是一个 Boolean 对象：
     let newBoolean: Boolean = new Boolean(1); // ok
 
@@ -149,7 +154,7 @@ arguments 实际上是一个类数组，不能用普通的数组的方式来描�
 
     当添加越界的元素时，它的类型会被限制为元组中每个类型的联合类型：
     arr.push('a') // ok
-    arr.push(true) // error,只能添加string、number类型的元素
+    arr.push(true) // error!!!,只能添加string、number类型的元素
 
 * 枚举 enum  
 枚举 enum 为一组数值赋予友好的名字。默认，从0开始为元素编号。   
@@ -178,13 +183,13 @@ arguments 实际上是一个类数组，不能用普通的数组的方式来描�
     Color.Blue // 4
 
     如果紧接在计算所得项后面的是未手动赋值的项，那么它就会因为无法获得初始值而报错：
-    enum Color {Red, Green = "red".length, Blue}; // error
+    enum Color {Red, Green = "red".length, Blue}; // error!!!
 
 常数枚举,与普通枚举的区别是，它会在编译阶段被删除，并且不能包含计算成员。
 >
     const enum cc {
       a = 1,
-      c = 'aaa'.length, // error
+      c = 'aaa'.length, // error!!!
       b = 2.4,
       d
     }
@@ -224,7 +229,7 @@ arguments 实际上是一个类数组，不能用普通的数组的方式来描�
 
     let a = 5; //一旦赋值就会进行类型推论，这里推测其为number类型
     a = 15 // ok
-    a= [] // error
+    a= [] // error!!!
 
     //不确定数组 包含的类型
     let list: any[] = [1, true, "free"];
@@ -325,7 +330,7 @@ object表示非原始类型，也就是除number，string，boolean，symbol，n
 >
     let a = 5; //一旦赋值就会进行类型推论，这里推测其为number类型
     a = 15 // ok
-    a= [] // error
+    a= [] // error!!!
 
 # <a name="泛型">泛型</a>
 定义泛型函数
@@ -365,53 +370,7 @@ object表示非原始类型，也就是除number，string，boolean，symbol，n
     }
     let output = identity([1]); // ok
     let output = identity({length: 2}); // ok
-    let output = identity(1); //error，它不再是适用于任意类型，需要传入符合约束类型的值
-
-
-# <a name="declear">declear声明</a>
-[参考](https://segmentfault.com/a/1190000020000325)
-
-[文档](https://www.tslang.cn/docs/handbook/declaration-files/introduction.html)
-
-作用：当使用第三方库时，我们需要引用它的声明文件，才能获得对应的代码补全、接口提示等功能。
->
-    declare var $: (selector: string) => any;  
-    $('body')
-
-更推荐的是使用 @types 统一管理第三方库的声明文件。  
-@types 的使用方式很简单，直接用 npm 安装对应的声明模块即可，以 jQuery 举例：
-npm install @types/jquery --save-dev
-
-declare var 并没有真的定义一个变量，只是定义了全局变量 $ 的类型，仅仅会用于编译时的检查，在编译结果中会被删除。
-
-----
-
-* 新建一个声明文件以 .d.ts 为后缀，把声明语句单独放到该文件中： runoob.d.ts
-
-* 声明文件或模块的语法格式如下：
->
-    declare module Module_Name {
-    }
-
-* ts中引入声明文件：
->
-    /// <reference path = " runoob.d.ts" />
-
->
-    不要在声明文件里使用  /// <reference path="..." />。
-    应该使用  /// <reference types="..." />代替
-
------
-
->
-    //a.d.ts
-    declare let myname: number
-
-    //a.ts
-    #!/usr/bin/env ts-node
-    /// <reference path = "./a.d.ts" />
-    myname = 5
-    console.log(myname)
+    let output = identity(1); //error!!!，它不再是适用于任意类型，需要传入符合约束类型的值
 
 # <a name="接口">接口interface、类型别名type</a>
 TypeScript的核心原则之一是对值所具有的结构进行类型检查。 它有时被称做“鸭式辨型法”或“结构性子类型化”。 在TypeScript里，接口的作用就是为这些类型命名和为你的代码或第三方代码定义契约。
@@ -431,7 +390,7 @@ TypeScript的核心原则之一是对值所具有的结构进行类型检查。 
     }
 
     let obj: lab = {size: 10, label: "label"};
-    obj.size = 11; // error ,size属性只读
+    obj.size = 11; // error!!! ,size属性只读
     obj.label = 'ooo' // ok
 
 希望一个接口允许有任意的属性，可以使用如下方式：
@@ -453,29 +412,53 @@ TypeScript的核心原则之一是对值所具有的结构进行类型检查。 
 
     interface Person {
         name: string;
-        age?: number; // error ,这里类型必须是string，对应下面任意属性的类型
+        age?: number; // error!!! ,这里类型必须是string，对应下面任意属性的类型
         [propName: string]: string;
     }
 
     let tom: Person = { 
         name: 'Tom',
-        age: 25, // error
+        age: 25, // error!!!
         gender: 'male'
     };
 
-* implements明确的强制一个类去符合某种契约
+*    
 >
-    interface ClockInterface {
-        currentTime: Date;
-        setTime(d: Date);
+    
+    interface A{
+      name?: string
+    }
+    interface B {
+      age?: number
+    }
+    
+* 交叉类型:将多个类型合并为一个类型（interface，type）
+>
+
+    let c: A & B = {
+      name: '',
+      age: 4
     }
 
-    class Clock implements ClockInterface {
-        currentTime: Date;
-        setTime(d: Date) {
-            this.currentTime = d;
-        }
-        constructor(h: number, m: number) { }
+* 联合类型：表示变量属于联合类型中的某种类型，使用时需要先断言一下（interface，type）
+
+    let c1: A | B = {};
+    (<A>c1).name = 'ad'
+
+
+* is 关键字通常组成类型谓词，作为函数的返回值。谓词为 paramName is Type这种形式， paramName必须是来自于当前函数签名里的一个参数名。
+>
+
+    let c1: A | B = {};
+    (<A>c1).name = 'ad'
+
+    function fun(arg: A | B): arg is A {
+      return (<A>arg).name !== undefined
+    }
+    if(fun(c1)){
+      console.log(c1.name)
+    }else{
+      console.log(c1.age)
     }
 
 * extends继承接口
@@ -516,33 +499,6 @@ TypeScript的核心原则之一是对值所具有的结构进行类型检查。 
     type SetUser = (name: string, age: number) => void
     let a:SetUser = function(){}
     console.log(a('1',1))
-
-
-
-* keyof 查询组给定类型的钥匙
->
-    interface Person {
-      name: string
-      age: number
-    }
-    type PersonKeys = keyof Person // 'name' | 'age'
-    let a:PersonKeys = 'age' // ok
-    let a:PersonKeys = 'a' // error
-
-* Exclude 允许您从其他类型中删除某些类型。Exclude 来自 T 任何可分配的东西 T。
->
-
-    type PersonKeys1 = Exclude<keyof Person, 'name'>
-
-    let b:PersonKeys1 = 'age' // ok 
-    let b:PersonKeys1 = 'name' //error
-
-* Pick 允许您从其他类型中选择某些类型。Pick 来自 T 任何可分配的东西 T。
->
-    type PersonKeys1 = Pick< Person, 'name'>
-
-    let b:PersonKeys1 = {name:'1'}
-
 
 * interface 、types区别
   * 都可以描述一个对象或者函数
@@ -610,6 +566,48 @@ TypeScript的核心原则之一是对值所具有的结构进行类型检查。 
         }
         */
 
+* implements明确的强制一个类去符合某种契约
+>
+    interface ClockInterface {
+        currentTime: Date;
+        setTime(d: Date);
+    }
+
+    class Clock implements ClockInterface {
+        currentTime: Date;
+        setTime(d: Date) {
+            this.currentTime = d;
+        }
+        constructor(h: number, m: number) { }
+    }
+
+
+* keyof 查询组给定类型的钥匙
+>
+    interface Person {
+      name: string
+      age: number
+    }
+    type PersonKeys = keyof Person // 'name' | 'age'
+    let a:PersonKeys = 'age' // ok
+    let a:PersonKeys = 'a' // error!!!
+
+* Exclude 允许您从其他类型中删除某些类型。Exclude 来自 T 任何可分配的东西 T。
+>
+
+    type PersonKeys1 = Exclude<keyof Person, 'name'>
+
+    let b:PersonKeys1 = 'age' // ok 
+    let b:PersonKeys1 = 'name' //error!!!
+
+* Pick 允许您从其他类型中选择某些类型。Pick 来自 T 任何可分配的东西 T。
+>
+    type PersonKeys1 = Pick< Person, 'name'>
+
+    let b:PersonKeys1 = {name:'1'}
+
+
+
 # <a name="函数">函数</a>
 可以为每个参数添加类型，及函数本身添加返回类型。
 
@@ -624,7 +622,7 @@ typeScript 会将添加了默认值的参数识别为可选参数,此时就不�
       return x + y;
     }
 
-    function add(x?: number, y: number, z?: string): number { // error 
+    function add(x?: number, y: number, z?: string): number { // error!!! 
       return x + y;
     }
 
@@ -700,6 +698,24 @@ protected 修饰的属性或方法是受保护的，它和 private 类似，区�
 
 js的static静态属性方法，通过类本身（和其子类）调用，不能在类的实例上调用静态方法  
 
+
+`当构造函数修饰为 private 时，该类不允许被继承或者实例化`  
+`当构造函数修饰为 protected时，该类只允许被继承不允许实例化`
+>
+    class Animal {
+      public name;
+      private constructor (name) { // 构造函数私有化
+          this.name = name;
+    }
+    }
+    class Cat extends Animal { // error!!!
+      constructor (name) {
+          super(name);
+      }
+    }
+
+    let a = new Animal('Jack'); // error!!!
+
 >
     class M {
       age: number
@@ -712,7 +728,7 @@ js的static静态属性方法，通过类本身（和其子类）调用，不能
         this.c() // 'protected'
 
         M.d() // ok 不能直接使用 this 关键字来访问静态方法。而是要用类名来调用
-        this.d() // error!!!
+        this.d() // error!!!!!!
       }
       private b() {
         console.log('private')
@@ -739,13 +755,77 @@ js的static静态属性方法，通过类本身（和其子类）调用，不能
 
     m.age // ok
     m.a() // ok
-    m.b() // error，private不能在声明它的类的外部访问
-    m.c() // error，protected不能在声明它的类的外部访问
-    m.d() // error，static不能被实例调用
+    m.b() // error!!!，private不能在声明它的类的外部访问
+    m.c() // error!!!，protected不能在声明它的类的外部访问
+    m.d() // error!!!，static不能被实例调用
 
     n.getC() // ok，protected允许被子类访问
     M.d() // ok
     N.d() // ok
+
+* abstract 用于定义抽象类和其中的抽象方法 (抽象方法只能出现在抽象类中)。
+
+抽象类是不允许被实例化的：
+>
+    abstract class Animal {
+        public name;
+        public constructor(name) {
+            this.name = name;
+        }
+        public abstract sayHi();
+    }
+
+    let a = new Animal('Jack'); // error!!!!!!
+
+# <a name="declear">declear声明</a>
+[参考](https://segmentfault.com/a/1190000020000325)
+
+[文档](https://www.tslang.cn/docs/handbook/declaration-files/introduction.html)
+
+作用：当使用第三方库时，我们需要引用它的声明文件，才能获得对应的代码补全、接口提示等功能。
+>
+    declare var $: (selector: string) => any;  
+    $('body')
+
+更推荐的是使用 @types 统一管理第三方库的声明文件。  
+@types 的使用方式很简单，直接用 npm 安装对应的声明模块即可，以 jQuery 举例：
+npm install @types/jquery --save-dev
+
+declare var 并没有真的定义一个变量，只是定义了全局变量 $ 的类型，仅仅会用于编译时的检查，在编译结果中会被删除。
+
+----
+
+* 新建一个声明文件以 .d.ts 为后缀，把声明语句单独放到该文件中： runoob.d.ts
+
+* 声明文件或模块的语法格式如下：
+>
+    declare module Module_Name {
+    }
+
+* ts中引入声明文件：
+>
+    /// <reference path = " runoob.d.ts" />
+
+>
+    不要在声明文件里使用  /// <reference path="..." />。
+    应该使用  /// <reference types="..." />代替
+
+-----
+
+>
+    //a.d.ts
+    declare let myname: number
+
+    //a.ts
+    #!/usr/bin/env ts-node
+    /// <reference path = "./a.d.ts" />
+    myname = 5
+    console.log(myname)
+
+# <a name="namespace">命名空间namespace</a>
+namespace：“内部模块”现在称做“命名空间”
+
+moduleX{ 相当于现在推荐的写法 namespaceX{)
 
 # <a name=""></a>
 # <a name=""></a>

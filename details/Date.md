@@ -1,6 +1,6 @@
 <details open>
   <summary>
-    伸/缩
+    目录
   </summary>
   
 </details>

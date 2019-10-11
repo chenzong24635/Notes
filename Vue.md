@@ -2023,7 +2023,7 @@ vue create projectName
     作用：项目打包后，代码都是经过压缩加密的，如果运行时报错，输出的错误信息无法准确得知是哪里的代码报错。  
     有了map就可以像未加密的代码一样，准确的输出是哪一行哪一列有错。
 
-## [引用public文件路径](https://cli.vuejs.org/zh/guide/html-and-static-assets.html#public-%E6%96%87%E4%BB%B6%E5%A4%B9)
+* [引用public文件路径](https://cli.vuejs.org/zh/guide/html-and-static-assets.html#public-%E6%96%87%E4%BB%B6%E5%A4%B9)
 >
     <img :src="`${publicPath}img.png`">
 
@@ -2032,6 +2032,15 @@ vue create projectName
         publicPath: process.env.BASE_URL
       }
     }
+
+* vue-cli项目创建时，git bash箭头选择无效问题
+>
+    选择git bash 的安装目录，找到bash.bashrc文件
+
+    文件末未添加 ：
+    alias vue='winpty vue.cmd'
+    
+    重启git bash 即可
 
 ## <a name="proxy跨域设置">vue-cli2 proxy跨域设置</a>
 >

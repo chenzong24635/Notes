@@ -24,6 +24,9 @@
   * <a href="#删除或修改本地保存的账号密码">删除或修改本地保存的账号密码</a>
 * <a href="#md添加图片">md添加图片</a>
 * <a href="#预览html文件">如何在github的markdown上预览html文件</a>
+* <a href="#git文件名大小写重命名">git文件名大小写重命名（git大小写敏感/默认不敏感），如何重命名并提交</a>
+* <a href="#执行rm -r操作后想恢复文件">执行rm -r操作后想恢复文件</a>
+* <a href="#vue-cli项目创建时，git bash箭头选择无效问题">vue-cli项目创建时，git bash箭头选择无效问题</a>
 * <a href="#"></a>
 
 </details>
@@ -197,20 +200,35 @@ npm i git //git安装
 
     http://htmlpreview.github.io/?https://github.com/chenzong24635/Notes/blob/master/文件名.html
 
-# <a name="git文件大小写更名">git文件大小写更名</a>    
-git默认对于文件名大小写是不敏感.  
+# <a name="git文件名大小写重命名">git文件名大小写重命名（git大小写敏感/默认不敏感），如何重命名并提交</a>    
+git config core.ignorecase true | false //配置git 使其对文件名大小写是否敏感
+>
+    git rm -r --cached a.md
+    git add A.md
+    git commit -m '文件重命名'
+    git push
+
 >
 
-    git config core.ignorecase false //配置git 使其对文件名大小写敏感
+    git config core.ignorecase false  //提交后会导致github上存在一份大写的和一份小写的文件夹。
+    git rm -r --cached .  //删除本地所有缓存(注意后面‘点号’)
+    git push
 
-    然后你修改名字,提交就可以了.
+# <a name="执行rm -r操作后想恢复文件">执行rm -r操作后想恢复文件</a>
+在未commit前，执行rm -r操作后，恢复未commit的文件
+>
+    git reset 
+    git checkout filename
 
-    如果你本地把文件夹小写的修改成大写的，然后提交，会导致github上存在一份大写的和一份小写的文件夹。
+# <a name="vue-cli项目创建时，git bash箭头选择无效问题">vue-cli项目创建时，git bash箭头选择无效问题</a>
+>
+    选择git bash 的安装目录，找到bash.bashrc文件
 
-    此时要删除掉github上的小写文件，需要做的是:
-
-    在github删除该分支
-    本地执行git rm -r --cached . (注意后面‘点号’)
-    然后重新 git push，就ok了
-
+    文件末未添加 ：
+    alias vue='winpty vue.cmd'
     
+    重启git bash 即可
+
+![img](./img/git-choose.jpg)
+
+# <a name=""></a>

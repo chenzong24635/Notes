@@ -4,7 +4,7 @@ https://segmentfault.com/a/1190000012422198
 
 <details open>
   <summary>
-    伸/缩
+    目录
   </summary>
 </details>
 

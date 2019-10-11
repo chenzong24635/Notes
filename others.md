@@ -1,3 +1,16 @@
+解决IOS设备局部滚动不顺畅(粘手)
+除了浏览器原生滚动，自定义的滚动条都会出现这种情况，加以下属性就可以解决：
+>
+    .box {
+      -webkit-overflow-scrolling: touch;
+    }
+
+滚动传播
+指有多个滚动区域，当一个滚动区域滚动完之后，继续滚动会传播到到父区域继续滚动的行为：
+>
+    .box {
+      overscroll-behavior: contain; // 阻止滚动传播
+    }
 
 # IntersectionObserver 判断元素是否进入了"视口"（viewport）
 [详情](http://www.ruanyifeng.com/blog/2016/11/intersectionobserver_api.html)

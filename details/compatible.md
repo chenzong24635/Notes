@@ -14,6 +14,41 @@
 
 * <a href="#"></a>
 
+* window.scrollTo、window.scrollBy、scrollIntoView()
+
+>
+    window.scrollTo(0, 0);
+
+    // or
+    window.scrollTo({
+      left: 0,
+      top: 100,
+      behavior: "smooth" // 平滑滚动
+    });
+
+相对滚动:相对与当前滚动条位置进行滚动
+>
+    window.scrollBy(0, 0);
+
+    // or
+    window.scrollBy({
+      left: 0,
+      top: 100,
+      behavior: "smooth" // 平滑滚动
+    });
+
+>
+    document.scrollingElement.scrollTop = 100;
+
+指定一个元素显示在视窗
+>
+    // start出现在视口顶部、center出现在视口中央、end出现在视口底部，
+    //默认start
+    document.querySelector(".box").scrollIntoView({
+      block: "start" || "center" || "end",
+      behavior: "smooth" // 平滑滚动
+    });
+
 
 # offset、scroll、client
 ![img](./img/offset_scroll_client.png)

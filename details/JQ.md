@@ -6,9 +6,10 @@
 [jQuery之家-插件库](http://www.htmleaf.com/)
 
 
-* <a href="#"></a>
 * <a href="#jQuery获取的dom对象和原生的dom对象区别">jQuery获取的dom对象和原生的dom对象区别</a>
+* <a href="#Jq中如何实现多库并存">Jq中如何实现多库并存</a>
 * <a href="#jQuery如何扩展自定义方法">jQuery如何扩展自定义方法</a>
+* <a href="#"></a>
 
 ## <a name=""></a>
 ## <a name="jQuery获取的dom对象和原生的dom对象区别">jQuery获取的dom对象和原生的dom对象区别</a>

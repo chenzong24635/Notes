@@ -29,13 +29,12 @@
       }
     ];
 
-  
-
 ## <a name="for">for</a>
-`能被break, continue,  return中断`  
+`能被break, continue,  return（函数中）中断`  
 >
     for (let i = 0,len = arr.length; i < len ; i++) {
       console.log('key:', i, 'val:', arr[i])
+      break;
     }
 
 ## <a name="for in">for...in --遍历对象--遍历的是索引（键名）</a>

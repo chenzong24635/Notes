@@ -266,9 +266,7 @@
 ## <a name="手机号验证">手机号验证</a>
 >
     function isPhone(tel) {
-      tel = tel + '';
-      if(tel.match(/^1[0-9]{10}$/gi)) return true;
-      return false;
+      return /^1[0-9]{10}$/.test(tel.toString())
     }
 
 ## <a name="邮箱验证">邮箱验证</a>
@@ -311,50 +309,42 @@
 >
     function accAdd(arg1, arg2) {
       let r1, r2, m;
-      try {
-        r1 = arg1.toString().split('.')[1].length;
-      } catch (e) {
-        r1 = 0;
-      }
-      try {
-        r2 = arg2.toString().split('.')[1].length;
-      } catch (e) {
-        r2 = 0;
-      }
-      m = Math.pow(10, Math.max(r1, r2));
-      return ((arg1 * m + arg2 * m) / m).toFixed(2);
-      //减
-      //return ((arg1 * m - arg2 * m) / m).toFixed(2);
+      try { r1 = arg1.toString().split(".")[1].length } catch (e) { r1 = 0 }
+      try { r2 = arg2.toString().split(".")[1].length } catch (e) { r2 = 0 }
+      m = Math.pow(10, Math.max(r1, r2))
+      return (arg1 * m + arg2 * m) / m
     }
 
-
+* 减
+>
+    function accDec(arg1, arg2) {
+      let r1, r2, m, n;
+      try { r1 = arg1.toString().split(".")[1].length } catch (e) { r1 = 0 }
+      try { r2 = arg2.toString().split(".")[1].length } catch (e) { r2 = 0 }
+      m = Math.pow(10, Math.max(r1, r2));
+      //动态控制精度长度
+      n = (r1 >= r2) ? r1 : r2;
+      return ((arg1 * m - arg2 * m) / m).toFixed(n);
+    }
+    
 * 乘
 >
-    function mul(a, b) {
-      var c = 0,
-          d = a.toString(),
-          e = b.toString();
-      try {
-        c += d.split('.')[1].length;
-      } catch (err) {}
-      try {
-        c += e.split('.')[1].length;
-      } catch (err) {}
-      return Number(d.replace('.', '')) * Number(e.replace('.', '')) / Math.pow(10, c);
+    function accMul(arg1, arg2) {
+      let m = 0, s1 = arg1.toString(), s2 = arg2.toString();
+      try { m += s1.split(".")[1].length } catch (e) { }
+      try { m += s2.split(".")[1].length } catch (e) { }
+      return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m)
     }
 
 * 除
 >
-    function div(a, b) {
-      var c, d, e = 0, f = 0;
-      try {
-        e = a.toString().split('.')[1].length;
-      } catch (err) {}
-      try {
-        f = b.toString().split('.')[1].length;
-      } catch (err) {}
-      c = Number(a.toString().replace('.', '')), d = Number(b.toString().replace('.', '')), mul(c / d, Math.pow(10, f - e));
-      return c
+    function accDiv(arg1, arg2) {
+      let t1 = 0, t2 = 0, r1, r2;
+      try { t1 = arg1.toString().split(".")[1].length } catch (e) { }
+      try { t2 = arg2.toString().split(".")[1].length } catch (e) { }
+      r1 = Number(arg1.toString().replace(".", ""))
+      r2 = Number(arg2.toString().replace(".", ""))
+      return (r1 / r2) * Math.pow(10, t2 - t1);
     }
 
 ## <a name="倒计时">倒计时</a>
