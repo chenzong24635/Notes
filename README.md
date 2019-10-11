@@ -1,4 +1,5 @@
 
+
 <details>
   <summary>vscode 快捷键</summary>
 
@@ -72,6 +73,18 @@
     1. aa<a.com>aa
 
     2. [链接文字](链接地址)
+
+多次引用同一链接
+>
+    // []里的内容要一致
+    [链接文字][]
+
+    //这个不会显示
+    [链接文字]: http://www.aaa.com/
+
+[链接文字][]
+
+[链接文字]: http://www.aaa.com/
 
 </details>
 

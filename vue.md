@@ -12,6 +12,7 @@
 
 [手摸手，带你用vue撸后台](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
 
+#
 <details open>
   <summary>
     目录
@@ -26,7 +27,7 @@
 * <a href="#computed watch methods">computed watch methods</a>
 * <a href="#Vue不能检测以下数组的变动">Vue不能检测以下数组的变动</a>
 * <a href="#组件中 data 为什么是一个函数">组件中 data 为什么是一个函数</a>
-* <a href="#Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？">Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？</a>
+* <a href="#Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决">Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？</a>
 * <a href="#样式绑定">样式绑定：class、style</a>
 * <a href="#v-if和v-show 的区别">v-if和v-show 的区别</a>
 * <a href="#v-for 遍历避免同时使用 v-if">v-for 遍历避免同时使用 v-if</a>
@@ -53,36 +54,26 @@
 * <a href="#vuex">vuex</a>
 * <a href="#组件通信方法">组件通信方法</a>
 
-
+* <a href="#axios、api 设计">axios、api 设计</a>
+* <a href="#token验证">如何添加token验证</a>
 * <a href="#vue项目性能优化">vue项目性能优化</a>
   * <a href="#事件的销毁">事件的销毁</a>
   * <a href="#图片资源懒加载">图片资源懒加载</a>
   * <a href="#路由懒加载">路由懒加载</a>
   * <a href="#"></a>
 
-
+* <a href="#vue-cli2快速创建项目">vue-cli2快速创建项目</a>
 * <a href="#vue-cli3">vue-cli3配置</a>
 
-* <a href="#proxy跨域设置">proxy跨域设置</a>
-* <a href="#token验证">如何添加token验证</a>
 * <a href="#静态资源处理">静态资源处理：图片等</a>
 * <a href="#打包">打包时常见问题及解决</a>
 
-
 * <a href="#插件">插件</a>
-
 * <a href="#其他">其他</a>
-
   * <a href="#rem">rem</a>
-  * <a href="#创建项目">创建项目</a>
-  * <a href="#npm">npm</a>
-  * <a href="#"></a>
   * <a href="#"></a>
 
 </details>
-
-
-
 
 
 # <a name="MVC、MVP、MVVM">MVC、MVP、MVVM</a>
@@ -576,7 +567,7 @@ watch：深度监听
 如果组件中 data 选项是一个函数，每次返回的都是一个新对象，组件实例之间的 data 属性值不会互相影响；而 new Vue 的实例，是不会被复用的，因此不存在引用对象的问题。
 
 
-# <a name="Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？">Vue中给data中的对象属性添加一个新的属性时 视图不更新，如何解决？</a>
+# <a name="Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决">Vue中给data中的对象属性添加一个新的属性时 视图不更新，如何解决？</a>
 >
     示例：
     <template>
@@ -986,7 +977,7 @@ https://router.vuejs.org/zh
 ##  <a name="base">base</a>
 
     {
-      path: '/a/:id',  //访问路径,
+      path: '/a/:id?',  //访问路径, id表示路由参数 ，？表示路由参数可选（可传可不传)
       name: 'a', //名称，vue页面可通过name调用,
       component: A, //具体vue页面
       meta: {title: '标题'},  //页面标题
@@ -1727,143 +1718,12 @@ ref：如果在普通的 DOM 元素上使用，引用指向的就是 DOM 元素�
       }
     }
 
-
-
-
-# <a name="vue项目性能优化">vue项目性能优化</a>
-
-## <a name="事件的销毁">事件的销毁</a>
-Vue 组件销毁时，会自动清理它与其它实例的连接，解绑它的全部指令及事件监听器，但是仅限于组件本身的事件。  
-如果在 js 内使用addEventListene 等方式是不会自动销毁的，我们需要在组件销毁时手动移除这些事件的监听，以免造成内存泄露
->
-    created() {
-      addEventListener('click', this.func, false)
-    },
-    beforeDestroy() {
-      removeEventListener('click', this.func, false)
-    }
-
-
-## <a name="图片资源懒加载">图片资源懒加载</a>
-对于图片过多的页面，为了加速页面加载速度，所以很多时候我们需要将页面内未出现在可视区域内的图片先不做加载， 等到滚动到可视区域后再去加载。这样对于页面加载性能上会有很大的提升，也提高了用户体验。我们在项目中使用 Vue 的 vue-lazyload 插件：
-
->
-    //安装插件
-    npm install vue-lazyload --save-dev
-
-    //man.js 中引入并使用
-    import VueLazyload from 'vue-lazyload'
-    
-    //直接使用
-    Vue.use(VueLazyload)
-
-    //或者添加自定义选项
-    Vue.use(VueLazyload, {
-      preLoad: 1.3,
-      error: 'dist/error.png',
-      loading: 'dist/loading.gif',
-      attempt: 1
-    })
-
-    //将 img 标签的 src 属性直接改为 v-lazy 
-    <img v-lazy="/static/img/1.png">
-
-## <a name="路由懒加载">路由懒加载</a>
-Vue  是单页面应用，会有很多的路由引入 ，打包后的文件很大，当进入首页时，加载的资源过多，页面会出现白屏的情况，不利于用户体验。如果我们能把不同路由对应的组件分割成不同的代码块，然后当路由被访问的时候才加载对应的组件，这样就更加高效了。这样会大大提高首屏显示的速度，但是可能其他的页面的速度就会降下来。
-
->
-    //import Foo from './Foo.vue'
-    const Foo = () => import('./Foo.vue')
-    const router = new VueRouter({
-      routes: [
-        { path: '/foo', component: Foo }
-      ]
-    })
-
-## <a name=""></a>
-
-
-# <a name="vue-cli3配置">vue-cli3配置</a>
-[参考](https://blog.csdn.net/qq_36407748/article/details/80739787)
-
-[官网](https://cli.vuejs.org/zh/config/#%E5%85%A8%E5%B1%80-cli-%E9%85%8D%E7%BD%AE)
-
-安装更新  
-npm install -g @vue/cli 
-
-创建项目  
-vue create projectName
-
-* vue.config.js
->
-    module.exports = {
-      publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
-      //baseUrl (Vue CLI 3.3已弃用)
-
-      outputDir: "dist", // 在npm run build时 生成文件的目录 
-
-      assetsDir: "static", // 放置生成的静态资源的目录
-      
-      indexPath: "index.html", // 指定生成的 index.html 的输出路径 (相对于 outputDir)。也可以是一个绝对路径。
-
-      lintOnSave: true, // 保存时检验格式
-
-      productionSourceMap: false, // 生产环境是否生成map文件
-
-      lintOnSave: process.env.NODE_ENV !== 'production', // eslint检验
-
-      devServer:{ // 代理
-        open: true,// 启动服务器后是否打开浏览器
-        host: 'localhost',
-        port: 8080, 
-        https: false, 
-        hotOnly: false,
-        chainWebpack: config => { // 自定义路径名
-          config.resolve.alias
-            .set('@', resolve('src'))
-            .set('_c', resolve('src/components'))
-        },
-        proxy: { // 代理
-          '/api': {
-            target: '<url>',
-            ws: true,
-            changeOrigin: true
-          },
-          '/foo': {
-            target: '<other_url>'
-          }
-        },
-      }  
-    }
-
-* 打包时不生成.map文件，map文件的作用
->
-    productionSourceMap: false
-
-    作用：项目打包后，代码都是经过压缩加密的，如果运行时报错，输出的错误信息无法准确得知是哪里的代码报错。  
-    有了map就可以像未加密的代码一样，准确的输出是哪一行哪一列有错。
-
-# <a name="proxy跨域设置">proxy跨域设置</a>
->
-
-    // config/index.js
-    proxyTable: {
-      '/api': {
-        target: '要跨域的域名',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api': ''
-        }
-      }
-    },
-
 # <a name="axios、api 设计">axios、api 设计</a>
 [参考](https://segmentfault.com/a/1190000018964794?utm_medium=hao.caibaojian.com&utm_source=hao.caibaojian.com&share_user=1030000000178452#articleHeader8)
 
 [参考](https://github.com/chenzong24635/vDemo/blob/master/src/api/index.js)
 
-
-# <a name="token验证">添加token验证</a>
+# <a name="token验证">如何添加token验证</a>
 通过vuex管理token
 
 #### api/index.js
@@ -1945,6 +1805,249 @@ vue create projectName
         this.changeToken({ accessToken: this.accessToken})
       }
     }
+
+
+# <a name="vue项目性能优化">vue项目性能优化</a>
+
+## <a name="事件的销毁">事件的销毁</a>
+Vue 组件销毁时，会自动清理它与其它实例的连接，解绑它的全部指令及事件监听器，但是仅限于组件本身的事件。  
+如果在 js 内使用addEventListene 等方式是不会自动销毁的，我们需要在组件销毁时手动移除这些事件的监听，以免造成内存泄露
+>
+    created() {
+      addEventListener('click', this.func, false)
+    },
+    beforeDestroy() {
+      removeEventListener('click', this.func, false)
+    }
+
+
+## <a name="图片资源懒加载">图片资源懒加载</a>
+对于图片过多的页面，为了加速页面加载速度，所以很多时候我们需要将页面内未出现在可视区域内的图片先不做加载， 等到滚动到可视区域后再去加载。这样对于页面加载性能上会有很大的提升，也提高了用户体验。我们在项目中使用 Vue 的 vue-lazyload 插件：
+
+>
+    //安装插件
+    npm install vue-lazyload --save-dev
+
+    //man.js 中引入并使用
+    import VueLazyload from 'vue-lazyload'
+    
+    //直接使用
+    Vue.use(VueLazyload)
+
+    //或者添加自定义选项
+    Vue.use(VueLazyload, {
+      preLoad: 1.3,
+      error: 'dist/error.png',
+      loading: 'dist/loading.gif',
+      attempt: 1
+    })
+
+    //将 img 标签的 src 属性直接改为 v-lazy 
+    <img v-lazy="/static/img/1.png">
+
+## <a name="路由懒加载">路由懒加载</a>
+Vue  是单页面应用，会有很多的路由引入 ，打包后的文件很大，当进入首页时，加载的资源过多，页面会出现白屏的情况，不利于用户体验。如果我们能把不同路由对应的组件分割成不同的代码块，然后当路由被访问的时候才加载对应的组件，这样就更加高效了。这样会大大提高首屏显示的速度，但是可能其他的页面的速度就会降下来。
+
+>
+    //import Foo from './Foo.vue'
+    const Foo = () => import('./Foo.vue')
+    const router = new VueRouter({
+      routes: [
+        { path: '/foo', component: Foo }
+      ]
+    })
+
+
+
+# <a name="vue-cli2快速创建项目">vue-cli2快速创建项目</a>
+
+npm install --global vue-cli //  vue-cli安装  
+vue init webpack vuedemo  
+输入命令后，会跳出几个选项让你回答：  
+>
+    Project name (baoge)： -----项目名称，直接回车，按照括号中默认名字（注意这里的名字不能有大写字母，如果有会报错Sorry, name can no longer contain capital letters）
+
+    Project description (A Vue.js project)： ----项目描述，也可直接点击回车，使用默认名字
+
+    Author ()： ----作者名
+
+    Runtime + Compiler: recommended for most users 运行加编译，既然已经说了推荐，就选它了
+
+    Runtime-only: about 6KB lighter min+gzip, but templates (or any Vue-specificHTML) are ONLY allowed in .vue files - render functions are required elsewhere 仅运行时，已经有推荐了就选择第一个了
+
+    Install vue-router? (Y/n) 是否安装vue-router，这是官方的路由，大多数情况下都使用，这里就输入“y”后回车即可。
+
+    Use ESLint to lint your code? (Y/n) 是否使用ESLint管理代码，ESLint是个代码风格管理工具，是用来统一代码风格的，一般项目中都会使用。
+      > Pick an ESLint preset (Use arrow keys) 选择一个ESLint预设，编写vue项目时的代码风格，直接y回车
+      
+      > Setup unit tests with Karma + Mocha? (Y/n) 是否安装单元测试，选择安装y回车
+
+    Setup e2e tests with Nightwatch(Y/n)? 是否安装e2e测试 ，选择安装y回车
+
+## 生成文件目录后，使用 npm / cnpm安装依赖
+npm install
+
+安装淘宝镜像 npm config set registry https://registry.npm.taobao.org  
+>cnpm安装  npm install -g cnpm --registry=https://registry.npm.taobao.org
+
+切换镜像 npm set registry https://registry.npm.taobao.org/
+
+查看当前镜像 npm config get registry
+
+## 启动项目 npm run dev 
+如果浏览器打开之后，没有加载出页面，有可能是本地的 8080 端口被占用，需要修改一下配置文件 config里的index.js  
+
+dev --> port
+
+## 打包上线 npm run build
+>
+    打开config/index.js，将其中build的assetsPublicPath值改为’./’
+    组件的路径不能使用@/../static   只能使用../../../static这个时候，打包过后的登陆页面引用图片路径错误，多了一个/static/css
+      修改build文件夹下边的utils.js文件
+      if (options.extract) {
+        return ExtractTextPlugin.extract({
+          use: loaders,
+          fallback: 'vue-style-loader',
+          publicPath:'../../'  //此处添加publicPath:'../../'
+        })
+      } else {
+        return ['vue-style-loader'].concat(loaders)
+      }
+
+    在项目开发完成之后，npm run build 来进行打包工作。注意，自己的项目文件都需要放到 src 文件夹下。
+    打包完成后，会生成 dist 文件夹，如果已经修改了文件路径，可以直接打开本地文件查看。项目上线时，只需要将 dist 文件夹放到服务器就行了。
+
+
+>
+
+    ├── build/                      ## webpack 编译任务配置文件: 开发环境与生产环境
+    │   └── ...
+    ├── config/                     
+    │   ├── index.js                ## 项目核心配置
+    │   └── ...
+    ├ ── node_module/               ##项目中安装的依赖模块
+       ── src/
+    │   ├── main.js                 ## 程序入口文件
+    │   ├── App.vue                 ## 程序入口vue组件
+    │   ├── components/             ## 组件
+    │   │   └── ...
+    │   └── assets/                 ## 资源文件夹，一般放一些静态资源文件
+    │       └── ...
+    ├── static/                     ## 纯静态资源 (直接拷贝到dist/static/里面)
+    ├── test/
+    │   └── unit/                   ## 单元测试
+    │   │   ├── specs/              ## 测试规范
+    │   │   ├── index.js            ## 测试入口文件
+    │   │   └── karma.conf.js       ## 测试运行配置文件
+    │   └── e2e/                    ## 端到端测试
+    │   │   ├── specs/              ## 测试规范
+    │   │   ├── custom-assertions/  ## 端到端测试自定义断言
+    │   │   ├── runner.js           ## 运行测试的脚本
+    │   │   └── nightwatch.conf.js  ## 运行测试的配置文件
+    ├── .babelrc                    ## babel 配置文件
+    ├── .editorconfig               ## 编辑配置文件
+    ├── .gitignore                  ## 用来过滤一些版本控制的文件，比如node_modules文件夹 
+    ├── index.html                  ## index.html 入口模板文件
+    └── package.json                ## 项目文件，记载着一些命令和依赖还有简要的项目描述信息 
+    └── README.md                   ##介绍自己这个项目的，可参照github上star多的项目。
+    build/
+
+
+## dependencies 与 devdependencies 区别
+>
+    –save会把依赖包名称添加到package.json文件dependencies键下
+    –save-dev则添加到package.json文件devDependencies键下
+
+    dependencies ----- 生产环境中需要的依赖，即正常运行该包时所需要的依赖项。 
+    devDependencies -- 开发时用的依赖项，它们不会被部署到生产环境。
+
+# <a name="vue-cli3配置">vue-cli3配置</a>
+[参考](https://blog.csdn.net/qq_36407748/article/details/80739787)
+
+[官网](https://cli.vuejs.org/zh/config/#%E5%85%A8%E5%B1%80-cli-%E9%85%8D%E7%BD%AE)
+
+安装更新  
+npm install -g @vue/cli 
+
+创建项目  
+vue create projectName
+
+* vue.config.js
+>
+    module.exports = {
+      publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+      //baseUrl (Vue CLI 3.3已弃用)
+
+      outputDir: "dist", // 在npm run build时 生成文件的目录 
+
+      assetsDir: "static", // 放置生成的静态资源的目录
+      
+      indexPath: "index.html", // 指定生成的 index.html 的输出路径 (相对于 outputDir)。也可以是一个绝对路径。
+
+      lintOnSave: true, // 保存时检验格式
+
+      productionSourceMap: false, // 生产环境是否生成map文件
+
+      lintOnSave: process.env.NODE_ENV !== 'production', // eslint检验
+
+      devServer:{ // 代理
+        open: true,// 启动服务器后是否打开浏览器
+        host: 'localhost',
+        port: 8080, 
+        https: false, 
+        hotOnly: false,
+        chainWebpack: config => { // 自定义路径名
+          config.resolve.alias
+            .set('@', resolve('src'))
+            .set('_c', resolve('src/components'))
+        },
+        proxy: { // 代理
+          '/api': {
+            target: '要跨域的域名',
+            ws: true,
+            changeOrigin: true
+          },
+          '/foo': {
+            target: '<other_url>'
+          }
+        },
+      }  
+    }
+
+
+
+* 打包时不生成.map文件，map文件的作用
+>
+    productionSourceMap: false
+
+    作用：项目打包后，代码都是经过压缩加密的，如果运行时报错，输出的错误信息无法准确得知是哪里的代码报错。  
+    有了map就可以像未加密的代码一样，准确的输出是哪一行哪一列有错。
+
+## [引用public文件路径](https://cli.vuejs.org/zh/guide/html-and-static-assets.html#public-%E6%96%87%E4%BB%B6%E5%A4%B9)
+>
+    <img :src="`${publicPath}img.png`">
+
+    data () {
+      return {
+        publicPath: process.env.BASE_URL
+      }
+    }
+
+## <a name="proxy跨域设置">vue-cli2 proxy跨域设置</a>
+>
+    // config/index.js
+    proxyTable: {
+      '/api': {
+        target: '要跨域的域名',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    },
+
+
+
 
 
 
@@ -2210,145 +2313,5 @@ api同swiper
     font-size: 28px; /*px*/
 
 
-# <a name="创建项目">vue-cli快速创建项目</a>
-
-npm install --global vue-cli //  vue-cli安装  
-vue init webpack vuedemo  
-输入命令后，会跳出几个选项让你回答：  
->
-    Project name (baoge)： -----项目名称，直接回车，按照括号中默认名字（注意这里的名字不能有大写字母，如果有会报错Sorry, name can no longer contain capital letters）
-
-    Project description (A Vue.js project)： ----项目描述，也可直接点击回车，使用默认名字
-
-    Author ()： ----作者名
-
-    Runtime + Compiler: recommended for most users 运行加编译，既然已经说了推荐，就选它了
-
-    Runtime-only: about 6KB lighter min+gzip, but templates (or any Vue-specificHTML) are ONLY allowed in .vue files - render functions are required elsewhere 仅运行时，已经有推荐了就选择第一个了
-
-    Install vue-router? (Y/n) 是否安装vue-router，这是官方的路由，大多数情况下都使用，这里就输入“y”后回车即可。
-
-    Use ESLint to lint your code? (Y/n) 是否使用ESLint管理代码，ESLint是个代码风格管理工具，是用来统一代码风格的，一般项目中都会使用。
-      > Pick an ESLint preset (Use arrow keys) 选择一个ESLint预设，编写vue项目时的代码风格，直接y回车
-      
-      > Setup unit tests with Karma + Mocha? (Y/n) 是否安装单元测试，选择安装y回车
-
-    Setup e2e tests with Nightwatch(Y/n)? 是否安装e2e测试 ，选择安装y回车
-
-## 生成文件目录后，使用 npm / cnpm安装依赖
-npm install
-
-安装淘宝镜像 npm install -g cnpm --registry=https://registry.npm.taobao.org
-
-## 启动项目 npm run dev 
-如果浏览器打开之后，没有加载出页面，有可能是本地的 8080 端口被占用，需要修改一下配置文件 config里的index.js  
-
-dev --> port
-
-## 打包上线 npm run build
->
-    打开config/index.js，将其中build的assetsPublicPath值改为’./’
-    组件的路径不能使用@/../static   只能使用../../../static这个时候，打包过后的登陆页面引用图片路径错误，多了一个/static/css
-      修改build文件夹下边的utils.js文件
-      if (options.extract) {
-        return ExtractTextPlugin.extract({
-          use: loaders,
-          fallback: 'vue-style-loader',
-          publicPath:'../../'  //此处添加publicPath:'../../'
-        })
-      } else {
-        return ['vue-style-loader'].concat(loaders)
-      }
-
-    在项目开发完成之后，npm run build 来进行打包工作。注意，自己的项目文件都需要放到 src 文件夹下。
-    打包完成后，会生成 dist 文件夹，如果已经修改了文件路径，可以直接打开本地文件查看。项目上线时，只需要将 dist 文件夹放到服务器就行了。
 
 
->
-
-    ├── build/                      ## webpack 编译任务配置文件: 开发环境与生产环境
-    │   └── ...
-    ├── config/                     
-    │   ├── index.js                ## 项目核心配置
-    │   └── ...
-    ├ ── node_module/               ##项目中安装的依赖模块
-       ── src/
-    │   ├── main.js                 ## 程序入口文件
-    │   ├── App.vue                 ## 程序入口vue组件
-    │   ├── components/             ## 组件
-    │   │   └── ...
-    │   └── assets/                 ## 资源文件夹，一般放一些静态资源文件
-    │       └── ...
-    ├── static/                     ## 纯静态资源 (直接拷贝到dist/static/里面)
-    ├── test/
-    │   └── unit/                   ## 单元测试
-    │   │   ├── specs/              ## 测试规范
-    │   │   ├── index.js            ## 测试入口文件
-    │   │   └── karma.conf.js       ## 测试运行配置文件
-    │   └── e2e/                    ## 端到端测试
-    │   │   ├── specs/              ## 测试规范
-    │   │   ├── custom-assertions/  ## 端到端测试自定义断言
-    │   │   ├── runner.js           ## 运行测试的脚本
-    │   │   └── nightwatch.conf.js  ## 运行测试的配置文件
-    ├── .babelrc                    ## babel 配置文件
-    ├── .editorconfig               ## 编辑配置文件
-    ├── .gitignore                  ## 用来过滤一些版本控制的文件，比如node_modules文件夹 
-    ├── index.html                  ## index.html 入口模板文件
-    └── package.json                ## 项目文件，记载着一些命令和依赖还有简要的项目描述信息 
-    └── README.md                   ##介绍自己这个项目的，可参照github上star多的项目。
-    build/
-
-
-
-# <a name="npm ">npm指令</a>
-##
->
-    npm init 在此目录生成package.json文件，可以添加-y | --yes 参数则默认所有配置为默认yes
-
-    npm install <package> -g 全局安装依赖包  
-        npm install -g cnpm --registry=https://registry.npm.taobao.org
-
-    npm install <package> 默认使用–save 参数，如果不想保存到package.json中，可以添加--no-save参数；还可以指定–save-dev 或 -g参数
-
-    npm install --production 安装dependencies，不包含devDependencies
-
-    npm cache clean --force 清缓存
-
-    npm uninstall <package> 卸载依赖包， 默认使用–save参数，即从package.json中移除
-
-    npm update <package> 升级依赖包版本
-
-    npm outdated 查看当前过期依赖，其中current显示当前安装版本，latest显示依赖包的最新版本，wanted显示我们可以升级到可以不破坏当前代码的版本
-
-    npm ls [-g] [--depth=0] 查看当前目录或全局的依赖包，可指定层级为0
-
-    npm root -g 查看全局安装地址
-
-    npm ll[la] [--depth=0] 查看依赖包信息
-
-    npm list <package>查看依赖的当前版本
-
-    npm search <string> 查找包含该字符串的依赖包
-
-    npm view <package> [field] [--json]列出依赖信息，包括历史版本，可以指定field来查看某个具体信息，比如（versions) 可以添加–json参数输出全部结果
-
-    npm home <package> 在浏览器端查看项目（项目主页）
-
-    npm repo <package> 浏览器端打开项目地址（GitHub）
-
-    npm docs <packge> 查看项目文档
-
-    npm bugs <packge> 查看项目bug
-
-    npm prune 移除当前不在package.json中但是存在node_modules中的依赖
-
-    npm link 不使用npm install 而连接某个依赖包，通常用作开发本地依赖包 
-
-
-## dependencies 与 devdependencies 区别
->
-    –save会把依赖包名称添加到package.json文件dependencies键下
-    –save-dev则添加到package.json文件devDependencies键下
-
-    dependencies ----- 生产环境中需要的依赖，即正常运行该包时所需要的依赖项。 
-    devDependencies -- 开发时用的依赖项，它们不会被部署到生产环境。
