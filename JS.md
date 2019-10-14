@@ -91,6 +91,7 @@
 * <a href="#get与post区别">get与post区别</a>
 * <a href="#css和js动画的差异">css和js动画的差异</a>
 * <a href="#use strict">"use strict"? 用处？</a>
+* <a href="#深度优先遍历和广度优先遍历">深度优先遍历和广度优先遍历</a>
 * <a href="#DOMContentLoaded、$(function(){})、window.onload事件、执行顺序">DOMContentLoaded、$(function(){})、window.onload事件、执行顺序</a>
 * <a href="#WebAssembly">WebAssembly</a>
 
@@ -1434,6 +1435,18 @@ https://segmentfault.com/a/1190000007535316
 https://lidaguang1989.github.io/2018/04/async-await/
 >
 
+## <a name="setTimeout、Promise、Async/Await 的区别">setTimeout、Promise、Async/Await 的区别</a>
+事件循环中分为宏任务队列和微任务队列。
+
+其中settimeout的回调函数放到宏任务队列里，等到执行栈清空以后执行；
+
+Promise本身是同步的立即执行函数；Promise.then里的回调函数会放到相应宏任务的微任务队列里，等宏任务里面的同步代码执行完再执行；
+
+async函数表示函数里面可能会有异步方法，await后面跟一个表达式，async方法执行时，遇到await会立即执行表达式，然后把表达式后面的代码放到微任务队列里，让出执行栈让同步代码先执行。
+
+<a href="事件执行机制">事件执行机制</a>
+
+
 ## <a name="深，浅拷贝">深，浅拷贝</a>
 
 * 浅拷贝： 浅拷贝只复制指向某个对象的指针，即复制对象地址
@@ -2632,6 +2645,10 @@ ______
 7. 不允许重复的属性名称或参数值。当检测到对象（例如，var object = {foo: "bar", foo: "baz"};）中重复命名的属性，或检测到函数中（例如，function foo(val1, val2, val1){}）重复命名的参数时，严格模式会抛出错误。  
 8. 使eval() 更安全。在严格模式和非严格模式下，eval() 的行为方式有所不同。最显而易见的是，在严格模式下，变量和声明在 eval() 语句内部的函数不会在包含范围内创建（它们会在非严格模式下的包含范围中被创建，这也是一个常见的问题源）。
 9. 在 delete使用无效时抛出错误。delete操作符（用于从对象中删除属性）不能用在对象不可配置的属性上。当试图删除一个不可配置的属性时，非严格代码将默默地失败，而严格模式将在这样的情况下抛出异常。
+
+## <a name="深度优先遍历和广度优先遍历">深度优先遍历和广度优先遍历</a>
+[参考](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/9)
+
 
 ## <a name="DOMContentLoaded、$(function(){})、window.onload事件、执行顺序">DOMContentLoaded、$(function(){})、window.onload事件、执行顺序</a>
 >

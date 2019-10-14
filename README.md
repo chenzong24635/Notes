@@ -176,6 +176,7 @@
     * [Math](./details/Math.md)
     * [Date](./details/Date.md)
     * [Function??](./details/Function.md)
+    * [Set、Map](./details/Set、Map.md)
   * --
   * [JS遍历方法](./details/Iterate.md) 
   * [JS兼容](./details/compatible.md)
@@ -361,13 +362,13 @@
       endTime = + new Date(endTime);
       let now = + new Date();
       let time = endTime- now;
-      const years = (Math.floor(time / Y) + '').padStart(2,0);
-      const months = (Math.floor(time % Y / M) + '').padStart(2,0);
-      const days = (Math.floor(time % M / D) + '').padStart(2,0);
-      const hours = (Math.floor(time % D / h) + '').padStart(2,0);
-      const minutes = (Math.floor(time % h / m) + '').padStart(2,0);
-      const seconds = (Math.floor(time % m / s) + '').padStart(2,0);
-      const milliseconds = (Math.floor(time % s) + '').padStart(3,0);
+      let years = (Math.floor(time / Y) + '').padStart(2,0);
+      let months = (Math.floor(time % Y / M) + '').padStart(2,0);
+      let days = (Math.floor(time % M / D) + '').padStart(2,0);
+      let hours = (Math.floor(time % D / h) + '').padStart(2,0);
+      let minutes = (Math.floor(time % h / m) + '').padStart(2,0);
+      let seconds = (Math.floor(time % m / s) + '').padStart(2,0);
+      let milliseconds = (Math.floor(time % s) + '').padStart(3,0);
       let str = (years + '' === '00' ? '': years + '年')
               + (months + '' === '00' ? '': months + '月')
               + (days + '' === '00' ? '': days + '天')
@@ -1164,28 +1165,32 @@ arr.sort((a-b)=>b-a) 降序
 ## <a name="数组扁平化">数组扁平化:n维数组展开成一维数组  </a>
 var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10]; 
 
-0. 
+* flatten
 >
     foo.flat(Infinity) // Array.prototype.flat()用于将嵌套的数组“拉平”，变成一维的数组。该方法返回一个新数组，对原数据没有影响。默认只会“拉平”一层，如果想要“拉平”多层的嵌套数组，可以将flat()方法的参数写成一个整数，表示想要拉平的层数，默认为1。
-1. 
->
-    const flatten = (ary) => ary.reduce((pre, now) => pre.concat(Array.isArray(now) ? flatten(now) : now), []);
 
-    flatten(foo); // [1, 2, 3, "4", 5, "6", 7, 8, 9, 10]
-
-2. 
+* reduce + flatten
 >
     function flatten(arr){
-      var arr1 =[].concat(...arr);
-      return arr1.some(item =>Array.isArray(item))?func(arr1):arr1
+      return arr.reduce((prev,now)=>{
+        return prev.concat(Array.isArray(now) ? fun2(now) : now)
+      },[])
     }
+    // flatten = (ary) => ary.reduce((pre, now) => pre.concat(Array.isArray(now) ? flatten(now) : now), []);
 
-3. 
+* toString | join + split
+>
+    arr.join().split(",") 
+    arr.toString().split(",") 
+    //返回的内容都是字符串，arr.toString().split(",").map(Number)
+    // ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+
+* 
 >
     flatten= (arr)=>Array.isArray(arr) ? [].concat(...arr.map(flatten)) : arr;
     flatten(foo); // [1, 2, 3, "4", 5, "6", 7, 8, 9, 10]
 
-4. 
+* for 
 >
     function flatten(arr) {
       let res = []
@@ -1233,43 +1238,7 @@ var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
 ## 数组扁平化+去重: Array.from(new Set(arr.flat(Infinity)))
 
 ## <a name="数组排序"> 数组排序</a>
-1. 冒泡排序： 每次将最小元素推至最前
->
-    function bubble(arr) {
-      if(arr.length <= 1)return arr
-      let n = 0; //计算循环次数
-      let len = arr.length;
-      for (i = 0; i < len - 1; i++) {
-        for (j = 0; j < len - i - 1; j++) {
-          if (arr[j] > arr[j + 1]) { //相邻元素两两对比
-            [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
-            n++;
-          }
-        }
-      }
-      return {arr, n};
-    }
-
-2. 快速排序：
->
-    var quickSort = function(arr) {
-      if (arr.length <= 1) { return arr; }
-      //选择"基准"（pivot），并将其与原数组分离，再定义两个空数组，用来存放一左一右的两个子集
-      var pivotIndex = Math.floor(arr.length / 2);
-      var pivot = arr.splice(pivotIndex, 1)[0];
-      var left = [];
-      var right = [];
-      //开始遍历数组，小于"基准"的元素放入左边的子集，大于基准的元素放入右边的子集。
-      for (var i = 0, len = arr.length; i < len; i++){
-        if (arr[i] < pivot) {
-          left.push(arr[i]);
-        } else {
-          right.push(arr[i]);
-        }
-      }
-      //用递归不断重复这个过程，就可以得到排序后的数组。
-    　return quickSort(left).concat([pivot], quickSort(right));
-    };
+[排序](./details/sort.md)
 
 ## <a name="n的阶层（尾调用优化）">n的阶层（尾调用优化）</a>
 1 1 2 3 5 8 13....

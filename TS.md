@@ -333,7 +333,9 @@ object表示非原始类型，也就是除number，string，boolean，symbol，n
     a= [] // error!!!
 
 # <a name="泛型">泛型</a>
-定义泛型函数
+泛型（Generics）是指在定义函数、接口或类的时候，不预先指定具体的类型，而在使用的时候再指定类型的一种特性。
+
+* 例：定义泛型函数
 >
     function identity<T>(arg: T): T {
       return arg;
@@ -356,8 +358,24 @@ object表示非原始类型，也就是除number，string，boolean，symbol，n
     let myIdentity: {<T>(arg: T): T} = identity;
     console.log(myIdentity(43))
 
+* 一次定义多个类型参数
+>
+    function swap<T, U>(tuple: [T, U]): [U, T] {
+      return [tuple[1], tuple[0]];
+    }
+
+    console.log(swap([7, 'seven']))
+
 ---
-约束： 
+
+* 泛型约束: 
+在函数内部使用泛型变量的时候，由于事先不知道它是哪种类型，所以不能随意的操作它的属性或方法：
+>
+    function identity<T>(arg: T): T {
+        console.log(arg.length); // error!!!
+        return arg;
+    }
+    // 泛型 T 不一定包含属性 length，所以编译的时候报错了。
 
 创建一个包含 .length属性的接口，使用这个接口和extends关键字来实现约束：
 >
@@ -375,11 +393,12 @@ object表示非原始类型，也就是除number，string，boolean，symbol，n
 # <a name="接口">接口interface、类型别名type</a>
 TypeScript的核心原则之一是对值所具有的结构进行类型检查。 它有时被称做“鸭式辨型法”或“结构性子类型化”。 在TypeScript里，接口的作用就是为这些类型命名和为你的代码或第三方代码定义契约。
 
-接口一般首字母大写
+接口一般首字母大写  
 
-可选属性( ? )：可以对可能存在的属性进行预定义，可以捕获引用了不存在的属性时的错误
 
-只读属性( readonly ):只读，不可写
+* 可选属性( ? )：可以对可能存在的属性进行预定义，可以捕获引用了不存在的属性时的错误
+
+* 只读属性( readonly ):只读，不可写
 
 >
 
@@ -393,7 +412,7 @@ TypeScript的核心原则之一是对值所具有的结构进行类型检查。 
     obj.size = 11; // error!!! ,size属性只读
     obj.label = 'ooo' // ok
 
-希望一个接口允许有任意的属性，可以使用如下方式：
+* 希望一个接口允许有任意的属性，可以使用如下方式：
 >
     interface Person {
       name: string;
@@ -407,7 +426,7 @@ TypeScript的核心原则之一是对值所具有的结构进行类型检查。 
       length: 11
     };
 
-一旦定义了任意属性，那么确定属性和可选属性的类型都必须是它的类型的子集：
+* 一旦定义了任意属性，那么确定属性和可选属性的类型都必须是它的类型的子集：
 >
 
     interface Person {
@@ -776,6 +795,33 @@ js的static静态属性方法，通过类本身（和其子类）调用，不能
     }
 
     let a = new Animal('Jack'); // error!!!!!!
+
+
+## 类实现接口
+实现（implements）是面向对象中的一个重要概念。一般来讲，一个类只能继承自另一个类，有时候不同类之间可以有一些共有的特性，这时候就可以把特性提取成接口（interfaces），用 implements 关键字来实现。这个特性大大提高了面向对象的灵活性。
+
+>
+    interface Alarm {
+        alert();
+    }
+
+    interface Light {
+        lightOn();
+        lightOff();
+    }
+
+    class Car implements Alarm, Light {
+        alert() {
+            console.log('Car alert');
+        }
+        lightOn() {
+            console.log('Car light on');
+        }
+        lightOff() {
+            console.log('Car light off');
+        }
+    }
+
 
 # <a name="declear">declear声明</a>
 [参考](https://segmentfault.com/a/1190000020000325)

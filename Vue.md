@@ -828,17 +828,29 @@ CSS 属性名可以用驼峰式（camelCase）或短横分隔命名（kebab-case
 [参考](https://www.zhihu.com/question/61064119)
 
 [参考](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/1)
+
+[官网解释](https://cn.vuejs.org/v2/guide/list.html#%E7%BB%B4%E6%8A%A4%E7%8A%B6%E6%80%81)
 >
 
     当 Vue.js 用 v-for 正在更新已渲染过的元素列表时，它默认用“就地复用”策略。如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序， 而是简单复用此处每个元素，并且确保它在特定索引下显示已被渲染过的每个元素。
 
+    这个默认的模式是高效的，但是只适用于不依赖子组件状态或临时 DOM 状态 (例如：表单输入值) 的列表渲染输出。
 
+    为了给 Vue 一个提示，以便它能跟踪每个节点的身份，从而重用和重新排序现有元素，你需要为每项提供一个唯一 key 属性：
+
+[API-key](https://cn.vuejs.org/v2/api/#key)
 >
-    vue 和 react 都是采用 diff 算法来对比新旧虚拟节点，从而更新节点。在 vue 的 diff 函数中。可以先了解一下 diff 算法。
+    key 的特殊属性主要用在 Vue 的虚拟 DOM 算法，在新旧 nodes 对比时辨识 VNodes。如果不使用 key，Vue 会使用一种最大限度减少动态元素并且尽可能的尝试修复/再利用相同类型元素的算法。使用 key，它会基于 key 的变化重新排列元素顺序，并且会移除 key 不存在的元素。
 
-    在交叉对比的时候，当新节点跟旧节点头尾交叉对比没有结果的时候，会根据新节点的 key 去对比旧节点数组中的 key，从而找到相应旧节点（这里对应的是一个 key => index 的 map 映射）。如果没找到就认为是一个新增节点。而如果没有 key，那么就会采用一种遍历查找的方式去找到对应的旧节点。一种一个 map 映射，另一种是遍历查找。相比而言。map 映射的速度更快。  
+    有相同父元素的子元素必须有独特的 key。重复的 key 会造成渲染错误
     
-key 的作用是为了在 diff 算法执行时更快的找到对应的节点，提高 diff 速度，高效的更新虚拟DOM  
+key是给每一个vnode的唯一id,可以依靠key,更准确, 更快的拿到oldVnode中对应的vnode节点。
+
+1. 更准确
+因为带key就不是就地复用了，在sameNode函数 a.key === b.key对比中可以避免就地复用的情况。所以会更加准确。
+
+2. 更快
+利用key的唯一性生成map对象来获取对应节点，比遍历方式更快。 
 
 * 为什么不能用 index 作为 key
 >
@@ -2045,18 +2057,18 @@ vue create projectName
 ## <a name="proxy跨域设置">vue-cli2 proxy跨域设置</a>
 >
     // config/index.js
+    //配置跨域请求,注意配置完之后需要重启编译该项目
     proxyTable: {
+      //请求名字变量可以自己定义
       '/api': {
-        target: '要跨域的域名',
-        changeOrigin: true,
+        target: 'http://www.thenewstep.cn', // 请求的接口域名或IP地址，开头是http或https
+        // secure: false,  // 如果是https接口，需要配置这个参数
+        changeOrigin: true, // 是否跨域，如果接口跨域，需要进行这个参数配置
         pathRewrite: {
-          '^/api': ''
+          '^/api': ''//表示需要rewrite重写路径  
         }
       }
     },
-
-
-
 
 
 
