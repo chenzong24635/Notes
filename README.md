@@ -3,11 +3,10 @@
 <details>
   <summary>vscode 快捷键</summary>
 
-  [vscode快捷键](chrome-extension://cdonnmffkdaoajfknoeeecmchibpmkmg/static/pdf/web/viewer.html?file=https%3A%2F%2Fcode.visualstudio.com%2Fshortcuts%2Fkeyboard-shortcuts-windows.pdf)
+  [vscode快捷键](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf)
 
 >
-    删除空行：
-      ctrl+h键进行正则匹配：^\s*(?=\r?$)\n
+    删除空行：ctrl+h键进行正则匹配：^\s*(?=\r?$)\n
 
     格式化代码： Shift + Alt + F
 
@@ -166,7 +165,7 @@
 ## [CSS](CSS.md)
 ## [JS](JS.md) 
 
-  * [Undefined、Null](./details/Undefined_Null.md)
+  * [Undefined、Null](./details/Undefined、Null.md)
   * [Boolean](./details/Boolean.md)
   * [Number](./details/Number.md)
   * [String](./details/String.md)
@@ -181,10 +180,10 @@
   * [JS遍历方法](./details/Iterate.md) 
   * [JS兼容](./details/compatible.md)
   * [JS排序？？](./details/sort.md)
-  * [JQ](./details/jq.md)
+  * [JQ](./details/JQ.md)
 
 ## [TypeScript](TS.md)
-## [正则](./details/reg.md)
+## [正则](./details/RegExp.md)
 ## [AJAX](./details/Ajax.md)
 ## [跨域](./details/crossOrigin.md)
 ## [HTTP](HTTP.md)  
@@ -195,22 +194,22 @@
 ## [WebSocket??](./details/WebSocket.md)
 
 
-## [Git](git.md)
+## [Git](Git.md)
+## [Node](Node.md)
 ## [console.log](./details/consolelog.md)
-
-## [vscode快捷键](vscode.md)
 
 ## [其他](others.md)
 
 ## 常用
 <details open>
   <summary>
-  <a href="#常用">**`目录`**</a>
+  <a href="#常用">目录</a>
   </summary>
 
   * <a href="#手机号验证">手机号验证</a>
   * <a href="#邮箱验证">邮箱验证</a>
   * <a href="#密码验证">密码验证</a>
+
   * <a href="#保留小数点后两位-不足则补零">保留小数点后两位-不足则补零</a>
   * <a href="#浮点型+-*/">浮点型+-*/</a>
   * <a href="#时间戳、日期 的转换">时间戳、日期 的转换</a>
@@ -243,21 +242,16 @@
   * <a href="#网页是否可编辑">网页是否可编辑</a>
   * <a href="#逗号操作符">逗号操作符</a>
 
-
-  
   * <a href="#一道setTimeout面试题">一道setTimeout面试题</a>
   * <a href="#map(parseInt) 原理解析">['1','2','3'].map(parseInt) 原理解析</a>
   * <a href="#Array.apply(null,Array(3))与Array(3)区别">Array.apply(null,Array(3))与Array(3)区别</a>
 
-
   * <a href="#页面加载进度条">页面加载进度条</a>
   
-  <a href="#"></a>
   <a href="#"></a>
 
   * <a href="#面试题">**面试题**</a>
 
-  <a href="#"></a>
 
 </details>
 

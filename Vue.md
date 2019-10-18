@@ -1446,7 +1446,7 @@ App.vue
 
 
 # <a name="vuex">vuex</a>
-[详情](./details/vuex.md)
+[详情](./details/Vuex.md)
 
 
 # <a name="组件通信方法">组件通信方法</a>
@@ -1564,7 +1564,7 @@ App.vue
     }
 
 ## vuex -- 兄弟|父子|隔代
-[详情](./details/vuex.md)
+[详情](./details/Vuex.md)
 
 ## $attrs/$listeners -- 父子|隔代
 $attrs 包含了父作用域中不作为 prop(子组件的props) 被识别 (且获取) 的特性绑定 (class 和 style 除外)。当一个组件没有声明任何 prop 时，这里会包含所有父作用域的绑定 (class 和 style 除外)，并且可以通过 v-bind="$attrs" 传入内部组件——在创建高级别的组件时非常有用。

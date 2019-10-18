@@ -65,16 +65,48 @@ npm i git //git安装
 ## 命令
 
 * git init  //初始化git 将当前目录变为仓库
+
 * git clone url reName  //获取下载仓库  git clone http://chenzong@git/仓库名.git '仓库重命名为reName(可略)'
+
+`添加文件到暂缓区`
 * git add .  |  git add ./文件名  //将文件添加到暂存区（添加所有 | 添加某个文件）
 
+`提交暂存区文件`
 * git commit  -m "这里写备注"  //将暂存区文件提交到仓库
 * git commit  -a -m "这里写备注"  //git add + git commit
 * git commit --amend  // 将暂存区中的文件提交
 
+`拉取`
 * git pull origin  //从服务器拉取
-* git push origin  //更新到服务器
 
+`更新到服务器`
+* git push origin  //更新到服务器
+* git push -u origin master  //提交到远端仓库 第一次 以后用：git push origin master
+
+
+
+* git diff //查看修改之后还没有暂存起来的变化内容
+* git diff --cached //查看已暂存的将要添加到下次提交里的内容
+
+`删除文件`
+* git rm -r fileName //删除本地文件/文件夹
+* git rm -r --cached fileName //删除缓存文件/文件夹；但仍保留在工作区中
+>git rm -r --cached .  //删除所有缓存文件
+
+`文件重命名`
+* git mv oldName newName //文件改名
+
+`远程仓库`
+* git remote // 查看你已经配置的远程仓库服务器
+  * git remote -v  //查看已关联远端库
+  * git remote add origin http://github.com/chenzong24635/仓库名.git //添加远端仓库关联
+  * git remote rm origin  //删除远端仓库关联
+  * git remote rename origin newOrigin  // 修改远程仓库的简写名
+
+`版本回退`
+* git reset --hard HEAD^  //回退版本 HEAD HEAD^  HEAD^^ HEAD~100
+
+`查看文件状态`
 * git status  //查看文件状态
 * git status -s // 查看文件状态---紧凑的格式输出
   >
@@ -84,26 +116,9 @@ npm i git //git安装
       A  fileName  //新添加到暂存区中的文件前面
       ?? fileName  //新添加的未跟踪文件
 
-* git diff //查看修改之后还没有暂存起来的变化内容
-* git diff --cached //查看已暂存的将要添加到下次提交里的内容
-
-* git rm -r fileName //删除本地文件/文件夹
-* git rm -r --cached fileName //删除缓存文件/文件夹；但仍保留在工作区中
->git rm -r --cached .  //删除所有缓存文件
-
-* git mv oldName newName //文件改名
-
-* git remote add origin http://github.com/仓库名.git //关联远端仓库
-* git remote rm origin  //删除远端仓库关联
-* git remote -v  //查看已关联远端库
-* git push -u origin master  //提交到远端仓库 第一次 以后用：git push origin master
-
-* git reset --hard HEAD^  //回退版本 HEAD HEAD^  HEAD^^ HEAD~100
-
+`查看记录`
 * git log   //查看记录
 * git log -p -2 // -p显示每次提交的内容差异。-2 仅显示最近两次提交
-
-
 
 `分支`
 * git branch //查看分支   
@@ -114,7 +129,21 @@ npm i git //git安装
 * git branch -D <name>  //删除分支  
 * git checkout branch -- file  //将你的某个文件还原到某个分支的版本
 
-退出vim编辑器：ESC + ZZ
+`标签` 给历史中的某一个提交打上标签,常使用其来标记发布结点（v1.0 等等）
+* git tag // 列出已有的标签
+
+
+*  git tag -a v1.4 -m "my version 1.4" // 添加标签
+>-m 选项指定了一条将会存储在标签中的信息。如果没有，Git 会运行编辑器要求你输入信息
+
+* git tag v1.4 // 添加标签(轻量标签)
+>本质上是将提交校验和存储到一个文件中——没有保存任何其他信息。 不需要使用 -a、-s 或 -m 选项
+
+* git show <tagName> // 查看标签信息与对应的提交信息
+>输出显示了打标签者的信息、打标签的日期时间、附注信息，然后显示具体的提交信息。
+
+
+`退出vim编辑器：ESC + ZZ`
 
 # <a name="gitingore">忽略某些文件提交 gitingore</a>
 
