@@ -27,13 +27,14 @@
 * <a href="#git文件名大小写重命名">git文件名大小写重命名（git大小写敏感/默认不敏感），如何重命名并提交</a>
 * <a href="#执行rm -r操作后想恢复文件">执行rm -r操作后想恢复文件</a>
 * <a href="#vue-cli项目创建时，git bash箭头选择无效问题">vue-cli项目创建时，git bash箭头选择无效问题</a>
-* <a href="#"></a>
+* <a href="#gist.github.com无法访问">gist.github.com无法访问</a>
 
 </details>
 
 # <a name=""></a>
 # <a name="vscode-sync-setting">vscode-sync-setting</a>
 >
+
     token: bb7d41e1e039fdd294a6819e7305b73bd066d9a1
     sync.gist: 0e3b4eb383f938cbacac6b443dd818a0
 
@@ -90,7 +91,7 @@ npm i git //git安装
 
 `删除文件`
 * git rm -r fileName //删除本地文件/文件夹
-* git rm -r --cached fileName //删除缓存文件/文件夹；但仍保留在工作区中
+* git rm -r --cached fileName //删除缓存文件/文件夹；(但仍保留在工作区中),(git push origin 后就能删除仓库文件)
 >git rm -r --cached .  //删除所有缓存文件
 
 `文件重命名`
@@ -260,4 +261,10 @@ git config core.ignorecase true | false //配置git 使其对文件名大小写�
 
 ![img](./img/git-choose.jpg)
 
-# <a name=""></a>
+# <a name="gist.github.com无法访问">gist.github.com无法访问</a>
+>
+    打开C:\Windows\System32\drivers\etc\hosts文件
+
+    编辑器打开，在最后行添加192.30.253.118 gist.github.com
+
+    保存即可。

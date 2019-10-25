@@ -69,6 +69,7 @@
 * <a href="#打包">打包时常见问题及解决</a>
 
 * <a href="#插件">插件</a>
+
 * <a href="#其他">其他</a>
   * <a href="#rem">rem</a>
   * <a href="#"></a>
@@ -2194,6 +2195,26 @@ vue create projectName
 ## [vue-amap(高德地图)](https://elemefe.github.io/vue-amap/#/zh-cn/introduction/install)
 
 ## [国际化插件-vue-i18n](https://link.zhihu.com/?target=https%3A//github.com/kazupon/vue-i18n)
+
+## echart 
+* 重新渲染(重新绘制,重新加载数据) 解决数据更新后图表不更新
+>
+    this.myChart.setOption(this.option,true);
+
+>
+    document.getElementById('div的ID').setAttribute('_echarts_instance_', '')
+    //这样的操作会重新渲染echarts的div容器结构,也就是重新操作了dom,会影响性能
+    
+* 动态设置高度  
+>
+    <div  id="myChart1" :style="{width:'650px'}" ref="myEchart1"></div>
+    let myChart = this.$echarts.init(document.getElementById('myChart1'))
+    this.myChart1 = myChart
+    myChart.setOption(this.option1,true);
+    // 动态设置高度
+    myChart.getDom().style.height = res.result.chartX.length * 10  + "px";
+    myChart.resize();
+
 
 ## 轮播图--VueAwesomeSwiper
 https://segmentfault.com/a/1190000014609379
