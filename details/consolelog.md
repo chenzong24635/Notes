@@ -1,16 +1,25 @@
 [参考](https://mp.weixin.qq.com/s?__biz=MzUzOTM0MTE4OQ==&mid=2247486207&idx=1&sn=217d474172b4752d4451c3cb3c167f77&chksm=fac8b215cdbf3b03be8486e6af1389a0bf049f5ab989f4dd83f692200d60ce84fbe3796f2b8c&scene=0&xtrack=1&key=f7996279e56ff0c960fdcd6fc46af973f3cd29a09a4fb2543272423dd21a14a538eb8d392236fd402ded694ca172c4eedb1ccbbfa3d656a250b047b86c418ac388480eda6c6ab2e3411a209a4d6ea248&ascene=14&uin=MTIxNDM5MTUzOQ%3D%3D&devicetype=Windows+7&version=62060841&lang=zh_CN&pass_ticket=6hbWVbVQi9b8nDPWnQLyNwIhfW%2Fxii%2FBAH6JGd5v7eUzIH49WIfoITbvxT9QEwrs)
 
+[参考](https://mp.weixin.qq.com/s?__biz=MzAxODE2MjM1MA==&mid=2651557216&idx=1&sn=8aa033d2c7a04a73a6abf836bd4e5a61&chksm=80255aa1b752d3b73de295ee3f75d1366e80619f7c41bf3987a6fa11868434061f54719a1848&scene=0&xtrack=1&key=0a90e6804693187e789b8123d8a54f8ac3e54394d624772969e2d7c03e6cd1a1c4f00684550740ecf3a9c10b1a8d8adfc0717aaa189395aef6cda07420bd49c331d49750fa72d2cb0b4c05d2101cdc21&ascene=14&uin=MTIxNDM5MTUzOQ%3D%3D&devicetype=Windows+7&version=62070152&lang=zh_CN&pass_ticket=ry6FDDAoqQqJKYWDmY%2B5w9Aa16s7DxV4gkLc6EneCNKZKJ5%2FcMQClARdchk%2FAOzB)
+
 # 开发者工具面板：
 >
-    Elements：查看网页的HTML源码和CSS代码。
-    Console：用来运行 JavaScript 命令。
+    Elements：页面dom元素，查看网页的HTML源码和CSS代码。
+    Console：控制台，用来运行 JavaScript 命令。
     Sources：查看网页加载的所有源码。
+    Network： 网络
     Application：查看网页加载的各种资源文件（比如代码文件、字体文件、css文件等），以及在硬盘上创建的各种内容（比如本地缓存、Cookie、Local Storage等）。
     Performance：查看网页的性能情况，比如 CPU 和内存消耗。
-
+    Security： 安全分析
+    Audits： 审计，自动化测试工具
 
 
 # console的常见用途
+* 截图 ctrl+shift+p 输入screen
+  >* 截图当前网页：Capture full size screenhot
+  >* 截图当前区域：Capture area screenhot
+  >* 截图单个元素：Capture node screenhot
+
 * 调试程序，显示网页代码运行时的错误信息。
 * 提供了一个命令行接口，用来与网页代码互动。
 

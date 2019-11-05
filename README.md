@@ -228,6 +228,7 @@
   * <a href="#范围内随机数，包括两个数在内">范围内随机数</a>
   * <a href="#数字千分位">数字千分位</a>
   * <a href="#统计字符串中同一字符出现次数">统计字符串中同一字符出现次数</a>
+  * <a href="#查找字符串中出现最多的字符和个数">查找字符串中出现最多的字符和个数</a>
   * <a href="#类数组转化为数组">类数组转化为数组</a>
   * <a href="#判断是否回文、实现回文">判断是否回文、实现回文</a>
   * <a href="#两位大整数相加">两位大整数相加</a>
@@ -661,6 +662,34 @@ var obj = {
     // Request['参数1'];
 
 
+## <a name="解析url为对象">解析url为对象</a>
+>
+    let url = 'http://www.aaa.com/?a=a1&b=123&c=打算'
+    
+    function parseParam(url) {
+      const paramsStr = /.+\?(.+)$/.exec(url)[1]; // 将 ? 后面的字符串取出来
+      const paramsArr = paramsStr.split('&'); // 将字符串以 & 分割后存到数组中
+      let paramsObj = {};
+      // 将 params 存到对象中
+      paramsArr.forEach(param => {
+        if (/=/.test(param)) { // 处理有 value 的参数
+          let [key, val] = param.split('='); // 分割 key 和 value
+          val = decodeURIComponent(val); // 解码
+          val = /^\d+$/.test(val) ? parseFloat(val) : val; // 判断是否转为数字
+
+          if (paramsObj.hasOwnProperty(key)) { // 如果对象有 key，则添加一个值
+            paramsObj[key] = [].concat(paramsObj[key], val);
+          } else { // 如果对象没有这个 key，创建 key 并设置值
+            paramsObj[key] = val;
+          }
+        } else { // 处理没有 value 的参数
+          paramsObj[param] = true;
+        }
+      })
+      return paramsObj;
+    }
+    console.log(parseParam(url)) //{a: "a1", b: 123, c: "打算"}
+
 ## <a name="图片转base64">图片转base64</a>
 >
     getBase64(
@@ -996,6 +1025,28 @@ Math.random().toFixed(6).slice(-6) / 1
         return val
       }, {})
     }
+
+## <a name="查找字符串中出现最多的字符和个数">查找字符串中出现最多的字符和个数</a>
+
+>
+    let str = "abcabcabcbbccccc";
+    let num = 0;
+    let char = '';
+
+    // 使其按照一定的次序排列
+    str = str.split('').sort().join('');
+    // "aaabbbbbcccccccc"
+
+    // 定义正则表达式
+    let re = /(\w)\1+/g;
+    str.replace(re,($0,$1) => {
+        if(num < $0.length){
+            num = $0.length;
+            char = $1;        
+        }
+    });
+    console.log(`字符最多的是${char}，出现了${num}次`);
+
 ## <a name="类数组转化为数组">类数组转化为数组</a>
 >
     

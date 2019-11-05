@@ -17,7 +17,6 @@
 
   [《TypeScript》](https://ts.xcatliu.com/introduction/what-is-typescript.html)
 
-
   [axios](https://www.kancloud.cn/yunye/axios/234845)
 
   [Swiper-轮播图插件](https://www.swiper.com.cn/api/index.html) 
@@ -63,6 +62,7 @@
 * <a href="#作用域、作用域链、执行上下文">作用域、作用域链、执行上下文</a>
 * <a href="#this">this绑定</a>
 * <a href="apply call bind">apply call bind</a>
+* <a href="实现apply call bind">实现apply call bind</a>
 * <a href="#公有、私有、静态、特权方法与属性">公有、私有、静态、特权方法与属性</a>
 * <a href="#promise">promise</a>
 * <a href="#async、await">async、await</a>
@@ -577,7 +577,6 @@ https://www.jianshu.com/p/5f9027722204
     console.log(obj.a);//输出1 ，不可被修改
 
 ### value
-值
 
 ## <a name="typeof instanceof">typeof 、instanceof 、in</a>
 typeof 
@@ -1048,153 +1047,7 @@ JavaScript中的函数采用静态作用域，也称词法作用域。当在执�
 全局上下文只有唯一的一个，它在浏览器关闭时出栈。
 
 ## <a name="this">this绑定</a>
-[彻底理解JavaScript中的this](http://www.cnblogs.com/pssp/p/5216085.html?tdsourcetag=s_pctim_aiomsg)
-
-
-[彻底理解js中的this](https://juejin.im/post/5c049e6de51d45471745eb98)
-
-[5种this绑定全面解析](https://github.com/yygmind/blog/issues/20)
-
-
-this的值是在执行的时候才能确认，定义的时候不能确认—— 因为this是执行上下文环境的一部分，而执行上下文需要在代码执行之前确定，而不是定义的时候
-
-this永远指向的是最后调用它的对象
-
-#### this绑定
-![this](img/this.png)
-
-* this的绑定规则总共有下面5种
-
-  1. 默认绑定（严格/非严格模式）
-  2. 隐式绑定
-  3. 显式绑定
-  4. new绑定
-  5. 箭头函数绑定
-
-* this优先级：new绑定 > 显示绑定 > 隐式绑定
-___
-
-对于普通函数，this始终指向全局对象window；严格模式下为undefined (`默认绑定`)
-
-对于构造函数，this则指向新创建的对象；(`new绑定`)
-
-对于对象方法，this指向调用该方法的对象（`隐式绑定`）//当函数是否在某个上下文对象中调用，函数的this被隐式绑定到该对象: obj.func()
-
-在对象方法内部再次定义一个方法，该方法的this关键字又会重新指向全局对象(`隐式丢失`): var a = obj.func; a();
-
-通过call、apply和 bind 等方法来改变函数的 this 指向(`显式绑定`).  
-//call 和 apply 主动执行函数，bind一般在事件回调中使用，call和apply的区别只是参数的传递方式不同：func.call(obj, arg1,arg2);func.apply(obj, [arg1,arg2]);  
-//如果把 null 或者 undefined 作为 this 的绑定对象传入 call、apply 或者 bind, 这些值在调用时会被忽略，为`默认绑定`。
-
-箭头函数的this，总是指向定义时所在的对象，而不是运行时所在的对象。
->
-    function foo(){
-      return (a) => {
-        console.log(this.a);
-      }
-    }
-    var obj1 = {
-      a:'obj1'
-    };
-    var obj2 = {
-      a:'obj2'
-    };
-    foo.call(obj1).call(obj2); //输出obj1
-    //foo绑定obj1的this,call未改变外层作用域
-____
-
-#### this指向
-
-本质上，this 均指向触发函数运行时的那个对象。而在函数运行时，this 的值是不能被改变的。  
-如果函数返回值是一个对象，那么this指向的就是那个返回的对象，如果返回值不是一个对象那么this还是指向函数的实例。
-
-常规函数的this 始终指向最后调用它的对象  
-
-
-箭头函数的this，总是指向定义时所在的对象，而不是运行时所在的对象。  
-箭头函数this的作用域继承自执行上下文，自身不绑定 this，因此 this 的值将在调用堆栈中查找
-
-___
-
-this 指针存在于函数中，用以标识函数运行时所处的上下文。
-
-1. 如果一个函数中有this，这个函数未被上一级的对象所调用，那么this指向的就是window，(在js的严格模式中this指向undefined,不是window)
-2. 如果一个函数中有this，这个函数有被上一级的对象所调用，那么this指向的就是上一级的对象。
-3. 如果一个函数中有this，这个函数中包含多个对象，尽管这个函数是被最外层的对象所调用，this指向的也只是它上一级的对象
-
-
-
-#### `箭头函数的this`
-[深入之重新认识箭头函数的this](https://github.com/yygmind/blog/issues/21)
-
-[箭头函数与普通函数区别](https://mp.weixin.qq.com/s?__biz=MzA5NzkwNDk3MQ==&mid=2650589501&idx=1&sn=9b88f96265ce3fe5ebd9df9e11dba42d&chksm=8891d919bfe6500f8d128d9ac230911117bbb0021430f2385b0a769909fe643d415da0d9bb16&scene=0&xtrack=1#rd)
-
-**特点**
-
-箭头函数没有prototype(原型)，所以箭头函数本身没有this;
-
-箭头函数没有constructor,所以不能用new调用箭头函数；
-
-箭头函数没有 this/super/arguments/new.target 的绑定，这些值继承自外层第一个普通函数；
-
-箭头函数的this，总是指向定义时所在的对象，而不是运行时所在的对象。
-
-箭头函数不能直接通过call、aaply、bind、new等修改其this指向(可间接改变：修改被继承的普通函数的this指向)
-
-箭头函数绑定中，this指向外层作用域，并不一定是第一层，也不一定是第二层。因为没有自身的this，所以只能根据作用域链往上层查找，直到找到一个绑定了this的函数作用域，并指向调用该普通函数的对象。
-
-箭头函数外层没有普通函数，严格模式和非严格模式下它的this都会指向window(全局对象)
-
->
-    function bar() {
-      let a = () => {
-        console.log(this, 'this指向定义的时候外层第一个普通函数')
-      }; // 在bar中定义 this继承于bar函数的this指向
-    }
-
-
->
-
-    var name = 'window'
-
-    var person1 = {
-      name: 'person1',
-      show1: function () {
-        console.log(this.name)
-      },
-      show2: () => console.log(this.name),
-      show3: function () {
-        return function () {
-          console.log(this.name)
-        }
-      },
-      show4: function () {
-        return () => console.log(this.name)
-      }
-    }
-    var person2 = { name: 'person2' }
-
-    person1.show1()// person1
-    person1.show1.call(person2)// person2
-
-    person1.show2()// window
-    person1.show2.call(person2)// window
-
-    person1.show3()()// window
-    person1.show3().call(person2)// person2
-    person1.show3.call(person2)()// window
-
-    person1.show4()()// person1
-    person1.show4().call(person2)// person1  
-      //先执行show() 绑定this指向person1
-      //call并没有改变外层作用域
-    person1.show4.call(person2)()// person2
-      //call改变其指向
-
-
-    箭头函数不用function（function有自己的函数作用域）将其包裹起来，那么默认绑定的父级作用域就是window。（如show2）
-
-    用function包裹的目的就是将箭头函数绑定到当前的对象上。 匿名函数的作用域是当前这个对象，所以之后箭头函数会自动绑定到此函数所在作用域的this，。（如show4）
+[this](./details/this.md)
 
 ## <a name="apply call bind">apply call bind</a>
 https://github.com/yygmind/blog/issues/22
@@ -1229,6 +1082,7 @@ bind(..)可以对参数进行柯里化（预先设置一些参数）
     var bar = foo.bind( null, 2 );
     bar( 3 ); // a:2，b:3 
 
+## <a name="实现apply call bind">实现apply call bind</a>
 
 ## <a name="公有、私有、静态、特权方法与属性">公有、私有、静态、特权方法与属性</a>
 
@@ -1296,138 +1150,7 @@ bind(..)可以对参数进行柯里化（预先设置一些参数）
     var user = new User(26);
 
 ## <a name="promise">promise</a>
-
-[【2019 前端进阶之路】站住，你这个Promise！](https://zhuanlan.zhihu.com/p/52714698)
-
-[ES6 Promise](http://es6.ruanyifeng.com/#docs/promise)
-
-
-Promise是一个构造函数（或者类），接受一个函数作为参数，该函数接受resolve，reject两个参数。
-
-Promise 对象代表一个异步操作，有三种状态：pending（进行中）、fulfilled（已成功） 和 rejected（已失败）。只有异步操作的结果，可以决定当前是哪一种状态，任何其他操作都无法改变这个状态。  
-
-Promise 对象的状态改变，只有两种可能：从 pending 变为 fulfilled 和 从 pending 变为 rejected。只要这两种情况发生，状态就凝固了，不会再变了，就称为 resolved（已定型）。
-
-调用resolve或reject并不会终结 Promise 的参数函数的执行。一般来说，调用resolve或reject以后，Promise 的使命就完成了，可return resolve()
-
-
-* 基本用法：  
->
-    new Promise((resolve, reject) => {
-      resolve()
-      console.log(2)
-    })
-
-    调用resolve(1)以后，后面的console.log(2)还是会执行，并且会首先打印出来。这是因为立即 resolved 的 Promise 是在本轮事件循环的末尾执行，总是晚于本轮循环的同步任务
-
-* Promise.prototype.then()  
-then 方法返回新的Promise实例  
-then 方法的第一个参数是 resolved 状态的回调函数，第二个参数（可选）是 rejected 状态的回调函数。
->
-    new Promise((resolve, reject) => {
-      if(Math.random()>=0.5){
-        resolve('成功')
-      }else{
-        reject('失败')
-      }
-    }).then((data) => {
-      console.log(data) //成功
-    }, (error) => {
-      console.log(error) //失败
-    })
-
-* Promise.prototype.catch()  
-
-catch方法 是.then(null, rejection) 或 .then(undefined, rejection)别名 用于指定发生错误时的回调函数
-
-catch方法返回Promise 对象，因此后面还可以接着调用 then 方法。
-
-如果异步操作抛出错误，状态就会变为 rejected，就会调用 catch 方法指定的回调函数，处理这个错误。 then 方法指定的回调函数，如果运行中抛出错误，也会被 catch 方法捕获。 catch 方法的写法更接近同步的写法（try/catch）。  
-因此，建议总是使用 catch 方法，而不使用 then 方法的第二个参数。
-
->
-    new Promise((resolve, reject) => {
-      <!--  -->
-    }).
-    then((data) => {
-      
-    }).
-    catch((err) => {
-
-    })
-
-    等价于
-
-    new Promise((resolve, reject) => {
-      <!--  -->
-    }).
-    then((data) => {
-
-    },(err) => {
-      
-    })
-
-如果没有使用 catch 方法或者 then 第二个参数指定错误处理的回调函数，Promise 对象抛出的错误不会传递到外层代码，即不会有任何反应
-
-* Promise.prototype.finally()  
-
-finally 方法用于指定不管 Promise 对象最后状态如何，都会执行的操作。  
-不接收任何参数
-
-* Promise.all()    
-
-将多个Promise实例，包装成一个新的Promise实例
->
-    var p1 = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (Math.random() >= 0.5) {
-            resolve('P1');
-        } else {
-            reject('error');
-        }
-      }, 500);
-    });
-    var p2 = new Promise((resolve, reject) => {
-      setTimeout(resolve, 600, 'P2');
-    });
-
-    var p = Promise.all([p1, p2]).
-      then((results) => {
-        console.log(results); // 输出：['P1', 'P2']
-      }).
-      catch((error) => {
-          console.log(error); // 如果p1执行失败，则输出：error
-      });
-
-Promise.all 方法接受一个数组作为参数，p1、p2 都是 Promise 实例，如果不是，就会先调用下面讲到的 Promise.resolve 方法，将参数转为 Promise 实例，再进一步处理。（Promise.all方法的参数可以不是数组，但必须具有 Iterator 接口，且返回的每个成员都是 Promise 实例。）
-
-p的状态由p1、p2决定，分成两种情况:
->
-
-    只有 p1、p2 的状态都变成 fulfilled，p 的状态才会变成 fulfilled，此时 p1、p2 的返回值组成一个数组，传递给 p 的回调函数。
-
-    只要 p1、p2 之中有一个被 rejected，p 的状态就变成 rejected，此时第一个被 reject 的实例的返回值，会传递给 p 的回调函数。
-
-* Promise.race()    
-
-var p = Promise.race([p1, p2]);
-
-race方法 类似于all方法同样是将多个Promise实例，包装成一个新的 Promise 实例。
- 
-不同的是 只要 p1、p2 之中有一个实例率先改变状态，p 的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给 p 的回调函数。
-
-
-* Promise.resolve()
-将现有对象转为 Promise 对象，Promise.resolve方法就起到这个作用。  
-Promise.resolve(obj);
-
-Promise.resolve('foo')
-// 等价于
-new Promise(resolve => resolve('foo'))
-
-* Promise.reject()
-* Promise.try()
-
+[promise](./details/promise.md)
 
 ## <a name="async、await">async、await</a>
 https://segmentfault.com/a/1190000007535316
@@ -1444,7 +1167,7 @@ Promise本身是同步的立即执行函数；Promise.then里的回调函数会�
 
 async函数表示函数里面可能会有异步方法，await后面跟一个表达式，async方法执行时，遇到await会立即执行表达式，然后把表达式后面的代码放到微任务队列里，让出执行栈让同步代码先执行。
 
-<a href="事件执行机制">事件执行机制</a>
+[事件执行机制](./details/eventExecutionMechanism.md)
 
 
 ## <a name="深，浅拷贝">深，浅拷贝</a>
@@ -1784,7 +1507,7 @@ https://zhuanlan.zhihu.com/p/55064276
 
 
 ## <a name="跨域">跨域</a>
-[详情](crossOrigin.md)
+[详情](./details/crossOrigin.md)
 
 ## <a name="常见的web攻击">常见的web攻击</a>
 [参考](https://mp.weixin.qq.com/s?__biz=MzA3NTUzNjk1OA==&mid=2651562103&idx=1&sn=0b52850e0ca268918928629bdb80499f&chksm=84900f26b3e78630bfd3cc5c5d8f02de909b8a27f366c3855a8adf4e0c660819d88689a39f39&scene=0#rd)
@@ -1865,7 +1588,7 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
 
 在Java类库中，URI类不包含任何访问资源的方法
 
-## <a name="字符转码、解码">字符转码、解码</a>
+## <a name="字符转码、解码">字符转码、解码,encodeURIComponent、decodeURIComponent、encodeURI、decodeURI、escape、unescape</a>
 * encodeURIComponent()、decodeURIComponent()  
 
 将中文、韩文等特殊字符转换成utf-8格式的url编码   
@@ -1994,7 +1717,6 @@ https://segmentfault.com/a/1190000020302184
 应用场景
 >
     resize/scroll 触发统计事件
-
     文本输入的验证（连续输入文字后发送 AJAX 请求进行验证，验证一次就好）
 
 >
@@ -2029,6 +1751,12 @@ https://segmentfault.com/a/1190000020302184
 #### 节流: 高频事件触发，但在 n 秒内只会执行一次，所以节流会稀释函数的执行频率。
 
 设置一个执行函数间隔时间time, 当多次触发某个事件时便将执行函数的频率降低到time 
+
+适用场景：
+>
+    拖拽场景：固定时间内只执行一次，防止超高频次触发位置变动
+    缩放场景：监控浏览器resize
+    动画场景：避免短时间内多次触发动画引起性能问题
 >
     //当触发事件的时候，我们设置一个定时器，再触发事件的时候，如果定时器存在，就不执行，直到定时器执行，然后执行函数，清空定时器，这样就可以设置下个定时器。
     function throttle(func, delay=1000){
@@ -2195,118 +1923,11 @@ API：
     }
 
 ## <a name="浏览器缓存">浏览器缓存</a>
-[深入理解浏览器的缓存机制](https://mp.weixin.qq.com/s?__biz=MzA5NzkwNDk3MQ==&mid=2650589430&idx=1&sn=f8d78a5cff1ac08900942974f07a75ea&chksm=8891d8d2bfe651c425ed78b26de5a865bbb408c1a565f05fe353d26b2270cb4b706e62ab4c23&scene=0&xtrack=1#rd)
-
-[浏览器缓存看这一篇就够了](https://mp.weixin.qq.com/s?__biz=MzA3NTUzNjk1OA==&mid=2651562189&idx=1&sn=1aece422b2a6d019903b909ca75cd975&chksm=84900f9cb3e7868ac5c1c7642dd7353cb9d4069c9605f2d5accb22f4bbeeeebe992939515a9e&scene=0&xtrack=1#rd)
+[浏览器缓存](./details/InternetCache.md)
 
 
 ## <a name="前端性能优化的方法">前端性能优化的方法</a>
-[前端性能优化之雅虎35条军规](https://mp.weixin.qq.com/s?__biz=MzUzOTM0MTE4OQ==&mid=2247485489&idx=1&sn=053398c3f26f13924b27a1877fa0a2c4&chksm=fac8b0dbcdbf39cdfb4320aa76c0802ef320792a63b7bf64b4613258d15746592511726be50e&scene=0&xtrack=1#rd)
-
-
-content方面:
->
-    减少HTTP请求：合并文件、CSS Sprites、Gzip压缩，CDN托管，data缓存
-
-    减少DNS查询：DNS查询完成之前浏览器不能从这个主机下载任何任何文件。方法：DNS缓存、将资源分布到恰当数量的主机名，平衡并行下载和DNS查询  
-
-    避免重定向：多余的中间访问
-
-    延迟加载，预加载
-
-    缓存AJAX请求结果：每次操作本地变量，减少了请求次数   
-
-    减少DOM元素数量：计算页面 DOM元素 document.getElementsByTagName('*').length
-
-    将资源放到不同的域下：浏览器同时从一个域下载资源的数目有限，增加域可以提高并行下载量
-
-    减少iframe使用:frame完全加载以后，页面才会触发load事件(动态加载可解决)  
-
-    避免在页面的主体布局中使用table，
-      table要等其中的内容完全下载之后才会显示出来,显示比div+css布局慢;
-
-      标签较多，增加文件大小；
-
-      不易维护，无法适应响应式设计；
-
-      默认的表格布局算法会产生大量重绘
-
-    避免404
-
-
-css方面:
->
-    将样式表放到页面顶部（<head>里）
-
-    不使用@import；使用<link>
-
-    避免使用css表达式(CSS Expression)又称动态属性(Dynamic properties)
-
-    不使用IE的filter(不是 CSS3 Filter)
-
-    值为0时无需写单位
-
-JS方面:
->
-    将脚本放到页面底部  
-
-    使用外部javascript和css 
-
-    压缩javascript和css  
-
-    删除不需要的、重复的脚本  
-
-    少用全局变量、缓存DOM节点查找的结果
-
-    减少DOM操作次数: 
-      设置样式时使用className（或el.style.cssText +=）而不是直接操作style;
-
-      缓存已经访问过的元素;
-
-      使用DocumentFragment暂存DOM，整理好以后再插入DOM树;
-
-
-图片方面
->
-
-    优化图片:根据实际颜色需要选择色深、压缩
-
-    尽可能使用css、svg、base64、iconfont代替图片
-
-    优化css Sprite
-
-    不要在HTML中拉伸缩放图片
-
-    避免图片src为空（src属性为空，但浏览器仍然会向服务器发起一个HTTP请求）
-
-    保证favicon.ico小并且可缓存
-
-Server方面:
->
-    使用CDN(静态内容分发网络)：可以以较低的投入，有效提升加载速度  
-
-    添加Expires或者Cache-Control响应头  
-
-    使用Gzip压缩: 图片和PDF文件不要使用gzip,它们本身已经压缩过
-
-    配置ETag
-    
-    尽早输出缓存
-
-    Ajax使用GET进行请求
-
-Cookie方面:
->
-    减小cookie大小:提高响应速度。
-
-    静态资源使用无cookie域名:低Cookie传送的造成的流量浪费，提高响应速度。
-
-    设置合适的过期时间
-
-
-移动端方面：
->
-    保持单个组件小于25k
+[性能优化](./details/optimization.md)
 
 ## <a name="浏览器渲染">浏览器渲染</a>
 ![render](img/render.png)
@@ -2324,296 +1945,10 @@ Cookie方面:
 
 
 ## <a name="从浏览器地址栏输入url到显示页面的步骤">从浏览器地址栏输入url到显示页面的步骤</a>
-
-#### 浏览器工作原理
-1.用户界面 2.网络 3.UI后端 4.数据存储 5.浏览器引擎 6.渲染引擎 7.js解释器  
-
-浏览器解析过程：解析html以构建dom树->构建render树->布局render树->绘制render树
-
-#### 网页生成过程：
-1. HTML被HTML解析器解析成DOM树
-2. css则被css解析器解析成CSSOM树
-3. 结合DOM树和CSSOM树，生成一棵渲染树(Render Tree)
-4. 生成布局（flow），即将所有渲染树的所有节点进行平面合成
-5. 将布局绘制（paint）在屏幕上
-
-4、5是最耗时的部分，这两步合起来即 渲染。
-
-####  简
->
-    输入网址；
-
-    发送到DNS服务器，并获取域名对应的web服务器对应的ip地址；
-
-    与web服务器建立TCP连接；
-
-    浏览器向web服务器发送http请求；
-
-    web服务器响应请求，并返回指定url的数据（或错误信息，或重定向的新的url地址）；
-
-    浏览器下载web服务器返回的数据及解析html源文件；
-
-    生成DOM树，解析css和js，渲染页面，直至显示完成；
-
-#### 具体
-1. 在浏览器地址栏输入URL
-
-2. 浏览器查看缓存，如果请求资源在缓存中并且新鲜，跳转到转码步骤
-    * 如果资源未缓存，发起新请求
-
-    * 如果已缓存，检验是否足够新鲜，足够新鲜直接提供给客户端，否则与服务器进行验证。
-
-    * 检验新鲜通常有两个HTTP头进行控制Expires和Cache-Control：
-        * HTTP1.0提供Expires，值为一个绝对时间表示缓存新鲜日期
-        * HTTP1.1增加了Cache-Control: max-age=,值为以秒为单位的最大新鲜时间
-
-3. 浏览器解析URL获取协议，主机，端口，path
-
-4. 浏览器组装一个HTTP（GET）请求报文
-
-5. 浏览器获取主机ip地址，过程如下：
-    * 浏览器缓存
-    * 本机缓存
-    * hosts文件
-    * 路由器缓存
-    * ISP DNS缓存
-    * DNS递归查询（可能存在负载均衡导致每次IP不一样）
-
-6. 打开一个socket与目标IP地址，端口建立TCP链接，三次握手如下：
-    * 客户端发送一个TCP的SYN=1，Seq=X的包到服务器端口
-    * 服务器发回SYN=1， ACK=X+1， Seq=Y的响应包
-    * 客户端发送ACK=Y+1， Seq=Z
-
-7. TCP链接建立后发送HTTP请求
-
-8. 服务器接受请求并解析，将请求转发到服务程序，如虚拟主机使用HTTP Host头部判断请求的服务程序
-
-9. 服务器检查HTTP请求头是否包含缓存验证信息如果验证缓存新鲜，返回304等对应状态码
-
-10. 处理程序读取完整请求并准备HTTP响应，可能需要查询数据库等操作
-
-11. 服务器将响应报文通过TCP连接发送回浏览器
-
-12. 浏览器接收HTTP响应，然后根据情况选择关闭TCP连接或者保留重用，关闭TCP连接的四次挥手如下：
-    * 主动方发送Fin=1， Ack=Z， Seq= X报文
-    * 被动方发送ACK=X+1， Seq=Z报文
-    * 被动方发送Fin=1， ACK=X， Seq=Y报文
-    * 主动方发送ACK=Y， Seq=X报文
-
-13. 浏览器检查响应状态吗：是否为1XX，3XX， 4XX， 5XX，这些情况处理与2XX不同
-
-14. 如果资源可缓存，进行缓存
-
-15. 对响应进行解码（例如gzip压缩）
-
-16. 根据资源类型决定如何处理（假设资源为HTML文档）
-
-17. 解析HTML文档，构件DOM树，下载资源，构造CSSOM树，执行js脚本，这些操作没有严格的先后顺序，以下分别解释
-
-18. 构建DOM树：
-    * Tokenizing：根据HTML规范将字符流解析为标记
-
-    * Lexing：词法分析将标记转换为对象并定义属性和规则
-
-    * DOM construction：根据HTML标记关系将对象组成DOM树
-
-19. 解析过程中遇到图片、样式表、js文件，启动下载
-
-20. 构建CSSOM树：
-    * Tokenizing：字符流转换为标记流
-
-    * Node：根据标记创建节点
-
-    * CSSOM：节点创建CSSOM树
-    
-21. 根据DOM树和CSSOM树构建渲染树:
-    * 从DOM树的根节点遍历所有可见节点，不可见节点包括：1）script,meta这样本身不可见的标签。2)被css隐藏的节点，如display: none
-
-    * 对每一个可见节点，找到恰当的CSSOM规则并应用
-
-    * 发布可视节点的内容和计算样式
-
-22. js解析如下：
-    * 浏览器创建Document对象并解析HTML，将解析到的元素和文本节点添加到文档中，此时document.readystate为loading
-
-    * HTML解析器遇到没有async和defer的script时，将他们添加到文档中，然后执行行内或外部脚本。这些脚本会同步执行，并且在脚本下载和执行时解析器会暂停。这样就可以用document.write()把文本插入到输入流中。同步脚本经常简单定义函数和注册事件处理程序，他们可以遍历和操作script和他们之前的文档内容
-
-    * 当解析器遇到设置了async属性的script时，开始下载脚本并继续解析文档。脚本会在它下载完成后尽快执行，但是解析器不会停下来等它下载。异步脚本禁止使用document.write()，它们可以访问自己script和之前的文档元素
-
-    * 当文档完成解析，document.readState变成interactive
-
-    * 所有defer脚本会按照在文档出现的顺序执行，延迟脚本能访问完整文档树，禁止使用document.write()
-
-    * 浏览器在Document对象上触发DOMContentLoaded事件
-
-    * 此时文档完全解析完成，浏览器可能还在等待如图片等内容加载，等这些内容完成载入并且所有异步脚本完成载入和执行，document.readState变为* complete,window触发load事件
-
-23. 显示页面（HTML解析过程中会逐步显示页面）
-
+[从浏览器地址栏输入url到显示页面的步骤](./details/urlAnalysis.md)
 
 ## <a name="事件执行机制">事件执行机制</a>
-[参考](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/7)
-
-[参考](https://juejin.im/post/59e85eebf265da430d571f89)
-
-#### 浏览器的渲染进程是多线程的
-
-1. GUI渲染线程
->
-    负责渲染浏览器界面，解析HTML，CSS，构建DOM树和RenderObject树，布局和绘制等。
-    当界面需要重绘（Repaint）或由于某种操作引发回流(reflow)时，该线程就会执行
-    注意，GUI渲染线程与JS引擎线程是互斥的，当JS引擎执行时GUI线程会被挂起（相当于被冻结了），GUI更新会被保存在一个队列中等到JS引擎空闲时立即被执行。
-
-2. JS引擎线程
->
-    也称为JS内核，负责处理Javascript脚本程序。（例如V8引擎）
-    JS引擎线程负责解析Javascript脚本，运行代码。
-    JS引擎一直等待着任务队列中任务的到来，然后加以处理，浏览器无论什么时候都只有一个JS线程在运行JS程序
-    同样注意，GUI渲染线程与JS引擎线程是互斥的，所以如果JS执行的时间过长，这样就会造成页面的渲染不连贯，导致页面渲染加载阻塞。
-
-3. 事件触发线程
->
-    归属于浏览器而不是JS引擎，用来控制事件循环（可以理解，JS引擎自己都忙不过来，需要浏览器另开线程协助）
-    当JS引擎执行代码块如setTimeOut时（也可来自浏览器内核的其他线程,如鼠标点击、AJAX异步请求等），会将对应任务添加到事件线程中
-    当对应的事件符合触发条件被触发时，该线程会把事件添加到待处理队列的队尾，等待JS引擎的处理
-    注意，由于JS的单线程关系，所以这些待处理队列中的事件都得排队等待JS引擎处理（当JS引擎空闲时才会去执行）
-
-4. 定时触发器线程
->
-    传说中的 setInternal与 setTimeout所在线程
-    浏览器定时计数器并不是由JavaScript引擎计数的,（因为JavaScript引擎是单线程的, 如果处于阻塞线程状态就会影响记计时的准确）
-    因此通过单独线程来计时并触发定时（计时完毕后，添加到事件队列中，等待JS引擎空闲后执行）
-    注意，W3C在HTML标准中规定，规定要求setTimeout中低于4ms的时间间隔算为4ms。
-
-5. 异步http请求线程
->
-    在XMLHttpRequest在连接后是通过浏览器新开一个线程请求
-    将检测到状态变更时，如果设置有回调函数，异步线程就产生状态变更事件，将这个回调再放入事件队列中。再由JavaScript引擎执行。
-
-#### JS任务分类
-JS里的一种分类方式，就是将任务分为：同步任务和异步任务。
-
-按照这种分类方式 JS的执行机制是：
->
-    1. 首先判断JS是同步还是异步，同步就进入主进程，异步就进入event table
-    2. 异步任务在event table中注册函数，当满足触发条件后，被推入event queue
-    3. 同步任务进入主线程后一直执行，直到主线程空闲时，才会去event queue中查看是否有可执行的异步任务，如果有就推入主进程中
-    以上三步循环执行，这就是event loop。
-
-<img src="./img/event.png" width="50%" />
-
-而准确的划分方式是：
-1. macro-task(宏任务)：script(整体代码)，setTimeout、setInterval、I/O、UI交互事件、postMessage、MessageChannel、setImmediate(Node.js 环境)
-2. micro-task(微任务)：Promise.then、process.nextTick(Node.js 环境)、MutaionObserver
->
-
-    * macrotask（宏任务），可以理解是每次执行栈执行的代码就是一个宏任务（包括每次从事件队列中获取一个事件回调并放到执行栈中执行）  
-    每一个macrotask会从头到尾将这个任务执行完毕，不会执行其它；
-    浏览器为了能够使得JS内部macrotask与DOM任务能够有序的执行，会在一个macrotask执行结束后，在下一个 macrotask 执行开始前，对页面进行重新渲染
-
-    * microtask（微任务），可以理解是在当前 macrotask 执行结束后立即执行的任务  
-    也就是说，在当前macrotask任务后，下一个macrotask之前，在渲染之前。
-
-    所以它的响应速度相比setTimeout会更快，因为无需等渲染
-    也就是说，在某一个macrotask执行完后，就会将在它执行期间产生的所有microtask都执行完毕（在渲染前）
-
-
-#### JS的执行机制是：
->
-    执行一个宏任务
-    过程中如果遇到微任务，就将其放到微任务的“事件队列”里  
-    当前宏任务执行完成后，立即执行当前微任务队列中的所有微任务（依次执行）  
-    执行完毕后，开始检查渲染，然后GUI线程接管渲染  
-    渲染完毕后，JS线程继续接管，开始下一个宏任务（从事件队列中获取）
-
-![img](/img/JS的执行机制.jpg)
-
-
-* Promise和async中的立即执行
-我们知道Promise中的异步体现在then和catch中，所以写在Promise中的代码是被当做同步任务立即执行的。而在async/await中，在出现await出现之前，其中的代码也是立即执行的。那么出现了await时候发生了什么呢？
-
-* async await 
-从字面意思上看await就是等待，await 等待的是一个表达式，这个表达式的返回值可以是一个promise对象也可以是其他值。
-
-很多人以为await会一直等待之后的表达式执行完之后才会继续执行后面的代码，实际上await是一个让出线程的标志。await后面的表达式会先执行一遍，同时将await后面的代码加入到microtask中，然后就会跳出整个async函数来执行后面的代码。
-
-`由于因为async await 本身就是promise+generator的语法糖。所以await后面的代码是microtask。` 
-
->
-    async function async1() {
-      console.log('async1 start');
-      await async2();
-      console.log('async1 end');
-    }
-
-    等价于
-
-    async function async1() {
-      console.log('async1 start');
-      Promise.resolve(async2()).then(() => {
-        console.log('async1 end');
-      })
-    }
-
-#### 进程、线程
->
-    一个进程由一个或多个线程组成
-    进程之间相互独立
-    同一进程下的各个线程之间共享程序的内存空间（包括代码段、数据集、堆等）
-    多个线程在进程中协作完成任务
-
-    进程是能拥有资源和独立运行的最小单位
-    线程是建立在进程的基础上的一次程序运行单位
-
->
-    async function async1() {
-      console.log('async1 start') 
-      await async2() 
-      console.log('async1 end')
-    }
-    async function async2() {
-      console.log('async2')
-    }
-    console.log('script start') 
-    setTimeout(function () {
-      console.log('settimeout')
-    }) 
-    async1() 
-    new Promise(function (resolve) {
-      console.log('promise1')
-      resolve()
-    }).then(function () {
-      console.log('promise2')
-    }) 
-    console.log('script end')
-
-______
->
-    整体script作为第一个宏任务进入主线程，遇到console.log，输出'script start'
-
-    遇到setTimeout，分发到宏任务中
-
-    遇到async1() 立即执行，输出'async1 start'；遇到await，立即执行其后面表达式，执行async() 输出'async2'; 然后将其后代码console.log('async1 end')加到微任务队列
-
-    遇到promise,立即执行，输出'promise1'；然后将.then添加到微任务队列
-
-    遇到console.log，输出'script end'；全局任务执行完毕
-
-    执行完一个宏任务之后，查看微任务队列，依次输出，'async1 end'，'promise2'
-
-    第一轮事件循环正式结束,再次执行宏任务，执行setTimeout，输出'settimeout'
-
->
-
-    //script start
-    //async1 start
-    //async2
-    //promise1
-    //script end
-    //async1 end
-    //promise2
-    //settimeout
-
+[事件执行机制](./details/eventExecutionMechanism.md)
 
 ## <a name="get与post区别">get与post区别</a>
 ![getpost](/img/getpost.png)
