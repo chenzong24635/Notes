@@ -18,6 +18,10 @@ Set接受一个数组（或者具有 iterable 接口的其他数据结构）作�
 * [value, value]，只有键值，没有键名，有点类似数组。
 
 * 可以遍历(遍历方法：keys(),values(),entries(),forEach())
+  >
+      for (let value of new Set(['a','b']).values()) {
+        console.log(value);
+      }    
 
 * 方法：
   >add 添加某个值，返回 Set 结构本身  

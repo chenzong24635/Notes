@@ -58,3 +58,11 @@ cnpmjs镜像
     npm prune 移除当前不在package.json中但是存在node_modules中的依赖
 
     npm link 不使用npm install 而连接某个依赖包，通常用作开发本地依赖包
+
+# dependencies 与 devdependencies 区别
+>
+    –save会把依赖包名称添加到package.json文件dependencies键下
+    –save-dev则添加到package.json文件devDependencies键下
+
+    dependencies ----- 生产环境中需要的依赖，即正常运行该包时所需要的依赖项。 
+    devDependencies -- 开发时用的依赖项，它们不会被部署到生产环境。    

@@ -9,7 +9,7 @@ Promise是一个构造函数（或者类），接受一个函数作为参数，�
 
 Promise 对象代表一个异步操作，有三种状态：pending（进行中）、fulfilled（已成功） 和 rejected（已失败）。只有异步操作的结果，可以决定当前是哪一种状态，任何其他操作都无法改变这个状态。  
 
-Promise 对象的状态改变，只有两种可能：从 pending 变为 fulfilled 和 从 pending 变为 rejected。只要这两种情况发生，状态就凝固了，不会再变了，就称为 resolved（已定型）。
+Promise 对象的状态改变，只有两种可能：从Pending变为Resolved和从Pending变为Rejected。只要这两种情况发生，状态就凝固了，不会再变了，就称为 （已定型）。
 
 调用resolve或reject并不会终结 Promise 的参数函数的执行。一般来说，调用resolve或reject以后，Promise 的使命就完成了，可return resolve()
 
@@ -17,11 +17,15 @@ Promise 对象的状态改变，只有两种可能：从 pending 变为 fulfille
 * 基本用法：  
 >
     new Promise((resolve, reject) => {
-      resolve()
-      console.log(2)
+      if (/* 异步操作成功 */){
+        resolve('success');
+        console.log(2)
+      } else {
+        reject('error');
+      }
     })
 
-    调用resolve(1)以后，后面的console.log(2)还是会执行，并且会首先打印出来。这是因为立即 resolved 的 Promise 是在本轮事件循环的末尾执行，总是晚于本轮循环的同步任务
+    调用resolve()以后，后面的console.log(2)还是会执行，并且会首先打印出来。这是因为立即 resolved 的 Promise 是在本轮事件循环的末尾执行，总是晚于本轮循环的同步任务
 
 * Promise.prototype.then()  
 then 方法返回新的Promise实例  

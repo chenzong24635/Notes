@@ -22,12 +22,12 @@
 * <a href="#SPA">SPA SSR</a>
 * <a href="#双向数据绑定原理、实现">双向数据绑定原理、实现:Object.defineProperty、proxy</a>
 * <a href="#单向数据流">单向数据流</a>
-* <a href="#生命周期">生命周期</a>
+* <a href="#组件生命周期">组件生命周期</a>
 * <a href="#监听组件的生命周期">监听组件的生命周期</a>
 * <a href="#computed watch methods">computed watch methods</a>
-* <a href="#Vue不能检测以下数组的变动">Vue不能检测以下数组的变动</a>
+* <a href="#解决对象新增属性不能响应的问题"> vm.$set() 解决对象新增属性不能响应的问题</a>
+* <a href="#Vue检测数组的变动">Vue检测数组的变动</a>
 * <a href="#组件中 data 为什么是一个函数">组件中 data 为什么是一个函数</a>
-* <a href="#Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决">Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决？</a>
 * <a href="#样式绑定">样式绑定：class、style</a>
 * <a href="#v-if和v-show 的区别">v-if和v-show 的区别</a>
 * <a href="#v-for 遍历避免同时使用 v-if">v-for 遍历避免同时使用 v-if</a>
@@ -124,7 +124,7 @@
 <img src="img/mvvm1.png" width="50%"/>
 
 >
-    View: 代表视图层，负责将数据模型渲染到页面上，  
+    View: 代表视图层，负责将数据模型渲染到页面上 ;也就是用户界面。前端主要由 HTML 和 CSS 来构建 。
 
     ViewModel:通过双向绑定把View和Model进行同步交互，不需要手动操作DOM的一种设计思想。前端开发者对从后端获取的 Model 数据进行转换处理，做二次封装，以生成符合 View 层使用预期的视图数据模型
 
@@ -210,7 +210,21 @@ React 的 [Next](https://nextjs.org/)
 
 [深入浅出Vue响应式原理](https://juejin.im/post/5d229bfc5188252d707f3ac6)
 
-Vue2 采用数据劫持结合发布—订阅模式的方法，通过 Object.defineProperty() 来劫持各个属性的 setter，getter，在数据变动时发布消息给订阅者，触发相应的监听回调。实现数据双向绑定
+Vue 数据双向绑定主要是指：数据变化更新视图，视图变化更新数据
+
+Vue2 采用数据劫持结合发布—订阅模式的方法，通过 Object.defineProperty() 来劫持各个属性的 setter，getter，在数据变动时发布消息给订阅者，触发相应的监听回调,实现数据双向绑定
+
+
+Object.defineProperty无法监控到数组下标的变化，导致直接通过数组的下标给数组设置值，不能实时响应。 为了解决这个问题，经过vue内部处理后可以使用以下几种方法来监听数组
+>
+    push()
+    pop()
+    shift()
+    unshift()
+    splice()
+    sort()
+    reverse()
+
 
 Vue3 则使用 Proxy
 
@@ -225,6 +239,7 @@ Vue3 则使用 Proxy
 
     Proxy 可以直接监听对象而非属性,以直接监听数组的变化；
 
+    Proxy 的第二个参数可以有 13 种拦截方法，比起 Object.defineProperty() 要更加丰富
 
     Object.definedProperty 不支持数组，更准确的说是不支持数组的各种API，因为如果仅仅考虑arry[i] = value 这种情况，是可以劫持的，但是这种劫持意义不大。而 Proxy 可以支持数组的各种API。
 
@@ -332,31 +347,32 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
     当一个Vue实例创建时，vue会遍历data选项的属性，用 Object.defineProperty 将它们转为 getter/setter并且在内部追踪相关依赖，在属性被访问和修改时通知变化。 每个组件实例都有相应的 watcher 程序实例，它会在组件渲染的过程中把属性记录为依赖，之后当依赖项的 setter 被调用时，会通知 watcher 重新计算，从而致使它关联的组件得以更新。
 
 # <a name="单向数据流">单向数据流</a>
-父组件可以向子组件传递数据，但是子组件不能直接修改父组件的状态。
+父组件可以向子组件传递数据，但是子组件不能直接修改父组件的状态。  
+防止从子组件意外改变父级组件的状态，从而导致你的应用的数据流向难以理解。
 
 如所有的 prop 都使得其父子 prop 之间形成了一个单向下行绑定  
 当你想要在子组件去修改 props 时，两种情况
 1. 定义一个 data 属性，并用 prop 的值初始化它。
 >
-    props: ['initialCounter'],
+    props: ['count'],
     data() {
       return {
-        counter: this.initialCounter
+        counter: this.count
       }
     }
 
 2. 定义一个计算属性，处理 prop 的值并返回。
 >
-    props: ['initialCounter'],
-    data() {
-      return {
-        counter: this.initialCounter
+    props: ['count'],
+    computed: {
+      add: function () {
+        return this.count++
       }
     }
 
-
-# <a name="生命周期">生命周期</a>
-[Vue2.0生命周期](https://segmentfault.com/a/1190000008010666)
+# <a name="组件生命周期">组件生命周期</a>
+[Vue2.0生命周期](https://segmentfault.com/a/1190000008010666)  
+[参考](https://www.cnblogs.com/yuliangbin/p/9348156.html)
 
 Vue 实例有一个完整的生命周期，也就是从开始创建、初始化数据、编译模版、挂载 Dom -> 渲染、更新 -> 渲染、卸载等一系列过程，我们称这是 Vue 的生命周期。
 
@@ -395,29 +411,42 @@ Vue 实例有一个完整的生命周期，也就是从开始创建、初始化�
     beforeDestroy : 可以做一个确认停止事件的确认框 (如：确认是否退出登录)
 
 <img src="img/lifecycle.png" width="60%" />
-<!-- ![lifecycle](img/lifecycle.png) -->
 
 
 ## 父子组件生命周期钩子函数执行顺序？
 
 加载渲染过程
 >
-    父 beforeCreate -> 父 created -> 父 beforeMount -> 子 beforeCreate -> 子 created -> 子 beforeMount -> 子 mounted -> 父 mounted
+    父 beforeCreate -> 
+    父 created -> 
+    父 beforeMount -> 
+    子 beforeCreate -> 
+    子 created -> 
+    子 beforeMount -> 
+    子 mounted -> 
+    父 mounted
 
 
 子组件更新过程
 >
-    父 beforeUpdate -> 子 beforeUpdate -> 子 updated -> 父 updated
+    父 beforeUpdate -> 
+    子 beforeUpdate -> 
+    子 updated -> 
+    父 updated
 
 
 父组件更新过程
 >
-    父 beforeUpdate -> 父 updated
+    父 beforeUpdate -> 
+    父 updated
 
 
 销毁过程
 >
-    父 beforeDestroy -> 子 beforeDestroy -> 子 destroyed -> 父 destroyed
+    父 beforeDestroy -> 
+    子 beforeDestroy -> 
+    子 destroyed -> 
+    父 destroyed
 
 
 
@@ -512,63 +541,10 @@ watch：深度监听
         deep: true //深度监听
       }
     }    
+# <a name="解决对象新增属性不能响应的问题">vm.$set() 解决对象新增属性不能响应的问题</a>
+受现代 JavaScript 的限制 ，Vue 无法检测到对象属性的添加或删除。
 
-# <a name="Vue不能检测以下数组的变动">[Vue不能检测以下数组的变动](https://cn.vuejs.org/v2/guide/list.html#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)</a>
-* 当你利用索引直接设置一个数组项时，例如：vm.items[indexOfItem] = newValue
-
-* 当你修改数组的长度时，例如：vm.items.length = newLength
-
->
-    举例：
-
-    var vm = new Vue({
-      data: {
-        items: ['a', 'b', 'c']
-      }
-    })
-    vm.items[1] = 'x' // 不是响应性的
-    vm.items.length = 2 // 不是响应性的
-
-解决第一个问题：
->
-
-    Vue.set(vm.items, indexOfItem, newValue) 
-    // vm.$set，Vue.set的一个别名
-    vm.$set(vm.items, indexOfItem, newValue)
-
-    vm.items.splice(indexOfItem, 1, newValue)
-
-
-
-解决第二类问题：
-
-    vm.items.splice(newLength)
-
-
-# <a name="组件中 data 为什么是一个函数">组件中 data 为什么是一个函数</a>
-为什么组件中的 data 必须是一个函数，然后 return 一个对象，而 new Vue 实例里，data 可以直接是一个对象？
->
-    // data
-    data() {
-      return {
-        message: "子组件",
-        childName:this.name
-      }
-    }
-
-    // new Vue
-    new Vue({
-      el: '#app',
-      router,
-      template: '<App/>',
-      components: {App}
-    })
-
-因为组件是用来复用的，且 JS 里对象是引用关系，如果组件中 data 是一个对象，那么这样作用域没有隔离，子组件中的 data 属性值会相互影响，  
-如果组件中 data 选项是一个函数，每次返回的都是一个新对象，组件实例之间的 data 属性值不会互相影响；而 new Vue 的实例，是不会被复用的，因此不存在引用对象的问题。
-
-
-# <a name="Vue中给data中的对象属性添加一个新的属性时会发生什么，如何解决">Vue中给data中的对象属性添加一个新的属性时 视图不更新，如何解决？</a>
+Vue 提供了 Vue.set (object, propertyName, value) / vm.$set (object, propertyName, value)来实现为对象添加响应式属性
 >
     示例：
     <template>
@@ -608,6 +584,71 @@ watch：深度监听
           console.log(this.obj)
         }
     $set()方法相当于手动的去把obj.b处理成一个响应式的属性，此时视图也会跟着改变了：
+
+
+# <a name="Vue检测数组的变动">[Vue检测数组的变动](https://cn.vuejs.org/v2/guide/list.html#%E6%95%B0%E7%BB%84%E6%9B%B4%E6%96%B0%E6%A3%80%E6%B5%8B)</a>
+Vue 能检测以下数组的变动
+>
+    push()
+    pop()
+    shift()
+    unshift()
+    splice()
+    sort()
+    reverse()
+
+Vue 不能检测以下数组的变动
+
+* 当你利用索引直接设置一个数组项时，例如：vm.items[indexOfItem] = newValue
+
+* 当你修改数组的长度时，例如：vm.items.length = newLength
+
+>
+    举例：
+
+    var vm = new Vue({
+      data: {
+        items: ['a', 'b', 'c']
+      }
+    })
+    vm.items[1] = 'x' // 不是响应性的
+    vm.items.length = 2 // 不是响应性的
+
+解决第一个问题：
+>
+
+    Vue.set(vm.items, indexOfItem, newValue) 
+      //或使用 vm.$set，Vue.set的一个别名
+      vm.$set(vm.items, indexOfItem, newValue)
+
+    vm.items.splice(indexOfItem, 1, newValue)
+
+解决第二类问题：
+
+    vm.items.splice(newLength)
+
+
+# <a name="组件中 data 为什么是一个函数">组件中 data 为什么是一个函数</a>
+为什么组件中的 data 必须是一个函数，然后 return 一个对象，而 new Vue 实例里，data 可以直接是一个对象？
+>
+    // data
+    data() {
+      return {
+        message: "子组件",
+        childName:this.name
+      }
+    }
+
+    // new Vue
+    new Vue({
+      el: '#app',
+      router,
+      template: '<App/>',
+      components: {App}
+    })
+
+因为组件是用来复用的，且 JS 里对象是引用关系，如果组件中 data 是一个对象，那么这样作用域没有隔离，子组件中的 data 属性值会相互影响，  
+如果组件中 data 选项是一个函数，每次返回的都是一个新对象，组件实例之间的 data 属性值不会互相影响；而 new Vue 的实例，是不会被复用的，因此不存在引用对象的问题。
 
 
 
@@ -826,7 +867,7 @@ CSS 属性名可以用驼峰式（camelCase）或短横分隔命名（kebab-case
 
 
 # <a name="组件中key作用">组件中key作用</a>
-[参考](https://www.zhihu.com/question/61064119)
+
 
 [参考](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/1)
 
@@ -847,17 +888,15 @@ CSS 属性名可以用驼峰式（camelCase）或短横分隔命名（kebab-case
     
 key是给每一个vnode的唯一id,可以依靠key,更准确, 更快的拿到oldVnode中对应的vnode节点。
 
-1. 更准确
+1. 更准确  
 因为带key就不是就地复用了，在sameNode函数 a.key === b.key对比中可以避免就地复用的情况。所以会更加准确。
 
-2. 更快
+2. 更快  
 利用key的唯一性生成map对象来获取对应节点，比遍历方式更快。 
 
 * 为什么不能用 index 作为 key
->
-
-    如果你用 index 作为 key，那么在删除第二项的时候，index 就会从 1 2 3 变成 1 2（而不是 1 3），那么 Vue 依然会认为你删除的是第三项。
-
+[参考](https://www.zhihu.com/question/61064119/answer/766607894)
+操作数据更新时有bug，如删除某项时，删除了另一项
 
 # <a name="虚拟DOM">虚拟DOM</a>
 [参考](https://www.jianshu.com/p/af0b398602bc?tdsourcetag=s_pctim_aiomsg)
@@ -942,8 +981,9 @@ https://www.jianshu.com/p/a7550c0e164f
 
 # <a name="keep-alive">keep-alive</a>
 [keep-alive](https://cn.vuejs.org/v2/api/#keep-alive)
+
+包裹动态组件时，会缓存不活动的组件实例，主要用于保留组件状态或避免重新渲染；被包裹在keep-alive中的组件的状态将会被保留
 >
-    包裹动态组件时，会缓存不活动的组件实例，主要用于保留组件状态或避免重新渲染；被包裹在keep-alive中的组件的状态将会被保留
 
     使用：
       缓存： <keep-alive include="组件1,组件2"></keep-alive>
@@ -974,15 +1014,14 @@ https://www.jianshu.com/p/a7550c0e164f
       } 
     ]
 
+      <!--会被缓存的组件-->
     <keep-alive>
-      <router-view v-if="this.$route.meat.keepAlive"></router-view>
-      <!--这里是会被缓存的组件-->
+      <router-view v-if="$route.meat.keepAlive"></router-view>
     </keep-alive>
 
-    <keep-alive v-if="!this.$router.meta.keepAlive">
-    </keep-alive>
-    <!--这里是不会被缓存的组件-->
-
+    <!--不会被缓存的组件-->
+    <router-view v-if="!$route.meta.keepAlive">
+    </router-view>
 
 # <a name="路由vue-router">路由vue-router</a>
 https://router.vuejs.org/zh
@@ -1352,7 +1391,7 @@ App.vue
     默认让key等于当时的时间戳，当切换当前路由的时候改变时间戳为现在的时间戳，同样也可以达到刷新路由的目的
     this.reload = new Date().getTime()
 
-##  <a name="mode">前端路由、 hash | history区别</a>
+##  <a name="mode">前端路由模式 hash | history区别</a>
 [参考](https://juejin.im/post/5cd8d609e51d456e7b372155#heading-9)
 
 什么是前端路由：
@@ -1362,7 +1401,7 @@ App.vue
 
 
 
-* hash
+#### hash
 >
     URL 中 hash (#) 及后面的那部分，常用作锚点在页面内进行导航，改变 URL 中的 hash 部分不会引起页面刷新
 
@@ -1370,11 +1409,36 @@ App.vue
 
     通过 hashchange 事件监听 URL 的变化，改变 URL 的方式只有这几种：通过浏览器前进后退改变 URL、通过<a>标签改变 URL、通过window.location改变URL
 
-* history 
+#### history 
 >
     利用了H5 history的 pushState() 和 replaceState() 方法。（需要特定浏览器支持）
 
 这两个方法应用于浏览器的历史记录栈，在当前已有的 back、forward、go 的基础之上，它们提供了对历史记录进行修改的功能。只是当它们执行修改时，虽然改变了当前的 URL，但浏览器不会立即向后端发送请求。
+
+history.pushState({ page: 1 }, "", "a.html");
+history.replaceState({ page: 1 }, "", "a.html");
+
+pushState() 需要三个参数: 一个状态对象, 一个标题 (目前被忽略), 和 (可选的) 一个URL. 让我们来解释下这三个参数详细内容：
+
+* 状态对象 — 是一个JavaScript对象，通过pushState () 创建新的历史记录条目。无论什么时候用户导航到新的状态，popstate事件就会被触发，且该事件的state属性包含该历史记录条目状态对象的副本。可以是能被序列化的任何东西。
+
+* 标题 — 在此处传一个空字符串应该可以安全的防范未来这个方法的更改。或者，你可以为跳转的state传递一个短标题。
+
+* URL — 该参数定义了新的历史URL记录。注意，调用 pushState() 后浏览器并不会立即加载这个URL，但可能会在稍后某些情况下加载这个URL，比如在用户重新打开浏览器时。新URL不必须为绝对路径。如果新URL是相对路径，那么它将被作为相对于当前URL处理。新URL必须与当前URL同源，否则 pushState() 会抛出一个异常。该参数是可选的，缺省为当前URL。
+
+popstate
+>
+    当历史记录条目更改时，将触发popstate事件。如果被激活的历史记录条目是通过对history.pushState（）的调用创建的，或者受到对history.replaceState（）的调用的影响，popstate事件的state属性包含历史条目的状态对象的副本。
+
+    需要注意的是调用history.pushState()或history.replaceState()不会触发popstate事件。只有在做出浏览器动作时，才会触发该事件，如用户点击浏览器的回退按钮（或者在Javascript代码中调用history.back()）
+
+    触发浏览器回退按钮
+    window.addEventListener('popstate', ()=>{
+      console.log(location.href)
+    })
+
+####  abstract
+支持所有 JavaScript 运行环境，如 Node.js 服务器端。如果发现没有浏览器的 API，路由会自动强制进入这个模式.
 
 #### mode:history缺点
 

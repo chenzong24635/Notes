@@ -216,8 +216,15 @@
   * <a href="#保留小数点后两位-不足则补零">保留小数点后两位-不足则补零</a>
   * <a href="#浮点型+-*/">浮点型+-*/</a>
   * <a href="#时间戳、日期 的转换">时间戳、日期 的转换</a>
+    * <a href="#new Date()">Date API</a>
+    * <a href="#日期转时间戳">日期转时间戳</a>
+    * <a href="#时间戳转日期">时间戳转日期</a>
+    * <a href="#把日期格式化为指定格式">把日期格式化为指定格式</a>
+    * <a href="#倒计时">倒计时</a>
+    * <a href="#时间戳转距当前时间 多久">时间戳 --> 距当前时间 多久</a>
   * <a href="#浏览器判断">浏览器、手机类型判断navigator.userAgent</a>
   * <a href="#获取当前页面url网址信息">获取当前页面url网址信息</a>
+  * <a href="#解析url为对象">解析url为对象</a>
   * <a href="#图片转base64">图片转base64</a>
   * <a href="#base64数据导出文件">base64数据导出文件，文件下载</a>
   * <a href="#判断字符串长度">判断字符串长度</a>
@@ -275,6 +282,13 @@
       let  res=reg.test(val);
       if (res) return true;
       return false;
+    }
+
+## <a name="身份证验证">身份证验证</a>
+>
+    function isCardNo(number) {
+        var regx = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        return regx.test(number);
     }
 
 ## <a name="密码验证">密码验证</a>
@@ -380,7 +394,8 @@
 
 
 ## <a name="时间戳、日期 的转换">时间戳、日期 的转换</a>
-* [new Date()](https://www.runoob.com/jsref/jsref-obj-date.html)
+### <a name="new Date()">[Date API](https://www.runoob.com/jsref/jsref-obj-date.html)</a>
+
 >
     new Date()
 
@@ -423,7 +438,7 @@
 
     new Date().valueOf( ); //原始值, 获取当前时间(从1970.1.1开始的毫秒数) 等同于getTime() -- 1568778089633
 
-* 日期 --> 时间戳
+### <a name="日期转时间戳">日期转时间戳</a>
 >
     let date = new Date('2014-04-23 18:55:49:123')
     // 有三种方式获取
@@ -435,7 +450,7 @@
     console.log(time2);//1398250549123  
     console.log(time3);//1398250549000
 
-* 时间戳 --> 日期
+### <a name="时间戳转日期">时间戳转日期</a>
 >
     function timestampToTime(timestamp) { //时间戳 转 时间
       //时间戳为10位需*1000，时间戳为13位的话不需乘1000
@@ -456,7 +471,8 @@
     }
     console.log(timestampToTime(+new Date()))
 
-* 把日期格式化为指定格式
+### <a name="把日期格式化为指定格式">把日期格式化为指定格式</a>
+
 >
     function format(date, fmt) {
       date = new Date(date)
@@ -490,8 +506,25 @@
       format(new Date(2179,5,24,11,33,0),"yyyy/MM/dd hh:mm:ss")
     )
 
+### <a name="倒计时">倒计时</a>
+>
+    function counter() { 
+        var date = new Date(); 
+        var year = date.getFullYear();
+        var date2 = new Date(year, 12, 31, 23, 59, 59);
+        /*转换成秒*/
+        var time = (date2 - date) / 1000;
+        var day = Math.floor(time / (24 * 60 * 60))
+        var hour = Math.floor(time % (24 * 60 * 60) / (60 * 60))
+        var minute = Math.floor(time % (24 * 60 * 60) % (60 * 60) / 60);
+        var second = Math.floor(time % (24 * 60 * 60) % (60 * 60) % 60);
+        var str = year + "年还剩" + day + "天" + hour + "时" + minute + "分" + second + "秒";
+        console.log(str);
+    }
+    window.setInterval("counter()", 1000);
 
-* 时间戳 --> 距当前时间 多久
+### <a name="时间戳转距当前时间 多久"> 时间戳 --> 距当前时间 多久</a>
+
 >
 
     function formatMsgTime(timestamp) {
@@ -663,6 +696,13 @@ var obj = {
 
 
 ## <a name="解析url为对象">解析url为对象</a>
+>
+    //url里有= 字符会报错
+    //?a=5&b=321===ad&c=a
+    searchObj = search => JSON.parse(`{"${decodeURIComponent(search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=?/g, '":"')}"}`);
+
+    searchObj(window.location.search)
+
 >
     let url = 'http://www.aaa.com/?a=a1&b=123&c=打算'
     
@@ -1211,7 +1251,7 @@ arr.sort((a-b)=>b-a) 降序
 
 
 ## <a name="数组扁平化">数组扁平化:n维数组展开成一维数组  </a>
-var foo = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10]; 
+var arr = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10]; 
 
 * flatten
 >

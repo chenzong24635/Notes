@@ -9,10 +9,25 @@ https://segmentfault.com/a/1190000012422198
 </details>
 
 * <a href="#"></a>
+* <a href="#工厂模式">工厂模式</a>
+* <a href="#构造函数模式">构造函数模式</a>
+* <a href="#原型模式">原型模式</a>
+* <a href="#混合模式">混合模式(原型模式+构造函数模式)</a>
+* <a href="#单例模式">单例模式</a>
+* <a href="#模块模式">模块模式</a>
+* <a href="#观察者模式">观察者模式</a>
+* <a href="#发布订阅模式">发布订阅模式</a>
+
+
+
+
 #  <a name=""></a>
 
 
-#### 工厂模式 -- Factory
+
+
+#  <a name="工厂模式">工厂模式 Factory</a>
+
 * 核心:
 >
     return一个对象
@@ -38,7 +53,7 @@ https://segmentfault.com/a/1190000012422198
 
 
 
-#### 构造函数模式 -- Constructor
+#  <a name="构造函数模式">构造函数模式 Constructor</a>
 * 核心：
 >
     将属性绑定到this上
@@ -64,7 +79,7 @@ https://segmentfault.com/a/1190000012422198
     1.与工厂方式相比，使用构造函数方式创建对象，无需再函数内部重建创建对象，而使用this指代，并而函数无需明确return
     2.同工厂模式一样，虽然属性的值可以为方法，但建议将该方法定义在函数之外
 
-#### 原型模式
+#  <a name="原型模式">原型模式 prototype</a>
 * 例：
 >
     function Parent(){};  
@@ -79,7 +94,7 @@ https://segmentfault.com/a/1190000012422198
     2.利用prototype属性对属性进行定义
     3.不推荐
 
-#### 混合模式 —— Mixin (原型模式+构造函数模式)
+#  <a name="混合模式">混合模式(原型模式+构造函数模式) Mixin </a>
 * 核心
 >
     1.在JS中，一般我们实现继承的过程就是混合模式
@@ -112,7 +127,8 @@ https://segmentfault.com/a/1190000012422198
     将所有属性是方法的属性利用prototype在函数之外定义（原型方式）
 
 
-#### 单例模式 —— Singleton
+
+#  <a name="单例模式">单例模式 Single</a>
 * 核心
 >
     保证一个特定类只有一个实例，第二次使用同一个类创建新对象的时候，应该得到与第一次创建对象完全相同的对象。
@@ -136,7 +152,8 @@ https://segmentfault.com/a/1190000012422198
     console.log("姓名:"+person22.name,"年龄:"+person22.age);
     console.log(person11===person22); //==>true
 
-#### 模块模式 —— Module
+
+#  <a name="模块模式">模块模式 Module</a>
 * 核心
 >
     在js中，常常使用闭包的形式来实现
@@ -156,7 +173,60 @@ https://segmentfault.com/a/1190000012422198
     })()
 
 
-#### 发布订阅模式 —— Publish/Subscribe
+
+#  <a name="观察者模式">[观察者模式 Observer-Subject](https://juejin.im/post/5cd81a20e51d453b4558d858)</a>
+
+
+![observer](/img/observer.png)
+![observer](/img/observer1.png)
+
+观察者模式就是，一个对象（subject）的状态发生改变时，会通知所有依赖它的对象（观察者），这两者是直接关联的。
+
+在观察者模式中，观察者(Observer)是知道被观察对象(subject)的，Subject一直保持对观察者进行记录;当Subject状态发生变化时，会给所有的Observers发送一个通知函数，Observers接收到通知后通常会调用各自的更新函数。
+
+观察者模式大多数时候是同步的，比如当事件触发，Subject就会去调用观察者的方法
+>
+    const Subject = (() => {
+      const observers = [];
+      const addOb = (ob) => {
+        observers.push(ob);
+      };
+      const notify = () => {
+        for (let ob of observers) {
+          if (typeof ob.update === 'function') {
+            ob.update();
+          }
+        }
+      };
+      return {addOb, notify};
+    })();
+
+    let subA = {
+      update: () => {
+        console.log('updateSubA');
+      }
+    },
+    subB = {
+      update: () => {
+        console.log('updateSubB');
+      }
+    };
+    Subject.addOb(subA);    //添加观察者subA
+    Subject.addOb(subB);    //添加观察者subB
+    Subject.notify();       //通知所有观察者
+
+
+#  <a name="发布订阅模式">[发布订阅模式 Publisher-Subscriber](https://juejin.im/post/5cd81a20e51d453b4558d858)</a>
+![publisher](/img/publisher.png)
+![publisher](/img/publisher1.png)
+
+
+在发布-订阅模式，消息的发送方，叫做发布者（publishers），消息不会直接发送给特定的接收者，叫做订阅者（Subscriber）。
+
+发布者和订阅者不知道对方的存在。需要一个第三方组件，叫做信息中介，它将订阅者和发布者串联起来，它过滤和分配所有输入的消息
+
+发布-订阅模式大多数时候是异步的（使用消息队列）。
+
 * 核心
 >
     比如我【订阅者】现在订阅了一个公众号，公众号【发布者】向我发布消息
@@ -164,9 +234,8 @@ https://segmentfault.com/a/1190000012422198
 * 案例
 >
     let Event = (function () {
-      let events = {}
-      function on(evt, handler) {
-        // 实现监听效果
+      let events = {} //保存订阅主题
+      function on(evt, handler) { //订阅
         // 使用'或'是为了可以对同一个事件多次进行回调
         events[evt] = events[evt] || []
         events[evt].push({
@@ -174,26 +243,26 @@ https://segmentfault.com/a/1190000012422198
         })
       }
 
-      function fire(evt, args) {
-        if (!events[evt]) {
+      function fire(evt, args) { // 发布
+        if (!events[evt]) { 
           // 如果未监听任何事件，直接中断
           throw evt + '事件未监听'
           return
         }
         events[evt].map((item)=>{
            // 遍历，实现对同一个事件的多次回调
-          item.handler(args)
+          item.handler(args) //通知订阅者
         })
       }
 
-      function off(evt) {
+      function off(evt) { //取消订阅
         delete events[evt]
       }
 
       return {
-        on, // 订阅者
-        fire, // 发布者
-        off // 取消订阅
+        on,
+        fire,
+        off
       }
     })()
 

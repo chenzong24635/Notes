@@ -82,15 +82,15 @@ css手册
 * <a href="#百分数相对于width">padding/margin-top/bottom的百分数相对于width</a>
 * <a href="#css选择器">css选择器</a>
 * <a href="#哪些属性可继承">哪些属性可继承</a>
-* <a href="#zIndex">堆叠上下文(stacking context )z-index</a>
+* <a href="#zIndex">层叠上下文(stacking context )z-index</a>
 * <a href="#BFC">块级格式化上下文(BFC)、行内格式化上下文(IFC)</a>
 * <a href="#float特性">float特性</a>
 * <a href="#display、visibility、overflow">display、visibility、overflow的隐藏问题</a>
 * <a href="#line-hieght">line-hieght</a>
 * <a href="#文本换行">文本换行</a>
-* <a href="#文字超出省略">文字超出省略</a>
 * <a href="#尺寸单位">像素定义 尺寸单位</a>
 * <a href="#注意事项">注意事项</a>
+* <a href="#JS获取CSS属性方法">JS获取CSS属性方法</a>
 * <a href="#用CSS开启硬件加速来提高网站性能">用CSS开启硬件加速来提高网站性能</a>
 * <a href="#@规则">@规则</a>
 * <a href="#CSS hack">CSS hack</a>
@@ -98,11 +98,19 @@ css手册
 
 * <a href="#一些css属性及其他">**一些css属性及其他**</a>
 
+  * <a href="#"></a>
+  * <a href="#css自定义属性">css自定义属性</a>
+  * <a href="#文字超出省略">文字超出省略</a>
+  * <a href="#shape-outside">shape-outside</a>
   * <a href="#pointer-events">pointer-events 使用指针事件來控制鼠标事件</a>
   * <a href="#渐变">渐变linear-gradient</a>
+  * <a href="#透明方格的绘制">透明方格的绘制</a>
+  * <a href="#移动端1px">移动端1px</a>
+  * <a href="#清除手机端a链接点击高亮">清除手机端a链接点击高亮</a>
+  * <a href="#三角形">三角形</a>
   * <a href="#改变input placeholder颜色">改变input placeholder颜色</a>
   * <a href="#selection">selection 改变选中内容的字体、背景颜色</a>
-  * <a href="#user-select">user-select</a>
+  * <a href="#user-select">user-select 文本是否可选中</a>
   * <a href="#-webkit-text-size-adjust">-webkit-text-size-adjust</a>
   * <a href="#-webkit-scrollbar">-webkit-scrollbar 自定义滚动条样式</a>
   * <a href="#为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"</a>
@@ -111,9 +119,6 @@ css手册
   * <a href="#filter滤镜">filter滤镜</a>
   * <a href="#background-blend-mode和mix-blend-mode">background-blend-mode和mix-blend-mode</a>
   * <a href="#多方法描绘一个边框">多方法描绘一个边框</a>
-  * <a href="#移动端1px">移动端1px</a>
-  * <a href="#清除手机端a链接点击高亮">清除手机端a链接点击高亮</a>
-  * <a href="#三角形">三角形</a>
   * <a href="#纯css横向、垂直滑动">纯css横向、垂直滑动</a>
   * <a href="#纯css页面滚动进度条">纯css页面滚动进度条</a>
   * <a href="#"></a>
@@ -393,10 +398,16 @@ css2伪类和伪元素都是用单冒号，所有的浏览器都兼容，
     如：font:italic 700 16px/40px  微软雅黑;
 
 
-## <a name="zIndex">堆叠上下文(stacking context )z-index</a>
+## <a name="zIndex">层叠上下文(stacking context )z-index</a>
 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Understanding_z_index/The_stacking_context)
 
-[z-index堆叠规则](https://www.cnblogs.com/starof/p/4424926.html)
+[参考]https://www.zhangxinxu.com/wordpress/2016/01/understand-css-stacking-context-order-z-index/)
+[参考](https://www.cnblogs.com/starof/p/4424926.html)
+
+
+CSS2
+![zIndex](./img/zindex.png)
+
 
 ### 概述：
 >
@@ -435,8 +446,6 @@ css2伪类和伪元素都是用单冒号，所有的浏览器都兼容，
     有定位后代元素(有定位 越靠后出现 层级越高)  
         没有指定z-index值的定位元素，他们的堆叠顺序取决于在HTML文档中的顺序，越靠后出现的元素，位置越高，和定位属性无关。  
 
-
-
 ![不使用z-index](img/zIndex1.png)
 分析：
 >
@@ -450,6 +459,7 @@ z-index只适用于已经定位的元素
     定位元素z-index越大 层级越高（限同一父元素）
     定位元素与浮动元素（先看zindex，越大越高；若相同，再看其在html顺序，越后越高）
 
+
 ![zindex](img/zIndex2.png)
 
 ### z-index不起作用情况：
@@ -461,6 +471,7 @@ z-index只适用于已经定位的元素
 
 ## <a name="BFC">块级格式化上下文(BFC) 、行内格式化上下文(IFC)</a>
 格式化上下文即Formatting context，它是指页面上的一个局部独立渲染区域，根据Formatting context中包含的是元素类型的不同，分为块级格式上下文BFC和行内格式化上下文IFC，
+
 
 ### BFC
 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context)
@@ -668,67 +679,6 @@ word-break
     keep-all:让亚洲语言文本如同非亚洲语言文本那样不允许在任意单词内换行。
     break-all:允许非亚洲语言文本行如同亚洲语言文本那样可以在任意单词内换行。
 
-## <a name="文字超出省略">文字超出省略</a>
-
-#### 单行省略
-    .ov1{
-      white-space: nowrap; //强制文本在一行内输出
-      overflow: hidden; //隐藏溢出部分
-      text-overflow: ellipsis; //对溢出部分加上...
-    }
-
-#### 多行省略
-    <!-- 只适用于webkit内核 -->
-    .ov2( @clamp:2 ){
-      position: relative;
-      display: -webkit-box;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      word-wrap: break-word;
-      word-break: break-all; 
-      -webkit-line-clamp: @clamp;
-      /* 防止打包后出现css中文本超出部分隐藏显示省略号失效
-         autoprefixer自动移除老式过时的代码 */
-      /*! autoprefixer: off */
-        -webkit-box-orient: vertical;/*伸缩盒子的子元素排列：从上到下*/
-      /* autoprefixer: on */
-    }
-
-    <!-- 火狐 -->
-    @-moz-document url-prefix() {
-      .ov2{max-height: 40px;}
-      .ov2::after{
-        content: "...";
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        padding-left: 40px;
-        /* //以上三个属性，可以后续调整，看要把...放在哪个位置 */
-        background: -webkit-linear-gradient(left, transparent, #fff 55%);
-        background: -o-linear-gradient(right, transparent, #fff 55%);
-        background: -moz-linear-gradient(right, transparent, #fff 55%);
-        background: linear-gradient(to right, transparent, #fff 55%);
-        /* 背景色可写成渐变也可写成一样的颜色 */
-      }
-    }
-    
-    <!-- IE10、11 -->
-    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-      .ov2{max-height: 36px;}
-      .ov2::after{
-        content: "...";
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        padding-left: 40px;
-        /* 以上三个属性，可以后续调整，看要把...放在哪个位置 */
-        background: -webkit-linear-gradient(left, transparent, #fff 55%);
-        background: -o-linear-gradient(right, transparent, #fff 55%);
-        background: -moz-linear-gradient(right, transparent, #fff 55%);
-        background: linear-gradient(to right, transparent, #fff 55%);
-      }
-    }
-
 
 ## <a name="尺寸单位">像素定义 尺寸单位</a>
 #### 像素
@@ -927,7 +877,16 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
 
 5. 使用calc时运算符之间要有空格 ，否则可能无效 
 
+6. background引入图片的一个缺点是页面的Web可访问性会受到轻微的影响，因为屏幕阅读器和搜索引擎无法正确地获取到图像。可以通过CSS object-fit属性解决(IE除外)
 
+## <a name="JS获取CSS属性方法">JS获取CSS属性方法</a>
+https://my.oschina.net/i33/blog/126960
+
+//style只能获取元素的内联样式，内部样式和外部样式使用style是获取不到的。  （这里我测试的在IE和FF下没有用，Chrome下有用，所有有歧义）
+
+//currentStyle可以弥补style的不足，但是只适用于IE。
+
+//getComputedStyle("元素", "伪类" || null) 同currentStyle作用相同，但是适用于FF、opera、safari、chrome。
 
 
 ## <a name="@规则">@规则</a>
@@ -1011,9 +970,6 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
 
 # <a name="一些css属性及其他">**一些css属性及其他**</a>
 
-* <a href="#"></a>
-
-## <a name=""></a>
 
 ## <a name="css自定义属性">css自定义属性</a>
 <b>IE不支持</b>
@@ -1058,6 +1014,60 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
 
 
 
+## <a name="文字超出省略">文字超出省略</a>
+[](https://juejin.im/post/5dc15b35f265da4d432a3d10)
+#### 单行省略
+    .ov1{
+      white-space: nowrap; //强制文本在一行内输出
+      overflow: hidden; //隐藏溢出部分
+      text-overflow: ellipsis; //对溢出部分加上...
+    }
+
+#### 多行省略
+    <!-- 只适用于webkit内核 -->
+    .ov( @clamp:2 ){
+      position: relative;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-wrap: break-word;
+      word-break: break-all; 
+      -webkit-line-clamp: @clamp; /* 限制在显示的文本的行数 */
+      display: -webkit-box; /* 将对象作为弹性伸缩盒子模型显示 */
+      /* 防止打包后出现css中文本超出部分隐藏显示省略号失效
+         autoprefixer自动移除老式过时的代码 */
+      /*! autoprefixer: off */
+        -webkit-box-orient: vertical;/* 伸缩盒子的子元素排列：从上到下 */
+      /* autoprefixer: on */
+    }
+
+    /* 其他浏览器 */
+    .ov(@maxHeight:40px){
+      max-height: @maxHeight;
+      &::after{
+        content: "...";
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        padding-left: 40px;
+        /* //以上三个属性，可以后续调整，看要把...放在哪个位置 */
+        background: -webkit-linear-gradient(left, transparent, #fff 55%);
+        background: -o-linear-gradient(right, transparent, #fff 55%);
+        background: -moz-linear-gradient(right, transparent, #fff 55%);
+        background: linear-gradient(to right, transparent, #fff 55%);
+        /* 背景色可写成渐变也可写成一样的颜色 */
+      }
+    }
+
+    <!-- 火狐 -->
+    @-moz-document url-prefix() {
+      .ov
+    }
+    
+    <!-- IE10、11 -->
+    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+      .ov
+    }
+
 ## <a name="shape-outside">[shape-outside](https://developer.mozilla.org/zh-CN/docs/Web/CSS/shape-outside)</a>
 `IE不支持`  
 定义了一个可以是非矩形的形状，相邻的内联内容应围绕该形状进行包装。 默认情况下，内联内容包围其边距框; shape-outside提供了一种自定义此包装的方法，可以将文本包装在复杂对象周围而不是简单的框中。
@@ -1071,215 +1081,20 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
       opacity: .5;
       pointer-events: none
     }
-
-
-
-## <a name="改变input placeholder颜色">改变input placeholder颜色</a>
->
-    ::-webkit-input-placeholder { color: ; }/*WebKit, Blink, Edge*/
-    :-moz-placeholder { color: ; }/*Mozilla Firefox 4 to 18*/
-    ::-moz-placeholder { color: ; }/*Mozilla Firefox 19+*/
-    :-ms-input-placeholder { color: ; }/*Internet Explorer 10-11 */
-
-## <a name="selection">selection 改变选中内容的字体、背景颜色</a>
->
-    ::selection { 
-        background: #fff; 
-        color: #333; 
-    } 
-    ::-webkit-selection { 
-        background: #fff; 
-        color: #333; 
-    }
-    ::-moz-selection { 
-        background: #fff; 
-        color: #333; 
-    } 
-
-## <a name="user-select">user-select 文本是否可选中</a>
-user-select:none  
--webkit-user-select:none
-
-语法
->
-    user-select:none | text | all | element
-    默认值：text
-    适用范围：除替换元素外的所有元素
-
-取值说明
->
-    none:文本不能被选择
-    text:可以选择文本
-    all：当所有内容作为一个整体时可以被选择。如果双击或者在 上下文上点击子元素，
-        那么被选择的部分将是以该子元素 向上回溯的最高祖先元素。
-
-## <a name="-webkit-text-size-adjust">-webkit-text-size-adjust: none</a>
->
-
-    Chrome 中文界面下默认会将小于 12px 的文本强制按照 12px 显示；
-
-    可关闭字体大小自动调整功能; 
-
-    放在body中会导致页面缩放失效,不要把-webkit-text-size-adjust设置为全局或者可继承的
-
-
-## <a name="-webkit-scrollbar">-webkit-scrollbar 自定义滚动条样式</a>
-chrome
->
-    ::-webkit-scrollbar 滚动条整体部分
-
-    ::-webkit-scrollbar-thumb 滚动条里面的小方块，能向上向下移动（或往左往右移动，取决于是垂直滚动条还是水平滚动条）
-
-    ::-webkit-scrollbar-track 滚动条的轨道（里面装有Thumb）
-
-    ::-webkit-scrollbar-button 滚动条的轨道的两端按钮，允许通过点击微调小方块的位置。
-
-    ::-webkit-scrollbar-track-piece 内层轨道，滚动条中间部分（除去）
-
-    ::-webkit-scrollbar-corner 边角，即两个滚动条的交汇处
-    
-    ::-webkit-resizer 两个滚动条的交汇处上用于通过拖动调整元素大小的小控件
-
-IE
->
-    scrollbar-arrow-color: color; /*三角箭头的颜色*/
-    scrollbar-face-color: color; /*立体滚动条的颜色（包括箭头部分的背景色）*/
-    scrollbar-3dlight-color: color; /*立体滚动条亮边的颜色*/
-    scrollbar-highlight-color: color; /*滚动条的高亮颜色（左阴影？）*/
-    scrollbar-shadow-color: color; /*立体滚动条阴影的颜色*/
-    scrollbar-darkshadow-color: color; /*立体滚动条外阴影的颜色*/
-    scrollbar-track-color: color; /*立体滚动条背景颜色*/
-    scrollbar-base-color:color; /*滚动条的基色*/
-
-firefox    
-[插件](https://github.com/malihu/malihu-custom-scrollbar-plugin)
-
 ## <a name="渐变">渐变 linear-gradient</a>
 [你真的理解CSS的linear-gradient？](https://www.w3cplus.com/css3/do-you-really-understand-css-linear-gradients.html)
 
-## <a name="css矩阵matrix">css矩阵matrix</a>
-
+## <a name="透明方格的绘制">透明方格的绘制</a>
+![transparentSquare](./img/transparentSquare.png)
 >
-    transform: matrix(a,b,c,d,e,f)
-    a c e   x   ax + cy + e // ax+cy+e:变换后的水平坐标
-    b d f . y = bx + dy + f // bx+dy+f:变换后的垂直位置 
-    0 0 1   1   0  + 0  + 1
-
-
-    x, y表示转换元素的所有坐标（变量）
-
-    matrix(sx, 0, 0, sy, 0, 0) 等同于scale(sx, sy)
-
-    matrix(0, 0, 0, 0, tx, ty) 等同于translate(tx, ty)
-
-## <a name="图片缩放">图片缩放transform+transition</a>
->
-    // 先放大1.1倍 ，再还原。一般用于轮播图
-    .img{
-      transform: matrix(1.1, 0, 0, 1.1, 0, 0);/* 等同于transfrom:scale(1.1,1.1) */
-      -webkit-transition: all 0.4s ease 1.2s;
-      -moz-transition: all 0.4s ease 1.2s;
-      -ms-transition: all 0.4s ease 1.2s;
-      -o-transition: all 0.4s ease 1.2s;
-      transition: all 0.4s ease 1.2s;
+    .square {
+      display: inline-block;
+      padding: 300px;
+      background-color: #fff;
+      background-image: linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%), linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%);
+      background-size: 16px 16px;
+      background-position: 0 0, 8px 8px;
     }
-
-    .img.active{
-      transform: matrix(1, 0, 0, 1, 0, 0); /* 等同于transfrom:scale(1,1)*/
-      -webkit-transition: all 7.0s ease;
-      -moz-transition: all 7.0s ease;
-      -ms-transition: all 7.0s ease;
-      -o-transition: all 7.0s ease;
-      transition: all 7.0s ease;  
-      transition-delay: 0.4s;
-    }
-
-## <a name="为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"</a>
-
->
-    img {
-      display: block;
-      font-family: sans-serif;
-      font-weight: 300;
-      height: auto;
-      line-height: 2;
-      position: relative;
-      text-align: center;
-      width: 100%;
-    }
-
-    img::before {
-      content: "We're sorry, the image below is broken ";
-      display: block;
-      margin-bottom: 10px;
-    }
-
-    img::after {
-      content: "(url:'attr(src)')";
-      display: block;
-      font-size: 12px;
-    }
-    
-## <a name="filter滤镜">filter滤镜（不是IE的filter:alpha(opacity=50)）</a>
-
-## <a name="background-blend-mode和mix-blend-mode">background-blend-mode和mix-blend-mode</a>
-
-## <a name="多方法描绘一个边框">多方法描绘一个边框</a>
-[参考](https://www.w3cplus.com/css/css-tips-0904-1.html)
-
-### 其他方法 绘制一个实心边框(border-style:solid)
->
-    outline:1em solid #000; //不占用盒模型空间
->    
-    box-shadow: 0 0 0 1em #000; //不占用盒模型空间
->    
-    {
-      padding: 1em;
-      background: linear-gradient(to right, #fff, #fff), #000;
-      background-clip: content-box, padding-box;
-    }
->
-    {
-        border: 1em solid transparent;
-        border-image: linear-gradient(to right, #000, #000) 10% round;
-    }    
-
-> 伪元素
-
-
-### 层叠边框
-![层叠边框](/img/border.png)
->
-    .div1{
-      width: 300px;
-      height: 100px;
-      margin: 20px auto;
-      outline: 10px dashed red;
-      box-shadow: 0 0 0 10px #000;
-    }
->
-    .div2{
-      margin: 20px auto;
-      width: 300px;
-      height: 100px;
-      border: 10px dashed;
-      background:
-        linear-gradient(to top, red, 10px, transparent 10px),
-        linear-gradient(to right, red, 10px, transparent 10px),
-        linear-gradient(to bottom, red, 10px, transparent 10px),
-        linear-gradient(to left, red, 10px, transparent 10px);
-      background-origin: border-box;
-    }
->    
-    .div3{
-      margin: 20px auto;
-      width: 300px;
-      height: 100px;
-      border: 10px dashed;
-      background: linear-gradient(to top, #fff, #fff), red;
-      background-clip: padding-box, border-box;
-    }
-
 
 ## <a name="移动端1px">移动端1px</a>
 [参考](https://juejin.im/post/5d70a030f265da03a715f3fd)
@@ -1394,7 +1209,6 @@ devicePixelRatio：设备物理像素和设备独立像素的比例   devicePixe
         }
     }
 
-
 ## <a name="清除手机端a链接点击高亮">清除手机端a链接点击高亮</a>
 tap-highlight-color: rgba(0, 0, 0, 0);  
 -webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -1417,6 +1231,209 @@ tap-highlight-color: rgba(0, 0, 0, 0);
     border-width: 30px 10px;
     border-color:  transparent transparent transparent ##f4f4f4;
 
+## <a name="改变input placeholder颜色">改变input placeholder颜色</a>
+>
+    ::-webkit-input-placeholder { color: ; }/*WebKit, Blink, Edge*/
+    :-moz-placeholder { color: ; }/*Mozilla Firefox 4 to 18*/
+    ::-moz-placeholder { color: ; }/*Mozilla Firefox 19+*/
+    :-ms-input-placeholder { color: ; }/*Internet Explorer 10-11 */
+
+## <a name="selection">selection 改变选中内容的字体、背景颜色</a>
+>
+    ::selection { 
+        background: #fff; 
+        color: #333; 
+    } 
+    ::-webkit-selection { 
+        background: #fff; 
+        color: #333; 
+    }
+    ::-moz-selection { 
+        background: #fff; 
+        color: #333; 
+    } 
+
+## <a name="user-select">user-select 文本是否可选中</a>
+user-select:none  
+-webkit-user-select:none
+
+语法
+>
+    user-select:none | text | all | element
+    默认值：text
+    适用范围：除替换元素外的所有元素
+
+取值说明
+>
+    none:文本不能被选择
+    text:可以选择文本
+    all：当所有内容作为一个整体时可以被选择。如果双击或者在 上下文上点击子元素，
+        那么被选择的部分将是以该子元素 向上回溯的最高祖先元素。
+
+## <a name="-webkit-text-size-adjust">-webkit-text-size-adjust: none</a>
+>
+
+    Chrome 中文界面下默认会将小于 12px 的文本强制按照 12px 显示；
+
+    可关闭字体大小自动调整功能; 
+
+    放在body中会导致页面缩放失效,不要把-webkit-text-size-adjust设置为全局或者可继承的
+
+
+## <a name="-webkit-scrollbar">-webkit-scrollbar 自定义滚动条样式</a>
+chrome
+>
+    ::-webkit-scrollbar 滚动条整体部分
+
+    ::-webkit-scrollbar-thumb 滚动条里面的小方块，能向上向下移动（或往左往右移动，取决于是垂直滚动条还是水平滚动条）
+
+    ::-webkit-scrollbar-track 滚动条的轨道（里面装有Thumb）
+
+    ::-webkit-scrollbar-button 滚动条的轨道的两端按钮，允许通过点击微调小方块的位置。
+
+    ::-webkit-scrollbar-track-piece 内层轨道，滚动条中间部分（除去）
+
+    ::-webkit-scrollbar-corner 边角，即两个滚动条的交汇处
+    
+    ::-webkit-resizer 两个滚动条的交汇处上用于通过拖动调整元素大小的小控件
+
+IE
+>
+    scrollbar-arrow-color: color; /*三角箭头的颜色*/
+    scrollbar-face-color: color; /*立体滚动条的颜色（包括箭头部分的背景色）*/
+    scrollbar-3dlight-color: color; /*立体滚动条亮边的颜色*/
+    scrollbar-highlight-color: color; /*滚动条的高亮颜色（左阴影？）*/
+    scrollbar-shadow-color: color; /*立体滚动条阴影的颜色*/
+    scrollbar-darkshadow-color: color; /*立体滚动条外阴影的颜色*/
+    scrollbar-track-color: color; /*立体滚动条背景颜色*/
+    scrollbar-base-color:color; /*滚动条的基色*/
+
+firefox    
+[插件](https://github.com/malihu/malihu-custom-scrollbar-plugin)
+
+
+## <a name="css矩阵matrix">css矩阵matrix</a>
+
+>
+    transform: matrix(a,b,c,d,e,f)
+    a c e   x   ax + cy + e // ax+cy+e:变换后的水平坐标
+    b d f . y = bx + dy + f // bx+dy+f:变换后的垂直位置 
+    0 0 1   1   0  + 0  + 1
+
+
+    x, y表示转换元素的所有坐标（变量）
+
+    matrix(sx, 0, 0, sy, 0, 0) 等同于scale(sx, sy)
+
+    matrix(0, 0, 0, 0, tx, ty) 等同于translate(tx, ty)
+
+## <a name="图片缩放">图片缩放matrix,transform+transition</a>
+>
+    // 先放大1.1倍 ，再还原。一般用于轮播图
+    .img{
+      transform: matrix(1.1, 0, 0, 1.1, 0, 0);/* 等同于transfrom:scale(1.1,1.1) */
+      -webkit-transition: all 0.4s ease 1.2s;
+      -moz-transition: all 0.4s ease 1.2s;
+      -ms-transition: all 0.4s ease 1.2s;
+      -o-transition: all 0.4s ease 1.2s;
+      transition: all 0.4s ease 1.2s;
+    }
+
+    .img.active{
+      transform: matrix(1, 0, 0, 1, 0, 0); /* 等同于transfrom:scale(1,1)*/
+      -webkit-transition: all 7.0s ease;
+      -moz-transition: all 7.0s ease;
+      -ms-transition: all 7.0s ease;
+      -o-transition: all 7.0s ease;
+      transition: all 7.0s ease;  
+      transition-delay: 0.4s;
+    }
+
+## <a name="为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"</a>
+
+>
+    img {
+      display: block;
+      font-family: sans-serif;
+      font-weight: 300;
+      height: auto;
+      line-height: 2;
+      position: relative;
+      text-align: center;
+      width: 100%;
+    }
+
+    img::before {
+      content: "We're sorry, the image below is broken ";
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    img::after {
+      content: "(url:'attr(src)')";
+      display: block;
+      font-size: 12px;
+    }
+    
+## <a name="filter滤镜">filter滤镜（不是IE的filter:alpha(opacity=50)）</a>
+
+## <a name="background-blend-mode和mix-blend-mode">background-blend-mode和mix-blend-mode</a>
+
+## <a name="多方法描绘一个边框">多方法描绘一个边框</a>
+[参考](https://www.w3cplus.com/css/css-tips-0904-1.html)
+
+### 其他方法 绘制一个实心边框(border-style:solid)
+>
+    outline:1em solid #000; //不占用盒模型空间
+>    
+    box-shadow: 0 0 0 1em #000; //不占用盒模型空间
+>    
+    {
+      padding: 1em;
+      background: linear-gradient(to right, #fff, #fff), #000;
+      background-clip: content-box, padding-box;
+    }
+>
+    {
+        border: 1em solid transparent;
+        border-image: linear-gradient(to right, #000, #000) 10% round;
+    }    
+
+> 伪元素
+
+
+### 层叠边框
+![层叠边框](/img/border.png)
+>
+    .div1{
+      width: 300px;
+      height: 100px;
+      margin: 20px auto;
+      outline: 10px dashed red;
+      box-shadow: 0 0 0 10px #000;
+    }
+>
+    .div2{
+      margin: 20px auto;
+      width: 300px;
+      height: 100px;
+      border: 10px dashed;
+      background:
+        linear-gradient(to top, red, 10px, transparent 10px),
+        linear-gradient(to right, red, 10px, transparent 10px),
+        linear-gradient(to bottom, red, 10px, transparent 10px),
+        linear-gradient(to left, red, 10px, transparent 10px);
+      background-origin: border-box;
+    }
+>    
+    .div3{
+      margin: 20px auto;
+      width: 300px;
+      height: 100px;
+      border: 10px dashed;
+      background: linear-gradient(to top, #fff, #fff), red;
+      background-clip: padding-box, border-box;
+    }
 
 
 
