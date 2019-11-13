@@ -123,7 +123,7 @@
 
   [Can I Use-兼容性查询](https://caniuse.com/#home)
 
-  [MDN](https://developer.mozilla.org/zh-CN/)
+  [MDN](https://developer.mozilla.org/zh-CN/docs/Web)
 
   [W3CSchool](https://www.w3cschool.cn/)
 

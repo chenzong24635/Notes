@@ -1,4 +1,6 @@
 
+[MDN-HTM L参考](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Reference)
+
 <details open>
   <summary>目录</summary>
 
@@ -9,7 +11,7 @@
 * <a href="#Doctype作用 标准模式、兼任模式区别">Doctype作用？标准模式、兼任模式区别</a>
 * <a href="#HTML5 为什么只需要写">HTML5 为什么只需要写 \<!DOCTYPE HTML\></a>
 * <a href="#渐进增强与优雅降级">渐进增强与优雅降级-----开发方式，设计理念</a>
-* <a href="#块级元素、行内元素、行内块级元素">块级元素、行内元素、行内块级元素</a>
+* <a href="#块级元素、内联元素">块级元素、内联元素（行内元素、行内块级元素）</a>
 * <a href="#HTML全局属性有哪些">HTML全局属性有哪些</a>
 * <a href="#src和href的区别">src和href的区别</a>
 * <a href="#浏览器内核、私有化前缀">浏览器内核、私有化前缀</a>
@@ -24,7 +26,7 @@
   </details>  
 * <a href="base标签">base标签</a>
 * <a href="#响应式设计-viewport">响应式设计-viewport</a>
-* <details >
+* <details open>
     <summary><a href="#meta标签属性">meta标签属性</a></summary>
 
     * <a href="必要属性">必要属性</a>
@@ -163,9 +165,9 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
     渐进增强则从基础的的版本开始，并不断扩充，以适应未来环境的需要。  
     优雅降级意味着往回看；而渐进增强则意味着朝前看，同时保证其根基处于安全地带
 
-## <a name="块级元素、行内元素、行内块级元素">块级元素、行内元素、行内块级元素</a>
+## <a name="块级元素、内联元素">块级元素、内联元素（行内元素、行内块级元素）</a>
 
-块级元素：display:block
+* 块级元素：display:block
 >
     会独占一行,默认情况下,其宽度自动填满其父元素宽度.设置了宽度,仍然是独占一行.
     块级元素可以设置width,height,margin和padding属性.
@@ -173,7 +175,7 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
     div,p,ol,ul,li,h1-h6,dl,dt,dd,
     main,header,footer,section,aside,nav,...
 
-行内元素：display:inline.
+* 行内元素：display:inline.
 >
     不会独占一行,相邻的行内元素会排列在同一行里,直到一行排不下,才会换行,其宽度随元素的内容而变化.  
     行内元素设置width,height属性无效，它的长度高度主要根据内容决定.  
@@ -181,16 +183,35 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 
     a,span,img,select,input
 
-行内块级元素：display:inline-block
+* 行内块级元素：display:inline-block
 >
     让行内元素拥有块级元素（除了独占一行）的特性
 
-空元素：
+* 空元素：
 >
     没有内容的 HTML 元素被称为空元素。
     空元素是在开始标签中关闭的
 
     <br> <hr> <img> <input> <link> <meta>
+
+* 替换元素  
+
+特性：
+>
+    内容可以被替换,
+    内容的外观不受页面上的 CSS 的影响
+    有自己的尺寸
+    在很多 CSS 属性上有自己的一套表现规则
+>
+    <img> 
+    <input>
+    <iframe>
+    <video>
+    <select>
+    <button>
+    <textarea>
+
+![替换元素](/img/替换元素display值.jpg)
 
 ## <a name="HTML全局属性有哪些">HTML全局属性有哪些</a>
     accesskey属性允许你设置一个或者多个键盘快捷键，快速聚焦到页面元素
@@ -426,6 +447,7 @@ token是用户身份的验证方式，我们通常叫它：令牌。最简单的
     <meta http-equiv="refresh" content="0; url="">
 
     content内的数字代表时间（秒），既多少时间后刷新。如果加url,则会重定向到指定网页（搜索引擎能够自动检测，也很容易被引擎视作误导而受到惩罚）。
+
 
 * viewport
 >

@@ -1222,6 +1222,7 @@ https://router.vuejs.org/zh
       //不过，你可以通过传一个回调给 next来访问组件实例。在导航被确认的时候执行回调，并且把组件实例作为回调方法的参数。
       next(vm => {
         // 通过 `vm` 访问组件实例
+        // `next 函数中 vm 回调不是同步执行，而是等到 mounted 执行完之后，才执行` 。
       })
     },
     beforeRouteUpdate (to, from, next) {
@@ -1240,9 +1241,8 @@ https://router.vuejs.org/zh
     当路由变化时，watch里的路由监听函数都会被触发，可以在这个函数中对页面的数据进行重新加载的操作。
     watch:{
       "$route":function(to,from){
-        if (to.name ==== from.name && to.params.id !== from.params.id) {
+        if (to.name === from.name && to.params.id !== from.params.id) {
           //do something 
-          next() 
         }
       }
     }
@@ -1250,7 +1250,7 @@ https://router.vuejs.org/zh
 >
     //设置id参数 判断是否相同
     beforeRouteUpdate (to, from, next) {
-      if (to.name ==== from.name && to.params.id !== from.params.id) {
+      if (to.name === from.name && to.params.id !== from.params.id) {
         //do something 
         next() 
       }
