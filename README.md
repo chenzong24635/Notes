@@ -226,6 +226,7 @@
   * <a href="#获取当前页面url网址信息">获取当前页面url网址信息</a>
   * <a href="#解析url为对象">解析url为对象</a>
   * <a href="#图片转base64">图片转base64</a>
+  * <a href="#打印">打印</a>
   * <a href="#base64数据导出文件">base64数据导出文件，文件下载</a>
   * <a href="#判断字符串长度">判断字符串长度</a>
   * <a href="#0.1+0.2">0.1+0.2!=0.3 原因，解决</a>
@@ -765,6 +766,72 @@ var obj = {
       };
       xhr.send();
     }
+
+## <a name="打印">打印</a>
+[参考](https://www.jianshu.com/p/d19d66ef8d7e)
+
+
+>
+    此方法，要打印的内容要包含在id为print中,否则打印时定义的css会失效!!!
+    //可能未引入原先写在head标签的css
+    <div id="print">
+      <table></table>
+    </div>
+
+    若这样，打印时不会加载设定的css
+    <table id="print"></table>
+
+    function startPrint() {
+        // 打开一个新窗口
+        const myWindow = window.open('', '标题');
+
+        // 获取id为app内的html
+        // const bodyHtml =this.$refs.print.innerHTML
+        const bodyHtml = window.document.getElementById('print').innerHTML;
+
+        // 获取head标签内的html
+        let headHtml = document.head.innerHTML;
+        //也可自定义head内容
+        //但是原先写在head标签的css就不会引入了
+        //let headHtml = "<head><meta charset='utf-8'/><title></title></head>";
+
+        // 头中的screen换成打印样式print
+        headHtml = headHtml.replace('screen', 'screen, print');
+        //重新写入文档流
+        let str = 
+          '<html>' +
+          headHtml  +
+          '<body>' +
+          bodyHtml +
+          '<script>setTimeout(function() {window.print(); window.close();}, 500)</'+
+          'script>' +
+          '</body></html>'
+        myWindow.document.write(str)
+    }
+
+>
+    function printout() {
+        //打开一个新的窗口
+        let newWindow = window.open();
+
+        // 是新窗口获得焦点  
+        newWindow.focus();
+
+        //保存写入内容  
+        let newContent = "<html><head><meta charset='utf-8'/><title>打印</title></head><body>"
+        newContent += document.getElementById("print").outerHTML;
+        newContent += "</body></html>"
+
+        // 将HTML代码写入新窗口中  
+        newWindow.document.write(newContent);
+        newWindow.print();
+
+        // close layout stream 
+        newWindow.document.close();
+        //关闭打开的临时窗口
+        newWindow.close();
+        return false;
+    };
 
 ## <a name="base64数据导出文件">base64数据导出文件，文件下载</a>
 >

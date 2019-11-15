@@ -72,7 +72,9 @@ CSS布局、居中
   <summary>
     目录
   </summary>
-  
+
+<a name="top"></a>
+
 * <a href="#CSS">**`CSS`**</a>
 
 * <a href="#概述">概述</a>
@@ -84,11 +86,13 @@ CSS布局、居中
 
 * <a href="#百分数相对于width">padding/margin-top/bottom的百分数相对于width</a>
 * <a href="#css选择器">css选择器</a>
+* <a href="#content属性">:before和:after伪元素的content属性</a>
 * <a href="#哪些属性可继承">哪些属性可继承</a>
 * <a href="#zIndex">层叠上下文(stacking context )z-index</a>
 * <a href="#BFC">块级格式化上下文(BFC)、行内格式化上下文(IFC)</a>
 * <a href="#float特性">float特性</a>
 * <a href="#display、visibility、overflow">display、visibility、overflow的隐藏问题</a>
+* <a href="#background">background属性值</a>
 * <a href="#line-hieght">line-hieght</a>
 * <a href="#文本换行">文本换行 white-space word-wrap word-break</a>
 * <a href="#尺寸单位">像素定义 尺寸单位</a>
@@ -130,8 +134,8 @@ CSS布局、居中
 
 # <a name="CSS">**CSS**</a>
 
+## <a name="概述">概述</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
 
-## <a name="概述">概述</a>
 CSS 是层叠样式表 ( Cascading Style Sheets ) 的简称。  
 CSS 是一种标记语言，属于浏览器解释型语言，可以直接由浏览器执行，不需要编译。  
 CSS 是用来表现HTML或XML的标记语言。  
@@ -359,6 +363,79 @@ E[attr|=val]   //E中带有attr属性 且值具有 val 或以 val- 开始的值�
 
 css2伪类和伪元素都是用单冒号，所有的浏览器都兼容，
 但是css3伪类为单冒号如:hover ，伪元素为双冒号::before；但是双冒号IE8以下不兼容
+
+
+## <a name="content属性">::before和::after伪元素的content属性</a>
+| 值 |	说明
+|:-|:-|
+| none	|设置Content，如果指定成Nothing
+| normal	|设置content，如果指定的话，正常，默认是"none"（该是| nothing）
+| string	|设置Content到你指定的文本
+| attr(attribute)	| 可以读取该元素的属性值如 attr(href) , attr(title) , 或者自定义的属性值如 attr(data-content)。
+| url(url)	| 设置某种媒体（图像，声音，视频等内容）
+| counter|	设定计数器内容(序列只是 1、2、3、4)
+| counters|	设定计数器内容（可自定义序列）
+| open-quote	|添加开口引号
+| close-quote	|添加闭合引号
+| no-open-quote	|移除开始引号
+| no-close-quote	| 移除闭合引号
+| inherit	| 指定的content属性的值，应该从父元素继承
+
+* 特点：
+
+content 属性生成的内容都是替换元素
+
+使用 content 生成的文本是无法选中、无法复制的
+
+content 生成的文本无法被屏幕阅读设备读取，也无法被搜索引擎抓取,因此 重要内容不要用content生成
+
+不能左右:empty 伪类（即使content有内容，元素为空时，:empty依旧生效）
+
+* [counters属性使用](https://blog.csdn.net/qq_37815596/article/details/80046996)
+>
+counter-reset：[identifier  integer] | none | inherit
+>必需值。必须用于选择器，主要用来标识该作用域，其值可以自定义,不能是CSS的关键词（默认none）。  
+>identifier:自定义定义计数器的名称  
+>integer： 设置调用计算数器时起始值(任意整数，如果你设置的值为1，那么计数从2开始)，默认值为 0
+
+counter-increment：[identifier  integer] | none | inherit
+>用来标识计数器与实际相关联的范围（默认none）  
+>identifier:计数器名称，就调用counter-reset声明的计数器的标识符。  
+>integer：一个整数值，指定计数起始值。其值允许是0或者负整数值，如果未指定任何值，则该值为1（前提是counter-reset未显式设置计数的起始值）。其值递增是按倍数值递增，如果设置了值为2,后面元素递增值为4、6、8，依此类推。
+
+content：用来生成内容，其为:before、:after或::before、::after的一个属性。在生成计数器内容，主要配合counter()一起使用。
+
+counters()：该函数用来设置插入计数器的值,接受两个参数，而且两参数之间使用逗号(,)来分隔。
+>第一个参数是counter-increment定义的属性值,用来告诉该文档插入的计数器标识符名称是什么。
+>第二个是用来设置计数器的风格，有点类似于list-style-type。默认情况之下取值为十制，但你也可以重置这个样式风格，比如upper-roman或者upper-alpha等。
+
+>
+    ol {
+      counter-reset: name 3;
+      list-style-type: none;
+      /* display: none; */
+      visibility: visible;
+    }
+    li::before {
+      counter-increment: name ; 
+      content: counters(name, ".") " "; 
+    }
+    <ol>
+      <li>
+        a
+        <ol>
+          <li>b</li>
+          <li>
+            c
+            <ol>
+              <li>c1</li>
+              <li>c2</li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+    </ol>
+![counter](/img/counter.jpg)
 
 
 ## <a name="CSS书写顺序">CSS书写顺序、规范</a>
@@ -643,6 +720,71 @@ z-index只适用于已经定位的元素
 2. visibility：hidden：元素消失的时间跟transition属性设置的时间一样，但是没有动画效果.
 3. opacity:0,动画属性生效,能够进行正常的动画效果.
 
+
+## <a name="background">background属性值</a>
+简写：background: background-color  background-image background-repeat  background-attachment background-position
+
+* inherit
+
+* background-color  背景颜色  
+>值：transparent(默认) | 十六进制 | RGB | 颜色名称 | currentColor | inherit
+
+* background-image   背景图像  
+>值：url('URL') | none
+
+* background-repeat  如何重复背景图像 
+>值：repeat | repeat-x | repeat-y | no-repeat
+
+* background-attachment  背景图像是否固定或者随着页面的其余部分滚动  
+>值：scroll(默认值) | fixed
+>>scroll: 默认值。背景图像会随着页面其余部分的滚动而移动    
+>>fixed: 当页面的其余部分滚动时，背景图像不会移动。
+
+* background-position  背景图像的位置  
+>值：top/center/bottom left/center/right | x% y% | xpos ypos (单位一般用px)
+>> 如果您仅规定了一个关键词，那么第二个值将是"center"。
+>> x% y% | xpos ypos 第一个值是水平位置，第二个值是垂直位置。如果您仅规定了一个值，另一个值将是 50%。
+>> 默认值0% 0%  
+
+* background-size  背景图像的尺寸  
+>值： length | percentage | cover | contain
+>> length | percentage: 第一个值设置宽度，第二个值设置高度。如果只设置一个值，则第二个值会被设置为 "auto"。  
+>> cover: 把背景图像扩展至足够大，以使背景图像完全覆盖背景区域。背景图像的某些部分也许无法显示在背景定位区域中。  
+>>contain: 把图像图像扩展至最大尺寸，以使其宽度和高度完全适应内容区域。
+
+* background-origin  背景图片的定位区域  
+>值：border-box | content-box | padding-box 
+>>border-box:背景被裁剪到边框盒。  
+>>content-box:背景被裁剪到内边距框   
+>>padding-box:背景被裁剪到内容框   
+
+
+* background-clip  背景的绘制区域  
+>值：border-box | content-box | padding-box 
+>>border-box:背景被裁剪到边框盒。  
+>>content-box:背景被裁剪到内边距框   
+>>padding-box:背景被裁剪到内容框   
+
+>
+    .icon-menu {
+        display: inline-block;
+        width: 140px; height: 10px;
+        padding: 35px 0;
+        border-top: 10px solid;
+        border-bottom: 10px solid;
+        background-color: currentColor;
+        background-clip: content-box;
+    }
+    .icon-dot {
+        display: inline-block;
+        width: 100px; height: 100px;
+        padding: 10px;
+        border: 10px solid;    
+        border-radius: 50%;
+        background-color: currentColor;
+        background-clip: content-box;
+    }
+![clip](/img/clip.jpg)
 
 ## <a name="line-hieght">line-hieght</a>
 ![line-height](./img/lineheight.png)
@@ -1523,7 +1665,7 @@ firefox
     }    
 
 
-## <a name="纯css页面滚动进度条">纯css页面滚动进度条</a>
+## <a name="纯css页面滚动进度条">纯css页面滚动进度条</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
 >
     *{
       margin: 0;
