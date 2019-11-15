@@ -68,12 +68,14 @@ CSS布局、居中
 
 ---
 
+<a name="TOP"></a>
+
 <details open>
   <summary>
     目录
   </summary>
 
-<a name="top"></a>
+
 
 * <a href="#CSS">**`CSS`**</a>
 
@@ -93,6 +95,7 @@ CSS布局、居中
 * <a href="#float特性">float特性</a>
 * <a href="#display、visibility、overflow">display、visibility、overflow的隐藏问题</a>
 * <a href="#background">background属性值</a>
+* <a href="#border-style">border-style属性值</a>
 * <a href="#line-hieght">line-hieght</a>
 * <a href="#文本换行">文本换行 white-space word-wrap word-break</a>
 * <a href="#尺寸单位">像素定义 尺寸单位</a>
@@ -147,7 +150,7 @@ CSS的优势：
     内容与表现分离，有了CSS，网页的内容(XHMTL)与表现就可以分开了。
     使用CSS可以减少网页的代码量，增加网页的浏览速度。
 
-## <a name="权重、优先级">权重、优先级</a>
+## <a name="权重、优先级">权重、优先级</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
 >
 
     内联样式 > 内部样式表 > 外部样式表  
@@ -161,7 +164,8 @@ CSS的优势：
     载入样式以最后载入的定位为准;
 
 
-## <a name="CSS引入的方式">CSS引入的方式? link和@import的区别是? 如何避免FOUC？</a>
+## <a name="CSS引入的方式">CSS引入的方式? link和@import的区别是? 如何避免FOUC？</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
 ### CSS引入的方式
 >
     内联样式：直接在 HTML 标签中的 style 属性中添加 <div style=''>
@@ -189,7 +193,8 @@ Flash Of Unstyled Content：文档样式短暂失效; 用户定义样式表加�
 >
     使用link标签将样式表放在head中
 
-## <a name="盒模型">盒模型</a>
+## <a name="盒模型">盒模型</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
 * 定义：
 HTML中每个元素都被描绘成一个矩形盒子，这些盒子通过一个模型来描述其占有空间，该模型称为盒模型。盒模型通过四个边界描述:内边距（padding）、外边距(margin)、边框(border)、内容(content)
 
@@ -215,7 +220,8 @@ HTML中每个元素都被描绘成一个矩形盒子，这些盒子通过一个�
           父元素font-size设置为0, 子元素再重新设置回来;
           直接在HTML文档里改变文本排列，使行间元素尾标签和下一个头便签间不留任何空格，如<span>第一个元素</span><span>第二个元素</span>
 
-## <a name="文字、盒子阴影">文字、盒子阴影</a>
+## <a name="文字、盒子阴影">文字、盒子阴影</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
 文字阴影：text-shadow 
 >
     text-shadow:h-shadow v-shadow blur  color
@@ -237,7 +243,8 @@ HTML中每个元素都被描绘成一个矩形盒子，这些盒子通过一个�
     color	可选。阴影的颜色。在CSS颜色值寻找颜色值的完整列表
     inset	可选。从外层的阴影（开始时）改变阴影内侧阴影
 
-## <a name="max-,min-">max-width,max-height,min-width,min-height</a>
+## <a name="max-,min-">max-width,max-height,min-width,min-height</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
 min-width/max-width 出现的场景一定是自适应布局或者流体布局中
 
 width/height 的默认值是 auto
@@ -251,13 +258,15 @@ mix-width,min-height 权重大于 max-width,max-height
 
 [max-height与任意高度元素滑动展开收起效果实例页面](https://demo.cssworld.cn/3/3-2.php)
 
-## <a name="百分数相对于width">为什么padding/margin-top/bottom的百分数相对于width？</a>
+## <a name="百分数相对于width">为什么padding/margin-top/bottom的百分数相对于width？</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
 CSS权威指南中的解释：
 >
     正常流中的大多数元素都会足够高以包含其后代元素（包括外边距），如果一个元素的上下外边距时父元素的height的百分数，就可能导致一个无限循环，父元素的height会增加，以适应后代元素上下外边距的增加，而相应的，上下外边距因为父元素height的增加也会增加，如果循环。
 
 
-## <a name="css选择器">css选择器</a>
+## <a name="css选择器">css选择器</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
 #### 
 * 通配符选择器(*)
 * id选择器（ #myid）
@@ -365,7 +374,8 @@ css2伪类和伪元素都是用单冒号，所有的浏览器都兼容，
 但是css3伪类为单冒号如:hover ，伪元素为双冒号::before；但是双冒号IE8以下不兼容
 
 
-## <a name="content属性">::before和::after伪元素的content属性</a>
+## <a name="content属性">::before和::after伪元素的content属性</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
 | 值 |	说明
 |:-|:-|
 | none	|设置Content，如果指定成Nothing
@@ -438,7 +448,8 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
 ![counter](/img/counter.jpg)
 
 
-## <a name="CSS书写顺序">CSS书写顺序、规范</a>
+## <a name="CSS书写顺序">CSS书写顺序、规范</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
 书写顺序
 >
     1.位置属性(position, top, right, z-index,display, float等)　　
@@ -452,7 +463,8 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
     属性缩写
     去掉小数点前的 0
 
-## <a name="哪些属性可继承">哪些属性可继承</a>
+## <a name="哪些属性可继承">哪些属性可继承</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
 * 不可继承的样式：
 >
     border 、padding、 margin、 width 、height、position、
@@ -492,7 +504,8 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
     如：font:italic 700 16px/40px  微软雅黑;
 
 
-## <a name="zIndex">层叠上下文(stacking context )z-index</a>
+## <a name="zIndex">层叠上下文(stacking context )z-index</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Understanding_z_index/The_stacking_context)
 
 [参考]https://www.zhangxinxu.com/wordpress/2016/01/understand-css-stacking-context-order-z-index/)
@@ -563,7 +576,8 @@ z-index只适用于已经定位的元素
     3、问题标签含有浮动(float)属性。(去除浮动)
 
 
-## <a name="BFC">块级格式化上下文(BFC) 、行内格式化上下文(IFC)</a>
+## <a name="BFC">块级格式化上下文(BFC) 、行内格式化上下文(IFC)</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
 格式化上下文即Formatting context，它是指页面上的一个局部独立渲染区域，根据Formatting context中包含的是元素类型的不同，分为块级格式上下文BFC和行内格式化上下文IFC，
 
 
@@ -672,7 +686,8 @@ z-index只适用于已经定位的元素
     <div id="container"><span>inlineinline</span><span>inlineinline</span></div>
 
 
-## <a name="float特性">float特性</a>
+## <a name="float特性">float特性</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
 由于float意味着使用块布局，所以它会修改元素的display值（block）。
 
 * 浮动的本意： 让文字像流水一样环绕浮动元素。
@@ -691,7 +706,8 @@ z-index只适用于已经定位的元素
     浮动盒子的顶部不会超出在html文档中早出现的的块级元素(block)或者是浮动元素的顶部
 
 
-## <a name="display、visibility、overflow">display、visibility、overflow、opacity的隐藏问题</a>
+## <a name="display、visibility、overflow">display、visibility、overflow、opacity的隐藏问题</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
 * display：block | none | inline | table | flex | grid .... 
 * overflow : visible | auto | hidden | scroll
       visible:不处理,  auto:默认属性    
@@ -721,7 +737,8 @@ z-index只适用于已经定位的元素
 3. opacity:0,动画属性生效,能够进行正常的动画效果.
 
 
-## <a name="background">background属性值</a>
+## <a name="background">background属性值</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
 简写：background: background-color  background-image background-repeat  background-attachment background-position
 
 * inherit
@@ -786,7 +803,22 @@ z-index只适用于已经定位的元素
     }
 ![clip](/img/clip.jpg)
 
-## <a name="line-hieght">line-hieght</a>
+## <a name="border-style">border-style属性值</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+none 无、  
+hidden 与 "none" 相同。不过应用于表时除外，对于表，hidden 用于解决边框冲突、  
+solid（实线）、  
+dashed（虚线）、  
+dotted（点线）、  
+double（双线边框）宽度等于 border-width 的值、  
+inset（内凹）、  
+outset（外凸）、  
+groove（沟槽）、  
+ridge（山脊）
+
+![border-style](/img/border-style.jpg)
+
+## <a name="line-hieght">line-hieght</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
 ![line-height](./img/lineheight.png)
 
 定义：两行文字基线之间的距离。//不同字体之间的基线是不同的。
@@ -800,7 +832,7 @@ z-index只适用于已经定位的元素
 | em、% | 行高=父元素字体大小*行高值（与子元素字体大小无关）
 | 无 | 行高=子元素字体大小*行高值
 
-## <a name="文本换行">文本换行 white-space word-wrap word-break</a>
+## <a name="文本换行">文本换行 white-space word-wrap word-break</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
 
 white-space
 >
@@ -844,7 +876,8 @@ word-break
     word-break: break-all; 
     //white-space:normal;
 
-## <a name="尺寸单位">尺寸单位 像素定义</a>
+## <a name="尺寸单位">尺寸单位 像素定义</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
 #### 尺寸单位
 >
     %: 占父元素的百分比
@@ -926,7 +959,8 @@ https://www.cnblogs.com/ranyonsue/p/6795943.html
 
 
 
-## <a name="用CSS开启硬件加速来提高网站性能">用CSS开启硬件加速来提高网站性能</a>
+## <a name="用CSS开启硬件加速来提高网站性能">用CSS开启硬件加速来提高网站性能</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
 #### 何为硬件加速
 
 就是将浏览器的渲染过程交给GPU处理，而不是使用自带的比较慢的渲染器。这样就可以使得animation与transition更加顺畅。
@@ -1032,7 +1066,7 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
  
 
 
-## <a name="注意事项">注意事项</a>
+## <a name="注意事项">注意事项</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
 
 1. margin的top、bottom及padding的top、bottom使用百分比作为单位时，是相对父元素的宽度width的而不是高度height；
 2. 含有定位属性的元素，其top、bottom单位为百分比时，是相对于父元素的高度的。left、right则是相对于父元素的宽度的。
@@ -1045,7 +1079,8 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
 
 6. background引入图片的一个缺点是页面的Web可访问性会受到轻微的影响，因为屏幕阅读器和搜索引擎无法正确地获取到图像。可以通过CSS object-fit属性解决(object-position和object-fit只针对替换元素有作用)
 
-## <a name="JS获取CSS属性方法">JS获取CSS属性方法</a>
+## <a name="JS获取CSS属性方法">JS获取CSS属性方法</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
 https://my.oschina.net/i33/blog/126960
 
 //style只能获取元素的内联样式，内部样式和外部样式使用style是获取不到的。  （这里我测试的在IE和FF下没有用，Chrome下有用，所有有歧义）
@@ -1055,7 +1090,8 @@ https://my.oschina.net/i33/blog/126960
 //getComputedStyle("元素", "伪类" || null) 同currentStyle作用相同，但是适用于FF、opera、safari、chrome。
 
 
-## <a name="@规则">@规则</a>
+## <a name="@规则">@规则</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
 @charset 
 >
     定义样式表中使用的字符编码。它必须写在样式表的最开头且前面不可有别的字符。
@@ -1112,7 +1148,8 @@ https://my.oschina.net/i33/blog/126960
         margin: 10% 20%;
     }
 
-## <a name="CSS hack">CSS hack</a>
+## <a name="CSS hack">CSS hack</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
 [CSS hack](https://blog.csdn.net/freshlover/article/details/12132801)
 
 //IE6-9
@@ -1134,10 +1171,12 @@ https://my.oschina.net/i33/blog/126960
 
 
 
-# <a name="一些css属性及其他">**一些css属性及其他**</a>
+# <a name="一些css属性及其他">**一些css属性及其他**</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
 
 
-## <a name="css自定义属性">css自定义属性</a>
+
+## <a name="css自定义属性">css自定义属性</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
 <b>IE不支持</b>
 
 * 特点：
