@@ -24,7 +24,7 @@
     * <a href="#Array.isArray()">Array.isArray()判断是否数组</a>
     * <a href="#Array.of()">Array.of()</a>
     * <a href="#Array.from()">Array.from()</a>
-    * <a href="#find()、findIndex(),indexOf()、lastIndexOf(),includes()">find()、findIndex(),indexOf()、lastIndexOf(),includes())</a>
+    * <a href="#find()、findIndex(),indexOf()、lastIndexOf(),includes()">find()、findIndex(),indexOf()、lastIndexOf()、includes())</a>
     * <a href="#join()">join()数组转字符串</a>
     * <a href="#fill()">fill()填充数组 -- 改变原数组</a>
     * <a href="#push()、unshift()、pop()、shift()">push()、unshift()、pop()、shift() -- 改变原数组</a>

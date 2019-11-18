@@ -71,12 +71,11 @@
 * <a href="#js延迟加载：defer,async">js延迟加载：defer,async</a>
 * <a href="#重绘和回流">重绘和回流</a>
 * <a href="#模块化">模块化AMD CMD modules</a>
-
 * <a href="#面向过程和面向对象的异同">面向过程和面向对象的异同</a>
 * <a href =""></a>
 * <a href="#跨域">跨域</a>
 * <a href="#常见的web攻击">常见的web攻击</a>
-* <a href="#字符转码、解码">字符转码、解码</a>
+* <a href="#字符转码、解码">字符转码、解码,encodeURIComponent、decodeURIComponent、encodeURI、decodeURI、escape、unescape</a>
 * <a href="#URI、URL、URN">URI、URL、URN</a>
 * <a href="#函数式编程">函数式编程</a>
 * <a href="#函数重载">函数重载</a>
@@ -444,6 +443,14 @@ https://www.jianshu.com/p/5f9027722204
     
     只有在鼠标指针穿过被选元素时，才会触发 mouseenter 事件，对应 mouseleave。
 
+## <a name=""></a>
+parentNode  
+childNodes  
+firstChild  
+lastChild  
+nextSibling  
+previousSibling
+
 ## <a name="DOM操作">DOM操作—怎样添加、移除、移动、复制、创建和查找节点?</a>
 * 创建新节点
 >
@@ -469,6 +476,14 @@ https://www.jianshu.com/p/5f9027722204
     document.getElementsByTagName()    //通过标签名称
     document.getElementsByName()  //通过元素的Name属性的值(IE容错能力较强，会得到一个数组，其中包括id等于name值的)
 
+* 操作属性的方法
+>
+    getAttribute(attrName)  //获取属性值
+    setAttribute(attrName,attrValue)  //设置属性
+    removeAttribute(attrName)  //移除属性
+    hasAttribute(attrName) //判断是否存在该属性
+    getAttributeNode(attrName) // 获取属性节点
+    setAttributeNode(attrName) // 设置属性节点
 
 ## <a name="获取元素属性">获取元素属性innerHTML、outerHTML、innerText 、outerText、value</a>
 >
@@ -608,12 +623,20 @@ https://www.jianshu.com/p/5f9027722204
 场景：一般用于框架、插件等场景
 
 
-## <a name="对象属性">对象属性configurable enumerable writable</a>
-### configurable
->
-    能否使用delete、能否需改属性特性、或能否修改访问器属性、，false为不可重新定义，默认值为true 
+## <a name="对象属性">对象属性configurable enumerable writable,value,get,set</a>
 
-    简单的说 ，设置这个为false之后，就不能删除这个属性或修改这个属性（属性值不影响），这个属性就是这个对象固有的，删除不了
+数据属性 4 个特性: configurable(可配置),enumerable(可枚举),writable(可修改),value(属性值)
+
+访问器属性 2 个特性: get(获取),set(设置)
+
+get,set 与 wriable,value 是互斥的,如果有交集设置会报错
+
+* configurable可配置
+
+能否使用delete、能否需改属性特性、或能否修改访问器属性、，false为不可重新定义，默认值为true 
+
+简单的说 ，设置这个为false之后，就不能删除这个属性或修改这个属性（属性值不影响），这个属性就是这个对象固有的，删除不了
+>
 
     var obj = Object.create({},{
         "a":{
@@ -629,11 +652,11 @@ https://www.jianshu.com/p/5f9027722204
     console.log(obj.a);//正常使用，输出结果为 2
 
 
-### enumerable
+* enumerable可枚举
+
+对象属性是否可通过for-in循环，flase为不可循环，默认值为true 
+简单的说，当你想用 for-in 遍历这个对象的时候，正常会输出每一个属性，但当你设置false时，这个属性就不会被for-in 遍历读到
 >    
-    可枚举性 
-    对象属性是否可通过for-in循环，flase为不可循环，默认值为true 
-    简单的说，当你想用 for-in 遍历这个对象的时候，正常会输出每一个属性，但当你设置false时，这个属性就不会被for-in 遍历读到
 
     var obj = {
         a: 1,
@@ -653,10 +676,12 @@ https://www.jianshu.com/p/5f9027722204
         console.log(i); //输出b，c 不会输出a，a已经设置不被枚举
     }
 
-### writable
+* writable可修改
+
+对象属性是否可修改,flase为不可修改，默认值为true 
+
+设置不可修改后，可以理解为常量，不能对属性值进行修改
 >
-    对象属性是否可修改,flase为不可修改，默认值为true 
-    设置不可修改后，可以理解为常量，不能对属性值进行修改
 
     var obj = Object.create({},{
         "a":{
@@ -669,7 +694,11 @@ https://www.jianshu.com/p/5f9027722204
     obj.a = 2;//普通模式不会抛异常，严格模式会抛出TypeError
     console.log(obj.a);//输出1 ，不可被修改
 
-### value
+* value属性值
+
+* get获取
+
+* set设置
 
 ## <a name="typeof instanceof">typeof 、instanceof 、in</a>
 typeof 
@@ -826,7 +855,7 @@ hasOwnProperty()
 
 发布订阅模式，有一个事件池，用来给你订阅(注册)事件，当你订阅的事件发生时就会通知你，然后你就可以去处理此事件
 
-[designMode](./details/designMode.md)
+[designMode](/details/designMode.md)
 
 ## <a name="事件委托">事件委托(代理)delegate</a>
 
@@ -1063,7 +1092,7 @@ Object.create:
 
 
 ## <a name="设计模式">设计模式</a>
-[designMode](./details/designMode.md)
+[designMode](/details/designMode.md)
 
 ## <a name="作用域、作用域链、执行上下文">作用域、作用域链、执行上下文(执行环境)</a>
 #### 作用域：
@@ -1140,7 +1169,7 @@ JavaScript中的函数采用静态作用域，也称词法作用域。当在执�
 全局上下文只有唯一的一个，它在浏览器关闭时出栈。
 
 ## <a name="this">this绑定</a>
-[this](./details/this.md)
+[this](/details/this.md)
 
 ## <a name="apply call bind">apply call bind</a>
 https://github.com/yygmind/blog/issues/22
@@ -1174,6 +1203,60 @@ bind(..)可以对参数进行柯里化（预先设置一些参数）
     bar( 3 ); // a:2，b:3 
 
 ## <a name="实现apply call bind">实现apply call bind</a>
+call
+>
+    Function.prototype.newCall = function(context, ...parameter) {
+    if (typeof context === 'object' || typeof context === 'function') {
+        context = context || window
+    } else {
+        context = Object.create(null)
+    }
+      context[fn] = this
+      const res =context[fn](...parameter "fn")
+      delete context.fn;
+      return res
+    }
+    let person = {
+      name: 'Abiel'
+    }
+    function sayHi(age,sex) {
+      console.log(this.name, age, sex);
+    }
+    sayHi.newCall (person, 25, '男'); // Abiel 25 男
+
+
+apply
+>
+    Function.prototype.newApply = function(context, parameter) {
+      if (typeof context === 'object' || typeof context === 'function') {
+        context = context || window
+      } else {
+        context = Object.create(null)
+      }
+      let fn = Symbol()
+      context[fn] = this
+      return res=context[fn](..parameter "fn");
+      delete context[fn]
+      return res
+    }
+    sayHi.newApply (person,[ 25, '男']) //Abiel 25 男
+
+bind
+>
+    Function.prototype.bind = function (context,...innerArgs) {
+      var me = this
+      return function (...finnalyArgs) {
+        return me.call(context,...innerArgs,...finnalyArgs)
+      }
+    }
+    let person = {
+      name: 'Abiel'
+    }
+    function sayHi(age,sex) {
+      console.log(this.name, age, sex);
+    }
+    let personSayHi = sayHi.bind(person, 25)
+    personSayHi('男')
 
 ## <a name="公有、私有、静态、特权方法与属性">公有、私有、静态、特权方法与属性</a>
 
@@ -1241,7 +1324,7 @@ bind(..)可以对参数进行柯里化（预先设置一些参数）
     var user = new User(26);
 
 ## <a name="promise">promise</a>
-[promise](./details/promise.md)
+[promise](/details/promise.md)
 
 ## <a name="async、await">async、await</a>
 https://segmentfault.com/a/1190000007535316
@@ -1258,7 +1341,7 @@ Promise本身是同步的立即执行函数；Promise.then里的回调函数会�
 
 async函数表示函数里面可能会有异步方法，await后面跟一个表达式，async方法执行时，遇到await会立即执行表达式，然后把表达式后面的代码放到微任务队列里，让出执行栈让同步代码先执行。
 
-[事件执行机制](./details/eventExecutionMechanism.md)
+[事件执行机制](/details/eventExecutionMechanism.md)
 
 
 ## <a name="深，浅拷贝">深，浅拷贝</a>
@@ -1552,6 +1635,32 @@ defer 属性
     import  * as name  from './index'
 
 
+export：规定模块对外接口
+>
+    默认导出：export default Person(导入时可指定模块任意名称，无需知晓内部真实名称)
+    单独导出：export const name = "Bruce"
+    按需导出：export { age, name, sex }(推荐)
+    改名导出：export { name as newName }
+
+import：导入模块内部功能
+>
+    默认导入：import Person from "person"
+    整体导入：import * as Person from "person"
+    按需导入：import { age, name, sex } from "person"
+    改名导入：import { name as newName } from "person"
+    自执导入：import "person"
+    复合导入：import Person, { name } from "person"
+
+
+复合模式：export命令和import命令结合在一起写成一行，变量实质没有被导入当前模块，相当于对外转发接口，导致当前模块无法直接使用其导入变量
+>
+    默认导入导出：export { default } from "person"
+    整体导入导出：export * from "person"
+    按需导入导出：export { age, name, sex } from "person"
+    改名导入导出：export { name as newName } from "person"
+    具名改默认导入导出：export { name as default } from "person"
+    默认改具名导入导出：export { default as name } from "person"
+
 
 ## <a name="垃圾回收机制">垃圾回收机制</a>
   Javascript具有自动垃圾回收机制(GC:Garbage Collecation)。
@@ -1628,7 +1737,7 @@ https://zhuanlan.zhihu.com/p/55064276
 
 
 ## <a name="跨域">跨域</a>
-[详情](./details/crossOrigin.md)
+[详情](/details/crossOrigin.md)
 
 ## <a name="常见的web攻击">常见的web攻击</a>
 [参考](https://mp.weixin.qq.com/s?__biz=MzA3NTUzNjk1OA==&mid=2651562103&idx=1&sn=0b52850e0ca268918928629bdb80499f&chksm=84900f26b3e78630bfd3cc5c5d8f02de909b8a27f366c3855a8adf4e0c660819d88689a39f39&scene=0#rd)
@@ -2044,11 +2153,11 @@ API：
     }
 
 ## <a name="浏览器缓存">浏览器缓存</a>
-[浏览器缓存](./details/InternetCache.md)
+[浏览器缓存](/details/InternetCache.md)
 
 
 ## <a name="前端性能优化的方法">前端性能优化的方法</a>
-[性能优化](./details/optimization.md)
+[性能优化](/details/optimization.md)
 
 ## <a name="浏览器渲染">浏览器渲染</a>
 ![render](img/render.png)
@@ -2066,10 +2175,10 @@ API：
 
 
 ## <a name="从浏览器地址栏输入url到显示页面的步骤">从浏览器地址栏输入url到显示页面的步骤</a>
-[从浏览器地址栏输入url到显示页面的步骤](./details/urlAnalysis.md)
+[从浏览器地址栏输入url到显示页面的步骤](/details/urlAnalysis.md)
 
 ## <a name="事件执行机制">事件执行机制</a>
-[事件执行机制](./details/eventExecutionMechanism.md)
+[事件执行机制](/details/eventExecutionMechanism.md)
 
 ## <a name="get与post区别">get与post区别</a>
 ![getpost](/img/getpost.png)

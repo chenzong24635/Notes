@@ -92,10 +92,12 @@ Number.isSafeInteger()判断是否为安全整数
 
 ##  <a name="Number.NaN">Number.NaN 非数字</a>
 
-主要出现在将字符串解析成数字出错的场合。
+主要出现在将字符串解析成数字出错的场合。  
+无穷大除以无穷大  
 >
     5 - 'x' // NaN
     0 / 0 // NaN
+    Infinity / Infinity; // NaN
 
 NaN不是独立的数据类型，而是一个特殊数值，它的数据类型依然属于Number
 >
@@ -164,7 +166,7 @@ undefined,{}转为NaN
     其他NaN
 
   
-false,null,0,[],''转为 0
+`false,null,0,[],''转为 0`
 
 
 >

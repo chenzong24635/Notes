@@ -18,8 +18,9 @@
   * <a href="#replace()">replace()替代字符串</a>
   * <a href="#toLowerCase()、toUpperCase()、toLocaleLowerCase()、toLocaleUpperCase()">toLowerCase()、toUpperCase()、toLocaleLowerCase()、toLocaleUpperCase()字符串转大小写</a>
   * <a href="#trim()、trimLeft()、trimRight()">trim()、trimLeft()、trimRight()取出空白符</a>
-  * <a href="#localeCompare()">localeCompare()</a>
-  * <a href="#"></a>
+  * <a href="#localeCompare()">localeCompare()指示参考字符串是否在排序顺序前面或之后或相同。</a>
+  * <a href="#normalize()">normalize()</a>
+  * <a href="#row()">String.row()</a>
   * <a href="#"></a>
 
 # <a name="概述">概述</a>
@@ -33,7 +34,30 @@ String 有最大长度是 2^53 - 1
 * 属性：prototype、length
 
 # <a name="方法">方法</a>
-## <a name="">toString()</a>
+## <a name="">toString() String()</a>
+
+null,undefined没有toString()方法，有String()方法
+toString()可以转进制字符串，String()不行
+>
+    二进制：.toString(2);
+    八进制：.toString(8);
+    十进制：.toString(10);
+    十六进制：.toString(16);
+>
+    String(null)                 // 'null'
+    String(undefined)            // 'undefined'
+    String(true)                 // 'true'
+    String(1)                    // '1'
+    String(-1)                   // '-1'
+    String(0)                    // '0'
+    String(-0)                   // '0'
+    String(Math.pow(1000,10))    // '1e+30'
+    String(Infinity)             // 'Infinity'
+    String(-Infinity)            // '-Infinity'
+    String({})                   // '[object Object]'
+    String([1,[2,3]])            // '1,2,3'
+    String(['koala',1])          //koala,1
+
 ## <a name="">valueOf()</a>
 
 ## <a name="String.fromCharCode()、String.fromCodePoint()">~~String.fromCharCode()~~、String.fromCodePoint()</a>
@@ -312,13 +336,49 @@ trimRight() | trimEnd()
 删除字符串的两端、左侧、右侧空白字符。在这个上下文中的空白字符是所有的空白字符 (space, tab, no-break space 等) 以及所有行终止符字符（如 LF，CR）。
 
 ## <a name="localeCompare()">localeCompare()</a>
- 方法返回一个数字(-1:前，0:相同，1:后)来指示一个参考字符串是否在排序顺序前面或之后或与给定字符串相同。
+返回一个数字(-1:前，0:相同，1:后)来指示一个参考字符串是否在排序顺序前面或之后或与给定字符串相同。
 
+referenceStr.localeCompare(compareString[, locales[, options]])  
+>compareString: 用来比较的字符串  
+>locales: 可选。  
+>options: 可选。  
 
- referenceStr.localeCompare(compareString[, locales[, options]])
- >compareString: 用来比较的字符串
+>
+    'a'.localeCompare('a') // 0
+    'a'.localeCompare('c') // -1
+    'c'.localeCompare('a') // 1
 
- >locales: 可选。
+## <a name="normalize()">String.normalize()</a>
+按照指定的一种 Unicode 正规形式将当前字符串正规化。（如果该值不是字符串，则首先将其转换为一个字符串）。
 
- >options: 可选。
+str.normalize([form])
+>form
+>
+    四种 Unicode 正规形式 "NFC", "NFD", "NFKC", 以及 "NFKD" 其中的一个, 默认值为 "NFC".
 
+>
+    let str = "\u1E9B\u0323";
+    str.normalize("NFC") // "ẛ̣"
+    str.normalize("NFD") // "ẛ̣"
+    str.normalize("NFKC") // "ṩ"
+    str.normalize("NFKD") // "ṩ"
+
+## <a name="row()">String.row()</a>
+把字符串所有变量替换且对斜杠进行转义的结果
+
+String.raw(callSite, ...substitutions)  |
+String.raw\`templateString`  
+>callSite: 一个模板字符串的“调用点对象“ 。类似{ raw: ['foo', 'bar', 'baz'] }。  
+>...substitutions: 任意个可选的参数，表示任意个内插表达式对应的值。
+
+>templateString: 模板字符串，可包含占位符（${...}）。
+
+>
+    String.raw`Hi\n${2+3}!`
+    // 'Hi\n5!'，Hi 后面的字符不是换行符，\ 和 n 是两个不同的字符
+
+    String.raw({
+      raw: ['foo', 'bar', 'baz'] 
+    }, 2 + 3, 'Java' + 'Script'); // 'foo5barJavaScriptbaz'
+
+## <a name="()">()</a>

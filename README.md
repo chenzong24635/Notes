@@ -168,38 +168,38 @@
 ## [CSS](CSS.md)
 ## [JS](JS.md) 
 
-  * [Undefined、Null](./details/Undefined、Null.md)
-  * [Boolean](./details/Boolean.md)
-  * [Number](./details/Number.md)
-  * [String](./details/String.md)
-  * [Symbol??](./details/Symbol.md)
-  * [Object](./details/Object.md)
-    * [Array](./details/Array.md)
-    * [Math](./details/Math.md)
-    * [Date](./details/Date.md)
-    * [Function??](./details/Function.md)
-    * [Set、Map](./details/Set、Map.md)
+  * [Undefined、Null](/details/Undefined、Null.md)
+  * [Boolean](/details/Boolean.md)
+  * [Number](/details/Number.md)
+  * [String](/details/String.md)
+  * [Symbol??](/details/Symbol.md)
+  * [Object](/details/Object.md)
+    * [Array](/details/Array.md)
+    * [Math](/details/Math.md)
+    * [Date](/details/Date.md)
+    * [Function??](/details/Function.md)
+    * [Set、Map](/details/Set、Map.md)
   * --
-  * [JS遍历方法](./details/Iterate.md) 
-  * [JS兼容](./details/compatible.md)
-  * [JS排序？？](./details/sort.md)
-  * [JQ](./details/JQ.md)
+  * [JS遍历方法](/details/Iterate.md) 
+  * [JS兼容](/details/compatible.md)
+  * [JS排序？？](/details/sort.md)
+  * [JQ](/details/JQ.md)
 
 ## [TypeScript](TS.md)
-## [正则](./details/RegExp.md)
-## [AJAX](./details/Ajax.md)
-## [跨域](./details/crossOrigin.md)
+## [正则](/details/RegExp.md)
+## [AJAX](/details/Ajax.md)
+## [跨域](/details/crossOrigin.md)
 ## [HTTP](HTTP.md)  
 
 ## [Vue](Vue.md)
-## [Vuex](./details/vuex.md)
+## [Vuex](/details/vuex.md)
 ## [小程序??](Applet.md)
-## [WebSocket??](./details/WebSocket.md)
+## [WebSocket??](/details/WebSocket.md)
 
 
 ## [Git](Git.md)
 ## [Node](Node.md)
-## [console.log](./details/consolelog.md)
+## [console.log](/details/consolelog.md)
 
 ## [其他](others.md)
 
@@ -216,12 +216,6 @@
   * <a href="#保留小数点后两位-不足则补零">保留小数点后两位-不足则补零</a>
   * <a href="#浮点型+-*/">浮点型+-*/</a>
   * <a href="#时间戳、日期 的转换">时间戳、日期 的转换</a>
-    * <a href="#new Date()">Date API</a>
-    * <a href="#日期转时间戳">日期转时间戳</a>
-    * <a href="#时间戳转日期">时间戳转日期</a>
-    * <a href="#把日期格式化为指定格式">把日期格式化为指定格式</a>
-    * <a href="#倒计时">倒计时</a>
-    * <a href="#时间戳转距当前时间 多久">时间戳 --> 距当前时间 多久</a>
   * <a href="#浏览器判断">浏览器、手机类型判断navigator.userAgent</a>
   * <a href="#获取当前页面url网址信息">获取当前页面url网址信息</a>
   * <a href="#解析url为对象">解析url为对象</a>
@@ -361,209 +355,10 @@
       return (r1 / r2) * Math.pow(10, t2 - t1);
     }
 
-## <a name="倒计时">倒计时</a>
->
-    function countdown(endTime){
-      //月份默认30天
-      //年份默认365天
-      const s = 1000; //秒
-      const m = 60 * s; // 分
-      const h = 60 * m; // 时
-      const D = 24 * h; // 天
-      const M = 30 * D; // 月
-      const Y = 365 * D; // 年
-      endTime = + new Date(endTime);
-      let now = + new Date();
-      let time = endTime- now;
-      let years = (Math.floor(time / Y) + '').padStart(2,0);
-      let months = (Math.floor(time % Y / M) + '').padStart(2,0);
-      let days = (Math.floor(time % M / D) + '').padStart(2,0);
-      let hours = (Math.floor(time % D / h) + '').padStart(2,0);
-      let minutes = (Math.floor(time % h / m) + '').padStart(2,0);
-      let seconds = (Math.floor(time % m / s) + '').padStart(2,0);
-      let milliseconds = (Math.floor(time % s) + '').padStart(3,0);
-      let str = (years + '' === '00' ? '': years + '年')
-              + (months + '' === '00' ? '': months + '月')
-              + (days + '' === '00' ? '': days + '天')
-              + (hours + '' === '00' ? '' :  hours + '时')
-              + (minutes + '' === '00' ?'' :  minutes + '分')
-              + (seconds + '' === '00' ? '' :  seconds + '秒') 
-              // + (milliseconds + '' === '000'  ? '毫秒' :  milliseconds) 
-      // let str = days + '天' + hours + '时' + minutes + '分' + seconds + '秒';
-      return str
-    }
 
 
 ## <a name="时间戳、日期 的转换">时间戳、日期 的转换</a>
-### <a name="new Date()">[Date API](https://www.runoob.com/jsref/jsref-obj-date.html)</a>
-
->
-    new Date()
-
-    new Date(milliseconds)
-      new Date(1568093648697)
-
-    new Date(dateString) 
-      new Date("October 13, 1975 11:13:00")
-
-    new Date(year, month, day, hours, minutes, seconds, milliseconds)
-      new Date(79,5,24,11,33,0)//
-
->
-
-
-    new Date().getFullYear(); //获取完整的年份(4位,1970-????)  -- 2019
-        
-    new Date().getMonth(); //获取当前月份(0-11,0代表1月) -- 8
-
-    new Date().getDate(); //获取当前日(1-31)   -- 18
-
-    new Date().getDay(); //获取当前星期X(0-6,0代表星期天)  -- 3
-
-    new Date().getTime(); //获取当前时间(从1970.1.1开始的毫秒数)  -- 1568778089633
-
-    new Date().getHours(); //获取当前小时数(0-23)  -- 11
-
-    new Date().getMinutes(); //获取当前分钟数(0-59)  -- 45
-
-    new Date().getSeconds(); //获取当前秒数(0-59)  -- 30
-
-    new Date().getMilliseconds(); //获取当前毫秒数(0-999)  -- 123
-
-    new Date().toLocaleDateString(); //获取当前日期 - 本地时间格式 -- 2019/9/18
-
-    new Date().toLocaleTimeString(); //获取当前时间 - 本地时间格式 -- 2019/9/18 上午11:47:06
-
-    new Date().toLocaleString( ); //获取日期与时间 - 本地时间格式 -- 上午11:41:29
-      上午11:41:29
-
-    new Date().valueOf( ); //原始值, 获取当前时间(从1970.1.1开始的毫秒数) 等同于getTime() -- 1568778089633
-
-### <a name="日期转时间戳">日期转时间戳</a>
->
-    let date = new Date('2014-04-23 18:55:49:123')
-    // 有三种方式获取
-    let time1 = date.getTime();   //--精确到毫秒
-    let time2 = date.valueOf();   //--精确到毫秒
-    let time3 = Date.parse(date); //--精确到秒
-
-    console.log(time1);//1398250549123  
-    console.log(time2);//1398250549123  
-    console.log(time3);//1398250549000
-
-### <a name="时间戳转日期">时间戳转日期</a>
->
-    function timestampToTime(timestamp) { //时间戳 转 时间
-      //时间戳为10位需*1000，时间戳为13位的话不需乘1000
-      if ((timestamp + '').length === 10) {
-        timestamp *= 1000;
-      }
-      timestamp = timestamp / 1;
-      let date = new Date(timestamp);
-      let Y = date.getFullYear();
-      // let M = ((date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1));
-      let M = (date.getMonth() + 1 + '').padStart(2,0);
-      let D = (date.getDate() + '').padStart(2,0);
-      let h = (date.getHours() + '').padStart(2,0);
-      let m = (date.getMinutes() + '').padStart(2,0);
-      let s = (date.getSeconds() + '').padStart(2,0);
-      let ms = (date.getMilliseconds() + '').padStart(3,0);
-      return Y + '-' + M + '-' + D + ' ' + h + ':' + m + ':' + s + ':' + ms;
-    }
-    console.log(timestampToTime(+new Date()))
-
-### <a name="把日期格式化为指定格式">把日期格式化为指定格式</a>
-
->
-    function format(date, fmt) {
-      date = new Date(date)
-      var o = {
-        "M+" : date.getMonth()+1,                 //月份
-        "d+" : date.getDate(),                    //日
-        "h+" : date.getHours(),                   //小时
-        "m+" : date.getMinutes(),                 //分
-        "s+" : date.getSeconds(),                 //秒
-        "q+" : Math.floor((date.getMonth()+3)/3), //季度
-        "S"  : date.getMilliseconds()             //毫秒
-      };
-
-      if(/(y+)/.test(fmt)){
-        fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
-      }
-
-      for(let k in o){
-        if(new RegExp("("+ k +")").test(fmt)){
-          fmt = fmt.replace(
-            RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));  
-        }       
-      }
-
-      return fmt;
-    }
-
-    console.log(
-      format(new Date(44222222222),"yyyy年MM月"),
-      format(new Date(),"yyyy年MM月dd日"),
-      format(new Date(2179,5,24,11,33,0),"yyyy/MM/dd hh:mm:ss")
-    )
-
-### <a name="倒计时">倒计时</a>
->
-    function counter() { 
-        var date = new Date(); 
-        var year = date.getFullYear();
-        var date2 = new Date(year, 12, 31, 23, 59, 59);
-        /*转换成秒*/
-        var time = (date2 - date) / 1000;
-        var day = Math.floor(time / (24 * 60 * 60))
-        var hour = Math.floor(time % (24 * 60 * 60) / (60 * 60))
-        var minute = Math.floor(time % (24 * 60 * 60) % (60 * 60) / 60);
-        var second = Math.floor(time % (24 * 60 * 60) % (60 * 60) % 60);
-        var str = year + "年还剩" + day + "天" + hour + "时" + minute + "分" + second + "秒";
-        console.log(str);
-    }
-    window.setInterval("counter()", 1000);
-
-### <a name="时间戳转距当前时间 多久"> 时间戳 --> 距当前时间 多久</a>
-
->
-
-    function formatMsgTime(timestamp) {
-      if (!timestamp) return ''
-      if ((timestamp + '').length === 10) {
-        //时间戳为10位需*1000，时间戳为13位的话不需乘1000
-        timestamp *= 1000;
-      }
-      timestamp = timestamp / 1;
-      let s = 1000 // 秒
-      let m = 60 * s // 分
-      let h = 60 * m // 时
-      let D = 24 * h // 天
-      // let W = 7 * D // 周
-      let M = 30 * D // 月
-      let Y = 365 * M // 年 
-
-      let time = new Date().getTime() - new Date(timestamp).getTime() //现在的时间-传入的时间 = 相差的时间（单位 = 毫秒）
-      if (time < 0) {
-          return ''
-      } else if ((time / 1000 < 10)) {
-          return '刚刚'
-      } else if (time / s < 60) {
-          return parseInt((time / s)) + '秒前'
-      } else if ((time / m) < 60) {
-          return parseInt((time / m)) + '分钟前'
-      } else if ((time / h) < 24) {
-          return parseInt(time / h) + '小时前'
-      } else if ((time / D) < 30) {
-          return parseInt(time / D) + '天前'
-      } else if ((time / M) < 12) {
-          return parseInt(time / M) + '月前'
-      } else {
-          return parseInt(time / Y) + '年前'
-      }
-      return 'error';
-    }
-    console.log(formatMsgTime(+new Date('2019 4 5') ))
+![Date](/details/Date.md)
 
 ## <a name="浏览器判断">浏览器、手机类型判断navigator.userAgent</a>
 使用navigator.userAgent属性 PC端、手机端、iPad判断 ，ie、火狐、其他浏览器判断， 微信浏览器判断， Android、IOS判断
@@ -697,6 +492,30 @@ var obj = {
 
 
 ## <a name="解析url为对象">解析url为对象</a>
+[URLSearchParams](https://developer.mozilla.org/zh-CN/docs/Web/API/URLSearchParams) 定义了一些实用的方法来处理 URL 的查询字符串。
+>
+    var paramsString = "q=URLUtils.searchParams&topic=api"
+    var searchParams = new URLSearchParams(paramsString);
+
+    for (let p of searchParams) {
+      console.log(p);
+    }
+    //output 
+    ["q", "URLUtils.searchParams"]
+    ["topic", "api"]
+
+    searchParams.has("topic") === true; // true
+    searchParams.get("topic") === "api"; // true
+    searchParams.getAll("topic"); // ["api"]
+    searchParams.get("foo") === null; // true
+    searchParams.append("topic", "webdev");
+    searchParams.toString(); // "q=URLUtils.searchParams&topic=api&topic=webdev"
+    searchParams.set("topic", "More webdev");
+    searchParams.toString(); // "q=URLUtils.searchParams&topic=More+webdev"
+    searchParams.delete("topic");
+    searchParams.toString(); // "q=URLUtils.searchParams"
+
+
 >
     //url里有= 字符会报错
     //?a=5&b=321===ad&c=a
@@ -1393,7 +1212,7 @@ var arr = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
 ## 数组扁平化+去重: Array.from(new Set(arr.flat(Infinity)))
 
 ## <a name="数组排序"> 数组排序</a>
-[排序](./details/sort.md)
+[排序](/details/sort.md)
 
 ## <a name="n的阶层（尾调用优化）">n的阶层（尾调用优化）</a>
 1 1 2 3 5 8 13....

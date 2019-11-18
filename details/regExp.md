@@ -110,14 +110,30 @@ let re = new RegExp("abc",gi);
 
 | 字符| 描述| |
 |:---|:---|:--|
-| g | 全局搜索  |
-| i | 忽略大小写 |
-| s | 单行模式 :	更改.的含义，允许 . 匹配换行符(\n)。
-| m | 多行模式 : 更改^和$的含义，使它们分别在任意一行的行首和行尾匹配，而不仅仅在整个字符串的开头和结尾匹配。(在此模式下,$的精确含意是:匹配\n之前的位置以及字符串结束前的位置.)|
-| u | 使用unicode码的模式进行匹配|
-| y | 执行“粘性”搜索,匹配从目标字符串的当前位置开始，可以使用y标志。 |
+| g (global)| 全局搜索  |
+| i (ignoreCase)| 忽略大小写 |
+| s (dotAll)| 单行模式 :	更改.的含义，允许 . 匹配换行符(\n)。
+| m (multiline)| 多行模式 : 更改^和$的含义，使它们分别在任意一行的行首和行尾匹配，而不仅仅在整个字符串的开头和结尾匹配。(在此模式下,$的精确含意是:匹配\n之前的位置以及字符串结束前的位置.)|
+| u (unicode)| 使用unicode码的模式进行匹配,用来正确处理大于\uFFFF的 Unicode 字符。会正确处理四个字节的 UTF-16 编码。|
+| y (sticky)| 执行“粘性”搜索,匹配从目标字符串的当前位置开始，可以使用y标志。 |
 
 `多行模式和单行模式没有任何关系.能同时使用`
+
+* source 返回正则表达式的正文
+> /abc/ig.source  // "abc"
+
+* flags 返回正则表达式的修饰符
+> /abc/ig.flags // 'gi'
+
+* global 是否设置了g修饰符
+>/abc/g.global // true
+>/abc/.global // false
+
+* sticky 是否设置了y修饰符
+> /abc/y.sticky // true
+> /abc/.sticky // false
+
+....
 
 # <a name="贪婪、懒惰">贪婪、懒惰</a>
 
@@ -160,7 +176,7 @@ let re = new RegExp("abc",gi);
     string.search("\\.") // 4
     string.search(/\./) // 4
 
-### exec match
+### exec, match
 * exec --  reg.exec(str)  
 * match(非全局搜索) --  str.match(reg|str)   
 * matchAll() 方法返回一个包含所有匹配正则表达式及分组捕获结果的迭代器。  

@@ -4,7 +4,7 @@ Boolean(value): true | false
 
 如果第一个参数不是布尔值，则会将其转换为布尔值。
 
-`如果省略该参数，或者值为 0（+0，-0）、null、false、NaN、undefined、空字符串（""） 为 false`
+`如果省略该参数，或者值为 0、+0、-0、null、false、NaN、undefined、空字符串（""） 为 false`
 
 `这意味着字符串 "false" 、字符串"0" 、空对象 {} 和空数组 [] 都是真`
 

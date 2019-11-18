@@ -135,22 +135,25 @@ https://segmentfault.com/a/1190000012422198
 
 >
 
-    var Person1  = (function () {
-      var _this = null;
-      return function (name,age) {
-        if(!_this){
-          _this = this;
+    let singleCase = function(name){
+        this.name = name;
+    };
+    singleCase.prototype.getName = function(){
+        return this.name;
+    }
+    // 获取实例对象
+    let getInstance = (function() {
+        var instance = null;
+        return function(name) {
+            if(!instance) {//相当于一个一次性阀门,只能实例化一次
+                instance = new singleCase(name);
+            }
+            return instance;
         }
-        _this.name = name;
-        _this.age = age;
-        return _this
-      }
     })();
-    var person11 = new Person1("A",18);
-    console.log("姓名:"+person11.name,"年龄:"+person11.age);
-    var person22 = new Person1("B",19);
-    console.log("姓名:"+person22.name,"年龄:"+person22.age);
-    console.log(person11===person22); //==>true
+    // 测试单体模式的实例,所以one===two
+    let one = getInstance("one");
+    let two = getInstance("two");
 
 
 #  <a name="模块模式">模块模式 Module</a>

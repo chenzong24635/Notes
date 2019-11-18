@@ -75,8 +75,6 @@ CSS布局、居中
     目录
   </summary>
 
-
-
 * <a href="#CSS">**`CSS`**</a>
 
 * <a href="#概述">概述</a>
@@ -95,12 +93,13 @@ CSS布局、居中
 * <a href="#float特性">float特性</a>
 * <a href="#display、visibility、overflow">display、visibility、overflow的隐藏问题</a>
 * <a href="#background">background属性值</a>
+ * <a href="#渐变">渐变linear-gradient,radial-gradient,conic-gradient</a>
 * <a href="#border-style">border-style属性值</a>
 * <a href="#line-hieght">line-hieght</a>
 * <a href="#文本换行">文本换行 white-space word-wrap word-break</a>
 * <a href="#尺寸单位">像素定义 尺寸单位</a>
 * <a href="#注意事项">注意事项</a>
-* <a href="#JS获取CSS属性方法">JS获取CSS属性方法</a>
+* <a href="#获取CSS样式">获取CSS样式</a>
 * <a href="#用CSS开启硬件加速来提高网站性能">用CSS开启硬件加速来提高网站性能</a>
 * <a href="#@规则">@规则</a>
 * <a href="#CSS hack">CSS hack</a>
@@ -113,7 +112,6 @@ CSS布局、居中
   * <a href="#文字超出省略">文字超出省略</a>
   * <a href="#shape-outside">shape-outside</a>
   * <a href="#pointer-events">pointer-events 使用指针事件來控制鼠标事件</a>
-  * <a href="#渐变">渐变linear-gradient</a>
   * <a href="#透明方格的绘制">透明方格的绘制</a>
   * <a href="#移动端1px">移动端1px</a>
   * <a href="#清除手机端a链接点击高亮">清除手机端a链接点击高亮</a>
@@ -803,6 +801,43 @@ z-index只适用于已经定位的元素
     }
 ![clip](/img/clip.jpg)
 
+## <a name="渐变">渐变linear-gradient,radial-gradient,conic-gradient</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+[你真的理解CSS的linear-gradient？](https://www.w3cplus.com/css3/do-you-really-understand-css-linear-gradients.html)
+
+### linear-gradient()线性渐变
+>linear-gradient(angle | to direction , color1 range,...colorn range)  
+>第一个参数（可省略）接受一个表示角度的值（可用的单位deg、rad、grad或turn）或者是表示方向的关键词（top、right、bottom、left、left top、top right、bottom right或者left bottom）。  
+如果省略，默认to bottom（对应180deg或者.5turn）  
+
+>第二个参数是接受一系列颜色节点 并且可指定颜色控制的范围(像素,百分比)。
+
+>
+    background: linear-gradient(to right, green 10%, white 30px, yellow);  
+    background: linear-gradient(to right, green 10%, white 10%, yellow);  
+    background: linear-gradient(to right, green 10%, white -30px, yellow);  
+
+
+
+### radial-gradient()径向渐变
+>radial-gradient(shape size at position, color1 range,...colorn range)  
+>shape(形状)：ellipse(默认): 椭圆形，circle：圆形  
+>size(大小):  
+>>farthest-corner(默认): 指定径向渐变的半径长度为从圆心到离圆心最远的角    
+>>farthest-side ：渐变的边缘形状与容器距离渐变中心点最远的一边相切（圆形）或者至少与距离渐变中心点最远的垂直和水平边相切（椭圆）
+>>closest-side ：渐变的边缘形状与容器距离渐变中心点最近的一边相切（圆形）或最近的垂直和水平边（椭圆）。与farthest-side相反  
+>>closest-corner：指定径向渐变的半径长度为从圆心到离圆心最近的角  
+>>数值：
+
+>position(圆心位置): center(默认), top, bottom, left, right, length(相对于左上角，值可正负数)
+>colors:接受一系列颜色节点 并且可指定颜色控制的范围(length(单位一般px),百分比)。
+
+>
+    radial-gradient(ellipse farthest-corner at left, red, yellow, green)
+    radial-gradient(ellipse farthest-corner at 80px 50px, red, yellow, green)
+    radial-gradient(ellipse farthest-corner at 10% -40%, red, yellow, green)
+
+### repeating-linear-gradient()，repeating-radial-gradient()重复渐变
+
 ## <a name="border-style">border-style属性值</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
 none 无、  
 hidden 与 "none" 相同。不过应用于表时除外，对于表，hidden 用于解决边框冲突、  
@@ -831,6 +866,8 @@ ridge（山脊）
 | px  | 行高=父元素行高
 | em、% | 行高=父元素字体大小*行高值（与子元素字体大小无关）
 | 无 | 行高=子元素字体大小*行高值
+
+对于非替换元素的纯内联元素，其可视高度完全由 line-height 决定
 
 ## <a name="文本换行">文本换行 white-space word-wrap word-break</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
 
@@ -1079,9 +1116,12 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
 
 6. background引入图片的一个缺点是页面的Web可访问性会受到轻微的影响，因为屏幕阅读器和搜索引擎无法正确地获取到图像。可以通过CSS object-fit属性解决(object-position和object-fit只针对替换元素有作用)
 
-## <a name="JS获取CSS属性方法">JS获取CSS属性方法</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name="获取CSS样式">获取CSS样式</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
 
 https://my.oschina.net/i33/blog/126960
+
+
+* document.styleSheets 获取文档中所有的样式表
 
 //style只能获取元素的内联样式，内部样式和外部样式使用style是获取不到的。  （这里我测试的在IE和FF下没有用，Chrome下有用，所有有歧义）
 
@@ -1286,8 +1326,7 @@ https://my.oschina.net/i33/blog/126960
       opacity: .5;
       pointer-events: none
     }
-## <a name="渐变">渐变 linear-gradient</a>
-[你真的理解CSS的linear-gradient？](https://www.w3cplus.com/css3/do-you-really-understand-css-linear-gradients.html)
+
 
 ## <a name="透明方格的绘制">透明方格的绘制</a>
 ![transparentSquare](./img/transparentSquare.png)

@@ -1,7 +1,4 @@
 
-
-
-
 HTTP协议 ：Hyper Text Transfer Protocol（超文本传输协议）,是用于从万维网（WWW:World Wide Web ）服务器传输超文本到本地浏览器的传送协议。是互联网上应用最为广泛的一种网络协议。所有的WWW文件都必须遵守这个标准。
 
 HTTP是一个基于TCP/IP通信协议来传递数据（HTML 文件, 图片文件, 查询结果等）。
@@ -31,6 +28,8 @@ HTTP特点：
     为了防止已失效的连接请求报文段突然又传送到了服务端，因而产生错误”。
     或则说 解决“网络中存在延迟的重复分组”的问题。
 
+![tcp三次握手](/img/tcp三次握手.jpg)
+
 如何关闭连接（四次挥手）：
 >
     TCP的连接的拆除需要发送四个包，因此称为四次挥手(four-way handshake)
@@ -39,7 +38,10 @@ HTTP特点：
     服务器B关闭与客户端A的连接，发送一个FIN给客户端A。 
     客户端A发回ACK报文确认，并将确认序号设置为收到序号加1
 
-![三次握手四次挥手](img/tcp.jpg)
+![tcp四次挥手](/img/tcp四次挥手.jpg)
+
+
+![三次握手四次挥手](/img/tcp.jpg)
 
 Web访问过程
 >
@@ -51,18 +53,6 @@ Web访问过程
     （6）服务器开始接收请求数据包，接收完成后，处理接收到的数据——Request Handling
     （7）服务器开始向客户端发送以4KB为大小的响应数据——发送HTTP Response
     （8）响应结束之后，服务器会经过四次握手，断开连接，关闭各自的自由端口
-
-
-
-
-
-HTTP 1.1 做了哪些升级：
->
-    缓存处理，在HTTP1.0中主要使用header里的If-Modified-Since,Expires来做为缓存判断的标准，HTTP1.1则引入了更多的缓存控制策略例如Entity tag，If-Unmodified-Since, If-Match, If-None-Match等更多可供选择的缓存头来控制缓存策略。
-    带宽优化及网络连接的使用，HTTP1.0中，存在一些浪费带宽的现象，例如客户端只是需要某个对象的一部分，而服务器却将整个对象送过来了，并且不支持断点续传功能，HTTP1.1则在请求头引入了range头域，它允许只请求资源的某个部分，即返回码是206（Partial Content），这样就方便了开发者自由的选择以便于充分利用带宽和连接。
-    错误通知的管理，在HTTP1.1中新增了24个错误状态响应码，如409（Conflict）表示请求的资源与资源的当前状态发生冲突；410（Gone）表示服务器上的某个资源被永久性的删除。
-    Host头处理，在HTTP1.0中认为每台服务器都绑定一个唯一的IP地址，因此，请求消息中的URL并没有传递主机名（hostname）。但随着虚拟主机技术的发展，在一台物理服务器上可以存在多个虚拟主机（Multi-homed Web Servers），并且它们共享一个IP地址。HTTP1.1的请求消息和响应消息都应支持Host头域，且请求消息中如果没有Host头域会报告一个错误（400 Bad Request）。
-    长连接，HTTP 1.1支持长连接（PersistentConnection）和请求的流水线（Pipelining）处理，在一个TCP连接上可以传送多个HTTP请求和响应，减少了建立和关闭连接的消耗和延迟，在HTTP1.1中默认开启Connection： keep-alive，一定程度上弥补了HTTP1.0每次请求都要创建连接的缺点。
 
 HTTP/2的多路复用和HTTP1.1中的长连接复用有什么区别？
 > 
@@ -93,6 +83,8 @@ PORT：端口号，每项服务在服务器上对应一个监听端口号
 
 
 HTTP请求到服务器的请求消息组成部分：请求行（request line）、请求头部（header）、空行、请求数据
+
+![requestheader](/img/requestheader.jpg)
 
 HTTP响应也由四个部分组成：状态行、消息报头、空行和响应正文。
 
@@ -206,10 +198,10 @@ HTTP请求和响应优化
 | 306 | Unused | 已废弃
 | 307 | Temporary Redirect 临时重定向。与302类似。使用GET请求重定向
 | 400 | Bad Request	客户端请求的语法错误，服务器无法理解
-| 401 | Unauthorized	请求要求用户的身份认证
+| 401 | Unauthorized	未授权 请求要求用户的身份认证
 | 402 | Payment Required 保留，将来使用
-| 403 | Forbidden 服务器理解请求客户端的请求，但是拒绝执行此请求
-| 404 | Not Found 服务器无法根据客户端的请求找到资源（网页）。 网站设计人员可设置"您所请求的资源无法找到"的个性页面
+| 403 | Forbidden 禁止  服务器理解请求客户端的请求，但是拒绝执行此请求
+| 404 | Not Found 未找到 服务器无法根据客户端的请求找到资源（网页）。 网站设计人员可设置"您所请求的资源无法找到"的个性页面
 | 405 | Method Not Allowed 客户端请求中的方法被禁止
 | 406 | Not Acceptable 服务器无法根据客户端请求的内容特性完成请求
 | 407 | Proxy Authentication Required 请求要求代理的身份认证，与401类似，但请求者应当使用代理进行授权
