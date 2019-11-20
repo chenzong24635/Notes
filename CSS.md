@@ -81,7 +81,7 @@ CSS布局、居中
 * <a href="#权重、优先级">权重、优先级</a>
 * <a href="#CSS引入的方式">CSS引入的方式有哪些? link和@import的区别是? 如何避免FOUC?</a>
 * <a href="#盒模型">盒模型</a>
-* <a href="#文字、盒子阴影">文字、盒子阴影</a>
+* <a href="#文字、盒子阴影">text-shadow 、box-shadow</a>
 * <a href="#max-,min-">max-width,max-height,min-width,min-height</a>
 
 * <a href="#百分数相对于width">padding/margin-top/bottom的百分数相对于width</a>
@@ -89,26 +89,29 @@ CSS布局、居中
 * <a href="#content属性">:before和:after伪元素的content属性</a>
 * <a href="#哪些属性可继承">哪些属性可继承</a>
 * <a href="#zIndex">层叠上下文(stacking context )z-index</a>
-* <a href="#BFC">块级格式化上下文(BFC)、行内格式化上下文(IFC)</a>
 * <a href="#float特性">float特性</a>
+* <a href="#BFC">块级格式化上下文(BFC)、行内格式化上下文(IFC)</a>
 * <a href="#display、visibility、overflow">display、visibility、overflow的隐藏问题</a>
-* <a href="#background">background属性值</a>
- * <a href="#渐变">渐变linear-gradient,radial-gradient,conic-gradient</a>
 * <a href="#border-style">border-style属性值</a>
-* <a href="#line-hieght">line-hieght</a>
+* <a href="#line-hieght">line-hieght,vertical-align</a>
 * <a href="#文本换行">文本换行 white-space word-wrap word-break</a>
+* <a href="#background">background属性值</a>
+  * <a href="#background-blend-mode和mix-blend-mode">background-blend-mode和mix-blend-mode</a>
+ * <a href="#渐变">渐变linear-gradient,radial-gradient,conic-gradient</a>
+* <a href="#transform">transform变形</a>
+* <a href="#transition">transition过渡</a>
+* <a href="#animation">animation动画</a>
 * <a href="#尺寸单位">像素定义 尺寸单位</a>
-* <a href="#注意事项">注意事项</a>
 * <a href="#获取CSS样式">获取CSS样式</a>
 * <a href="#用CSS开启硬件加速来提高网站性能">用CSS开启硬件加速来提高网站性能</a>
 * <a href="#@规则">@规则</a>
 * <a href="#CSS hack">CSS hack</a>
 
-
 * <a href="#一些css属性及其他">**一些css属性及其他**</a>
 
   * <a href="#"></a>
-  * <a href="#css自定义属性">css自定义属性</a>
+* <a href="#注意事项">注意事项</a>
+  * <a href="#css自定义变量属性">css自定义变量属性</a>
   * <a href="#文字超出省略">文字超出省略</a>
   * <a href="#shape-outside">shape-outside</a>
   * <a href="#pointer-events">pointer-events 使用指针事件來控制鼠标事件</a>
@@ -122,10 +125,8 @@ CSS布局、居中
   * <a href="#-webkit-text-size-adjust">-webkit-text-size-adjust</a>
   * <a href="#-webkit-scrollbar">-webkit-scrollbar 自定义滚动条样式</a>
   * <a href="#为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"</a>
-  * <a href="#css矩阵matrix">css矩阵matrix</a>
   * <a href="#图片缩放">图片缩放matrix,transform+transition</a>
   * <a href="#filter滤镜">filter滤镜</a>
-  * <a href="#background-blend-mode和mix-blend-mode">background-blend-mode和mix-blend-mode</a>
   * <a href="#多方法描绘一个边框">多方法描绘一个边框</a>
   * <a href="#纯css横向、垂直滑动">纯css横向、垂直滑动</a>
   * <a href="#纯css页面滚动进度条">纯css页面滚动进度条</a>
@@ -218,7 +219,7 @@ HTML中每个元素都被描绘成一个矩形盒子，这些盒子通过一个�
           父元素font-size设置为0, 子元素再重新设置回来;
           直接在HTML文档里改变文本排列，使行间元素尾标签和下一个头便签间不留任何空格，如<span>第一个元素</span><span>第二个元素</span>
 
-## <a name="文字、盒子阴影">文字、盒子阴影</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name="文字、盒子阴影">text-shadow 、box-shadow</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
 
 文字阴影：text-shadow 
 >
@@ -450,7 +451,7 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
 
 书写顺序
 >
-    1.位置属性(position, top, right, z-index,display, float等)　　
+    1.位置属性(position, top, right, z-index,display, float等)  
     2.大小(width, height, padding, margin,border)
     3.文字系列(font, line-height, letter-spacing,color- text-align等)
     4.背景 颜色(background, color等)
@@ -573,6 +574,61 @@ z-index只适用于已经定位的元素
     2、问题标签无position属性,不包括static (添加position属性)
     3、问题标签含有浮动(float)属性。(去除浮动)
 
+## <a name="float特性">float特性</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
+由于float意味着使用块布局，所以它会修改元素的display值为block|table
+
+* 浮动的本意：是为了实现文字环绕效果(主要指的是文字环绕图片显示的效果)
+
+* 特性：
+>
+    包裹性(由“包裹”和“自适应性”两部分组成)
+    块状化并格式化上下文；
+    破坏文档流；
+    没有任何 margin 合并；
+
+* 规则：
+>
+    不会超越前面的块元素，仅在本行浮动 
+    脱离文档流后，下分的块元素会填充  
+    两个浮动元素的垂直外边距将不会折叠 
+    浮动后的元素不会影响其他块元素的布局，仅会影响被它覆盖的行内元素  
+    浮动盒子的顶部不会超出在html文档中早出现的的块级元素(block)或者是浮动元素的顶部
+
+包裹:假设浮动元素父元素宽度 200px，浮动元素子元素是一个 128px 宽度的图片，
+则此时浮动元素宽度表现为“包裹”，就是里面图片的宽度 128px，代
+>
+    <div class="father">
+      <div class="float">
+      <img src="/img/border-style.jpg">
+      </div>
+    </div>
+
+自适应性:元素尺寸由内部元素决定，但永远小于“包含块”容器的
+尺寸（除非容器尺寸小于元素的“首选最小宽度”）
+
+如果浮动元素的子元素不只是一张 128px 宽度的图片，还有一大波普通
+的文字，则此时浮动元素宽度就自适应父元素的 200px 宽度，最终的宽度表现也是 200px。
+>
+    <div class="father">
+    <div class="float">
+      <img src="/img/border-style.jpg">我是帅哥，好巧啊，我也是帅哥，原来看这本书的人都是帅哥~
+    </div>
+
+clear:left | right | both
+
+clear 属性是让自身不能和前面的浮动元素相邻
+
+clear 属性只有块级元素才有效的，而::after 等伪元素默认都是内联水平，
+
+由于 clear:both 的作用本质是让自己不和 float 元素在一行显示，并不是真正意义上
+的清除浮动，因此 float 元素一些不好的特性依然存在，于是，会有类似下面的现象。
+>
+    （1）如果 clear:both 元素前面的元素就是 float 元素，则 margin-top 负值即使设
+    成-9999px，也不见任何效果。
+    （2）clear:both 后面的元素依旧可能会发生文字环绕的现象。举个例子，如下 HTML
+    和 CSS： 
+
 
 ## <a name="BFC">块级格式化上下文(BFC) 、行内格式化上下文(IFC)</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
 
@@ -684,25 +740,6 @@ z-index只适用于已经定位的元素
     <div id="container"><span>inlineinline</span><span>inlineinline</span></div>
 
 
-## <a name="float特性">float特性</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
-
-由于float意味着使用块布局，所以它会修改元素的display值（block）。
-
-* 浮动的本意： 让文字像流水一样环绕浮动元素。
-
-* 特性：
->
-    包裹性
-    高度欺骗
-
-* 规则：
->
-    不会超越前面的块元素，仅在本行浮动 
-    脱离文档流后，下分的块元素会填充  
-    两个浮动元素的垂直外边距将不会折叠 
-    浮动后的元素不会影响其他块元素的布局，仅会影响被它覆盖的行内元素  
-    浮动盒子的顶部不会超出在html文档中早出现的的块级元素(block)或者是浮动元素的顶部
-
 
 ## <a name="display、visibility、overflow">display、visibility、overflow、opacity的隐藏问题</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
 
@@ -735,7 +772,139 @@ z-index只适用于已经定位的元素
 3. opacity:0,动画属性生效,能够进行正常的动画效果.
 
 
+## <a name="border-style">border-style属性值</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+none 无、  
+hidden 与 "none" 相同。不过应用于表时除外，对于表，hidden 用于解决边框冲突、  
+solid（实线）、  
+dashed（虚线）、  
+dotted（点线）、  
+double（双线边框）宽度等于 border-width 的值、  
+inset（内凹）、  
+outset（外凸）、  
+groove（沟槽）、  
+ridge（山脊）
+
+![border-style](/img/border-style.jpg)
+
+## <a name="line-hieght">line-hieght,vertical-align</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+### line-height
+![line-height](./img/lineheight.png)
+
+定义：两行文字基线之间的距离。//不同字体之间的基线是不同的。  
+line-height:normal(默认)  | number  | lenght |  percent  |  inherit;
+
+>
+|父元素行高单位   | 子元素行高大小 (子元素未设置行高情况下) |
+|:---|:---|
+| px  | 行高=父元素行高
+| em、% | 行高=父元素字体大小*行高值（与子元素字体大小无关）
+| 无 | 行高=子元素字体大小*行高值
+
+对于非替换元素的纯内联元素，其可视高度完全由 line-height 决定
+
+要想让单行文字垂直居中，只要设置line-height 或 设置ine-height和
+height高度一样
+
+### vertical-align
+>
+    线类，如 baseline（默认值）、top、middle、bottom；
+    文本类，如 text-top、text-bottom；
+    上标下标类，如 sub、super；
+    数值百分比类，如 20px、2em、20%等(vertical-align 的百分比值是相对于 line-height 计算)
+
+vertical-align起作用是有前提条件的：只能应用于内联元
+素(inline、inlineblock，inline-table)以及 display 值为 table-cell 的元素
+
+
+有些 CSS 属性值会在背后默默
+地改变元素 display 属性的计算值，从而导致 vertical-align 不起作用。比方说，
+浮动和绝对定位会让元素块状化
+
+
+此时图片顶着.box 元素的上边缘显示，根本没垂直居中，完全没起作用！
+>
+    box {
+      height: 128px;
+      line-height: 128px; /* 若不设置， 子元素的vertical-align: middle;不会起作用*/ 
+    }
+    .box > img {
+      height: 96px;
+      vertical-align: middle;
+    }
+    <div class="box">
+      <img src="1.jpg">
+    </div>
+
+实际上，只是行框盒子前面的“幽灵空白节点”高度太小，如果我们通过设置一个
+足够大的行高让“幽灵空白节点”高度足够，就会看到 vertical-align:middle 起作用了，
+
+table-cell 元素设置 vertical-align 垂
+直对齐的是子元素，但是其作用的并不是子元素，而是 table-cell 元素自
+身。就算 table-cell 元素的子元素是一个块级元素，也一样可以让其有各
+种垂直对齐表现。
+>
+    box {
+      height: 128px;
+      display:table-cell;
+      vertical-align: middle; 
+    }
+    .box > img {
+      height: 96px;
+    }
+    <div class="box">
+      <img src="1.jpg">
+    </div>
+
+
+## <a name="文本换行">文本换行 white-space word-wrap word-break</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
+white-space
+>
+    normal: 忽略/合并空白(默认值)
+    pre: 保留空白，如同<pre>的行为
+    nowrap: 忽略/合并空白，文本不会换行，直到遇到<br/>
+    pre-wrap: 保留空白，但是会正常地进行换行
+    pre-line: 忽略/合并空白，但是会正常地进行换行
+    inherit: 从父元素继承。
+
+word-wrap
+>
+    normal: 只在允许的断字点换行(默认值)
+    break-word: 在长单词或URL地址内部进行换行
+
+word-break
+>  
+    normal：依照亚洲语言和非亚洲语言的文本规则，允许在字内换行。
+
+    keep-all：与所有非亚洲语言的normal相同。对于中文，韩文，日文，不允许字断开。适合包含少量亚洲文本的非亚洲文本。
+
+    break-all：该行为与亚洲语言的normal相同。也允许非亚洲语言文本行的任意字内断开。该值适合包含一些非亚洲文本的亚洲文本，比如使连续的英文字母间断行。
+
+---
+
+强制不换行
+>
+    white-space:nowrap;
+
+正常文字的换行(亚洲文字和非亚洲文字)
+>
+    white-space:normal;
+
+强制英文单词断行
+>
+    word-break:break-all;
+
+自动换行
+>
+    word-wrap: break-word; 
+    word-break: break-all; 
+    //white-space:normal;
+
+<a href="#文字超出省略">文字超出省略</a>
+
 ## <a name="background">background属性值</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
+### background
 
 简写：background: background-color  background-image background-repeat  background-attachment background-position
 
@@ -801,35 +970,48 @@ z-index只适用于已经定位的元素
     }
 ![clip](/img/clip.jpg)
 
+### background-blend-mode和mix-blend-mode
+
+
 ## <a name="渐变">渐变linear-gradient,radial-gradient,conic-gradient</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
 [你真的理解CSS的linear-gradient？](https://www.w3cplus.com/css3/do-you-really-understand-css-linear-gradients.html)
 
-### linear-gradient()线性渐变
->linear-gradient(angle | to direction , color1 range,...colorn range)  
->第一个参数（可省略）接受一个表示角度的值（可用的单位deg、rad、grad或turn）或者是表示方向的关键词（top、right、bottom、left、left top、top right、bottom right或者left bottom）。  
+### [linear-gradient()线性渐变](https://www.w3cplus.com/css3/do-you-really-understand-css-linear-gradients.html)
+
+
+linear-gradient(angle | to direction , color1 range,...colorn range)  
+* 第一个参数（可省略）接受一个表示角度的值（可用的单位deg、rad、grad或turn）或者是表示方向的关键词（top、right、bottom、left、left top、top right、bottom right或者left bottom）。  
 如果省略，默认to bottom（对应180deg或者.5turn）  
 
->第二个参数是接受一系列颜色节点 并且可指定颜色控制的范围(像素,百分比)。
+* 第二个参数是接受一系列颜色节点 并且可指定颜色控制的范围(像素,百分比)。
 
 >
     background: linear-gradient(to right, green 10%, white 30px, yellow);  
     background: linear-gradient(to right, green 10%, white 10%, yellow);  
     background: linear-gradient(to right, green 10%, white -30px, yellow);  
 
+background:linear-gradient(blue, red),   background:linear-gradient(90deg, blue, red)  
+<img src="./img/linear0.jpg" width="40%" >
+<img src="./img/linear.jpg" width="40%">
 
+<img src="./img/linear.gif" width="40%">
 
 ### radial-gradient()径向渐变
->radial-gradient(shape size at position, color1 range,...colorn range)  
->shape(形状)：ellipse(默认): 椭圆形，circle：圆形  
->size(大小):  
->>farthest-corner(默认): 指定径向渐变的半径长度为从圆心到离圆心最远的角    
->>farthest-side ：渐变的边缘形状与容器距离渐变中心点最远的一边相切（圆形）或者至少与距离渐变中心点最远的垂直和水平边相切（椭圆）
->>closest-side ：渐变的边缘形状与容器距离渐变中心点最近的一边相切（圆形）或最近的垂直和水平边（椭圆）。与farthest-side相反  
->>closest-corner：指定径向渐变的半径长度为从圆心到离圆心最近的角  
->>数值：
+radial-gradient(shape size at position, color1 range,...colorn range)   
+* shape(形状,可略)：ellipse(默认): 椭圆形，circle：圆形  
+* size(半径,可略): 
+>数值： x(横向的长度) y(纵向的长度)；传两个值默认为椭圆；
 
->position(圆心位置): center(默认), top, bottom, left, right, length(相对于左上角，值可正负数)
->colors:接受一系列颜色节点 并且可指定颜色控制的范围(length(单位一般px),百分比)。
+>farthest-corner(默认): 指定径向渐变的半径长度为从圆心到离圆心最远的角
+
+>farthest-side ：渐变的边缘形状与容器距离渐变中心点最远的一边相切（圆形）或者至少与距离渐变中心点最远的垂直和水平边相切（椭圆）
+
+>closest-side ：渐变的边缘形状与容器距离渐变中心点最近的一边相切（圆形）或最近的垂直和水平边（椭圆）。与farthest-side相反  
+
+>closest-corner：指定径向渐变的半径长度为从圆心到离圆心最近的角  
+
+* position(圆心位置): center(默认), top, bottom, left, right, length|百分比(相对于左上角，值可正负数)
+* colors:接受一系列颜色节点 并且可指定颜色控制的范围(length|百分比)。
 
 >
     radial-gradient(ellipse farthest-corner at left, red, yellow, green)
@@ -838,82 +1020,153 @@ z-index只适用于已经定位的元素
 
 ### repeating-linear-gradient()，repeating-radial-gradient()重复渐变
 
-## <a name="border-style">border-style属性值</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
-none 无、  
-hidden 与 "none" 相同。不过应用于表时除外，对于表，hidden 用于解决边框冲突、  
-solid（实线）、  
-dashed（虚线）、  
-dotted（点线）、  
-double（双线边框）宽度等于 border-width 的值、  
-inset（内凹）、  
-outset（外凸）、  
-groove（沟槽）、  
-ridge（山脊）
-
-![border-style](/img/border-style.jpg)
-
-## <a name="line-hieght">line-hieght</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
-
-![line-height](./img/lineheight.png)
-
-定义：两行文字基线之间的距离。//不同字体之间的基线是不同的。
+### 兼容
+带有私有前缀的不加to,at，方向就是起始点
 >
-    line-height:normal  | <number>  | <lenght>  |  <percent>  |  inherit;
-      
+    /*线性渐变*/
+    background: -webkit-linear-gradient(left, hotpink , darkblue); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(left, hotpink, darkblue); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(left, hotpink, darkblue); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, hotpink , darkblue); /* 标准的语法 */
+    /*径向渐变*/
+    background: -webkit-radial-gradient(center, hotpink , darkblue); /* Safari 5.1 - 6.0 */
+    background: -o-radial-gradient(center, hotpink, darkblue); /* Opera 11.1 - 12.0 */
+    background: -moz-radial-gradient(center, hotpink, darkblue); /* Firefox 3.6 - 15 */
+    background: radial-gradient(at center, hotpink , darkblue); /* 标准的语法 */
+
+
+## <a name="transform">[transform变形](http://css.cuishifeng.cn/transform.html)</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
+matrix()：以一个含六值的(a,b,c,d,e,f)变换矩阵的形式指定一个2D变换，相当于直接应用一个[a,b,c,d,e,f]变换矩阵  
+matrix3d(): 以一个4x4矩阵的形式指定一个3D变换  
+
+translate()：指定对象的2D平移。第一个参数对应X轴，第二个参数对应Y轴。如果第二个参数未提供，则默认值为0  
+translate3d(): 指定对象的3D位移。第1个参数对应X轴，第2个参数对应Y轴，第3个参数对应Z轴，参数不允许省略  
+translateX()：指定对象X轴（水平方向）的平移  
+translateY()：指定对象Y轴（垂直方向）的平移  
+translateZ()：指定对象Z轴的平移  
+
+rotate()：指定对象的2D旋转，需先有 <' transform-origin '> 属性的定义  
+rotate3d()：指定对象的3D旋转，其中前3个参数分别表示旋转的方向x,y,z，第4个参数表示旋转的角度，参数不允许省略   
+rotatey()：指定对象在y轴上的旋转角度   
+rotatez()：指定对象在z轴上的旋转角度   
+
+scale()：指定对象的2D缩放。第一个参数对应X轴，第二个参数对应Y轴。如果第二个参数未提供，则默认取第一个参数的值  
+scale3d()：指定对象的3D缩放。第1个参数对应X轴，第2个参数对应Y轴，第3个参数对应Z轴，参数不允许省略  
+scaleX()：指定对象X轴的（水平方向）缩放  
+scaleY()：指定对象Y轴的（垂直方向）缩放  
+scaleZ()：指定对象Z轴的缩放  
+
+skew()：指定对象斜切扭曲。第一个参数对应X轴，第二个参数对应Y轴。如果第二个参数未提供，则默认值为0,单位deg,turn  
+skewX()：指定对象X轴的（水平方向）扭曲  
+skewY()：指定对象Y轴的（垂直方向）扭曲  
+skewZ()：指定对象Z轴的扭曲  
+
+perspective()：指定3d的透视距离
+
+
+* matrix
 >
-|父元素行高单位   | 子元素行高大小 (子元素未设置行高情况下) |
-|:---|:---|
-| px  | 行高=父元素行高
-| em、% | 行高=父元素字体大小*行高值（与子元素字体大小无关）
-| 无 | 行高=子元素字体大小*行高值
+    transform: matrix(a,b,c,d,e,f)
+    a c e   x   ax + cy + e // ax+cy+e:变换后的水平坐标
+    b d f . y = bx + dy + f // bx+dy+f:变换后的垂直位置 
+    0 0 1   1   0  + 0  + 1
 
-对于非替换元素的纯内联元素，其可视高度完全由 line-height 决定
 
-## <a name="文本换行">文本换行 white-space word-wrap word-break</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+    x, y表示转换元素的所有坐标（变量）
 
-white-space
+    matrix(sx, 0, 0, sy, 0, 0) 等同于scale(sx, sy)
+
+    matrix(0, 0, 0, 0, tx, ty) 等同于translate(tx, ty)
+
+* [ transform的影响](http://www.zhangxinxu.com/wordpress/2015/05/css3-transform-affect/)
+
+transform限制position:fixed的跟随效果，
+父元素有transform属性（filter属性也会）， fixed 的效果会降级为 absolute。
+
+
+
+<a href="#图片缩放">图片缩放matrix,transform+transition</a>
+
+## <a name="transition">[transition过渡](http://css.cuishifeng.cn/transform.html)</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+用于设置元素的样式过度，和animation有着类似的效果
+
+就是元素从这个属性(color)的某个值(red)过渡到这个属性(color)的另外一个值(green)，这是一个状态的转变，需要一种条件来触发这种转变，比如我们平时用到的:hoever、:focus、:checked、媒体查询或者JavaScript。
+
+transition: property duration  timing-function delay  
+
+>property 执行过渡效果对应的属性，例如 color，background 等，可以使用 all 来指定所有的属性 ；并不是所有的CSS属性都可添加transition 效果 如:display[参考](http://css.cuishifeng.cn/transition-property.html)
+
+>duration 过渡动画的持续时间  
+
+>timing-function 动画的速度曲线，常见的有：linear(匀速)，ease(快-慢-慢)，ease-in(快-快)，ease-out(慢-慢)，ease-in-out(慢-快-慢),cubic-bezier...[详细参考](http://css.cuishifeng.cn/transition-timing-function.html)  
+
+>delay 延迟多久后开始动画  
+
+如果需要不同属性对应不同的效果，可以这么来写：
 >
-    normal: 忽略/合并空白(默认值)
-    pre: 保留空白，如同<pre>的行为
-    nowrap: 忽略/合并空白，文本不会换行，直到遇到<br/>
-    pre-wrap: 保留空白，但是会正常地进行换行
-    pre-line: 忽略/合并空白，但是会正常地进行换行
-    inherit: 从父元素继承。
+    .demo {
+      transition-property: all, border-radius, opacity;
+      transition-duration: 1s, 2s, 3s;
+      /* 当这样使用时，确保 all 在第一个，因为如果 all 在后边的话，它的规则会覆盖掉前边的属性 */
+    }
 
-word-wrap
+## <a name="animation">animation动画</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+animation: name duration timing-function delay iteration-count direction play-state fill-mode;  
+
+>name: 用来调用@keyframes定义好的动画，与@keyframes定义的动画名称一致  
+
+>duration: 指定动画完成一个周期所需时间（ms|s），默认是 0。
+
+>timing-function: 规定动画的速度曲线，ease(默认) | linear | ease-in | ease-out...
+
+>delay: 指定动画延迟时间，即动画何时开始，默认是 0。
+
+>iteration-count: 指定动画播放的次数（number | infinite）,默认是 1
+
+>direction: 指定动画播放方向：normal(按时间轴顺序)(默认值),reverse(时间轴反方向运行),alternate(轮流，即来回往复进行),alternate-reverse(动画先反运行再正方向运行，并持续交替运行)
+
+>play-state: 指定控制元素动画的播放状态，通过此来控制动画的暂停和继续，running(继续)（默认值），paused(暂停)
+
+>fill-mode: 控制动画结束后，元素的样式，有四个值：none(回到动画没开始时的状态)（默认值），forwards(动画结束后动画停留在结束状态)，backwords(动画回到第一帧的状态)，both(根据animation-direction轮流应用forwards和backwards规则)，注意与iteration-count不要冲突(动画执行无限次)
+
+
+使用 animation 的前提是我们需要先使用 @keyframes 来定义一个动画效果，用来控制动画过程中的各个状态的情况，
 >
-    normal: 只在允许的断字点换行(默认值)
-    break-word: 在长单词或URL地址内部进行换行
+    @keyframes animationName {
+      from { left: 0; top: 0; }
+      to { left: 100%; top: 100%; }
+    }
+    @keyframes animationName {
+      0% { left: 0; top: 0; }
+      100% { left: 100%; top: 100%; }
+    }
 
-word-break
->  
-    normal：依照亚洲语言和非亚洲语言的文本规则，允许在字内换行。
 
-    keep-all：与所有非亚洲语言的normal相同。对于中文，韩文，日文，不允许字断开。适合包含少量亚洲文本的非亚洲文本。
+      .animation {
+        width: 200px;
+        height: 300px;
+        background-image: linear-gradient(blue, red);
+      }
+      .animation{
+        animation: a 2s ease-in-out infinite alternate both;
+      }
+      @keyframes a{
+        0%{
+          opacity: 1;
+          transform: translate(0,0)
+        }
+        100%{
+          opacity: 0;
+          transform: translate(200px,0) scale(.5) skew(2turn)
+        }
+      }
 
-    break-all：该行为与亚洲语言的normal相同。也允许非亚洲语言文本行的任意字内断开。该值适合包含一些非亚洲文本的亚洲文本，比如使连续的英文字母间断行。
+[animate.css](https://daneden.github.io/animate.css/)
 
----
+## <a name="尺寸单位">像素定义 尺寸单位</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
 
-强制不换行
->
-    white-space:nowrap;
-
-正常文字的换行(亚洲文字和非亚洲文字)
->
-    white-space:normal;
-
-强制英文单词断行
->
-    word-break:break-all;
-
-自动换行
->
-    word-wrap: break-word; 
-    word-break: break-all; 
-    //white-space:normal;
-
-## <a name="尺寸单位">尺寸单位 像素定义</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+[移动端适配](https://juejin.im/post/5cddf289f265da038f77696c#heading-14)
 
 #### 尺寸单位
 >
@@ -1103,18 +1356,6 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
  
 
 
-## <a name="注意事项">注意事项</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
-
-1. margin的top、bottom及padding的top、bottom使用百分比作为单位时，是相对父元素的宽度width的而不是高度height；
-2. 含有定位属性的元素，其top、bottom单位为百分比时，是相对于父元素的高度的。left、right则是相对于父元素的宽度的。
-3. 边框宽度不允许使用百分比值
-4. 
-  当子元素是绝对定位，  子元素设置width:100% = 父容器的padding+content 
-  当子元素是非绝对定位，子元素设置width:100% = 父元素的content
-
-5. 使用calc时运算符之间要有空格 ，否则可能无效 
-
-6. background引入图片的一个缺点是页面的Web可访问性会受到轻微的影响，因为屏幕阅读器和搜索引擎无法正确地获取到图像。可以通过CSS object-fit属性解决(object-position和object-fit只针对替换元素有作用)
 
 ## <a name="获取CSS样式">获取CSS样式</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
 
@@ -1213,9 +1454,28 @@ https://my.oschina.net/i33/blog/126960
 
 # <a name="一些css属性及其他">**一些css属性及其他**</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
 
+## <a name="注意事项">注意事项</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
+* margin的top、bottom及padding的top、bottom使用百分比作为单位时，是相对父元素的宽度width的而不是高度height；
+
+* 含有定位属性的元素，其top、bottom单位为百分比时，是相对于父元素的高度的。left、right则是相对于父元素的宽度的。
+
+* 边框宽度不允许使用百分比值
+
+* 当子元素是绝对定位，子元素设置width:100% = 父容器的padding+content     
+* 当子元素是非绝对定位，子元素设置width:100% = 父元素的content
+
+* position:fixed 降级问题:其父元素中有使用 transform 、filter属性，fixed 的效果会降级为 absolute。
+[参考](http://www.zhangxinxu.com/wordpress/2015/05/css3-transform-affect/)
+
+解决：当使用 fixed 的直接父元素的高度和屏幕的高度相同时 fixed 和 absolute 的表现效果会是一样的。如果这个直接父级内的元素存在滚动的情况，那就加上 overflow-y:auto。
+
+* 使用calc时运算符之间要有空格 ，否则可能无效 
+
+*  background引入图片的一个缺点是页面的Web可访问性会受到轻微的影响，因为屏幕阅读器和搜索引擎无法正确地获取到图像。可以通过CSS object-fit属性解决(object-position和object-fit只针对替换元素有作用)
 
 
-## <a name="css自定义属性">css自定义属性</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name="css自定义变量属性">css自定义变量属性</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
 
 <b>IE不支持</b>
 
@@ -1229,6 +1489,8 @@ https://my.oschina.net/i33/blog/126960
     对大小写敏感：--color 与 --COLOR 不同
 
     可以级联继承 
+
+    CSS 变量字符限制为： [0-9]、[a-zA-Z]、_、-、中文和韩文等
 
 * 获取方式
 >
@@ -1278,8 +1540,7 @@ https://my.oschina.net/i33/blog/126960
       word-break: break-all; 
       -webkit-line-clamp: @clamp; /* 限制在显示的文本的行数 */
       display: -webkit-box; /* 将对象作为弹性伸缩盒子模型显示 */
-      /* 防止打包后出现css中文本超出部分隐藏显示省略号失效
-         autoprefixer自动移除老式过时的代码 */
+      /* 防止打包后这段代码被删除 */
       /*! autoprefixer: off */
         -webkit-box-orient: vertical;/* 伸缩盒子的子元素排列：从上到下 */
       /* autoprefixer: on */
@@ -1556,20 +1817,6 @@ firefox
 [插件](https://github.com/malihu/malihu-custom-scrollbar-plugin)
 
 
-## <a name="css矩阵matrix">css矩阵matrix</a>
-
->
-    transform: matrix(a,b,c,d,e,f)
-    a c e   x   ax + cy + e // ax+cy+e:变换后的水平坐标
-    b d f . y = bx + dy + f // bx+dy+f:变换后的垂直位置 
-    0 0 1   1   0  + 0  + 1
-
-
-    x, y表示转换元素的所有坐标（变量）
-
-    matrix(sx, 0, 0, sy, 0, 0) 等同于scale(sx, sy)
-
-    matrix(0, 0, 0, 0, tx, ty) 等同于translate(tx, ty)
 
 ## <a name="图片缩放">图片缩放matrix,transform+transition</a>
 >
@@ -1621,7 +1868,7 @@ firefox
     
 ## <a name="filter滤镜">filter滤镜（不是IE的filter:alpha(opacity=50)）</a>
 
-## <a name="background-blend-mode和mix-blend-mode">background-blend-mode和mix-blend-mode</a>
+
 
 ## <a name="多方法描绘一个边框">多方法描绘一个边框</a>
 [参考](https://www.w3cplus.com/css/css-tips-0904-1.html)

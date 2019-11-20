@@ -24,6 +24,7 @@
 * <a href="#单向数据流">单向数据流</a>
 * <a href="#组件生命周期">组件生命周期</a>
 * <a href="#监听组件的生命周期">监听组件的生命周期</a>
+* <a href="#组件销毁时，清除定时器">组件销毁时，清除定时器</a>
 * <a href="#computed watch methods">computed watch methods</a>
 * <a href="#解决对象新增属性不能响应的问题"> vm.$set() 解决对象新增属性不能响应的问题</a>
 * <a href="#Vue检测数组的变动">Vue检测数组的变动</a>
@@ -50,7 +51,7 @@
   * <a href="#mode">mode: hash | history区别</a>
   * <a href="#切换页面时自动滚动到顶部">切换页面时自动滚动到顶部</a>
   * <a href="#设置页面title">设置页面title</a>
-
+* <a href="#路由权限">路由权限</a>
 * <a href="#vuex">vuex</a>
 * <a href="#组件通信方法">组件通信方法</a>
 
@@ -63,7 +64,7 @@
   * <a href="#"></a>
 
 * <a href="#vue-cli2快速创建项目">vue-cli2快速创建项目</a>
-* <a href="#vue-cli3">vue-cli3配置</a>
+* <a href="#vue-cli3配置">vue-cli3配置</a>
 
 * <a href="#静态资源处理">静态资源处理：图片等</a>
 * <a href="#打包">打包时常见问题及解决</a>
@@ -484,6 +485,38 @@ Vue 实例有一个完整的生命周期，也就是从开始创建、初始化�
     // 父组件监听到 mounted 钩子函数 ...     
 
 其它的生命周期事件，例如： created， updated等都可监听
+
+# <a name="组件销毁时，清除定时器">组件销毁时，清除定时器</a>
+>
+    data() {            
+      return {                              
+        timer: null  // 定时器名称          
+      }        
+    },
+    mounted() {
+      this.timer = setTimeout(() => {
+        // 某些操作
+      }, 1000)
+    },
+    beforeDestroy() {
+      clearTimeout(this.timer);        
+      this.timer = null;
+    }
+
+通过$once这个事件侦听器器在定义完定时器之后的位置来清除定时器
+>
+    mounted() {
+      const timer = null
+      timer = setTimeout(() => {
+        // 某些操作
+      }, 1000)
+      // 通过$once来监听定时器，在beforeDestroy钩子可以被清除。
+      this.$once('hook:beforeDestroy', () => {            
+        clearTimeout(timer);                                    
+      })
+    },
+
+[$once、$on、$off的使用](https://cn.vuejs.org/v2/guide/components-edge-cases.html#%E7%A8%8B%E5%BA%8F%E5%8C%96%E7%9A%84%E4%BA%8B%E4%BB%B6%E4%BE%A6%E5%90%AC%E5%99%A8)
 
 # <a name="computed watch methods">computed watch methods</a>
 [computed和watch的细节全面分析](https://segmentfault.com/a/1190000012948175)
@@ -982,6 +1015,8 @@ https://www.jianshu.com/p/a7550c0e164f
 # <a name="keep-alive">keep-alive</a>
 [keep-alive](https://cn.vuejs.org/v2/api/#keep-alive)
 
+[参考](https://juejin.im/post/5b2ce07ce51d45588a7dbf76)
+
 包裹动态组件时，会缓存不活动的组件实例，主要用于保留组件状态或避免重新渲染；被包裹在keep-alive中的组件的状态将会被保留
 >
 
@@ -1016,12 +1051,14 @@ https://www.jianshu.com/p/a7550c0e164f
 
       <!--会被缓存的组件-->
     <keep-alive>
-      <router-view v-if="$route.meat.keepAlive"></router-view>
+      <router-view v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
 
     <!--不会被缓存的组件-->
     <router-view v-if="!$route.meta.keepAlive">
     </router-view>
+
+
 
 # <a name="路由vue-router">路由vue-router</a>
 https://router.vuejs.org/zh
@@ -1510,6 +1547,11 @@ popstate
     export default router
 
 
+# <a name="路由权限">路由权限</a>
+https://juejin.im/post/5b5bfd5b6fb9a04fdd7d687a
+
+
+
 # <a name="vuex">vuex</a>
 [详情](/details/Vuex.md)
 
@@ -1797,7 +1839,7 @@ ref：如果在普通的 DOM 元素上使用，引用指向的就是 DOM 元素�
 
 # <a name="axios、api 设计">axios、api 设计</a>
 [参考](https://segmentfault.com/a/1190000018964794?utm_medium=hao.caibaojian.com&utm_source=hao.caibaojian.com&share_user=1030000000178452#articleHeader8)
-
+[参考](https://juejin.im/post/5b55c118f265da0f6f1aa354)
 [参考](https://github.com/chenzong24635/vDemo/blob/master/src/api/index.js)
 
 # <a name="token验证">如何添加token验证</a>
@@ -1994,7 +2036,23 @@ dev --> port
     在项目开发完成之后，npm run build 来进行打包工作。注意，自己的项目文件都需要放到 src 文件夹下。
     打包完成后，会生成 dist 文件夹，如果已经修改了文件路径，可以直接打开本地文件查看。项目上线时，只需要将 dist 文件夹放到服务器就行了。
 
+## 查看所有注入的命令 npx vue-cli-service help
 
+## 查看打包后各文件的体积 npm run build --report 
+如果你是vue-cli初始化的项目，会默认安装webpack-bundle-analyzer插件，该插件可以帮助我们查看项目的体积结构对比和项目中用到的所有依赖。也可以直观看到各个模块体积在整个项目中的占比
+
+记得运行的时候先把之前npm run dev开启的本地关掉
+
+
+## dependencies 与 devdependencies 区别
+>
+    –-save会把依赖包名称添加到package.json文件dependencies键下
+    –-save-dev则添加到package.json文件devDependencies键下
+
+    dependencies ----- 生产环境中需要的依赖，即正常运行该包时所需要的依赖项。 
+    devDependencies -- 开发时用的依赖项，它们不会被部署到生产环境。
+
+---
 >
 
     ├── build/                      ## webpack 编译任务配置文件: 开发环境与生产环境
@@ -2030,14 +2088,6 @@ dev --> port
     build/
 
 
-## dependencies 与 devdependencies 区别
->
-    –save会把依赖包名称添加到package.json文件dependencies键下
-    –save-dev则添加到package.json文件devDependencies键下
-
-    dependencies ----- 生产环境中需要的依赖，即正常运行该包时所需要的依赖项。 
-    devDependencies -- 开发时用的依赖项，它们不会被部署到生产环境。
-
 # <a name="vue-cli3配置">vue-cli3配置</a>
 [参考](https://blog.csdn.net/qq_36407748/article/details/80739787)
 
@@ -2051,6 +2101,10 @@ vue create projectName
 
 * vue.config.js
 >
+    const path = require('path');
+    function resolve(dir) {
+      return path.join(__dirname, dir)
+    }
     module.exports = {
       publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
       //baseUrl (Vue CLI 3.3已弃用)
@@ -2067,17 +2121,19 @@ vue create projectName
 
       lintOnSave: process.env.NODE_ENV !== 'production', // eslint检验
 
+      chainWebpack: config => { // 自定义路径名
+        config.resolve.alias
+          .set('@', resolve('src'))
+          .set('_c', resolve('src/components'))
+      },
+
       devServer:{ // 代理
         open: true,// 启动服务器后是否打开浏览器
         host: 'localhost',
         port: 8080, 
         https: false, 
         hotOnly: false,
-        chainWebpack: config => { // 自定义路径名
-          config.resolve.alias
-            .set('@', resolve('src'))
-            .set('_c', resolve('src/components'))
-        },
+        
         proxy: { // 代理
           '/api': {
             target: '要跨域的域名',
@@ -2091,6 +2147,8 @@ vue create projectName
       }  
     }
 
+* 引用public文件夹内文件
+process.env.BASE_URL + 'img/temp.jpg'
 
 
 * 打包时不生成.map文件，map文件的作用
@@ -2099,6 +2157,7 @@ vue create projectName
 
     作用：项目打包后，代码都是经过压缩加密的，如果运行时报错，输出的错误信息无法准确得知是哪里的代码报错。  
     有了map就可以像未加密的代码一样，准确的输出是哪一行哪一列有错。
+    但是我们在生成环境是不需要.map文件的
 
 * [引用public文件路径](https://cli.vuejs.org/zh/guide/html-and-static-assets.html#public-%E6%96%87%E4%BB%B6%E5%A4%B9)
 >
@@ -2285,7 +2344,8 @@ https://segmentfault.com/a/1190000014609379
 
 https://blog.csdn.net/wcy7916/article/details/87357007
 
-[3.X-API](https://3.swiper.com.cn/api/pagination/2014/1217/70.html)
+[3.X-API](https://3.swiper.com.cn/api/pagination/2014/1217/70.html)  
+[API](https://www.swiper.com.cn/api/index.html)
 
 api同swiper
 // notNextTick是一个组件自有属性，如果notNextTick设置为true，组件则不会通过NextTick来实例化swiper，也就意味着你可以在第一时间获取到swiper对象，假如你需要刚加载遍使用获取swiper对象来做什么事，那么这个属性一定要是true
@@ -2370,7 +2430,7 @@ api同swiper
   console.log(data)
 
 ## 修改组件css  /deep/ 或 >>>   
-    // less和sass中不管用
+    // less和sass中不支持 >>> 
     .wrap /deep/ .vux-header {
       background-color: ##3cc51f;
     }

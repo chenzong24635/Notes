@@ -121,6 +121,8 @@
 
 `手册、API:`
 
+  [DevDocs API](https://devdocs.io/)
+
   [Can I Use-兼容性查询](https://caniuse.com/#home)
 
   [MDN](https://developer.mozilla.org/zh-CN/docs/Web)
@@ -137,9 +139,13 @@
 
   [vux](https://doc.vux.li/zh-CN/)
 
+  [vant](https://youzan.github.io/vant/#/zh-CN/toast)
+
   [mint-ui](http://mint-ui.github.io/docs/#/)
 
   [Element](http://element-cn.eleme.io/#/zh-CN/component/installation)
+
+  [iView](http://v1.iviewui.com/components/button)
 
   [jqweui](http://jqweui.com/components)
 
@@ -220,6 +226,7 @@
   * <a href="#获取当前页面url网址信息">获取当前页面url网址信息</a>
   * <a href="#解析url为对象">解析url为对象</a>
   * <a href="#图片转base64">图片转base64</a>
+  * <a href="#图片转blob下载">图片转blob下载</a>
   * <a href="#打印">打印</a>
   * <a href="#base64数据导出文件">base64数据导出文件，文件下载</a>
   * <a href="#判断字符串长度">判断字符串长度</a>
@@ -584,6 +591,45 @@ var obj = {
         }
       };
       xhr.send();
+    }
+
+## <a name="图片转blob下载">图片转blob下载</a>
+>
+    getImageBlob("./img/linear.gif");
+
+    // 通过src获取图片的blob对象
+    function getImageBlob(url) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("get", url, true);
+      xhr.responseType = "blob";
+      xhr.onload = function() {
+        if (this.status == 200) {
+          download(this.response);
+        }
+      };
+      xhr.send();
+    }
+
+    function download(blob) {
+      let reader = new FileReader();
+      reader.addEventListener("loadend", function() {
+        console.log(reader.result);
+      });
+
+      // 读取来看下下载的内容
+      let suffix = blob.type.match(/\/.*/g)[0].slice(1) //图片后缀,jpg png...
+      reader.readAsDataURL(blob);
+      // 最终生成的字符串
+      // data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAA...
+      // 生成下载用的URL对象
+      let url = URL.createObjectURL(blob);
+      // 生成一个a标签，并模拟点击，即可下载，批量下载同理
+      let aDom = document.createElement("a");
+      aDom.href = url;
+      aDom.download = "download" + '.'+suffix;
+      aDom.text = "下载文件";
+      document.getElementsByTagName("body")[0].appendChild(aDom);
+      aDom.click();
     }
 
 ## <a name="打印">打印</a>
