@@ -41,16 +41,13 @@ css手册
 CSS布局、居中
 
 [Flex](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
-
 [Flex](https://yoksel.github.io/flex-cheatsheet/)
-
-[Flex](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
-
 [Flex](http://caibaojian.com/flexbox-guide.html)
 
 [Grid](http://grid.guide/)
 [Grid](https://zhuanlan.zhihu.com/p/33030746)
 [Grid](https://www.html.cn/archives/8510)
+
 
 [CSS布局](http://zh.learnlayout.com/)
 
@@ -95,6 +92,8 @@ CSS布局、居中
 * <a href="#border-style">border-style属性值</a>
 * <a href="#line-hieght">line-hieght,vertical-align</a>
 * <a href="#文本换行">文本换行 white-space word-wrap word-break</a>
+* <a href="#Flex">Flex</a>
+* <a href="#Grid">Grid</a>
 * <a href="#background">background属性值</a>
   * <a href="#background-blend-mode和mix-blend-mode">background-blend-mode和mix-blend-mode</a>
  * <a href="#渐变">渐变linear-gradient,radial-gradient,conic-gradient</a>
@@ -901,6 +900,12 @@ word-break
     //white-space:normal;
 
 <a href="#文字超出省略">文字超出省略</a>
+
+## <a name="Flex">Flex</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+[Flex](/details/Flex.md)
+
+## <a name="Grid">Grid</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+[Grid](/details/Grid.md)
 
 ## <a name="background">background属性值</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
 

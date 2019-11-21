@@ -226,7 +226,7 @@
   * <a href="#获取当前页面url网址信息">获取当前页面url网址信息</a>
   * <a href="#解析url为对象">解析url为对象</a>
   * <a href="#图片转base64">图片转base64</a>
-  * <a href="#图片转blob下载">图片转blob下载</a>
+  * <a href="#图片转base64下载">图片转base64下载</a>
   * <a href="#打印">打印</a>
   * <a href="#base64数据导出文件">base64数据导出文件，文件下载</a>
   * <a href="#判断字符串长度">判断字符串长度</a>
