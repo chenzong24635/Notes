@@ -38,7 +38,12 @@
     >
         <a>我是代码</a>
 
-
+* 生成多行相同代码
+div.item*3>{$}
+>
+    <div class="item">1</div>
+    <div class="item">2</div>
+    <div class="item">3</div>
 
 * 换行
 两长段落之间没有空行 ，如何换行

@@ -12,7 +12,7 @@ display: flex | inline-flex; (适用于父类容器元素上)
 采用 Flex 布局的元素，称为 Flex 容器（flex container），简称"容器"。它的所有子元素自动成为容器成员，称为 Flex 项目（flex item），简称"项目"。
 
 
-![flex](/img/flex.png)
+![flex](/img/flex/flex.png)
 
 容器默认存在两根轴：水平的主轴（main axis）和垂直的交叉轴（cross axis）。主轴的开始位置（与边框的交叉点）叫做main start，结束位置叫做main end；交叉轴的开始位置叫做cross start，结束位置叫做cross end。
 
@@ -42,8 +42,8 @@ display: flex | inline-flex; (适用于父类容器元素上)
   >space-around: 两端对齐，项目的间隔相等。两端保留的间距为项目间距大小的一半。  
   >space-evenly: 两端对齐，项目的间隔相等。两端保留的间距等于项目间距大小
 
-  <!-- ![justify-content](/img/justify-content.png) -->
-  ![justify-content](/img/justify-content.svg)
+  <!-- ![justify-content](/img/flex/justify-content.png) -->
+  ![justify-content](/img/flex/justify-content.svg)
 
 * align-items：定义项目在交叉轴上对齐方式
   >stretch（默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度。
@@ -52,8 +52,8 @@ display: flex | inline-flex; (适用于父类容器元素上)
   >center：交叉轴的中点对齐。  
   >baseline: 项目的第一行文字的基线对齐。  
   
-  <!-- ![align-items](/img/align-items.png) -->
-  ![align-items](/img/align-items.svg)
+  <!-- ![align-items](/img/flex/align-items.png) -->
+  ![align-items](/img/flex/align-items.svg)
 
 * align-content:定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。
   >flex-start：与交叉轴的起点对齐。  
@@ -63,15 +63,15 @@ display: flex | inline-flex; (适用于父类容器元素上)
   >space-around：每根轴线两侧的间隔都相等。所以，轴线之间的间隔>比轴线与边框的间隔大一倍。  
   >stretch（默认值）：轴线占满整个交叉轴。  
 
-  <!-- ![align-content](/img/align-content.png) -->
-  ![align-content](/img/align-content.svg)
+  <!-- ![align-content](/img/flex/align-content.png) -->
+  ![align-content](/img/flex/align-content.svg)
 
 ## 项目属性
 
 * order:定义项目的排列顺序。数值越小，排列越靠前，默认为0。
   >order: number（自然数）
 
-  ![order](/img/order.svg)
+  ![order](/img/flex/order.svg)
 
 
 * flex:flex-grow flex-shrink flex-basis 简写形式(后两个属性可选)
@@ -130,4 +130,4 @@ display: flex | inline-flex; (适用于父类容器元素上)
   >align-self: auto | flex-start | flex-end | center | baseline | stretch  
   >默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则为stretch。  
 
-  ![align-self](/img/align-self.svg)
+  ![align-self](/img/flex/align-self.svg)

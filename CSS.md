@@ -43,9 +43,8 @@ CSS布局、居中
 [Flex](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
 [Flex](https://yoksel.github.io/flex-cheatsheet/)
 [Flex](http://caibaojian.com/flexbox-guide.html)
+[Flex](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
 
-[Grid](http://grid.guide/)
-[Grid](https://zhuanlan.zhihu.com/p/33030746)
 [Grid](https://www.html.cn/archives/8510)
 
 
@@ -75,6 +74,7 @@ CSS布局、居中
 * <a href="#CSS">**`CSS`**</a>
 
 * <a href="#概述">概述</a>
+* <a href="#常见浏览器及其内核、私有化前缀">常见浏览器及其内核、私有化前缀</a>
 * <a href="#权重、优先级">权重、优先级</a>
 * <a href="#CSS引入的方式">CSS引入的方式有哪些? link和@import的区别是? 如何避免FOUC?</a>
 * <a href="#盒模型">盒模型</a>
@@ -147,6 +147,15 @@ CSS的优势：
 >
     内容与表现分离，有了CSS，网页的内容(XHMTL)与表现就可以分开了。
     使用CSS可以减少网页的代码量，增加网页的浏览速度。
+
+## <a name="常见浏览器及其内核、私有化前缀">常见浏览器及其内核、私有化前缀</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
+
+| | Chrome | Firefox | IE | Safari | Opera |
+:-:| :-:|:-:|:-:|:-:|:-:|
+| 渲染引擎(内核) | Blink | Gecko | Trident | Webkit | Blink(原Presto) |
+| JS 引擎 | V8 | SpiderMonkey | Nitro | Chakra | V8 |
+| 私有化前缀 | -webkit- | -moz- | -ms- | -webkit- | -webkit- |
 
 ## <a name="权重、优先级">权重、优先级</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
 >
