@@ -2,50 +2,50 @@
 
 [兼容性](https://caniuse.com/#search=grid)
 
-<a name="TOP"></a>
+<a href="#TOP"></a>
 
 <details open>
   <summary>
     目录
   </summary>
 
-  * <a name="基本">基本</a>
-    * <a name="网格项">网格项(Grid Item)</a>
-    * <a name="网格线">网格线(Grid Line)</a>
-    * <a name="网格轨道">网格轨道(Grid Track)</a>
-    * <a name="网格单元格">网格单元格(Grid Cell):</a>
-    * <a name="网格区域">网格区域(Grid Area)</a>
-  * <a name="容器属性">容器属性</a>
-    * <a name="display">display: 将元素定义为网格容器，并为其内容建立新的 网格格式上下文。</a>
-    * <a name="grid-template-rows / grid-template-columns">grid-template-rows / grid-template-columns</a>
-    * <a name="repeat()">repeat()</a>
-    * <a name="minmax()">minmax(min,max)</a>
-    * <a name="grid-template-areas">grid-template-areas</a>
-    * <a name="grid-template">grid-template-rows grid-template-columns  grid-template-areas 简写属性</a>
-    * <a name="grid-row-gap 、grid-column-gap">grid-row-gap 、grid-column-gap行列间距</a>
-    * <a name="grid-gap">grid-row-gap grid-column-gap 简写形式</a>
-    * <a name="justify-items">justify-items:沿着 inline（行）轴线网格项(grid items)对齐方式</a>
-    * <a name="align-items">align-items 沿着block（列）轴线网格项(grid items)对齐方式</a>
-    * <a name="place-items">place-items:align-items justify-items 的简写形式</a>
-    * <a name="justify-content">justify-content: 定义沿着 inline（行）轴线 网格容器内的网格的对齐方式</a>
-    * <a name="align-content">align-content: 定义沿着 block（列）轴线 网格容器内的网格的对齐方式</a>
-    * <a name="place-content">place-content: align-content justify-content简写方式</a>
-    * <a name="grid-auto-columns / grid-auto-rows">grid-auto-columns / grid-auto-rows指定任何自动生成的网格轨道(grid tracks)（又名隐式网格轨道）的大小</a>
-    * <a name="grid-auto-flow">grid-auto-flow</a>
-    * <a name="grid">grid: grid-template-rows  grid-template-columns  grid-template-areas  grid-auto-rows  grid-auto-columns  grid-auto-flow 简写形式</a>
-  * <a name="项目属性">项目属性</a>
-    * <a name="grid-column-start / grid-column-end / grid-row-start / grid-row-end">grid-column-start / grid-column-end / grid-row-start / grid-row-end 网格位置</a>
-    * <a name="grid-column">grid-column: grid-column-start / grid-column-end 简写形式</a>
-    * <a name="grid-row">grid-column: grid-column-start / grid-column-end 简写形式</a>
-    * <a name="grid-area">grid-area为网格项提供一个名称</a>
-    * <a name="justify-self">justify-self:设置沿着 inline（行）轴线网格项对齐方式。覆盖容器的justify-content属性</a>
-    * <a name="align-self">align-self:设置沿着 block（列）轴线网格项对齐方式。覆盖容器的align-content属性></a>
-    * <a name="place-self">place-self</a>
-    * <a name=""></a>
-    * <a name=""></a>
+  * <a href="#基本">基本</a>
+    * <a href="#网格项">网格项(Grid Item)</a>
+    * <a href="#网格线">网格线(Grid Line)</a>
+    * <a href="#网格轨道">网格轨道(Grid Track)</a>
+    * <a href="#网格单元格">网格单元格(Grid Cell):</a>
+    * <a href="#网格区域">网格区域(Grid Area)</a>
+  * <a href="#容器属性">容器属性</a>
+    * <a href="#display">display: 将元素定义为网格容器，并为其内容建立新的 网格格式上下文。</a>
+    * <a href="#grid-template-rows / grid-template-columns">grid-template-rows / grid-template-columns</a>
+    * <a href="#repeat()">repeat()</a>
+    * <a href="#minmax()">minmax(min,max)</a>
+    * <a href="#grid-template-areas">grid-template-areas</a>
+    * <a href="#grid-template">grid-template-rows grid-template-columns  grid-template-areas 简写属性</a>
+    * <a href="#grid-row-gap 、grid-column-gap">grid-row-gap 、grid-column-gap行列间距</a>
+    * <a href="#grid-gap">grid-row-gap grid-column-gap 简写形式</a>
+    * <a href="#justify-items">justify-items:沿着 inline（行）轴线网格项(grid items)对齐方式</a>
+    * <a href="#align-items">align-items 沿着block（列）轴线网格项(grid items)对齐方式</a>
+    * <a href="#place-items">place-items:align-items justify-items 的简写形式</a>
+    * <a href="#justify-content">justify-content: 定义沿着 inline（行）轴线 网格容器内的网格的对齐方式</a>
+    * <a href="#align-content">align-content: 定义沿着 block（列）轴线 网格容器内的网格的对齐方式</a>
+    * <a href="#place-content">place-content: align-content justify-content简写方式</a>
+    * <a href="#grid-auto-columns / grid-auto-rows">grid-auto-columns / grid-auto-rows指定任何自动生成的网格轨道(grid tracks)（又名隐式网格轨道）的大小</a>
+    * <a href="#grid-auto-flow">grid-auto-flow</a>
+    * <a href="#grid">grid: grid-template-rows  grid-template-columns  grid-template-areas  grid-auto-rows  grid-auto-columns  grid-auto-flow 简写形式</a>
+  * <a href="#项目属性">项目属性</a>
+    * <a href="#grid-column-start / grid-column-end / grid-row-start / grid-row-end">grid-column-start / grid-column-end / grid-row-start / grid-row-end 网格位置</a>
+    * <a href="#grid-column">grid-column: grid-column-start / grid-column-end 简写形式</a>
+    * <a href="#grid-row">grid-column: grid-column-start / grid-column-end 简写形式</a>
+    * <a href="#grid-area">grid-area为网格项提供一个名称</a>
+    * <a href="#justify-self">justify-self:设置沿着 inline（行）轴线网格项对齐方式。覆盖容器的justify-content属性</a>
+    * <a href="#align-self">align-self:设置沿着 block（列）轴线网格项对齐方式。覆盖容器的align-content属性></a>
+    * <a href="#place-self">place-self</a>
+    * <a href="#"></a>
+    * <a href="#"></a>
 </details>
 
-# <a href="#基本">基本</a>
+# <a name="#基本">基本</a>
 
 Grid(网格)布局，是一个二维的基于网格的布局系统，它的目标是完全改变我们基于网格的用户界面的布局方式
 
@@ -54,7 +54,7 @@ display:grid | inline-grid;
 使用 grid-template-columns 和 grid-template-rows 设置 列 和 行 的尺寸大小，  
 然后通过 grid-column 和 grid-row 将其子元素放入这个 grid(网格) 中。
 
-##  <a href="#网格项">网格项(Grid Item):网格容器（Grid Container）的直接子元素</a>
+##  <a name="#网格项">网格项(Grid Item):网格容器（Grid Container）的直接子元素</a>
 
 >
     这里 item 元素就是网格项(Grid Item)，但是 sub-item 不是。
@@ -66,41 +66,41 @@ display:grid | inline-grid;
       <div class="item"></div>
     </div>
 
-##  <a href="#网格线">网格线(Grid Line):构成网格结构的分界线</a>
+##  <a name="#网格线">网格线(Grid Line):构成网格结构的分界线</a>
 
 它们既可以是垂直的（“列网格线(column grid lines)”），也可以是水平的（“行网格线(row grid lines)”），并位于行或列的任一侧。例如，这里的黄线就是一条列网格线  
   <img src="../img/grid/Grid-Line.svg" width="40%" >
 
-##  <a href="#网格轨道">网格轨道(Grid Track)</a>
+##  <a name="#网格轨道">网格轨道(Grid Track)</a>
 :两条相邻网格线之间的空间。你可以把它们想象成网格的列或行
 
 下图是第二条和第三条 行网格线 之间的 网格轨道(Grid Track)。  
 
 <img src="../img/grid/Grid-Track.svg" width="40%" >
 
-##  <a href="#网格单元格">网格单元格(Grid Cell)</a>
+##  <a name="#网格单元格">网格单元格(Grid Cell)</a>
 :两个相邻的行和两个相邻的列网格线之间的空间。这是 Grid(网格) 系统的一个“单元”
 
 下图是第 1 至第 2 条 行网格线 和第 2 至第 3 条 列网格线 交汇构成的 网格单元格(Grid Cell)。
 
 <img src="../img/grid/Grid-Cell.svg" width="40%" >
 
-##  <a href="#网格区域">网格区域(Grid Area):4条网格线包围的总空间。一个 网格区域(Grid Area) 可以由任意数量的 网格单元格(Grid Cell) 组成。</a>
+##  <a name="#网格区域">网格区域(Grid Area):4条网格线包围的总空间。一个 网格区域(Grid Area) 可以由任意数量的 网格单元格(Grid Cell) 组成。</a>
 
   下图是 行网格线1和3，以及列网格线1和3 之间的网格区域。  
   <img src="../img/grid/Grid-Area.svg" width="40%" >
   
-# <a href="#容器属性">容器属性</a>
+# <a name="#容器属性">容器属性</a>
 
-##  <a href="#display">display: 将元素定义为网格容器，并为其内容建立新的 网格格式上下文。</a>
+##  <a name="#display">display: 将元素定义为网格容器，并为其内容建立新的 网格格式上下文。</a>
 
 grid | inline-grid  
 
 块级网格 | 内联网格
 
-* <a name=""></a>
+* <a href="#"></a>
 
-##  <a href="#grid-template-rows / grid-template-columns">grid-template-rows / grid-template-columns</a>
+##  <a name="#grid-template-rows / grid-template-columns">grid-template-rows / grid-template-columns</a>
 使用空格分隔的值列表，用来定义网格的列和行。这些值表示 网格轨道(Grid Track) 大小，它们之间的空格表示网格线。
 
   >grid-template-columns: \<track-size> ... | \<line-name> \<track-size> ...;  
@@ -131,7 +131,7 @@ grid | inline-grid
 
     <img src="../img/grid/template-column-rows-02.svg" width="70%" >
 
-## <a href="#repeat()">repeat()函数：如果你的定义包含多个重复值，则可以使用其来简化定义 </a>
+## <a name="#repeat()">repeat()函数：如果你的定义包含多个重复值，则可以使用其来简化定义 </a>
 > repeat(auto-fill | auto-fit | number, \<line-name> \<track-size> \<line-name> \<track-size> ...)   
 
 >auto-fill:自动填充轨道，最后不会折叠空轨道,保留空轨道留白
@@ -148,12 +148,12 @@ grid | inline-grid
     grid-template-columns: [col-start] 1fr [col-start] 1fr [col-start] 1fr;
 
 
-## <a href="#minmax()">minmax(min,max)函数</a>
+## <a name="#minmax()">minmax(min,max)函数</a>
 >min | max值 : auto | \<length> | percent | 弹性值(fr) | max-content(单元格最大宽度) | min-content(单元格最小宽度)  
 >> auto 如果用于最大值，相当于max-content值；  
 >>如果用于最小值，那么auto值相当于min-content。  
 
-## <a href="#grid-template-areas">grid-template-areas</a>
+## <a name="#grid-template-areas">grid-template-areas</a>
 通过引用项目的grid-area 属性指定的网格区域(Grid Area) 名称来定义网格模板。重复网格区域的名称导致内容跨越这些单元格。一个点号（.）代表一个空单元格。这个语法本身可视作网格的可视化结构。  
 
   >grid-template-areas: "\<grid-area-name> | . | none | ..."  
@@ -196,7 +196,7 @@ grid | inline-grid
       </div>
   <img src="../img/grid/template-areas.svg" width="70%" >
 
-## <a href="#grid-template">grid-template-rows grid-template-columns  grid-template-areas 简写属性</a>
+## <a name="#grid-template">grid-template-rows grid-template-columns  grid-template-areas 简写属性</a>
   >none：将所有三个属性设置为其初始值  
   >\<grid-template-rows> / \<grid-template-columns>：将 grid-template-columns 和 grid-template-rows 设置为相应地特定的值，并且设置grid-template-areas为none
 
@@ -214,17 +214,17 @@ grid | inline-grid
   由于 grid-template 不会重置 隐式 网格属性（grid-auto-columns， grid-auto-rows， 和 grid-auto-flow），
 这可能是你想在大多数情况下做的，建议使用 grid 属性而不是 grid-template。
 
-## <a href="#grid-row-gap 、grid-column-gap">grid-row-gap 、grid-column-gap:指定网格线(grid lines)的大小（列/行之间间距的宽度）</a>
+## <a name="#grid-row-gap 、grid-column-gap">grid-row-gap 、grid-column-gap:指定网格线(grid lines)的大小（列/行之间间距的宽度）</a>
   >长度，百分比或 calc  
 
   <img src="../img/grid/grid-gap.svg" width="70%" >
 
-## <a href="#grid-gap">grid-row-gap grid-column-gap 简写形式</a>
+## <a name="#grid-gap">grid-row-gap grid-column-gap 简写形式</a>
 
   >省略第二个，则值同第一个
   >>grid-gap: 10px 10px; 等价于 grid-gap: 10px;
 
-## <a href="#justify-items">justify-items: 定义沿着inline（行）轴线网格项(grid items)对齐方式</a>
+## <a name="#justify-items">justify-items: 定义沿着inline（行）轴线网格项(grid items)对齐方式</a>
 
   >stretch：填满单元格的宽度（默认值）  
   >start：将网格项对齐到其单元格的左侧起始边缘（左侧对齐）  
@@ -235,7 +235,7 @@ grid | inline-grid
 
   也可以通过每个单独网格项(grid items) 的 justify-self 属性设置。
 
-## <a href="#align-items">align-items：定义沿着block（列）轴线网格项(grid items)对齐方式</a>
+## <a name="#align-items">align-items：定义沿着block（列）轴线网格项(grid items)对齐方式</a>
   >stretch：填满单元格的高度（默认值）  
   >start：将网格项对齐到其单元格的顶部起始边缘（顶部对齐）  
   >center：将网格项对齐到其单元格的垂直中间位置（垂直居中对齐）  
@@ -245,7 +245,7 @@ grid | inline-grid
 
   也可以通过每个单独网格项(grid items) 的 align-self 属性设置
 
-## <a href="#place-items">place-items:align-items justify-items 的简写形式</a>
+## <a name="#place-items">place-items:align-items justify-items 的简写形式</a>
   >省略第二个，则值同第一个
 
 
@@ -273,7 +273,7 @@ grid | inline-grid
     </ul>
 
 
-## <a href="#justify-content">justify-content: 定义沿着 inline（行）轴线 网格容器内的网格的对齐方式</a>
+## <a name="#justify-content">justify-content: 定义沿着 inline（行）轴线 网格容器内的网格的对齐方式</a>
 
   >start(默认值)：将网格对齐到 网格容器(grid container) 的左侧起始边缘（左侧对齐）  
   >center：将网格对齐到 网格容器 的水平中间位置（水平居中对齐）  
@@ -294,7 +294,7 @@ grid | inline-grid
   <img src="../img/grid/justify-content-space-around.svg" width="50%" >  
   ....
 
-## <a href="#align-content">align-content: 定义沿着 block（列）轴线 网格容器内的网格的对齐方式</a>
+## <a name="#align-content">align-content: 定义沿着 block（列）轴线 网格容器内的网格的对齐方式</a>
   >start(默认值）：将网格对齐到 网格容器(grid container) 的顶部起始边缘（顶部对齐）  
   >end：将网格对齐到 网格容器 的底部结束边缘（底部对齐）  
   >center：将网格对齐到 网格容器 的垂直中间位置（垂直居中对齐）  
@@ -311,19 +311,19 @@ grid | inline-grid
   ....
 
 
-## <a href="#place-content">place-content: align-content  justify-content 的简写形式。</a>
+## <a name="#place-content">place-content: align-content  justify-content 的简写形式。</a>
   >省略第二个，则值同第一个
   >默认start start
 
 当网格中的网格项多于单元格时，或者当网格项位于显式网格之外时，就会创建隐式轨道。[显式网格和隐式网格之间的区别](https://www.html.cn/archives/10327)。
 
-## <a href="#grid-auto-columns / grid-auto-rows">grid-auto-columns / grid-auto-rows指定任何自动生成的网格轨道(grid tracks)（又名隐式网格轨道）的大小</a>
+## <a name="#grid-auto-columns / grid-auto-rows">grid-auto-columns / grid-auto-rows指定任何自动生成的网格轨道(grid tracks)（又名隐式网格轨道）的大小</a>
   >
       通过使用 minmax() 函数来指定范围，可以使调整隐式轨道更灵活。
       grid-auto-columns: minmax(200px, auto);
       grid-auto-rows: minmax(60px, auto);
 
-## <a href="#grid-auto-flow">grid-auto-flow</a>
+## <a name="#grid-auto-flow">grid-auto-flow</a>
 如果你有一些没有明确放置在网格上的网格项(grid items)，自动放置算法 会自动放置这些网格项。该属性控制自动布局算法如何工作。  
 
   >row（默认）：告诉自动布局算法依次填充每行，根据需要添加新行   
@@ -333,16 +333,16 @@ grid | inline-grid
   >grid-auto-flow: row | column | row dense | column dense
 
 
-## <a href="#grid">grid: grid-template-rows  grid-template-columns  grid-template-areas  grid-auto-rows  grid-auto-columns  grid-auto-flow 简写形式</a>
+## <a name="#grid">grid: grid-template-rows  grid-template-columns  grid-template-areas  grid-auto-rows  grid-auto-columns  grid-auto-flow 简写形式</a>
 
-# <a href="#项目属性">项目属性</a>
+# <a name="#项目属性">项目属性</a>
 
 float，
 display: inline-block，
 display: table-cell，
 vertical-align 和 column-## 属性对网格项无效
 
-## <a href="#grid-column-start / grid-column-end / grid-row-start / grid-row-end">grid-column-start / grid-column-end / grid-row-start / grid-row-end 网格位置</a>
+## <a name="#grid-column-start / grid-column-end / grid-row-start / grid-row-end">grid-column-start / grid-column-end / grid-row-start / grid-row-end 网格位置</a>
 通过引用特定网格线(grid lines) 来确定 网格项(grid item) 在网格内的位置。 grid-column-start / grid-row-start 是网格项开始的网格线，grid-column-end / grid-row-end 是网格项结束的网格线。
 
   >\<line> ：可以是一个数字引用一个编号的网格线，或者一个名字来引用一个命名的网格线  
@@ -374,14 +374,14 @@ vertical-align 和 column-## 属性对网格项无效
 
 
 
-## <a href="#grid-column">grid-column: grid-column-start / grid-column-end 简写形式 </a>
+## <a name="#grid-column">grid-column: grid-column-start / grid-column-end 简写形式 </a>
 
-## <a href="#grid-row">grid-row: grid-row-start / grid-row-end 简写形式  </a>
+## <a name="#grid-row">grid-row: grid-row-start / grid-row-end 简写形式  </a>
 
   >grid-column: 3 / span 2;  
   >grid-row: third-line / 4;  
 
-## <a href="#grid-area">grid-area为网格项提供一个名称</a>
+## <a name="#grid-area">grid-area为网格项提供一个名称</a>
 为网格项提供一个名称，以便可以 被使用网格容器 grid-template-areas 属性创建的模板进行引用。 另外，这个属性可以用作grid-row-start  grid-column-start  grid-row-end   grid-column-end 的简写。
 
   >\<name>：自定义名称  
@@ -392,7 +392,7 @@ vertical-align 和 column-## 属性对网格项无效
   <img src="../img/grid/grid-area1.svg">
   
 
-## <a href="#justify-self">justify-self:设置沿着 inline（行）轴线网格项对齐方式。覆盖容器的justify-content属性</a>
+## <a name="#justify-self">justify-self:设置沿着 inline（行）轴线网格项对齐方式。覆盖容器的justify-content属性</a>
 
 
   >stretch：填满单元格的宽度（默认值）  
@@ -400,13 +400,13 @@ vertical-align 和 column-## 属性对网格项无效
   >center：将网格项对齐到其单元格的水平中间位置（水平居中对齐）  
   >end：将网格项对齐到其单元格的右侧结束边缘（右侧对齐）  
 
-## <a href="#align-self">align-self:设置沿着 block（列）轴线网格项对齐方式。覆盖容器的align-content属性</a>
+## <a name="#align-self">align-self:设置沿着 block（列）轴线网格项对齐方式。覆盖容器的align-content属性</a>
   >stretch：填满单元格的高度（默认值）  
   >start：将网格项对齐到其单元格的顶部起始边缘（顶部对齐）  
   >center：将网格项对齐到其单元格的垂直中间位置（垂直居中对齐）  
   >end：将网格项对齐到其单元格的底部结束边缘（底部对齐）  
 
-## <a href="#place-self">place-self:align-self justify-self 简写形式</a>
+## <a name="#place-self">place-self:align-self justify-self 简写形式</a>
 
   >auto 默认的对齐方式(stretch)。
   >>省略第二个，则值同第一个
