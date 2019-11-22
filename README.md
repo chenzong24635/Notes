@@ -1,3 +1,26 @@
+<style>
+
+  a[href]{
+    position:relative;
+    padding-right:30px;
+  }
+  a[href="#TOP"]:after{
+    content: '';
+    position:absolute;
+    top: 0;
+    bottom:0;
+    right: 0;
+    background:url('./img/backward.png') no-repeat 100% 100% / cover;
+    /* background-size: cover; */
+    width:30px;
+    height:30px;
+  }
+</style>
+
+
+# <a name="常用" >**常用**</a><a href="#TOP">
+# <a name="常用" >**常用**</a><a href="#TOP">
+
 
 
 <details>
@@ -21,6 +44,29 @@
   <summary>markdown 语法</summary>
 
   [Markdown 语法说明](https://www.appinn.com/markdown/)
+
+* css样式：可在markdown里写css样式,一般写在头部
+>
+    <style>
+      img{
+          width:200px;
+      }
+      a[name]{
+        font-size:20px
+      }
+    </style>
+
+* 跳转
+>
+    [点击跳转](#5)
+    <a id="5">跳转到这</a>
+
+    里面也能放图片
+    [![img](./img/backward.png)](#backward)
+    [<img src="./img/backward.png" width="20px" />](#backward)
+>
+    <a href="#点击跳转">点击跳转</a>
+    <a name="点击跳转">跳转到这</a>
 
 * 代码折叠、展开
 >  
