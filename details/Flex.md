@@ -1,9 +1,19 @@
-# [Flex](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
+# Flex
+
+其他[Grid-二维布局](/details/Grid.md)
+
+[参考](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
+[参考](https://yoksel.github.io/flex-cheatsheet/)
+[参考](http://caibaojian.com/flexbox-guide.html)
+[参考](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
+
 # <a href="#"></a>
 <a name=""></a>
 
 # 基本
 Flex 是 Flexible Box 的缩写，意为"弹性布局"，用来为盒状模型提供最大的灵活性。
+
+flexbox 是一维布局，他只能在一条直线上放置你的内容区块；而grid是一个二维布局。它除了可以灵活的控制水平方向之外，还能轻易的控制垂直方向的布局模式。
 
 任何一个容器都可以指定为 Flex 布局。设为 Flex 布局以后，子元素的float、clear和vertical-align属性将失效。
 
@@ -128,3 +138,5 @@ display: flex | inline-flex; (适用于父类容器元素上)
   >默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则为stretch。  
 
   ![align-self](/img/flex/align-self.svg)
+
+其他[Grid-二维布局](/details/Grid.md)

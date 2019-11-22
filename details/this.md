@@ -12,8 +12,17 @@ this的值是在执行的时候才能确认，定义的时候不能确认—— 
 
 this永远指向的是最后调用它的对象
 
+
+在ES2019中添加了globalThis对象，从现在开始应该在任何平台上访问全局作用域：
+>   
+    let num = 1
+    globalThis.num  // 1
+
+    globalThis.v = { flag: true };
+    console.log(globalThis.v);//{ flag: true }
+
 #### this绑定
-![this](img/this.png)
+![this](/img/this.png)
 
 * this的绑定规则总共有下面5种
 

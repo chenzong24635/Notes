@@ -1,28 +1,7 @@
-<style>
-
-  a[href]{
-    position:relative;
-    padding-right:30px;
-  }
-  a[href="#TOP"]:after{
-    content: '';
-    position:absolute;
-    top: 0;
-    bottom:0;
-    right: 0;
-    background:url('./img/backward.png') no-repeat 100% 100% / cover;
-    /* background-size: cover; */
-    width:30px;
-    height:30px;
-  }
-</style>
+<a id="top"></a>
 
 
-# <a name="常用" >**常用**</a><a href="#TOP">
-# <a name="常用" >**常用**</a><a href="#TOP">
-
-
-
+# 
 <details>
   <summary>vscode 快捷键</summary>
 
@@ -45,16 +24,41 @@
 
   [Markdown 语法说明](https://www.appinn.com/markdown/)
 
-* css样式：可在markdown里写css样式,一般写在头部
+<!-- * css样式：可在markdown里写css样式,一般写在头部
 >
-    <style>
-      img{
-          width:200px;
-      }
-      a[name]{
-        font-size:20px
-      }
-    </style>
+  <style>
+    a[href]{
+      position:relative;
+      padding-right:30px;
+    }
+    a[href="#TOP"]:after{
+      content: '';
+      position:absolute;
+      top: 0;
+      bottom:0;
+      right: 0;
+      background:url('./img/backward.png') no-repeat 100% 100% / cover;
+      width:30px;
+      height:30px;
+    }
+  </style> -->
+
+
+
+* 分级标题
+>
+    # 一级标题
+    ## 二级标题
+    ### 三级标题
+    #### 四级标题
+    ##### 五级标题
+    ###### 六级标题  <!--最多6级标题-->  
+
+* 对齐方式
+>
+    <center>行中心对齐</center>
+    <p align="left">行左对齐</p>
+    <p align="right">行右对齐</p>
 
 * 跳转
 >
@@ -109,14 +113,19 @@ div.item*3>{$}
     标题元件(表头)至少需要3个---来分隔
     最外面的竖线|可以省略，书写的时候也可以不必需让原始的文字对得很整齐
 
+* 分割线
+>
+    * * *
+    ***
+    *****
+    - - -
+    -----------
+
 * 强调——粗体和斜体
 >
-    *斜体*      _斜体_  
-    **粗体** __粗体__  
+    *斜体*    
+    **粗体** 
     ~~删除线~~  
-    \*加入反斜线以显示星号\* 
-
-
 
 * 链接
 >
@@ -131,14 +140,32 @@ div.item*3>{$}
 
     //这个不会显示
     [链接文字]: http://www.aaa.com/
+>
+    [github][1]  
+    [1]:https://github.com
 
-[链接文字][]
 
-[链接文字]: http://www.aaa.com/
+* 特殊字符
+
+| 特殊字符 | 描述 | 字符代码 |
+|:--|:--|:--|
+| 	|空格符	|\&nbsp;|
+| <	|小于号	|\&lt;|
+| >	|大于号|\&gt;|
+| &	|和号	|\&amp;|
+| ￥	|人民币|\&yen;|
+| ©	|版权	|\&copy;|
+| ®	|注册商标	|\&reg;|
+| °C|	摄氏度	|\&deg;C|
+| ±	|正负号	|\&plusmn;|
+| ×	|乘号	|\&times;|
+| ÷	|除号	|\&divide;|
+| ²	|平方（上标²）|\&sup2;|
+| ³	|立方（上标³）|	\&sup3;|
 
 </details>
 
-
+# 
 <details >
   <summary>
   常用网站：论坛、社区、博客、网站、手册
@@ -159,7 +186,6 @@ div.item*3>{$}
   [SegmentFault](https://segmentfault.com/) 
 
   [stackoverflow](https://stackoverflow.com/)
-
 
 
   [w3cplus-大漠](https://www.w3cplus.com/)
@@ -218,6 +244,8 @@ div.item*3>{$}
 </details>
 
 ---
+
+# 
 
 **前端页面由哪三层构成：结构层、表示层、行为层。**
 
@@ -1278,12 +1306,12 @@ var arr = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
 ## <a name="数组去重">数组去重</a>
 [JS高性能数组去重](https://www.cnblogs.com/wisewrong/p/9642264.html)
 
-1. Set
+* Set
 >
-    [...new Set([1,2,2,3,4,1])]        --> [1,2,3,4]  
-    Array.from(new Set([1,2,2,3,4,1])) --> [1,2,3,4]  
+    [...new Set([2,3,4,4,5,2,3,6])]        --> [2,3,4,5,6]  
+    Array.from(new Set([2,3,4,4,5,2,3,6])) --> [2,3,4,5,6]  
 
-2. filter + indexOf
+* filter + indexOf
 >
     var arr = [2,3,4,4,5,2,3,6];
     var arr2 = arr.filter(function(item,index,self){
@@ -1291,9 +1319,24 @@ var arr = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
     });
     console.log(arr2);
 
-3.  for...of + Object 利用对象的key不会重复的特性
+* 
+> includes
+    function unique(arr) {
+        const newArray = [];
+        arr.forEach(item => {
+            if (!newArray.includes(item)) {
+                newArray.push(item);
+            }
+        });
+        return newArray;
+    }
+    var array = [2,3,4,4,5,2,3,6];
+    unique(array);
+
+
+*  for...of + Object 利用对象的key不会重复的特性
 >
-    var arr = [0,2,3,4,4,0,2];
+    var arr = [2,3,4,4,5,2,3,6];
     var obj = {}; //重复次数
     var arr2 = []; //去重后的数组
     for(var i = 0 ;i< arr.length;i++){

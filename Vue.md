@@ -2121,7 +2121,8 @@ vue create projectName
 
       lintOnSave: process.env.NODE_ENV !== 'production', // eslint检验
 
-      chainWebpack: config => { // 自定义路径名
+      chainWebpack: config => { 
+        // 自定义路径名
         config.resolve.alias
           .set('@', resolve('src'))
           .set('_c', resolve('src/components'))

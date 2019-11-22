@@ -20,6 +20,9 @@
   [axios](https://www.kancloud.cn/yunye/axios/234845)
 
   [Swiper-轮播图插件](https://www.swiper.com.cn/api/index.html) 
+
+
+
 </details>
 
 
@@ -460,7 +463,7 @@ previousSibling
 
 * 添加、移除、替换、插入、克隆
 >
-    appendChlid(childNode)  添加节点
+    appendChild(childNode)  添加节点
     insertBefore(newChild,oldChild) 添加节点
     removeChild(childNode) 删除节点    
     replaceChild(newNode,oldNode）替换节点

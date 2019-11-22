@@ -1,4 +1,4 @@
-<a name="TOP"></a>
+<a id="top"></a>
 
 [MDN-HTM L参考](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Reference)
 
@@ -19,14 +19,14 @@
 * <a href="#web存储">cookies、sessionStorage 、和 localStorage 的区别</a>
 * <a href="#HTML5的离线储存">HTML5的离线储存</a>
 * <a href="#iframe缺点">iframe缺点</a>
-* <details >
+* <details open>
     <summary><a href="#link标签属性">link标签属性</a></summary>
-    * <a href="网页标题引入图标">网页标题引入图标</a>
+
+    * <a href="网页标题引入图标">网页标题引入图标</a>  
     * <a href="预加载页面资源prefetch、prefetch">预加载页面资源prefetch、prefetch</a>
     
   </details>  
 * <a href="base标签">base标签</a>
-* <a href="#响应式设计-viewport">响应式设计-viewport</a>
 * <details open>
     <summary><a href="#meta标签属性">meta标签属性</a></summary>
 
@@ -48,9 +48,9 @@
 * <a href="#未使用自适应写的PC页面在手机上显示不全的问题">未使用自适应写的PC页面在手机上显示不全的问题</a>
 </details>
 
-# <a name="HTML">**HTML**</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+# <a name="HTML">**HTML**</a>[![img](/img/backward.png)](#top)
 
-## <a name="语义化">语义化及好处</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name="语义化">语义化及好处</a>[![img](/img/backward.png)](#top)
 
 语义化是指通过HTML标记表示页面包含的信息，包含了HTML标签的语义化和css命名的语义化。
 
@@ -60,12 +60,12 @@
 
 好处:
 >
-    去掉样式后页面呈现清晰的结构
-    搜索引擎更好地理解页面，有利于收录
-    便团队项目的可持续运作及维护
-    盲人使用读屏器更好地阅读
+    易于用户阅读，去掉样式后页面呈现清晰的结构  
+    搜索引擎更好地理解页面，有利于SEO  
+    有利于开发和维护，语义化更具可读性  
+    方便其他设备解析，如盲人阅读器根据语义渲染网页  
 
-## <a name="XHTML、HTML区别">XHTML、HTML区别</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name="XHTML、HTML区别">XHTML、HTML区别</a>[![img](/img/backward.png)](#top)
 
 HTML是一种基于标准通用标记语言（SGML）的应用，是一种非常灵活的置标语言，  
 而XHTML则基于可扩展标记语言（XML），XML是SGML的一个子集。
@@ -75,13 +75,19 @@ XHTML是更为严格纯净的HTML版
 XHTML是作为一种xml应用被重新定义的HTML  
 XHTML文档必须拥有根元素、元素必须被关闭、元素必须被正确地嵌套、标签应该使用小写
 
-## <a name="HTML5新标签">[HTML5新标签](https://www.w3cschool.cn/html5/html5-new-element.html)</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name="HTML5新标签">[HTML5新标签](https://www.w3school.com.cn/html/html5_new_elements.asp)</a>[![img](/img/backward.png)](#top)
 >
+    <header>	定义了文档的头部区域
+    <article>	定义页面独立的内容区域。
+    <aside>	定义页面的侧边栏内容。
+    <main>	定义文档的主内容。
+    <nav>	定义导航链接的部分。
+    <section>	定义文档中的节（section、区段）。
+    <footer>	定义 section 或 document 的页脚。
 
-    <canvas> 
-
-    <audio>	
-    <video>	
+    <canvas>   
+    <audio>	  
+    <video>	 
     <source> 定义多媒体资源 <video> 和 <audio>
     <embed>	 定义嵌入的内容，比如插件。
     <track>  为<video> 和 <audio> 元素之类的媒介规定外部文本轨道。
@@ -89,21 +95,13 @@ XHTML文档必须拥有根元素、元素必须被关闭、元素必须被正确
     <datalist>	定义选项列表。与input配合使用来定义input可能的值。
         <input list="browsers" name="browser">
         <datalist id="browsers">
-        <option value="Internet Explorer">
-        <option value="Firefox">
-        <option value="Chrome">
-        <option value="Opera">
-        <option value="Safari">
+          <option value="Internet Explorer">
+          <option value="Firefox">
+          <option value="Chrome">
         </datalist>
 
     <keygen>	规定用于表单的密钥对生成器字段。
-
     <output>	定义不同类型的输出，比如脚本的输出。
-
-    <article>	定义页面独立的内容区域。
-
-    <aside>	定义页面的侧边栏内容。
-
     <bdi>	允许您设置一段文本，使其脱离其父元素的文本方向设置。
     <command>	定义命令按钮，比如单选按钮、复选框或按钮
     <details>	用于描述文档或文档某个部分的细节
@@ -111,26 +109,59 @@ XHTML文档必须拥有根元素、元素必须被关闭、元素必须被正确
     <summary>	标签包含 details 元素的标题
     <figure>	规定独立的流内容（图像、图表、照片、代码等等）。
     <figcaption>	定义 <figure> 元素的标题
-    <footer>	定义 section 或 document 的页脚。
-    <header>	定义了文档的头部区域
     <mark>	定义带有记号的文本。
     <meter>	定义度量衡。仅用于已知最大和最小值的度量。
-    <nav>	定义导航链接的部分。
     <progress>	定义任何类型的任务的进度。
     <ruby>	定义 ruby 注释（中文注音或字符）。
     <rt>	定义字符（中文注音或字符）的解释或发音。
     <rp>	在 ruby 注释中使用，定义不支持 ruby 元素的浏览器所显示的内容。
-    <section>	定义文档中的节（section、区段）。
     <time>	定义日期或时间。
     <wbr>	规定在文本中的何处适合添加换行符。
 
-## <a name="HTML5 为什么只需要写">HTML5 为什么只需要写 \<!DOCTYPE HTML\></a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+[HTML5 新增加的input输入类型](https://www.w3school.com.cn/html/html_form_input_types.asp)
+>
+    color
+    date
+    datetime
+    datetime-local
+    email
+    month
+    number
+    range
+    search
+    tel
+    time
+    url
+    week
+
+[HTML5 新增加的input属性](https://www.w3school.com.cn/html/html_form_attributes.asp)
+>
+    autocomplete
+    autofocus
+    form
+    formaction
+    formenctype
+    formmethod
+    formnovalidate
+    formtarget
+    height 和 width
+    list
+    min 和 max
+    multiple
+    pattern (regexp)
+    placeholder
+    required
+    step
+
+
+
+## <a name="HTML5 为什么只需要写">HTML5 为什么只需要写 \<!DOCTYPE HTML\></a>[![img](/img/backward.png)](#top)
 
 HTML5 不基于 SGML，因此不需要对DTD进行引用，但是需要doctype来规范浏览器的行为（让浏览器按照它们应该的方式来运行）
 
 HTML4.01基于SGML,所以需要对DTD进行引用，才能告知浏览器文档所使用的文档类型。
 
-## <a name="Doctype作用 标准模式、混杂模式区别">Doctype作用？标准模式、混杂模式区别</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name="Doctype作用 标准模式、混杂模式区别">Doctype作用？标准模式、混杂模式区别</a>[![img](/img/backward.png)](#top)
 
 documnet type(文档类型的简写),位于HTML文档的第一行，告知浏览器用什么规范解析
 DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
@@ -143,7 +174,7 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 
 常见dotype：
 >
-    HTML 5: <!DOCTYPE html>
+    HTML5: <!DOCTYPE html>
 
     HTML4.01 strict：不允许使用表现性、废弃元素（如font）以及frameset。
     声明：<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
@@ -156,7 +187,7 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 
     
 
-## <a name="渐进增强与优雅降级">渐进增强与优雅降级-----开发方式，设计理念</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name="渐进增强与优雅降级">渐进增强与优雅降级-----开发方式，设计理念</a>[![img](/img/backward.png)](#top)
 
 渐进增强：针对低版本浏览器构建页面，保证核心功能。再针对高级浏览器进行改进和追加功能以达到更好的用户体验
 
@@ -168,7 +199,7 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
     渐进增强则从基础的的版本开始，并不断扩充，以适应未来环境的需要。  
     优雅降级意味着往回看；而渐进增强则意味着朝前看，同时保证其根基处于安全地带
 
-## <a name="块级元素、内联元素">块级元素、内联元素（行内元素、行内块级元素）</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name="块级元素、内联元素">块级元素、内联元素（行内元素、行内块级元素）</a>[![img](/img/backward.png)](#top)
 
 * 块级元素：display:block
 >
@@ -216,7 +247,7 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 
 ![替换元素](/img/替换元素display值.jpg)
 
-## <a name="HTML全局属性有哪些">HTML全局属性有哪些</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name="HTML全局属性有哪些">HTML全局属性有哪些</a>[![img](/img/backward.png)](#top)
 
     accesskey属性允许你设置一个或者多个键盘快捷键，快速聚焦到页面元素
         <input type="text" name="name" accesskey="n"/>  
@@ -236,7 +267,7 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
     title: 元素相关的建议信息
     tabindex: 使用tab键时的访问顺序。当设置为-1的时候，不会被选中。当为0时在所有大于0的之后
 
-## <a name="src和href的区别">src和href的区别</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name="src和href的区别">src和href的区别</a>[![img](/img/backward.png)](#top)
 
 href（Hypertext Reference）
 >
@@ -249,7 +280,7 @@ src（source）
 
 `总而言之，src用于替换当前元素；href用于在当前文档和引用资源之间建立联系。`
 
-## <a name="浏览器内核、私有化前缀">浏览器内核、私有化前缀</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name="浏览器内核、私有化前缀">浏览器内核、私有化前缀</a>[![img](/img/backward.png)](#top)
 
 #### 主要分为：
     渲染引擎(layout engineer或Rendering Engine)
@@ -274,7 +305,7 @@ src（source）
 | 私有化前缀 | -webkit- | -moz- | -ms- | -webkit- | -webkit- |
 
 
-## <a name="web存储">cookies、sessionStorage 、和 localStorage 的区别</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name="web存储">cookies、sessionStorage 、和 localStorage 的区别</a>[![img](/img/backward.png)](#top)
 
 https://zhuanlan.zhihu.com/p/61704951
 
@@ -314,8 +345,8 @@ https://zhuanlan.zhihu.com/p/61704951
     key(n) 以索引值来获取键值key的数据
     length 存储空间积累项的数目
 
-    保存数据：sessionStorage.setItem('key','value');/sessionStroge.key='value';
-    读取数据：sessionStorage.getItem('key'); /sessionStroge.key(n)
+    保存数据：sessionStorage.setItem('keyname','value') / sessionStroge.keyname='value';
+    读取数据：sessionStorage.getItem('keyname') / sessionStroge.keyname /  sessionStroge.key(n)
 
 * cookie方法
 >
@@ -362,14 +393,14 @@ token是用户身份的验证方式，我们通常叫它：令牌。最简单的
     对比二：如果没有这个 token 值, 则说明没有登录成功.
     对比三：如果 token 值不同: 说明原来的登录信息已经失效,让用户重新登录.
 
-## <a name="HTML5的离线储存">HTML5的离线储存</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name="HTML5的离线储存">HTML5的离线储存</a>[![img](/img/backward.png)](#top)
 
 [MDN - 介绍](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Using_the_application_cache)
 >
     离线存储可以将站点的一些文件存储在本地，在没有网络的时候还是可以访问到以缓存的对应的站点页面，其中这些文件可以包括html，js，css，img等等文件，但其实即使在有网络的时候，浏览器也会优先使用已离线存储的文件，返回一个200（from cache）头。这跟HTTP的缓存使用策略是不同的。
 
 
-## <a name="iframe缺点">iframe缺点</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name="iframe缺点">iframe缺点</a>[![img](/img/backward.png)](#top)
 
 1. 会阻塞主页面的onload事件
 2. iframe和主页面共享连接池，而浏览器对相同域的连接有限制，所以会影响页面的并行加载.
@@ -377,19 +408,20 @@ token是用户身份的验证方式，我们通常叫它：令牌。最简单的
 
 通过javascript动态给iframe添加src属性值，这样可以解决1,2两个问题。
 
-## <a name="link标签属性">link标签属性</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
-### <a name="网页标题引入图标">网页标题引入图标</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+
+## <a name="link标签属性">link标签属性</a>[![img](/img/backward.png)](#top)
+### <a name="网页标题引入图标">网页标题引入图标</a>[![img](/img/backward.png)](#top)
 >
 
     <link rel="shortcut icon" href="favicon.ico" type="images/x-icon" />
 
     <link rel="icon" href="favicon.gif" type="image/gif" />
 
-### <a name="预加载页面资源prefetch、prefetch">预加载页面资源prefetch、prefetch</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+### <a name="预加载页面资源prefetch、prefetch">预加载页面资源prefetch、prefetch</a>[![img](/img/backward.png)](#top)
 
 [参考](https://mp.weixin.qq.com/s?__biz=MzAxODE2MjM1MA==&mid=2651557145&idx=2&sn=275f6a2cd5698993ac37c30d1272b6d9&chksm=80255ad8b752d3ced93788a47c1c0e09b358f520e427095282805ae38568d391ffb841629fc5&scene=0&xtrack=1&key=f7996279e56ff0c926f68429b9d715f81f365434df8bef8ae0fdc0f07356e1153e13ec7efaadcdcee3ee2a269ca1e1d26d64b4456b49e9d4a9470ffdb5dff4e18fb06a01c2606003c0a2f1d538732c1f&ascene=14&uin=MTIxNDM5MTUzOQ%3D%3D&devicetype=Windows+7&version=62060841&lang=zh_CN&pass_ticket=6hbWVbVQi9b8nDPWnQLyNwIhfW%2Fxii%2FBAH6JGd5v7eUzIH49WIfoITbvxT9QEwrs)
 
-## <a name="base标签">base标签</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name="base标签">base标签</a>[![img](/img/backward.png)](#top)
 >
     <base href="www.aaa.com" target="_blank"/>
 
@@ -397,24 +429,7 @@ token是用户身份的验证方式，我们通常叫它：令牌。最简单的
     <base>设置的target属性 ，a链接也会继承
 
 
-## <a name="响应式设计-viewport">响应式设计-viewport</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
->
-    什么是 Viewport?
-    viewport 是用户网页的可视区域。
-    viewport 翻译为中文可以叫做"视区"。
-    手机浏览器是把页面放在一个虚拟的"窗口"（viewport）中，通常这个虚拟的"窗口"（viewport）比屏幕宽，这样就不用把每个网页挤到很小的窗口中（这样会破坏没有针对手机浏览器优化的网页的布局），用户可以通过平移和缩放来看网页的不同部分
-
-    viewport meta 标签属性：
-    width：控制 viewport 的大小，可以指定的一个值，如果 600，或者特殊的值，如 device-width 为设备的宽度（单位为缩放为 100% 时的 CSS 的像素）。
-    height：和 width 相对应，指定高度。
-    initial-scale：初始缩放比例，也即是当页面第一次 load 的时候缩放比例。
-    maximum-scale：允许用户缩放到的最大比例。
-    minimum-scale：允许用户缩放到的最小比例。
-    user-scalable：用户是否可以手动缩放
-
-
-
-## <a name="meta标签属性">meta标签属性</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name="meta标签属性">meta标签属性</a>[![img](/img/backward.png)](#top)
 
 * 必要属性: content 
 
@@ -460,13 +475,19 @@ token是用户身份的验证方式，我们通常叫它：令牌。最简单的
 
 * viewport
 >
+    什么是 Viewport?
+    viewport 是用户网页的可视区域。
+    viewport 翻译为中文可以叫做"视区"。
+    手机浏览器是把页面放在一个虚拟的"窗口"（viewport）中，通常这个虚拟的"窗口"（viewport）比屏幕宽，这样就不用把每个网页挤到很小的窗口中（这样会破坏没有针对手机浏览器优化的网页的布局），用户可以通过平移和缩放来看网页的不同部分
+
+>
     <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
 
     width：宽度（数值 / device-width）（范围从200 到10,000，默认为980 像素）
 
     height：高度（数值 / device-height）（范围从223 到10,000）
 
-    initial-scale：初始的缩放比例 （范围从>0 到10）
+    initial-scale：初始的缩放比例 （范围从>0 到10）也即是当页面第一次 load 的时候缩放比例。
 
     minimum-scale：允许用户缩放到的最小比例
 
@@ -542,7 +563,7 @@ token是用户身份的验证方式，我们通常叫它：令牌。最简单的
 
 
 
-## <a name="IE hack">IE hack</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name="IE hack">IE hack</a>[![img](/img/backward.png)](#top)
 >
     <!--[if !IE]>除IE外都可识别<![endif]-->
     <!--[if IE]> 所有的IE可识别 <![endif]-->
@@ -555,7 +576,7 @@ token是用户身份的验证方式，我们通常叫它：令牌。最简单的
     <!--[if IE 8]> 仅IE8可识别 <![endif]-->
     <!--[if IE 9]> 仅IE9可识别 <![endif]-->
 
-## <a name="aria与role">aria与role</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name="aria与role">aria与role</a>[![img](/img/backward.png)](#top)
 >
     这些都是HTML5针对html tag增加的属性，一般是为不方便的人士提供的功能，比如屏幕阅读器。
 
@@ -572,12 +593,12 @@ token是用户身份的验证方式，我们通常叫它：令牌。最简单的
 ## <a name=""></a>
 ## <a name=""></a>
 
-## <a name="CSS和JS的位置会影响页面效率，为什么">CSS和JS的位置会影响页面效率，为什么？</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name="CSS和JS的位置会影响页面效率，为什么">CSS和JS的位置会影响页面效率，为什么？</a>[![img](/img/backward.png)](#top)
 css在加载过程中不会影响到DOM树的生成，但是会影响到Render树的生成，进而影响到layout，所以一般来说，style的link标签需要尽量放在head里面，因为在解析DOM树的时候是自上而下的，而css样式又是通过异步加载的，这样的话，解析DOM树下的body节点和加载css样式能尽可能的并行，加快Render树的生成的速度。
 
 js脚本应该放在底部，原因在于js线程与GUI渲染线程是互斥的关系，如果js放在首部，当下载执行js的时候，会影响渲染行程绘制页面，js的作用主要是处理交互，而交互必须得先让页面呈现才能进行，所以为了保证用户体验，尽量让页面先绘制出来。
 
-## <a name="未使用自适应写的PC页面在手机上显示不全的问题">未使用自适应写的PC页面在手机上显示不全的问题</a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name="未使用自适应写的PC页面在手机上显示不全的问题">未使用自适应写的PC页面在手机上显示不全的问题</a>[![img](/img/backward.png)](#top)
 
 原因：
 >
@@ -590,5 +611,5 @@ js脚本应该放在底部，原因在于js线程与GUI渲染线程是互斥的�
 	<meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=0.3, maximum-scale=1.0, minimum-scale=0.3">
 
 
-## <a name=""></a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
-## <a name=""></a><a href="#TOP"><img src="./img/backward.png" width="20px" /></a>
+## <a name=""></a>[![img](/img/backward.png)](#top)
+## <a name=""></a>[![img](/img/backward.png)](#top)

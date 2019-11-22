@@ -78,7 +78,7 @@ npm i git //git安装
 
 * git init  //初始化git 将当前目录变为仓库
 
-* git clone url reName  //获取下载仓库  git clone http://chenzong@git/仓库名.git '仓库重命名为reName(可略)'
+* git clone url reName  //获取下载仓库  git clone http://chenzong@git/仓库名.git 
 
 `添加文件到暂缓区`
 * git add .  |  git add ./文件名  //将文件添加到暂存区（添加所有 | 添加某个文件）

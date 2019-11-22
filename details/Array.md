@@ -471,6 +471,10 @@ ____
       return index > 1 //返回索引大于1的元素
     });
 
+    //过滤空值
+    [1, 2, 0, undefined, null, false, ''].filter(Boolean) //[1.2]
+
+
 ## <a name="reduce()、reduceRight()">reduce()、reduceRight()</a>
 reduce((sum, item, index, array) => {})  
 reduce()接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终为一个值，  
