@@ -35,6 +35,8 @@
 * <a href="#slot">slot插槽</a>
 * <a href="#组件中key作用">组件中key作用</a>
 * <a href="#虚拟DOM">虚拟DOM</a>
+* <a href="#Vue的运行机制简述">Vue的运行机制简述</a>
+* <a href="#Vue的数据为什么频繁变化但只会更新一次">Vue的数据为什么频繁变化但只会更新一次</a>
 * <a href="#$nextTick">$nextTick</a>
 * <a href="#页面滚动">页面滚动</a>
 * <a href="#keep-alive">keep-alive</a>
@@ -87,22 +89,10 @@
 ### MVC(Model-view-Controller)
 <img src="img/mvc.png" width="50%"/>
 
->
 
-    View（视图）：用户界面。
-    Controller（控制器）：业务逻辑
-    Model（模型）：数据保存
-
->
-
-    View 传送指令到 Controller
-    Controller 完成业务逻辑后，要求 Model 改变状态
-    Model 将新的数据发送到 View，用户得到反馈
-
-<!-- 
-<img src="img/mvc1.png" width="30%"/>
-<img src="img/mvc2.png" width="30%"/> -->
-
+* View（视图）：检测用户的键盘、鼠标等行为，传递调用Controller执行应用逻辑。View更新需要重新获取Model的数据。  
+* Controller（控制器）：View和Model之间协作的应用逻辑或业务逻辑处理。
+* Model（模型）：Model变更后，通过观察者模式通知View更新视图。
 
 
 ### MVP(Model-View-Presenter)
@@ -936,18 +926,49 @@ key是给每一个vnode的唯一id,可以依靠key,更准确, 更快的拿到old
 
 [参考](https://juejin.im/post/5d36cc575188257aea108a74#heading-1)
 
+# <a name="Vue的运行机制简述">Vue的运行机制简述</a>
+[参考](https://juejin.im/post/5cd8a7c1f265da037a3d0992#heading-13)
+
+# <a name="Vue的数据为什么频繁变化但只会更新一次">Vue的数据为什么频繁变化但只会更新一次</a>
+Vue 异步执行 DOM 更新。Vue在观察到数据变化时并不是直接更新DOM，而是开启一个队列，并缓冲在同一事件循环中发生的所有数据改变。在缓冲时会去除重复数据，从而避免不必要的计算和DOM操作。然后，在下一个事件循环tick中，Vue刷新队列并执行实际工作。
+
+由于VUE的数据驱动视图更新是异步的，即修改数据的当下，视图不会立刻更新，而是等同一事件循环中的所有数据变化完成之后，再统一进行视图更新。在同一事件循环中的数据变化后，DOM完成更新，立即执行nextTick(callback)内的回调。
+
 # <a name="$nextTick">$nextTick</a>
 https://www.jianshu.com/p/a7550c0e164f
 
 >
-    Vue中DOM更新是异步的
-    $nextTick是DOM更新完成后执行的
+    Vue中DOM更新是异步的，$nextTick是DOM更新完成后执行的
+    在下次 DOM 更新循环结束之后执行延迟回调
+    在修改数据之后立即使用这个方法，可获取更新后的 DOM数据
 
 * 什么时候需要用的$nextTick()
 >
-    你在Vue生命周期的created()钩子函数进行的DOM操作一定要放在Vue.nextTick()的回调函数中。原因是在created()钩子函数执行的时候DOM 其实并未进行任何渲染，而此时进行DOM操作无异于徒劳，所以此处一定要将DOM操作的js代码放进Vue.nextTick()的回调函数中。  
+    如：你在Vue生命周期的created()钩子函数进行的DOM操作一定要放在Vue.nextTick()的回调函数中。原因是在created()钩子函数执行的时候DOM 其实并未进行任何渲染，而此时进行DOM操作无异于徒劳，所以此处一定要将DOM操作的js代码放进Vue.nextTick()的回调函数中。  
 
     而在mounted钩子函数中，因为该钩子函数执行时所有的DOM挂载和渲染都已完成，此时在该钩子函数中进行任何DOM操作都不会有问题，无需Vue.nextTick() 。
+
+>
+    <div ref="msgDiv">{{msg}}</div>
+    <button @click="changeMsg">点击我</button>
+
+    data(){
+      return {
+        msg: "a"
+      }
+    },     
+    methods: {
+      changeMsg() {
+        this.msg = "b"
+        console.log(this.$refs.msgDiv.textContent) //'a' 
+        this.$nextTick(function(){
+            console.log(this.$refs.msgDiv.textContent) // 'b'
+        })
+      }
+    }
+
+    Vue在观察到数据变化时并不是直接更新DOM，而是开启一个队列，并缓冲在同一事件循环中发生的所有数据改变。在缓冲时会去除重复数据，从而避免不必要的计算和DOM操作。然后，在下一个事件循环tick中，Vue刷新队列并执行实际工作。
+
 
 `总之，在数据变化后要执行的某个操作，而这个操作需要使用随数据改变而改变的DOM结构的时候，这个操作都应该放进Vue.nextTick()的回调函数中。`
 

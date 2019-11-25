@@ -405,11 +405,18 @@ end : 要复制序列的结束位置，如为负值则从后向前计数。如�
 ## <a name="forEach()">forEach()-- 不改变原数组</a>
 遍历数组 ,无法遍历对象, IE不支持  
 `没有返回值 undefined` , `不改变原数组 、不能中断`
+
+forEach(callback,thisArg)
+>callback(item,index,array)：生成新数组元素的函数，使用三个参数：  
+>>item，数组中正在处理的当前元素。  
+>>index数组中正在处理的当前元素的索引。  
+>>array源数组  
+
+>thisArg  
+>>可选的。执行 callback 函数时 使用的this 值(箭头函数时，this指向window)
+
 >
     forEach((item, index, array) => {})
-    // 	item-- 当前元素的值
-    // 	index--当前元素的索引
-    // 	array--源数组
     //  break,continue不能中断其循环，使用return也不能返回到外层函数。
     arr.forEach((item, index, array) => {
       console.log('forEach()-->', 'index:', index, ';item:', item, '源数组:', array)
@@ -417,19 +424,42 @@ end : 要复制序列的结束位置，如为负值则从后向前计数。如�
 
 ## <a name="map()">map() -- 不改变原数组</a>
 遍历数组，返回修改后的数组，`不改变原数组，不能中断`
+
+map(callback,thisArg)
+>callback(item,index,array)：生成新数组元素的函数，使用三个参数：  
+>>item，数组中正在处理的当前元素。  
+>>index数组中正在处理的当前元素的索引。  
+>>array源数组  
+
+>thisArg  
+>>可选的。执行 callback 函数时 使用的this 值(箭头函数时，this指向window)
+
 >
     arr.map((item, index) => {
       console.log('map()-->', 'index:', index, ';item:', item)
       return item + index
     });
 
+    ['a','b'].map(function (item){
+      console.log(this)
+      return this
+    },{}) //返回 [{},{}]
 
+    //箭头函数时，this指向window
+    ['a','b'].map((item) => {
+      console.log(this)
+      return this
+    },{}) //返回 [Window, Window]
 
 ## <a name="some()、every()、filter()">some()、every()、filter() -- 不改变原数组</a>
-some、、every、filter(item, index, array)  
-item: 键值  
-index: 索引  
-array：源数组  
+
+>callback(item,index,array)：生成新数组元素的函数，使用三个参数：  
+>>item，数组中正在处理的当前元素。  
+>>index数组中正在处理的当前元素的索引。  
+>>array源数组  
+
+>thisArg  
+>>可选的。执行 callback 函数时 使用的this 值(箭头函数时，this指向window)
 
 
 | |检测元素是否符合条件| 空数组测试| 不改变原数组|
@@ -476,14 +506,18 @@ ____
 
 
 ## <a name="reduce()、reduceRight()">reduce()、reduceRight()</a>
-reduce((sum, item, index, array) => {})  
 reduce()接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终为一个值，  
 // reduceRight() (从右到左)  
 
-sum：累计器 累计回调的返回值; 它是上一次调用回调时返回的累积值)  
-item：当前值  
-index：当前索引
-array：源数组
+reduce(callback(acu, item, index, array),initialValue)  
+>callback执行数组中每个值 (如果没有提供 initialValue则第一个值除外)的函数 
+>>acu：累计器 累计回调的返回值; 它是上一次调用回调时返回的累积值)   
+>>item：当前值  
+>>index：当前索引  
+>>array：源数组
+
+>initialValue可选,
+作为第一次调用 callback函数时的第一个参数的值。 如果没有提供初始值，则将使用数组中的第一个元素。在没有初始值的空数组上调用 reduce 将报错。
 >
 
     arr.reduce((prev, now, index, array) => {

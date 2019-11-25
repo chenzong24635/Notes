@@ -77,20 +77,21 @@ CSS布局、居中
 * <a href="#权重、优先级">权重、优先级</a>
 * <a href="#CSS引入的方式">CSS引入的方式有哪些? link和@import的区别是? 如何避免FOUC?</a>
 * <a href="#盒模型">盒模型</a>
+* <a href="#css选择器">css选择器</a>
+* <a href="#content属性">:before和:after伪元素的content属性</a>
+* <a href="#哪些属性可继承">哪些属性可继承</a>
 * <a href="#文字、盒子阴影">text-shadow 、box-shadow</a>
 * <a href="#max-,min-">max-width,max-height,min-width,min-height</a>
 
 * <a href="#百分数相对于width">padding/margin-top/bottom的百分数相对于width</a>
-* <a href="#css选择器">css选择器</a>
-* <a href="#content属性">:before和:after伪元素的content属性</a>
-* <a href="#哪些属性可继承">哪些属性可继承</a>
 * <a href="#zIndex">层叠上下文(stacking context )z-index</a>
 * <a href="#float特性">float特性</a>
-* <a href="#BFC">块级格式化上下文(BFC)、行内格式化上下文(IFC)</a>
+* <a href="#格式化上下文">格式化上下文BFC、IFC、FFC、GFC</a>
 * <a href="#display、visibility、overflow">display、visibility、overflow的隐藏问题</a>
 * <a href="#border-style">border-style属性值</a>
 * <a href="#line-hieght">line-hieght,vertical-align</a>
 * <a href="#文本换行">文本换行 white-space word-wrap word-break</a>
+* <a href="#定位">定位</a>
 * <a href="#Flex">Flex</a>
 * <a href="#Grid">Grid</a>
 * <a href="#background">background属性值</a>
@@ -164,7 +165,7 @@ CSS的优势：
 
     内联样式 > 内部样式表 > 外部样式表  
     !important > 内联样式 > ID选择器 > 类选择器/属性选择器/伪类选择器 > 元素选择器/关系选择器/伪元素选择器 > 通配符(*)  
-    权值: 10000   1000      100       10                             1                                   0
+    权值: 10000   1000      0100      0010                         0001                                000000
 
     max-width、mix-width、max-height、min-height 权重大于 !important
     mix-width,min-height 权重大于 max-width,max-height
@@ -195,7 +196,7 @@ Flash Of Unstyled Content：文档样式短暂失效; 用户定义样式表加�
 
 原因：
 >
-    使用import方法导入样式表。
+    使用import方法导入样式表(需等页面完全载入后再加载)
     将样式表放在页面底部
     有几个样式表，放在html结构的不同位置。其实原理很清楚：当样式表晚于结构性html加载，当加载到此样式表时，页面将停止之前的渲染。此样式表被下载和解析后，将重新渲染页面，也就出现了短暂的花屏现象
 
@@ -229,51 +230,6 @@ HTML中每个元素都被描绘成一个矩形盒子，这些盒子通过一个�
           可以为inline-block元素设置为负的margin-left;
           父元素font-size设置为0, 子元素再重新设置回来;
           直接在HTML文档里改变文本排列，使行间元素尾标签和下一个头便签间不留任何空格，如<span>第一个元素</span><span>第二个元素</span>
-
-## <a name="文字、盒子阴影">text-shadow 、box-shadow</a>[![img](/img/backward.png)](#top)
-
-文字阴影：text-shadow 
->
-    text-shadow:h-shadow v-shadow blur  color
-                 水平位移 垂直位移  模糊程度  阴影颜色;
-    //正值向右、下 ， 负值向左、上 ;模糊度不能为负值;
-    //可以设置多个阴影 用逗号隔开
-
-    .tu{ text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000; } //凸
-    .ao{ text-shadow: -1px -1px 1px #000, 1px 1px 1px #fff; } //凹
-
-盒子阴影box-shadow
->
-    box-shadow: h-shadow v-shadow blur spread color inset;
-    值	说明
-    h-shadow	必需的。水平阴影偏移量。正值：阴影在元素右边；负值：阴影在元素左边
-    v-shadow	必需的。垂直阴影偏移量。正值：阴影在元素底部；负值：阴影在元素顶部
-    blur	可选。模糊距离  
-    spread	可选。阴影的大小  正值：阴影扩大；负值：阴影缩小
-    color	可选。阴影的颜色。在CSS颜色值寻找颜色值的完整列表
-    inset	可选。从外层的阴影（开始时）改变阴影内侧阴影
-
-## <a name="max-,min-">max-width,max-height,min-width,min-height</a>[![img](/img/backward.png)](#top)
-
-min-width/max-width 出现的场景一定是自适应布局或者流体布局中
-
-width/height 的默认值是 auto
-
-max-width 和 max-height 的初始值是 none
-
-min-width 和 min-height 的初始值是 auto
-
-max-width、mix-width、max-height、min-height 权重大于 !important
-mix-width,min-height 权重大于 max-width,max-height
-
-[max-height与任意高度元素滑动展开收起效果实例页面](https://demo.cssworld.cn/3/3-2.php)
-
-## <a name="百分数相对于width">为什么padding/margin-top/bottom的百分数相对于width？</a>[![img](/img/backward.png)](#top)
-
-CSS权威指南中的解释：
->
-    正常流中的大多数元素都会足够高以包含其后代元素（包括外边距），如果一个元素的上下外边距时父元素的height的百分数，就可能导致一个无限循环，父元素的height会增加，以适应后代元素上下外边距的增加，而相应的，上下外边距因为父元素height的增加也会增加，如果循环。
-
 
 ## <a name="css选择器">css选择器</a>[![img](/img/backward.png)](#top)
 
@@ -514,6 +470,52 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
     如：font:italic 700 16px/40px  微软雅黑;
 
 
+
+## <a name="文字、盒子阴影">text-shadow 、box-shadow</a>[![img](/img/backward.png)](#top)
+
+文字阴影：text-shadow 
+>
+    text-shadow:h-shadow v-shadow blur  color
+                 水平位移 垂直位移  模糊程度  阴影颜色;
+    //正值向右、下 ， 负值向左、上 ;模糊度不能为负值;
+    //可以设置多个阴影 用逗号隔开
+
+    .tu{ text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000; } //凸
+    .ao{ text-shadow: -1px -1px 1px #000, 1px 1px 1px #fff; } //凹
+
+盒子阴影box-shadow
+>
+    box-shadow: h-shadow v-shadow blur spread color inset;
+    值	说明
+    h-shadow	必需的。水平阴影偏移量。正值：阴影在元素右边；负值：阴影在元素左边
+    v-shadow	必需的。垂直阴影偏移量。正值：阴影在元素底部；负值：阴影在元素顶部
+    blur	可选。模糊距离  
+    spread	可选。阴影的大小  正值：阴影扩大；负值：阴影缩小
+    color	可选。阴影的颜色。在CSS颜色值寻找颜色值的完整列表
+    inset	可选。从外层的阴影（开始时）改变阴影内侧阴影
+
+## <a name="max-,min-">max-width,max-height,min-width,min-height</a>[![img](/img/backward.png)](#top)
+
+min-width/max-width 出现的场景一定是自适应布局或者流体布局中
+
+width/height 的默认值是 auto
+
+max-width 和 max-height 的初始值是 none
+
+min-width 和 min-height 的初始值是 auto
+
+max-width、mix-width、max-height、min-height 权重大于 !important
+mix-width,min-height 权重大于 max-width,max-height
+
+[max-height与任意高度元素滑动展开收起效果实例页面](https://demo.cssworld.cn/3/3-2.php)
+
+## <a name="百分数相对于width">为什么padding/margin-top/bottom的百分数相对于width？</a>[![img](/img/backward.png)](#top)
+
+CSS权威指南中的解释：
+>
+    正常流中的大多数元素都会足够高以包含其后代元素（包括外边距），如果一个元素的上下外边距时父元素的height的百分数，就可能导致一个无限循环，父元素的height会增加，以适应后代元素上下外边距的增加，而相应的，上下外边距因为父元素height的增加也会增加，如果循环。
+
+
 ## <a name="zIndex">层叠上下文(stacking context )z-index</a>[![img](/img/backward.png)](#top)
 
 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Understanding_z_index/The_stacking_context)
@@ -641,35 +643,36 @@ clear 属性只有块级元素才有效的，而::after 等伪元素默认都是
     和 CSS： 
 
 
-## <a name="BFC">块级格式化上下文(BFC) 、行内格式化上下文(IFC)</a>[![img](/img/backward.png)](#top)
+## <a name="格式化上下文">格式化上下文BFC、IFC、FFC、GFC</a>[![img](/img/backward.png)](#top)
 
-格式化上下文即Formatting context，它是指页面上的一个局部独立渲染区域，根据Formatting context中包含的是元素类型的不同，分为块级格式上下文BFC和行内格式化上下文IFC，
+格式化上下文即Formatting context，它是指页面上的一个局部独立渲染区域，根据Formatting context中包含的是元素类型的不同，分为BFC(块级格式上下文)、IFC(行内格式化上下文)、FFC(自适应格式化上下文)、GFC(网格布局格式化上下文)
 
 
-### BFC
-[MDN](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context)
+### [BFC](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context)
 
-* 概述：BFC(Block Formatting Context)是Web页面中盒模型布局的CSS渲染模式。它的定位体系属于常规文档流。
 
-* BFC形成条件：
+概述：BFC(Block Formatting Context)是Web页面中盒模型布局的CSS渲染模式。它的定位体系属于常规文档流。
+
+BFC形成条件：
 1. 根元素 html
 2. float的值不为none
 3. position的值为absolute或fixed（不为static或relative或sticky）
-4. overflow的值不为visible( hidden,scroll,auto, )
-5. display的值为 inline-block | flex | inline-flex | grid | inline-grid | table | table-cell | table-caption |  
-6. display值为 flow-root
-7. 多列容器（元素的colunm-count或column-width不为auto，包括column-count为1）
+4. overflow的值不为visible( hidden,scroll,auto,... )的块元素
+5. display的值为 inline-block | flex | inline-flex | grid | inline-grid | table | inline-table | table-cell | table-caption |  flow-root
+6. contain 值为 layout、content或 paint 块元素
+6. 多列容器colunm-count或column-width不为auto 的块元素  
+7. column-span 为 all的块元素
 .....
 
-* BFC的布局规则
+BFC的布局规则
 1. 内部的元素会在垂直排列，可以理解为是BFC中的一个常规流
-2. 元素垂直方向的距离由margin决定，属于同一个BFC的两个相邻盒子的margin可能会发生重叠
-3. 每个元素的左外边距与包含块的左边界相接触(从左往右，否则相反)，即使存在浮动也是如此，说明BFC中的子元素不会超出它的包含块
-4. BFC的区域不会与float元素区域重叠叠
+2. 元素垂直方向的距离由margin决定，同一个BFC的相邻元素的margin可能会重叠
+3. 每个元素的左外边距与包含块的左边界相接触(从左往右，否则相反)，即使存在浮动也是如此(说明BFC中的子元素不会超出它的包含块)
+4. BFC的区域不会与float元素区域重叠
 5. 计算BFC的高度时，浮动子元素也参与计算
 6. BFC就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素，反之亦然
 
-* BFC的作用
+BFC的作用
 1. 不和浮动元素重叠：
 >
     如果一个浮动元素后面跟着一个非浮动的元素，那么就会产生一个覆盖的现象。清除元素内部浮动，只要把父元素设为BFC就可以清理子元素的浮动了，最常见的用法就是在父元素上设置overflow: hidden样式 
@@ -804,12 +807,22 @@ ridge（山脊）
 定义：两行文字基线之间的距离。//不同字体之间的基线是不同的。  
 line-height:normal(默认)  | number  | lenght |  percent  |  inherit;
 
->
-|父元素行高单位   | 子元素行高大小 (子元素未设置行高情况下) |
+子元素未设置行高：
+|父元素行高单位   | 子元素行高值|
 |:---|:---|
-| px  | 行高=父元素行高
-| em、% | 行高=父元素字体大小*行高值（与子元素字体大小无关）
-| 无 | 行高=子元素字体大小*行高值
+| px  | 行高=父元素行高 | 
+| em、% | 行高=父元素字体大小*行高值（与子元素字体大小无关）|
+| 无 | 行高=子元素字体大小*行高值 |
+
+---
+
+子元素设置行高：
+|子元素行高 | 子元素行高值 |
+|:---|:---|
+| inherit  | 见上表格 | 
+| px  | 行高 = 子元素行高 | 
+| em、% 、无| 行高= 子元素行高 * 子元素字体大小|
+
 
 对于非替换元素的纯内联元素，其可视高度完全由 line-height 决定
 
@@ -912,6 +925,32 @@ word-break
     //white-space:normal;
 
 <a href="#文字超出省略">文字超出省略</a>
+
+## <a name="定位">定位</a>[![img](/img/backward.png)](#top)
+* inherit： 继承值。但是任何的版本的 Internet Explorer （包括 IE8）都不支持属性值 “inherit”。
+* static：默认值。位置设置为static的元素，它始终会处于文档流给予的位置。
+* relative：相对定位，相对于该元素在文档中的初始位置进行定位。通过 left、top、right、bottom 属性来设置此元素相对于自身位置的偏移。
+* absolute：绝对定位，相对于距该元素最近的已定位的祖先元素进行定位。此元素的位置可通过left、top、right、bottom 属性来规定。
+
+* fixed：固定定位。默认情况下，可定位于相对于浏览器窗口的指定坐标。元素的位置通过left、top、right、bottom 属性进行规定。不论窗口滚动与否，元素都会留在那个位置。
+
+
+
+注意：
+* 一旦给元素加上absolute或float就相当于给元素加上了display:block
+* absolute元素覆盖正常文档流内元素（不用设z-index，自然覆盖）
+* absolute可以减少重绘和回流的开销（如absolute+ top:-9999em，或absolute +  visibility:hidden，将动画效果放到absolute元素中）
+
+* 定位的元素的margin依旧能起作用
+* 含有定位属性的元素，其top、bottom单位为百分比时，是相对于父元素的高度的。left、right则是相对于父元素的宽度的。
+
+* 当子元素是绝对定位，子元素设置width:100% = 父容器的padding+content     
+* 当子元素是非绝对定位，子元素设置width:100% = 父元素的content
+
+* position:fixed 降级问题:其父元素中有使用 transform 、filter属性，fixed 的效果会降级为 absolute。
+[参考](http://www.zhangxinxu.com/wordpress/2015/05/css3-transform-affect/)
+
+解决：当使用 fixed 的直接父元素的高度和屏幕的高度相同时 fixed 和 absolute 的表现效果会是一样的。如果这个直接父级内的元素存在滚动的情况，那就加上 overflow-y:auto。
 
 ## <a name="Flex">Flex</a>[![img](/img/backward.png)](#top)
 [Flex](/details/Flex.md)
@@ -1100,7 +1139,6 @@ perspective()：指定3d的透视距离
 
 transform限制position:fixed的跟随效果，
 父元素有transform属性（filter属性也会）， fixed 的效果会降级为 absolute。
-
 
 
 <a href="#图片缩放">图片缩放matrix,transform+transition</a>
@@ -1517,17 +1555,9 @@ https://my.oschina.net/i33/blog/126960
 
 * margin的top、bottom及padding的top、bottom使用百分比作为单位时，是相对父元素的宽度width的而不是高度height；
 
-* 含有定位属性的元素，其top、bottom单位为百分比时，是相对于父元素的高度的。left、right则是相对于父元素的宽度的。
 
 * 边框宽度不允许使用百分比值
 
-* 当子元素是绝对定位，子元素设置width:100% = 父容器的padding+content     
-* 当子元素是非绝对定位，子元素设置width:100% = 父元素的content
-
-* position:fixed 降级问题:其父元素中有使用 transform 、filter属性，fixed 的效果会降级为 absolute。
-[参考](http://www.zhangxinxu.com/wordpress/2015/05/css3-transform-affect/)
-
-解决：当使用 fixed 的直接父元素的高度和屏幕的高度相同时 fixed 和 absolute 的表现效果会是一样的。如果这个直接父级内的元素存在滚动的情况，那就加上 overflow-y:auto。
 
 * 使用calc时运算符之间要有空格 ，否则可能无效 
 

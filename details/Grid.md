@@ -26,7 +26,7 @@
     * <a href="#repeat()">repeat()</a>
     * <a href="#minmax()">minmax(min,max)</a>
     * <a href="#grid-template-areas">grid-template-areas</a>
-    * <a href="#grid-template">grid-template-rows grid-template-columns  grid-template-areas 简写属性</a>
+    * <a href="#grid-template">grid-template:grid-template-rows grid-template-columns  grid-template-areas 简写属性</a>
     * <a href="#grid-row-gap 、grid-column-gap">grid-row-gap 、grid-column-gap行列间距</a>
     * <a href="#grid-gap">grid-row-gap grid-column-gap 简写形式</a>
     * <a href="#justify-items">justify-items:沿着 inline（行）轴线网格项(grid items)对齐方式</a>
@@ -202,7 +202,7 @@ grid | inline-grid
       </div>
   <img src="../img/grid/template-areas.svg" width="70%" >
 
-## <a name="grid-template">grid-template-rows grid-template-columns  grid-template-areas 简写属性</a>[![img](/img/backward.png)](#top)
+## <a name="grid-template">grid-template:grid-template-rows grid-template-columns  grid-template-areas 简写属性</a>[![img](/img/backward.png)](#top)
   >none：将所有三个属性设置为其初始值  
   >\<grid-template-rows> / \<grid-template-columns>：将 grid-template-columns 和 grid-template-rows 设置为相应地特定的值，并且设置grid-template-areas为none
 

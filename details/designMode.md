@@ -2,6 +2,9 @@ https://segmentfault.com/a/1190000014436817
 
 https://segmentfault.com/a/1190000012422198
 
+
+https://github.com/ziyi2/js/blob/master/JS%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.md
+
 <details open>
   <summary>
     目录
@@ -183,9 +186,10 @@ https://segmentfault.com/a/1190000012422198
 ![observer](/img/observer.png)
 ![observer](/img/observer1.png)
 
-观察者模式就是，一个对象（subject）的状态发生改变时，会通知所有依赖它的对象（观察者），这两者是直接关联的。
+观察者模式就是使用一个目标对象（subject）维持一系列依赖于它的观察者对象（observer），    
+目标对象的状态发生改变时，会通知所有依赖它的观察者对象，这两者是直接关联的。
 
-在观察者模式中，观察者(Observer)是知道被观察对象(subject)的，Subject一直保持对观察者进行记录;当Subject状态发生变化时，会给所有的Observers发送一个通知函数，Observers接收到通知后通常会调用各自的更新函数。
+在观察者模式中，观察者(Observer)是知道被观察对象(subject)的，Subject一直保持对观察者进行记录;当Subject状态发生变化时，会给所有的observers发送一个通知函数，Observers接收到通知后通常会调用各自的更新函数。
 
 观察者模式大多数时候是同步的，比如当事件触发，Subject就会去调用观察者的方法
 >
@@ -226,7 +230,7 @@ https://segmentfault.com/a/1190000012422198
 
 在发布-订阅模式，消息的发送方，叫做发布者（publishers），消息不会直接发送给特定的接收者，叫做订阅者（Subscriber）。
 
-发布者和订阅者不知道对方的存在。需要一个第三方组件，叫做信息中介，它将订阅者和发布者串联起来，它过滤和分配所有输入的消息
+发布者和订阅者不知道对方的存在。发布/订阅模式使用一个事件通道，这个通道介于订阅者和发布者之间，采用事件通道可以避免发布者和订阅者之间产生依赖关系。
 
 发布-订阅模式大多数时候是异步的（使用消息队列）。
 

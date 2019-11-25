@@ -3,6 +3,8 @@
 [JS继承的六种方式](https://blog.csdn.net/caijixin/article/details/78295676)
 
 
+https://github.com/ziyi2/js/blob/master/JS%E7%B1%BB%E5%92%8C%E7%BB%A7%E6%89%BF.md
+
 # 目录
 * <a href="原型链继承">原型链继承</a>
 * <a href="构造继承">构造继承</a>

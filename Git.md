@@ -158,6 +158,8 @@ npm i git //git安装
 `退出vim编辑器：ESC + ZZ`
 
 # <a name="gitingore">忽略某些文件提交 gitingore</a>
+touch .gitignore 添加 gitignore文件
+
 
 配置语法
 >   

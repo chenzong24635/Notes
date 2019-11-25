@@ -62,7 +62,7 @@
 
 * 跳转
 >
-    [点击跳转](#5)
+    [点击跳转](#5)  //限数字 1,1.5之类
     <a id="5">跳转到这</a>
 
     里面也能放图片
@@ -102,11 +102,11 @@ div.item*3>{$}
 
 * 表格
 >
-    | Tables       | Are       | Cool |
-    |:-------------|:---------:|----:|
-    | 靠左对齐   | 居中对齐  | 靠右对齐     |
-    | 书写时     | 原始文字  |  可以不用对整齐 |
-    *斜体*      | **加粗**     | `渲染效果`
+    | Tables | Are  | Cool |
+    |:--|:---------:|----:|
+    | 靠左对齐 | 居中对齐  | 靠右对齐 |
+    | *斜体* | **加粗**     | `渲染效果`
+    | 书写时原始文字可以不用对整齐  |   |   |
 
 >
     冒号: 在第二行中不同的位置表示对齐方式，在无冒号：的情况下默认靠左对齐
@@ -1375,11 +1375,11 @@ F(1)=1，F(2)=1, F(n)=F(n-1)+F(n-2)（n>=3，n∈N*）
     }
     //去除重复计算版
     function fib(n){
-      function fib_(n,a,b){
-          if(n==0)  return a
-          else return fib_(n-1,b,a+b)
+      function fib_(n, a = 0, b = 1){
+        if(n==0) return a
+        else return fib_(n-1, b, a + b)
       }
-      return fib_(n,0,1)
+      return fib_(n)
     }
 
 * 计算斐波那列数（js语言精粹
@@ -1402,15 +1402,11 @@ F(1)=1，F(2)=1, F(n)=F(n-1)+F(n-2)（n>=3，n∈N*）
 >
     var arr = []
     function fib(n){
-      function fib_(n, a, b){
-        if(n === 0) {
-          return a
-        } else {
-          arr.push(b)
-          return fib_(n-1, b, a+b)
-        }
+      function fib_(n, a = 0, b = 1){
+        if(n === 0)return a
+        return arr.push(b),fib_(n-1, b, a + b)
       }
-      return fib_(n, 0, 1)
+      return fib_(n)
     }
     console.log(fib(33))
     console.log(arr)

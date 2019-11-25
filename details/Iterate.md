@@ -66,10 +66,17 @@
 遍历数组 ,无法遍历对象, IE不支持  
 `没有返回值 undefined` , `不改变原数组 、不能中断`
 
-forEach((item, index, array) => {})
-    // 	item-- 当前元素的值
-    // 	index--当前元素的索引
-    // 	array--源数组
+forEach(callback,thisArg)
+>callback(item,index,array)：生成新数组元素的函数，使用三个参数：  
+>>item，数组中正在处理的当前元素。  
+>>index数组中正在处理的当前元素的索引。  
+>>array源数组  
+
+>thisArg  
+>>可选的。执行 callback 函数时 使用的this 值(箭头函数时，this指向window)
+
+>
+    forEach((item, index, array) => {})
     //  break,continue不能中断其循环，使用return也不能返回到外层函数。
     arr.forEach((item, index, array) => {
       console.log('forEach()-->', 'index:', index, ';item:', item, '源数组:', array)
@@ -77,6 +84,15 @@ forEach((item, index, array) => {})
 
 ##  <a name="map()">map()</a>
 遍历数组，返回修改后的新数组，`不改变原数组，不能中断`
+
+map(callback,thisArg)
+>callback(item,index,array)：生成新数组元素的函数，使用三个参数：  
+>>item，数组中正在处理的当前元素。  
+>>index数组中正在处理的当前元素的索引。  
+>>array源数组  
+
+>thisArg  
+>>可选的。执行 callback 函数时 使用的this 值(箭头函数时，this指向window)
 
     arr.map((item, index) => {
       console.log('map()-->', 'index:', index, ';item:', item)
@@ -86,10 +102,13 @@ forEach((item, index, array) => {})
  
 ##  <a name="every()、some()、filter()">every()、some()、filter()</a>
 
-some、、every、filter(item, index, array)  
-item: 键值  
-index: 索引  
-array：源数组 
+>callback(item,index,array)：生成新数组元素的函数，使用三个参数：  
+>>item，数组中正在处理的当前元素。  
+>>index数组中正在处理的当前元素的索引。  
+>>array源数组  
+
+>thisArg  
+>>可选的。执行 callback 函数时 使用的this 值(箭头函数时，this指向window)
 
 | |检测元素是否符合条件| 空数组测试| 不改变原数组|
 |:--|:--|:--:|:--:|
