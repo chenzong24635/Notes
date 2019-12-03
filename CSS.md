@@ -138,7 +138,7 @@ CSS布局、居中
 
 # <a name="CSS">**CSS**</a>
 
-## <a name="概述">概述</a>[![img](/img/backward.png)](#top)
+## <a name="概述">概述</a>[![bakTop](./img/backward.png)](#top)
 
 CSS 是层叠样式表 ( Cascading Style Sheets ) 的简称。  
 CSS 是一种标记语言，属于浏览器解释型语言，可以直接由浏览器执行，不需要编译。  
@@ -151,7 +151,7 @@ CSS的优势：
     内容与表现分离，有了CSS，网页的内容(XHMTL)与表现就可以分开了。
     使用CSS可以减少网页的代码量，增加网页的浏览速度。
 
-## <a name="常见浏览器及其内核、私有化前缀">常见浏览器及其内核、私有化前缀</a>[![img](/img/backward.png)](#top)
+## <a name="常见浏览器及其内核、私有化前缀">常见浏览器及其内核、私有化前缀</a>[![bakTop](./img/backward.png)](#top)
 
 
 | | Chrome | Firefox | IE | Safari | Opera |
@@ -160,7 +160,7 @@ CSS的优势：
 | JS 引擎 | V8 | SpiderMonkey | Nitro | Chakra | V8 |
 | 私有化前缀 | -webkit- | -moz- | -ms- | -webkit- | -webkit- |
 
-## <a name="权重、优先级">权重、优先级</a>[![img](/img/backward.png)](#top)
+## <a name="权重、优先级">权重、优先级</a>[![bakTop](./img/backward.png)](#top)
 >
 
     内联样式 > 内部样式表 > 外部样式表  
@@ -175,7 +175,7 @@ CSS的优势：
 
 ![css-specificity](/img/css-specificity.jpg)
 
-## <a name="CSS引入的方式">CSS引入的方式? link和@import的区别是? 如何避免FOUC？</a>[![img](/img/backward.png)](#top)
+## <a name="CSS引入的方式">CSS引入的方式? link和@import的区别是? 如何避免FOUC？</a>[![bakTop](./img/backward.png)](#top)
 
 ### CSS引入的方式
 >
@@ -204,7 +204,7 @@ Flash Of Unstyled Content：文档样式短暂失效; 用户定义样式表加�
 >
     使用link标签将样式表放在head中
 
-## <a name="盒模型">盒模型</a>[![img](/img/backward.png)](#top)
+## <a name="盒模型">盒模型</a>[![bakTop](./img/backward.png)](#top)
 
 * 定义：
 HTML中每个元素都被描绘成一个矩形盒子，这些盒子通过一个模型来描述其占有空间，该模型称为盒模型。盒模型通过四个边界描述:内边距（padding）、外边距(margin)、边框(border)、内容(content)
@@ -231,7 +231,7 @@ HTML中每个元素都被描绘成一个矩形盒子，这些盒子通过一个�
           父元素font-size设置为0, 子元素再重新设置回来;
           直接在HTML文档里改变文本排列，使行间元素尾标签和下一个头便签间不留任何空格，如<span>第一个元素</span><span>第二个元素</span>
 
-## <a name="css选择器">css选择器</a>[![img](/img/backward.png)](#top)
+## <a name="css选择器">css选择器</a>[![bakTop](./img/backward.png)](#top)
 
 #### 
 * 通配符选择器(*)
@@ -340,7 +340,7 @@ css2伪类和伪元素都是用单冒号，所有的浏览器都兼容，
 但是css3伪类为单冒号如:hover ，伪元素为双冒号::before；但是双冒号IE8以下不兼容
 
 
-## <a name="content属性">::before和::after伪元素的content属性</a>[![img](/img/backward.png)](#top)
+## <a name="content属性">::before和::after伪元素的content属性</a>[![bakTop](./img/backward.png)](#top)
 
 | 值 |	说明
 |:-|:-|
@@ -414,7 +414,7 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
 ![counter](/img/counter.jpg)
 
 
-## <a name="CSS书写顺序">CSS书写顺序、规范</a>[![img](/img/backward.png)](#top)
+## <a name="CSS书写顺序">CSS书写顺序、规范</a>[![bakTop](./img/backward.png)](#top)
 
 书写顺序
 >
@@ -429,7 +429,7 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
     属性缩写
     去掉小数点前的 0
 
-## <a name="哪些属性可继承">哪些属性可继承</a>[![img](/img/backward.png)](#top)
+## <a name="哪些属性可继承">哪些属性可继承</a>[![bakTop](./img/backward.png)](#top)
 
 * 不可继承的样式：
 >
@@ -471,7 +471,7 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
 
 
 
-## <a name="文字、盒子阴影">text-shadow 、box-shadow</a>[![img](/img/backward.png)](#top)
+## <a name="文字、盒子阴影">text-shadow 、box-shadow</a>[![bakTop](./img/backward.png)](#top)
 
 文字阴影：text-shadow 
 >
@@ -494,7 +494,7 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
     color	可选。阴影的颜色。在CSS颜色值寻找颜色值的完整列表
     inset	可选。从外层的阴影（开始时）改变阴影内侧阴影
 
-## <a name="max-,min-">max-width,max-height,min-width,min-height</a>[![img](/img/backward.png)](#top)
+## <a name="max-,min-">max-width,max-height,min-width,min-height</a>[![bakTop](./img/backward.png)](#top)
 
 min-width/max-width 出现的场景一定是自适应布局或者流体布局中
 
@@ -509,14 +509,14 @@ mix-width,min-height 权重大于 max-width,max-height
 
 [max-height与任意高度元素滑动展开收起效果实例页面](https://demo.cssworld.cn/3/3-2.php)
 
-## <a name="百分数相对于width">为什么padding/margin-top/bottom的百分数相对于width？</a>[![img](/img/backward.png)](#top)
+## <a name="百分数相对于width">为什么padding/margin-top/bottom的百分数相对于width？</a>[![bakTop](./img/backward.png)](#top)
 
 CSS权威指南中的解释：
 >
     正常流中的大多数元素都会足够高以包含其后代元素（包括外边距），如果一个元素的上下外边距时父元素的height的百分数，就可能导致一个无限循环，父元素的height会增加，以适应后代元素上下外边距的增加，而相应的，上下外边距因为父元素height的增加也会增加，如果循环。
 
 
-## <a name="zIndex">层叠上下文(stacking context )z-index</a>[![img](/img/backward.png)](#top)
+## <a name="zIndex">层叠上下文(stacking context )z-index</a>[![bakTop](./img/backward.png)](#top)
 
 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Understanding_z_index/The_stacking_context)
 
@@ -587,7 +587,7 @@ z-index只适用于已经定位的元素
     2、问题标签无position属性,不包括static (添加position属性)
     3、问题标签含有浮动(float)属性。(去除浮动)
 
-## <a name="float特性">float特性</a>[![img](/img/backward.png)](#top)
+## <a name="float特性">float特性</a>[![bakTop](./img/backward.png)](#top)
 
 由于float意味着使用块布局，所以它会修改元素的display值为block|table
 
@@ -643,7 +643,7 @@ clear 属性只有块级元素才有效的，而::after 等伪元素默认都是
     和 CSS： 
 
 
-## <a name="格式化上下文">格式化上下文BFC、IFC、FFC、GFC</a>[![img](/img/backward.png)](#top)
+## <a name="格式化上下文">格式化上下文BFC、IFC、FFC、GFC</a>[![bakTop](./img/backward.png)](#top)
 
 格式化上下文即Formatting context，它是指页面上的一个局部独立渲染区域，根据Formatting context中包含的是元素类型的不同，分为BFC(块级格式上下文)、IFC(行内格式化上下文)、FFC(自适应格式化上下文)、GFC(网格布局格式化上下文)
 
@@ -755,7 +755,7 @@ BFC的作用
 
 
 
-## <a name="display、visibility、overflow">display、visibility、overflow、opacity的隐藏问题</a>[![img](/img/backward.png)](#top)
+## <a name="display、visibility、overflow">display、visibility、overflow、opacity的隐藏问题</a>[![bakTop](./img/backward.png)](#top)
 
 * display：block | none | inline | table | flex | grid .... 
 * overflow : visible | auto | hidden | scroll
@@ -786,7 +786,7 @@ BFC的作用
 3. opacity:0,动画属性生效,能够进行正常的动画效果.
 
 
-## <a name="border-style">border-style属性值</a>[![img](/img/backward.png)](#top)
+## <a name="border-style">border-style属性值</a>[![bakTop](./img/backward.png)](#top)
 none 无、  
 hidden 与 "none" 相同。不过应用于表时除外，对于表，hidden 用于解决边框冲突、  
 solid（实线）、  
@@ -800,7 +800,7 @@ ridge（山脊）
 
 ![border-style](/img/border-style.jpg)
 
-## <a name="line-hieght">line-hieght,vertical-align</a>[![img](/img/backward.png)](#top)
+## <a name="line-hieght">line-hieght,vertical-align</a>[![bakTop](./img/backward.png)](#top)
 ### line-height
 ![line-height](./img/lineheight.png)
 
@@ -880,7 +880,7 @@ table-cell 元素设置 vertical-align 垂
     </div>
 
 
-## <a name="文本换行">文本换行 white-space word-wrap word-break</a>[![img](/img/backward.png)](#top)
+## <a name="文本换行">文本换行 white-space word-wrap word-break</a>[![bakTop](./img/backward.png)](#top)
 
 white-space
 >
@@ -926,7 +926,7 @@ word-break
 
 <a href="#文字超出省略">文字超出省略</a>
 
-## <a name="定位">定位</a>[![img](/img/backward.png)](#top)
+## <a name="定位">定位</a>[![bakTop](./img/backward.png)](#top)
 * inherit： 继承值。但是任何的版本的 Internet Explorer （包括 IE8）都不支持属性值 “inherit”。
 * static：默认值。位置设置为static的元素，它始终会处于文档流给予的位置。
 * relative：相对定位，相对于该元素在文档中的初始位置进行定位。通过 left、top、right、bottom 属性来设置此元素相对于自身位置的偏移。
@@ -952,13 +952,13 @@ word-break
 
 解决：当使用 fixed 的直接父元素的高度和屏幕的高度相同时 fixed 和 absolute 的表现效果会是一样的。如果这个直接父级内的元素存在滚动的情况，那就加上 overflow-y:auto。
 
-## <a name="Flex">Flex</a>[![img](/img/backward.png)](#top)
+## <a name="Flex">Flex</a>[![bakTop](./img/backward.png)](#top)
 [Flex](/details/Flex.md)
 
-## <a name="Grid">Grid</a>[![img](/img/backward.png)](#top)
+## <a name="Grid">Grid</a>[![bakTop](./img/backward.png)](#top)
 [Grid](/details/Grid.md)
 
-## <a name="background">background属性值</a>[![img](/img/backward.png)](#top)
+## <a name="background">background属性值</a>[![bakTop](./img/backward.png)](#top)
 
 ### background
 
@@ -1029,7 +1029,7 @@ word-break
 ### background-blend-mode和mix-blend-mode
 
 
-## <a name="渐变">渐变linear-gradient,radial-gradient,conic-gradient</a>[![img](/img/backward.png)](#top)
+## <a name="渐变">渐变linear-gradient,radial-gradient,conic-gradient</a>[![bakTop](./img/backward.png)](#top)
 [你真的理解CSS的linear-gradient？](https://www.w3cplus.com/css3/do-you-really-understand-css-linear-gradients.html)
 
 ### [linear-gradient()线性渐变](https://www.w3cplus.com/css3/do-you-really-understand-css-linear-gradients.html)
@@ -1091,7 +1091,7 @@ radial-gradient(shape size at position, color1 range,...colorn range)
     background: radial-gradient(at center, hotpink , darkblue); /* 标准的语法 */
 
 
-## <a name="transform">[transform变形](http://css.cuishifeng.cn/transform.html)</a>[![img](/img/backward.png)](#top)
+## <a name="transform">[transform变形](http://css.cuishifeng.cn/transform.html)</a>[![bakTop](./img/backward.png)](#top)
 
 matrix()：以一个含六值的(a,b,c,d,e,f)变换矩阵的形式指定一个2D变换，相当于直接应用一个[a,b,c,d,e,f]变换矩阵  
 matrix3d(): 以一个4x4矩阵的形式指定一个3D变换  
@@ -1143,7 +1143,7 @@ transform限制position:fixed的跟随效果，
 
 <a href="#图片缩放">图片缩放matrix,transform+transition</a>
 
-## <a name="transition">[transition过渡](http://css.cuishifeng.cn/transform.html)</a>[![img](/img/backward.png)](#top)
+## <a name="transition">[transition过渡](http://css.cuishifeng.cn/transform.html)</a>[![bakTop](./img/backward.png)](#top)
 用于设置元素的样式过度，和animation有着类似的效果
 
 就是元素从这个属性(color)的某个值(red)过渡到这个属性(color)的另外一个值(green)，这是一个状态的转变，需要一种条件来触发这种转变，比如我们平时用到的:hoever、:focus、:checked、媒体查询或者JavaScript。
@@ -1166,7 +1166,7 @@ transition: property duration  timing-function delay
       /* 当这样使用时，确保 all 在第一个，因为如果 all 在后边的话，它的规则会覆盖掉前边的属性 */
     }
 
-## <a name="animation">animation动画</a>[![img](/img/backward.png)](#top)
+## <a name="animation">animation动画</a>[![bakTop](./img/backward.png)](#top)
 animation: name duration timing-function delay iteration-count direction play-state fill-mode;  
 
 >name: 用来调用@keyframes定义好的动画，与@keyframes定义的动画名称一致  
@@ -1219,13 +1219,13 @@ animation: name duration timing-function delay iteration-count direction play-st
 
 [animate.css](https://daneden.github.io/animate.css/)
 
-## <a name="移动端开发相关知识">移动端开发相关知识</a>[![img](/img/backward.png)](#top)
+## <a name="移动端开发相关知识">移动端开发相关知识</a>[![bakTop](./img/backward.png)](#top)
 
 [关于移动端适配，你必须要知道的](https://juejin.im/post/5cddf289f265da038f77696c)
 
 [移动端开发的屏幕、图像、字体与布局的兼容适配](https://juejin.im/post/5d70747cf265da03e16897c8)
 
-### <a name="响应式、自适应">响应式、自适应</a>[![img](/img/backward.png)](#top)
+### <a name="响应式、自适应">响应式、自适应</a>[![bakTop](./img/backward.png)](#top)
 响应式设计是 Responsive Web Design（RWD）:响应式的概念覆盖了自适应，但包括的更多。响应式布局可以根据屏幕的大小自动的调整页面的展现方式，以及布局。  
 * 采用 CSS 的 media query 技术
 * 流体布局（ fluid grids ）
@@ -1241,7 +1241,7 @@ RWD 和 AWD 两者都是为了适配各种不同的移动设备，致力于提�
 
 ![rwdawd.jpg](/img/rwdawd.jpg)
 
-### <a name="尺寸单位">像素定义 尺寸单位</a>[![img](/img/backward.png)](#top)
+### <a name="尺寸单位">像素定义 尺寸单位</a>[![bakTop](./img/backward.png)](#top)
 
 #### 尺寸单位
 |单位|描述|
@@ -1334,10 +1334,10 @@ https://www.cnblogs.com/ranyonsue/p/6795943.html
 
 
 
-### <a name="移动端适配">移动端适配</a>[![img](/img/backward.png)](#top)
+### <a name="移动端适配">移动端适配</a>[![bakTop](./img/backward.png)](#top)
 
 
-## <a name="用CSS开启硬件加速来提高网站性能">用CSS开启硬件加速来提高网站性能</a>[![img](/img/backward.png)](#top)
+## <a name="用CSS开启硬件加速来提高网站性能">用CSS开启硬件加速来提高网站性能</a>[![bakTop](./img/backward.png)](#top)
 
 #### 何为硬件加速
 
@@ -1445,7 +1445,7 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
 
 
 
-## <a name="获取CSS样式">获取CSS样式</a>[![img](/img/backward.png)](#top)
+## <a name="获取CSS样式">获取CSS样式</a>[![bakTop](./img/backward.png)](#top)
 
 https://my.oschina.net/i33/blog/126960
 
@@ -1459,7 +1459,7 @@ https://my.oschina.net/i33/blog/126960
 //getComputedStyle("元素", "伪类" || null) 同currentStyle作用相同，但是适用于FF、opera、safari、chrome。
 
 
-## <a name="@规则">@规则</a>[![img](/img/backward.png)](#top)
+## <a name="@规则">@规则</a>[![bakTop](./img/backward.png)](#top)
 
 @charset 
 >
@@ -1526,7 +1526,7 @@ https://my.oschina.net/i33/blog/126960
         margin: 10% 20%;
     }
 
-## <a name="CSS hack">CSS hack</a>[![img](/img/backward.png)](#top)
+## <a name="CSS hack">CSS hack</a>[![bakTop](./img/backward.png)](#top)
 
 [CSS hack](https://blog.csdn.net/freshlover/article/details/12132801)
 
@@ -1549,9 +1549,9 @@ https://my.oschina.net/i33/blog/126960
 
 
 
-# <a name="一些css属性及其他">**一些css属性及其他**</a>[![img](/img/backward.png)](#top)
+# <a name="一些css属性及其他">**一些css属性及其他**</a>[![bakTop](./img/backward.png)](#top)
 
-## <a name="注意事项">注意事项</a>[![img](/img/backward.png)](#top)
+## <a name="注意事项">注意事项</a>[![bakTop](./img/backward.png)](#top)
 
 * margin的top、bottom及padding的top、bottom使用百分比作为单位时，是相对父元素的宽度width的而不是高度height；
 
@@ -1564,7 +1564,7 @@ https://my.oschina.net/i33/blog/126960
 *  background引入图片的一个缺点是页面的Web可访问性会受到轻微的影响，因为屏幕阅读器和搜索引擎无法正确地获取到图像。可以通过CSS object-fit属性解决(object-position和object-fit只针对替换元素有作用)
 
 
-## <a name="css自定义变量属性">css自定义变量属性</a>[![img](/img/backward.png)](#top)
+## <a name="css自定义变量属性">css自定义变量属性</a>[![bakTop](./img/backward.png)](#top)
 
 <b>IE不支持</b>
 
@@ -2079,7 +2079,7 @@ firefox
     }    
 
 
-## <a name="纯css页面滚动进度条">纯css页面滚动进度条</a>[![img](/img/backward.png)](#top)
+## <a name="纯css页面滚动进度条">纯css页面滚动进度条</a>[![bakTop](./img/backward.png)](#top)
 >
     *{
       margin: 0;

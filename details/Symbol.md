@@ -14,7 +14,7 @@
   * <a href="#"></a>
 </details>
 
-# <a name="概述">概述</a>[![img](/img/backward.png)](#top)
+# <a name="概述">概述</a>[![bakTop](../img/backward.png)](#top)
 
 是一种数据类型; 不能 new,因为 Symbol 是一个原始类型的值，不是对象。
 
@@ -40,21 +40,21 @@ Symbol值作为对象属性名时，只能用方括号运算符([])读取，不�
 
 Symbol值作为对象属性名时，不会被常规方法遍历得到，可利用此特性为对象定义非私有但又只用于内部的方法
 
-# <a name="description">description</a>[![img](/img/backward.png)](#top)
+# <a name="description">description</a>[![bakTop](../img/backward.png)](#top)
 
 返回Symbol值的描述
 
 
 Symbol('a').description //'a'
 
-# <a name="for">for</a>[![img](/img/backward.png)](#top)
+# <a name="for">for</a>[![bakTop](../img/backward.png)](#top)
 在全局中搜索有没有以该参数作为名称的 Symbol 值，如果有，就返回这个 Symbol 值，否则就新建并返回一个以该字符串为名称的 Symbol 值
 >
     let s1 = Symbol.for('foo');
     let s2 = Symbol.for('foo');
     s1 === s2 // true
 
-# <a name="keyFor">keyFor</a>[![img](/img/backward.png)](#top)
+# <a name="keyFor">keyFor</a>[![bakTop](../img/backward.png)](#top)
 
 返回一个已登记的 Symbol 类型值的 key
 >
