@@ -308,6 +308,7 @@ div.item*3>{$}
   * <a href="#图片转base64下载">图片转base64下载</a>
   * <a href="#打印">打印</a>
   * <a href="#base64数据导出文件">base64数据导出文件，文件下载</a>
+  * <a href="#实现模糊搜索结果的关键词高亮显示">实现模糊搜索结果的关键词高亮显示</a>
   * <a href="#判断字符串长度">判断字符串长度</a>
   * <a href="#0.1+0.2">0.1+0.2!=0.3 原因，解决</a>
   * <a href="#移动端点透问题">移动端点透问题(click 300ms延迟)</a>
@@ -801,6 +802,44 @@ var obj = {
         document.body.removeChild(DownloadLink);
       }
     }
+
+## <a name="实现模糊搜索结果的关键词高亮显示">[实现模糊搜索结果的关键词高亮显示](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/141)</a>
+>
+    <div class="input">
+        <input type="text" oninput="search(event)">
+        <ul class="options"></ul>
+    </div>
+
+    <script>
+        const list = [1,1111,'13','a','ab','baa','上海', '上海市', '上海海昌海洋公园', '上海市徐汇区', '上海自来水来自海上'];
+        function setList(value) {
+          const ul = document.querySelector('.options');
+          ul.innerHTML = '';
+          if (!value) {
+            ul.innerHTML = '';
+            return;
+          }
+          list.forEach((item, index) => {
+            //number没有replace方法
+            item = String(item)
+            if (item.indexOf(value) !== -1) {
+              const li = document.createElement('li');
+              const innerHtml = item.replace(value, `<span style="color:red">${value}</span>`);
+              console.log(innerHtml)
+              li.innerHTML = innerHtml;
+              li.setAttribute('key', index);
+              ul.appendChild(li);
+            }
+          })
+        }
+        function search(e) {
+          const value = e.target.value;
+          setList(value)
+        }
+    </script>
+
+
+
 
 ## <a name="判断字符串长度">判断字符串长度(英文占1个字符，中文汉字占2个字符)</a>
     
