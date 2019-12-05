@@ -57,9 +57,9 @@
 * <a href="#路由权限">路由权限</a>
 * <a href="#vuex">vuex</a>
 * <a href="#组件通信方法">组件通信方法</a>
-* <a href="#axios、api 设计">axios、api 设计</a>
 * <a href="#token验证">如何添加token验证</a>
 * <a href="#vue项目性能优化">vue项目性能优化</a>
+  * <a href="#骨架屏">骨架屏</a>
   * <a href="#事件的销毁">事件的销毁</a>
   * <a href="#图片资源懒加载">图片资源懒加载</a>
   * <a href="#路由懒加载">路由懒加载</a>
@@ -259,7 +259,7 @@ Object.defineProperty(obj, prop, descriptor)
 
 https://juejin.im/post/5acc17cb51882555745a03f8  
 
-//双向绑定-简
+Object.defineProperty双向绑定-简
 >
     const obj = {};
     Object.defineProperty(obj, 'text', {
@@ -310,22 +310,22 @@ Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值�
     p.hobbits.push('photography'); //读取成功;注意不会触发 set
     p.info.age = 18; //读取成功;不会触发 set
 
-双向绑定-简
+proxy双向绑定-简
 >
+    let input = document.querySelector('#input')
+    let span = document.querySelector('#span')
     const obj = new Proxy({text:''},{
-      get: function(target,key) {
+      get: function(target,key,receiver) {
         console.log('get ');
-        // return Reflect.get(target,key)
+        return Reflect.get(target,key,receiver)
       },
-      set: function(target,key,val) {
+      set: function(target,key,val,receiver) {
         console.log('set :' + val);
-        document.getElementById('input').value = val;
-        document.getElementById('span').innerHTML = val;
-        // return Reflect.set([target,key,val])
+        input.value = val;
+        span.innerHTML = val;
+        return Reflect.set(target,key,val,receiver)
       }
     });
-
-    const input = document.getElementById('input');
     input.addEventListener('keyup', function(e){
       obj.text = e.target.value;
     })
@@ -1855,10 +1855,6 @@ ref：如果在普通的 DOM 元素上使用，引用指向的就是 DOM 元素�
       }
     }
 
-# <a name="axios、api 设计">axios、api 设计</a>[![bakTop](./img/backward.png)](#top)  
-[参考](https://segmentfault.com/a/1190000018964794?utm_medium=hao.caibaojian.com&utm_source=hao.caibaojian.com&share_user=1030000000178452#articleHeader8)
-[参考](https://juejin.im/post/5b55c118f265da0f6f1aa354)
-[参考](https://github.com/chenzong24635/vDemo/blob/master/src/api/index.js)
 
 # <a name="token验证">如何添加token验证</a>[![bakTop](./img/backward.png)](#top)  
 通过vuex管理token
@@ -1945,6 +1941,15 @@ ref：如果在普通的 DOM 元素上使用，引用指向的就是 DOM 元素�
 
 
 # <a name="vue项目性能优化">vue项目性能优化</a>[![bakTop](./img/backward.png)](#top)  
+
+## 首屏优化
+[Vue CLI 首屏优化技巧](https://segmentfault.com/a/1190000019499007)
+
+## <a name="骨架屏">[骨架屏](https://www.jianshu.com/p/eacac700630e)</a>[![bakTop](./img/backward.png)](#top)  
+骨架屏就是在页面数据尚未加载前先给用户展示出页面的大致结构，直到请求数据返回后再渲染页面，补充进需要显示的数据内容。常用于文章列表、动态列表页等相对比较规则的列表页面。
+<img src="./img/skeleton.jpg">
+
+
 
 ## <a name="事件的销毁">事件的销毁</a>[![bakTop](./img/backward.png)](#top)  
 Vue 组件销毁时，会自动清理它与其它实例的连接，解绑它的全部指令及事件监听器，但是仅限于组件本身的事件。  
@@ -2057,9 +2062,32 @@ dev --> port
 ## 查看所有注入的命令 npx vue-cli-service help
 
 ## 查看打包后各文件的体积 npm run build --report 
-如果你是vue-cli初始化的项目，会默认安装webpack-bundle-analyzer插件，该插件可以帮助我们查看项目的体积结构对比和项目中用到的所有依赖。也可以直观看到各个模块体积在整个项目中的占比
+如果你是vue-cli2初始化的项目，会默认安装webpack-bundle-analyzer插件，该插件可以帮助我们查看项目的体积结构对比和项目中用到的所有依赖。也可以直观看到各个模块体积在整个项目中的占比
 
-记得运行的时候先把之前npm run dev开启的本地关掉
+npm install webpack-bundle-analyzer --save-dev
+
+vue.config.js配置
+>
+    module.exports = {
+      chainWebpack: config => {
+        if (process.env.use_analyzer) {
+          config
+            .plugin('webpack-bundle-analyzer')
+            .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
+        }
+      }
+    }
+
+npm i cross-env -D  
+由于windows下不支持xxx=xxx这种写法。为了支持这种写法，用npm安装cross-env
+
+修改package.json
+>
+    "scripts": {
+      "analyzer": "cross-env use_analyzer=true npm run build"
+    },
+
+npm run analyzer
 
 
 ## dependencies 与 devdependencies 区别

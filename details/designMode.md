@@ -21,30 +21,23 @@ https://github.com/ziyi2/js/blob/master/JS%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.m
 * <a href="#观察者模式">观察者模式</a>
 * <a href="#发布订阅模式">发布订阅模式</a>
 
-
-
-
-#  <a name=""></a>
-
-
-
-
 #  <a name="工厂模式">工厂模式 Factory</a>
 
 * 核心:
 >
     return一个对象
     创建不同的引用类型
+    
 * 例子:
 > 
-    function People () {
+    function People (name) {
       let person = {
-        name: '人',
+        name: name,
         walk: function () {console.log('walk')}
       }
       return person // 返回一个对象
     }
-    let p = People() // 工厂生产对象
+    let p = People('Tom') // 工厂生产对象
 
 * 说明：
 >
@@ -96,7 +89,7 @@ https://github.com/ziyi2/js/blob/master/JS%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.m
     1.函数中不对属性进行定义
     2.利用prototype属性对属性进行定义
     3.不推荐
-
+    
 #  <a name="混合模式">混合模式(原型模式+构造函数模式) Mixin </a>
 * 核心
 >
@@ -283,3 +276,4 @@ https://github.com/ziyi2/js/blob/master/JS%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.m
     });
     Event.fire('click', 'click 事件绑定');
 
+#  <a name=""></a>

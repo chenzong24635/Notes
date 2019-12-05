@@ -62,12 +62,13 @@
 * <a href="#new的实现原理">new的实现原理</a>
 * <a href="#原型、原型链、原型继承">原型、原型链、原型继承</a>
 * <a href="#创建对象的几种方式">创建对象的几种方式</a>
-* <a href="#设计模式">设计模式</a>
 * <a href="#作用域、作用域链、执行上下文">作用域、作用域链、执行上下文</a>
 * <a href="#this">this绑定</a>
 * <a href="apply call bind">apply call bind</a>
 * <a href="实现apply call bind">实现apply call bind</a>
 * <a href="#公有、私有、静态、特权方法与属性">公有、私有、静态、特权方法与属性</a>
+* <a href="#继承方式">继承方式</a>
+* <a href="#设计模式">设计模式</a>
 * <a href="#promise">promise</a>
 * <a href="#async、await">async、await</a>
 * <a href="#深，浅拷贝">深，浅拷贝</a>
@@ -184,6 +185,8 @@
 JS的特点：无需编译、弱类型、基于对象、事件驱动  
 JS的组成：核心( ECMAScript) , 文档对象模型(DOM), 浏览器对象模型(BOM)
 
+JavaScript 是弱类型语言，而且JavaScript 声明变量的时候并没有预先确定的类型， 变量的类型就是其值的类型
+
 >  
     任何 JavaScript 语句是可以加标签的，在语句前加冒号即可：
 
@@ -216,6 +219,9 @@ JS的组成：核心( ECMAScript) , 文档对象模型(DOM), 浏览器对象模�
     栈内存（连续的存储空间，类似数据结构中的栈）：主要用来存放数值、字符、内存地址等小数据
     
     堆内存（散列的存储空间，类似数据结构中的链表）：存放可以动态变化的大数据
+
+![堆栈](./img/堆栈.jpg)
+
 
 对象的键名只能是字符串和 Symbol 类型。  
 其他类型的键名会被转换成字符串类型。  
@@ -1071,19 +1077,16 @@ Object.getPrototypeOf(Function.prototype) === Object.prototype //true
 * 原型继承：
 原型中的成员可以被和其相关的对象共享这一特性，可以实现继承。这种实现继承的方式，就叫做原型继承。
 
-[inherit.md](details/inherit.md)
+[继承方式](details/inherit.md)
 
-
-#### 如何实现继承？
-[inherit.md](details/inherit.md)
 
 ## <a name="创建对象的几种方式">创建对象的几种方式</a>
 
 对象字面量：
-  p = {name:'jack'}
+>p = {name:'jack'}
 
 new Object():  
-  p = new Object({name:'jack'})
+>p = new Object({name:'jack'})
 
 Object.create:
 >
@@ -1098,9 +1101,6 @@ Object.create:
     function P(name){this.name = name}
     p = new P('jack')
 
-
-## <a name="设计模式">设计模式</a>
-[designMode](/details/designMode.md)
 
 ## <a name="作用域、作用域链、执行上下文">作用域、作用域链、执行上下文(执行环境)</a>
 #### 作用域：
@@ -1332,6 +1332,13 @@ bind
     }
     var user = new User(26);
 
+
+## <a name="继承方式">继承方式</a>
+[inherit.md](details/inherit.md)
+
+## <a name="设计模式">设计模式</a>
+[designMode](/details/designMode.md)
+
 ## <a name="promise">promise</a>
 [promise](/details/promise.md)
 
@@ -1365,7 +1372,10 @@ async函数表示函数里面可能会有异步方法，await后面跟一个表�
     b = a.slice(0)
     b = a.concat([])
 
-* 深拷贝：开辟新的栈
+* 深拷贝：开辟新的栈  
+0. [函数库lodash](https://www.lodashjs.com/)  [CDN](https://www.bootcdn.cn/lodash.js/)  
+提供_.cloneDeep深拷贝方法
+
 1. JSON.parse(JSON.stringify(obj))
 >
 
@@ -1831,12 +1841,10 @@ npm install xss --save
 
 URI是以一种抽象的，高层次概念定义统一资源标识，而URL和URN则是具体的资源标识的方式。URL和URN都是一种URI。笼统地说，每个 URL 都是 URI，但不一定每个 URI 都是 URL。这是因为 URI 还包括一个子类，即统一资源名称 (URN)，它命名资源但不指定如何定位资源。上面的 mailto、news 和 isbn URI 都是 URN 的示例。
 
-在Java的URI中，一个URI实例可以代表绝对的，也可以是相对的，只要它符合URI的语法规则。而URL类则不仅符合语义，还包含了定位该资源的信息，因此它不能是相对的。
+[彻底明白ip地址，区分localhost、127.0.0.1和0.0.0.0](https://blog.csdn.net/liyi1009365545/article/details/84780476)
 
-在Java类库中，URI类不包含任何访问资源的方法
-
-## <a name="字符转码、解码">字符转码、解码,encodeURIComponent、decodeURIComponent、encodeURI、decodeURI、escape、unescape</a>
-* encodeURIComponent()、decodeURIComponent()  
+## <a name="字符转码、解码">字符转码、解码,encodeURIComponent、decodeURIComponent,encodeURI、decodeURI,escape、unescape,btoa、atob</a>
+* 编码encodeURIComponent()、解码decodeURIComponent()  
 
 将中文、韩文等特殊字符转换成utf-8格式的url编码   
 传递参数时需要使用encodeURIComponent，这样组合的url才不会被#等特殊字符截断。
@@ -1846,7 +1854,7 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
     encodeURIComponent(encodeURIComponent(url))
     "http%3A%2F%2Flocalhost%3A8080%2F%23%2Fpp%3Fa%3D1%26b%3D"
 
-* encodeURI()、decodeURI()  
+* 编码encodeURI()、解码decodeURI()  
 用于整个url跳转
 >
 
@@ -1855,36 +1863,36 @@ URI是以一种抽象的，高层次概念定义统一资源标识，而URL和UR
     "http://localhost:8080/#/pro?a=1&b=%E5%BC%A0%E4%B8%89&c=aaa"
     本例中只是将中文转成%...，传过去再解码就可以拿到中文
 
-* escape() 、unescape()  
+* 编码escape() 、解码unescape()  
 js对字符串进行编码。不常用
 >
+    escape('啊') // "%u554A"
+    unescape("%u554A") // '啊'
 
+* window.atob()、window.btoa()
+
+window.btoa()：编码，Base64 to ASCII ,该方法不能直接作用于Unicode字符串.
+>
+    btoa('a') // "YQ=="
+    btoa('啊') // 报错
+
+window.atob() 解码，ASCII to Base64
+>
+    atob("YQ==") // "a"
+
+如何让btoa支持Unicode字符编码  
+>编码时，先用encodeURIComponent对字符串进行编码，再进行btoa进行Base64编码  
+>解码时，先用atob对Base64编码的串进行解码，再用decodeURIComponent对字符串进行解码
+>
+    var str = "a啊";
+    var encoded_str = btoa(encodeURIComponent(str));
+    var decoded_str = decodeURIComponent(atob(encoded_str));
+    console.log(encoded_str); // "YSVFNSU5NSU4QQ=="
+    console.log(decoded_str); // "a啊"
 
 ## <a name="函数式编程">函数式编程</a>
-https://segmentfault.com/a/1190000020302184
+[函数式编程](./details/Function.md)
 
-函数式编程的核心概念：
->
-    数据不可变： 它要求你所有的数据都是不可变的，这意味着如果你想修改一个对象，那你应该创建一个新的对象用来修改，而不是修改已有的对象。
-
-    无状态： 主要是强调对于一个函数，不管你何时运行，它都应该像第一次运行一样，给定相同的输入，给出相同的输出，完全不依赖外部状态的变化。
-
-为了实现这个目标，函数式编程提出函数应该具备的特性：没有副作用和纯函数。
-
-------
-
-命令式代码：命令“机器”如何去做事情(how)，这样不管你想要的是什么(what)，它都会按照你的命令实现。
-
-声明式代码：告诉“机器”你想要的是什么(what)，让机器想出如何去做(how)。
->
-    // 命令式
-    var makes = [];
-    for (var i = 0; i < cars.length; i++) {
-      makes.push(cars[i].make);
-    }
-
-    // 声明式
-    var makes = cars.map(function(car){ return car.make; });
 
 ## <a name="函数重载">函数重载</a>
 

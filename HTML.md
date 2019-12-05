@@ -430,6 +430,7 @@ token是用户身份的验证方式，我们通常叫它：令牌。最简单的
 
 
 ## <a name="meta标签属性">meta标签属性</a>[![bakTop](./img/backward.png)](#top)
+[HTML meta标签总结与属性使用介绍](https://segmentfault.com/a/1190000004279791)
 
 * 必要属性: content 
 
@@ -438,7 +439,7 @@ token是用户身份的验证方式，我们通常叫它：令牌。最简单的
 >
     http-equiv: content-type | expire | refresh | set-cookie  ;把content属性关联到HTTP头部  
 
-    name: author | description | keywords | robots | format-detection  ;把content属性关联到一个名称
+    name: author(作者) | copyright(版权) | description(描述) | keywords(关键词) | robots | format-detection | renderer(双核浏览器渲染方式) ;把content属性关联到一个名称
 
 * 声明文档使用的字符编码
 >
@@ -471,7 +472,11 @@ token是用户身份的验证方式，我们通常叫它：令牌。最简单的
     <meta http-equiv="refresh" content="0; url="">
 
     content内的数字代表时间（秒），既多少时间后刷新。如果加url,则会重定向到指定网页（搜索引擎能够自动检测，也很容易被引擎视作误导而受到惩罚）。
-
+* renderer 用于指定双核浏览器默认以何种方式渲染页面。
+>
+    <meta name="renderer" content="webkit"> //默认webkit内核
+    <meta name="renderer" content="ie-comp"> //默认IE兼容模式
+    <meta name="renderer" content="ie-stand"> //默认IE标准模式
 
 * viewport
 >

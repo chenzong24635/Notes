@@ -1,6 +1,6 @@
 # Flex
 
-其他[Grid-二维布局](/details/Grid.md)
+[Grid-二维布局](/details/Grid.md)
 
 [参考](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
 [参考](https://yoksel.github.io/flex-cheatsheet/)
@@ -48,14 +48,14 @@ display: flex | inline-flex; (适用于父类容器元素上)
   >flex-start（默认值）：左对齐  
   >flex-end:右对齐  
   >center: 居中对齐  
-  >space-between: 两端对齐，项目的间隔都相等。 
+  >space-between: 两端对齐，项目的间隔都相等。  
   >space-around: 两端对齐，项目的间隔相等。两端保留的间距为项目间距大小的一半。  
-  >space-evenly: 两端对齐，项目的间隔相等。两端保留的间距等于项目间距大小
+  >space-evenly: 两端对齐，项目的间隔相等。两端保留的间距等于项目间距大小  
 
   ![justify-content](/img/flex/justify-content.svg)
 
 ## align-items：定义项目在交叉轴上对齐方式
-  >stretch（默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度。
+  >stretch（默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度。  
   >flex-start：交叉轴的起点对齐。  
   >flex-end：交叉轴的终点对齐。  
   >center：交叉轴的中点对齐。  
@@ -68,7 +68,7 @@ display: flex | inline-flex; (适用于父类容器元素上)
   >flex-start：与交叉轴的起点对齐。  
   >flex-end：与交叉轴的终点对齐。  
   >center：与交叉轴的中点对齐。  
-  >space-between：与交叉轴两端对齐，轴线之间的间隔平均分布。 
+  >space-between：与交叉轴两端对齐，轴线之间的间隔平均分布。  
   >space-around：每根轴线两侧的间隔都相等。所以，轴线之间的间隔>比轴线与边框的间隔大一倍。  
 
   ![align-content](/img/flex/align-content.svg)

@@ -1,5 +1,10 @@
 # 目录
 
+* <a href="#window.scrollTo、window.scrollBy、scrollIntoView()">window.scrollTo、window.scrollBy、scrollIntoView()</a>
+* <a href="#offset、scroll、client">offset、scroll、client</a>
+* <a href="#getBoundingClientRect()">getBoundingClientRect()</a>
+* <a href="#getComputedStyle()">getComputedStyle()</a>
+
 <a href="#JS兼容写法">**JS兼容写法**</a>
 
 * <a href="#浏览器高度">浏览器高度</a>
@@ -12,9 +17,10 @@
 * <a href="#清除选中">清除选中</a>
 * <a href="#滚动事件mouseWheel">滚动事件mouseWheel</a>
 
-* <a href="#"></a>
 
-* window.scrollTo、window.scrollBy、scrollIntoView()
+
+* <a href="#"></a>
+# <a name="window.scrollTo、window.scrollBy、scrollIntoView()">window.scrollTo、window.scrollBy、scrollIntoView()</a>
 
 >
     window.scrollTo(0, 0);
@@ -50,7 +56,7 @@
     });
 
 
-# offset、scroll、client
+# <a name="offset、scroll、client">offset、scroll、client</a>
 ![img](./img/offset_scroll_client.png)
 
 ### offset  自身
@@ -94,8 +100,7 @@
     这两个返回的是元素周围边框的厚度，一般它的值就是0。因为滚动条不会出现在顶部或者左侧
 
 
-# getBoundingClientRect()
-
+# <a name="getBoundingClientRect()">getBoundingClientRect()</a>
 ## 返回值
 >
 
@@ -120,10 +125,19 @@
 ![a](img/element-size.png)    
 
 
+# <a name="getComputedStyle()">getComputedStyle()</a>
+[MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/getComputedStyle)
+
+getComputedStyle是一个可以获取当前元素所有最终使用的CSS属性值。返回的是一个CSS样式声明对象([object CSSStyleDeclaration])，只读。
+>window.getComputedStyle("元素", "伪类"); //第二个参数可选（忽略或者传null）
+
+* getComputedStyle与style区别  
+
+1. ele.style 读取的只是元素的内联样式，即写在元素的 style 属性上的样式；而 getComputedStyle 读取的样式是最终样式，包括了内联样式、嵌入样式和外部样式。
+
+2. ele.style 既支持读也支持写。而 getComputedStyle 仅支持读并不支持写入。
 
 # <a name="JS兼容写法">**JS兼容写法**</a>
-
-
 
 ## <a name="浏览器高度">浏览器高度</a>
 >

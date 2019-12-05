@@ -304,8 +304,9 @@ div.item*3>{$}
   * <a href="#浏览器判断">浏览器、手机类型判断navigator.userAgent</a>
   * <a href="#获取当前页面url网址信息">获取当前页面url网址信息</a>
   * <a href="#解析url为对象">解析url为对象</a>
+  * <a href="#FileReader">FileReader，图片转base64、blob，canvas图片压缩</a>
   * <a href="#图片转base64">图片转base64</a>
-  * <a href="#图片转base64下载">图片转base64下载</a>
+  * <a href="#图片转blob下载">图片转blob下载下载</a>
   * <a href="#打印">打印</a>
   * <a href="#base64数据导出文件">base64数据导出文件，文件下载</a>
   * <a href="#实现模糊搜索结果的关键词高亮显示">实现模糊搜索结果的关键词高亮显示</a>
@@ -637,80 +638,122 @@ var obj = {
     }
     console.log(parseParam(url)) //{a: "a1", b: 123, c: "打算"}
 
-## <a name="图片转base64">图片转base64</a>
+## <a name="FileReader">FileReader，图片转base64、blob，canvas图片压缩</a>
+[文档](https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader)
+
+读取存储在用户计算机上的文件（或原始数据缓冲区）的内容，使用 File 或 Blob 对象指定要读取的文件或数据。
+
+* 常用
+
+let fr = new FileReader()
+
+readyStatus
+>文件状态
+>>EMPTY	0	还没有加载任何数据.  
+>>LOADING	1	数据正在被加载.  
+>>DONE	2	已完成全部的读取请求.  
+
+fr.result
+>文件的内容。该属性仅在读取操作完成后才有效，数据的格式取决于使用哪个方法来启动读取操作。
+
+fr.readAsDataURL(file)
+>转换成base64格式
+
+fr.readAsText(file) 
+>转换成字符串格式,返回文件内容的纯文本格式
+>对于媒体文件（图片、音频、视频），其内部组成并不是按字符排列，会产生乱码
+
+fr.readAsArrayBuffer(file)
+>转换成ArrayBuffer格式
+
+fr.abort()
+>中止读取操作。在返回时，readyState属性为DONE
+
+fr.loadstart
+>处理loadstart事件。该事件在读取操作开始时触发。
+
+fr.onload = function (e) { console.log(e.target.result) }
+>处理load事件。该事件在读取操作完成时触发
+
+fr.onloadend
+>处理loadend事件。该事件在读取操作结束时（要么成功，要么失败）触发。
+
+fr.onabort
+处理abort事件。该事件在读取操作被中断时触发。
+
+fr.onprogress
+>处理progress事件。该事件在读取Blob时触发。
+
+预览并上传的图片 | 文本内容
 >
-    getBase64(
-      "http://pt.baicaitianzun.cn/20190925142975943"
-    );
-    function getBase64(imgUrl) {
-      window.URL = window.URL || window.webkitURL;
-      var xhr = new XMLHttpRequest();
-      xhr.open("get", imgUrl, true);
-      // 至关重要
-      xhr.responseType = "blob";
-      xhr.onload = function() {
-        if (this.status == 200) {
-          //得到一个blob对象
-          var blob = this.response;
-          console.log("blob", blob);
-          // 至关重要
-          let oFileReader = new FileReader();
-          oFileReader.onloadend = function(e) {
-            let base64 = e.target.result;
-            console.log("base64:--->", base64);
-          };
-          oFileReader.readAsDataURL(blob);
-          //====为了在页面显示图片，可以删除====
-          var img = document.createElement("img");
-          img.onload = function(e) {
-            window.URL.revokeObjectURL(img.src); // 清除释放
-          };
-          img.src = window.URL.createObjectURL(blob)
-          document.documentElement.appendChild(img);
-          //====为了在页面显示图片，可以删除====
-        }
-      };
-      xhr.send();
-    }
+    <input type="file" name='file' id="file">
+    <input type="file" accept="image/*" name='file' id="file">
+    <input type="file" accept="txt/*" name='file' id="file">
 
-## <a name="图片转blob下载">图片转blob下载</a>
+
+    document.querySelector('#file').addEventListener('change', function(e) {
+      let fr = new FileReader();
+      // base64
+      fr.readAsDataURL(this.files[0]); //e.target.files[0]
+      fr.onload = function(e) {
+        console.log(e)
+        let img = new Image()
+        img.src = e.target.result || fr.result || this.result;
+        document.body.appendChild(img)
+      };
+
+      // 使用canvas进行图片压缩
+      /* fr.onload = function(e) {
+        let img = new Image();
+        img.src = e.target.result
+        img.onload = function (){
+          let canvas = document.createElement('canvas');  
+          let context = canvas.getContext("2d");  
+          canvas.width = img.width; // 设置canvas的画布宽度为图片宽度  
+          canvas.height = img.height;  
+          context.drawImage(img, 0, 0, canvas.width, canvas.height) // 在canvas上绘制图片  
+          let dataUrl = canvas.toDataURL('image/jpeg', 0.9) // 0.9为压缩比，可根据需要设置，设置过小会影响图片质量
+          document.body.appendChild(canvas)
+        } 
+      };*/
+
+      //blob
+      /* fr.readAsArrayBuffer(this.files[0]);
+      fr.onload=function(e){
+        let blob = new Blob([fr.result],{type:"text/plain"});
+        let img = new Image()
+        img.src = URL.createObjectURL(blob); // 将file文件转换为一个URL地址
+        document.body.appendChild(img)
+        console.log(e)
+        console.log(blob)
+      } */
+
+      // txt
+      fr.readAsText(this.files[0]);
+      fr.onload = function(e) {
+        console.log(e)
+        let div = document.createElement('div')
+        div.innerHTML = e.target.result
+        document.body.appendChild(div)
+      };
+      
+    })
+
+多图上传
 >
-    getImageBlob("./img/linear.gif");
+    <input type="file" accept="image/*" multiple name='file' id="file">
 
-    // 通过src获取图片的blob对象
-    function getImageBlob(url) {
-      var xhr = new XMLHttpRequest();
-      xhr.open("get", url, true);
-      xhr.responseType = "blob";
-      xhr.onload = function() {
-        if (this.status == 200) {
-          download(this.response);
-        }
-      };
-      xhr.send();
-    }
-
-    function download(blob) {
-      let reader = new FileReader();
-      reader.addEventListener("loadend", function() {
-        console.log(reader.result);
-      });
-
-      // 读取来看下下载的内容
-      let suffix = blob.type.match(/\/.*/g)[0].slice(1) //图片后缀,jpg png...
-      reader.readAsDataURL(blob);
-      // 最终生成的字符串
-      // data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAA...
-      // 生成下载用的URL对象
-      let url = URL.createObjectURL(blob);
-      // 生成一个a标签，并模拟点击，即可下载，批量下载同理
-      let aDom = document.createElement("a");
-      aDom.href = url;
-      aDom.download = "download" + '.'+suffix;
-      aDom.text = "下载文件";
-      document.getElementsByTagName("body")[0].appendChild(aDom);
-      aDom.click();
-    }
+    document.querySelector('#file').addEventListener('change',function (e) {
+      for (var i = 0; i < e.target.files.length; i++) {
+        let fr = new FileReader();
+        fr.readAsDataURL(e.target.files[i]);
+        fr.onload = function(e) {
+          let img = new Image();
+          img.src = e.target.result || fr.result || this.result;
+          document.body.appendChild(img);
+        };
+      }
+    })
 
 ## <a name="打印">打印</a>
 [参考](https://www.jianshu.com/p/d19d66ef8d7e)

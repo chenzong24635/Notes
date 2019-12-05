@@ -15,6 +15,8 @@
 
 [CSS技巧](https://github.com/chokcoco/iCSS)
 
+[css_tricks](https://qishaoxuan.github.io/css_tricks/)
+
 [灵活运用CSS开发技巧](https://juejin.im/post/5d4d0ec651882549594e7293)
 
 [常见的CSS图形](https://codepen.io/chenzong24635/pen/xQNyzg)
@@ -79,6 +81,7 @@ CSS布局、居中
 * <a href="#盒模型">盒模型</a>
 * <a href="#css选择器">css选择器</a>
 * <a href="#content属性">:before和:after伪元素的content属性</a>
+* <a href="#CSS书写顺序、规范">CSS书写顺序、规范</a>
 * <a href="#哪些属性可继承">哪些属性可继承</a>
 * <a href="#文字、盒子阴影">text-shadow 、box-shadow</a>
 * <a href="#max-,min-">max-width,max-height,min-width,min-height</a>
@@ -87,7 +90,7 @@ CSS布局、居中
 * <a href="#zIndex">层叠上下文(stacking context )z-index</a>
 * <a href="#float特性">float特性</a>
 * <a href="#格式化上下文">格式化上下文BFC、IFC、FFC、GFC</a>
-* <a href="#display、visibility、overflow">display、visibility、overflow的隐藏问题</a>
+* <a href="#display、visibility、overflow、opacity">display、visibility、overflow、opacity的隐藏问题</a>
 * <a href="#border-style">border-style属性值</a>
 * <a href="#line-hieght">line-hieght,vertical-align</a>
 * <a href="#文本换行">文本换行 white-space word-wrap word-break</a>
@@ -111,8 +114,8 @@ CSS布局、居中
 
 * <a href="#一些css属性及其他">**一些css属性及其他**</a>
 
-  * <a href="#"></a>
-* <a href="#注意事项">注意事项</a>
+  * <a href="#注意事项">注意事项</a>
+  * <a href="#CSSOM视图模式">CSSOM视图模式</a>
   * <a href="#css自定义变量属性">css自定义变量属性</a>
   * <a href="#文字超出省略">文字超出省略</a>
   * <a href="#shape-outside">shape-outside</a>
@@ -125,14 +128,16 @@ CSS布局、居中
   * <a href="#selection">selection 改变选中内容的字体、背景颜色</a>
   * <a href="#user-select">user-select 文本是否可选中</a>
   * <a href="#-webkit-text-size-adjust">-webkit-text-size-adjust</a>
-  * <a href="#-webkit-scrollbar">-webkit-scrollbar 自定义滚动条样式</a>
   * <a href="#为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"</a>
   * <a href="#图片缩放">图片缩放matrix,transform+transition</a>
   * <a href="#filter滤镜">filter滤镜</a>
   * <a href="#多方法描绘一个边框">多方法描绘一个边框</a>
-  * <a href="#纯css横向、垂直滑动">纯css横向、垂直滑动</a>
-  * <a href="#纯css页面滚动进度条">纯css页面滚动进度条</a>
-  * <a href="#"></a>
+  * <a href="#滚动">滚动</a>
+    * <a href="#-webkit-scrollbar">-webkit-scrollbar 自定义滚动条样式</a>
+    * <a href="#页面滑动不顺畅的问题">页面滑动不顺畅的问题</a>
+    * <a href="#滚动传播">滚动传播</a>
+    * <a href="#纯css横向、垂直滑动">纯css横向、垂直滑动</a>
+    * <a href="#纯css页面滚动进度条">纯css页面滚动进度条</a>
   * <a href="#"></a>
 </details>
 
@@ -414,9 +419,9 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
 ![counter](/img/counter.jpg)
 
 
-## <a name="CSS书写顺序">CSS书写顺序、规范</a>[![bakTop](./img/backward.png)](#top)
+## <a name="CSS书写顺序、规范">CSS书写顺序、命名规范</a>[![bakTop](./img/backward.png)](#top)
 
-书写顺序
+* 书写顺序
 >
     1.位置属性(position, top, right, z-index,display, float等)  
     2.大小(width, height, padding, margin,border)
@@ -424,17 +429,41 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
     4.背景 颜色(background, color等)
     5.其他(animation, transition等)
 
-书写规范
+* 书写规范
 >
     属性缩写
     去掉小数点前的 0
+    使用单引号
+    避免使用复杂的选择器，层级越少越好 建议选择器的嵌套最好不要超过三层
+    尽量使用简写属性(padding,margin,background,font...)
+    声明结束都应该带一个分号
+    颜色尽量用三位字符表示 #AAA
+    除16进制颜色和字体设置外，CSS文件中的所有的代码都应该小写
+
+* 命名规范
+
+正确命名 CSS 中的类名可以让你的代码变得更易理解和维护
+
+连字符（-） .box-left{}  
+
+BEM  
+>B 代表区块  
+>E 代表元素  
+>M 代表修饰符  
+>>.letter-top-red
+
+使用 js- 类名:用这种方法来表明这个 DOM 元素和 JavaScript 代码的关联。
+>
+    <div class="site-navigation js-site-navigation">
+    </div>
+
 
 ## <a name="哪些属性可继承">哪些属性可继承</a>[![bakTop](./img/backward.png)](#top)
 
 * 不可继承的样式：
 >
     border 、padding、 margin、 width 、height、position、
-    a标签不能继承父元素中的color（被浏览器默认样式给覆盖）（解决：a{color:inherit} ）
+    ）
     h1-h6 标题标签不能继承父元素中的font-size,font-weight
 
 * 可继承的样式：
@@ -446,7 +475,7 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
     word-break
     word-spacing
     white-space
-    color
+    color // a标签不能继承父元素中的color（被浏览器默认样式给覆盖）（解决：a{color:inherit} 
     visibility
     cursor
 
@@ -755,7 +784,7 @@ BFC的作用
 
 
 
-## <a name="display、visibility、overflow">display、visibility、overflow、opacity的隐藏问题</a>[![bakTop](./img/backward.png)](#top)
+## <a name="display、visibility、overflow、opacity">display、visibility、overflow、opacity的隐藏问题</a>[![bakTop](./img/backward.png)](#top)
 
 * display：block | none | inline | table | flex | grid .... 
 * overflow : visible | auto | hidden | scroll
@@ -769,7 +798,9 @@ BFC的作用
     hidden:隐藏
     collapse: 主要用来隐藏表格的行或列。隐藏的行或列能够被其他内容使用。其他对象，等同于hidden。
 
-### 三种隐藏方式差别:visibility:hidden,display:none,opacity:0
+* opacity：[0,1] 不透明度
+
+### 隐藏方式差别
 * 渲染上的差异:
 1. display:none:隐藏且不占空间，会导致浏览器的回流和重绘。
 2. visibility为hidden:隐藏但占空间，只会导致浏览器重绘而不会回流。
@@ -1217,6 +1248,25 @@ animation: name duration timing-function delay iteration-count direction play-st
         }
       }
 
+简易loading
+>
+    .loading{
+      width: 100px;
+      height: 100px;
+      border: .5rem solid #9e9e9e;
+      border-left: .5rem solid #fff;
+      border-radius: 50%;
+      animation: move 1s linear infinite;
+    }
+    @keyframes move{
+      0%{
+        transform: rotate(0deg)
+      }
+      100%{
+        transform: rotate(360deg)
+      }
+    }
+
 [animate.css](https://daneden.github.io/animate.css/)
 
 ## <a name="移动端开发相关知识">移动端开发相关知识</a>[![bakTop](./img/backward.png)](#top)
@@ -1563,6 +1613,8 @@ https://my.oschina.net/i33/blog/126960
 
 *  background引入图片的一个缺点是页面的Web可访问性会受到轻微的影响，因为屏幕阅读器和搜索引擎无法正确地获取到图像。可以通过CSS object-fit属性解决(object-position和object-fit只针对替换元素有作用)
 
+## <a name="CSSOM视图模式">CSSOM视图模式</a>[![bakTop](./img/backward.png)](#top)
+[CSSOM视图模式(CSSOM View Module)相关整理](https://www.zhangxinxu.com/wordpress/2011/09/cssom%E8%A7%86%E5%9B%BE%E6%A8%A1%E5%BC%8Fcssom-view-module%E7%9B%B8%E5%85%B3%E6%95%B4%E7%90%86%E4%B8%8E%E4%BB%8B%E7%BB%8D/)-张鑫旭
 
 ## <a name="css自定义变量属性">css自定义变量属性</a>[![bakTop](./img/backward.png)](#top)
 
@@ -1610,7 +1662,7 @@ https://my.oschina.net/i33/blog/126960
 
 
 
-## <a name="文字超出省略">文字超出省略</a>
+## <a name="文字超出省略">文字超出省略</a>[![bakTop](./img/backward.png)](#top)
 [](https://juejin.im/post/5dc15b35f265da4d432a3d10)
 #### 单行省略
     .ov1{
@@ -1663,12 +1715,12 @@ https://my.oschina.net/i33/blog/126960
       .ov
     }
 
-## <a name="shape-outside">[shape-outside](https://developer.mozilla.org/zh-CN/docs/Web/CSS/shape-outside)</a>
+## <a name="shape-outside">[shape-outside](https://developer.mozilla.org/zh-CN/docs/Web/CSS/shape-outside)</a>[![bakTop](./img/backward.png)](#top)
 `IE不支持`  
 定义了一个可以是非矩形的形状，相邻的内联内容应围绕该形状进行包装。 默认情况下，内联内容包围其边距框; shape-outside提供了一种自定义此包装的方法，可以将文本包装在复杂对象周围而不是简单的框中。
 ![shape-outside](./img/shape-outside.png)
 
-## <a name="pointer-events">pointer-events 使用指针事件來控制鼠标事件</a>
+## <a name="pointer-events">pointer-events 使用指针事件來控制鼠标事件</a>[![bakTop](./img/backward.png)](#top)
 
 例如：要禁用按钮上的默认指针事件
 >
@@ -1678,7 +1730,7 @@ https://my.oschina.net/i33/blog/126960
     }
 
 
-## <a name="透明方格的绘制">透明方格的绘制</a>
+## <a name="透明方格的绘制">透明方格的绘制</a>[![bakTop](./img/backward.png)](#top)
 ![transparentSquare](./img/transparentSquare.png)
 >
     .square {
@@ -1690,7 +1742,7 @@ https://my.oschina.net/i33/blog/126960
       background-position: 0 0, 8px 8px;
     }
 
-## <a name="移动端1px">移动端1px</a>
+## <a name="移动端1px">移动端1px</a>[![bakTop](./img/backward.png)](#top)
 [参考](https://juejin.im/post/5d70a030f265da03a715f3fd)
 
 [参考](https://juejin.im/entry/584e427361ff4b006cd22c7c)
@@ -1803,7 +1855,7 @@ devicePixelRatio：设备物理像素和设备独立像素的比例   devicePixe
         }
     }
 
-## <a name="清除手机端a链接点击高亮">清除手机端a链接点击高亮</a>
+## <a name="清除手机端a链接点击高亮">清除手机端a链接点击高亮[![bakTop](./img/backward.png)](#top)
 tap-highlight-color: rgba(0, 0, 0, 0);  
 -webkit-tap-highlight-color: rgba(0,0,0,0);
 >
@@ -1817,7 +1869,7 @@ tap-highlight-color: rgba(0, 0, 0, 0);
       text-decoration: none;
     }
 
-## <a name="三角形">三角形</a>
+## <a name="三角形">三角形</a>[![bakTop](./img/backward.png)](#top)
 >
     width:0; 
     height:0; 
@@ -1825,14 +1877,14 @@ tap-highlight-color: rgba(0, 0, 0, 0);
     border-width: 30px 10px;
     border-color:  transparent transparent transparent ##f4f4f4;
 
-## <a name="改变input placeholder颜色">改变input placeholder颜色</a>
+## <a name="改变input placeholder颜色">改变input placeholder颜色</a>[![bakTop](./img/backward.png)](#top)
 >
     ::-webkit-input-placeholder { color: ; }/*WebKit, Blink, Edge*/
     :-moz-placeholder { color: ; }/*Mozilla Firefox 4 to 18*/
     ::-moz-placeholder { color: ; }/*Mozilla Firefox 19+*/
     :-ms-input-placeholder { color: ; }/*Internet Explorer 10-11 */
 
-## <a name="selection">selection 改变选中内容的字体、背景颜色</a>
+## <a name="selection">selection 改变选中内容的字体、背景颜色</a>[![bakTop](./img/backward.png)](#top)
 >
     ::selection { 
         background: #fff; 
@@ -1847,7 +1899,7 @@ tap-highlight-color: rgba(0, 0, 0, 0);
         color: #333; 
     } 
 
-## <a name="user-select">user-select 文本是否可选中</a>
+## <a name="user-select">user-select 文本是否可选中</a>[![bakTop](./img/backward.png)](#top)
 user-select:none  
 -webkit-user-select:none
 
@@ -1864,7 +1916,7 @@ user-select:none
     all：当所有内容作为一个整体时可以被选择。如果双击或者在 上下文上点击子元素，
         那么被选择的部分将是以该子元素 向上回溯的最高祖先元素。
 
-## <a name="-webkit-text-size-adjust">-webkit-text-size-adjust: none</a>
+## <a name="-webkit-text-size-adjust">-webkit-text-size-adjust: none</a>[![bakTop](./img/backward.png)](#top)
 >
 
     Chrome 中文界面下默认会将小于 12px 的文本强制按照 12px 显示；
@@ -1874,40 +1926,7 @@ user-select:none
     放在body中会导致页面缩放失效,不要把-webkit-text-size-adjust设置为全局或者可继承的
 
 
-## <a name="-webkit-scrollbar">-webkit-scrollbar 自定义滚动条样式</a>
-chrome
->
-    ::-webkit-scrollbar 滚动条整体部分
-
-    ::-webkit-scrollbar-thumb 滚动条里面的小方块，能向上向下移动（或往左往右移动，取决于是垂直滚动条还是水平滚动条）
-
-    ::-webkit-scrollbar-track 滚动条的轨道（里面装有Thumb）
-
-    ::-webkit-scrollbar-button 滚动条的轨道的两端按钮，允许通过点击微调小方块的位置。
-
-    ::-webkit-scrollbar-track-piece 内层轨道，滚动条中间部分（除去）
-
-    ::-webkit-scrollbar-corner 边角，即两个滚动条的交汇处
-    
-    ::-webkit-resizer 两个滚动条的交汇处上用于通过拖动调整元素大小的小控件
-
-IE
->
-    scrollbar-arrow-color: color; /*三角箭头的颜色*/
-    scrollbar-face-color: color; /*立体滚动条的颜色（包括箭头部分的背景色）*/
-    scrollbar-3dlight-color: color; /*立体滚动条亮边的颜色*/
-    scrollbar-highlight-color: color; /*滚动条的高亮颜色（左阴影？）*/
-    scrollbar-shadow-color: color; /*立体滚动条阴影的颜色*/
-    scrollbar-darkshadow-color: color; /*立体滚动条外阴影的颜色*/
-    scrollbar-track-color: color; /*立体滚动条背景颜色*/
-    scrollbar-base-color:color; /*滚动条的基色*/
-
-firefox    
-[插件](https://github.com/malihu/malihu-custom-scrollbar-plugin)
-
-
-
-## <a name="图片缩放">图片缩放matrix,transform+transition</a>
+## <a name="图片缩放">图片缩放matrix,transform+transition</a>[![bakTop](./img/backward.png)](#top)
 >
     // 先放大1.1倍 ，再还原。一般用于轮播图
     .img{
@@ -1929,7 +1948,7 @@ firefox
       transition-delay: 0.4s;
     }
 
-## <a name="为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"</a>
+## <a name="为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"[![bakTop](./img/backward.png)](#top)
 
 >
     img {
@@ -1955,11 +1974,9 @@ firefox
       font-size: 12px;
     }
     
-## <a name="filter滤镜">filter滤镜（不是IE的filter:alpha(opacity=50)）</a>
+## <a name="filter滤镜">filter滤镜（不是IE的filter:alpha(opacity=50)）</a>[![bakTop](./img/backward.png)](#top)
 
-
-
-## <a name="多方法描绘一个边框">多方法描绘一个边框</a>
+## <a name="多方法描绘一个边框">多方法描绘一个边框</a>[![bakTop](./img/backward.png)](#top)
 [参考](https://www.w3cplus.com/css/css-tips-0904-1.html)
 
 ### 其他方法 绘制一个实心边框(border-style:solid)
@@ -2016,8 +2033,58 @@ firefox
     }
 
 
+## <a name="滚动">滚动</a>[![bakTop](./img/backward.png)](#top)
 
-## <a name="纯css横向、垂直滑动">纯css横向、竖直滑动</a>
+## <a name="页面滑动不顺畅的问题">页面滑动不顺畅的问题</a>[![bakTop](./img/backward.png)](#top)
+解决IOS设备局部滚动不顺畅(粘手)
+除了浏览器原生滚动，自定义的滚动条都会出现这种情况，加以下属性就可以解决：
+>
+    html,body{
+      -webkit-overflow-scrolling: touch;
+      overflow-scrolling: touch;
+      overflow-y: visible;
+    }
+
+## <a name="滚动传播">滚动传播</a>[![bakTop](./img/backward.png)](#top)
+
+指有多个滚动区域，当一个滚动区域滚动完之后，继续滚动会传播到到父区域继续滚动的行为：
+>
+    .box {
+      overscroll-behavior: contain; // 阻止滚动传播
+    }
+
+## <a name="-webkit-scrollbar">-webkit-scrollbar 自定义滚动条样式</a>[![bakTop](./img/backward.png)](#top)
+chrome
+>
+    ::-webkit-scrollbar 滚动条整体部分
+
+    ::-webkit-scrollbar-thumb 滚动条里面的小方块，能向上向下移动（或往左往右移动，取决于是垂直滚动条还是水平滚动条）
+
+    ::-webkit-scrollbar-track 滚动条的轨道（里面装有Thumb）
+
+    ::-webkit-scrollbar-button 滚动条的轨道的两端按钮，允许通过点击微调小方块的位置。
+
+    ::-webkit-scrollbar-track-piece 内层轨道，滚动条中间部分（除去）
+
+    ::-webkit-scrollbar-corner 边角，即两个滚动条的交汇处
+    
+    ::-webkit-resizer 两个滚动条的交汇处上用于通过拖动调整元素大小的小控件
+
+IE
+>
+    scrollbar-arrow-color: color; /*三角箭头的颜色*/
+    scrollbar-face-color: color; /*立体滚动条的颜色（包括箭头部分的背景色）*/
+    scrollbar-3dlight-color: color; /*立体滚动条亮边的颜色*/
+    scrollbar-highlight-color: color; /*滚动条的高亮颜色（左阴影？）*/
+    scrollbar-shadow-color: color; /*立体滚动条阴影的颜色*/
+    scrollbar-darkshadow-color: color; /*立体滚动条外阴影的颜色*/
+    scrollbar-track-color: color; /*立体滚动条背景颜色*/
+    scrollbar-base-color:color; /*滚动条的基色*/
+
+firefox    
+[插件](https://github.com/malihu/malihu-custom-scrollbar-plugin)
+
+## <a name="纯css横向、垂直滑动">纯css横向、竖直滑动</a>[![bakTop](./img/backward.png)](#top)
 横向
 >
     * {

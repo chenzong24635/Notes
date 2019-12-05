@@ -99,6 +99,9 @@ let re = new RegExp("abc",gi);
 * source 返回正则表达式的正文
 > /abc/ig.source  // "abc"
 
+* lastIndex:整数,表示开始搜索下一个匹配项的字符位置,从0算起
+> /abc/ig.lastIndex  // 0
+
 * flags 返回正则表达式的修饰符
 > /abc/ig.flags // 'gi'
 

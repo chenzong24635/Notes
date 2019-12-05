@@ -63,7 +63,7 @@
     }
 
 ##  <a name="forEach">forEach()</a>
-遍历数组 ,无法遍历对象, IE不支持  
+遍历数组 ,无法遍历对象, IE不支持  ,跳过空位
 `没有返回值 undefined` , `不改变原数组 、不能中断`
 
 forEach(callback,thisArg)
@@ -116,6 +116,9 @@ map(callback,thisArg)
 |some()| 一个满足就返回true|返回false|√ | 
 |filter()| 数组形式返回符合元素|返回[]| √|
 
+every()、some()、filter()会跳过空位
+>
+    [1,2,,3].every(item => item >= 1) // true
 
 >
     let arr = [ 1, 2, 3, 4 ];

@@ -11,6 +11,7 @@
   * <a href="#把日期格式化为指定格式">把日期格式化为指定格式</a>
   * <a href="#时间戳转距当前时间多久">时间戳 --> 距当前时间 多久</a>
   * <a href="#倒计时">倒计时</a>
+  * <a href="#两个日期中间的有效日期">两个日期中间的有效日期</a>
 </details>
 
 # <a name="DateAPI">[Date API](https://www.runoob.com/jsref/jsref-obj-date.html)</a></a>
@@ -203,3 +204,22 @@
       // let str = days + '天' + hours + '时' + minutes + '分' + seconds + '秒';
       return str
     }
+
+# <a name="两个日期中间的有效日期">两个日期中间的有效日期</a>
+>
+    function rangeDay (day1, day2) {
+      const result = []
+        const dayTimes = 24*60*60*1000 // 一天时间(毫秒)
+        const range = day2.getTime() - day1.getTime() // 两日期相差时间(毫秒)
+        let total = 0
+        while (total <= range && range > 0) {
+          // 添加有效日期(格式YYYY-MM--DD)
+          result.push(new Date(day1.getTime() + total).toLocaleDateString().replace(/\//g, '-'))
+          // 每次加1天
+          total += dayTimes
+        }
+      return result
+    };
+    rangeDay(new Date("2015-02-08"), new Date("2015-03-03"))
+
+# <a name=""></a>
