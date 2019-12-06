@@ -14,10 +14,10 @@ Promise 对象的状态改变，只有两种可能：从Pending变为Resolved和
 调用resolve或reject并不会终结 Promise 的参数函数的执行。一般来说，调用resolve或reject以后，Promise 的使命就完成了，可return resolve()
 
 
-* 基本用法：  
+### 基本用法：  
 >
     new Promise((resolve, reject) => {
-      if (/* 异步操作成功 */){
+      if (/### 异步操作成功 ###/){
         resolve('success');
         console.log(2)
       } else {
@@ -27,7 +27,7 @@ Promise 对象的状态改变，只有两种可能：从Pending变为Resolved和
 
     调用resolve()以后，后面的console.log(2)还是会执行，并且会首先打印出来。这是因为立即 resolved 的 Promise 是在本轮事件循环的末尾执行，总是晚于本轮循环的同步任务
 
-* Promise.prototype.then()  
+### Promise.prototype.then()  
 then 方法返回新的Promise实例  
 then 方法的第一个参数是 resolved 状态的回调函数，第二个参数（可选）是 rejected 状态的回调函数。
 >
@@ -43,7 +43,7 @@ then 方法的第一个参数是 resolved 状态的回调函数，第二个参�
       console.log(error) //失败
     })
 
-* Promise.prototype.catch()  
+### Promise.prototype.catch()  
 
 catch方法 是.then(null, rejection) 或 .then(undefined, rejection)别名 用于指定发生错误时的回调函数
 
@@ -76,12 +76,12 @@ catch方法返回Promise 对象，因此后面还可以接着调用 then 方法�
 
 如果没有使用 catch 方法或者 then 第二个参数指定错误处理的回调函数，Promise 对象抛出的错误不会传递到外层代码，即不会有任何反应
 
-* Promise.prototype.finally()  
+### Promise.prototype.finally()  
 
 finally 方法用于指定不管 Promise 对象最后状态如何，都会执行的操作。  
 不接收任何参数
 
-* Promise.all()    
+### Promise.all()    
 
 将多个Promise实例，包装成一个新的Promise实例
 >
@@ -115,7 +115,7 @@ p的状态由p1、p2决定，分成两种情况:
 
     只要 p1、p2 之中有一个被 rejected，p 的状态就变成 rejected，此时第一个被 reject 的实例的返回值，会传递给 p 的回调函数。
 
-* Promise.race()    
+### Promise.race()    
 
 var p = Promise.race([p1, p2]);
 
@@ -124,7 +124,7 @@ race方法 类似于all方法同样是将多个Promise实例，包装成一个�
 不同的是 只要 p1、p2 之中有一个实例率先改变状态，p 的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给 p 的回调函数。
 
 
-* Promise.resolve()
+### Promise.resolve()
 将现有对象转为 Promise 对象，Promise.resolve方法就起到这个作用。  
 Promise.resolve(obj);
 
@@ -132,6 +132,17 @@ Promise.resolve('foo')
 // 等价于
 new Promise(resolve => resolve('foo'))
 
-* Promise.reject()
-* Promise.try()
+### Promise.reject()
+### Promise.try()
 
+# 应用
+加载图片
+>
+    const preloadImage = function (path) {
+      return new Promise(function (resolve, reject) {
+        var image = new Image();
+        image.onload  = resolve;
+        image.onerror = reject;
+        image.src = path;
+      });
+    };

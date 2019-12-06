@@ -991,7 +991,7 @@ word-break
 
 ## <a name="background">background属性值</a>[![bakTop](./img/backward.png)](#top)
 
-### background
+### [background](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background)
 
 简写：background: background-color  background-image background-repeat  background-attachment background-position
 
@@ -1000,11 +1000,14 @@ word-break
 * background-color  背景颜色  
 >值：transparent(默认) | 十六进制 | RGB | 颜色名称 | currentColor | inherit
 
-* background-image   背景图像  
+* [background-image](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-image)   背景图像  
 >值：url('URL') | none
 
-* background-repeat  如何重复背景图像 
->值：repeat | repeat-x | repeat-y | no-repeat
+* [background-repeat](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-repeat)  背景图像的重复方式 
+>值：repeat | no-repeat | repeat-x | repeat-y | round | space
+>双值语法: 水平horizontal | 垂直vertical  
+>>background-repeat: repeat space;
+
 
 * background-attachment  背景图像是否固定或者随着页面的其余部分滚动  
 >值：scroll(默认值) | fixed
@@ -1061,9 +1064,9 @@ word-break
 
 
 ## <a name="渐变">渐变linear-gradient,radial-gradient,conic-gradient</a>[![bakTop](./img/backward.png)](#top)
-[你真的理解CSS的linear-gradient？](https://www.w3cplus.com/css3/do-you-really-understand-css-linear-gradients.html)
 
-### [linear-gradient()线性渐变](https://www.w3cplus.com/css3/do-you-really-understand-css-linear-gradients.html)
+### linear-gradient()线性渐变
+[你真的理解CSS的linear-gradient？](https://www.w3cplus.com/css3/do-you-really-understand-css-linear-gradients.html)--大漠 
 
 
 linear-gradient(angle | to direction , color1 range,...colorn range)  
@@ -1104,6 +1107,9 @@ radial-gradient(shape size at position, color1 range,...colorn range)
     radial-gradient(ellipse farthest-corner at left, red, yellow, green)
     radial-gradient(ellipse farthest-corner at 80px 50px, red, yellow, green)
     radial-gradient(ellipse farthest-corner at 10% -40%, red, yellow, green)
+
+### conic-gradient
+[MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/conic-gradient)
 
 ### repeating-linear-gradient()，repeating-radial-gradient()重复渐变
 
@@ -1715,10 +1721,56 @@ https://my.oschina.net/i33/blog/126960
       .ov
     }
 
-## <a name="shape-outside">[shape-outside](https://developer.mozilla.org/zh-CN/docs/Web/CSS/shape-outside)</a>[![bakTop](./img/backward.png)](#top)
-`IE不支持`  
+## <a name="shape-outside">shape-outside</a>[![bakTop](./img/backward.png)](#top)
+[MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/shape-outside)
+
+  
 定义了一个可以是非矩形的形状，相邻的内联内容应围绕该形状进行包装。 默认情况下，内联内容包围其边距框; shape-outside提供了一种自定义此包装的方法，可以将文本包装在复杂对象周围而不是简单的框中。
+
+值：
+>inherit  
+>initial  
+>unset  
+>none  // 默认margin box  
+>margin-box  
+>border-box  
+>padding-box  
+>content-box  
+>circle()  
+>ellipse()  
+>inset(10px 10px 10px 10px)  
+>polygon(10px 10px, 20px 20px, 30px 30px)  
+>url(image.png)  
+
+
+
 ![shape-outside](./img/shape-outside.png)
+
+## <a name="clip-path">clip-path</a>[![bakTop](./img/backward.png)](#top)
+[MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/clip-path)
+创建一个只有元素的部分区域可以显示的剪切区域。区域内的部分显示，区域外的隐藏。剪切区域是被引用内嵌的URL定义的路径或者外部svg的路径，或者作为一个形状例如circle().。clip-path属性代替了现在已经弃用的剪切 clip属性。
+
+[clip-path](https://juejin.im/post/5de6fdbae51d4557e76a422f)
+
+值：
+>inherit  
+>initial  
+>unset  
+>none  
+>margin-box  
+>border-box  
+>padding-box  
+>content-box  
+>fill-box  
+>stroke-box  
+>view-box  
+>circle()  
+>ellipse()  
+>inset(10px 10px 10px 10px)  
+>polygon(10px 10px, 20px 20px, 30px 30px)  
+>url(image.png)  
+>path()  
+
 
 ## <a name="pointer-events">pointer-events 使用指针事件來控制鼠标事件</a>[![bakTop](./img/backward.png)](#top)
 
@@ -1928,24 +1980,15 @@ user-select:none
 
 ## <a name="图片缩放">图片缩放matrix,transform+transition</a>[![bakTop](./img/backward.png)](#top)
 >
-    // 先放大1.1倍 ，再还原。一般用于轮播图
+    // 先放大1.1倍 ，再还原。
     .img{
       transform: matrix(1.1, 0, 0, 1.1, 0, 0);/* 等同于transfrom:scale(1.1,1.1) */
-      -webkit-transition: all 0.4s ease 1.2s;
-      -moz-transition: all 0.4s ease 1.2s;
-      -ms-transition: all 0.4s ease 1.2s;
-      -o-transition: all 0.4s ease 1.2s;
       transition: all 0.4s ease 1.2s;
     }
 
-    .img.active{
+    .img:hover{
       transform: matrix(1, 0, 0, 1, 0, 0); /* 等同于transfrom:scale(1,1)*/
-      -webkit-transition: all 7.0s ease;
-      -moz-transition: all 7.0s ease;
-      -ms-transition: all 7.0s ease;
-      -o-transition: all 7.0s ease;
-      transition: all 7.0s ease;  
-      transition-delay: 0.4s;
+      transition: all 7.0s ease 0.4s;  
     }
 
 ## <a name="为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"[![bakTop](./img/backward.png)](#top)

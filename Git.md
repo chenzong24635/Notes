@@ -59,10 +59,10 @@
     git init 
     git add .  // 将文件添加到暂存区
     git commit -m 'newbranch first push' // 将暂存区文件提交到仓库
-    git checkout -b 新分支名 // 新建分支并切换到该分支
-    git remote add origin 仓库地址  // 关联远程仓库
+    git checkout -b <新分支名> // 新建分支并切换到该分支
+    git remote add origin <仓库地址>  // 关联远程仓库
       >git remote -v  // 查看已关联的远程仓库
-    git push --set-upstream origin 新分支名 // 推送当前分支并将远程设置为上游
+    git push --set-upstream origin <新分支名> // 推送当前分支并将远程设置为上游
 
 
 # <a name="git基本命令">git基本命令</a>
@@ -78,7 +78,14 @@ npm i git //git安装
 
 * git init  //初始化git 将当前目录变为仓库
 
-* git clone url reName  //获取下载仓库  git clone http://chenzong@git/仓库名.git 
+`克隆远程分支`
+* git clone <url> //克隆项目(默认master)
+* git clone -b <分支名> <url> // 克隆项目某个的分支,并切换为该分支
+
+>
+    git clone <url> // 克隆项目（master）
+    git branch -a // 查看所有分支
+    git checkout -b <分支名> origin/<分支名>  // 克隆分支项目
 
 `添加文件到暂缓区`
 * git add .  |  git add ./文件名  //将文件添加到暂存区（添加所有 | 添加某个文件）
@@ -106,7 +113,7 @@ npm i git //git安装
 >git rm -r --cached .  //删除所有缓存文件
 
 `文件重命名`
-* git mv oldName newName //文件改名
+* git mv <oldName> <newName>  //文件改名
 
 `远程仓库`
 * git remote // 查看你已经配置的远程仓库服务器
@@ -133,12 +140,13 @@ npm i git //git安装
 * git log -p -2 // -p显示每次提交的内容差异。-2 仅显示最近两次提交
 
 `分支`
-* git branch //查看分支   
-* git branch <name>  //创建分支  
-* git checkout <name> //切换分支  
-* git checkout -b <name> //创建+切换分支  
-* git merge <name>  //合并某分支到当前分支  
-* git branch -D <name>  //删除分支  
+* git branch //查看当前分支   
+* git branch --all //查看所有分支 (简：git branch -a)  
+* git branch <branch-name>  //创建分支  
+* git branch -D <branch-name>  //删除分支  
+* git checkout <branch-name> //切换分支  
+* git checkout -b <branch-name> //创建 + 切换分支  
+* git merge <branch-name>  //合并某分支到当前分支  
 * git checkout branch -- file  //将你的某个文件还原到某个分支的版本
 
 `标签` 给历史中的某一个提交打上标签,常使用其来标记发布结点（v1.0 等等）

@@ -117,6 +117,8 @@ display: flex | inline-flex; (适用于父类容器元素上)
         <div class="box-item">3</div>
       </div>
 
+当所有项目的flex-grow之和小于1时，只能按比例分配部分剩余空间，而不是全部
+
 ## flex-shrink:定义项目的收缩比例，默认为1(即如果空间不足，该项目将缩小)。
   > flex-shrink: number（正整数） ; /## default 1 */
   >如果所有项目的flex-shrink属性都为1，当空间不足时，都将等比例缩小。  

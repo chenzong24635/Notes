@@ -7,11 +7,9 @@
   * <a href="#map()">map()</a>
   * <a href="#every()、some()、filter()">every()、some()、filter()</a>
   * <a href="#reduce()">reduce()</a>
-  * <a href="#entries()、keys()、values()">entries()、keys()、values()</a>
-  * <a href="#Object.entries()、Object.keys()、Object.values()">Object.entries()、Object.keys()、Object.values()、Object.fromEntries()</a>
-  * <a href="#Object.getOwnPropertyNames()">Object.getOwnPropertyNames()</a>
-  * <a href="#Object.getOwnPropertySymbols()">Object.getOwnPropertySymbols()</a>
-  * <a href="#Reflect.ownKeys()">Reflect.ownKeys()</a>
+  * <a href="#entries()、keys()、values()">entries()、keys()、values()--遍历数组</a>
+  * <a href="#Object.entries()、Object.keys()、Object.values()">Object.entries()、Object.keys()、Object.values()、Object.fromEntries()--遍历对象</a>
+  * <a href="#Object.getOwnPropertyNames()">Object.getOwnPropertyNames()、Object.getOwnPropertySymbols()、Reflect.ownKeys()--遍历对象,返回键名</a>
   * <a href="#"></a>
 
 # <a name="遍历方法">**遍历方法**</a>
@@ -58,7 +56,7 @@
 `必须部署了 Iterator 接口后才能使用；遍历普通对象会报错`
 
     for (item of arr) {
-      
+      if(item >= 3)break
       console.log('item:', item);
     }
 
@@ -241,17 +239,29 @@ Object.fromEntries //可以将数组转换为对象 -->数组格式：[[key,val]
     let obj = Object.fromEntries(arr);
     // { a: 20, b: 20, c: 21 }
 
-## <a name="Object.getOwnPropertyNames()">Object.getOwnPropertyNames()--遍历对象</a>
-返回一个数组，包含对象自身的所有属性（含不可枚举属性,不含 Symbol 属性）的键名
+## <a name="Object.getOwnPropertyNames()">Object.getOwnPropertyNames()、Object.getOwnPropertySymbols()、Reflect.ownKeys()--遍历对象</a>
 
-
-## <a name="#Object.getOwnPropertySymbols()">#Object.getOwnPropertySymbols()</a>
-返回一个数组，包含对象自身的所有 Symbol 属性的键名。
+| 方法 | 返回值 | 包含不可枚举属性 | 包含Symbol属性| 
+|:--|:--|:--|:--|
+| Object.getOwnPropertyNames() | 返回数组，对象自身的所有属性（包含不可枚举属性,不含 Symbol 属性）的键名 | √ | ×
+| Object.getOwnPropertySymbols() | 返回数组，对象自身的所有 Symbol 属性的键名 |  × | √
+| Reflect.ownKeys() | 返回数组，对象自身的所有键名，(包含不可枚举属性及Symbol属性)| √ | √
 
 >
+    // 不可枚举属性
+    var obj = Object.create({}, {
+      num: {
+        value: 1,
+        enumerable: false
+      }
+    });
+    obj.str = 'str';
+    obj[Symbol('syb')] = 'symbol'; // Symbol属性
 
-## <a name="Reflect.ownKeys()">Reflect.ownKeys()</a>
-返回一个数组，包含对象自身的所有键名，(包括不可枚举属性和Symbol属性)
+    console.log(Object.getOwnPropertyNames(obj)); //  ["num", "str"]
+    console.log(Object.getOwnPropertySymbols(obj)); // [Symbol(syb)]
+    console.log(Reflect.ownKeys(obj)); // ["num", "str",Symbol(syb)]
+
 
 ## <a name=""></a>
 ## <a name=""></a>

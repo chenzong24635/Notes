@@ -1212,27 +1212,32 @@ bind(..)可以对参数进行柯里化（预先设置一些参数）
     bar( 3 ); // a:2，b:3 
 
 ## <a name="实现apply call bind">实现apply call bind</a>
+>
+    let person = {
+      name: 'Abiel'
+    }
+    function sayHi(age,type) {
+      console.log(this.name, age, type);
+    }
+
 call
 >
+   
     Function.prototype.newCall = function(context, ...parameter) {
       if (typeof context === 'object' || typeof context === 'function') {
           context = context || window
       } else {
           context = Object.create(null)
       }
+      let fn = Symbol()
       context[fn] = this
-      const res =context[fn](...parameter "fn")
+      const res =context[fn](...parameter, "fn")
       delete context.fn;
       return res
     }
-    let person = {
-      name: 'Abiel'
-    }
-    function sayHi(age,sex) {
-      console.log(this.name, age, sex);
-    }
-    sayHi.newCall (person, 25, '男'); // Abiel 25 男
 
+    sayHi.newCall(person, 25, 'newCall');
+    sayHi.call(person, 25, 'call');
 
 apply
 >
@@ -1244,28 +1249,23 @@ apply
       }
       let fn = Symbol()
       context[fn] = this
-      return res=context[fn](..parameter "fn");
-      delete context[fn]
-      return res
+      return res=context[fn](...parameter, "fn");
     }
-    sayHi.newApply (person,[ 25, '男']) //Abiel 25 男
+
+    sayHi.newApply(person, [25, 'newApply']); 
+    sayHi.apply(person, [25, 'apply']);
 
 bind
 >
-    Function.prototype.bind = function (context,...innerArgs) {
+    Function.prototype.myBind = function (context,...innerArgs) {
       var me = this
       return function (...finnalyArgs) {
         return me.call(context,...innerArgs,...finnalyArgs)
       }
     }
-    let person = {
-      name: 'Abiel'
-    }
-    function sayHi(age,sex) {
-      console.log(this.name, age, sex);
-    }
-    let personSayHi = sayHi.bind(person, 25)
-    personSayHi('男')
+
+    sayHi.myBind(person, 25)('myBind')
+    sayHi.bind(person, 25)('bind')
 
 ## <a name="公有、私有、静态、特权方法与属性">公有、私有、静态、特权方法与属性</a>
 

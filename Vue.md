@@ -78,6 +78,8 @@
 
 
 # <a name="MVC、MVP、MVVM">MVC、MVP、MVVM</a>[![bakTop](./img/backward.png)](#top)  
+[基于Vue实现一个简易MVVM](https://juejin.im/post/5cd8a7c1f265da037a3d0992#heading-0)
+
 [MVC、MVP、MVVM三种区别及适用场合](https://blog.csdn.net/victoryzn/article/details/78392128)
 
 
@@ -108,6 +110,7 @@
     View 非常薄，不部署任何业务逻辑，称为"被动视图"（Passive View），即没有任何主动性，而 Presenter非常厚，所有逻辑都部署在那里。
 
 ### MVVM(Model-View-ViewModel)
+
 <img src="img/mvvm.png" width="50%"/>
 <img src="img/mvvm1.png" width="50%"/>
 
@@ -1311,19 +1314,7 @@ https://router.vuejs.org/zh
       }
     }
 
-3.  router-view上加上一个唯一的key
-简单的在 router-view上加上一个唯一的key，来保证路由切换时都会重新渲染触发钩子了
->
 
-    <router-view :key="key"></router-view>
-
-    computed: {
-      key() {
-        // 只要保证 key 唯一性就可以了，保证不同页面的 key 不相同
-        return this.$route.fullPath
-        // return this.$route.name !== undefined? this.$route.name + +new Date(): this.$route + +new Date()
-      }
-    }
 
 ##  <a name="单页面多路由区域操作">单页面多路由区域操作</a>[![bakTop](./img/backward.png)](#top)  
 router.js
@@ -1438,13 +1429,22 @@ App.vue
     }
     </script>
 
-* 通过改变router-view中的key来达到刷新组件的目的
+* router-view上加上一个唯一的key
+简单的在 router-view上加上一个唯一的key，来保证路由切换时都会重新渲染触发钩子了,
+默认让key等于当时的时间戳，当切换当前路由的时候改变时间戳为现在的时间戳，同样也可以达到刷新路由的目的
 >
-    
 
-    <router-view :key="reload"></router-view>
-    默认让key等于当时的时间戳，当切换当前路由的时候改变时间戳为现在的时间戳，同样也可以达到刷新路由的目的
-    this.reload = new Date().getTime()
+    <router-view :key="key"></router-view>
+
+    computed: {
+      key() {
+        // 只要保证 key 唯一性就可以了，保证不同页面的 key 不相同
+        return this.$route.fullPath
+        // return this.$route.name !== undefined? this.$route.name + +new Date(): this.$route + +new Date()
+      }
+    }
+
+
 
 ##  <a name="mode">前端路由模式 hash | history区别</a>[![bakTop](./img/backward.png)](#top)  
 [参考](https://juejin.im/post/5cd8d609e51d456e7b372155#heading-9)
@@ -1992,12 +1992,12 @@ Vue  是单页面应用，会有很多的路由引入 ，打包后的文件很�
 
 >
     //import Foo from './Foo.vue'
+
+    懒加载
     const Foo = () => import('./Foo.vue')
-    const router = new VueRouter({
-      routes: [
-        { path: '/foo', component: Foo }
-      ]
-    })
+    //或者
+    //const Foo = resolve => require(['./Foo.vue'], resolve)
+
 
 
 
