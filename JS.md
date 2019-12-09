@@ -85,6 +85,8 @@
 * <a href="#函数重载">函数重载</a>
 * <a href="#防抖、节流">防抖、节流</a>
 * <a href="#柯里化">柯里化</a>
+* <a href="#n的阶层（尾调用优化）">n的阶层（尾调用优化）</a>
+* <a href="#斐波那契数列">斐波那契数列</a>
 * <a href="#函数缓存">函数缓存</a>
 * <a href="#webWorker">webWorker</a>
 * <a href="#浏览器缓存">浏览器缓存</a>
@@ -1231,7 +1233,7 @@ call
       }
       let fn = Symbol()
       context[fn] = this
-      const res =context[fn](...parameter, "fn")
+      const res =context[fn](...parameter)
       delete context.fn;
       return res
     }
@@ -1249,7 +1251,7 @@ apply
       }
       let fn = Symbol()
       context[fn] = this
-      return res=context[fn](...parameter, "fn");
+      return res=context[fn](...parameter);
     }
 
     sayHi.newApply(person, [25, 'newApply']); 
@@ -1816,6 +1818,9 @@ npm install xss --save
 
 
 ## <a name="URI、URL、URN">URI、URL、URN</a>
+[页面url属性](./README#页面url属性)
+
+![HREF](./img/href.png)
 
 * URI
 > 
@@ -1835,13 +1840,57 @@ npm install xss --save
     ②存有该资源的主机IP地址(有时也包括端口号)
     ③主机资源的具体地址。如目录和文件名等
 
+    如 scheme://user:pwd@host:port/path;params?query#frag
+
 * URN
 > 
-    URN，uniform resource name，统一资源命名，是通过名字来标识资源，比如mailto:java-net@java.sun.com。
+    URN，uniform resource name，统一资源命名，是通过名字来标识资源，
 
-URI是以一种抽象的，高层次概念定义统一资源标识，而URL和URN则是具体的资源标识的方式。URL和URN都是一种URI。笼统地说，每个 URL 都是 URI，但不一定每个 URI 都是 URL。这是因为 URI 还包括一个子类，即统一资源名称 (URN)，它命名资源但不指定如何定位资源。上面的 mailto、news 和 isbn URI 都是 URN 的示例。
+    如 mailto:java-net@java.sun.com。
+
+URI是以一种抽象的，高层次概念定义统一资源标识，而URL和URN则是具体的资源标识的方式。
+URI包含URL和URN
+
+HOST :主机名，资源所在服务器的IP地址或域名（需DNS转换IP地址）  
+PORT：端口号，每项服务在服务器上对应一个监听端口号
+
+js中encodeURI()函数不会对 :/@;?# 进行编码  
+encodeURIComponent()函数会对上述标点进行编码
 
 [彻底明白ip地址，区分localhost、127.0.0.1和0.0.0.0](https://blog.csdn.net/liyi1009365545/article/details/84780476)
+
+* new URL(url)  
+
+new URL('https://www.aaa.com')
+>
+    hash: ""
+    host: "www.aaa.com"
+    hostname: "www.aaa.com"
+    href: "https://www.aaa.com/"
+    origin: "https://www.aaa.com"
+    password: ""
+    pathname: "/"
+    port: ""
+    protocol: "https:"
+    search: ""
+    searchParams: URLSearchParams {}
+    username: ""
+
+还可以传入一个相对地址作为第一个参数，并把相对地址的基础URL作为第二个参数来创建一个URL对象    
+new URL('a','https://www.aaa.com')
+>
+    hash: ""
+    host: "www.aaa.com"
+    hostname: "www.aaa.com"
+    href: "https://www.aaa.com/a"
+    origin: "https://www.aaa.com"
+    password: ""
+    pathname: "/a"
+    port: ""
+    protocol: "https:"
+    search: ""
+    searchParams: URLSearchParams {}
+    username: ""
 
 ## <a name="字符转码、解码">字符转码、解码,encodeURIComponent、decodeURIComponent,encodeURI、decodeURI,escape、unescape,btoa、atob</a>
 * 编码encodeURIComponent()、解码decodeURIComponent()  
@@ -2069,8 +2118,10 @@ window.atob() 解码，ASCII to Base64
   它与函数绑定紧密相关, 用于创建已经设置好了一个或多个参数的函数, 其具体做法时使用一个闭包返回一个函数, 当函数被调用时, 返回的函数还需要设置一些传入的参数。
   柯里化的三个作用 : 1.参数复用 2. 提前返回 3.延迟计算
 例 
+
 >
-  const curry = (fn,...args) => args.length < fn.length ? (...arguments) => curry(fn,...args,...arguments) : fn(...args)
+    // 简
+    const curry = (fn,...args1) => args.length < fn.length ? (...args2) => curry(fn,...args1,...args2) : fn(...args1)
 
  
 >  
@@ -2088,6 +2139,7 @@ window.atob() 解码，ASCII to Base64
         }
       }
     }
+    
     var f = function(a, b, c) {
       return a+b+c
     };
@@ -2096,6 +2148,68 @@ window.atob() 解码，ASCII to Base64
     curried(1, 2)(3) // => [1, 2, 3]
     curried(1, 2, 3) // => [1, 2, 3]
 
+## <a name="n的阶层（尾调用优化）">n的阶层（尾调用优化）</a>
+1 1 2 3 5 8 13....
+>
+    //获取第n个斐波那契数列
+    function factorial(n, total=1) {
+      if (n <= 1) return total;
+      return factorial(n - 1, n * total);
+    }
+    factorial(5) // 120
+
+## <a name="斐波那契数列">斐波那契数列</a>
+F(1)=1，F(2)=1, F(n)=F(n-1)+F(n-2)（n>=3，n∈N*）
+>
+    //正常递归版 -- 存在大量的重复计算
+    function fib(n){
+      if(n==0)return 0
+      else if(n==1)return 1
+      else return fib(n-1) + fib(n-2)
+    }
+    
+    //去除重复计算版
+    function fib(n){
+      function fib_(n, a = 0, b = 1){
+        if(n==0) return a
+        else return fib_(n-1, b, a + b)
+      }
+      return fib_(n)
+    }
+
+* 计算斐波那列数（js语言精粹
+>
+    var  arr=[0,1];
+    var m=0;//计算运行次数
+    function fib(n){
+        var result=arr[n];
+        if(typeof arr[n]!=='number'){
+          m++;
+          result=fib(n-1)+fib(n-2);
+          arr[n]=result;
+        }
+        return result
+      }
+    console.log(fib(7),m);
+
+* 输出n个fib数
+1. 
+>
+    var arr = []
+    function fib(n){
+      function fib_(n, a = 0, b = 1){
+        if(n === 0)return a
+        return arr.push(b),fib_(n-1, b, a + b)
+      }
+      return fib_(n)
+    }
+    console.log(fib(33))
+    console.log(arr)
+
+2. 
+> 
+    const fibonacci = n => Array(n).fill(0).reduce((acc, val, i) => acc.concat(i > 1 ? acc[i - 1] + acc[i - 2] : i), []);
+    console.log(fibonacci(800))
 
 ## <a name="函数缓存">函数缓存</a>
 

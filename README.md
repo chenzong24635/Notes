@@ -302,7 +302,7 @@ div.item*3>{$}
   * <a href="#浮点型+-*/">浮点型+-*/</a>
   * <a href="#时间戳、日期 的转换">时间戳、日期 的转换</a>
   * <a href="#浏览器判断">浏览器、手机类型判断navigator.userAgent</a>
-  * <a href="#获取当前页面url网址信息">获取当前页面url网址信息</a>
+  * <a href="#页面url属性">页面url属性</a>
   * <a href="#解析url为对象">解析url为对象</a>
   * <a href="#FileReader">FileReader，图片转base64、blob，canvas图片压缩</a>
   * <a href="#图片转base64">图片转base64</a>
@@ -314,6 +314,7 @@ div.item*3>{$}
   * <a href="#0.1+0.2">0.1+0.2!=0.3 原因，解决</a>
   * <a href="#移动端点透问题">移动端点透问题(click 300ms延迟)</a>
   * <a href="#随机字符串">随机字符串</a>
+  * <a href="#随机HEX色值">随机HEX色值</a>
   * <a href="#随机6个数字">随机6个数字</a>
   * <a href="#范围内随机数，包括两个数在内">范围内随机数</a>
   * <a href="#数字千分位">数字千分位</a>
@@ -328,8 +329,6 @@ div.item*3>{$}
   * <a href="#数组扁平化">数组扁平化:n维数组展开成一维数组</a>
   * <a href="#数组去重">数组去重</a>
   * <a href="#数组排序">数组排序</a>
-  * <a href="#n的阶层（尾调用优化）">n的阶层（尾调用优化）</a>
-  * <a href="#斐波那契数列">斐波那契数列</a>
 
   * <a href="#unicode转中文">unicode转中文</a>
   * <a href="#取消选择，防止复制，禁止剪切、粘贴">取消选择，防止复制，禁止剪切、粘贴</a>
@@ -447,7 +446,7 @@ div.item*3>{$}
 
 
 ## <a name="时间戳、日期 的转换">时间戳、日期 的转换</a>
-![Date](/details/Date.md)
+[Date](/details/Date.md)
 
 ## <a name="浏览器判断">浏览器、手机类型判断navigator.userAgent</a>
 使用navigator.userAgent属性 PC端、手机端、iPad判断 ，ie、火狐、其他浏览器判断， 微信浏览器判断， Android、IOS判断
@@ -504,40 +503,72 @@ var obj = {
     isWeixin: Boolean(navigator.userAgent.match(/MicroMessenger/ig)),
 }
 
-## <a name="获取当前页面url网址信息">获取当前页面url网址信息</a>
-    http://www.aaa.com/bbb.aspx?name=1
+## <a name="页面url属性">页面url属性</a>
+new URL('http://www.aaa.com/bbb.aspx?name=1')
 
-### 属性
-#### window.location.href(设置或获取整个 URL 为字符串)
+>hash: ""  
+>host: "www.aaa.com:8080"  
+>hostname: "www.aaa.com"  
+>href: "http://www.aaa.com:8080/bbb.aspx?name=1"  
+>origin: "http://www.aaa.com:8080"  
+>password: ""  
+>pathname: "/bbb.aspx"  
+>port: "8080"  
+>protocol: "http:"  
+>search: "?name=1"  
+>searchParams: URLSearchParams {}
+>username: ""
 
-    // http://www.aaa.com/bbb.aspx?name=1
+* hash (URL中在井号“#”后面的分段)
+  >window.location.hash  
+  >new URL(url).hash
 
-#### window.location.protocol(设置或获取 URL 的协议部分)
+* host (URL 的主机部分包含端口号)
 
-    // http:
+* href (URL整个地址字符串)
 
-#### window.location.host(设置或获取 URL 的主机部分)
+* hostname (URL 的主机部分不含端口号)
 
-    // www.aaa.com
+* origin (只读属性，返回具有URL来源的Unicode序列化USVString。Origin的结构是由传入的URL类型决定的，对于http或https 的链接，得到的Origin将会为 协议（http/https）+ (://) + 域名 + (:端口)，一般情况下，默认端口将会被忽略。对于BLOB 链接，Origin返回的则是BLOB：后面的部分)
 
-#### window.location.port(设置或获取与 URL 关联的端口号码)
+* userName和password属性也是可写属性，它能提取域名前的用户名和密码部分的内容
+  >
+      url = new URL('https://username1:password1@www.grapecity.com.cn');
 
-    // 空字符(采用默认的80端口返回空字符)
+      console.log(url.username,url.password);
+      //username1 password1
 
-#### window.location.pathname(设置或获取与 URL 的路径部分（就是文件地址）)
+* pathname (URL的第一个斜杠(/) 后面除参数外的部分)
 
-    // bbb.aspx
+* port (URL的端口号)
+  >(默认的80端口返回空字符)
 
-#### window.location.search(设置或获取 href 属性中跟在问号后面的部分)
+* protocol (URL 的协议部分,一般是指类似http:，https:，ftp:，file:等这样的协议)
 
-    // ?name=1 
+* search (URL地址参数?后面的部分)
 
-#### window.location.hash(设置或获取 href 属性中在井号“##”后面的分段)
-
-    // 空字符
+* searchParams属性  
+search属性只为我们获取了整个参数字符串，如果有把字符串解析为键值对，这时候searchParams属性就派上了用场，该属性将获得一个URLSearchParams对象，该对象具有列出查询字符串键值对列表的能力，例如，要获取参数列表，我们可以这样使用。
+>new URL('http://www.aaa.com/bbb.aspx?name=1').searchParams.get('name') // 1
+>new URLSearchParams(window.loaction.search).get('name')
 
 
 ### 获取 url 中的参数值
+### new URL
+new URL('https://www.aaa.com')
+>
+    hash: ""
+    host: "www.aaa.com"
+    hostname: "www.aaa.com"
+    href: "https://www.aaa.com/"
+    origin: "https://www.aaa.com"
+    password: ""
+    pathname: "/"
+    port: ""
+    protocol: "https:"
+    search: ""
+    searchParams: URLSearchParams {}
+    username: ""
 
 #### js 获取 url 中的参数值
 >
@@ -1071,6 +1102,9 @@ fastclick库地址 ：https://github.com/ftlabs/fastclick
       return tmp;
     }
 
+## <a name="随机HEX色值">随机HEX色值 </a>
+ RandomColor = () => "#" + Math.floor(Math.random() * 0xffffff).toString(16).padEnd(6, "0");
+
 ## <a name="随机6个数字">随机6个数字 </a>
 Math.floor(Math.random() * 999999)  
 
@@ -1080,7 +1114,12 @@ Math.random().toFixed(6).slice(-6) / 1
 
 ## <a name="范围内随机数，包括两个数在内">范围内随机数</a>
 >
+    // 小数
     const number =(min, max) => Math.random() * (max - min) + min
+
+    // 整数
+    const number = = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+    
 
 ## <a name="数字千分位">数字千分位 </a>
 1. toLocaleString()
@@ -1099,9 +1138,10 @@ Math.random().toFixed(6).slice(-6) / 1
     }
     //$&  表示整个被匹配的字符串
 
-    //做多只支持 小数点后两位
-    thousandth(16623.67864)//"16,623.67,864" ???
+    //最多只支持 小数点后三位
     thousandth(1662367864) //"1,662,367,864" 
+    thousandth(16623.678)//"16,623.678"  
+    thousandth(16623.6786)//"16,623.67,86" ???
 
 
 3. reduce
@@ -1437,66 +1477,6 @@ var arr = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
 ## <a name="数组排序"> 数组排序</a>
 [排序](/details/sort.md)
 
-## <a name="n的阶层（尾调用优化）">n的阶层（尾调用优化）</a>
-1 1 2 3 5 8 13....
->
-    //获取第n个斐波那契数列
-    function factorial(n, total=1) {
-      if (n <= 1) return total;
-      return factorial(n - 1, n * total);
-    }
-    factorial(5) // 120
-
-## <a name="斐波那契数列">斐波那契数列</a>
-F(1)=1，F(2)=1, F(n)=F(n-1)+F(n-2)（n>=3，n∈N*）
->
-    //正常递归版 -- 存在大量的重复计算
-    function fib(n){
-      if(n==0)return 0
-      else if(n==1)return 1
-      else return fib(n-1) + fib(n-2)
-    }
-    //去除重复计算版
-    function fib(n){
-      function fib_(n, a = 0, b = 1){
-        if(n==0) return a
-        else return fib_(n-1, b, a + b)
-      }
-      return fib_(n)
-    }
-
-* 计算斐波那列数（js语言精粹
->
-    var  arr=[0,1];
-    var m=0;//计算运行次数
-    function fib(n){
-        var result=arr[n];
-        if(typeof arr[n]!=='number'){
-          m++;
-          result=fib(n-1)+fib(n-2);
-          arr[n]=result;
-        }
-        return result
-      }
-    console.log(fib(7),m);
-
-* 输出n个fib数
-1. 
->
-    var arr = []
-    function fib(n){
-      function fib_(n, a = 0, b = 1){
-        if(n === 0)return a
-        return arr.push(b),fib_(n-1, b, a + b)
-      }
-      return fib_(n)
-    }
-    console.log(fib(33))
-    console.log(arr)
-
-2.
-> 
-    const fibonacci = n => Array(n).fill(0).reduce((acc, val, i) => acc.concat(i > 1 ? acc[i - 1] + acc[i - 2] : i), []);console.log(fibonacci(80000))
 
 
 ##  <a name="自动触发onclick事件">自动触发onclick事件</a>

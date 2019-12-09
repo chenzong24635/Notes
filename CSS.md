@@ -94,7 +94,7 @@ CSS布局、居中
 * <a href="#border-style">border-style属性值</a>
 * <a href="#line-hieght">line-hieght,vertical-align</a>
 * <a href="#文本换行">文本换行 white-space word-wrap word-break</a>
-* <a href="#定位">定位</a>
+* <a href="#定位">position定位</a>
 * <a href="#Flex">Flex</a>
 * <a href="#Grid">Grid</a>
 * <a href="#background">background属性值</a>
@@ -117,19 +117,22 @@ CSS布局、居中
   * <a href="#注意事项">注意事项</a>
   * <a href="#CSSOM视图模式">CSSOM视图模式</a>
   * <a href="#css自定义变量属性">css自定义变量属性</a>
-  * <a href="#文字超出省略">文字超出省略</a>
   * <a href="#shape-outside">shape-outside</a>
-  * <a href="#pointer-events">pointer-events 使用指针事件來控制鼠标事件</a>
-  * <a href="#透明方格的绘制">透明方格的绘制</a>
-  * <a href="#移动端1px">移动端1px</a>
-  * <a href="#清除手机端a链接点击高亮">清除手机端a链接点击高亮</a>
-  * <a href="#三角形">三角形</a>
+  * <a href="#文字超出省略">文字超出省略</a>
+  * <a href="#text-align-last">text-align-last文本中最后一行在被强制换行之前的对齐规则</a>
+  * <a href="#writing-mode">writing-mode调整文本排版方向</a>
   * <a href="#改变input placeholder颜色">改变input placeholder颜色</a>
   * <a href="#selection">selection 改变选中内容的字体、背景颜色</a>
   * <a href="#user-select">user-select 文本是否可选中</a>
   * <a href="#-webkit-text-size-adjust">-webkit-text-size-adjust</a>
   * <a href="#为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"</a>
+  * <a href="#pointer-events">pointer-events 使用指针事件來控制鼠标事件</a>
+  * <a href="#透明方格的绘制">透明方格的绘制</a>
+  * <a href="#移动端1px">移动端1px</a>
+  * <a href="#清除手机端a链接点击高亮">清除手机端a链接点击高亮</a>
+  * <a href="#三角形">三角形</a>
   * <a href="#图片缩放">图片缩放matrix,transform+transition</a>
+  * <a href="#clip-path">clip-path</a>
   * <a href="#filter滤镜">filter滤镜</a>
   * <a href="#多方法描绘一个边框">多方法描绘一个边框</a>
   * <a href="#滚动">滚动</a>
@@ -549,11 +552,11 @@ CSS权威指南中的解释：
 
 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Understanding_z_index/The_stacking_context)
 
-[参考]https://www.zhangxinxu.com/wordpress/2016/01/understand-css-stacking-context-order-z-index/)
-[参考](https://www.cnblogs.com/starof/p/4424926.html)
+[深入理解CSS中的层叠上下文和层叠顺序](https://www.zhangxinxu.com/wordpress/2016/01/understand-css-stacking-context-order-z-index/)
+
+[z-index堆叠规则](https://www.cnblogs.com/starof/p/4424926.html)
 
 
-CSS2
 ![zIndex](./img/zindex.png)
 
 
@@ -621,6 +624,7 @@ z-index只适用于已经定位的元素
 由于float意味着使用块布局，所以它会修改元素的display值为block|table
 
 * 浮动的本意：是为了实现文字环绕效果(主要指的是文字环绕图片显示的效果)
+  >由两个特性（即“父级高度塌陷”和“行框盒子区域限制”）共同作用的结果
 
 * 特性：
 >
@@ -957,10 +961,13 @@ word-break
 
 <a href="#文字超出省略">文字超出省略</a>
 
-## <a name="定位">定位</a>[![bakTop](./img/backward.png)](#top)
+## <a name="定位">position定位</a>[![bakTop](./img/backward.png)](#top)
 * inherit： 继承值。但是任何的版本的 Internet Explorer （包括 IE8）都不支持属性值 “inherit”。
+
 * static：默认值。位置设置为static的元素，它始终会处于文档流给予的位置。
+
 * relative：相对定位，相对于该元素在文档中的初始位置进行定位。通过 left、top、right、bottom 属性来设置此元素相对于自身位置的偏移。
+
 * absolute：绝对定位，相对于距该元素最近的已定位的祖先元素进行定位。此元素的位置可通过left、top、right、bottom 属性来规定。
 
 * fixed：固定定位。默认情况下，可定位于相对于浏览器窗口的指定坐标。元素的位置通过left、top、right、bottom 属性进行规定。不论窗口滚动与否，元素都会留在那个位置。
@@ -982,6 +989,46 @@ word-break
 [参考](http://www.zhangxinxu.com/wordpress/2015/05/css3-transform-affect/)
 
 解决：当使用 fixed 的直接父元素的高度和屏幕的高度相同时 fixed 和 absolute 的表现效果会是一样的。如果这个直接父级内的元素存在滚动的情况，那就加上 overflow-y:auto。
+
+----
+
+* position:relative  
+
+  relative 的定位有两大特性：一是相对自身；二是无侵入
+  >相对自身:当 relative 进行定位偏移的时候,是相对于自身进行偏移定位的  
+  >无侵入:当 relative 进行定位偏移的时候，一般情况下不会影响周围元素的布
+  局。
+
+
+  当相对定位元素同时应用对立方向定位值的时候，也就是 top/bottom 和 left/right
+  同时使用的时候，其表现和绝对定位差异很大。绝对定位是尺寸拉伸，保持流体特性，但是相
+  对定位却是“你死我活”的表现，也就是说，只有一个方向的定位属性会起作用。而孰强孰弱
+  则是与文档流的顺序有关的，默认的文档流是自上而下、从左往右，因此 top/bottom 同时使
+  用的时候，bottom 被干掉；left/right 同时使用的时候，right 毙命。
+
+  >
+      .example {
+        position: relative;
+        top: 10px;
+        right: 10px; /* 无效 */
+        bottom: 10px; /* 无效 */
+        left: 10px;
+      } 
+
+----
+
+* position:absolute  
+绝对定位元素的 margin:auto 的填充规则和普通流体元素的一模一样：
+• 如果一侧定值，一侧 auto，auto 为剩余空间大小；
+• 如果两侧均是 auto，则平分剩余空间。
+  >
+      // 水平垂直居中
+      position:absolute;
+      top:0;
+      bottom:0;
+      left:0;
+      right:0;
+      margin:auto;
 
 ## <a name="Flex">Flex</a>[![bakTop](./img/backward.png)](#top)
 [Flex](/details/Flex.md)
@@ -1058,9 +1105,37 @@ word-break
         background-color: currentColor;
         background-clip: content-box;
     }
-![clip](/img/clip.jpg)
+![clip](./img/clip.jpg)
 
 ### background-blend-mode和mix-blend-mode
+
+[mix-blend-mode 混合模式](https://blog.csdn.net/Geoooo/article/details/80063852)
+
+通过拾色器改变图像色相
+>
+    .color-changer {
+      overflow: hidden;
+      position: relative;
+      height: 100%;
+    }
+    input {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      mix-blend-mode: hue;
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    <div class="color-changer">
+      <input type="color" value="#ff6666">
+      <img src="./img/zindex.png">
+      <!-- <img src="https://yangzw.vip/static/codepen/car.jpg"> -->
+    </div>
 
 
 ## <a name="渐变">渐变linear-gradient,radial-gradient,conic-gradient</a>[![bakTop](./img/backward.png)](#top)
@@ -1090,15 +1165,15 @@ background:linear-gradient(blue, red),   background:linear-gradient(90deg, blue,
 radial-gradient(shape size at position, color1 range,...colorn range)   
 * shape(形状,可略)：ellipse(默认): 椭圆形，circle：圆形  
 * size(半径,可略): 
->数值： x(横向的长度) y(纵向的长度)；传两个值默认为椭圆；
+  >数值： x(横向的长度) y(纵向的长度)；传两个值默认为椭圆；
 
->farthest-corner(默认): 指定径向渐变的半径长度为从圆心到离圆心最远的角
+  >farthest-corner(默认): 指定径向渐变的半径长度为从圆心到离圆心最远的角
 
->farthest-side ：渐变的边缘形状与容器距离渐变中心点最远的一边相切（圆形）或者至少与距离渐变中心点最远的垂直和水平边相切（椭圆）
+  >farthest-side ：渐变的边缘形状与容器距离渐变中心点最远的一边相切（圆形）或者至少与距离渐变中心点最远的垂直和水平边相切（椭圆）
 
->closest-side ：渐变的边缘形状与容器距离渐变中心点最近的一边相切（圆形）或最近的垂直和水平边（椭圆）。与farthest-side相反  
+  >closest-side ：渐变的边缘形状与容器距离渐变中心点最近的一边相切（圆形）或最近的垂直和水平边（椭圆）。与farthest-side相反  
 
->closest-corner：指定径向渐变的半径长度为从圆心到离圆心最近的角  
+  >closest-corner：指定径向渐变的半径长度为从圆心到离圆心最近的角  
 
 * position(圆心位置): center(默认), top, bottom, left, right, length|百分比(相对于左上角，值可正负数)
 * colors:接受一系列颜色节点 并且可指定颜色控制的范围(length|百分比)。
@@ -1112,6 +1187,24 @@ radial-gradient(shape size at position, color1 range,...colorn range)
 [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/conic-gradient)
 
 ### repeating-linear-gradient()，repeating-radial-gradient()重复渐变
+
+
+### 应用
+* 描绘彩带：
+  >
+      repeating-linear-gradient(90deg, red,red 40px, blue 40px,blue 80px)
+
+* 描绘方格背景: 
+  >
+      <div class="square-bg"></div>
+      .square-bg {
+        width: 500px;
+        height: 300px;
+        background-image: linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%),
+          linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%);
+        background-position: 0 0, 20px 20px;
+        background-size: 40px 40px;
+      }
 
 ### 兼容
 带有私有前缀的不加to,at，方向就是起始点
@@ -1666,6 +1759,30 @@ https://my.oschina.net/i33/blog/126960
         div.style.setProperty('--color', 'green') //设置属性值
     </script>
 
+## <a name="shape-outside">shape-outside</a>[![bakTop](./img/backward.png)](#top)
+[MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/shape-outside)
+
+  
+定义了一个可以是非矩形的形状，相邻的内联内容应围绕该形状进行包装。 默认情况下，内联内容包围其边距框; shape-outside提供了一种自定义此包装的方法，可以将文本包装在复杂对象周围而不是简单的框中。
+
+值：
+>inherit  
+>initial  
+>unset  
+>none  // 默认margin box  
+>margin-box  
+>border-box  
+>padding-box  
+>content-box  
+>circle()  
+>ellipse()  
+>inset(10px 10px 10px 10px)  
+>polygon(10px 10px, 20px 20px, 30px 30px)  
+>url(image.png)  
+
+
+
+![shape-outside](./img/shape-outside.png)
 
 
 ## <a name="文字超出省略">文字超出省略</a>[![bakTop](./img/backward.png)](#top)
@@ -1721,56 +1838,125 @@ https://my.oschina.net/i33/blog/126960
       .ov
     }
 
-## <a name="shape-outside">shape-outside</a>[![bakTop](./img/backward.png)](#top)
-[MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/shape-outside)
-
-  
-定义了一个可以是非矩形的形状，相邻的内联内容应围绕该形状进行包装。 默认情况下，内联内容包围其边距框; shape-outside提供了一种自定义此包装的方法，可以将文本包装在复杂对象周围而不是简单的框中。
-
-值：
->inherit  
->initial  
->unset  
->none  // 默认margin box  
->margin-box  
->border-box  
->padding-box  
->content-box  
->circle()  
->ellipse()  
->inset(10px 10px 10px 10px)  
->polygon(10px 10px, 20px 20px, 30px 30px)  
->url(image.png)  
 
 
 
-![shape-outside](./img/shape-outside.png)
+## <a name="text-align-last">text-align-last文本中最后一行在被强制换行之前的对齐规则</a>[![bakTop](./img/backward.png)](#top)
+[MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/text-align-last)
 
-## <a name="clip-path">clip-path</a>[![bakTop](./img/backward.png)](#top)
-[MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/clip-path)
-创建一个只有元素的部分区域可以显示的剪切区域。区域内的部分显示，区域外的隐藏。剪切区域是被引用内嵌的URL定义的路径或者外部svg的路径，或者作为一个形状例如circle().。clip-path属性代替了现在已经弃用的剪切 clip属性。
+text-align-last: justify;  
+![text-align-last](./img/text-align-last.jpg)
 
-[clip-path](https://juejin.im/post/5de6fdbae51d4557e76a422f)
+text-align-last: auto;
+>由 text-align 的值来确定
 
-值：
->inherit  
->initial  
->unset  
->none  
->margin-box  
->border-box  
->padding-box  
->content-box  
->fill-box  
->stroke-box  
->view-box  
->circle()  
->ellipse()  
->inset(10px 10px 10px 10px)  
->polygon(10px 10px, 20px 20px, 30px 30px)  
->url(image.png)  
->path()  
+text-align-last: start;
+>与 direction 的设置有关
 
+text-align-last: end;
+>与 direction 的设置有关
+
+text-align-last: left;
+>最后一行文字与内容盒子的左侧对齐
+
+text-align-last: right;
+>最后一行文字与内容盒子的右侧对齐
+
+text-align-last: center;
+>最后一行文字与内容盒子居中对齐
+
+text-align-last: justify;
+>最后一行文字的开头与内容盒子的左侧对齐，末尾与右侧对齐。
+
+text-align-last: inherit;  
+text-align-last: initial;  
+text-align-last: unset;  
+
+
+## <a name="writing-mode">writing-mode调整文本排版方向</a>[![bakTop](./img/backward.png)](#top)
+[MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/writing-mode)
+
+>writing-mode:horizontal-tb;//默认：水平方向，从上到下
+
+>writing-mode: vertical-rl;//垂直方向，从右向左
+
+>writing-mode:  vertical-lr;//垂直方向，从左向右
+
+## <a name="改变input placeholder颜色">改变input placeholder颜色</a>[![bakTop](./img/backward.png)](#top)
+>
+    ::-webkit-input-placeholder { color: ; }/*WebKit, Blink, Edge*/
+    :-moz-placeholder { color: ; }/*Mozilla Firefox 4 to 18*/
+    ::-moz-placeholder { color: ; }/*Mozilla Firefox 19+*/
+    :-ms-input-placeholder { color: ; }/*Internet Explorer 10-11 */
+
+## <a name="selection">selection 改变选中内容的字体、背景颜色</a>[![bakTop](./img/backward.png)](#top)
+>
+    ::selection { 
+        background: #fff; 
+        color: #333; 
+    } 
+    ::-webkit-selection { 
+        background: #fff; 
+        color: #333; 
+    }
+    ::-moz-selection { 
+        background: #fff; 
+        color: #333; 
+    } 
+
+## <a name="user-select">user-select 文本是否可选中</a>[![bakTop](./img/backward.png)](#top)
+user-select:none  
+-webkit-user-select:none
+
+语法
+>
+    user-select:none | text | all | element
+    默认值：text
+    适用范围：除替换元素外的所有元素
+
+取值说明
+>
+    none:文本不能被选择
+    text:可以选择文本
+    all：当所有内容作为一个整体时可以被选择。如果双击或者在 上下文上点击子元素，
+        那么被选择的部分将是以该子元素 向上回溯的最高祖先元素。
+
+## <a name="-webkit-text-size-adjust">-webkit-text-size-adjust: none</a>[![bakTop](./img/backward.png)](#top)
+>
+
+    Chrome 中文界面下默认会将小于 12px 的文本强制按照 12px 显示；
+
+    可关闭字体大小自动调整功能; 
+
+    放在body中会导致页面缩放失效,不要把-webkit-text-size-adjust设置为全局或者可继承的
+
+
+## <a name="为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"[![bakTop](./img/backward.png)](#top)
+
+>
+    img {
+      display: block;
+      font-family: sans-serif;
+      font-weight: 300;
+      height: auto;
+      line-height: 2;
+      position: relative;
+      text-align: center;
+      width: 100%;
+    }
+
+    img::before {
+      content: "We're sorry, the image below is broken ";
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    img::after {
+      content: "(url:'attr(src)')";
+      display: block;
+      font-size: 12px;
+    }
+    
 
 ## <a name="pointer-events">pointer-events 使用指针事件來控制鼠标事件</a>[![bakTop](./img/backward.png)](#top)
 
@@ -1929,54 +2115,6 @@ tap-highlight-color: rgba(0, 0, 0, 0);
     border-width: 30px 10px;
     border-color:  transparent transparent transparent ##f4f4f4;
 
-## <a name="改变input placeholder颜色">改变input placeholder颜色</a>[![bakTop](./img/backward.png)](#top)
->
-    ::-webkit-input-placeholder { color: ; }/*WebKit, Blink, Edge*/
-    :-moz-placeholder { color: ; }/*Mozilla Firefox 4 to 18*/
-    ::-moz-placeholder { color: ; }/*Mozilla Firefox 19+*/
-    :-ms-input-placeholder { color: ; }/*Internet Explorer 10-11 */
-
-## <a name="selection">selection 改变选中内容的字体、背景颜色</a>[![bakTop](./img/backward.png)](#top)
->
-    ::selection { 
-        background: #fff; 
-        color: #333; 
-    } 
-    ::-webkit-selection { 
-        background: #fff; 
-        color: #333; 
-    }
-    ::-moz-selection { 
-        background: #fff; 
-        color: #333; 
-    } 
-
-## <a name="user-select">user-select 文本是否可选中</a>[![bakTop](./img/backward.png)](#top)
-user-select:none  
--webkit-user-select:none
-
-语法
->
-    user-select:none | text | all | element
-    默认值：text
-    适用范围：除替换元素外的所有元素
-
-取值说明
->
-    none:文本不能被选择
-    text:可以选择文本
-    all：当所有内容作为一个整体时可以被选择。如果双击或者在 上下文上点击子元素，
-        那么被选择的部分将是以该子元素 向上回溯的最高祖先元素。
-
-## <a name="-webkit-text-size-adjust">-webkit-text-size-adjust: none</a>[![bakTop](./img/backward.png)](#top)
->
-
-    Chrome 中文界面下默认会将小于 12px 的文本强制按照 12px 显示；
-
-    可关闭字体大小自动调整功能; 
-
-    放在body中会导致页面缩放失效,不要把-webkit-text-size-adjust设置为全局或者可继承的
-
 
 ## <a name="图片缩放">图片缩放matrix,transform+transition</a>[![bakTop](./img/backward.png)](#top)
 >
@@ -1991,33 +2129,39 @@ user-select:none
       transition: all 7.0s ease 0.4s;  
     }
 
-## <a name="为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"[![bakTop](./img/backward.png)](#top)
 
->
-    img {
-      display: block;
-      font-family: sans-serif;
-      font-weight: 300;
-      height: auto;
-      line-height: 2;
-      position: relative;
-      text-align: center;
-      width: 100%;
-    }
-
-    img::before {
-      content: "We're sorry, the image below is broken ";
-      display: block;
-      margin-bottom: 10px;
-    }
-
-    img::after {
-      content: "(url:'attr(src)')";
-      display: block;
-      font-size: 12px;
-    }
     
+## <a name="clip-path">clip-path</a>[![bakTop](./img/backward.png)](#top)
+[MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/clip-path)
+创建一个只有元素的部分区域可以显示的剪切区域。区域内的部分显示，区域外的隐藏。剪切区域是被引用内嵌的URL定义的路径或者外部svg的路径，或者作为一个形状例如circle().。clip-path属性代替了现在已经弃用的剪切 clip属性。
+
+[clip-path](https://juejin.im/post/5de6fdbae51d4557e76a422f)
+
+值：
+>inherit  
+>initial  
+>unset  
+>none  
+>margin-box  
+>border-box  
+>padding-box  
+>content-box  
+>fill-box  
+>stroke-box  
+>view-box  
+>circle()  
+>ellipse()  
+>inset(10px 10px 10px 10px)  
+>polygon(10px 10px, 20px 20px, 30px 30px)  
+>url(image.png)  
+>path()  
+
 ## <a name="filter滤镜">filter滤镜（不是IE的filter:alpha(opacity=50)）</a>[![bakTop](./img/backward.png)](#top)
+[在线演示](https://codepen.io/JowayYoung/pen/NWKbVNQ)
+
+[CSSgram插件](https://github.com/una/CSSgram/blob/master/README-CN.md)
+
+![filter](./img/filter.png)
 
 ## <a name="多方法描绘一个边框">多方法描绘一个边框</a>[![bakTop](./img/backward.png)](#top)
 [参考](https://www.w3cplus.com/css/css-tips-0904-1.html)

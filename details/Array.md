@@ -324,8 +324,8 @@ item1... ： 表示添加的元素
     arr.splice( 1, 0, 'b'); //返回 []
     console.log(arr);    // 输出 [ "a", "b", "c", "d" ]
 
-    arr.splice(1,1);     // 返回 ["b"]
-    console.log(arr);    // 输出 [ "a", "c", "d" ]
+    arr.splice(1,1);     // 返回 ["c"]
+    console.log(arr);    // 输出 [ "a", "d" ]
 
     arr.splice(1,1,'bb','cc');// 返回["c"]
     console.log(arr);    // 输出 [ "a", "bb", "cc", "d" ]
@@ -399,9 +399,6 @@ end : 要复制序列的结束位置，如为负值则从后向前计数。如�
     console.log(arr.copyWithin(0, 3, 5));    // 输出 [ "d", "e", "c", "d", "e", "f" ]
     console.log(arr.copyWithin(1, 3));    // 输出 [ "d", "d", "e", "f", "e", "f" ]
 
-   
-
-
 ## <a name="forEach()">forEach()-- 不改变原数组</a>
 遍历数组 ,无法遍历对象, IE不支持  
 `没有返回值 undefined` , `不改变原数组 、不能中断`
@@ -465,9 +462,12 @@ map(callback,thisArg)
 | |检测元素是否符合条件| 空数组测试| 不改变原数组|
 |:--|:--|:--:|:--:|
 |every()| 全部满足才返回true|返回false| √|
-|some()| 一个满足就返回true|返回false|√ | 
+|some()| 一个满足就返回true|返回false|√ |
 |filter()| 数组形式返回符合元素|返回[]| √|
 
+every()、some()、filter()会跳过空位
+>
+    [1,2,,3].every(item => item >= 1) // true
 >
 
     let arr = [ 1, 2, 3, 4 ];
@@ -504,6 +504,12 @@ ____
     //过滤空值
     [1, 2, 0, undefined, null, false, ''].filter(Boolean) //[1.2]
 
+    // 利用filter去重
+    var arr = [2,3,4,4,5,2,3,6];
+    var arr2 = arr.filter(function(element,index,self){
+      return self.indexOf(element) === index;
+    });
+    console.log(arr2);
 
 ## <a name="reduce()、reduceRight()">reduce()、reduceRight()</a>
 reduce()接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终为一个值，  
@@ -560,5 +566,78 @@ next().done 用于指示迭代器是否完成：在每次迭代时进行更新�
     }
 
 ## <a name="()"></a>
+[一个合格的中级前端工程师需要掌握的 28 个 JavaScript 技巧](https://juejin.im/post/5cef46226fb9a07eaf2b7516#heading-0)
+
+实现map
+>
+    Array.prototype.myMap = function(fn,context){
+      let arr = Array.prototype.slice.call(this)
+      let resultArr = []
+      for(let i = 0, len = arr.length; i < len; i++){
+        if(!arr.hasOwnProperty(i))continue;
+        resultArr[i] = fn.call(context, arr[i], i, this)
+      }
+      return resultArr
+    }
+
+实现filter
+>
+    Array.prototype.myFilter = function(fn,context){
+      let arr = Array.prototype.slice.call(this)
+      let resultArr = []
+      for(let i = 0, len = arr.length; i < len; i++){
+        if(!arr.hasOwnProperty(i))continue;
+        fn.call(context, arr[i], i, this) && resultArr.push(arr[i])
+      }
+      return resultArr
+    }
+
+实现some
+>
+    Array.prototype.mySome = function(fn,context){
+      let arr = Array.prototype.slice.call(this)
+      let resultArr = []
+      for(let i = 0, len = arr.length; i < len; i++){
+        if(!arr.hasOwnProperty(i))continue;
+        if(fn.call(context, arr[i], i, this))return true
+      }
+      return false
+    }
+
+实现every
+    Array.prototype.myEvery = function(fn,context){
+      let arr = Array.prototype.slice.call(this)
+      let resultArr = []
+      for(let i = 0, len = arr.length; i < len; i++){
+        if(!arr.hasOwnProperty(i))continue;
+        if(!fn.call(context, arr[i], i, this))return false
+      }
+      return true
+    }
+
+实现reduce
+>
+    Array.prototype.myReduce = function(fn,initialValue){
+      let arr = Array.prototype.slice.call(this)
+      let result;
+      let startIndex;
+      if (initialValue === undefined) {
+        // 找到第一个非空单元（真实）的元素和下标
+        for (let i = 0,len = arr.length; i< len; i++) {
+          if(!arr.hasOwnProperty(i))continue
+          startIndex = i
+          result = arr[i]
+          break
+        }
+      } else {
+        result = initialValue
+      }
+      for(let i =  ++startIndex || 0, len = arr.length; i < len; i++){
+        if(!arr.hasOwnProperty(i))continue;
+        result = fn.call(null, result, arr[i], i, this)
+      }
+      return result
+    }
+
 ## <a name="()"></a>
 ## <a name="()"></a>

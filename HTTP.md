@@ -60,19 +60,6 @@ HTTP/2的多路复用和HTTP1.1中的长连接复用有什么区别？
     HTTP/1.1 可以在一次连接中处理多个请求，并且多个请求可以重叠进行，不需要等待一个请求结束后再发送下一个请求。若干个请求排队串行化单线程处理，后面的请求等待前面请求的返回才能获得执行机会，一旦有某请求超时等，后续请求只能被阻塞，毫无办法，也就是人们常说的线头阻塞；
     HTTP/2多个请求可同时在一个连接上并行执行。某个请求任务耗时严重，不会影响到其它连接的正常执行；
 
-### URL、URI、URN
->
-    URI：Unified Resource Identifier   包含URL和URN
-    URL：Unified Resource Locator    如 http://www.baidu.com/q?kw=js
-    URN：Unified Resource Naming    如 mailto: admin@tarena.com
-
-URL的完整格式：scheme://user:pwd@host:port/path;params?query#frag
-
-js中encodeURI()函数不会对 :/@;?# 进行编码
-encodeURIComponent()函数会对上述标点进行编码
-
-HOST :主机名，资源所在服务器的IP地址或域名（需DNS转换IP地址）
-PORT：端口号，每项服务在服务器上对应一个监听端口号
 
 ### HTTP协议详解
 >
