@@ -87,7 +87,7 @@ CSS布局、居中
 * <a href="#max-,min-">max-width,max-height,min-width,min-height</a>
 
 * <a href="#百分数相对于width">padding/margin-top/bottom的百分数相对于width</a>
-* <a href="#zIndex">层叠上下文(stacking context )z-index</a>
+* <a href="#zIndex">层叠上下文(stacking context )</a>
 * <a href="#float特性">float特性</a>
 * <a href="#格式化上下文">格式化上下文BFC、IFC、FFC、GFC</a>
 * <a href="#display、visibility、overflow、opacity">display、visibility、overflow、opacity的隐藏问题</a>
@@ -483,9 +483,12 @@ BEM
     cursor
 
 * font属性:
+
+[font-family中文字体对应的英文名称一览表](https://www.zhangxinxu.com/study/201703/font-family-chinese-english.html)
 >
-    font: font-style  font-weight  font-size/line-height  font-family;  
-    一定按照书写顺序。font-size和font-family必须，其他可选 
+    font: font-style?  font-weight?  font-size/line-height?  font-family;
+    //font-size和font-family必须，其他可选 
+    // font:italic 700 16px/40px  '微软雅黑';
 
     font-style: normal | italic;      normal 默认值  italic  斜体  
 
@@ -498,10 +501,7 @@ BEM
         100-900 (400 等同于 normal，700 等同于 bold)
 
     font-size:16px;  文字大小
-
-    如：font:italic 700 16px/40px  微软雅黑;
-
-
+    
 
 ## <a name="文字、盒子阴影">text-shadow 、box-shadow</a>[![bakTop](./img/backward.png)](#top)
 
@@ -548,54 +548,91 @@ CSS权威指南中的解释：
     正常流中的大多数元素都会足够高以包含其后代元素（包括外边距），如果一个元素的上下外边距时父元素的height的百分数，就可能导致一个无限循环，父元素的height会增加，以适应后代元素上下外边距的增加，而相应的，上下外边距因为父元素height的增加也会增加，如果循环。
 
 
-## <a name="zIndex">层叠上下文(stacking context )z-index</a>[![bakTop](./img/backward.png)](#top)
+## <a name="zIndex">层叠上下文(stacking context )</a>[![bakTop](./img/backward.png)](#top)
 
 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Understanding_z_index/The_stacking_context)
 
-[深入理解CSS中的层叠上下文和层叠顺序](https://www.zhangxinxu.com/wordpress/2016/01/understand-css-stacking-context-order-z-index/)
-
 [z-index堆叠规则](https://www.cnblogs.com/starof/p/4424926.html)
 
+[深入理解CSS中的层叠上下文和层叠顺序](https://www.zhangxinxu.com/wordpress/2016/01/understand-css-stacking-context-order-z-index/) -- 张鑫旭
 
-![zIndex](./img/zindex.png)
+[CSS世界.pdf--第7章](https://www.cssworld.cn/)-- 张鑫旭
 
+### **什么是层叠上下文**
 
-### 概述：
+层叠上下文，英文称作 stacking context，是 HTML 中的一个三维的概念。如果一个元素含有层叠上下文，我们可以理解为这个元素在 z 轴上就“高人一等”。
+
+### **什么是层叠水平**
+层叠水平，英文称作 stacking level，决定了同一个层叠上下文中元
+素在 z 轴上的显示顺序。
+
+页面中的每个元素都是独立的个体，它们一定是会有一个类似的排名顺序的存
+在。而这个排名顺序就是这里所说的“层叠水平”
+
+所有的元素都有层叠水平，包括层叠上下文元素，也包括普通元素
+
+需要注意的是，诸位`千万不要把层叠水平和 CSS 的 z-index 属性混为一谈`。尽管某些情况下 z-index 确实可以影响层叠水平，但是只限于定位元素以及 flex 盒子的孩子元素；而层叠水平是所有的元素都存在的。
+
+### **层叠顺序**
+层叠顺序，英文称作 stacking order，表示元素发生层叠时有着特定的垂直显示顺序。注意，这里跟上面两个不一样，上面的“层叠上下文”和“层叠水平”是**概念**，
+而这里的“层叠顺序”是**规则**。
+
+css2层叠顺序规则
+![zIndex](./img/zindex.jpg)
+
+为什么内联元素的层叠顺序要比浮动元素和块状元素都高？
 >
-主要用来比较一个拥有定位元素（position不为static）的元素的z轴层叠关系（z-index）。
-同一个层叠上下文中，层叠级别（即z-index属性值）大的显示在上面。
-同一个层叠上下文中，层叠级别相同的两个元素，依据它们在HTML文档流中的顺序，写在后面的会覆盖前面的。
+    诸如border/background一般为装饰属性，而浮动和块状元素一般用作布局，而内联元素都是内容。网页中最重要的是什么？当然是内容了哈，对不对！
+
+    因此，一定要让内容的层叠顺序相当高，当发生层叠时，重要的文字、图片内容才可以优先显示在屏幕上
+
+
+### **层叠准则**
+
+当元素发生层叠的时候，其覆盖关系遵循下面两条准则：
+* 同一个层叠上下文中，层叠级别（z-index属性值）大的显示在上面。
+* 同一个层叠上下文中，层叠级别相同的两个元素，依据它们在HTML文档流中的顺序，写在后面的会覆盖前面的。
+
+### **层叠上下文的特性**
+* 层叠上下文的层叠水平要比普通元素高（原因后面会说明）。
+* 层叠上下文可以阻断元素的混合模式（[见此文第二部分说明](https://www.zhangxinxu.com/wordpress/2016/01/understand-css3-isolation-isolate/)）。
+* 层叠上下文可以嵌套，内部层叠上下文及其所有子元素均受制于外部的“层叠上下文”。
+* 每个层叠上下文和兄弟元素独立，也就是说，当进行层叠变化或渲染的时候，只需要
+考虑后代元素。
+* 每个层叠上下文是自成体系的，当元素发生层叠的时候，整个元素被认为是在父层叠
+上下文的层叠顺序中。
+
+### **层叠上下文创建条件**： 满足以下任一条件即可
+* 文档根元素（html）
+* position: fixed | sticky  
+* z-index 值不为 "auto"的 绝对 | 相对定位， 
+* z-index 值不为 "auto"的 flex | grid  
+* opacity值 < 1  
+* transform 值不为 none  
+* filter值不为 none
+* perspective值不为 none 的元素，
+* isolation 值为 isolate 的元素，  
+* mix-blend-mode 值不为 normal
+* 在 will-change 中指定了任意 CSS 属性，即便你没有直接指定这些属性的值  
+* -webkit-overflow-scrolling 值为"touch"的元素  
 
 层叠上下文的层级是 HTML 元素层级的一个层级，因为只有某些元素才会创建层叠上下文。可以这样说，没有创建自己的层叠上下文的元素 将被父层叠上下文包含。
-
-满足以下任一条件即可形成：
->
-    z-index 值不为 "auto"的 绝对/相对定位， 
-    position: fixed | sticky  
-    z-index 值不为 "auto"的 flex 项目 (flex item)，即：父元素display: flex|inline-flex， 
-    opacity值 < 1  
-    transform 属性值不为 none  
-    filter值不为 none
-    perspective值不为“none”的元素，
-    isolation 属性被设置为 "isolate"的元素，  
-    mix-blend-mode 属性值不为 normal
-    在 will-change 中指定了任意 CSS 属性，即便你没有直接指定这些属性的值  
-    -webkit-overflow-scrolling 属性被设置 "touch"的元素  
 
 在层叠上下文中，其子元素同样也按照上面解释的规则进行层叠。 
 <b>其子元素的 z-index 值只在父级层叠上下文中有意义</b>。子级层叠上下文被自动视为父级层叠上下文的一个独立单元。(每个层叠上下文完全独立于它的兄弟元素：当处理层叠时只考虑子元素。)
 
 
 ### 层叠顺序-优先级
-* 不使用z-index的情况，也是默认的情况，即所有元素都不用z-index时，堆叠顺序如下：（低-->高)
+* 不使用z-index的情况，默认的情况，即所有元素都不用z-index时，堆叠顺序如下：（低-->高)
 >
 
     根元素（即HTML元素）的background和borders <
-    正常流中非定位后代元素(没定位层级较有定位的低) <   
+    正常流中非定位后代元素(没定位层级比有定位的低) <   
         总是先于定位元素渲染，所以表现就是在定位元素下方，跟在HTML中出现的顺序无关。 
     浮动元素(浮动元素之间是不会出现z-index重叠的) <
-    有定位后代元素(有定位 越靠后出现 层级越高)  
+    有定位后代元素(越靠后出现 层级越高)  
         没有指定z-index值的定位元素，他们的堆叠顺序取决于在HTML文档中的顺序，越靠后出现的元素，位置越高，和定位属性无关。  
+
 
 ![不使用z-index](img/zIndex1.png)
 分析：
@@ -1610,43 +1647,79 @@ https://my.oschina.net/i33/blog/126960
 
 ## <a name="@规则">@规则</a>[![bakTop](./img/backward.png)](#top)
 
-@charset 
+* @charset 
 >
     定义样式表中使用的字符编码。它必须写在样式表的最开头且前面不可有别的字符。
 
     @charset "UTF-8";
 
-@font-face
+* @font-face
 >
     给网页指定文本字体。
     @font-face {
-      font-family: 'NeuesBauenDemo';
-      src: url('../fonts/neues_bauen_demo-webfont.eot') format('embedded-opentype'),
-           url('../fonts/neues_bauen_demo-webfont.woff') format('woff'),
-           url('../fonts/neues_bauen_demo-webfont.ttf') format('truetype'),
-           url('../fonts/neues_bauen_demo-webfont.svg#NeuesBauenDemo') format('svg');
-      font-weight: normal;
-      font-style: normal;
-    }
+      font-family: ICON;
+      src:url('icon.eot') format('eot');
+      src:url('icon.eot?#iefix') format('embedded-opentype'),
+          url('icon.woff2') format("woff2")
+          url('icon.woff') format("woff"),
+          url('icon.ttf') format("typetrue"),
+          url('icon.svg#icon') format('svg');
+      font-weight:normal;
+      font-style:normal;
+    } 
 
     .body {
-        font-family: 'NeuesBauenDemo'
+        font-family: 'ICON'
     }
 
+多个字体的作用
+>
+    • woff(web open font format)，是专门为 Web 开发而设计的字体格式，显然是优先使用的字体格式，其字体尺寸更小，加载更快。Android 4.4 开始全面支持。
+    • woff2 是比 woff 尺寸更小的字体，小得非常明显。因此，Web 开发第一首选字体就
+    是 woff2，只是此字体目前仅 Chrome 和 Firefox 支持得比较好。
+    • svg 格式是为了兼容 iOS 4.1 及其之前的版本，考虑到现如今 iOS 的版本数已经翻了一
+    番，所以 svg 格式的兼容代码大可舍弃。
+    • eot 格式是 IE 私有的。目前所有版本的 IE 浏览器都支持 eot 格式，。只是，IE6～IE8 仅支持 eot 这一种字体格式。
+    • ttf 格式作为系统安装字体比较多，Web 开发也能用，就是尺寸大了点儿，优点在于
+    老版本 Android 也支持。
 
-@import
+    综合上面的分析，我们可以得到如下的结论。
+    （1）svg 格式果断舍弃。
+    （2）如果无须兼容 IE8 浏览器，eot 格式果断舍弃。
+    （3）如果无须兼容 Android 4.3 之前版本手机，ttf 格式果断舍弃。
+
+\#iefix作用
+>
+    IE9 之前的版本解析有一个严重的问题，当 src
+    属性包含多个 url()时，会把长长的字符当作一个地址解析而返回 404 错误。因此把 eot
+    格式放在第一位，然后在字体文件 url 地址后加上问号，这样 IE9 之前的版本会把问号之后
+    的内容当作 url 的参数。
+
+format()作用
+>
+    让浏览器提前知道字体的格式，以决定是否需要加载这个字体，而不是加载完了之后再自动判断
+    
+    浏览器对文件格式的判断不是基于后缀名，下面这种写法只会加载 ttf 这一种格式字体，
+    因为浏览器提前知道了文件格式是自己无法识别的：
+    @font-face {
+      font-family: ICON;
+      src: url('icon.eot') format("embedded-opentype"),
+      url('icon.ttf');
+    } 
+
+* @import
 >
     导入外部CSS样式表文件
     @import url('a.css')
 
-@media
+* @media
 >
     定义在一个或多个设备类型、具体特点和环境的媒体查询来应用样式。
 
     @media screen and (min-width: 900px) {
     }
 
-@keyframs
+* @keyframs
 >
     通过定义动画序列中的关键帧来控制CSS动画不同步骤的状态。
     @keyframes name{
@@ -1654,7 +1727,7 @@ https://my.oschina.net/i33/blog/126960
         to{}
     }
 
-@supports
+* @supports
 >
     检测规则组的规则是否生效。规则与@media类似
     @supports (display: flex) {
@@ -1663,11 +1736,11 @@ https://my.oschina.net/i33/blog/126960
         }
     }
 
-@viewport
+* @viewport
 >
     设置视口（viewport）的特性。
 
-@page
+* @page
 >
     用于在打印文档时修改某些CSS属性。@page规则只能修改margin、orphans、widow 和 page breaks of the document，对其他属性的修改是无效的。
     @page {
