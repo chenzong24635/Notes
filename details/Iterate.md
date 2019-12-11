@@ -16,16 +16,10 @@
 > 
     * 
     let arr = ['a', 'b'];
-    let obj = [
-      {
-        'a1': '1',
-        'b1': '1'
-      },
-      {
-        'a2': '2',
-        'b2': '2'
-      }
-    ];
+    let obj = {
+      'a': 'a1',
+      'b': 'b1'
+    }
 
 ## <a name="for">for</a>
 `能被break, continue,  return（函数中）中断`  
@@ -60,9 +54,53 @@
       console.log('item:', item);
     }
 
+## <a name="for await of">for await of-- 异步迭代器</a>
+for await (let item of arr) {}
+
+for await of可以用来遍历具有Symbol.asyncIterator方法的数据结构，也就是异步迭代器，且会等待前一个成员的状态改变后才会遍历到下一个成员，相当于async函数内部的await。
+
+>
+    function Gen (time) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+          resolve(time)
+        }, time)
+      })
+    }
+
+    // for of遍历
+    async function test () {
+      let arr = [Gen(2000), Gen(100), Gen(3000)]
+      for (let item of arr) {
+        console.log(Date.now(), item.then(console.log))
+      }
+    }
+    test()
+    //输出
+      1576030907652 Promise {<pending>}
+      1576030907652 Promise {<pending>}
+      1576030907652 Promise {<pending>}
+      Promise {<resolved>: undefined}
+      100
+      2000
+      3000
+
+    // for await of遍历
+    async function test () {
+      let arr = [Gen(2000), Gen(100), Gen(3000)]
+      for await (let item of arr) {
+        console.log(Date.now(), item)
+      }
+    }
+    test()
+    //输出
+      1575536194608 2000
+      1575536194608 100
+      1575536195608 3000
+
 ##  <a name="forEach">forEach()</a>
-遍历数组 ,无法遍历对象, IE不支持  ,跳过空位
-`没有返回值 undefined` , `不改变原数组 、不能中断`
+`遍历数组 ,无法遍历对象,跳过空位`  
+`没有返回值， undefined` , `不改变原数组 、不能中断`
 
 forEach(callback,thisArg)
 >callback(item,index,array)：生成新数组元素的函数，使用三个参数：  
@@ -81,7 +119,7 @@ forEach(callback,thisArg)
     });
 
 ##  <a name="map()">map()</a>
-遍历数组，返回修改后的新数组，`不改变原数组，不能中断`
+`遍历数组，返回修改后的新数组，不改变原数组，不能中断`
 
 map(callback,thisArg)
 >callback(item,index,array)：生成新数组元素的函数，使用三个参数：  
@@ -203,14 +241,12 @@ next().done 用于指示迭代器是否完成：在每次迭代时进行更新�
 遍历对象，返回一个数组，包括对象自身的（不含继承的）所有可枚举属性（不含 Symbol 属性）的键值对数组、键名、键值。 
 
 > 
-    let entries = Object.entries(obj);
-    console.log('Object.entries()-->', entries)
+    Object.entries(obj); // [['a','a1'],['b','b1']]
 
-    let keys = Object.keys(obj);
-    console.log('Object.keys()-->', keys)
+    Object.keys(obj);// ['a','b']
 
-    let values = Object.values(obj);
-    console.log('Object.values()-->', values)
+    Object.values(obj); // ['a1','b1']
+    Object.values(arr); // ['a','b']
 
 
 * Object.fromEntries()

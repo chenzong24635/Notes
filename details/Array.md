@@ -190,15 +190,18 @@ thisArg可选： 执行回调时用作this 的对象。
 * find() 找到第一个满足检测函数条件的元素，并返回该元素，没找到则返回 undefined。
 >
 
-    let arr = [1, 2, 3, 4, 5];
+    let arr = [1, 2, 3, 4, 5,NaN];
     console.log(arr.find(x => x > 3));    // 输出  4
 
+    arr.find(x => Number.isNaN(x)) // NaN
 
 * findIndex() 找到第一个满足检测函数条件的元素，并返回该元素索引。找不到返回-1。
 >
 
-    let arr = [6, 7, 8, 9, 10];
+    let arr = [6, 7, 8, 9, 10,NaN];
     console.log(arr.findIndex(x => x > 8));    // 输出  3
+
+    arr.findIndex(x => Object.is(NaN, x)) // 5
 
 ### indexOf()、lastIndexOf()
 indexOf(searchElement[, fromIndex = 0])  
@@ -207,7 +210,7 @@ lastIndexOf(searchElement[, fromIndex = arr.length - 1])
 searchElement： 查找的元素 （全等查找===）
 fromIndex：表示查找的起始位置。
 
-* indexOf() 查找元素并返回第一个满足的元素索引值，找不到返回-1。  
+#### indexOf() 查找元素并返回第一个满足的元素索引值，找不到返回-1。  
 
 >
 
@@ -215,9 +218,16 @@ fromIndex：表示查找的起始位置。
     console.log(arr.indexOf(3));    // 输出 2
     console.log(arr.indexOf(6));    // 输出 -1
     console.log(arr.indexOf(2, 2));    // 输出 -1
-   
 
-* lastIndexOf() 从后向前查找元素并返回元素索引值，找不到返回 -1。
+**缺点**
+
+* 一是不够语义化，要先找到参数值的第一个出现位置，所以要去比较是否不等于-1，表达起来不够直观。
+
+* 二是，它内部使用严格相等运算符（===）进行判断，不能检测NaN
+>
+    [NaN].indexOf(NaN)// -1
+
+#### lastIndexOf() 从后向前查找元素并返回元素索引值，找不到返回 -1。
 >
     let arr = ['a', 'b', 'c', 'd'];
     console.log(arr.lastIndexOf('b'));    // 输出 1
@@ -236,8 +246,9 @@ fromIndex：表示查找的起始位置，
 对象数组不能使用includes方法来检测
 >
 
-    let arr = [1, 2, 3];
+    let arr = [1, 2, 3,NaN];
     console.log(arr.includes(2));    // 输出 true
+    console.log(arr.includes(NaN));    // 输出 true
     console.log(arr.includes(4));    // 输出 false
 
 ## <a name="join()">join()数组转字符串 -- 不改变原数组</a>

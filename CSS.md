@@ -5,7 +5,7 @@
     链接
   </summary>
   
-[MDN-CSS 参考](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Reference)
+[MDN-CSS](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Reference)
 
 [You-Dont-Need-JavaScript:用CSS实现效果而不需要JS](https://github.com/you-dont-need/You-Dont-Need-JavaScript)
 
@@ -329,7 +329,7 @@ E[attr|=val]   //E中带有attr属性 且值具有 val 或以 val- 开始的值�
 >
     E::before{content:"";......}
     E::after{content:"";......}
-    E::first-letter     //选中第一个单词、字
+    E::first-letter     //选中第一个单词、字(常见的标点符号、各类括号和引号在::first-letter中全部都是“辅助类”字符，)
     E::first-line     //选中第一行的伪元素
     E::selection       //选中的区域 
     E::placeholder  //设置placeholder样式
@@ -1916,6 +1916,8 @@ format()作用
 
 ## <a name="text-align-last">text-align-last文本中最后一行在被强制换行之前的对齐规则</a>[![bakTop](./img/backward.png)](#top)
 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/text-align-last)
+
+[兼容性](https://caniuse.com/#feat=css-grid&search=text-align-last)
 
 text-align-last: justify;  
 ![text-align-last](./img/text-align-last.jpg)

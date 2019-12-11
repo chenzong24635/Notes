@@ -99,3 +99,40 @@ Object.assign(obj1, obj2,...)
         },
         
       }
+
+主要是为了解决Object.assign()无法正确拷贝get属性和set属性的问题
+>
+
+    const source = {
+      set foo (value) {
+        console.log(value)
+      },
+      get bar () {
+        return '浪里行舟'
+      }
+    }
+
+    const target1 = {}
+    Object.assign(target1, source)
+    console.log(Object.getOwnPropertyDescriptor(target1, 'foo'))
+    //
+      {
+        configurable: true
+        enumerable: true
+        value: undefined
+        writable: true
+      }
+
+    值为undefined，这是因为Object.assign方法总是拷贝一个属性的值，而不会拷贝它背后的赋值方法或取值方法。
+
+    const target2 = {}
+    Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source))
+    console.log(Object.getOwnPropertyDescriptor(target2, 'foo'))
+    //
+      {
+        configurable: true
+        enumerable: true
+        get: undefined
+        set: ƒ foo(value)
+      }
+      

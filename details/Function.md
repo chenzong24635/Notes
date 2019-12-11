@@ -38,3 +38,5 @@
     1 > function() {}();   
 
 #  <a name=""></a>
+Function.prototype.toString()
+之前执行这个方法时，得到的字符串是去空白符号的。而现在，得到的字符串呈现出原本源码的样子：

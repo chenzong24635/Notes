@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-[MDN-HTM L参考](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Reference)
+[MDN-HTML文档](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Reference)
 
 <details open>
   <summary>目录</summary>
@@ -30,16 +30,15 @@
 * <details open>
     <summary><a href="#meta标签属性">meta标签属性</a></summary>
 
-    * <a href="必要属性">必要属性</a>
-    * <a href="可选属性">可选属性</a>
-    * <a href="声明文档使用的字符编码">声明文档使用的字符编码</a>
-    * <a href="关键词">关键词 name="keywords"</a>
-    * <a href="页面描述">页面描述 name="description"</a>
-    * <a href="搜索引擎索引方式">搜索引擎索引方式 name="robots"</a>
-    * <a href="页面重定向和刷新">页面重定向和刷新 http-equiv="refresh"</a>
-    * <a href="viewport">viewport</a>
-    * <a href="其他">其他</a>
-    * <a href=""></a>
+    * 必要属性
+    * 可选属性
+    * 声明文档使用的字符编码
+    * 关键词 name="keywords"
+    * 页面描述 name="description"
+    * 搜索引擎索引方式 name="robots"
+    * 页面重定向和刷新 http-equiv="refresh"
+    * viewport
+    * 其他
       
   </details> 
 * <a href="#IE hack">IE hack</a>
@@ -612,8 +611,8 @@ js脚本应该放在底部，原因在于js线程与GUI渲染线程是互斥的�
 解决方法
 >
     html,body{min-width: 1200px;} //(具体多少按实际情况
-    或  
-	<meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=0.3, maximum-scale=1.0, minimum-scale=0.3">
+    或
+	  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=0.3, maximum-scale=1.0, minimum-scale=0.3">
 
 
 ## <a name=""></a>[![bakTop](./img/backward.png)](#top)

@@ -2,10 +2,10 @@
 
 [Grid-二维布局](/details/Grid.md)
 
-[参考](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
-[参考](https://yoksel.github.io/flex-cheatsheet/)
-[参考](http://caibaojian.com/flexbox-guide.html)
-[参考](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
+[Flex 布局教程：语法篇](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
+[Flexbox](https://yoksel.github.io/flex-cheatsheet/)
+[Flexbox布局详解](http://caibaojian.com/flexbox-guide.html)
+[A Complete Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
 
 # <a href="#"></a>
 <a name=""></a>
@@ -71,7 +71,7 @@ display: flex | inline-flex; (适用于父类容器元素上)
   >space-between：与交叉轴两端对齐，轴线之间的间隔平均分布。  
   >space-around：每根轴线两侧的间隔都相等。所以，轴线之间的间隔>比轴线与边框的间隔大一倍。  
 
-  ![align-content](/img/flex/align-content.svg)
+  ![align-content](/img/flex/align-content.jpg)
 
 # 项目属性
 
@@ -129,7 +129,7 @@ display: flex | inline-flex; (适用于父类容器元素上)
   >会覆盖原本设置的width
   >
 
-      上面css代码.box-item添加flex-basis: 150px;
+      上面flex-grow的css代码.box-item添加flex-basis: 150px;
       则：项目的width:150px;剩余150px;
       根据扩展比列分配
       first-child分配到2/3即100px,宽为250px

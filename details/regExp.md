@@ -33,7 +33,10 @@
 let re = /abc/gi;
 
 构造函数形式：
-let re = new RegExp("abc",gi);
+let re = new RegExp("abc",'gi');    
+let re = new RegExp(/abc/,'gi');  
+let re = new RegExp(/abc/gi);  
+
 
 # <a name="字符">字符</a>
 | 字符| 描述| |
@@ -93,6 +96,25 @@ let re = new RegExp("abc",gi);
 | m (multiline)| 多行模式 : 更改^和$的含义，使它们分别在任意一行的行首和行尾匹配，而不仅仅在整个字符串的开头和结尾匹配。(在此模式下,$的精确含意是:匹配\n之前的位置以及字符串结束前的位置.)|
 | u (unicode)| 使用unicode码的模式进行匹配,用来正确处理大于\uFFFF的 Unicode 字符。会正确处理四个字节的 UTF-16 编码。|
 | y (sticky)| 执行“粘性”搜索,匹配从目标字符串的当前位置开始，可以使用y标志。 |
+
+**u修饰符**
+>
+    /𠮷{2}/.test('𠮷𠮷') // false
+    /𠮷{2}/u.test('𠮷𠮷') // true
+
+**y修饰符**  
+y修饰符的作用与g修饰符类似，也是全局匹配，后一次匹配都从上一次匹配成功的下一个位置开始。不同之处在于，g修饰符只要剩余位置中存在匹配就可，而y修饰符确保匹配必须从剩余的第一个位置开始，这也就是“粘连”的涵义。
+>
+    var s = 'aaa_aa_a';
+    var r1 = /a+/g;
+    var r2 = /a+/y;
+
+    r1.exec(s) // ["aaa"]
+    r2.exec(s) // ["aaa"]
+
+    r1.exec(s) // ["aa"]
+    r2.exec(s) // null
+
 
 `多行模式和单行模式没有任何关系.能同时使用`
 
@@ -359,6 +381,13 @@ ___
 
 ## 反向引用
 在正则本身里引用分组。但只能引用之前出现的分组，即反向引用
+
+如果要在正则表达式内部引用某个“具名组匹配”，可以使用\k<组名> 或者 数字引用（\1）；可以同时使用。
+>
+    const RE_TWICE = /^(?<word>[a-z]+)!\k<word>$/;
+    //const RE_TWICE = /^(?<word>[a-z]+)!\1$/;
+    RE_TWICE.test('abc!abc') // true
+    RE_TWICE.test('abc!ab') // false
 
 >
     比如要写一个正则支持匹配如下三种格式：

@@ -564,6 +564,7 @@ watch：深度监听
         deep: true //深度监听
       }
     }    
+
 # <a name="解决对象新增属性不能响应的问题">vm.$set() 解决对象新增属性不能响应的问题</a>[![bakTop](./img/backward.png)](#top)  
 受现代 JavaScript 的限制 ，Vue 无法检测到对象属性的添加或删除。
 
@@ -917,9 +918,11 @@ key是给每一个vnode的唯一id,可以依靠key,更准确, 更快的拿到old
 2. 更快  
 利用key的唯一性生成map对象来获取对应节点，比遍历方式更快。 
 
-* 为什么不能用 index 作为 key
-[参考](https://www.zhihu.com/question/61064119/answer/766607894)
+为了标识独有dom，key值一般我们取类似id这种唯一且 不变的变量，如果仅为了区分dom，切元素不会频繁更新（增删改）则可使用index索引
+
+* 为什么某些情况(增删改)不能用 index 作为 key  
 操作数据更新时有bug，如删除某项时，删除了另一项
+[参考](https://www.zhihu.com/question/61064119/answer/766607894)
 
 # <a name="虚拟DOM">虚拟DOM</a>[![bakTop](./img/backward.png)](#top)  
 [参考](https://www.jianshu.com/p/af0b398602bc?tdsourcetag=s_pctim_aiomsg)

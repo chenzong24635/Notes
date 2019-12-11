@@ -19,7 +19,7 @@
 </details>
 
 
-<details >
+<details open>
   <summary>markdown 语法</summary>
 
   [Markdown 语法说明](https://www.appinn.com/markdown/)
@@ -82,11 +82,20 @@
     </details>
 
 * 文章中添加代码
+
+1. 使用反引号 :
 >
-    1. 使用反引号 :`<a>我是代码</a>`
-    2. 使用制表符或者至少4个空格进行缩进的行:  
+    `let a = 0`
+2. 使用制表符或者至少4个空格进行缩进的行: 
+>
+
     >
-        <a>我是代码</a>
+        let a = 0
+3.  
+  >
+      ```
+      let a = 0
+      ```
 
 * 生成多行相同代码
 div.item*3>{$}
@@ -257,7 +266,7 @@ div.item*3>{$}
   * [Boolean](/details/Boolean.md)
   * [Number](/details/Number.md)
   * [String](/details/String.md)
-  * [Symbol??](/details/Symbol.md)
+  * [Symbol](/details/Symbol.md)
   * [Object](/details/Object.md)
     * [Array](/details/Array.md)
     * [Math](/details/Math.md)
@@ -278,15 +287,15 @@ div.item*3>{$}
 
 ## [Vue](Vue.md)
 ## [Vuex](/details/vuex.md)
-## [小程序??](Applet.md)
-## [WebSocket??](/details/WebSocket.md)
+## [小程序](Applet.md)
+## [WebSocket](/details/WebSocket.md)
 
 
 ## [Git](Git.md)
 ## [Node](Node.md)
 ## [console.log](/details/consolelog.md)
 
-## [其他](others.md)
+## [其他-待整理](others.md)
 
 ## 常用
 <details open>
@@ -328,6 +337,7 @@ div.item*3>{$}
   * <a href="#数组无序排列">数组无序排列</a>
   * <a href="#数组扁平化">数组扁平化:n维数组展开成一维数组</a>
   * <a href="#数组去重">数组去重</a>
+  * <a href="#数组扁平化+去重">数组扁平化+去重</a>
   * <a href="#数组排序">数组排序</a>
 
   * <a href="#unicode转中文">unicode转中文</a>
@@ -385,64 +395,69 @@ div.item*3>{$}
       return false
     }
 ## <a name="保留小数点后两位-不足则补零">保留小数点后两位-不足则补零</a>
->
-    function returnFloat(value) {
-      var value = Math.round(parseFloat(value) * 100) / 100;
-      var xsd = value.toString().split('.');
-      if (xsd.length == 1) {
-        value = value.toString() + '.00';
-        return value;
-      }
-      if (xsd.length > 1) {
-        if (xsd[1].length < 2) {
-          value = value.toString() + '0';
-        }
-        return value;
-      }
+```
+function returnFloat(value) {
+  var value = Math.round(parseFloat(value) * 100) / 100;
+  var xsd = value.toString().split('.');
+  if (xsd.length == 1) {
+    value = value.toString() + '.00';
+    return value;
+  }
+  if (xsd.length > 1) {
+    if (xsd[1].length < 2) {
+      value = value.toString() + '0';
     }
+    return value;
+  }
+}
+```
+
 ## <a name="浮点型+-*/">浮点型+-*/</a>
 * 加
->
-    function accAdd(arg1, arg2) {
-      let r1, r2, m;
-      try { r1 = arg1.toString().split(".")[1].length } catch (e) { r1 = 0 }
-      try { r2 = arg2.toString().split(".")[1].length } catch (e) { r2 = 0 }
-      m = Math.pow(10, Math.max(r1, r2))
-      return (arg1 * m + arg2 * m) / m
-    }
+```
+function accAdd(arg1, arg2) {
+  let r1, r2, m;
+  try { r1 = arg1.toString().split(".")[1].length } catch (e) { r1 = 0 }
+  try { r2 = arg2.toString().split(".")[1].length } catch (e) { r2 = 0 }
+  m = Math.pow(10, Math.max(r1, r2))
+  return (arg1 * m + arg2 * m) / m
+}
+```
 
 * 减
->
-    function accDec(arg1, arg2) {
-      let r1, r2, m, n;
-      try { r1 = arg1.toString().split(".")[1].length } catch (e) { r1 = 0 }
-      try { r2 = arg2.toString().split(".")[1].length } catch (e) { r2 = 0 }
-      m = Math.pow(10, Math.max(r1, r2));
-      //动态控制精度长度
-      n = (r1 >= r2) ? r1 : r2;
-      return ((arg1 * m - arg2 * m) / m).toFixed(n);
-    }
+```    
+function accDec(arg1, arg2) {
+  let r1, r2, m, n;
+  try { r1 = arg1.toString().split(".")[1].length } catch (e) { r1 = 0 }
+  try { r2 = arg2.toString().split(".")[1].length } catch (e) { r2 = 0 }
+  m = Math.pow(10, Math.max(r1, r2));
+  //动态控制精度长度
+  n = (r1 >= r2) ? r1 : r2;
+  return ((arg1 * m - arg2 * m) / m).toFixed(n);
+}
+```
     
 * 乘
->
-    function accMul(arg1, arg2) {
-      let m = 0, s1 = arg1.toString(), s2 = arg2.toString();
-      try { m += s1.split(".")[1].length } catch (e) { }
-      try { m += s2.split(".")[1].length } catch (e) { }
-      return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m)
-    }
+```
+function accMul(arg1, arg2) {
+  let m = 0, s1 = arg1.toString(), s2 = arg2.toString();
+  try { m += s1.split(".")[1].length } catch (e) { }
+  try { m += s2.split(".")[1].length } catch (e) { }
+  return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m)
+}
+```
 
 * 除
->
-    function accDiv(arg1, arg2) {
-      let t1 = 0, t2 = 0, r1, r2;
-      try { t1 = arg1.toString().split(".")[1].length } catch (e) { }
-      try { t2 = arg2.toString().split(".")[1].length } catch (e) { }
-      r1 = Number(arg1.toString().replace(".", ""))
-      r2 = Number(arg2.toString().replace(".", ""))
-      return (r1 / r2) * Math.pow(10, t2 - t1);
-    }
-
+```
+function accDiv(arg1, arg2) {
+  let t1 = 0, t2 = 0, r1, r2;
+  try { t1 = arg1.toString().split(".")[1].length } catch (e) { }
+  try { t2 = arg2.toString().split(".")[1].length } catch (e) { }
+  r1 = Number(arg1.toString().replace(".", ""))
+  r2 = Number(arg2.toString().replace(".", ""))
+  return (r1 / r2) * Math.pow(10, t2 - t1);
+}
+```
 
 
 ## <a name="时间戳、日期 的转换">时间戳、日期 的转换</a>
@@ -453,15 +468,17 @@ div.item*3>{$}
 
 * navigator为Window对象的一个属性，指向了一个包含浏览器相关信息的对象。
 常用到的属性：
-1. navigator.appVersion 浏览器的平台和版本信息
-2. navigator.appName 浏览器的名称 
-3. navigator.language 浏览器使用的语言 
-4. navigator.platform 浏览器操作系统平台 
-5. navigator.userAgent 浏览器的user-agent信息,客户机发送服务器的user-agent 头部的值
+* navigator.appVersion 浏览器的平台和版本信息
+* navigator.appName 浏览器的名称 
+* navigator.language 浏览器使用的语言 
+* navigator.platform 浏览器操作系统平台 
+* navigator.userAgent 浏览器的user-agent信息,客户机发送服务器的user-agent 头部的值
 
+----
+浏览器判断：
 
 * PC端、手机端、iPad
->
+```
     if (/Android|Windows Phone|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
       console.log("手机端");
     } else if (/iPad/i.test(navigator.userAgent)) {
@@ -469,17 +486,20 @@ div.item*3>{$}
     } else {
       console.log("PC")
     }
+```
 
 * 微信内置浏览器
->
+```
     if (navigator.userAgent.toLowerCase().match(/MicroMessenger/i) === "micromessenger") {
       console.log("微信")
     } else { 
       console.log("非微信")
     } 
+```
 
 * IE 、火狐、其他
->
+```
+
     if (navigator.userAgent.toLowerCase().indexOf("firefox") >=0) { // 若-1为其他，否则火狐
       console.log("firefox");
     } else if(window.addEventListener){
@@ -487,22 +507,23 @@ div.item*3>{$}
     }else if(window.attachEvent){
       console.log("ie");
     }
+```
 
 * Android、IOS
->
+```
     if(/android/ig.test(navigator.userAgent)){
       console.log("Android");
     } else if(/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)){
       console.log("iOS");
     }
 
-var obj = {
-    userAgent: navigator.userAgent.toLowerCase()
-    isAndroid: Boolean(navigator.userAgent.match(/android/ig)),
-    isIphone: Boolean(navigator.userAgent.match(/(iPhone|iPad|iPod|iOS)/ig)),
-    isWeixin: Boolean(navigator.userAgent.match(/MicroMessenger/ig)),
-}
-
+    var obj = {
+        userAgent: navigator.userAgent.toLowerCase()
+        isAndroid: Boolean(navigator.userAgent.match(/android/ig)),
+        isIphone: Boolean(navigator.userAgent.match(/(iPhone|iPad|iPod|iOS)/ig)),
+        isWeixin: Boolean(navigator.userAgent.match(/MicroMessenger/ig)),
+    }
+```
 ## <a name="页面url属性">页面url属性</a>
 new URL('http://www.aaa.com/bbb.aspx?name=1')
 
@@ -532,11 +553,12 @@ new URL('http://www.aaa.com/bbb.aspx?name=1')
 * origin (只读属性，返回具有URL来源的Unicode序列化USVString。Origin的结构是由传入的URL类型决定的，对于http或https 的链接，得到的Origin将会为 协议（http/https）+ (://) + 域名 + (:端口)，一般情况下，默认端口将会被忽略。对于BLOB 链接，Origin返回的则是BLOB：后面的部分)
 
 * userName和password属性也是可写属性，它能提取域名前的用户名和密码部分的内容
-  >
-      url = new URL('https://username1:password1@www.grapecity.com.cn');
+  ```
+  url = new URL('https://username1:password1@www.grapecity.com.cn');
 
-      console.log(url.username,url.password);
-      //username1 password1
+  console.log(url.username,url.password);
+  //username1 password1
+  ```
 
 * pathname (URL的第一个斜杠(/) 后面除参数外的部分)
 
@@ -556,19 +578,20 @@ search属性只为我们获取了整个参数字符串，如果有把字符串�
 ### 获取 url 中的参数值
 ### new URL
 new URL('https://www.aaa.com')
->
-    hash: ""
-    host: "www.aaa.com"
-    hostname: "www.aaa.com"
-    href: "https://www.aaa.com/"
-    origin: "https://www.aaa.com"
-    password: ""
-    pathname: "/"
-    port: ""
-    protocol: "https:"
-    search: ""
-    searchParams: URLSearchParams {}
-    username: ""
+```
+hash: ""
+host: "www.aaa.com"
+hostname: "www.aaa.com"
+href: "https://www.aaa.com/"
+origin: "https://www.aaa.com"
+password: ""
+pathname: "/"
+port: ""
+protocol: "https:"
+search: ""
+searchParams: URLSearchParams {}
+username: ""
+```
 
 #### js 获取 url 中的参数值
 >
@@ -1472,7 +1495,8 @@ var arr = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
     }
     console.log(arr2);
 
-## 数组扁平化+去重: Array.from(new Set(arr.flat(Infinity)))
+## <a name="数组扁平化+去重"> 数组扁平化+去重</a>
+` Array.from(new Set(arr.flat(Infinity)))`
 
 ## <a name="数组排序"> 数组排序</a>
 [排序](/details/sort.md)
