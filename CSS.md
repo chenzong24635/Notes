@@ -1092,7 +1092,6 @@ word-break
 >双值语法: 水平horizontal | 垂直vertical  
 >>background-repeat: repeat space;
 
-
 * background-attachment  背景图像是否固定或者随着页面的其余部分滚动  
 >值：scroll(默认值) | fixed
 >>scroll: 默认值。背景图像会随着页面其余部分的滚动而移动    
@@ -1441,7 +1440,7 @@ RWD 和 AWD 两者都是为了适配各种不同的移动设备，致力于提�
 
 vw、vh、vmin、vmax 的含义
 
-    vw、vh、vmin、vmax 是一种视窗单位，也是相对单位。它相对的不是父节点或者页面的根节点。而是由视窗（Viewport）大小来决定的，单位 1. 代表类似于 1%。
+    vw、vh、vmin、vmax 是一种视窗单位，也是相对单位。它相对的不是父节点或者��面的根节点。而是由视窗（Viewport）大小来决定的，单位 1. 代表类似于 1%。
 
     视窗(Viewport)是你的浏览器实际显示内容的区域—，换句话说是你的不包括工具栏和按钮的网页浏览器。
 
@@ -1948,14 +1947,77 @@ text-align-last: initial;
 text-align-last: unset;  
 
 
-## <a name="writing-mode">writing-mode调整文本排版方向</a>[![bakTop](./img/backward.png)](#top)
-[MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/writing-mode)
 
+
+## <a name="writing-mode">writing-mode、direction、unicode-bidi</a>[![bakTop](./img/backward.png)](#top)
+
+### [writing-mode](https://developer.mozilla.org/zh-CN/docs/Web/CSS/writing-mode)
+
+调整文本排版方向,将页面默认的水平流改成了垂直流,实现文字竖向呈现的
+
+* W3c:
 >writing-mode:horizontal-tb;//默认：水平方向，从上到下
+
+>writing-mode:  vertical-lr;//垂直方向，从左向右
 
 >writing-mode: vertical-rl;//垂直方向，从右向左
 
->writing-mode:  vertical-lr;//垂直方向，从左向右
+
+* IE: writing-mode:lr-tb | tb-lr | tb-rl ;
+
+
+
+#### 实现元素垂直居中
+>
+    text-align:center; /* 兼容 IE下替换元素无法垂直居中 */
+    writing-mode: tb-rl; /* 兼容IE */
+    -webkit-writing-mode: vertical-rl;
+    writing-mode: vertical-rl;
+
+[writing-mode与图片margin:auto垂直居中](https://demo.cssworld.cn/12/2-2.php)--张鑫旭    
+[writing-mode与普通块状元素margin:auto垂直居中](https://demo.cssworld.cn/12/2-3.php)--张鑫旭    
+
+IE下图片这类替换元素无法垂直居中（[只需添加text-align:center即可垂直居中](https://demo.cssworld.cn/12/2-4.php)），普通的 block 元素都是可以
+
+
+#### 使用 text-indent 实现文字下沉效果
+[下沉实例](https://demo.cssworld.cn/12/2-5.php)
+>
+    // 核心代码
+    .btn {
+    }
+    .btn:active {
+      text-indent: 2px;
+    }
+    .verticle-mode {
+    writing-mode: tb-rl;
+    writing-mode: vertical-rl;
+    }
+    <a href="javascript:" class="btn verticle-mode">领</a>
+
+### [direction](https://developer.mozilla.org/zh-CN/docs/Web/CSS/direction)
+设置文本、表列水平溢出的方向  
+direction 属性似乎只能改变图片或者按钮的呈现顺序，但对纯字符内容（尤其中文）好像并没有什么效果,可使用unicode-bidi属性
+
+
+direction: rtl | ltr  
+>ltr(默认值) 表示 left-to-right，就是从左往右的意思  
+>rtl表示 right-to-left，就是从右往左的意思  
+
+也可以写在标签上： dir="ltr"
+>`<p dir="ltr"></p>`
+
+### [unicode-bidi](https://developer.mozilla.org/zh-CN/docs/Web/CSS/unicode-bidi)
+配合direction 属性，决定如何处理文档中的双书写方向文本  
+
+>normal  
+>embed  
+>isolate  
+>bidi-override  
+>isolate-override  
+>plaintext  
+
+[unicode-bidi:embed和unicode-bidi:normal对比实例](https://demo.cssworld.cn/12/1-4.php)--张鑫旭
 
 ## <a name="改变input placeholder颜色">改变input placeholder颜色</a>[![bakTop](./img/backward.png)](#top)
 >
@@ -1965,7 +2027,7 @@ text-align-last: unset;
     :-ms-input-placeholder { color: ; }/*Internet Explorer 10-11 */
 
 ## <a name="selection">selection 改变选中内容的字体、背景颜色</a>[![bakTop](./img/backward.png)](#top)
->
+```css
     ::selection { 
         background: #fff; 
         color: #333; 
@@ -1978,6 +2040,7 @@ text-align-last: unset;
         background: #fff; 
         color: #333; 
     } 
+```
 
 ## <a name="user-select">user-select 文本是否可选中</a>[![bakTop](./img/backward.png)](#top)
 user-select:none  
@@ -2008,7 +2071,7 @@ user-select:none
 
 ## <a name="为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"[![bakTop](./img/backward.png)](#top)
 
->
+```css
     img {
       display: block;
       font-family: sans-serif;
@@ -2031,21 +2094,21 @@ user-select:none
       display: block;
       font-size: 12px;
     }
-    
+```
 
 ## <a name="pointer-events">pointer-events 使用指针事件來控制鼠标事件</a>[![bakTop](./img/backward.png)](#top)
 
 例如：要禁用按钮上的默认指针事件
->
+```css
     .button-disabled {
       opacity: .5;
       pointer-events: none
     }
-
+```
 
 ## <a name="透明方格的绘制">透明方格的绘制</a>[![bakTop](./img/backward.png)](#top)
 ![transparentSquare](./img/transparentSquare.png)
->
+```css
     .square {
       display: inline-block;
       padding: 300px;
@@ -2054,6 +2117,7 @@ user-select:none
       background-size: 16px 16px;
       background-position: 0 0, 8px 8px;
     }
+```
 
 ## <a name="移动端1px">移动端1px</a>[![bakTop](./img/backward.png)](#top)
 [参考](https://juejin.im/post/5d70a030f265da03a715f3fd)
@@ -2068,15 +2132,15 @@ user-select:none
 devicePixelRatio：设备物理像素和设备独立像素的比例   devicePixelRatio = 物理像素 / 独立像素。
 
 ### box-shadow
->
+```css
     .box-shadow-1px {
         box-shadow: inset 0px -1px 1px -1px #c8c7cc;
     }
-
     边框颜色变浅
+```
 
 ### 伪类 + transform
->
+```css
 
     .border-1px,
     .border-top-1px{
@@ -2112,9 +2176,10 @@ devicePixelRatio：设备物理像素和设备独立像素的比例   devicePixe
         transform: scale(.5);
         -webkit-transform: scale(.5);
     }
+```
 
 各种dpr兼容 
->
+```css
     .min-device-pixel-ratio(@scale2, @scale3) {
         @media screen and (min-device-pixel-ratio: 2), (-webkit-min-device-pixel-ratio: 2) {
             transform: @scale2;
@@ -2167,6 +2232,7 @@ devicePixelRatio：设备物理像素和设备独立像素的比例   devicePixe
             .min-device-pixel-ratio(scaleY(.5), scaleY(.33));
         }
     }
+```
 
 ## <a name="清除手机端a链接点击高亮">清除手机端a链接点击高亮[![bakTop](./img/backward.png)](#top)
 tap-highlight-color: rgba(0, 0, 0, 0);  
@@ -2183,16 +2249,16 @@ tap-highlight-color: rgba(0, 0, 0, 0);
     }
 
 ## <a name="三角形">三角形</a>[![bakTop](./img/backward.png)](#top)
->
+```css
     width:0; 
     height:0; 
     border-style: solid;
     border-width: 30px 10px;
-    border-color:  transparent transparent transparent ##f4f4f4;
-
+    border-color:  transparent transparent transparent #f4f4f4;
+```
 
 ## <a name="图片缩放">图片缩放matrix,transform+transition</a>[![bakTop](./img/backward.png)](#top)
->
+```css
     // 先放大1.1倍 ，再还原。
     .img{
       transform: matrix(1.1, 0, 0, 1.1, 0, 0);/* 等同于transfrom:scale(1.1,1.1) */
@@ -2203,9 +2269,8 @@ tap-highlight-color: rgba(0, 0, 0, 0);
       transform: matrix(1, 0, 0, 1, 0, 0); /* 等同于transfrom:scale(1,1)*/
       transition: all 7.0s ease 0.4s;  
     }
+```
 
-
-    
 ## <a name="clip-path">clip-path</a>[![bakTop](./img/backward.png)](#top)
 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/clip-path)
 创建一个只有元素的部分区域可以显示的剪切区域。区域内的部分显示，区域外的隐藏。剪切区域是被引用内嵌的URL定义的路径或者外部svg的路径，或者作为一个形状例如circle().。clip-path属性代替了现在已经弃用的剪切 clip属性。
@@ -2242,28 +2307,35 @@ tap-highlight-color: rgba(0, 0, 0, 0);
 [参考](https://www.w3cplus.com/css/css-tips-0904-1.html)
 
 ### 其他方法 绘制一个实心边框(border-style:solid)
->
-    outline:1em solid #000; //不占用盒模型空间
->    
-    box-shadow: 0 0 0 1em #000; //不占用盒模型空间
->    
-    {
-      padding: 1em;
-      background: linear-gradient(to right, #fff, #fff), #000;
-      background-clip: content-box, padding-box;
-    }
->
-    {
-        border: 1em solid transparent;
-        border-image: linear-gradient(to right, #000, #000) 10% round;
-    }    
+```css
+outline:1em solid #000; //不占用盒模型空间
+``` 
+
+```css
+box-shadow: 0 0 0 1em #000; //不占用盒模型空间
+```
+
+```css
+{
+  padding: 1em;
+  background: linear-gradient(to right, #fff, #fff), #000;
+  background-clip: content-box, padding-box;
+}
+```
+
+```css
+{
+  border: 1em solid transparent;
+  border-image: linear-gradient(to right, #000, #000) 10% round;
+}
+```
 
 > 伪元素
 
 
 ### 层叠边框
 ![层叠边框](/img/border.png)
->
+```css
     .div1{
       width: 300px;
       height: 100px;
@@ -2271,7 +2343,9 @@ tap-highlight-color: rgba(0, 0, 0, 0);
       outline: 10px dashed red;
       box-shadow: 0 0 0 10px #000;
     }
->
+```
+  
+```css
     .div2{
       margin: 20px auto;
       width: 300px;
@@ -2284,7 +2358,8 @@ tap-highlight-color: rgba(0, 0, 0, 0);
         linear-gradient(to left, red, 10px, transparent 10px);
       background-origin: border-box;
     }
->    
+```    
+```css    
     .div3{
       margin: 20px auto;
       width: 300px;
@@ -2293,7 +2368,7 @@ tap-highlight-color: rgba(0, 0, 0, 0);
       background: linear-gradient(to top, #fff, #fff), red;
       background-clip: padding-box, border-box;
     }
-
+```
 
 ## <a name="滚动">滚动</a>[![bakTop](./img/backward.png)](#top)
 

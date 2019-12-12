@@ -23,7 +23,7 @@ cnpmjs镜像
     npm install <package> -g 全局安装依赖包  
         npm install -g cnpm --registry=https://registry.npm.taobao.org
 
-    npm install <package> 默认使用–-save 参数，如果不想保存到package.json中，可以添加--no-save参数；还可以指定–-save-dev 或 -g参数
+    npm install <package> 默认使用–-save(-S) 参数，如果不想保存到package.json中，可以添加--no-save参数；还可以指定–-save-dev(-D) 或 -g参数
 
     npm install --production 安装dependencies，不包含devDependencies
 
@@ -59,10 +59,13 @@ cnpmjs镜像
 
     npm link 不使用npm install 而连接某个依赖包，通常用作开发本地依赖包
 
+ --save 简写 -S  
+ --save-dev 简写 -D
+
 # dependencies 与 devdependencies 区别
 >
-    –-save会把依赖包名称添加到package.json文件dependencies键下
-    –-save-dev则添加到package.json文件devDependencies键下
+    –-save会把依赖包名称添加到package.json文件dependencies下
+    –-save-dev则添加到package.json文件devDependencies下
 
     dependencies ----- 生产环境中需要的依赖，即正常运行该包时所需要的依赖项。 
     devDependencies -- 开发时用的依赖项，它们不会被部署到生产环境。    

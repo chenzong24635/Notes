@@ -17,6 +17,8 @@
 # <a name="准备">准备</a>
 TypeScript 是 JavaScript 的类型的超集，它可以编译成纯 JavaScript。编译出来的 JavaScript 可以运行在任何浏览器上。TypeScript 编译工具可以运行在任何服务器和任何系统上,它由 Microsoft 开发
 
+TypeScript 是静态弱类型语言,因为要兼容 JavaScript， 所以 TypeScript 几乎不限制 JavaScript 中原有的隐式类型转换，它对类型的隐式转换是有容忍度的
+
 TypeScript 增加了代码的可读性和可维护性  
 * 类型系统实际上是最好的文档，大部分的函数看看类型的定义就可以知道如何使用了  
 * 可以在编译阶段就发现大部分错误，这总比在运行时候出错好  

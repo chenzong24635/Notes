@@ -91,11 +91,13 @@
 
     >
         let a = 0
-3.  
+3. 推荐  
   >
-      ```
+      ```js
       let a = 0
       ```
+      
+      //```后面添加js是为了增加代码可读性
 
 * 生成多行相同代码
 div.item*3>{$}
@@ -553,7 +555,7 @@ new URL('http://www.aaa.com/bbb.aspx?name=1')
 * origin (只读属性，返回具有URL来源的Unicode序列化USVString。Origin的结构是由传入的URL类型决定的，对于http或https 的链接，得到的Origin将会为 协议（http/https）+ (://) + 域名 + (:端口)，一般情况下，默认端口将会被忽略。对于BLOB 链接，Origin返回的则是BLOB：后面的部分)
 
 * userName和password属性也是可写属性，它能提取域名前的用户名和密码部分的内容
-  ```
+  ```js
   url = new URL('https://username1:password1@www.grapecity.com.cn');
 
   console.log(url.username,url.password);

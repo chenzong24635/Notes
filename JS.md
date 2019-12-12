@@ -353,19 +353,44 @@ JSONP则是一种跨域数据交互协议。
 JSON.parse(json, replacer)  //把json解析为javascript对象  
 >第二个参数，是一个函数(key, value)=>{}。此函数有两个参数：key 和 value，分别代表键和值。当传入一个 JSON 字符串后，JSON 的每一组键/值对都要调用此函数。该函数有返回值，返回值将赋值给当前的键key。
 ```
-JSON.parse('{"a":1,"b":2}', (name,value)=>console.log(name,value))
+JSON.parse('{"a":1,"b":2}', (key,value)=>console.log(key,value))
+
 输出：
 a 1
 b 2
 ```
 
-
 JSON.stringify(obj, replacer, space) //把javascript对象转换为JSON字符串  
->第二个参数（数组形式| 函数）  
->>数组形式：指定需要转成字符串的属性，只对对象的属性有效，对数组无效。
->>函数：每一组名称/值对都会调用此函数，该函数返回一个值，作为名称的值变换到结果字符串中，如果返回 undefined，则该成员被忽略。
+>第二个参数（数组形式| 函数） 
 
->space第三个参数（数字| 字符串），用于增加返回的JSON字符串的可读性。 >>数字：表示每个属性前面添加的空格（最多不超过10个）；  
+>>数组形式：指定需要转成字符串的属性，只对对象的属性有效，对数组无效。
+```
+JSON.stringify({"a":1,"b":2},['a'])
+
+输出：
+"{"a":1}"
+```
+
+>>函数：(key, value)=>{},每一组键/值对都会调用此函数，该函数返回一个值，作为键的值变换到结果字符串中，如果返回 undefined，则该成员被忽略。
+```
+JSON.stringify({"a":1,"b":2}, (key, value) => {
+  console.log('key:',key);
+  console.log('value:',value);
+  return value;
+})
+
+输出：
+// 第一个参数不是对象的第一个键值对，而是空字符串作为 key 值，value 值是整个对象的键值对：
+key: 
+value: {a: 1, b: 2}
+key: a
+value: 1
+key: b
+value: 2
+```
+
+>space第三个参数（数字| 字符串），用于增加返回的JSON字符串的可读性。
+>>数字：表示每个属性前面添加的空格（最多不超过10个）；  
 >>字符串：（不超过10个字符），该字符串会添加在每行前面。  
 
 
@@ -1397,22 +1422,37 @@ async函数表示函数里面可能会有异步方法，await后面跟一个表�
 
 
 ## <a name="深，浅拷贝">深，浅拷贝</a>
+[如何写出一个惊艳面试官的深拷贝](https://juejin.im/post/5d6aa4f96fb9a06b112ad5b1)
 
-* 浅拷贝： 浅拷贝只复制指向某个对象的指针，即复制对象地址
->
+[浅拷贝与深拷贝](https://juejin.im/post/5b5dcf8351882519790c9a2e)
+
+
+
+### 浅拷贝： 浅拷贝只复制指向某个对象的指针，即复制对象地址
+创建一个新对象，这个对象有着原始对象属性值的一份精确拷贝。如果属性是基本类型，拷贝的就是基本类型的值，如果属性是引用类型，拷贝的就是内存地址 ，所以如果其中一个对象改变了，就会影响到另一个对象。
+
+* 一层深拷贝
+
     Object.assign(a, b, c) 第一个参数是目标对象，后面的参数都是源对象
     是一种可以对非嵌套对象进行深拷贝的方法,如果对象中出现嵌套情况,那么其对被嵌套对象的行为就成了普通的浅拷贝.
 
     b = {...a,...b} //扩展运算符
 
     b = a.slice(0)
+
     b = a.concat([])
 
-* 深拷贝：开辟新的栈  
-0. [函数库lodash](https://www.lodashjs.com/)  [CDN](https://www.bootcdn.cn/lodash.js/)  
+
+
+### 深拷贝：开辟新的栈  
+将一个对象从内存中完整的拷贝一份出来,从堆内存中开辟一个新的区域存放新对象,且修改新对象不会影响原对象
+
+
+
+* [函数库lodash](https://www.lodashjs.com/)  [CDN](https://www.bootcdn.cn/lodash.js/)  
 提供_.cloneDeep深拷贝方法
 
-1. JSON.parse(JSON.stringify(obj))
+*  JSON.parse(JSON.stringify(obj))
 >
 
     只能正确处理的对象只有 Number, String, Boolean, Array，扁平对象 即那些能够被json直接表示的数据结构。
@@ -1454,46 +1494,40 @@ async函数表示函数里面可能会有异步方法，await后面跟一个表�
     });
     console.log(obj,b,b.func())    
 
-2. 
- 
+* 
 >
-    function deepClone(objCloned) {
-      let obj = Array.isArray(objCloned) ? [] : {};
-      if(objCloned && typeof objCloned === "object") {
-        for(key in objCloned) {
-          //if(objCloned.hasOwnProperty(key)) {//判断是否为自身属性
-            // 判断 obj 子元素是否为对象，如果是，递归复制
-            // 添加objCloned[key]作为判断条件是防止当值为null时当做对象处理
-            if(objCloned[key] && typeof objCloned[key] === "object") {
-              if(objCloned[key] instanceof RegExp) { //判断正则
-                obj[key] = new RegExp(objCloned[key])
-              } else if(objCloned[key] instanceof Date) { //判断时间
-                obj[key] = new Date(objCloned[key])
-              } else if(objCloned[key] instanceof Error) { //判断错误
-                obj[key] = new Error(objCloned[key])
-              } else if(objCloned[key] instanceof Map) { //Map
-                obj[key] = new Map(objCloned[key])
-              } else if(objCloned[key] instanceof WeakMap) { //WeakMap
-                //WeakMap,WeakSet 不能遍历
-                //????
-                // obj[key] = objCloned[key]; // 
-                // obj[key] = new WeakMap(objCloned[key]) // error!!!
-              } else if(objCloned[key] instanceof Set) { //Set
-                obj[key] = new Set(objCloned[key])
-              } else if(objCloned[key] instanceof WeakSet) { //WeakSet
-                // obj[key] = objCloned[key];
-                // obj[key] = new WeakSet(objCloned[key])
-              } else {
-                obj[key] = deepClone(objCloned[key]);
-              }
-            }else { // 否则，简单复制
-              obj[key] = objCloned[key];
-            }
-        //}
+    //定义检测数据类型的功能函数
+    function checkedType(target) {
+      return Object.prototype.toString.call(target).slice(8, -1)
+    }
+    //实现深度克隆---对象/数组
+    function clone(target) {
+      //判断拷贝的数据类型
+      //初始化变量result 成为最终克隆的数据
+      let result, targetType = checkedType(target)
+      if (targetType === 'Object') {
+        result = {}
+      } else if (targetType === 'Array') {
+        result = []
+      } else {
+        return target
+      }
+      //遍历目标数据
+      for (let i in target) {
+        //获取遍历数据结构的每一项值。
+        let value = target[i]
+        //判断目标结构里的每一值是否存在对象/数组
+        if (checkedType(value) === 'Object' ||
+          checkedType(value) === 'Array') { //对象/数组里嵌套了对象/数组
+          //继续遍历获取到value值
+          result[i] = clone(value)
+        } else { //获取到value值是基本的数据类型或者是函数。
+          result[i] = value;
         }
       }
-      return obj;
+      return result
     }
+
 
 >
     var obj = {
@@ -1509,10 +1543,6 @@ async函数表示函数里面可能会有异步方法，await后面跟一个表�
       date: new Date(),
       reg: /[1-9]/,
       symbol: Symbol('syb'),
-      map: new Map([['a',1],['b',2]]),
-      weakmap: new WeakMap([[{},1]]),
-      set: new Set(['a','b']),
-      weakset: new WeakSet([[1],[2]]),
     }
     let obj1 = deepClone(obj);
     obj1.name= 'obj1'
@@ -1520,17 +1550,7 @@ async函数表示函数里面可能会有异步方法，await后面跟一个表�
     obj1.obj.b.arr.push('obj1')
     console.log(obj);
     console.log(obj1);
-    obj.map.set('obj',2)
-    obj1.map.set('obj1',2)
-    obj.weakmap.set({'b1':'bb1'},2)
-    obj.set.add('obj',2)
-    obj1.set.add('obj1',2)
-    obj.weakset.add({'b1':'bb1'},2)
-    // obj1.weakmap.set({'bbb':1},344)
-    console.log(obj.map,obj.weakmap)
-    console.log(obj1.map,obj1.weakmap)
-    console.log(obj.set,obj.weakset)
-    console.log(obj1.set,obj1.weakset)
+
 
 
 ## <a name="js延迟加载：defer,async">js延迟加载：defer,async</a>
@@ -1611,7 +1631,7 @@ defer 属性
     尽量使用 class 进行样式修改，而不是直接操作样式
     使用 transform 替代 top|left...
     使用 visibility 替换 display: none 
-    避免设置多层内联样式，CSS 选择符从右往左匹配查找，避免节点层级过多。
+    避免设置多层内联样式，CSS 选择符从右往左匹配查找，避免节点��级过多。
     尽可能在DOM树的最末端改变class。可以限制了回流的范围，使其影响尽可能少的节点
     动画效果设置position为absolute，fixed
     避免使用table布局
