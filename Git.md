@@ -79,7 +79,7 @@ npm i git //git安装
 
 `克隆远程分支`
 * git clone \<url> //克隆项目(默认master)
-* git clone -b \<分支名> \<url> // 克隆项目某个的分支
+* git clone -b \<分支名> \<url> \<本地文件夹名> // 克隆项目某个的分支
   >
       git clone <url> // 克隆项目（master）
       git branch -a // 查看所有分支

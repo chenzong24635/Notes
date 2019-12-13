@@ -1,9 +1,11 @@
 # 事件执行机制
 
 
-[参考](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/7)
+[从一道题浅说 JavaScript 的事件循环](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/7)
 
-[参考](https://juejin.im/post/59e85eebf265da430d571f89)
+[这一次，彻底弄懂 JavaScript 执行机制](https://juejin.im/post/59e85eebf265da430d571f89)
+
+[微任务、宏任务与Event-Loop](https://juejin.im/post/5b73d7a6518825610072b42b)
 
 #### 浏览器的渲染进程是多线程的
 
@@ -52,8 +54,19 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
 <img src="./img/event.png" width="100%" />
 
 而准确的划分方式是：
-1. macro-task(宏任务)：script(整体代码)，setTimeout、setInterval、I/O、UI交互事件、postMessage、MessageChannel、setImmediate(Node.js 环境)
-2. micro-task(微任务)：Promise.then catch finally、process.nextTick(Node.js 环境)、MutaionObserver
+* macro-task(宏任务)：
+  * script(整体代码)
+  * setTimeout
+  * setInterval
+  * I/O、UI交互事件
+  * postMessage
+  * MessageChannel
+  * setImmediate(Node.js 环境)
+
+* micro-task(微任务)
+  * Promise.then、catch、finally
+  * MutaionObserver
+  * process.nextTick(Node.js 环境)
 >
 
     * macrotask（宏任务），可以理解是每次执行栈执行的代码就是一个宏任务（包括每次从事件队列中获取一个事件回调并放到执行栈中执行）  
@@ -88,21 +101,22 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
 
 `由于因为async await 本身就是promise+generator的语法糖。所以await后面的代码是microtask。` 
 
->
-    async function async1() {
-      console.log('async1 start');
-      await async2();
-      console.log('async1 end');
-    }
+```js
+async function async1() {
+  console.log('async1 start');
+  await async2();
+  console.log('async1 end');
+}
 
-    等价于
+等价于
 
-    async function async1() {
-      console.log('async1 start');
-      Promise.resolve(async2()).then(() => {
-        console.log('async1 end');
-      })
-    }
+async function async1() {
+  console.log('async1 start');
+  Promise.resolve(async2()).then(() => {
+    console.log('async1 end');
+  })
+}
+```
 
 #### 进程、线程
 >
@@ -114,28 +128,28 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
     进程是能拥有资源和独立运行的最小单位
     线程是建立在进程的基础上的一次程序运行单位
 
->
-    async function async1() {
-      console.log('async1 start') 
-      await async2() 
-      console.log('async1 end')
-    }
-    async function async2() {
-      console.log('async2')
-    }
-    console.log('script start') 
-    setTimeout(function () {
-      console.log('settimeout')
-    }) 
-    async1() 
-    new Promise(function (resolve) {
-      console.log('promise1')
-      resolve()
-    }).then(function () {
-      console.log('promise2')
-    }) 
-    console.log('script end')
-
+```js
+async function async1() {
+  console.log('async1 start') 
+  await async2() 
+  console.log('async1 end')
+}
+async function async2() {
+  console.log('async2')
+}
+console.log('script start') 
+setTimeout(function () {
+  console.log('settimeout')
+}) 
+async1() 
+new Promise(function (resolve) {
+  console.log('promise1')
+  resolve()
+}).then(function () {
+  console.log('promise2')
+}) 
+console.log('script end')
+```
 ______
 >
     整体script作为第一个宏任务进入主线程，遇到console.log，输出'script start'
@@ -152,14 +166,16 @@ ______
 
     第一轮事件循环正式结束,再次执行宏任务，执行setTimeout，输出'settimeout'
 
->
+输出：
+```js
+script start
+async1 start
+async2
+promise1
+script end
+async1 end
+promise2
+settimeout
+```
 
-    //script start
-    //async1 start
-    //async2
-    //promise1
-    //script end
-    //async1 end
-    //promise2
-    //settimeout
 

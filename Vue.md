@@ -33,6 +33,7 @@
 * <a href="#样式绑定">样式绑定：class、style</a>
 * <a href="#v-if和v-show 的区别">v-if和v-show 的区别</a>
 * <a href="#v-for 遍历避免同时使用 v-if">v-for 遍历避免同时使用 v-if</a>
+* <a href="#v-model 的原理">v-model 的原理</a>
 * <a href="#slot">slot插槽</a>
 * <a href="#组件中key作用">组件中key作用</a>
 * <a href="#虚拟DOM">虚拟DOM</a>
@@ -569,57 +570,60 @@ watch：深度监听
 受现代 JavaScript 的限制 ，Vue 无法检测到对象属性的添加或删除。
 
 Vue 提供了 Vue.set (object, propertyName, value) / vm.$set (object, propertyName, value)来实现为对象添加响应式属性
->
-    示例：
-    <template>
-      <div>
-        <ul>
-          <li v-for="value in obj" :key="value">
-            {{value}}
-          </li>
-        </ul>
-        <button @click="addObjB">添加obj.b</button>
-      </div>
-    </template>
-    <script>
-    export default {
-      data () {
-        return {
-          obj: {
-            a: 'obj.a'
-          }
-        }
-      },
-      methods: {
-        addObjB () {
-          this.obj.b = 'obj.b'
-          console.log(this.obj)
-        }
+
+```
+
+示例：
+<template>
+  <div>
+    <ul>
+      <li v-for="value in obj" :key="value">
+        {{value}}
+      </li>
+    </ul>
+    <button @click="addObjB">添加obj.b</button>
+  </div>
+</template>
+<script>
+export default {
+  data () {
+    return {
+      obj: {
+        a: 'obj.a'
       }
     }
-    </script>
-    <style></style>
-    点击button会发现，obj.b 已经成功添加，但是视图并未刷新：
-    原因在于在Vue实例创建时，obj.b并未声明，因此就没有被Vue转换为响应式的属性，自然就不会触发视图的更新，这时就需要使用Vue的全局api: Vue.set() 、 $set() 
-
+  },
+  methods: {
     addObjB () {
-          // this.obj.b = 'obj.b'
-          this.$set(this.obj, 'b', 'obj.b')
-          console.log(this.obj)
-        }
-    $set()方法相当于手动的去把obj.b处理成一个响应式的属性，此时视图也会跟着改变了：
+      this.obj.b = 'obj.b'
+      console.log(this.obj)
+    }
+  }
+}
+</script>
+<style></style>
+点击button会发现，obj.b 已经成功添加，但是视图并未刷新：
+原因在于在Vue实例创建时，obj.b并未声明，因此就没有被Vue转换为响应式的属性，自然就不会触发视图的更新，这时就需要使用Vue的全局api: Vue.set() 、 $set() 
 
+addObjB () {
+  // this.obj.b = 'obj.b'
+  this.$set(this.obj, 'b', 'obj.b')
+  console.log(this.obj)
+}
+$set()方法相当于手动的去把obj.b处理成一个响应式的属性，此时视图也会跟着改变了：
+```
 
 # <a name="Vue检测数组的变动">[Vue检测数组的变动](https://cn.vuejs.org/v2/guide/list.html#%E6%95%B0%E7%BB%84%E6%9B%B4%E6%96%B0%E6%A3%80%E6%B5%8B)</a>[![bakTop](./img/backward.png)](#top)  
 Vue 能检测以下数组的变动
->
-    push()
-    pop()
-    shift()
-    unshift()
-    splice()
-    sort()
-    reverse()
+```js
+push()
+pop()
+shift()
+unshift()
+splice()
+sort()
+reverse()
+```
 
 Vue 不能检测以下数组的变动
 
@@ -627,34 +631,39 @@ Vue 不能检测以下数组的变动
 
 * 当你修改数组的长度时，例如：vm.items.length = newLength
 
->
-    举例：
+```js
+举例：
 
-    var vm = new Vue({
-      data: {
-        items: ['a', 'b', 'c']
-      }
-    })
-    vm.items[1] = 'x' // 不是响应性的
-    vm.items.length = 2 // 不是响应性的
+var vm = new Vue({
+  data: {
+    items: ['a', 'b', 'c']
+  }
+})
+vm.items[1] = 'x' // 不是响应性的
+vm.items.length = 2 // 不是响应性的
+```
 
 解决第一个问题：
->
+```js
 
     Vue.set(vm.items, indexOfItem, newValue) 
       //或使用 vm.$set，Vue.set的一个别名
       vm.$set(vm.items, indexOfItem, newValue)
 
     vm.items.splice(indexOfItem, 1, newValue)
+```
 
 解决第二类问题：
-
-    vm.items.splice(newLength)
+```vm.items.splice(newLength)```
 
 
 # <a name="组件中 data 为什么是一个函数">组件中 data 为什么是一个函数</a>[![bakTop](./img/backward.png)](#top)  
 为什么组件中的 data 必须是一个函数，然后 return 一个对象，而 new Vue 实例里，data 可以直接是一个对象？
->
+
+因为组件是用来复用的，且 JS 里对象是引用关系，如果组件中 data 是一个对象，那么这样作用域没有隔离，子组件中的 data 属性值会相互影响，  
+如果组件中 data 选项是一个函数，每次返回的都是一个新对象，组件实例之间的 data 属性值不会互相影响；而 new Vue 的实例，是不会被复用的，因此不存在引用对象的问题。
+
+```js
     // data
     data() {
       return {
@@ -670,11 +679,7 @@ Vue 不能检测以下数组的变动
       template: '<App/>',
       components: {App}
     })
-
-因为组件是用来复用的，且 JS 里对象是引用关系，如果组件中 data 是一个对象，那么这样作用域没有隔离，子组件中的 data 属性值会相互影响，  
-如果组件中 data 选项是一个函数，每次返回的都是一个新对象，组件实例之间的 data 属性值不会互相影响；而 new Vue 的实例，是不会被复用的，因此不存在引用对象的问题。
-
-
+```
 
 # <a name="样式绑定">样式绑定：class、style</a>[![bakTop](./img/backward.png)](#top)  
 
@@ -797,33 +802,67 @@ CSS 属性名可以用驼峰式（camelCase）或短横分隔命名（kebab-case
     v-for 比 v-if 优先级高，如果每一次都需要遍历整个数组，将会影响速度，尤其是当之需要渲染很小一部分的时候，必要情况下应该替换成 computed 属性。
 
 推荐：
->
-    <ul>
-      <li
-        v-for="user in activeUsers"
-        :key="user.id">
-        {{ user.name }}
-      </li>
-    </ul>
-    computed: {
-      activeUsers: function () {
-        return this.users.filter(function (user) {
-          return user.isActive
-        })
-      }
-    }
+```html
+<ul>
+  <li
+    v-for="user in activeUsers"
+    :key="user.id">
+    {{ user.name }}
+  </li>
+</ul>
+computed: {
+  activeUsers: function () {
+    return this.users.filter(function (user) {
+      return user.isActive
+    })
+  }
+}
+```
 
 不推荐：
->
-    <ul>
-      <li
-        v-for="user in users"
-        v-if="user.isActive"
-        :key="user.id">
-        {{ user.name }}
-      </li>
-    </ul>
+```html
+<ul>
+  <li
+    v-for="user in users"
+    v-if="user.isActive"
+    :key="user.id">
+    {{ user.name }}
+  </li>
+</ul>
+```
 
+# <a name="v-model 的原理">v-model 的原理</a>[![bakTop](./img/backward.png)](#top)
+在 vue 项目中主要使用 v-model 指令在表单 input、textarea、select 等元素上创建双向数据绑定，我们知道 v-model 本质上不过是语法糖，v-model 在内部为不同的输入元素使用不同的属性并抛出不同的事件：
+
+text 和 textarea 元素使用 value 属性和 input 事件；
+checkbox 和 radio 使用 checked 属性和 change 事件；
+select 字段将 value 作为 prop 并将 change 作为事件。
+
+以 input  表单元素为例：
+```html
+<input v-model='something'>
+相当于
+<input v-bind:value="something" v-on:input="something = $event.target.value">
+```
+
+如果在自定义组件中，v-model 默认会利用名为 value 的 prop 和名为 input 的事件，如下所示：
+```html
+父组件：
+<ModelChild v-model="message"></ModelChild>
+
+子组件：
+<div>{{value}}</div>
+
+props:{
+    value: String
+},
+methods: {
+  test1(){
+     this.$emit('input', '小红')
+  },
+},
+
+```
 
 # <a name="slot">slot插槽</a>[![bakTop](./img/backward.png)](#top)  
 父组件来控制 插槽显示状态、内容  
@@ -2143,7 +2182,8 @@ npm run analyzer
 [官网](https://cli.vuejs.org/zh/config/#%E5%85%A8%E5%B1%80-cli-%E9%85%8D%E7%BD%AE)
 
 安装更新  
-npm install -g @vue/cli 
+npm install -g @vue/cli //全局安装
+npm install -D @vue/cli //局部安装
 
 创建项目  
 vue create projectName

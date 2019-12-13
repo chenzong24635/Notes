@@ -1,5 +1,9 @@
 [官网-指南](https://www.webpackjs.com/guides/)
 
+[从零开始的Webpack4教程](https://segmentfault.com/a/1190000018534625?share_user=1030000000178452#item-5)
+
+[一看就懂之webpack高级配置与优化](https://segmentfault.com/a/1190000020320871)
+
 * <a href="打包图片资源">打包样式文件中的图片资源</a>
 * <a href=""></a>
 
@@ -25,45 +29,20 @@ npm i -D webpack@beta> // 安装最新体验版本到当前项目
     mkdir webpack
     cd webpack
     npm init
-    一直点回车 如果懒得填一些信息
+    一直点回车
 
-# webpack.config.js配置
+# [核心概念](https://www.webpackjs.com/concepts/)
 * entry：配置入口文件的地址，可以是单一入口，也可以是多入口。
-* output：配置出口文件的地址，在webpack2.X版本后，支持多出口配置。
-* module：配置模块，主要是解析CSS和图片转换压缩等功能。
+* output：配置出口文件的地址，支持多出口配置。
+* Loader：处理那些非 JS 文件（webpack 自身只能解析 JS)
 * plugins：配置插件，根据你的需要配置不同功能的插件,用于生产模版和各项功能。
-* devServer：配置开发服务功能
+* mode：模式，none(默认) | production(生产模式) | development(开发模式)
+  >mode: process.env.NODE_ENV
 
-entry
-```js
-entry:{
-  //里面的defname是自定义的
-  defname: './src/index.js',
-  defname1: './src/index1.js',
-},
-```
+# [webpack.config.js配置](https://www.webpackjs.com/configuration/#%E9%80%89%E9%A1%B9)
 
-output  
-出口配置是用来告诉webpack最后打包文件的地址和文件名称的。一般打包到dist目录下
-```js
-output:{
-  //输出的路径，用了Node语法
-  path: path.resolve(__dirname,'dist'),
-  //输出的文件名称
-  filename: '[name].js'
-},
-```
 
-```js
-```
-
-```js
-```
-
-```js
-```
-
-# 依赖包
+# 常用loader,plugins
 
 在webpack.config.js配置
 ```js
@@ -101,6 +80,7 @@ Loaders的配置:
 ## <a name="加载CSS">加载CSS: [style-loader css-loader](https://webpack.js.org/loaders/style-loader)</a>
 npm install --save-dev style-loader // 处理css文件中的url()等
 npm install --save-dev css-loader // 将css插入到页面的style标签
+npm install --save-dev less-loader less  // less
 
 ```js
 module: {
@@ -109,7 +89,8 @@ module: {
       test: /\.css$/,
       use: [
         'style-loader',
-        'css-loader'
+        'css-loader',
+        'less-loader'
       ]
     }
   ]
@@ -138,6 +119,7 @@ rules: [
     use: [
       'style-loader',
       'css-loader',
+      'less-loader',
       "postcss-loader"
     ]
   }  
@@ -165,7 +147,7 @@ module: {
       use: [{
         loader:'url-loader',
         options:{
-          limit:500000,
+          limit: 100*1024,
           outputPath:'images/',
         }
       }]
@@ -181,7 +163,7 @@ module: {
 ```
 * test:/.(png|jpg|gif)/是匹配图片文件后缀名称。
 * use：是指定使用的loader和loader的配置参数。
-* limit：是把小于500000B的文件打成Base64的格式，写入JS。
+* limit：是把小于100*1024B的文件打成Base64的格式，写入JS。
 * outputPath: 打包后的图片放到指定的文件夹下
 
 ## <a name="html的图片">html的图片: html-withimg-loader</a>
@@ -285,20 +267,32 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 plugins: [
   new HtmlWebpackPlugin({
     title: '标题',
-    minify:{
-        removeAttributeQuotes:true
-    },
-    hash:true,
     template:'./src/index.html'
   })
 ]
 ```
 
-* minify：是对html文件进行压缩，removeAttrubuteQuotes是却掉属性的双引号。
-* hash：为了开发中js有缓存效果，所以加入hash，这样可以有效避免缓存JS。
-* template：是要打包的html模版路径和文件名称。
-
-....
+打包多页面(必须配置 chunks)
+```js
+module.exports = {
+  entry: {
+      index: "./src/index.js", // 指定打包输出的chunk名为index
+      foo: "./src/foo.js" // 指定打包输出的chunk名为foo
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./src/index.html", // 要打包输出哪个文件，可以使用相对路径
+      filename: "index.html", // 打包输出后该html文件的名称
+      chunks: ["index"] // 数组元素为chunk名称，即entry属性值为对象的时候指定的名称，index页面只引入index.js
+    }),
+    new HtmlWebpackPlugin({
+      template: "./src/index.html", // 要打包输出哪个文件，可以使用相对路径
+      filename: "foo.html", // 打包输出后该html文件的名称
+      chunks: ["foo"] // 数组元素为chunk名称，即entry属性值为对象的时候指定的名称，foo页面只引入foo.js
+    }),
+  ]
+}
+```
 
 ## <a name="清理dist文件夹">[清理dist文件夹: clean-webpack-plugin](https://www.npmjs.com/package/clean-webpack-plugin) </a>
 npm install --save-dev clean-webpack-plugin 
@@ -309,6 +303,40 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 plugins: [
   new CleanWebpackPlugin(['dist'])
 ]
+```
+
+## <a name="JS语法转换babel-loader">[JS语法转换babel-loader](https://webpack.js.org/loaders/babel-loader)</a>
+npm install -D babel-loader @babel/core @babel/preset-env webpack
+
+```js
+rules: [
+  {
+    test: /\.m?js$/,
+    exclude: /(node_modules|bower_components)/,
+    use: {
+      loader: 'babel-loader',
+      options: {
+        presets: ['@babel/preset-env']
+      }
+    }
+  }
+]
+```
+
+## <a name="JS语法检查">[JS语法检查eslint-loader](https://webpack.js.org/loaders/eslint-loader)</a>
+npm install eslint-loader eslint --save-dev
+
+```js
+module: {
+  rules: [
+    {
+      test: /\.js$/,
+      exclude: /node_modules/,
+      loader: 'eslint-loader',
+      use: ['babel-loader', 'eslint-loader'],
+    },
+  ],
+},
 ```
 
 ## <a name="JS压缩">[JS压缩terser-webpack-glugin](https://www.npmjs.com/package/terser-webpack-plugin)</a>

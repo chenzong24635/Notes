@@ -724,49 +724,53 @@ clear 属性只有块级元素才有效的，而::after 等伪元素默认都是
 概述：BFC(Block Formatting Context)是Web页面中盒模型布局的CSS渲染模式。它的定位体系属于常规文档流。
 
 BFC形成条件：
-1. 根元素 html
-2. float的值不为none
-3. position的值为absolute或fixed（不为static或relative或sticky）
-4. overflow的值不为visible( hidden,scroll,auto,... )的块元素
-5. display的值为 inline-block | flex | inline-flex | grid | inline-grid | table | inline-table | table-cell | table-caption |  flow-root
-6. contain 值为 layout、content或 paint 块元素
-6. 多列容器colunm-count或column-width不为auto 的块元素  
-7. column-span 为 all的块元素
+*  根元素 html
+*  float的值不为none
+*  position的值为absolute或fixed（不为static或relative或sticky）
+*  overflow的值不为visible( hidden,scroll,auto,... )的块元素
+*  display的值为 inline-block | flex | inline-flex | grid | inline-grid | table | inline-table | table-cell | table-caption |  flow-root
+*  contain 值为 layout、content或 paint 块元素
+*  多列容器colunm-count或column-width不为auto 的块元素  
+*  column-span 为 all的块元素
 .....
 
 BFC的布局规则
-1. 内部的元素会在垂直排列，可以理解为是BFC中的一个常规流
-2. 元素垂直方向的距离由margin决定，同一个BFC的相邻元素的margin可能会重叠
-3. 每个元素的左外边距与包含块的左边界相接触(从左往右，否则相反)，即使存在浮动也是如此(说明BFC中的子元素不会超出它的包含块)
-4. BFC的区域不会与float元素区域重叠
-5. 计算BFC的高度时，浮动子元素也参与计算
-6. BFC就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素，反之亦然
+* 内部的元素会在垂直排列，可以理解为是BFC中的一个常规流
+* 元素垂直方向的距离由margin决定，同一个BFC的相邻元素的margin可能会重叠
+* BFC的区域不会与float元素区域重叠
+* 计算BFC的高度时，浮动子元素也参与计算
+* 每个元素的左外边距与包含块的左边界相接触(从左往右，否则相反)，即使存在浮动*如此(说明BFC中的子元素不会超出它的包含块)
+* BFC就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素，反之亦然
 
 BFC的作用
-1. 不和浮动元素重叠：
+1. 清除浮动--BFC元素不和浮动元素重叠：
 >
     如果一个浮动元素后面跟着一个非浮动的元素，那么就会产生一个覆盖的现象。清除元素内部浮动，只要把父元素设为BFC就可以清理子元素的浮动了，最常见的用法就是在父元素上设置overflow: hidden样式 
+
 2. 解决margin边距折叠问题
 >
     按照BFC的定义，只有同属于一个BFC时，两个元素才有可能发生垂直Margin的重叠，这个包括相邻元素，嵌套元素，只要他们之间没有阻挡(例如边框，非空内容，padding等)就会发生margin重叠。
 
     因此要解决margin重叠问题，只要让它们不在同一个BFC就行了，但是对于两个相邻元素来说，意义不大，没有必要给它们加个外壳，但是对于嵌套元素来说就很有必要了，只要把父元素设为BFC就可以了。这样子元素的margin就不会和父元素的margin发生重叠了。
+
 3. 防止文字环绕（给环绕元素添加BFC）
+
 4. 在多列布局中使用BFC（最后一个子元素添加BFC）
 >
     如果我们正在创建的一个多列布局占满了整个容器的宽度，在某些浏览器中最后一列有时候将会被挤到下一行。会发生这样可能是因为浏览器舍入（取整）了列的宽度使得总和的宽度超过了容器的宽度。然而，如果我们在一个列的布局中建立了一个新的BFC，它将会在前一列填充完之后的后面占据所剩余的空间
 
 * 清除浮动
-    .clearfix:after,.clearfix:before{
-      content: " ";
-      display: block;
-      height: 0;
-      line-height:0;
-      clear: both;
-      overflow: hidden;
-      visibility: hidden;
-    }
-
+```css
+.clearfix:after,.clearfix:before{
+  content: " ";
+  display: block;
+  height: 0;
+  line-height:0;
+  clear: both;
+  overflow: hidden;
+  visibility: hidden;
+}
+```
 ### IFC 
 行内格式化上下文IFC(Inlinel Formatting context)
 
@@ -783,22 +787,21 @@ BFC的作用
 
 
 当一个span里面的内容大于line box的宽度，它的内容自动拆分成两个部分，分布在两行（两个line box）中
->
-    <style type="text/css">
-        #container{
-        width: 100px;
-        height: 200px;
-        background: gold;
-        }
-        #container span{
-        color: #fff;
-        background:#000;
-        }
-    </style>
+```css
+#container{
+  width: 100px;
+  height: 200px;
+  background: gold;
+}
+#container span{
+  color: #fff;
+  background:#000;
+}
 
-    <div id="container">
-        <span>This is a span</span>
-    </div>
+<div id="container">
+    <span>This is a span</span>
+</div>
+```
 
 两个span元素的宽度总和已经大于line box的宽度了，但是第二个元素没有进行换行布局。
 因为第一个span里面的字符串和第二个span里面的字符串之间不存在空格，因此IFC把他们的内容理解成一个连续的字符串，他们也就成了不可拆分的整体，第二个span也就没有办法进行换行了。
@@ -807,37 +810,38 @@ BFC的作用
 >
     span间加空格 
     span设置强制换行：word-break;break-all; | word-break: break-word; |  word-wrap: break-word;
->
-    #container{
-    width: 100px;
-    height: 200px;
-    background: gold;
-    }
-    #container span{
-    color: #fff;
-    background:#000;
-    }
-    #container span:last-child{
-    color: #ff0000;
-    background-color: #233;
-    }
-    <div id="container"><span>inlineinline</span><span>inlineinline</span></div>
 
+```css
+#container{
+  width: 100px;
+  height: 200px;
+  background: gold;
+}
+#container span{
+  color: #fff;
+  background:#000;
+}
+#container span:last-child{
+  color: #ff0000;
+  background-color: #233;
+}
+<div id="container"><span>inlineinline</span><span>inlineinline</span></div>
+```
 
 
 ## <a name="display、visibility、overflow、opacity">display、visibility、overflow、opacity的隐藏问题</a>[![bakTop](./img/backward.png)](#top)
 
-* display：block | none | inline | table | flex | grid .... 
+* display：block | none | inline | table | flex | grid ....   
 * overflow : visible | auto | hidden | scroll
-      visible:不处理,  auto:默认属性    
-      hidden:溢出隐藏, scroll:总是显示滚动条 
+      visible:不处理,  auto:默认属性  
+      hidden:溢出隐藏, scroll:总是显示滚动条  
 
 
 * visibility(可见性): inherit | visible | hidden|collapse
-    inherit:继承
-    visible:可视
-    hidden:隐藏
-    collapse: 主要用来隐藏表格的行或列。隐藏的行或列能够被其他内容使用。其他对象，等同于hidden。
+    inherit:继承  
+    visible:可视  
+    hidden:隐藏  
+    collapse: 主要用来隐藏表格的行或列。隐藏的行或列能够被其他内容使用。其他对象，等同于hidden。  
 
 * opacity：[0,1] 不透明度
 
@@ -904,9 +908,9 @@ height高度一样
 ### vertical-align
 >
     线类，如 baseline（默认值）、top、middle、bottom；
-    文本类，如 text-top、text-bottom；
-    上标下标类，如 sub、super；
-    数值百分比类，如 20px、2em、20%等(vertical-align 的百分比值是相对于 line-height 计算)
+    文本类，如 text-top、text-bottom；  
+    上标下标类，如 sub、super；  
+    数值百分比类，如 20px、2em、20%等(vertical-align 的百分比值是相对于 line-height 计算)  
 
 vertical-align起作用是有前提条件的：只能应用于内联元
 素(inline、inlineblock，inline-table)以及 display 值为 table-cell 的元素
@@ -918,18 +922,19 @@ vertical-align起作用是有前提条件的：只能应用于内联元
 
 
 此时图片顶着.box 元素的上边缘显示，根本没垂直居中，完全没起作用！
->
-    box {
-      height: 128px;
-      line-height: 128px; /* 若不设置， 子元素的vertical-align: middle;不会起作用*/ 
-    }
-    .box > img {
-      height: 96px;
-      vertical-align: middle;
-    }
-    <div class="box">
-      <img src="1.jpg">
-    </div>
+```CSS
+box {
+  height: 128px;
+  line-height: 128px; /* 若不设置， 子元素的vertical-align: middle;不会起作用*/ 
+}
+.box > img {
+  height: 96px;
+  vertical-align: middle;
+}
+<div class="box">
+  <img src="1.jpg">
+</div>
+```
 
 实际上，只是行框盒子前面的“幽灵空白节点”高度太小，如果我们通过设置一个
 足够大的行高让“幽灵空白节点”高度足够，就会看到 vertical-align:middle 起作用了，
@@ -938,44 +943,46 @@ table-cell 元素设置 vertical-align 垂
 直对齐的是子元素，但是其作用的并不是子元素，而是 table-cell 元素自
 身。就算 table-cell 元素的子元素是一个块级元素，也一样可以让其有各
 种垂直对齐表现。
->
-    box {
-      height: 128px;
-      display:table-cell;
-      vertical-align: middle; 
-    }
-    .box > img {
-      height: 96px;
-    }
-    <div class="box">
-      <img src="1.jpg">
-    </div>
-
+```CSS
+box {
+  height: 128px;
+  display:table-cell;
+  vertical-align: middle; 
+}
+.box > img {
+  height: 96px;
+}
+<div class="box">
+  <img src="1.jpg">
+</div>
+```
 
 ## <a name="文本换行">文本换行 white-space word-wrap word-break</a>[![bakTop](./img/backward.png)](#top)
 
 white-space
->
-    normal: 忽略/合并空白(默认值)
-    pre: 保留空白，如同<pre>的行为
-    nowrap: 忽略/合并空白，文本不会换行，直到遇到<br/>
-    pre-wrap: 保留空白，但是会正常地进行换行
-    pre-line: 忽略/合并空白，但是会正常地进行换行
-    inherit: 从父元素继承。
+```CSS
+normal: 忽略/合并空白(默认值)
+pre: 保留空白，如同<pre>的行为
+nowrap: 忽略/合并空白，文本不会换行，直到遇到<br/>
+pre-wrap: 保留空白，但是会正常地进行换行
+pre-line: 忽略/合并空白，但是会正常地进行换行
+inherit: 从父元素继承。
+```
 
 word-wrap
->
-    normal: 只在允许的断字点换行(默认值)
-    break-word: 在长单词或URL地址内部进行换行
+```CSS
+normal: 只在允许的断字点换行(默认值)
+break-word: 在长单词或URL地址内部进行换行
+```
 
 word-break
->  
-    normal：依照亚洲语言和非亚洲语言的文本规则，允许在字内换行。
+```CSS  
+normal：依照亚洲语言和非亚洲语言的文本规则，允许在字内换行。
 
-    keep-all：与所有非亚洲语言的normal相同。对于中文，韩文，日文，不允许字断开。适合包含少量亚洲文本的非亚洲文本。
+keep-all：与所有非亚洲语言的normal相同。对于中文，韩文，日文，不允许字断开。适合包含少量亚洲文本的非亚洲文本。
 
-    break-all：该行为与亚洲语言的normal相同。也允许非亚洲语言文本行的任意字内断开。该值适合包含一些非亚洲文本的亚洲文本，比如使连续的英文字母间断行。
-
+break-all：该行为与亚洲语言的normal相同。也允许非亚洲语言文本行的任意字内断开。该值适合包含一些非亚洲文本的亚洲文本，比如使连续的英文字母间断行。
+```
 ---
 
 强制不换行
