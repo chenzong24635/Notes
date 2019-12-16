@@ -54,63 +54,66 @@ TypeScript 非常包容
 
 
 # <a name="类型">类型</a>
+Boolean Number String  
+Array Funciton Object Symbol  
+Undefined Null Void Any Never
+
 使用 : 指定变量的类型
 
-* 布尔值  
-: boolean 
->
+## 布尔值 : boolean 
 
-    let isDone: boolean = false; // ok
-    let isDone: boolean = Boolean(1); // ok
+```ts
+let isDone: boolean = false; // ok
+let isDone: boolean = Boolean(1); // ok
 
-    // 注意，使用构造函数 Boolean 创造的对象不是布尔值：
-    let newBoolean: boolean = new Boolean(1); // error!!!
-    // 返回的是一个 Boolean 对象：
-    let newBoolean: Boolean = new Boolean(1); // ok
+// 注意，使用构造函数 Boolean 创造的对象不是布尔值：
+let newBoolean: boolean = new Boolean(1); // error!!!
+// 返回的是一个 Boolean 对象：
+let newBoolean: Boolean = new Boolean(1); // ok
+```
 
-* 数值  
-: number
->
+## 数值 : number
 
-    let num: number = 5;
-    let num: number = NaN;
-    let num: number = Infinity;
-    let num: number = 0b10; // 二进制
-    let num: number = 0o744; // 八进制
-    let num: number = 0xf00d; // 十六进制
+```ts
+let num: number = 5;
+let num: number = NaN;
+let num: number = Infinity;
+let num: number = 0b10; // 二进制
+let num: number = 0o744; // 八进制
+let num: number = 0xf00d; // 十六进制
+```
 
-* 字符串  
-: string
->
+## 字符串 : string
+```ts
+let str: string = 'aaa';
 
-    let str: string = 'aaa';
+//使用模版字符串;被反引号包围(`)，以${ expr }嵌入
+let str1: string = `${str} b`;
+```
 
-    使用模版字符串;被反引号包围（ `），以${ expr }嵌入
-    let str1: string = `${str} b`;
-
-
-* 数组
+## 数组 : T[] | Array\<T>
 1. 在元素类型后面接上 []，表示由此类型元素组成的一个数组 T[]
->
-    : number[] //数组内容都为number类型
-    : string[]
-    : {str: string, num: number}[]
-    ....
-    
-    let a:number[] = [3232,13]
-    let a:string[] = ['a','b']
-    let a:{str: string, num: number}[] = [{str:'aa',num:3}]
-    
+```ts
+: number[] //数组内容都为number类型
+: string[]
+: {str: string, num: number}[]
+....
+
+let a:number[] = [3232,13]
+let a:string[] = ['a','b']
+let a:{str: string, num: number}[] = [{str:'aa',num:3}]
+```  
 
     
-2.  使用数组泛型，Array< T >、ReadonlyArray< T >
->
-    : Array<number> //数组内容都为number类型
-    : Array<boolean> 
-    : Array<any> //数组内容为任意类型
-    ...
-    
-用接口表示数组
+2.  使用数组泛型，Array<T>、ReadonlyArray<T>
+```ts
+: Array<number> //数组内容都为number类型
+: Array<any> //数组内容为任意类型
+: Array<number | string> //数组内容为多种类型类型
+...
+```
+
+* 用接口表示数组
 >
     interface NumberArray {
         [index: number]: number;
@@ -135,18 +138,20 @@ arguments 实际上是一个类数组，不能用普通的数组的方式来描�
 * ReadonlyArray<元素类型> //只读，数组创建后再也不能修改(但可以直接改变整个数组)
 >
     let arr: ReadonlyArray<number>; //只读的数组
-    let arr1: number[] = []
-    arr[1] = 4 //报错
-    arr.push(1)//报错
-    arr.shift(1)//报错
-    arr.length = 4 //报错
-    arr1 = arr //报错 -- 将其赋值到一个普通数组
-
-    arr1 = arr as number[] //ok -- 用类型断言重写
-
+    arr[1] = 4 //error
+    arr.push(1)//error
+    arr.shift(1)//error
+    arr.length = 4 //error
     arr = [] //ok -- 重写数组
 
-* 元组 Tuple  
+    let arr1: number[] = arr //error -- 不可分配给可变类型number[]
+
+    let arr1 = arr // ok
+    let arr1: any = arr // ok
+    let arr1 = arr as number[] //ok -- 用类型断言重写arr类型
+
+
+## 元组 Tuple  
 允许表示一个已知元素数量和类型的数组，各元素的类型不必相同。 (数组内定义不同类型的元素)
 >
 
@@ -158,7 +163,7 @@ arguments 实际上是一个类数组，不能用普通的数组的方式来描�
     arr.push('a') // ok
     arr.push(true) // error!!!,只能添加string、number类型的元素
 
-* 枚举 enum  
+## 枚举 enum  
 枚举 enum 为一组数值赋予友好的名字。默认，从0开始为元素编号。   
 你也可以手动的指定成员的数值（相应的在其后面的元素编号也会随其变化）
 
@@ -214,7 +219,7 @@ arguments 实际上是一个类数组，不能用普通的数组的方式来描�
     let a: number = Color.Red // 1
     let b: string = Color[0] // 'Red'
 
-* 任意类型 any    
+## 任意类型 :any    
 允许被赋值为任意类型;  
 在任意值上访问任何属性、方法都是允许的;  
 变量如果在声明的时候，未指定其类型且没有赋值，那么它会被识别为任意值类型
@@ -237,76 +242,100 @@ arguments 实际上是一个类数组，不能用普通的数组的方式来描�
     let list: any[] = [1, true, "free"];
     list[1] = 100;
 
-* 联合类型(|)  表示取值可以为多种类型中的一种。
+## 联合类型(|)  表示取值可以为多种类型中的一种。
 >
     let maybe: number | string;
     maybe = 1;
     maybe = 'str'
 
 
-* void  
+## :void  
 没有任何类型。 当一个函数没有返回值时，返回值类型定义 void
->
-    function warnUser(): void {
-      console.log("This is my warning message");
-    }
+```ts
+function warnUser(): void {
+  console.log("This is my warning message");
+}
 
-    function warnUser1(): number {
-      console.log("warnUser1");
-      return 1
-    }
-
+function warnUser1(): number {
+  console.log("warnUser1");
+  return 1
+}
+```
 声明一个void类型的变量没有什么大用，只能为它赋予undefined和null
->
-    let unusable: void = undefined;
+```ts
+let a1: void = undefined;
+let a2: void = null;
+let a3: void = 43; // err
+```
 
-* Null、Undefined  
+## null、undefined  
+一个变量类型为 undefined | null，其值只能为null | undefined
+
+```ts
+let a1: null = null // ok
+let a2: undefined = undefined // ok
+let a3: null = undefined // ok
+let a4: undefined = null // ok
+
+let a: undefined = 45 // err
+
+a1 // null
+a2 // undefined
+a3 // undefined
+a4 // null
+```
 
 和 void相似   
 默认情况下null和undefined是所有类型的子类型。 就是说你可以把 null和undefined赋值给number类型的变量。但当你指定了--strictNullChecks标记，null和undefined只能赋值给void和它们各自
->
-    // 这样不会报错
-    let num: number = undefined;
 
-* never  
+```ts
+// 这样不会报错
+let num: number = undefined;
+
+num // undefined
+```
+
+## :never  
 
 表示的是那些永不存在的值的类型。  
 例如， never类型是那些总是会抛出异常或根本就不会有返回值的函数表达式或箭头函数表达式的返回值类型； 变量也可能是 never类型，当它们被永不为真的类型保护所约束时。
 
 never类型是任何类型的子类型，也可以赋值给任何类型；然而，没有类型是never的子类型或可以赋值给never类型（除了never本身之外）。 即使 any也不可以赋值给never。
 
->
-    // 返回never的函数必须存在无法达到的终点
-    function error(message: string): never {
-        throw new Error(message);
-    }
+```ts
+// 返回never的函数必须存在无法达到的终点
+function error(message: string): never {
+    throw new Error(message);
+}
 
-    // 推断的返回值类型为never
-    function fail() {
-        return error("Something failed");
-    }
+// 推断的返回值类型为never
+function fail() {
+    return error("Something failed");
+}
 
-    // 返回never的函数必须存在无法达到的终点
-    function infiniteLoop(): never {
-        while (true) {
-        }
+// 返回never的函数必须存在无法达到的终点
+function infiniteLoop(): never {
+    while (true) {
     }
+}
+```
 
-* object  
+## :object  
 
 object表示非原始类型，也就是除number，string，boolean，symbol，null或undefined之外的类型。
->
-    declare function create(o: object | null): void;
+```ts
+declare function create(o: object | null): void;
 
-    create({ prop: 0 }); // OK
-    create(null); // OK
+create({ prop: 0 }); // OK
+create(null); // OK
 
-    create(42); // Error
-    create("string"); // Error
-    create(false); // Error
-    create(undefined); // Error
+create(42); // Error
+create("string"); // Error
+create(false); // Error
+create(undefined); // Error
+```
 
-* 类型断言
+## 类型断言
 
 1. <类型>值
 >
@@ -314,25 +343,27 @@ object表示非原始类型，也就是除number，string，boolean，symbol，n
     let strLength: number = (<string>someValue).length;
 
 2. 值 as 类型
->
-    let someValue: any = "this is a string";
-    let strLength: number = (someValue as string).length;
-
+```ts
+let someValue: any = "this is a string";
+let strLength: number = (someValue as string).length;
+```
 类型断言不是类型转换，断言成一个联合类型中不存在的类型是不允许的：
->
-    function toBoolean(something: string | number): boolean {
-      return <boolean>something;
-    }
+```ts
+function toBoolean(something: string | number): boolean {
+  return <boolean>something;
+}
+```
 
 当你在TypeScript里使用JSX时，只有 as语法断言是被允许的。
 
-* 类型推论
+## 类型推论
 
 如果没有明确的指定类型，但赋值了（没赋值就是any类型），那么 TypeScript 会依照类型推论（Type Inference）的规则推断出一个类型。
->
-    let a = 5; //一旦赋值就会进行类型推论，这里推测其为number类型
-    a = 15 // ok
-    a= [] // error!!!
+```ts
+let a = 5; //一旦赋值就会进行类型推论，这里推测其为number类型
+a = 15 // ok
+a= [] // error!!!
+```
 
 # <a name="泛型">泛型</a>
 泛型（Generics）是指在定义函数、接口或类的时候，不预先指定具体的类型，而在使用的时候再指定类型的一种特性。
@@ -569,24 +600,25 @@ TypeScript的核心原则之一是对值所具有的结构进行类型检查。 
  
 
     * interface 能够声明合并,type不行
-    >
-        interface User {
-          name: string
-          age: number
-        }
-        
-        interface User {
-          sex: string
-        }
-        
-        /*
-        User 接口为 {
-          name: string
-          age: number
-          sex: string 
-        }
-        */
-
+    ```js
+    interface User {
+      name: string
+      age: number
+    }
+    
+    interface User {
+      sex: string
+    }
+    
+    /*
+    User 接口为 {
+      name: string
+      age: number
+      sex: string 
+    }
+    */
+    ```
+    
 * implements明确的强制一个类去符合某种契约
 >
     interface ClockInterface {

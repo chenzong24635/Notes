@@ -21,7 +21,7 @@ this永远指向的是最后调用它的对象
     globalThis.v = { flag: true };
     console.log(globalThis.v);//{ flag: true }
 
-#### this绑定
+#### this理解
 ![this](/img/this.png)
 
 * this的绑定规则总共有下面5种
@@ -92,19 +92,18 @@ this 指针存在于函数中，用以标识函数运行时所处的上下文。
 
 **特点**
 
-箭头函数没有prototype(原型)，所以箭头函数本身没有this;
+* 箭头函数没有prototype(原型)，所以箭头函数本身没有this;
 
-箭头函数没有constructor,所以不能用new调用箭头函数；
+* 箭头函数没有constructor,所以不能用new调用箭头函数；
 
-箭头函数没有 this/super/arguments/new.target 的绑定，这些值继承自外层第一个普通函数；
+* 箭头函数没有 this/super/arguments/new.target 的绑定，这些值继承自外层第一个普通函数；
 
-箭头函数的this，总是指向定义时所在的对象，而不是运行时所在的对象。
+* 箭头函数的this，总是指向定义时所在的对象，而不是运行时所在的对象。
 
-箭头函数不能直接通过call、aaply、bind、new等修改其this指向(可间接改变：修改被继承的普通函数的this指向)
+* 箭头函数不能直接通过call、aaply、bind、new等修改其this指向(可间接改变：修改被继承的对象的this指向)
 
-箭头函数绑定中，this指向外层作用域，并不一定是第一层，也不一定是第二层。因为没有自身的this，所以只能根据作用域链往上层查找，直到找到一个绑定了this的函数作用域，并指向调用该普通函数的对象。
+* 箭头函数绑定中，this指向外层作用域，根据作用域链往上层查找，直到找到一个绑定了this的函数作用域，并指向调用该普通函数的对象, 否则this都会指向window(全局对象)
 
-箭头函数外层没有普通函数，严格模式和非严格模式下它的this都会指向window(全局对象)
 
 >
     function bar() {

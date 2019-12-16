@@ -4,7 +4,9 @@
 [Undefined](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/undefined)
 
 # null
-null 是一个字面量，不像 undefined，它不是全局对象的一个属性。null 是表示缺少的标识，指示变量未指向任何对象。把 null 作为尚未创建的对象，也许更好理解。在 API 中，null 常在返回类型应是一个对象，但没有关联的值的地方使用。
+null 是一个字面量，不像 undefined，它不是全局对象的一个属性。null 是表示缺少的标识，指示变量未指向任何对象。
+
+从逻辑的角度讲null是用来表示一个空指针，并且typeof返回object。通常null是用来声明一个对象,如：```let obj = null ```
 
 1. 用来初始化一个变量，这个变量可能被赋值为一个对象。
 2. 用来和一个已经初始化的变量比较，这个变量可以是也可以不是一个对象。
@@ -58,24 +60,26 @@ undefined是全局对象的一个属性。也就是说，它是全局作用域�
 使用undefined和严格相等或不相等操作符来决定一个变量是否拥有值。
 
 typeof 不会在一个变量没有被声明的时候抛出一个错误
->
-    // 这里没有声明y
-    if(typeof y === 'undefined') {       // 没有错误，执行结果为true
-      console.log("y is " + typeof y )  // y is undefined
-    }
+```js
+// 这里没有声明y
+if(typeof y === 'undefined') {       // 没有错误，执行结果为true
+  console.log("y is " + typeof y )  // y is undefined
+}
 
-    if(y === undefined) {                // ReferenceError: y is not defined
+if(y === undefined) {                // ReferenceError: y is not defined
 
-    }
+}
+```
 
-void
->
-    var x;
-    if(x === void 0) {
-        // 执行这些语句
-    }
+void判断  
+```js
+var x;
+if(x === void 0) {
+    // 执行这些语句
+}
 
-    // 没有声明y
-    if(y === void 0) {
-        // 抛出一个RenferenceError错误(与`typeof`相比)
-    }
+// 没有声明y
+if(y === void 0) {
+    // 抛出一个RenferenceError错误(与`typeof`相比)
+}
+```

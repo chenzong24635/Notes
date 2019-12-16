@@ -43,6 +43,25 @@
     enumerable：决定 能否枚举该属性。
     configurable：决定该属性能否被删除或者改变特征值
 
+
+get/set方法来检测属性变化
+```js
+  function foo() {}
+  Object.defineProperty(foo.prototype, 'z', 
+    {
+      get: function(){
+        return 1
+      }
+    }
+  )
+  let obj = new foo();
+  console.log(obj.z) // 1
+  obj.z = 10
+  console.log(obj.z) // 1
+
+```
+![defineProperty.jpg](../img/Object/defineProperty.jpg)
+
 ## 对象分类:
 >
 宿主对象（host Objects）：由 JavaScript 宿主环境提供的对象，它们的行为完全由宿主环境决定。全局对象window
@@ -68,6 +87,28 @@ Object.assign(obj1, obj2,...)
       bar() { return 'abc' },
       syb: Symbol('s')
     };
+## has、 in
+此方法可以接受两个参数，分别是目标对象、需查询的属性名，主要拦截如下几种操作：
+
+* 属性查询: foo in proxy
+* 继承属性查询: foo in Object.create(proxy)
+* with 检查: with(proxy) { (foo); }
+* Reflect.has()
+
+has拦截只对in运算符生效，对for...in循环不生效
+
+## Object.create(null)
+Object.create(null)创建出来后就是一个没任何属性的纯对象，
+
+{}则会拥有一个__proto__原型指针，用于指向Object.prototype，因此可以通过__proto__直接访问Object.prototype中的属性。
+
+## Object.preventExtensions、Object.seal、Object.freeze
+
+## propertyIsEnumerable判断对象属性是否可枚举
+obj.propertyIsEnumerable(name)
+
+## hasOwnProperty检测一个对象是否含有特定的自身属性；
+和 in 运算符不同，该方法会忽略掉那些从原型链上继承到的属性
 
 ## <a name="Object.getOwnPropertyNames()">Object.getOwnPropertyNames()</a>
 返回一个数组，包含对象自身的所有属性（包括不可枚举属性,不含 Symbol 属性）的键名

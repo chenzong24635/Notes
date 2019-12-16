@@ -18,7 +18,7 @@
   <summary>
     目录
   </summary>
- 
+* <a href="#概述">概述</a>  
 * <a href="#MVC、MVP、MVVM">MVC、MVP、MVVM</a>  
 * <a href="#SPA">SPA SSR</a>
 * <a href="#双向数据绑定原理、实现">双向数据绑定原理、实现:Object.defineProperty、proxy</a>
@@ -77,6 +77,29 @@
 
 </details>
 
+
+# <a name="概述">概述</a>[![bakTop](./img/backward.png)](#top)  
+Vue 是一套用于构建用户界面的渐进式MVVM框架
+
+Vue 采用自底向上增量开发的设计,Vue的核心库只关心视图渲染，且由于渐进式的特性，Vue便于与第三方库或既有项目整合。
+
+Vue 完全有能力驱动采用单文件组件和Vue生态系统支持的库开发的复杂单页应用。
+
+Vue包含了声明式渲染、组件化系统、客户端路由、大规模状态管理、构建工具、数据持久化、跨平台支持等，但在实际开发中，并没有强制要求开发者之后某一特定功能，而是根据需求逐渐扩展。
+```js
+var arr = [1, 2, 3, 4, 5];
+
+// 命令式渲染，关心每一步、关心流程。用命令去实现
+var newArr = [];
+for (var i = 0; i < arr.length; i++) {
+    newArr.push(arr[i] * 2);
+}
+
+// 声明式渲染，不用关心中间流程，只需要关心结果和实现的条件
+var newArr1 = arr.map(function (item) {
+    return item * 2;
+});
+```
 
 # <a name="MVC、MVP、MVVM">MVC、MVP、MVVM</a>[![bakTop](./img/backward.png)](#top)  
 [基于Vue实现一个简易MVVM](https://juejin.im/post/5cd8a7c1f265da037a3d0992#heading-0)
@@ -220,9 +243,10 @@ Object.defineProperty无法监控到数组下标的变化，导致直接通过�
 
 Vue3 则使用 Proxy
 
+
 ![img](./img/vuexys.png)
 
-[](https://juejin.im/post/5acd0c8a6fb9a028da7cdfaf)
+[实现双向绑定Proxy比defineproperty优劣如何?](https://juejin.im/post/5acd0c8a6fb9a028da7cdfaf)
 
 
 ### 区别：
@@ -375,11 +399,11 @@ Vue 实例有一个完整的生命周期，也就是从开始创建、初始化�
 
 ## 各个生命周期作用：
 >
-    beforeCreated阶段: vue实例的挂载元素$el和数据对象data都为undefined，还未初始化。 
+    beforeCreated阶段: 数据对象data和vue实例的挂载元素$el都为undefined，还未初始化。 
     created阶段: 完成data初始化，$el还没有。
 
-    beforeMount阶段：完成了$el和data初始化，但还是挂载之前为虚拟的dom节点，data.message还未替换。 
-    mounted阶段：vue实例挂载完成，data.message成功渲染。
+    beforeMount阶段：完成了data和$el初始化，但还是挂载之前为虚拟的dom节点，data.message还未替换。 
+    mounted阶段：$el挂载完成，data.message成功渲染。
 
     beforeUpdate 、updated:当data变化时，会触发
 
@@ -405,7 +429,7 @@ Vue 实例有一个完整的生命周期，也就是从开始创建、初始化�
 <img src="img/lifecycle.png" width="60%" />
 
 
-## 父子组件生命周期钩子函数执行顺序？
+## 父子组件生命周期执行顺序？
 
 加载渲染过程
 >
@@ -440,14 +464,12 @@ Vue 实例有一个完整的生命周期，也就是从开始创建、初始化�
     子 destroyed -> 
     父 destroyed
 
-
-
 # <a name="监听组件的生命周期">监听组件的生命周期</a>[![bakTop](./img/backward.png)](#top)  
 
 父组件监听到子组件挂载 mounted就做一些逻辑处理
 
 常规的写法可能如下：
->
+```js
     // Parent.vue
     <Child @mounted="doSomething"/>
 
@@ -455,13 +477,12 @@ Vue 实例有一个完整的生命周期，也就是从开始创建、初始化�
     mounted() {
       this.$emit("mounted");
     }
-
+```
 
 通过 @hook来监听，子组件不需要任何处理，只需要在父组件引用的时候即可：
->
+```js
     //  Parent.vue
     <Child @hook:mounted="doSomething" ></Child>
-
     doSomething() {
       console.log('父组件监听到 mounted 钩子函数 ...');
     },
@@ -474,7 +495,7 @@ Vue 实例有一个完整的生命周期，也就是从开始创建、初始化�
     // 以上输出顺序为：
     // 子组件触发 mounted 钩子函数 ...
     // 父组件监听到 mounted 钩子函数 ...     
-
+```
 其它的生命周期事件，例如： created， updated等都可监听
 
 # <a name="组件销毁时，清除定时器">组件销毁时，清除定时器</a>[![bakTop](./img/backward.png)](#top)  
@@ -1017,63 +1038,76 @@ https://www.jianshu.com/p/a7550c0e164f
 # <a name="页面滚动">页面滚动</a>[![bakTop](./img/backward.png)](#top)  
 
 切换路由时滚到头部
->
-    const router = new Router({
-      routes: [...],
-      scrollBehavior (to, from, savedPosition) {
-        // return 期望滚动到哪个的位置
-        // savedPosition当且仅当在浏览器前进后退按钮触发时才可用
-        if (to.hash) { //模拟“滚动到锚点”的行为：
-          return {
-            selector: to.hash
-          }
-        }
-        if (savedPosition) {
-          //如果返回savedPosition,那么在点击后退按钮时就会表现的像原生浏览器一样，返回的页面会滚动过到之前按钮点击跳转的位置
-          return savedPosition
-        } else {
-          return { x: 0, y: 0 }
-        }
+```js
+const router = new Router({
+  routes: [...],
+  scrollBehavior (to, from, savedPosition) {
+    // return 期望滚动到哪个的位置
+    // savedPosition当且仅当在浏览器前进后退按钮触发时才可用
+    if (to.hash) { //模拟“滚动到锚点”的行为：
+      return {
+        selector: to.hash
       }
-    })
+    }
+    if (savedPosition) {
+      //如果返回savedPosition,那么在点击后退按钮时就会表现的像原生浏览器一样，返回的页面会滚动过到之前按钮点击跳转的位置
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  }
+})
+```
+异步滚动
+```js
+scrollBehavior(to, from, savedPosition) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({ x: 0, y: 0 })
+    }, 500)
+  })
+} 
+
+```
 
 新增内容时，滚到底部（如聊天）
->
-    <div class="scroll-here" ref="scrollHere"></div>
+```js
+<div class="scroll-here" ref="scrollHere"></div>
 
-    // 监听lists列表 ，变化就触发滚动
-    watch: {
-      lists(){
-        setTimeout(this.scrollBottom,1000)
-      }
-    },
-    methods: {
-      scrollBottom() {
-        this.$nextTick(() => {
-          /* 无效？？？
-          this.$refs.lists.scrollTop = this.$refs.lists.scrollHeight
-          document.body.scrollTop = this.$refs.lists.scrollHeight
-          ; */
-          // document.querySelector('.scroll-here').scrollIntoView()
-          this.$refs.scrollHere.scrollIntoView()
-        });
-      },
-    }
->
-
-    document.documentElement.scrollTop = 300
-
+// 监听lists列表 ，变化就触发滚动
+watch: {
+  lists(){
+    setTimeout(this.scrollBottom,1000)
+  }
+},
+methods: {
+  scrollBottom() {
     this.$nextTick(() => {
-      // ref绑定元素不能是display:none;
-      // 在this.$nextTick里执行
-      <!-- this.$refs.DOM.scrollBy(0, 300) -->
-      this.$refs.DOM.scrollTo(0, 300)
-    })
+      /* 无效？？？
+      this.$refs.lists.scrollTop = this.$refs.lists.scrollHeight
+      document.body.scrollTop = this.$refs.lists.scrollHeight
+      ; */
+      // document.querySelector('.scroll-here').scrollIntoView()
+      this.$refs.scrollHere.scrollIntoView()
+    });
+  },
+}
+```
 
-    document.getElementById('ID').scrollIntoView()
+```js
+document.documentElement.scrollTop = 300
 
-   window.scrollTo(0, 0)
+this.$nextTick(() => {
+  // ref绑定元素不能是display:none;
+  // 在this.$nextTick里执行
+  <!-- this.$refs.DOM.scrollBy(0, 300) -->
+  this.$refs.DOM.scrollTo(0, 300)
+})
 
+document.getElementById('ID').scrollIntoView()
+
+window.scrollTo(0, 0)
+```
 
 # <a name="keep-alive">keep-alive</a>[![bakTop](./img/backward.png)](#top)  
 [keep-alive](https://cn.vuejs.org/v2/api/#keep-alive)
@@ -1269,8 +1303,9 @@ https://router.vuejs.org/zh
 
 2. vue-wechat-title
 假如title需要读取文章的标题，每次都不一样
+
+安装
 >
-# 安装
 
     npm i -D vue-wechat-title
     // 全局引入
@@ -1303,7 +1338,7 @@ https://router.vuejs.org/zh
 ### 全局解析守卫:beforeResolve
 与beforeEach 类似，区别是在导航被确认之前，同时在所有组件内守卫和异步路由组件被解析之后，解析守卫就被调用
 
-### 全局后置钩子 
+### 全局后置钩子 afterEach
 
 不会接受 next 函数也不会改变导航本身：
 >
@@ -1313,75 +1348,77 @@ https://router.vuejs.org/zh
 
 ### 组件内的守卫：beforeRouteEnter 、beforeRouteUpdate、beforeRouteLeave
 
->
-    beforeRouteEnter (to, from, next) {
-      // 在渲染该组件的对应路由被 confirm 前调用
-      // 不！能！获取组件实例 `this`
-      // 因为当守卫执行前，组件实例还没被创建
+```js
+beforeRouteEnter (to, from, next) {
+  // 在渲染该组件的对应路由被 confirm 前调用
+  // 不！能！获取组件实例 `this`
+  // 因为当守卫执行前，组件实例还没被创建
 
-      //不过，你可以通过传一个回调给 next来访问组件实例。在导航被确认的时候执行回调，并且把组件实例作为回调方法的参数。
-      next(vm => {
-        // 通过 `vm` 访问组件实例
-        // `next 函数中 vm 回调不是同步执行，而是等到 mounted 执行完之后，才执行` 。
-      })
-    },
-    beforeRouteUpdate (to, from, next) {
-      // 在当前路由改变，但是该组件被复用时调用
-      // 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，
-      // 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
-      // 可以访问组件实例 `this`
-    },
-    beforeRouteLeave (to, from, next) {
-      // 导航离开该组件的对应路由时调用
-    }
-    
+  //不过，你可以通过传一个回调给 next来访问组件实例。在导航被确认的时候执行回调，并且把组件实例作为回调方法的参数。
+  next(vm => {
+    // 通过 `vm` 访问组件实例
+    // `next 函数中 vm 回调不是同步执行，而是等到 mounted 执行完之后，才执行` 。
+  })
+},
+beforeRouteUpdate (to, from, next) {
+  // 在当前路由改变，但是该组件被复用时调用
+  // 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，
+  // 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
+  // 可以访问组件实例 `this`
+},
+beforeRouteLeave (to, from, next) {
+  // 导航离开该组件的对应路由时调用
+}
+```
+
 ##  <a name="多个路由共用一个页面操作">多个路由共用一个页面操作</a>[![bakTop](./img/backward.png)](#top)  
 1. watch
->
-    当路由变化时，watch里的路由监听函数都会被触发，可以在这个函数中对页面的数据进行重新加载的操作。
-    watch:{
-      "$route":function(to,from){
-        if (to.name === from.name && to.params.id !== from.params.id) {
-          //do something 
-        }
-      }
+```js
+当路由变化时，watch里的路由监听函数都会被触发，可以在这个函数中对页面的数据进行重新加载的操作。
+watch:{
+  "$route":function(to,from){
+    if (to.name === from.name && to.params.id !== from.params.id) {
+      //do something 
     }
+  }
+}
+```
+
 2. beforeRouteUpdate  // 组件内的守卫
->
-    //设置id参数 判断是否相同
-    beforeRouteUpdate (to, from, next) {
-      if (to.name === from.name && to.params.id !== from.params.id) {
-        //do something 
-        next() 
-      }
-    }
-
-
+```js
+//设置id参数 判断是否相同
+beforeRouteUpdate (to, from, next) {
+  if (to.name === from.name && to.params.id !== from.params.id) {
+    //do something 
+    next() 
+  }
+}
+```
 
 ##  <a name="单页面多路由区域操作">单页面多路由区域操作</a>[![bakTop](./img/backward.png)](#top)  
 router.js
->
-    export default new Router({
-      routes: [
-        {
-          path: '/',
-          components: {
-            default:Hello,
-            left:Hi1,
-            right:Hi2
-          }
-        },{
-          path: '/Hi',
-          components: {
-            default:Hello,
-            left:Hi2,
-            right:Hi1
-          }
-        }
-    
-      ]
-    })
+```js
+export default new Router({
+  routes: [
+    {
+      path: '/',
+      components: {
+        default:Hello,
+        left:Hi1,
+        right:Hi2
+      }
+    },{
+      path: '/Hi',
+      components: {
+        default:Hello,
+        left:Hi2,
+        right:Hi1
+      }
+    }
 
+  ]
+})
+```
 
 App.vue
 >

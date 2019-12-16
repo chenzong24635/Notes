@@ -63,7 +63,7 @@
 * <a href="#原型、原型链、原型继承">原型、原型链、原型继承</a>
 * <a href="#创建对象的几种方式">创建对象的几种方式</a>
 * <a href="#作用域、作用域链、执行上下文">作用域、作用域链、执行上下文</a>
-* <a href="#this">this绑定</a>
+* <a href="#this">this理解</a>
 * <a href="apply call bind">apply call bind</a>
 * <a href="实现apply call bind">实现apply call bind</a>
 * <a href="#公有、私有、静态、特权方法与属性">公有、私有、静态、特权方法与属性</a>
@@ -142,41 +142,51 @@
 ![===、==、Object.is()](/img/===.png)
 
 ## ===运算符判断
-    如果两个值不是相同类型，它们不相等
-    如果两个值都是null或者都是undefined，它们相等
-    如果两个值都是布尔类型true或者都是false，它们相等
-    如果其中有一个是NaN，它们不相等
-    如果都是数值型并且数值相等，他们相等， -0等于0
-    如果他们都是字符串并且在相同位置包含相同的16位值，他它们相等；如果在长度或者内容上不等，它们不相等；两个字符串显示结果相同但是编码不同==和===都认为他们不相等
-    如果他们指向相同对象、数组、函数，它们相等；如果指向不同对象，他们不相等
+* 如果两个值不是相同类型，它们不相等
+* 如果两个值都是null或者都是undefined，它们相等
+* 如果两个值都是布尔类型true或者都是false，它们相等
+* 如果其中有一个是NaN，它们不相等
+* 如果都是数值型并且数值相等，他们相等， -0等于0(+0)
+* 如果他们都是字符串并且在相同位置包含相同的16位值，他它们相等；如果在长度或者* 容上不等，它们不相等；两个字符串显示结果相同但是编码不同==和===都认为他们不* 等
+* 如果他们指向相同对象、数组、函数，它们相等；如果指向不同对象，他们不相等
     
 ## ==运算符判断
->
-    如果两个值类型相同，按照===比较方法进行比较
-    如果类型不同，使用如下规则进行比较
-    如果其中一个值是null，另一个是undefined，它们相等
-    如果一个值是数字另一个是字符串，将字符串转换为数字进行比较
-    如果有布尔类型，将true转换为1，false转换为0，然后用==规则继续比较
-    如果一个值是对象，另一个是数字或字符串，将对象转换为原始值然后用==规则继续比较
-    其他所有情况都认为不相等
+* 如果两个值类型相同，按照===比较方法进行比较
+* 如果类型不同，使用如下规则进行比较
+* 如果其中一个值是null，另一个是undefined，它们相等
+* 如果一个值是数字，另一个是字符串，将字符串转换为数字进行比较
+* 如果有布尔类型，将 true|false 转换为 1|0，然后用 == 规则继续比较
+* 如果其中有一个是NaN，它们不相等(```NaN == NaN ==> false```)
+* 如果一个值是对象，另一个是数字或字符串，将对象转换为原始值然后用 == 规则继续比较
+* 其他所有情况都认为不相等
+
+![==](./img/==.jpg)
 
 ##  Object.is()
+为true的情况
+* 都是 undefined
+* 都是 null
+* 都是 true 或者都是 false
+* 都是完全相同的字符串，
+* 都是数字并且
+  * 都是正零，0 | +0 (Object.is(0,+0) ==>true)
+  * 都是负零 -0 (Object.is(0,-0) ==>false)
+  * 都是 NaN 
+  * 都是除零和 NaN 外的其它同一个数字
+* 都指向同一个对象
+  ```js
+  let a = {}
+  let b =a
+  Object.is(a,b) // true
 
->
-    两个值都是 undefined
-    两个值都是 null
-    两个值都是 true 或者都是 false
-    两个值是由相同个数的字符按照相同的顺序组成的字符串
-    两个值指向同一个对象
-    两个值都是数字并且
-    都是正零 +0 (Object.is(0,+0) ==>true)
-    都是负零 -0 (Object.is(0,-0) ==>false)
-    都是 NaN
-    都是除零和 NaN 外的其它同一个数字
+  Object.is({},{}) // false
 
-    这种相等性判断逻辑和传统的 == 运算不同，== 运算符会对它两边的操作数做隐式类型转换（如果它们类型不同），然后才进行相等性比较，（所以才会有类似 "" == false 等于 true 的现象），但 Object.is 不会做这种类型转换。
+  ```
 
-    这与 === 运算符的判定方式也不一样。=== 运算符（和== 运算符）将数字值 -0 和 +0 视为相等，并认为 Number.NaN 不等于 NaN。
+
+这种相等性判断逻辑和传统的 == 运算不同，== 运算符会对它两边的操作数做隐式类型转换（如果它们类型不同），然后才进行相等性比较，（所以才会有类似 "" == false 等于 true 的现象），但 Object.is 不会做这种类型转换。
+
+这与 === 运算符的判定方式也不一样。=== 运算符（和== 运算符）将数字值 -0 和 +0 视为相等，并认为 Number.NaN 不等于 NaN。
 
 
 #  <a name="keyCode">keyCode:键盘按键键码</a>
@@ -224,16 +234,13 @@ JavaScript 是弱类型语言，而且JavaScript 声明变量的时候并没有�
 
 ![堆栈](./img/堆栈.jpg)
 
-
-对象的键名只能是字符串和 Symbol 类型。  
-其他类型的键名会被转换成字符串类型。  
-对象转字符串默认会调用 toString 方法。  
+对象的键名只能是字符串和 Symbol 类型。    
+其他类型的键名会被转换成字符串类型。    
+对象转字符串默认会调用 toString 方法。   
 [demo](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/125)
 
 
 [**BigInt**](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt)   
-
-[]
 
 ES10引入了一种新的数据类型 BigInt（大整数）,来表示大于 2^53 - 1 的整数。BigInt 可以表示任意大的整数。
 
@@ -258,12 +265,12 @@ ES10引入了一种新的数据类型 BigInt（大整数）,来表示大于 2^53
 它在某些方面类似于 Number ，但是也有几个关键的不同点：不能用于 Math 对象中的方法；不能和任何 Number 实例混合运算，两者必须转换成同一种类型。在两种类型来回转换时要小心，因为 BigInt 变量在转换成 Number 变量时可能会丢失精度。
 
 ### 内置对象
-    Object 是 JavaScript 中所有对象的父对象
-    数据封装类对象：Object、Array、Boolean、Number、String 
-    其他对象：Function、Arguments、Math、Date、RegExp、Error
+Object 是 JavaScript 中所有对象的父对象  
+数据封装类对象：Object、Array、Boolean、Number、String   
+其他对象：Function、Arguments、Math、Date、RegExp、Error  
 
- window对象是顶层对象，指浏览器打开的窗口。  
- document对象是Documentd对象（HTML 文档对象）的一个只读引用，window对象的一个属性。
+window对象是顶层对象，指浏览器打开的窗口。    
+document对象是Documentd对象（HTML 文档对象）的一个只读引用，window对象的一个属性。
 
 ### 区分数组对象方法 
 
@@ -278,42 +285,11 @@ ES10引入了一种新的数据类型 BigInt（大整数）,来表示大于 2^53
     ([].constructor) // ƒ Array() { [native code] }
     ({}.constructor) // ƒ Object() { [native code] }
 
+    Array.isArray([]) // true
+    Array.isArray({}) // false
+
 ## <a name="undefined与null定义、区别">undefined与null定义、区别</a>
-
-### null
-1. 用来初始化一个变量，这个变量可能被赋值为一个对象。
-2. 用来和一个已经初始化的变量比较，这个变量可以是也可以不是一个对象。
-3. 当函数的参数期望是对象时，被用作参数传入。
-4. 当函数的返回值期望是对象时，被用作返回值传出。
-5. 作为对象原型链的终点
-
-
-### undefined 
-1. 变量被声明了，但没有赋值时，就等于undefined。
-2. 调用函数时，应该提供的参数没有提供，该参数等于undefined。
-3. 对象没有赋值的属性，该属性的值为undefined。
-4. 函数没有返回值时，默认返回undefined。
-
-### 区别
->
-
-    null和undefined只有文字形式，没有构造形式
-
-    undefined:语义：不存在该数据；声明了变量，但未赋值或对象属性不存在
-    null:语义：存在该数据，但未赋值； 表无值、无对象
-
-    只有被定义才有可能为 null，未定义时为 undefined。  
-    null 用于对象 , undefined 用于变量，属性和方法。
-
-    null表示准备用来保存对象，还没有真正保存对象的值。从逻辑角度看，null值表示一个空对象指针，意思是你定义了它,但它没有分配内存空间。
-
-    null的类型是object，即 typeof null 返回object
-
-    null == undefined //true
-    null === undefined //false
-
-如果我们想测试对象是否为空，在对象还没定义时将会抛出一个错误。
-要先使用 typeof 来检测对象是否已定义：if (typeof myObj !== "undefined" && myObj !== null) 
+[undefined、null](./details/Undefined、Null.md)
 
 ## <a name="json jsonp">json jsonp</a>
 
@@ -838,8 +814,7 @@ hasOwnProperty()
 "异步模式"则完全不同，每一个任务有一个或多个回调函数（callback），前一个任务结束后，不是执行后一个任务，而是执行回调函数，后一个任务则是不等前一个任务结束就执行，所以程序的执行顺序与任务的排列顺序是不一致的、异步的。
 
 
-
-* 回调函数
+### 回调函数
 >
     如果f1是一个很耗时的任务，可以考虑改写f1，把f2写成f1的回调函数。
     　　function f1(callback){
@@ -856,7 +831,7 @@ hasOwnProperty()
 回调地狱，不能用 try catch 捕获错误，不能 return；
 
 
-* 事件监听
+### 事件监听
 >
 
     采用事件驱动模式。任务的执行不取决于代码的顺序，而取决于某个事件是否发生。
@@ -869,7 +844,13 @@ hasOwnProperty()
 缺点：  
 整个程序都要变成事件驱动型，运行流程会变得很不清晰。
 
-* Promises
+### 发布订阅模式
+
+发布订阅模式，有一个事件池，用来给你订阅(注册)事件，当你订阅的事件发生时就会通知你，然后你就可以去处理此事件
+
+[designMode](/details/designMode#发布订阅模式.md)
+
+### Promises
 >
 
     function fn(arg) {
@@ -899,9 +880,9 @@ hasOwnProperty()
 
 每一个异步任务返回一个Promise对象，该对象有一个then方法，允许指定回调函数
 
-* Generator
+### Generator
 
-* async await
+### async await
 >
     async function asyncFuns() {
       await fn1()
@@ -926,11 +907,7 @@ hasOwnProperty()
     首先函数 b 先执行，在执行到 await 10 之前变量 a 还是 0，因为 await 内部实现了 generator ，generator会保留堆栈中东西，所以这时候a = 0被保存了下来；
     因为 await 是异步操作，后来的表达式不返回 Promise 的话，就会包装成 Promise.reslove(返回值)，然后会去执行函数外的同步代码；
 
-* 发布订阅模式
 
-发布订阅模式，有一个事件池，用来给你订阅(注册)事件，当你订阅的事件发生时就会通知你，然后你就可以去处理此事件
-
-[designMode](/details/designMode.md)
 
 ## <a name="事件委托">事件委托(代理)delegate</a>
 
@@ -1044,37 +1021,51 @@ hasOwnProperty()
     组织好你的逻辑，避免死循环等造成浏览器卡顿，崩溃的问题。
 
 ## <a name="new的实现原理">new的实现原理</a>
->
-    创建一个空对象，并将这个空对象的 __proto__，指向构造函数的原型(prototype)对象 ，使其继承构造函数原型上的属性。  
+new
+* 创建一个空对象，并将这个空对象的 __proto__，指向构造函数的原型(prototype)对象 ，使其继承构造函数原型上的属性。  
 
-    改变构造函数内部 this 指针为这个空对象(如果有传参，需要将参数也导入构造函数)  
+* 改变构造函数内部 this 指针为这个对象(如果有传参，需要将参数也导入构造函数)  
 
-    执行构造函数中的代码，使其具有构造函数 this 指针的属性。  
+* 执行构造函数中的代码，使其具有构造函数 this 指针的属性。  
 
-    如果构造函数中没有返回其它对象，那么返回this，即创建的这个的新对象，否则，返回构造函数中返回的对象。
+* 如果构造函数中没有返回其它对象(tips：不包括null)，那么返回this，即创建的这个的新对象，否则，返回构造函数中返回的对象。
 
 new 操作返回的实例对象具有两个特征：
 >
     具有构造函数中定义的 this 指针的属性和方法  
     具有构造函数原型上的属性和方法
 
+```js
 function Person(x){
   this.name = x
 }
 Person.prototype.say=()=>{console.log(this.name)}
+var p = new Person('I am P')
+
+console.log(p) // Person {name: 'I am P'}
+```
+构造函数return一个对象时
+```js
+function Person(x){
+  this.name = x
+  return {name:1}
+}
+Person.prototype.say=()=>{console.log(this.name)}
 var p = new Person()
 
+console.log(p) // {name: 1}
+```
 
 ## <a name="原型、原型链、原型继承">原型、原型链、原型继承</a>
 
 
 * 原型(prototype)：
 >
-    函数本身就是个包含方法与属性的对象，每个对象都有个__proto__属性,称为原型。可通过原型为对象扩展属性，实现继承
+    函数本身就是个包含方法与属性的对象，每个函数都有一个prototype属性,每个对象都有个__proto__属性指向其构造函数的prototype,称为原型。可通过原型为对象扩展属性，实现继承
 
 * 原型链：
 >
-    当我们访问一个对象的属性时，如果这个对象内部不存在这个属性，就从其原型找这个属性，原型对象也是对象也拥有原型，一层层寻找，直至null（Object.prototype.__proto__）从而形成了所谓的“原型链”。
+    当我们访问一个对象的属性时，如果这个对象内部不存在这个属性，就从其原型找这个属性，原型对象也是对象也拥有原型，一层层寻找，直至null（即Object.prototype.__proto__）从而形成了所谓的“原型链”。
 
 查找自身属性（不查找原型链）：obj.hasOwnProperty(prop)
 
@@ -1238,7 +1229,7 @@ JavaScript中的函数采用静态作用域，也称词法作用域。当在执�
 浏览器的JS执行引擎总是访问栈顶的执行上下文。  
 全局上下文只有唯一的一个，它在浏览器关闭时出栈。
 
-## <a name="this">this绑定</a>
+## <a name="this">this理解</a>
 [this](/details/this.md)
 
 ## <a name="apply call bind">apply call bind</a>

@@ -1,11 +1,8 @@
 <a id="top"></a>
 
 
-# 
-<details>
-  <summary>vscode 快捷键</summary>
-
-  [vscode快捷键](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf)
+### 
+* [vscode快捷键](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf)
 
 >
     删除空行：ctrl+h键进行正则匹配：^\s*(?=\r?$)\n
@@ -16,9 +13,51 @@
 
     跳到某行： Ctrl+ G 然后在弹出的框中输入行数就可以了
 
-</details>
+
+* vsCode 添加浏览器调试和js调试的方法   
+
+安装插件Debugger for Chrome
+
+直接按F5,在launch.json文件中的配置如下
+
+```json
+{
+
+  "version": "0.2.0",
+  "configurations": [{
+          "name": "谷歌浏览器", //运行html文件，用谷歌浏览器打开
+          "type": "chrome",
+          "request": "launch",
+          "url": "${file}",
+          "sourceMaps": true,
+          "webRoot": "${workspaceRoot}"
+      },
+      {
+          "name": "nodeLauch", //单独调试js，即可以直接运行js
+          "type": "node",
+          "request": "launch",
+          "program": "${file}", //这个配置成你要调试的文件、${file}当前打开的文件
+          "stopOnEntry": false,
+          "args": [],
+          "cwd": "${workspaceRoot}",
+          "runtimeExecutable": null,
+          "runtimeArgs": [
+              "--nolazy"
+          ],
+          "env": {
+              "NODE_ENV": "development"
+          },
+          "console": "internalConsole",
+          "preLaunchTask": "",
+          "sourceMaps": false,
+          "outDir": null
+      }
+  ]
+}
+```
 
 
+### 
 <details open>
   <summary>markdown 语法</summary>
 
@@ -176,7 +215,7 @@ div.item*3>{$}
 
 </details>
 
-# 
+###  
 <details >
   <summary>
   常用网站：论坛、社区、博客、网站、手册

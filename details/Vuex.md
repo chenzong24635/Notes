@@ -1,6 +1,6 @@
 # [`vuex 官网`](https://vuex.vuejs.org/zh/)
 
-[参考](https://juejin.im/post/5cee430bf265da1b94212bf5?utm_medium=hao.caibaojian.com&utm_source=hao.caibaojian.com#heading-12)
+[Vuex概念浓缩版记录](https://juejin.im/post/5cee430bf265da1b94212bf5)
 
 ![img](img/vuex.png)
 # 基本

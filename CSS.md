@@ -1295,18 +1295,19 @@ perspective()：指定3d的透视距离
 
 
 * matrix
->
-    transform: matrix(a,b,c,d,e,f)
-    a c e   x   ax + cy + e // ax+cy+e:变换后的水平坐标
-    b d f . y = bx + dy + f // bx+dy+f:变换后的垂直位置 
-    0 0 1   1   0  + 0  + 1
+```js
+transform: matrix(a,b,c,d,e,f)
+a c e   x   ax + cy + e // ax+cy+e:变换后的水平坐标
+b d f . y = bx + dy + f // bx+dy+f:变换后的垂直位置 
+0 0 1   1   0  + 0  + 1
 
 
-    x, y表示转换元素的所有坐标（变量）
+x, y表示转换元素的所有坐标（变量）
 
-    matrix(sx, 0, 0, sy, 0, 0) 等同于scale(sx, sy)
+matrix(sx, 0, 0, sy, 0, 0) 等同于scale(sx, sy)
 
-    matrix(0, 0, 0, 0, tx, ty) 等同于translate(tx, ty)
+matrix(0, 0, 0, 0, tx, ty) 等同于translate(tx, ty)
+```
 
 * [ transform的影响](http://www.zhangxinxu.com/wordpress/2015/05/css3-transform-affect/)
 
@@ -1323,22 +1324,24 @@ transform限制position:fixed的跟随效果，
 
 transition: property duration  timing-function delay  
 
->property 执行过渡效果对应的属性，例如 color，background 等，可以使用 all 来指定所有的属性 ；并不是所有的CSS属性都可添加transition 效果 如:display[参考](http://css.cuishifeng.cn/transition-property.html)
+>property 执行过渡效果对应的属性，
+>>例如 color，background 等，可以使用 all 来指定所有的属性 ；并不是所有的CSS属性都可添加transition 效果 如:display...[详细](http://css.cuishifeng.cn/transition-property.html)
 
 >duration 过渡动画的持续时间  
 
->timing-function 动画的速度曲线，常见的有：linear(匀速)，ease(快-慢-慢)，ease-in(快-快)，ease-out(慢-慢)，ease-in-out(慢-快-慢),cubic-bezier...[详细参考](http://css.cuishifeng.cn/transition-timing-function.html)  
+>timing-function 动画的速度曲线，
+>>常见的有：linear(匀速)，ease(快-慢-慢)，ease-in(快-快)，ease-out(慢-慢)，ease-in-out(慢-快-慢),cubic-bezier...[详细](http://css.cuishifeng.cn/transition-timing-function.html)  
 
 >delay 延迟多久后开始动画  
 
 如果需要不同属性对应不同的效果，可以这么来写：
->
-    .demo {
-      transition-property: all, border-radius, opacity;
-      transition-duration: 1s, 2s, 3s;
-      /* 当这样使用时，确保 all 在第一个，因为如果 all 在后边的话，它的规则会覆盖掉前边的属性 */
-    }
-
+```css
+.demo {
+  transition-property: all, border-radius, opacity;
+  transition-duration: 1s, 2s, 3s;
+  /* 当这样使用时，确保 all 在第一个，因为如果 all 在后边的话，它的规则会覆盖掉前边的属性 */
+}
+```
 ## <a name="animation">animation动画</a>[![bakTop](./img/backward.png)](#top)
 animation: name duration timing-function delay iteration-count direction play-state fill-mode;  
 
@@ -1360,35 +1363,35 @@ animation: name duration timing-function delay iteration-count direction play-st
 
 
 使用 animation 的前提是我们需要先使用 @keyframes 来定义一个动画效果，用来控制动画过程中的各个状态的情况，
->
-    @keyframes animationName {
-      from { left: 0; top: 0; }
-      to { left: 100%; top: 100%; }
-    }
-    @keyframes animationName {
-      0% { left: 0; top: 0; }
-      100% { left: 100%; top: 100%; }
-    }
+```css
+@keyframes animationName {
+  from { left: 0; top: 0; }
+  to { left: 100%; top: 100%; }
+}
+@keyframes animationName {
+  0% { left: 0; top: 0; }
+  100% { left: 100%; top: 100%; }
+}
 
-
-      .animation {
-        width: 200px;
-        height: 300px;
-        background-image: linear-gradient(blue, red);
-      }
-      .animation{
-        animation: a 2s ease-in-out infinite alternate both;
-      }
-      @keyframes a{
-        0%{
-          opacity: 1;
-          transform: translate(0,0)
-        }
-        100%{
-          opacity: 0;
-          transform: translate(200px,0) scale(.5) skew(2turn)
-        }
-      }
+.animation {
+  width: 200px;
+  height: 300px;
+  background-image: linear-gradient(blue, red);
+}
+.animation{
+  animation: a 2s ease-in-out infinite alternate both;
+}
+@keyframes a{
+  0%{
+    opacity: 1;
+    transform: translate(0,0)
+  }
+  100%{
+    opacity: 0;
+    transform: translate(200px,0) scale(.5) skew(2turn)
+  }
+}
+```
 
 简易loading
 >
