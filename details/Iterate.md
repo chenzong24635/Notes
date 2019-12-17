@@ -13,46 +13,65 @@
   * <a href="#"></a>
 
 # <a name="遍历方法">**遍历方法**</a>
-> 
-    * 
-    let arr = ['a', 'b'];
-    let obj = {
-      'a': 'a1',
-      'b': 'b1'
-    }
+```js
+let arr = ['a', 'b'];
+let obj = {
+  'a': 'a1',
+  'b': 'b1'
+}
+```
 
 ## <a name="for">for</a>
 `能被break, continue,  return（函数中）中断`  
->
-    for (let i = 0,len = arr.length; i < len ; i++) {
-      console.log('key:', i, 'val:', arr[i])
-      break;
-    }
+```js
+for (let i = 0,len = arr.length; i < len ; i++) {
+  console.log('key:', i, 'val:', arr[i])
+  break;
+}
+```
 
 ## <a name="for in">for...in --遍历对象--遍历的是索引（键名）</a>
 `能被break, continue,  return中断`    
 `for in更适合遍历对象，不要使用for in遍历数组。`
 
->
-    1.遍历的是索引（键名）
-    2.遍历顺序有可能不是按照实际的内部顺序
-    3.for in环遍历对象自身的和继承的可枚举属性（不含 Symbol 属性）
+* 遍历的是索引（键名）
+* 遍历顺序有可能不是按照实际的内部顺序
+* for in环遍历对象自身的和继承的可枚举属性（不含 Symbol 属性）
 
-    for (key in obj) { 
-      if (myObject.hasOwnProperty(key)) { //判断某属性是否是该对象的实例属性
+```ts
+for (key in obj) { 
+  if (myObject.hasOwnProperty(key)) { //判断某属性是否是该对象的实例属性
 　　　　console.log(key);
 　　  }
-      console.log('key:', key, ';val:', obj[key]);
-    }
+  console.log('key:', key, ';val:', obj[key]);
+}
+```
+
+不会改变原对象
+```js
+let obj = {a: 1, b: 2}
+for(let item in obj){
+  item = item+2
+  console.log(item)
+}
+console.log(obj)
+
+```
 
 ## <a name="for of">for...of--遍历数组--遍历的是键值</a>
 `能被break, continue,  return中断`      
 `必须部署了 Iterator 接口后才能使用；遍历普通对象会报错`
 
-    for (item of arr) {
-      if(item >= 3)break
-      console.log('item:', item);
-    }
+不会改变原数组
+```js
+let arr = [1,2,3,4]
+for (item of arr) {
+  if(item >= 3)break
+  item *= 2
+  console.log('item:', item);
+}
+console.log(arr)
+```
 
 ## <a name="for await of">for await of-- 异步迭代器</a>
 for await (let item of arr) {}

@@ -41,16 +41,16 @@ TypeScript 非常包容
 >
     tsc 文件名.ts
 
+编译后，vscode提示重复声明的问题
+> 
+    在项目根目录添加配置文件 tsconfig.json即可，空文件也可
+
 在node运行ts
 >
     头部添加：
     #!/usr/bin/env ts-node
 
     node里直接执行： ./文件名.ts （./不能省）
-
-# 速查
-| 操作符 | 描述|作用 |使用
-|:--|:--|:--|
 
 
 # <a name="类型">类型</a>
@@ -91,7 +91,7 @@ let str: string = 'aaa';
 let str1: string = `${str} b`;
 ```
 
-## 数组 : T[] | Array\<T>
+## 数组 : T[] | Array\<T> | ReadonlyArray\<T>
 1. 在元素类型后面接上 []，表示由此类型元素组成的一个数组 T[]
 ```ts
 : number[] //数组内容都为number类型
@@ -114,140 +114,185 @@ let a:{str: string, num: number}[] = [{str:'aa',num:3}]
 ```
 
 * 用接口表示数组
->
-    interface NumberArray {
-        [index: number]: number;
-    }
-    let arr: NumberArray = [1, 1, 2, 3, 5];
+```ts
+interface NumberArray {
+  [index: number]: number;
+}
+let arr: NumberArray = [1, 1, 2, 3, 5];
+```
 
 * 类数组，如 arguments  
 arguments 实际上是一个类数组，不能用普通的数组的方式来描述，而应该用接口：
->
-    interface Arguments {
-      [index: number]: number;
-      length: number;
-      callee: Function;
-    } 
-    function aa(...arg): object{
-      let args: Arguments = arguments
-      return args
-    }
-    console.log(aa(21,'b2',[])) // { '0': 21, '1': 'b2', '2': [] }
 
+```ts
+interface Arguments {
+  [index: number]: number;
+  length: number;
+  callee: Function;
+} 
+function aa(...arg): object{
+  let args: Arguments = arguments
+  return args
+}
+console.log(aa(21,'b2',[])) // { '0': 21, '1': 'b2', '2': [] }
+```
 
 * ReadonlyArray<元素类型> //只读，数组创建后再也不能修改(但可以直接改变整个数组)
->
-    let arr: ReadonlyArray<number>; //只读的数组
-    arr[1] = 4 //error
-    arr.push(1)//error
-    arr.shift(1)//error
-    arr.length = 4 //error
-    arr = [] //ok -- 重写数组
+```ts
+let arr: ReadonlyArray<number>; //只读的数组
+arr[1] = 4 //error
+arr.push(1)//error
+arr.shift(1)//error
+arr.length = 4 //error
+arr = [] //ok -- 重写数组
 
-    let arr1: number[] = arr //error -- 不可分配给可变类型number[]
+let arr1: number[] = arr //error -- 不可分配给可变类型number[]
 
-    let arr1 = arr // ok
-    let arr1: any = arr // ok
-    let arr1 = arr as number[] //ok -- 用类型断言重写arr类型
-
+let arr1 = arr // ok
+let arr1: any = arr // ok
+let arr1 = arr as number[] //ok -- 用类型断言重写arr类型
+```
 
 ## 元组 Tuple  
 允许表示一个已知元素数量和类型的数组，各元素的类型不必相同。 (数组内定义不同类型的元素)
->
+```ts
+比如，你可以定义一对值分别为 string和number类型的元组。
+let arr: [string, number];
+arr = ['str', 2];
 
-    比如，你可以定义一对值分别为 string和number类型的元组。
-    let arr: [string, number];
-    arr = ['str', 2];
-
-    当添加越界的元素时，它的类型会被限制为元组中每个类型的联合类型：
-    arr.push('a') // ok
-    arr.push(true) // error!!!,只能添加string、number类型的元素
+当添加越界的元素时，它的类型会被限制为元组中每个类型的联合类型：
+arr.push('a') // ok
+arr.push(true) // error!!!,只能添加string、number类型的元素
+```
 
 ## 枚举 enum  
 枚举 enum 为一组数值赋予友好的名字。默认，从0开始为元素编号。   
 你也可以手动的指定成员的数值（相应的在其后面的元素编号也会随其变化）
 
-枚举项有两种类型：常数项（constant member）和计算所得项（computed member）。
+枚举项有两种类型：
+* 常数项（constant member）
+* 计算所得项（computed member）
 
-常数项
->
-    //enum Color {Red, Green, Blue}
-    //enum Color {Red=1, Green, Blue} //改变默认排序 从1开始（Green=2，Blue=3
-    // enum Color {Red = 'a', Green = 2, Blue = 4}
-    enum Color {Red = 1, Green = 2, Blue = 4}
+* 常数项
+```ts
+//enum Color {Red, Green, Blue}
+//enum Color {Red=1, Green, Blue} //改变默认排序 从1开始（Green=2，Blue=3
+// enum Color {Red = 'a', Green = 2, Blue = 4}
+enum Color {Red = 1, Green = 2, Blue = 4}
 
-    Color.Green;// 2
-    Color[1];// Red
-    Color[3];// undefined
+Color.Green;// 2
+Color[1];// Red
+Color[3];// undefined
 
-    手动赋值的枚举项也可以为小数或负数，此时后续未手动赋值的项的递增步长仍为 1
-    enum Color {Red = 1, Green = 2.1, Blue}
-    Color.Blue // 3.1
+手动赋值的枚举项也可以为小数或负数，此时后续未手动赋值的项的递增步长仍为 1
+enum Color {Red = 1, Green = 2.1, Blue}
+Color.Blue // 3.1
+```
 
-计算所得项
->
-    enum Color {Red, Green, Blue = "blue".length};
-    Color.Blue // 4
+* 计算所得项
+```ts
+enum Color {Red, Green, Blue = "blue".length};
+Color.Blue // 4
 
-    如果紧接在计算所得项后面的是未手动赋值的项，那么它就会因为无法获得初始值而报错：
-    enum Color {Red, Green = "red".length, Blue}; // error!!!
+如果紧接在计算所得项后面的是未手动赋值的项，那么它就会因为无法获得初始值而报错：
+enum Color {Red, Green = "red".length, Blue}; // error!!!; Blue必须赋值
+```
 
-常数枚举,与普通枚举的区别是，它会在编译阶段被删除，并且不能包含计算成员。
->
-    const enum cc {
-      a = 1,
-      c = 'aaa'.length, // error!!!
-      b = 2.4,
-      d
-    }
+* 常量枚举(const定义) ,与普通枚举的区别是，它会在编译阶段被删除，并且不能包含计算成员。
+```ts
+const enum cc {
+  a = 1,
+  c = 'aaa'.length, // error!!! 常量枚举不能包含计算成员
+  b = 2.4,
+  d
+}
+```
 
-枚举是在运行时真正存在的对象
->
-    enum E{
-      x,
-      y='a',
-      z=2
-    }
-    function f(obj:{x: number, y: string}){
-      return obj.x + obj.y
-    }
-    console.log(f(E)) //'0a'
+```ts
+enum Enum {
+  A = 0
+}
 
-反向映射，这意味着我们可以从其值中访问成员的值以及成员名称。
->
-    enum Color {Red, Green, Blue} 
-    let a: number = Color.Red // 1
-    let b: string = Color[0] // 'Red'
+declare enum Enum1 {
+  A = 1
+}
+
+const enum Enum2 {
+  A = 2
+}
+```
+编译后的js, 可以看见只编译了普通枚举
+```ts
+var Enum;
+(function (Enum) {
+    Enum[Enum["A"] = 0] = "A";
+})(Enum || (Enum = {}));
+```
+
+* 运行时的枚举：枚举是在运行时真正存在的对象
+```ts
+enum E{
+  x,
+  y='a',
+  z=2
+}
+function f(obj:{x: number, y: string}){
+  return obj.x + obj.y
+}
+console.log(f(E)) //'0a'
+```
+
+* 反向映射: 从其值中访问成员的值以及成员名称。
+```ts
+enum Color {Red, Green, Blue}
+let a: number = Color.Red // 1
+let b: string = Color[0] // 'Red'
+```
+
+* 外部枚举：描述已经存在的枚举类型的形状，会在编译阶段被删除
+```ts
+declare enum Enum {
+  A = 1,
+  B,
+  C = 2
+}
+```
+外部枚举和非外部枚举之间有一个重要的区别，在正常的枚举里，没有初始化方法的成员被当成常数成员。 对于非常数的外部枚举而言，没有初始化方法时被当做需要经过计算的。
 
 ## 任意类型 :any    
 允许被赋值为任意类型;  
 在任意值上访问任何属性、方法都是允许的;  
-变量如果在声明的时候，未指定其类型且没有赋值，那么它会被识别为任意值类型
->
-    let notSure: any = 4;
-    notSure = "maybe a string instead"; // ok 
-    notSure = false; // ok 
-    notSure.a // ok 
-    notSure.b() // ok 
+变量如果在声明的时候，未指定其类型且没有赋值，则默认为any类型;
 
-    let a; // 未指定类型且未赋值，则为any
-    a = 5 // ok
-    a= [] // ok
+```ts
+let notSure: any = 4;
+notSure = "maybe a string instead"; // ok 
+notSure = false; // ok 
+notSure.a // ok 
+notSure.b() // ok 
 
-    let a = 5; //一旦赋值就会进行类型推论，这里推测其为number类型
-    a = 15 // ok
-    a= [] // error!!!
+let a; // 未指定类型且未赋值，则为any
+a = 5 // ok
+a= [] // ok
 
-    //不确定数组 包含的类型
-    let list: any[] = [1, true, "free"];
-    list[1] = 100;
+let a = 5; //一旦赋值就会进行类型推论，这里推测其为number类型
+a = 15 // ok
+a= [] // error!!!
+
+```
+
+any[] 用于不确定数组其内类型
+```ts
+let list: any[] = [1, true, "free"];
+list[1] = 100;
+```
 
 ## 联合类型(|)  表示取值可以为多种类型中的一种。
->
-    let maybe: number | string;
-    maybe = 1;
-    maybe = 'str'
-
+```ts
+let maybe: number | string;
+maybe = 1;
+maybe = 'str'
+```
 
 ## :void  
 没有任何类型。 当一个函数没有返回值时，返回值类型定义 void
@@ -297,12 +342,17 @@ num // undefined
 
 ## :never  
 
-表示的是那些永不存在的值的类型。  
+表示的是那些永不存在的值的类型。 
+
 例如， never类型是那些总是会抛出异常或根本就不会有返回值的函数表达式或箭头函数表达式的返回值类型； 变量也可能是 never类型，当它们被永不为真的类型保护所约束时。
 
 never类型是任何类型的子类型，也可以赋值给任何类型；然而，没有类型是never的子类型或可以赋值给never类型（除了never本身之外）。 即使 any也不可以赋值给never。
 
 ```ts
+let b: never =  23 // err
+let b: never =  null // err
+let b: any =  function(): never{ throw ''} // ok
+
 // 返回never的函数必须存在无法达到的终点
 function error(message: string): never {
     throw new Error(message);
@@ -338,22 +388,28 @@ create(undefined); // Error
 ## 类型断言
 
 1. <类型>值
->
-    let someValue: any = "this is a string";
-    let strLength: number = (<string>someValue).length;
+```ts
+let someValue: any = "this is a string";
+let strLength: number = (<string>someValue).length; // 断言变量someValue为string类型
+```
 
 2. 值 as 类型
 ```ts
 let someValue: any = "this is a string";
 let strLength: number = (someValue as string).length;
 ```
+
 类型断言不是类型转换，断言成一个联合类型中不存在的类型是不允许的：
+
 ```ts
 function toBoolean(something: string | number): boolean {
-  return <boolean>something;
+  return <boolean>something; // error ;变量something没有boolean类型
+}
+
+function toBoolean(something: string | number | boolean): boolean {
+  return <boolean>something; // ok
 }
 ```
-
 当你在TypeScript里使用JSX时，只有 as语法断言是被允许的。
 
 ## 类型推论
@@ -368,365 +424,622 @@ a= [] // error!!!
 # <a name="泛型">泛型</a>
 泛型（Generics）是指在定义函数、接口或类的时候，不预先指定具体的类型，而在使用的时候再指定类型的一种特性。
 
-* 例：定义泛型函数
->
-    function identity<T>(arg: T): T {
-      return arg;
-    }
+例：定义泛型函数
+```ts
+function identity<T>(arg: T): T {
+  return arg;
+}
+```
 
-定义了泛型函数后，可以用两种方法使用。  
+### 定义了泛型函数后，可以用两种方法使用  
 
-第一种是，传入所有的参数，包含类型参数：
->
-    let output = identity<string>("myString");  // 输出值为string类型
+* 第一种是，传入所有的参数，包含类型参数：
+```ts
+let output = identity<string>("myString");  // 输出值为string类型
+```
 
-第二种方法更普遍。利用了类型推论 -- 即编译器会根据传入的参数自动地帮助我们确定T的类型：
->
-    let output = identity("myString");  // 输出值为string类型
-
+* 第二种方法更普遍。利用了类型推论 -- 即编译器会根据传入的参数自动地帮助我们确定T的类型：
+```ts
+let output = identity("myString");  // 输出值为string类型
+```
 ---
 
 使用带有调用签名的对象字面量来定义泛型函数：
->    
-    let myIdentity: {<T>(arg: T): T} = identity;
-    console.log(myIdentity(43))
+```ts
+let myIdentity: {<T>(arg: T): T} = identity;
 
-* 一次定义多个类型参数
->
-    function swap<T, U>(tuple: [T, U]): [U, T] {
-      return [tuple[1], tuple[0]];
-    }
+// 可输入任意类型
+console.log(myIdentity('ad')) // 'ad'
+console.log(myIdentity(43)) // 43
+```
 
-    console.log(swap([7, 'seven']))
+### 一次定义多个类型参数
+```ts
+function swap<T, U>(tuple: [T, U]): [T, U] {
+  return [tuple[0], tuple[1]];
+}
+// 可输入任意类型
+swap([7, 'seven']) // [7, 'seven']
+swap([true, {}])  // [true, {}]
 
----
+// 指定类型
+swap<string, number>(['peen', 22]); // ['peen', 22]
+```
 
-* 泛型约束: 
+### 泛型约束: 
 在函数内部使用泛型变量的时候，由于事先不知道它是哪种类型，所以不能随意的操作它的属性或方法：
->
-    function identity<T>(arg: T): T {
-        console.log(arg.length); // error!!!
-        return arg;
-    }
-    // 泛型 T 不一定包含属性 length，所以编译的时候报错了。
+```ts
+function identity<T>(arg: T): T {
+    console.log(arg.length); // error!!!
+    return arg;
+}
+// 泛型 T 不一定包含属性 length，所以编译的时候报错了。
+```
 
 创建一个包含 .length属性的接口，使用这个接口和extends关键字来实现约束：
->
-    interface len{
-      length:number
-    }
-    function identity<T extends len>(arg: T): T {
-      console.log(arg.length)
-      return arg;
-    }
-    let output = identity([1]); // ok
-    let output = identity({length: 2}); // ok
-    let output = identity(1); //error!!!，它不再是适用于任意类型，需要传入符合约束类型的值
+它不再是适用于任意类型，需要传入符合约束类型的值
+```ts
+interface len{
+  length: number
+}
+function identity<T extends len>(arg: T): T {
+  console.log(arg.length)
+  return arg;
+}
 
-# <a name="接口">接口interface、类型别名type</a>
+let output = identity([1]); // ok
+let output = identity({}); // err {}没有length属性
+let output = identity({length: 2}); // ok
+let output = identity(1); //error!!!，数字没有length属性
+```
+
+# 接口interface
 TypeScript的核心原则之一是对值所具有的结构进行类型检查。 它有时被称做“鸭式辨型法”或“结构性子类型化”。 在TypeScript里，接口的作用就是为这些类型命名和为你的代码或第三方代码定义契约。
 
 接口一般首字母大写  
 
+### 大概有以下三种使用方式:
+```ts
+interface List {
+  data: string;
+}
 
+// 声明一个对象
+let obj: List = { data: 'msg' }
+
+// 函数声明参数, 返回值
+function a(x: List): List {
+  return x;
+}
+
+// 类实现接口, 类似于 java 语言, 在接口描述一个方法，在类里实现它
+class Crazy implements List {
+  constructor() { }
+  data: string;
+}
+```
+声明一个对象另一种写法
+```ts
+interface List {
+  data: string;
+}
+// 需要定义接口 所有必须属性
+let obj: List = { data: 'msg' }
+
+// 无需定义属性
+let obj1 = <List>{}
+```
+
+### 可选属性,只读属性
 * 可选属性( ? )：可以对可能存在的属性进行预定义，可以捕获引用了不存在的属性时的错误
-
 * 只读属性( readonly ):只读，不可写
 
->
+```ts
+interface Lab {
+  label: string;
+  width?: number; //可选属性
+  readonly size: number; //只读属性
+  readonly height?: number; //可选属性+只读属性
+}
+// 分隔符也可用逗号 ,
 
-    interface lab {
-      label: string;
-      width?: number; //可选属性
-      readonly size: number; //只读属性
-    }
+let obj: Lab = {size: 10, label: "label"};
+obj.label = 'ooo' // ok
+obj.size // ok
+obj.size = 11; // error!!! ,size属性只读
+```
 
-    let obj: lab = {size: 10, label: "label"};
-    obj.size = 11; // error!!! ,size属性只读
-    obj.label = 'ooo' // ok
+### 希望一个接口允许有任意的属性，可以使用如下方式：
+```ts
+interface Person {
+  name: string;
+  age?: number;
+  [propName: string]: any; // 可定义任意属性(键名为string类型，键值为任意类型)
+  // propName为自定义(命名规范同变量名)
+}
 
-* 希望一个接口允许有任意的属性，可以使用如下方式：
->
-    interface Person {
-      name: string;
-      age?: number;
-      [propName: string]: any;
-    }
+let tom: Person = { // ok
+  name: 'Tom',
+  gender: 'male',
+  length: 11
+};
+```
 
-    let tom: Person = { // ok
-      name: 'Tom',
-      gender: 'male',
-      length: 11
-    };
+只读的任意的属性
+```ts
+interface Person {
+  readonly [property: string] :any
+}
+let tom: Person = {
+  aaa: 444
+}
+tom.aaa // 444
+tom.aaa = 222 // error
+```
 
-* 一旦定义了任意属性，那么确定属性和可选属性的类型都必须是它的类型的子集：
->
+### 一旦定义了任意属性，那么确定属性和可选属性的类型都必须是它的类型的子集：
+```ts
+interface Person {
+    name: string;
+    age?: number; // error!!! ,这里类型必须是string，对应下面任意属性的类型
+    [propName: string]: string;
+}
 
-    interface Person {
-        name: string;
-        age?: number; // error!!! ,这里类型必须是string，对应下面任意属性的类型
-        [propName: string]: string;
-    }
-
-    let tom: Person = { 
-        name: 'Tom',
-        age: 25, // error!!!
-        gender: 'male'
-    };
-
-*    
->
-    
-    interface A{
-      name?: string
-    }
-    interface B {
-      age?: number
-    }
-    
-* 交叉类型:将多个类型合并为一个类型（interface，type）
->
-
-    let c: A & B = {
-      name: '',
-      age: 4
-    }
-
-* 联合类型：表示变量属于联合类型中的某种类型，使用时需要先断言一下（interface，type）
-
-    let c1: A | B = {};
-    (<A>c1).name = 'ad'
+let tom: Person = { 
+    name: 'Tom',
+    age: 25, // error!!!
+    gender: 'male'
+};
+```
 
 
-* is 关键字通常组成类型谓词，作为函数的返回值。谓词为 paramName is Type这种形式， paramName必须是来自于当前函数签名里的一个参数名。
->
+### 可以多层嵌套
+```ts
+interface List {
+  id: number;
+  data: string;
+}
+interface LearnList {
+  subject: string,
+  detail: List[];
+}
 
-    let c1: A | B = {};
-    (<A>c1).name = 'ad'
+let res: LearnList = {
+  subject: 'math',
+  detail: [{
+    id: 1,
+    data: '数学'
+  }]
+}
+```
 
-    function fun(arg: A | B): arg is A {
-      return (<A>arg).name !== undefined
-    }
-    if(fun(c1)){
-      console.log(c1.name)
-    }else{
-      console.log(c1.age)
-    }
+如果作为函数参数声明的话, 会有一个有意思的地方. 我们直接传值的话, 会有报错提示
+```ts
+function func(data: LearnList) {
+ return data;
+}
+func({
+ subject: 'math',
+ xxx: 'sss', //报错, 多了一个属性
+ detail: [{
+     id: 1,
+     data: '数学'
+ }]
+})
+```
+解决：
+1. 将值赋值给一个对象  
+也就是 cache 他有 LearnList 声明的对象里面的所有属性, 那 cache 兼容 LearnList 声明的对象, cache 也就可以赋值给 LearnList声明的对象.
+```ts
+const cache = {
+ subject: 'math',
+ xxx: 'sss', //报错, 多了一个属性
+ detail: [{
+     id: 1,
+     data: '数学'
+ }]
+};
+func(cache) //不报错
+```
+2. 类型断言
+```ts
+func({
+  subject: 'math',
+  xxx: 'sss',
+  detail: [{
+    id: 1,
+    data: '数学'
+  }]
+} as LearnList)
+```
 
-* extends继承接口
+###   
+```ts    
+interface A{
+  name?: string;
+  sex: string;
+}
+interface B {
+  age?: number
+}
+```
+
+### 交叉类型 (&):将多个类型合并为一个类型（interface，type）
+```ts
+let c: A & B = {
+  sex: 'man',
+  age: 4
+}
+```
+
+### 联合类型 (|)：表示变量属于联合类型中的某种类型，使用时有时需要先断言一下（interface，type）
+```ts
+let c: A | B = {};
+c.name = 'da'; // error
+(<A>c).name = 'ad'; // ok
+```
+
+### is 关键字通常组成类型谓词，作为函数的返回值。谓词为 paramName is Type这种形式， paramName必须是来自于当前函数签名里的一个参数名。
+```ts
+let c: A | B = {};
+(<A>c).name = 'ad'
+
+function fun(arg: A | B): arg is A {
+  return (<A>arg).name !== undefined
+}
+if(fun(c)){
+  console.log(c.name)
+}else{
+  console.log(c.age)
+}
+```
+若没有 `arg is A `,则c1.name就报错`类型“B”上不存在属性“name”`;
+当然，也可使用断言`(<A>c).name`代替`c.name`
+
+
+### extends继承接口
 
 一个接口可以继承多个接口
->
-    interface Shape {
-        color: string;
-    }
+```ts
+interface Shape {
+    color: string;
+}
 
-    interface PenStroke {
-        penWidth: number;
-    }
+interface PenStroke {
+    penWidth: number;
+}
 
-    interface Square extends Shape, PenStroke {
-        sideLength: number;
-    }
+interface Square extends Shape, PenStroke {
+    sideLength: number;
+}
 
-    let square = <Square>{};
-    square.color = "blue";
-    square.sideLength = 10;
-    square.penWidth = 5.0;
-    console.log(square) // { color: 'blue', sideLength: 10,penWidth: 5 }
+let square = <Square>{};
+// let square :Square = {
+//   color: 'blue',
+//   penWidth: 10,
+//   sideLength: 5.0
+// };
 
-* type 可以声明基本类型别名，联合类型，元组等类型
->
-    type age = number
+square.color = "blue";
+square.sideLength = 10;
+square.penWidth = 5.0;
+console.log(square) // { color: 'blue', sideLength: 10,penWidth: 5 }
+```
 
-    type type = number | string
+# type 可以声明基本类型别名，联合类型，元组等类型
 
-    // 字符串字面量类型
-    type EventNames = 'click' | 'scroll' | 'mousemove';
+```ts
+type age = number
 
-    type Name = {
-      name: string
-    }
+type type = number | string
 
-    type SetUser = (name: string, age: number) => void
-    let a:SetUser = function(){}
-    console.log(a('1',1))
+// 字符串字面量类型, 指定变量值
+type EventNames = 'click' | 'scroll' | 'mousemove';
+let way: EventNames = 'dbclick' // error
+let way: EventNames = 'click' // ok
 
-* interface 、types区别
-  * 都可以描述一个对象或者函数
-  >
-        interface User {
-          name: string
-        }
-        
-        interface SetUser {
-          (name: string): void;
-        }
 
-        type User = {
-          name: string
-        };
-        
-        type SetUser = (name: string) => void
+type Name = {
+  name: string
+}
 
-  * 都允许拓展（extends），并且两者并不是相互独立的，也就是说 interface 可以 extends type, type 也可以 extends interface 。
-    >
-        interface Name1 {
-          name1: string
-        }
-        type Name2 = {
-          name2: string
-        }
+type SetUser = (name: string, age: number) => void;
+let a: SetUser = function(){}
+console.log(a('1',1))
+```
 
-        interface User1 extends Name1, Name2 {
-          age1: number
-        }
+# interface 、types区别
+* 都可以描述一个对象或者函数
+```ts
+interface User {
+  name: string
+}
 
-        type User2 = Name1 & Name2 & {
-          age2: number
-        }
+interface SetUser {
+  (name: string): void;
+}
 
-    * type 可以声明基本类型别名，联合类型，元组等类型；interface只能定义对象类型
-    >
-        interface Dog {
-          age: number
-        }
+type User = {
+  name: string
+};
 
-        type Name = string
+type SetUser = (name: string) => void
+```
 
-        type Pet = Dog | Name
-        
-        type PetList = [Dog, Pet]
- 
+* 都允许拓展（extends），并且两者并不是相互独立的，也就是说 interface 可以 extends type, type 也可以 extends interface 。
+```ts
+interface Name1 {
+  name1: string
+}
+type Name2 = {
+  name2: string
+}
+//type Name2 = Name1 // ok
+//interface extends Name2 {} // ok
 
-    * interface 能够声明合并,type不行
-    ```js
-    interface User {
-      name: string
-      age: number
-    }
-    
-    interface User {
-      sex: string
-    }
-    
-    /*
-    User 接口为 {
-      name: string
-      age: number
-      sex: string 
-    }
+interface User1 extends Name1, Name2 {
+  age1: number
+}
+
+type User2 = Name1 & Name2 & {
+  age2: number
+}
+```
+
+* type 可以声明基本类型别名，联合类型，元组等类型；interface只能定义对象类型
+```ts
+interface Dog {
+  age: number
+}
+
+type Name = string
+
+type Pet = Dog | Name
+
+type PetList = [Dog, Pet]
+```
+
+* interface 能够声明合并,type不行
+```ts
+interface User {
+  name: string
+  age: number
+}
+
+interface User {
+  sex: string
+}
+
+let user: User = {
+  name: 'user',
+  age: 11,
+  sex: 'man'
+}
+/*
+User 接口会合并为 {
+  name: string
+  age: number
+  sex: string 
+}
     */
-    ```
+```
     
-* implements明确的强制一个类去符合某种契约
->
-    interface ClockInterface {
-        currentTime: Date;
-        setTime(d: Date);
-    }
+### implements明确的强制一个类去符合某种契约
+```ts
+interface ClockInterface {
+  currentTime: Date;
+  setTime(d: Date);
+}
 
-    class Clock implements ClockInterface {
-        currentTime: Date;
-        setTime(d: Date) {
-            this.currentTime = d;
-        }
-        constructor(h: number, m: number) { }
-    }
+class Clock implements ClockInterface {
+  currentTime: Date;
+  setTime(d: Date) {
+      this.currentTime = d;
+  }
+  constructor(h: number, m: number) { }
+}
+```
 
+### keyof 查询组给定类型的钥匙
+```ts
+type Person = {
+  name: string
+  age: number
+}
+// 或
+/* interface Person {
+  name: string
+  age: number
+} */
 
-* keyof 查询组给定类型的钥匙
->
-    interface Person {
-      name: string
-      age: number
-    }
-    type PersonKeys = keyof Person // 'name' | 'age'
-    let a:PersonKeys = 'age' // ok
-    let a:PersonKeys = 'a' // error!!!
+type PersonKeys = keyof Person // 'name' | 'age'
+let a: PersonKeys = 'name' // ok
+let a1: PersonKeys = 'age' // ok
+let a2: PersonKeys = 'a' // error!!!
 
-* Exclude 允许您从其他类型中删除某些类型。Exclude 来自 T 任何可分配的东西 T。
->
+```
 
-    type PersonKeys1 = Exclude<keyof Person, 'name'>
+### Exclude 允许您从其他类型中删除某些类型。Exclude 来自 T 任何可分配的东西 T。
+```ts
 
-    let b:PersonKeys1 = 'age' // ok 
-    let b:PersonKeys1 = 'name' //error!!!
+interface Person {
+  name: string
+  age: number
+}
+type PersonKeys = Exclude<keyof Person, 'name'>
+//相当于type PersonKeys = 'age'
 
-* Pick 允许您从其他类型中选择某些类型。Pick 来自 T 任何可分配的东西 T。
->
-    type PersonKeys1 = Pick< Person, 'name'>
+let b: PersonKeys = 'age' // ok
+let b1: PersonKeys = 'name' // error
+//不能将类型“"name"”分配给类型“"age"”
+```
 
-    let b:PersonKeys1 = {name:'1'}
+不加keyof时，好像没作用，
+```ts
+type PersonKeys = Exclude<Person, 'name'>
+//相当于 type PersonKeys  = Person
 
+let b: PersonKeys = {
+  name: 'ad',
+  age: 24
+}
+```
+因此Exclude要加keyof
 
+### Pick 允许您从其他类型中选择某些类型。Pick 来自 T 任何可分配的东西 T。
+```ts
+interface Person {
+  name: string
+  age: number
+}
+type PersonKeys = Pick<Person, 'name'>
+//相当于
+/*
+type PersonKeys = {
+  name: string
+} */
+
+let b: PersonKeys = {name:'1'} // ok
+let b1: PersonKeys = {age: 1} // error
+//不能将类型“{ age: number; }”分配给类型“Pick<Person, "name">”。
+//对象文字可以只指定已知属性，并且“age”不在类型“Pick<Person, "name">”中
+```
+
+加keyof时```type PersonKeys = Pick<keyof Person, 'name'>```,好像没什么作用；  
+因此Pick不加keyof
 
 # <a name="函数">函数</a>
 可以为每个参数添加类型，及函数本身添加返回类型。
 
-在 TypeScript 的类型定义中，=> 用来表示函数的定义，左边是参数类型，需要用括号括起来，右边是函数返回值类型。
+在 TypeScript 的类型定义中，=> 用来表示函数的定义，=>左边是参数类型，需要用括号括起来，=>右边是函数返回值类型。
 
+### 为函数定义类型
+```ts
+function add(x: number, y: number): number {
+  return x + y;
+}
+
+let myAdd = function(x: number, y: number): number { return x + y; };
+```
+
+### 书写完整函数类型
+```ts
+//         参数类型，        函数返回值类型   
+let add: (x: number, y: number) => number = (x, y) => x + y;
+//let add = (x: number, y: number): number =>  x + y;
+```
+函数类型包含两部分：参数类型和返回值类型  
+我们以参数列表的形式写出参数类型，为每个参数指定一个名字和类型。 这个名字只是为了增加可读性。 我们也可以这么写：
+```ts
+let add:(baseValue: number, increment: number) => number = (x: number, y: number): number =>  x + y;
+```
+只要参数类型匹配，无需在乎参数名是否正确（参数名：baseValue，increment）
+
+返回值类型是函数类型的必要部分，如果函数没有返回任何值，必须指定返回值类型为 void而不能留空。
+```ts
+let add:(a: number) => void = (x: number): void =>  {
+  console.log(x);
+};
+```
+
+### 可选参数和默认参数
 用 ? 表示可选的参数,可选参数后面不允许再出现必需参数了
 
 typeScript 会将添加了默认值的参数识别为可选参数,此时就不受「可选参数必须接在必需参数后面」的限制,
 
->
-    function add(x: number, y: number, z?: string): number { // ok
-      return x + y;
-    }
+```ts
+function add(x: number, y: number, z?: string): number { // ok
+  return x + y;
+}
 
-    function add(x?: number, y: number, z?: string): number { // error!!! 
-      return x + y;
-    }
+//此时x为可选参数，后面跟着必须参数，会报错
+function add(x?: number, y: number, z?: string): number { // error!!! 可选参数后面不允许再出现必需参数了
+  return x + y;
+}
 
-    function add(x: number = 0, y: number, z?: string): number { // ok 
-      return x + y;
-    }
+//此时x为可选参数，后面跟着必须参数，但x设置了默认值，因此不会报错
+function add(x: number = 0, y: number, z?: string): number { // ok 
+  return x + y;
+}
+```
 
->
-    //         参数类型，        函数返回值类型   
-    let add: (x: number, y: number) => number = (x, y) => x + y;
-    //let add = (x: number, y: number): number =>  x + y;
+### 剩余参数
+有时，你想同时操作多个参数，或者你并不知道会有多少参数传递进来
 
->
-    let add:(xx: number, yy: number) => number = (x: number, y: number): number =>  x + y;
+可使用剩余参数，剩余参数会被当做个数不限的可选参数。 可以一个都没有，同样也可以有任意个
+```ts
+function buildName(firstName: string, ...restOfName: string[]): string {
+  return firstName + " " + restOfName.join(" ");
+}
 
-* 函数重载:
+let employeeName = buildName("Joseph", "Samuel", "Lucas", "MacKinzie");
+
+```
+
+
+### 让函数在运行时才确定参数的类型
+```ts
+function getVal<T>(val: T): T {
+  return val;
+}
+
+// 可以为函数参数传入任何类型
+let a1 = getVal('da')
+let a2 = getVal(232)
+console.log(a1,a2);
+```
+### this
+https://www.tslang.cn/docs/handbook/functions.html
+
+### 函数重载:
 
 在定义重载的时候，一定要把最精确的定义放在最前面。  
-因为TypeScript会选择第一个匹配到的重载当解析函数调用的时候。 当前面的重载比后面的“普通”，那么后面的被隐藏了不会被调用。
->
-    let suits = ["a", "b"];
+TS会选择第一个匹配到的重载当解析函数调用的时候。 当前面的重载比后面的“普通”，那么后面的被隐藏了不会被调用。
 
-    function pick(x: {name: string; age: number; }[]): [string, object];
-    function pick(x: number): [string, number];
-    function pick(x): any { // 并不是重载列表的一部分
-        if (typeof x === "object") {
-          return ['object', x];
-        }
-        else if (typeof x === "number") {
-          return ['number', x]
-        }
+```ts
+function getVal(val: number): number 
+function getVal(val: string):string 
+function getVal(val: any):any {
+    return val;
+}
+```
+---
+
+```ts
+let suits = ["a", "b"];
+
+function pick(x: {name: string; age: number; }[]): [string, object];
+function pick(x: number): [string, number];
+function pick(x): any { // 并不是重载列表的一部分
+    if (typeof x === "object") {
+      return ['object', x];
     }
+    else if (typeof x === "number") {
+      return ['number', x]
+    }
+}
 
-    let a = pick([{ name: "diamonds", age: 2 }]);
-    console.log(a); // [ 'object', [ { name: 'diamonds', age: 2 } ] ]
+let a = pick([{ name: "diamonds", age: 2 }]);
+console.log(a); // [ 'object', [ { name: 'diamonds', age: 2 } ] ]
 
-    let b = pick(4343);
-    console.log(b); // [ 'number', 4343 ]
-
+let b = pick(4343);
+console.log(b); // [ 'number', 4343 ]
+```
 重载的pickCard函数在调用的时候会进行正确的类型检查。
 
 
 不要因为回调函数参数个数不同而写不同的重载,应该只使用最大参数个数写一个重载：  
 因为回调函数总是可以忽略某个参数的，因此没必要为参数少的情况写重载。 参数少的回调函数首先允许错误类型的函数被传入，因为它们匹配第一个重载。
->
-    /* 错误 */
-    declare function beforeAll(action: () => void, timeout?: number): void;
-    declare function beforeAll(action: (done: DoneFn) => void, timeout?: number): void;
+```ts
+/* 错误 */
+declare function beforeAll(action: () => void, timeout?: number): void;
+declare function beforeAll(action: (done: DoneFn) => void, timeout?: number): void;
 
-    /* OK */
-    declare function beforeAll(action: (done: DoneFn) => void, timeout?: number): void;
+/* OK */
+declare function beforeAll(action: (done: DoneFn) => void, timeout?: number): void;
+```
+
+
 
 # <a name="class">class</a>
 ## class
