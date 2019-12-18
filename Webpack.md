@@ -229,8 +229,18 @@ rules: [
 ]
 ```
 
-## <a name=""></a>
+## <a name="将单个文件或整个目录复制到构建目录">[将单个文件或整个目录复制到构建目录 copy-webpack-plugin](https://www.webpackjs.com/plugins/copy-webpack-plugin/)</a>
+适合用于拷贝一些静态资源，如图片等
+npm install --save-dev copy-webpack-plugin
 
+```js
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+plugins: [
+  new CopyWebpackPlugin([
+    { from: path.resolve(__dirname, 'public'), to: '../dist/public' }
+  ])
+]
+```
 
 ## <a name="加载数据">加载数据,如 CSV、TSV 和 XML</a>
 npm install --save-dev csv-loader xml-loader

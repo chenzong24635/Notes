@@ -49,6 +49,7 @@
 * <a href="#DOM 文档对象模型">DOM 文档对象模型</a>
 * <a href="#DOM事件">DOM事件</a>
 * <a href="#mouseover、mouseout、mouseenter、mouseleave区别与联系">mouseover、mouseout、mouseenter、mouseleave区别与联系</a>
+* <a href="#DOM常用属性">DOM常用属性</a>
 * <a href="#DOM操作">DOM操作—怎样添加、移除、移动、复制、创建和查找节点</a>
 * <a href="#获取元素属性">获取元素属性innerHTML、outerHTML、innerText 、outerText、value</a>
 * <a href="#变量、函数声明提升">变量、函数声明提升</a>
@@ -245,20 +246,21 @@ JavaScript 是弱类型语言，而且JavaScript 声明变量的时候并没有�
 ES10引入了一种新的数据类型 BigInt（大整数）,来表示大于 2^53 - 1 的整数。BigInt 可以表示任意大的整数。
 
 创建 BigInt 类型,只需要在数字后面加上n(123n) 或者BigInt(value) 转化，value 为数字或数字字符串 。也可以用二进制、八进制或十六进制表示
->
-    123n  
+```js
+123n  
 
-    BigInt(123) // 123n
-    BigInt('123') // 123n
-    BigInt(false) // 0n
-    BigInt(true) // 1n 
+BigInt(123) // 123n
+BigInt('123') // 123n
+BigInt(false) // 0n
+BigInt(true) // 1n 
 
-    typeof 123n  // "bigint"
-    Number(111111111n) // 111111111
+typeof 123n  // "bigint"
+Number(111111111n) // 111111111
 
-    123n == 123 // true  
-    123n === 123 // false
-    8n/3n // 2n
+123n == 123 // true  
+123n === 123 // false
+8n/3n // 2n
+```
 
 除一元加号(+)运算符外,会与 asm.js 冲突，所有算术运算符都可用于BigInt
 
@@ -403,11 +405,11 @@ value: 2
 
 
 #### DOM事件
-* DOM事件的级别
-1. DOM0：不是W3C规范。
-2. DOM1：开始是W3C规范。专注于HTML文档和XML文档。
-3. DOM2：对DOM1增加了样式表对象模型
-4. DOM3：对DOM2增加了内容模型 (DTD 、Schemas) 和文档验证。
+##### DOM事件的级别
+* DOM0：不是W3C规范。
+* DOM1：开始是W3C规范。专注于HTML文档和XML文档。
+* DOM2：对DOM1增加了样式表对象模型
+* DOM3：对DOM2增加了内容模型 (DTD 、Schemas) 和文档验证。
 
 ##### 事件流: 捕获事件流、冒泡事件流。
 1. 捕获事件流从根节点开始执行，一直往子节点查找执行，直到查找执行到目标节点。
@@ -494,20 +496,30 @@ https://www.jianshu.com/p/5f9027722204
     
     只有在鼠标指针穿过被选元素时，才会触发 mouseenter 事件，对应 mouseleave。
 
-## <a name=""></a>
-parentNode  
-childNodes  
-firstChild  
-lastChild  
-nextSibling  
-previousSibling
+## <a name="DOM常用属性">DOM常用属性</a>
+* parentNode  // 当前元素的父节点对象
+* children // 当前元素所有子元素节点对象，只返回HTML节点
+* childNodes  // 当前元素所有子节点，包括文本，HTML，属性节点。（回车也会当做一个节点）
+* firstChild  // 当前元素的第一个子节点对象
+* lastChild  // 前元素的最后一个子节点对象
+
+* nextSibling  // 当前元素的下一个同级元素 没有就返回null
+* previousSibling // 当前元素上一个同级元素 没有就返回 null
+
+* innerHTML // 元素的所有文本，包括html代码
+* innerText // 元素的自身及子代所有文本值，只是文本内容，不包括html代码
+
+* nodeType // 节点的类型,
+>元素节点，2：属性节点，3：文本节点。
+* nodeName // 节点节点名称，返回值为大写 （如：DIV，P）
 
 ## <a name="DOM操作">DOM操作—怎样添加、移除、移动、复制、创建和查找节点?</a>
 * 创建新节点
 >
     document.createDocumentFragment()    //创建一个DOM片段
-    document.createElement()   //创建一个具体的元素
+    document.createElement()   //创建一个元素节点
     document.createTextNode()   //创建一个文本节点
+    document.createAttribute() // 创建一个属性节点,如class
 
 * 添加、移除、替换、插入、克隆
 >

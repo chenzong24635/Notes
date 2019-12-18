@@ -1,5 +1,7 @@
 # Promise
 
+[JS 高级之手写一个Promise,Generator,async和 await【近 1W字】](https://juejin.im/post/5df83b93f265da33f8652ccc)
+
 [【2019 前端进阶之路】站住，你这个Promise！](https://zhuanlan.zhihu.com/p/52714698)
 
 [ES6 Promise](http://es6.ruanyifeng.com/#docs/promise)

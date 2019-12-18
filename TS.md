@@ -583,6 +583,9 @@ interface Person {
     name: string;
     age?: number; // error!!! ,这里类型必须是string，对应下面任意属性的类型
     [propName: string]: string;
+    //或者
+    //[propName: string]: string | number;
+    //[propName: string]: any;
 }
 
 let tom: Person = { 
@@ -1039,136 +1042,137 @@ declare function beforeAll(action: (done: DoneFn) => void, timeout?: number): vo
 declare function beforeAll(action: (done: DoneFn) => void, timeout?: number): void;
 ```
 
-
-
 # <a name="class">class</a>
 ## class
 可以向属性和方法的参数添加类型
->
-    class Greeter {
-      greeting: string
-      constructor(message: string) {
-        this.greeting = message
-      }
-      greet(name: string) {
-        return `Hi ${name}, ${this.greeting}`
-      }
-    }
+```ts
+class Greeter {
+  greeting: string
+  constructor(message: string) {
+    this.greeting = message
+  }
+  greet(name: string) {
+    return `Hi ${name}, ${this.greeting}`
+  }
+}
+```
 
 ## 访问修饰符
 ts可以使用三种访问修饰符:public、private 和 protected
 
-public 修饰的属性或方法是公有的，可以在任何地方被访问到，`默认所有的属性和方法都是 public 的`;  
-private 修饰的属性或方法是私有的，不能在声明它的类的外部访问;  
-protected 修饰的属性或方法是受保护的，它和 private 类似，区别是它在子类中也是允许被访问的
+* public 修饰的属性或方法是公有的，可以在任何地方被访问到，`默认所有的属性和方法都是 public 的`;  
+* private 修饰的属性或方法是私有的，不能在声明它的类的外部访问;  
+* protected 修饰的属性或方法是受保护的，它和 private 类似，区别是它在子类中也是允许被访问的
 
-js的static静态属性方法，通过类本身（和其子类）调用，不能在类的实例上调用静态方法  
+* js的static静态属性方法，通过类本身（和其子类）调用，不能在类的实例上调用静态方法  
 
 
 `当构造函数修饰为 private 时，该类不允许被继承或者实例化`  
 `当构造函数修饰为 protected时，该类只允许被继承不允许实例化`
->
-    class Animal {
-      public name;
-      private constructor (name) { // 构造函数私有化
-          this.name = name;
-    }
-    }
-    class Cat extends Animal { // error!!!
-      constructor (name) {
-          super(name);
-      }
-    }
+```ts
+class Animal {
+  public name;
+  private constructor (name) { // 构造函数私有化
+      this.name = name;
+  }
+}
+class Cat extends Animal { // error!!!,无法扩展类“P”。类构造函数标记为私有
+  constructor (name) {
+      super(name);
+  }
+}
 
-    let a = new Animal('Jack'); // error!!!
+let a = new Animal('Jack'); // error!!!；类“P”的构造函数是私有的，仅可在类声明中访问
+```
 
->
-    class M {
-      age: number
-      constructor(age){
-        this.age = age
-      }
-      public a() {
-        console.log('public')
-        this.b() // 'private'
-        this.c() // 'protected'
+```ts
+class M {
+  age: number
+  constructor(age){
+    this.age = age
+  }
+  public a() {
+    console.log('public')
+    this.b() // 'private'
+    this.c() // 'protected'
 
-        M.d() // ok 不能直接使用 this 关键字来访问静态方法。而是要用类名来调用
-        this.d() // error!!!!!!
-      }
-      private b() {
-        console.log('private')
-      }
-      protected c() {
-        console.log('protected')
-      }
-      static d() {
-        console.log('static')
-      }
-    }
-    class N extends M {
-      name: string
-      constructor(age,name){
-        super(age)
-        this.name = name
-      }
-      getC() {
-        this.c()
-      }
-    }
-    let m = new M(23)
-    let n = new N(23,'n')
+    M.d() // 'static' 不能直接使用 this 关键字来访问静态方法。而是要用类名来调用
+    this.d() // error!!!，类的静态函数，只能通过 M.d() 访问
+  }
+  private b() {
+    console.log('private')
+  }
+  protected c() {
+    console.log('protected')
+  }
+  static d() {
+    console.log('static')
+  }
+}
+class N extends M {
+  name: string
+  constructor(age,name){
+    super(age)
+    this.name = name
+  }
+  getC() {
+    this.c()
+  }
+}
+let m = new M(23)
+let n = new N(23,'n')
 
-    m.age // ok
-    m.a() // ok
-    m.b() // error!!!，private不能在声明它的类的外部访问
-    m.c() // error!!!，protected不能在声明它的类的外部访问
-    m.d() // error!!!，static不能被实例调用
+m.age // 23
+m.a() // 'public' 'private' 'protected' 'static'
+m.b() // error!!!，private不能在声明它的类的外部访问
+m.c() // error!!!，protected不能在声明它的类的外部访问
+m.d() // error!!!，static不能被实例调用
 
-    n.getC() // ok，protected允许被子类访问
-    M.d() // ok
-    N.d() // ok
+n.getC() // 'protected' //protected允许被子类访问
+M.d() // 'static'
+N.d() // 'static'
+```
 
 * abstract 用于定义抽象类和其中的抽象方法 (抽象方法只能出现在抽象类中)。
 
 抽象类是不允许被实例化的：
->
-    abstract class Animal {
-        public name;
-        public constructor(name) {
-            this.name = name;
-        }
-        public abstract sayHi();
+```ts
+abstract class Animal {
+    public name;
+    public constructor(name) {
+        this.name = name;
     }
+    public abstract sayHi();
+}
 
-    let a = new Animal('Jack'); // error!!!!!!
+let a = new Animal('Jack'); // error!!! 无法创建抽象类的实例
+```
 
-
-## 类实现接口
+## implements 类实现接口
 实现（implements）是面向对象中的一个重要概念。一般来讲，一个类只能继承自另一个类，有时候不同类之间可以有一些共有的特性，这时候就可以把特性提取成接口（interfaces），用 implements 关键字来实现。这个特性大大提高了面向对象的灵活性。
 
->
-    interface Alarm {
-        alert();
-    }
+```ts
+interface Alarm {
+    alert();
+}
 
-    interface Light {
-        lightOn();
-        lightOff();
-    }
+interface Light {
+    lightOn();
+    lightOff();
+}
 
-    class Car implements Alarm, Light {
-        alert() {
-            console.log('Car alert');
-        }
-        lightOn() {
-            console.log('Car light on');
-        }
-        lightOff() {
-            console.log('Car light off');
-        }
+class Car implements Alarm, Light {
+    alert() {
+        console.log('Car alert');
     }
-
+    lightOn() {
+        console.log('Car light on');
+    }
+    lightOff() {
+        console.log('Car light off');
+    }
+}
+```
 
 # <a name="declear">declear声明</a>
 [参考](https://segmentfault.com/a/1190000020000325)
@@ -1176,9 +1180,10 @@ js的static静态属性方法，通过类本身（和其子类）调用，不能
 [文档](https://www.tslang.cn/docs/handbook/declaration-files/introduction.html)
 
 作用：当使用第三方库时，我们需要引用它的声明文件，才能获得对应的代码补全、接口提示等功能。
->
-    declare var $: (selector: string) => any;  
-    $('body')
+```ts
+declare var $: (selector: string) => any;  
+$('body')
+```
 
 更推荐的是使用 @types 统一管理第三方库的声明文件。  
 @types 的使用方式很简单，直接用 npm 安装对应的声明模块即可，以 jQuery 举例：
@@ -1188,37 +1193,34 @@ declare var 并没有真的定义一个变量，只是定义了全局变量 $ �
 
 ----
 
-* 新建一个声明文件以 .d.ts 为后缀，把声明语句单独放到该文件中： runoob.d.ts
+* 新建一个声明文件以 .d.ts 为后缀，把声明语句单独放到该文件中： `runoob.d.ts`
 
 * 声明文件或模块的语法格式如下：
->
-    declare module Module_Name {
-    }
+` declare module Module_Name {} `
 
 * ts中引入声明文件：
->
-    /// <reference path = " runoob.d.ts" />
 
->
-    不要在声明文件里使用  /// <reference path="..." />。
-    应该使用  /// <reference types="..." />代替
+`/// <reference path = " runoob.d.ts" />`
 
------
+```html
+  不要在声明文件里使用  /// <reference path="..." />。
+  应该使用  /// <reference types="..." />代替
+```
 
->
-    //a.d.ts
-    declare let myname: number
+```ts
+//a.d.ts
+declare let myname: number
 
-    //a.ts
-    #!/usr/bin/env ts-node
-    /// <reference path = "./a.d.ts" />
-    myname = 5
-    console.log(myname)
+//a.ts
+#!/usr/bin/env ts-node
+/// <reference path = "./a.d.ts" />
+myname = 5
+console.log(myname)
+```
 
 # <a name="namespace">命名空间namespace</a>
 namespace：“内部模块”现在称做“命名空间”
 
 moduleX{ 相当于现在推荐的写法 namespaceX{)
 
-# <a name=""></a>
 # <a name=""></a>
