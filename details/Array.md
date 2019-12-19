@@ -24,7 +24,7 @@
     * <a href="#Array.isArray()">Array.isArray()判断是否数组</a>
     * <a href="#Array.of()">Array.of()</a>
     * <a href="#Array.from()">Array.from()</a>
-    * <a href="#find()、findIndex(),indexOf()、lastIndexOf(),includes()">find()、findIndex(),indexOf()、lastIndexOf()、includes())</a>
+    * <a href="#find()、findIndex()、indexOf()、lastIndexOf()、includes()">find()、findIndex()、indexOf()、lastIndexOf()、includes()</a>
     * <a href="#join()">join()数组转字符串</a>
     * <a href="#fill()">fill()填充数组 -- 改变原数组</a>
     * <a href="#push()、unshift()、pop()、shift()">push()、unshift()、pop()、shift() -- 改变原数组</a>
@@ -44,6 +44,34 @@
 
 * <a href="#"></a>
 
+# 概述
+数组是一种类列表对象，其数据在内存中也可以不连续
+
+数组应该是一段线性分配的内存，但是JS的Array的检索和更新方式和对象一模一样
+
+* Array它把下标变成数字，用其作属性。它比真正的数组慢，但用起来更方便。
+* Array本质还是对象，其原型继承自Array.prototype，向上再继承自Object.prototype
+* Array的方法是设计为对象通用的，对象也能调用数组的方法
+
+```js
+1+[1,2] // '11,2'
+此时数组进行隐式转换,相当于
+1 + ([1,2]).toString()
+```
+
+### 类数组
+* 类数组不是数组，通过 Array.isArray() 会返回 false
+* 类数组通过 Array.from 可以转换为数组
+* 属性要为索引（数字）属性
+* 必须有length属性 
+
+###  常见的类数组
+
+* 字符串
+  >唯一的原生类数组
+* arguments
+  >arguments完全可以使用...args代替，这样不定参数就是真数组
+* DOM
 
 # <a name="属性">属性</a>
 ## <a name="length">length</a>
@@ -79,13 +107,19 @@ Array.prototype.constructor === Array //true 实例的原型的构造函数既�
 
 # <a name="方法">方法</a>
 ## <a name="toString()">toString()</a>
-返回一个字符串，表示指定的数组及其元素
+toString()返回一个字符串，表示指定的数组及其元素
 
 Array对象覆盖了Object的 toString 方法。对于数组对象，toString 方法连接数组并返回一个字符串，其中包含用逗号分隔的每个数组元素。
 
 当一个数组被作为文本值或者进行字符串连接操作时，将会自动调用其 toString 方法。
->
-    [1,3,'a'].toString() //"1,3,4,a"
+```js
+''+[1,3,'a'] // "1,3,a"
+等同于
+[1,3,'a'].toString() //"1,3,a"
+
+4+[1,3,'a'] // "41,3,a"
+```
+
 
 ## <a name="toLocaleString()">toLocaleString()</a>
 toLocaleString(locales, options)
@@ -172,22 +206,18 @@ thisArg：可选参数，执行回调函数 mapFunction 时 this 对象。这个
     }
 
 
-## <a name="find()、findIndex(),indexOf()、lastIndexOf(),includes()">find()、findIndex(),indexOf()、lastIndexOf(),includes()</a>
+## <a name="find()、findIndex()、indexOf()、lastIndexOf()、includes()">find()、findIndex()、indexOf()、lastIndexOf()、includes()</a>
 
 ### find()、findIndex()
 
-find(callback[, thisArg])  
-callback：在数组每一项上执行的函数，接收 3 个参数
->
-    element：当前遍历到的元素。
+* find(callback[, thisArg])  找到第一个满足检测函数条件的元素，并返回该元素，没找到则返回 undefined。
+>callback：在数组每一项上执行的函数，接收 3 个参数
+>>element：当前遍历到的元素。  
+>>index可选：当前遍历到的索引  
+>>array可选：数组本身  
 
-    index可选：当前遍历到的索引
+> thisArg可选： 执行回调时用作this 的对象。
 
-    array可选：数组本身
-
-thisArg可选： 执行回调时用作this 的对象。
-
-* find() 找到第一个满足检测函数条件的元素，并返回该元素，没找到则返回 undefined。
 >
 
     let arr = [1, 2, 3, 4, 5,NaN];
@@ -412,7 +442,7 @@ end : 要复制序列的结束位置，如为负值则从后向前计数。如�
 
 ## <a name="forEach()">forEach()-- 不改变原数组</a>
 遍历数组 ,无法遍历对象, IE不支持  
-`没有返回值 undefined` , `不改变原数组 、不能中断`
+`没有返回值 undefined` , `不改变原数组 、能被return中断`
 
 forEach(callback,thisArg)
 >callback(item,index,array)：生成新数组元素的函数，使用三个参数：  
@@ -427,6 +457,7 @@ forEach(callback,thisArg)
     forEach((item, index, array) => {})
     //  break,continue不能中断其循环，使用return也不能返回到外层函数。
     arr.forEach((item, index, array) => {
+      if(index == 0)return;
       console.log('forEach()-->', 'index:', index, ';item:', item, '源数组:', array)
     });
 

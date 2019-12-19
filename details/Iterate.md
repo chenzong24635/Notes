@@ -119,7 +119,7 @@ for await of可以用来遍历具有Symbol.asyncIterator方法的数据结构，
 
 ##  <a name="forEach">forEach()</a>
 `遍历数组 ,无法遍历对象,跳过空位`  
-`没有返回值， undefined` , `不改变原数组 、不能中断`
+`没有返回值， undefined` , `不改变原数组 、能被return中断`
 
 forEach(callback,thisArg)
 >callback(item,index,array)：生成新数组元素的函数，使用三个参数：  

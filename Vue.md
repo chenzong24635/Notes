@@ -23,7 +23,7 @@
 * <a href="#SPA">SPA SSR</a>
 * <a href="#双向数据绑定原理、实现">双向数据绑定原理、实现:Object.defineProperty、proxy</a>
 * <a href="#单向数据流">单向数据流</a> 
-* <a href="#组件生命周期">组件生命周期</a>
+* <a href="#生命周期">生命周期</a>
 * <a href="#监听组件的生命周期">监听组件的生命周期</a>
 * <a href="#组件销毁时，清除定时器">组件销毁时，清除定时器</a>
 * <a href="#computed watch methods">computed watch methods</a>
@@ -386,7 +386,7 @@ proxy双向绑定-简
       }
     }
 
-# <a name="组件生命周期">组件生命周期</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="生命周期">生命周期</a>[![bakTop](./img/backward.png)](#top)  
 [Vue2.0生命周期](https://segmentfault.com/a/1190000008010666)  
 [参考](https://www.cnblogs.com/yuliangbin/p/9348156.html)
 
@@ -394,37 +394,56 @@ Vue 实例有一个完整的生命周期，也就是从开始创建、初始化�
 
 
 调用钩子的顺序按照  
->
-    name -> components -> extend/mixins -> props -> data -> computed -> watch -> filters -> created -> beforeMount -> mounted -> beforeUpdate -> updated -> activated -> deactivate -> beforeDestroy -> destroyed
+```js
+name ->  
+components ->  
+extend/mixins ->  
+props ->  
+data ->  
+computed ->  
+watch ->  
+filters ->  
+beforeCreated ->  
+created ->  
+beforeMount ->  
+mounted ->  
+beforeUpdate ->  
+updated ->  
+activated ->  
+deactivate ->  
+beforeDestroy ->  
+destroyed
+```
 
 ## 各个生命周期作用：
->
-    beforeCreated阶段: 数据对象data和vue实例的挂载元素$el都为undefined，还未初始化。 
-    created阶段: 完成data初始化，$el还没有。
 
-    beforeMount阶段：完成了data和$el初始化，但还是挂载之前为虚拟的dom节点，data.message还未替换。 
-    mounted阶段：$el挂载完成，data.message成功渲染。
+* beforeCreated阶段: 数据对象data和vue实例的挂载元素$el都为undefined，还未初始化。 
+* created阶段: 完成data初始化，$el还没有。
 
-    beforeUpdate 、updated:当data变化时，会触发
+* beforeMount阶段：完成了data和$el初始化，但还是挂载之前为虚拟的dom节点，data.message还未替换。 
+* mounted阶段：$el挂载完成，data.message成功渲染。
 
-    activated: keep-alive组件被激活时调用
-    deactivated: keep-alive组件被停用时调用
+* beforeUpdate 、updated:当data变化时，会触发
 
-    beforeDestroy 、destroyed：在执行destroyed方法后，对data的改变不会再触发周期函数，说明此时vue实例已经解除了事件监听以及和dom的绑定，但是dom结构依然存在
+* activated: keep-alive组件被激活时调用
+* deactivated: keep-alive组件被停用时调用
+
+* beforeDestroy 、destroyed：在执行destroyed方法后，对data的改变不会再触发周期函数，说明此时vue实例已经解除了事件监听以及和dom的绑定，但是dom结构依然存在
 
 
 ## 生命周期钩子的一些使用方法：
->
+```js
+beforecreate : 可以在这加个loading事件，在加载实例时触发
 
-    beforecreate : 可以在这加个loading事件，在加载实例时触发
+created : 初始化完成时的事件写在这里，如在这结束loading事件，异步请求也适宜在这里调用
 
-    created : 初始化完成时的事件写在这里，如在这结束loading事件，异步请求也适宜在这里调用
+mounted : 挂载元素，获取到DOM节点
 
-    mounted : 挂载元素，获取到DOM节点
-    
-    updated : 如果对数据统一处理，在这里写上相应函数
+updated : 任何数据的更新,如果要做统一的业务逻辑处理使用此钩子函数
 
-    beforeDestroy : 可以做一个确认停止事件的确认框 (如：确认是否退出登录)
+beforeDestroy : 可以做一个确认停止事件的确认框 (如：确认是否退出登录)
+
+```
 
 <img src="img/lifecycle.png" width="60%" />
 

@@ -694,9 +694,13 @@ https://www.jianshu.com/p/5f9027722204
 
 get,set 与 wriable,value 是互斥的,如果有交集设置会报错
 
-* configurable可配置
+### configurable可配置
 
-能否使用delete、能否需改属性特性、或能否修改访问器属性、，false为不可重新定义，默认值为true 
+* 能否使用delete
+* 能否修改属性特性
+* 能否修改访问器属性
+* 值为false为不可重新定义
+* 默认值为true 
 
 简单的说 ，设置这个为false之后，就不能删除这个属性或修改这个属性（属性值不影响），这个属性就是这个对象固有的，删除不了
 >
@@ -715,7 +719,7 @@ get,set 与 wriable,value 是互斥的,如果有交集设置会报错
     console.log(obj.a);//正常使用，输出结果为 2
 
 
-* enumerable可枚举
+### enumerable可枚举
 
 对象属性是否可通过for-in循环，flase为不可循环，默认值为true 
 简单的说，当你想用 for-in 遍历这个对象的时候，正常会输出每一个属性，但当你设置false时，这个属性就不会被for-in 遍历读到
@@ -739,7 +743,7 @@ get,set 与 wriable,value 是互斥的,如果有交集设置会报错
         console.log(i); //输出b，c 不会输出a，a已经设置不被枚举
     }
 
-* writable可修改
+### writable可修改
 
 对象属性是否可修改,flase为不可修改，默认值为true 
 
@@ -757,11 +761,33 @@ get,set 与 wriable,value 是互斥的,如果有交集设置会报错
     obj.a = 2;//普通模式不会抛异常，严格模式会抛出TypeError
     console.log(obj.a);//输出1 ，不可被修改
 
-* value属性值
+### value属性值
+任何属性的值都保存在value中，哪怕值是一个函数。
 
-* get获取
+### get获取
+对读取属性进行额外操作的函数
 
-* set设置
+### set设置
+对设置属性进行额外操作的函数
+
+```js
+var spy = {
+	sex: 'male',
+};
+Object.defineProperty(spy,"sex",{
+	get: function () {
+		console.log("get");
+		return this.name;
+	},
+	set: function (val) {
+    console.log("set");
+		return val;
+	}
+})
+console.log(spy.sex) //调用get函数
+console.log(spy.sex = "feme"); //调用set函数
+
+```
 
 ## <a name="typeof instanceof">typeof 、instanceof 、in</a>
 typeof 
