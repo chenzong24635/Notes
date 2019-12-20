@@ -52,6 +52,8 @@ TypeScript 非常包容
 
     node里直接执行： ./文件名.ts （./不能省）
 
+    或vscode下载code runner插件，右键run code，终端输出
+
 
 # <a name="类型">类型</a>
 Boolean Number String  
@@ -729,7 +731,7 @@ square.penWidth = 5.0;
 console.log(square) // { color: 'blue', sideLength: 10,penWidth: 5 }
 ```
 
-# type 可以声明基本类型别名，联合类型，元组等类型
+# 类型别名type， 可以声明基本类型别名，联合类型，元组等类型
 
 ```ts
 type age = number
@@ -751,6 +753,26 @@ let a: SetUser = function(){}
 console.log(a('1',1))
 ```
 
+* &合并,可以合并interface和type
+```ts
+interface A  {
+  name: string;
+  age: number;
+};
+
+type B = {
+  gender: number;
+}
+type C = A & B;
+
+let obj: C = {
+  name: 'a',
+  age: 11,
+  gender: 11
+} 
+console.log(obj);
+```
+
 # interface 、types区别
 * 都可以描述一个对象或者函数
 ```ts
@@ -769,7 +791,7 @@ type User = {
 type SetUser = (name: string) => void
 ```
 
-* 都允许拓展（extends），并且两者并不是相互独立的，也就是说 interface 可以 extends type, type 也可以 extends interface 。
+* 都允许拓展（extends），并且两者并不是相互独立的，也就是说 interface 可以 拓展(extends) type, type 也可以拓展(&) interface 。
 ```ts
 interface Name1 {
   name1: string
@@ -826,8 +848,8 @@ User 接口会合并为 {
 }
     */
 ```
-    
-### implements明确的强制一个类去符合某种契约
+
+### implements明确的强制一个类去符合某种契约(interface,type)
 ```ts
 interface ClockInterface {
   currentTime: Date;
@@ -843,7 +865,23 @@ class Clock implements ClockInterface {
 }
 ```
 
-### keyof 查询组给定类型的钥匙
+```ts
+type A  = {
+  name: string;
+  age: number;
+};
+
+class Animal implements A {
+  constructor(public name: string,public age: number){
+    this.name = name;
+    this.age = age;
+  }
+}
+let cow = new Animal('cow',34);
+console.log(cow);
+```
+
+### keyof 查询健名,类似于JS中的Object.keys()方法
 ```ts
 type Person = {
   name: string
@@ -855,14 +893,42 @@ type Person = {
   age: number
 } */
 
-type PersonKeys = keyof Person // 'name' | 'age'
+type PersonKeys = keyof Person
+//type PersonKeys =  'name' | 'age'
 let a: PersonKeys = 'name' // ok
 let a1: PersonKeys = 'age' // ok
 let a2: PersonKeys = 'a' // error!!!
 
 ```
 
-### Exclude 允许您从其他类型中删除某些类型。Exclude 来自 T 任何可分配的东西 T。
+```ts
+interface Rectangle {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+type keys = keyof Rectangle;
+// 等价于
+// type keys = "x" | "y" | "width" | "height";
+
+// 这里使用了泛型，强制要求第二个参数的参数名必须包含在第一个参数的所有字符串索引中
+function getRectProperty<T extends object, K extends keyof T>(rect: T, property: K): T[K] {
+  return rect[property];
+} 
+
+let rect: Rectangle = {
+  x: 50,
+  y: 50,
+  width: 100,
+  height: 200
+};
+console.log(getRectProperty(rect, 'width')); // -> 100
+console.log(getRectProperty(rect, 'notExist')); // error!!! 类型“"notExist"”的参数不能赋给类型“"width" | "x" | "y" | "height"”的参数
+```
+
+### Exclude 允许您从其他类型中删除某些类型。
 ```ts
 
 interface Person {
@@ -887,9 +953,8 @@ let b: PersonKeys = {
   age: 24
 }
 ```
-因此Exclude要加keyof
 
-### Pick 允许您从其他类型中选择某些类型。Pick 来自 T 任何可分配的东西 T。
+### Pick 允许您从其他类型中选择某些类型。
 ```ts
 interface Person {
   name: string
@@ -910,6 +975,9 @@ let b1: PersonKeys = {age: 1} // error
 
 加keyof时```type PersonKeys = Pick<keyof Person, 'name'>```,好像没什么作用；  
 因此Pick不加keyof
+
+### Partial 可选属性
+### Omit 属性忽略
 
 # <a name="函数">函数</a>
 可以为每个参数添加类型，及函数本身添加返回类型。
@@ -1072,7 +1140,7 @@ ts可以使用三种访问修饰符:public、private 和 protected
 ```ts
 class Animal {
   public name;
-  private constructor (name) { // 构造函数私有化
+  private constructor (name) { // 构造函数私有化,不允许被继承或者实例化
       this.name = name;
   }
 }

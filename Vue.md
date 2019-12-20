@@ -18,6 +18,7 @@
   <summary>
     目录
   </summary>
+
 * <a href="#概述">概述</a>  
 * <a href="#MVC、MVP、MVVM">MVC、MVP、MVVM</a>  
 * <a href="#SPA">SPA SSR</a>
@@ -64,7 +65,9 @@
   * <a href="#事件的销毁">事件的销毁</a>
   * <a href="#图片资源懒加载">图片资源懒加载</a>
   * <a href="#路由懒加载">路由懒加载</a>
-  * <a href="#"></a>
+
+* <a href="#UI组件">UI组件常见问题</a>
+
 
 * <a href="#vue-cli2快速创建项目">vue-cli2快速创建项目</a>
 * <a href="#vue-cli3配置">vue-cli3配置</a>
@@ -2098,6 +2101,32 @@ Vue  是单页面应用，会有很多的路由引入 ，打包后的文件很�
 
 
 
+# <a name="UI组件">UI组件常见问题</a>[![bakTop](./img/backward.png)](#top)  
+* 组件事件触发不了  
+
+加.native`@key.native`
+
+* element UI 自定义传参的解决方法
+
+这里的handleSelect默认绑定的参数是选中的那条数据。如果一个页面有好几个相同的组件，要想知道选的是哪个？
+```html
+<el-autocomplete
+    v-model="state4"
+    :fetch-suggestions="querySearchAsync"
+    placeholder="请输入内容"
+    @select="handleSelect"
+></el-autocomplete>
+```
+解决方案：
+```html
+<el-autocomplete
+    v-model="state4"
+    :fetch-suggestions="querySearchAsync"
+    placeholder="请输入内容"
+    @select="((item)=>{handleSelect(item, index)})"
+    // 写个闭包就可以了，index表示第几个组件
+></el-autocomplete>
+```
 
 # <a name="vue-cli2快速创建项目">vue-cli2快速创建项目</a>[![bakTop](./img/backward.png)](#top)  
 

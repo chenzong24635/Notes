@@ -19,6 +19,24 @@ FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
 
 * 运行：`flutter doctor`查看是否需要安装任何依赖项来完成安装
 
+# vscode运行fluter
+* ctrl + shift + p
+* 输入 ‘flutter’, 然后选择 ‘Flutter: New Project’
+* 输入 Project 名称 (如myapp), 然后按回车键
+* 指定放置项目的位置，然后按蓝色的确定按钮
+* 等待项目创建继续，并显示main.dart文件
+* f5 运行程序
+
+[flutter 卡在Running Gradle task 'assembleDebug'.](https://www.cnblogs.com/wupeng88/p/11455874.html)
+
+# 
+
+* but Android SDK not found at this location问题
+更改android SDK路径:
+>flutter config --android-sdk "现在的Android SDK 路径"
+
+* Android license status unknown.
+
 # 概述
 Flutter是谷歌的移动UI框架，可以快速在iOS和Android上构建高质量的原生用户界面。 Flutter可以与现有的代码一起工作。在全世界，Flutter正在被越来越多的开发者和组织使用，并且Flutter是完全免费、开源的。
 

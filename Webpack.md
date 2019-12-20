@@ -130,14 +130,18 @@ rules: [
 npm install file-loader url-loader --save-dev
 
 * file-loader：  
+
 解决引用路径的问题，拿background样式用url引入背景图来说，我们都知道，webpack最终会将各个模块打包成一个文件，因此我们样式中的url路径是相对入口html页面的，而不是相对于原始css文件所在的路径的。这就会导致图片引入失败。  
+
 这个问题是用file-loader解决的，file-loader可以解析项目中的url引入（不仅限于css），根据我们的配置，将图片拷贝到相应的路径，再根据我们的配置，修改打包后文件引用路径，使之指向正确的文件。
 
 * url-loader：  
-如果图片较多，会发很多http请求，会降低页面性能。这个问题可以通过url-loader解决。url-loader会将引入的图片编码，生成dataURl。相当于把图片数据翻译成一串字符。再把这串字符打包到文件中，最终只需要引入这个文件就能访问图片了。  
-当然，如果图片较大，编码会消耗性能。因此url-loader提供了一个limit参数，小于limit字节的文件会被转为DataURl，大于limit的还会使用file-loader进行copy。
 
-url-loader封装了file-loader
+url-loader 功能类似于 file-loader，但是在文件大小（单位 byte）低于指定的限制时，可以返回一个 DataURL。
+
+url-loader 把资源文件转换为 URL，file-loader 也是一样的功能。不同之处在于 url-loader 更加灵活，它可以把小文件转换为 base64 格式的 URL，从而减少网络请求次数。
+
+url-loader 依赖 file-loader。url-loader封装了file-loader
 
 ```js
 module: {
@@ -148,6 +152,7 @@ module: {
         loader:'url-loader',
         options:{
           limit: 100*1024,
+          name: "[name]_[hash].[ext]",
           outputPath:'images/',
         }
       }]

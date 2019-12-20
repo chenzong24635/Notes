@@ -112,6 +112,10 @@ CSS布局、居中
 * <a href="#@规则">@规则</a>
 * <a href="#CSS hack">CSS hack</a>
 
+
+* <a href="#移动开发踩坑">移动开发踩坑</a>
+* <a href="#移动端页面调试">移动端页面调试</a>
+
 * <a href="#一些css属性及其他">**一些css属性及其他**</a>
 
   * <a href="#注意事项">注意事项</a>
@@ -1777,7 +1781,114 @@ format()作用
     </style>
 
 
+# <a name="移动开发踩坑">移动开发踩坑</a>[![bakTop](./img/backward.png)](#top)
+* css属性touch-action:none;  
+  >
+      该属性会导致安卓页面无法滚动，慎用!
 
+* iOS 禁止识别长串数字为电话
+  ```html
+  <meta name="format-detection" content="telephone=no" />
+  ```
+
+* IOS 去除手机端input输入框的内阴影
+  ```css
+  input{ 
+      -webkit-appearance: none; 
+  }
+  ```
+
+* iOS input输入框光标错位  
+  >
+      fixed定位引起的，改成absolute就解决了
+
+* IOS 点击input不聚焦问题,调不起键盘
+  ```js
+  js强制性给加上点击事件，点击后给input框聚集光标。
+  cilckTextarea(){
+      document.getElementsByClassName('cont-inp')[0].focus();
+  },
+  ```
+
+* iOS 取消input在输入的时候英文首字母的默认大写
+  ```html
+    <input type="text" autocapitalize="none">
+  ```
+
+* IOS 微信打开网页键盘弹起后页面上滑，导致弹框里的按钮响应区域错位  
+  `手动把滚动条滚到底部`如：
+  ```js
+  import Vue from 'vue';
+  Vue.directive('blur', {
+      'bind'(el) {
+          el.addEventListener("click", function(){
+              window.scrollTo(0,0);
+          })
+      }
+  }); 
+  //在点击页面提交按钮的时候，把滚动条滚到底部就OK了
+
+  ```
+
+* iconfont 字体某项情况里面加载不出来
+
+  ```css
+  引入iconfont字体的时候，需要按照顺序把字体依次引入
+  移动端字体图标加载顺序应该为 eto,svg,woff,ttf
+  @font-face {
+      font-family: "djicon";
+      src: url('./iconfont.eot'); /* IE9*/
+      src: url('./iconfont.svg#iconfont') format('svg'), /* iOS 4.1- */
+      url('./iconfont.woff') format('woff'), /* chrome、firefox */
+      url('./iconfont.ttf') format('truetype'); /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  }
+  // 参考文档：https://www.cnblogs.com/Megasu/p/4305116.html
+  ```
+
+* 上传图片，iPhone7 iPhone7p在上传图片的时候，传不过去图片的name  
+  ```js
+  手动添加图片name
+  let data = new FormData();
+  data.append("fileName", file[0],file[0].name); 
+
+  ```
+
+* 一些情况下对非可点击元素如(label,span)监听click事件，ios下不会触发
+  ```css
+  cursor: pointer;
+  ```
+
+* 禁用元素的默认指针事件
+  ```css
+  pointer-events: none;
+  ```
+
+# <a name="移动端页面调试">移动端页面调试</a>[![bakTop](./img/backward.png)](#top)
+
+* [vconsole--使用教程](https://github.com/Tencent/vConsole/blob/dev/doc/tutorial_CN.md)
+
+npm 安装使用   
+```js
+npm install vconsole
+let vConsole = new VConsole(option);
+```
+
+[CDN引入](https://www.bootcdn.cn/vConsole/)
+```js
+<script src="https://cdn.bootcss.com/vConsole/3.3.4/vconsole.min.js"></script>
+```
+*  [Weinre远程调试工具](https://segmentfault.com/a/1190000010017457)
+[移动端开发调试工具神器--Weinre使用方法](https://blog.csdn.net/seanxwq/article/details/80763861)
+
+```js
+本地全局安装weinre , 命令行：npm install -g weinre
+在本地启动一个检测器：weinre --httpPort 8080 --boundHost 1.2.3.4 （IP为本地IP地址）
+在浏览器访问此地址：http://1.2.3.4:8080
+把script，放在你需要调试的页面里：
+<script src="http://1.2.3.4:8080/target/target-script-min.js#anonymous"></script>
+打开链接：http://1.2.3.4:8080/client/#anonymous
+
+```
 
 
 # <a name="一些css属性及其他">**一些css属性及其他**</a>[![bakTop](./img/backward.png)](#top)
@@ -2112,7 +2223,7 @@ user-select:none
 ```css
     .button-disabled {
       opacity: .5;
-      pointer-events: none
+      pointer-events: none;
     }
 ```
 
