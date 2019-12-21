@@ -69,13 +69,30 @@ Object.defineProperties(obj,{
     value:'a'
   },
   b: {
-    value: 'b'
+    // value: 'b', //此时会报错， 不能同时指定访问器和值或可写属性
+    get(){
+      return 'get value ' + this.a;
+    },
+    set(val){
+      this.a = val;
+    }
   }
 })
 ```
 ![defineProperty.jpg](../img/Object/defineProperty.jpg)
 
 * Object.getOwnPropertyDescriptor() 读取属性
+```js
+let obj = {a: 1}
+Object.getOwnPropertyDescriptor(obj, 'a'); 
+//
+{
+  value: 1
+  writable: true
+  enumerable: true
+  configurable: true
+}
+```
 
 ## 对象分类:
 >
