@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>-->
+  <title></title>
+  <!-- <link rel="stylesheet" href="./css/base.css" /> -->
+  <style></style>
+</head>
+<body>
+    <p>location.hash + iframe 跨域</p>
+    <!-- // a.html -->
+    <p>a.html</p>
+    <iframe src="http://127.0.0.1:5500/location.hash/c.html#HaveYouGotIt"></iframe>
+    <script>
+      window.onhashchange = function () { //检测hash的变化
+        console.log(location.hash);
+      }
+    </script>
+</body>
+</html>

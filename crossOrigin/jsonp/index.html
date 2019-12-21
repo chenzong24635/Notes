@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>-->
+  <title></title>
+  <!-- <link rel="stylesheet" href="./css/base.css" /> -->
+  <style></style>
+</head>
+<body>
+  <!-- <script src="../jquery.min.js"></script> -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+    // 原生
+    let script = document.createElement('script');  //动态创建script
+    script.src = 'http://localhost:8080/crossOrigin/jsonp/test.php?callback=callback';//
+    document.body.appendChild(script);
+    function callback(json) {  //回调执行函数
+      console.log(JSON.stringify(json));
+    }
+    
+    // jquery
+    $.ajax({
+        type: "get", // 请求方式
+        url: "http://localhost:8080/crossOrigin/jsonp/test.php", // 请求地址
+        dataType: "jsonp",	// 标志跨域请求		
+        jsonp: "callback", // 传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(一般默认为:callback)
+        jsonpCallback: "receive", // 自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+        success: function(json) { // 请求成功的回调函数，json既为我们想要获得的数据
+          console.log(json);
+        },
+        error: function(e) { // 请求失败的回调函数
+          console.log("error");
+        }
+    });
+    function receive(data){
+      //data是后台返回的json对象。
+      //这里是回调函数的逻辑代码
+      console.log(data)
+    }
+  </script>
+</body>
+</html>
