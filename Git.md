@@ -50,7 +50,7 @@
     //,若报错: remote origin already exists. 先运行  git remote rm origin  	  
     git push -u origin master  //提交到你的仓库
 
-    git push --force --set-upstream origin master // 强制替换所有内容
+    或者git push --force --set-upstream origin master // 强制替换所有内容
 
 
 # <a name="将本地代码文件夹作为新分支添加到远程仓库">将本地代码文件夹作为新分支添加到远程仓库</a>

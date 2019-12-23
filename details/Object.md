@@ -43,24 +43,56 @@
     enumerable：决定 能否枚举该属性。
     configurable：决定该属性能否被删除或者改变特征值
 
-
+* Object.defineProperty() 定义对象属性
+* Object.defineProperties()定义对象多个属性
 get/set方法来检测属性变化
 ```js
-  function foo() {}
-  Object.defineProperty(foo.prototype, 'z', 
-    {
-      get: function(){
-        return 1
-      }
+function foo() {}
+Object.defineProperty(foo.prototype, 'z', 
+  {
+    get: function(){
+      return 1
     }
-  )
-  let obj = new foo();
-  console.log(obj.z) // 1
-  obj.z = 10
-  console.log(obj.z) // 1
+  }
+)
+let obj = new foo();
+console.log(obj.z) // 1
+obj.z = 10
+console.log(obj.z) // 1
 
 ```
+Object.defineProperties()
+```js
+let obj ={};
+Object.defineProperties(obj,{
+  a: {
+    value:'a'
+  },
+  b: {
+    // value: 'b', //此时会报错， 不能同时指定访问器和值或可写属性
+    get(){
+      return 'get value ' + this.a;
+    },
+    set(val){
+      this.a = val;
+    }
+  }
+})
+```
 ![defineProperty.jpg](../img/Object/defineProperty.jpg)
+
+* Object.getOwnPropertyDescriptor() 读取属性
+```js
+let obj = {a: 1}
+Object.getOwnPropertyDescriptor(obj, 'a'); 
+//
+{
+  value: 1
+  writable: true
+  enumerable: true
+  configurable: true
+}
+```
 
 ## 对象分类:
 >
