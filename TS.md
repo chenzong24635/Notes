@@ -7,10 +7,28 @@
 * <a href="#准备">准备</a>
 * <a href="#类型">类型</a>
 * <a href="#泛型">泛型</a>
-* <a href="#declear">declear声明</a>
+  * <a href="#Boolean">boolean 布尔值</a>
+  * <a href="#String">string 字符串</a>
+  * <a href="#Array">数组</a>
+  * <a href="#Tuple">元组 Tuple</a>
+  * <a href="#Enum">枚举 enum</a>
+  * <a href="#Any">任意类型 :any</a>
+  * <a href="#unkown">unkown</a>
+  * <a href="#联合类型">联合类型(|)  表示取值可以为多种类型中的一种</a>
+  * <a href="#Void">void</a>
+  * <a href="#Null、Undefined">null、undefined</a>
+  * <a href="#Never">never</a>
+  * <a href="#Object">object</a>
+* <a href="#类型断言">类型断言</a>
+* <a href="#类型推论">类型推论</a>
+* <a href="#泛型">泛型</a>
 * <a href="#接口">接口interface、type</a>
+  * <a href="#类型别名type">类型别名type， 可以声明基本类型别名，联合类型，元组等类型</a>
+  * <a href="#interface 、types区别">interface 、types区别</a>
 * <a href="#函数">函数</a>
 * <a href="#class">class</a>
+* <a href="#declear">declear声明</a>
+* <a href="#命名空间namespace">命名空间namespace</a>
 * <a href="#"></a>
 
 
@@ -62,7 +80,7 @@ Undefined Null Void Any Never
 
 使用 : 指定变量的类型
 
-## 布尔值 : boolean 
+## <a name="Boolean">boolean 布尔值</a>
 
 ```ts
 let isDone: boolean = false; // ok
@@ -85,7 +103,8 @@ let num: number = 0o744; // 八进制
 let num: number = 0xf00d; // 十六进制
 ```
 
-## 字符串 : string
+
+## <a name="String">string 字符串</a>
 ```ts
 let str: string = 'aaa';
 
@@ -93,7 +112,8 @@ let str: string = 'aaa';
 let str1: string = `${str} b`;
 ```
 
-## 数组 : T[] | Array\<T> | ReadonlyArray\<T>
+## <a name="Array">数组 : T[] | Array\<T> | ReadonlyArray\</a>
+## <T>
 1. 在元素类型后面接上 []，表示由此类型元素组成的一个数组 T[]
 ```ts
 : number[] //数组内容都为number类型
@@ -154,8 +174,7 @@ let arr1 = arr // ok
 let arr1: any = arr // ok
 let arr1 = arr as number[] //ok -- 用类型断言重写arr类型
 ```
-
-## 元组 Tuple  
+## <a name="元组">元组 Tuple</a>
 允许表示一个已知元素数量和类型的数组，各元素的类型不必相同。 (数组内定义不同类型的元素)
 ```ts
 比如，你可以定义一对值分别为 string和number类型的元组。
@@ -167,7 +186,7 @@ arr.push('a') // ok
 arr.push(true) // error!!!,只能添加string、number类型的元素
 ```
 
-## 枚举 enum  
+## <a name="Enum">枚举 enum</a>
 枚举 enum 为一组数值赋予友好的名字。默认，从0开始为元素编号。   
 你也可以手动的指定成员的数值（相应的在其后面的元素编号也会随其变化）
 
@@ -261,7 +280,7 @@ declare enum Enum {
 ```
 外部枚举和非外部枚举之间有一个重要的区别，在正常的枚举里，没有初始化方法的成员被当成常数成员。 对于非常数的外部枚举而言，没有初始化方法时被当做需要经过计算的。
 
-## 任意类型 :any    
+## <a name="Any">任意类型 :any </a>
 允许被赋值为任意类型;  
 在任意值上访问任何属性、方法都是允许的;  
 变量如果在声明的时候，未指定其类型且没有赋值，则默认为any类型;
@@ -289,14 +308,36 @@ let list: any[] = [1, true, "free"];
 list[1] = 100;
 ```
 
-## 联合类型(|)  表示取值可以为多种类型中的一种。
+## <a name="unkown">unkown</a>
+TypeScript 3.0引入了一个顶级的unknown类型。 对照于any，unknown是类型安全的。 任何值都可以赋给unknown，但是当没有类型断言或基于控制流的类型细化时unknown不可以赋值给其它类型，除了它自己和any外。 同样地，在unknown没有被断言或细化到一个确切类型之前，是不允许在其上进行任何操作的。
+
+```ts
+type T00 = unknown & null;  // null
+type T01 = unknown & undefined;  // undefined
+type T02 = unknown & null & undefined;  // null & undefined (which becomes never)
+type T03 = unknown & string;  // string
+type T04 = unknown & string[];  // string[]
+type T05 = unknown & unknown;  // unknown
+type T06 = unknown & any;  // any
+
+type T10 = unknown | null;  // unknown
+type T11 = unknown | undefined;  // unknown
+type T12 = unknown | null | undefined;  // unknown
+type T13 = unknown | string;  // unknown
+type T14 = unknown | string[];  // unknown
+type T15 = unknown | unknown;  // unknown
+type T16 = unknown | any;  // any
+```
+
+## <a name="联合类型">联合类型(|)  表示取值可以为多种类型中的一种</a>
+
 ```ts
 let maybe: number | string;
 maybe = 1;
 maybe = 'str'
 ```
 
-## :void  
+## <a name="Void">void</a>
 没有任何类型。 当一个函数没有返回值时，返回值类型定义 void
 ```ts
 function warnUser(): void {
@@ -315,7 +356,8 @@ let a2: void = null;
 let a3: void = 43; // err
 ```
 
-## null、undefined  
+## <a name="Null、Undefined">null、undefined</a>
+
 一个变量类型为 undefined | null，其值只能为null | undefined
 
 ```ts
@@ -342,7 +384,7 @@ let num: number = undefined;
 num // undefined
 ```
 
-## :never  
+## <a name="Never">never</a>
 
 表示的是那些永不存在的值的类型。 
 
@@ -372,7 +414,7 @@ function infiniteLoop(): never {
 }
 ```
 
-## :object  
+## <a name="Object">object</a>
 
 object表示非原始类型，也就是除number，string，boolean，symbol，null或undefined之外的类型。
 ```ts
@@ -387,7 +429,8 @@ create(false); // Error
 create(undefined); // Error
 ```
 
-## 类型断言
+
+## <a name="类型断言">类型断言</a>
 
 1. <类型>值
 ```ts
@@ -414,7 +457,8 @@ function toBoolean(something: string | number | boolean): boolean {
 ```
 当你在TypeScript里使用JSX时，只有 as语法断言是被允许的。
 
-## 类型推论
+
+## <a name="类型推论">类型推论</a>
 
 如果没有明确的指定类型，但赋值了（没赋值就是any类型），那么 TypeScript 会依照类型推论（Type Inference）的规则推断出一个类型。
 ```ts
@@ -495,7 +539,8 @@ let output = identity({length: 2}); // ok
 let output = identity(1); //error!!!，数字没有length属性
 ```
 
-# 接口interface
+## <a name="接口interface">接口interface</a>
+
 TypeScript的核心原则之一是对值所具有的结构进行类型检查。 它有时被称做“鸭式辨型法”或“结构性子类型化”。 在TypeScript里，接口的作用就是为这些类型命名和为你的代码或第三方代码定义契约。
 
 接口一般首字母大写  
@@ -731,7 +776,7 @@ square.penWidth = 5.0;
 console.log(square) // { color: 'blue', sideLength: 10,penWidth: 5 }
 ```
 
-# 类型别名type， 可以声明基本类型别名，联合类型，元组等类型
+## <a name="类型别名type">类型别名type， 可以声明基本类型别名，联合类型，元组等类型</a>
 
 ```ts
 type age = number
@@ -773,7 +818,8 @@ let obj: C = {
 console.log(obj);
 ```
 
-# interface 、types区别
+## <a name="interface 、types区别">interface 、types区别</a>
+
 * 都可以描述一个对象或者函数
 ```ts
 interface User {
@@ -928,6 +974,12 @@ console.log(getRectProperty(rect, 'width')); // -> 100
 console.log(getRectProperty(rect, 'notExist')); // error!!! 类型“"notExist"”的参数不能赋给类型“"width" | "x" | "y" | "height"”的参数
 ```
 
+```ts
+type T = keyof any;
+相当于
+type T = string | number | symbol
+```
+
 ### Exclude 允许您从其他类型中删除某些类型。
 ```ts
 
@@ -980,6 +1032,7 @@ let b1: PersonKeys = {age: 1} // error
 ### Omit 属性忽略
 
 # <a name="函数">函数</a>
+
 可以为每个参数添加类型，及函数本身添加返回类型。
 
 在 TypeScript 的类型定义中，=> 用来表示函数的定义，=>左边是参数类型，需要用括号括起来，=>右边是函数返回值类型。

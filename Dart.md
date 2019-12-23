@@ -14,6 +14,7 @@
   * <a href="Set">Set</a>
   * <a href="Map">Map</a>
   * <a href="Rune">Rune</a>
+* <a href="运算符">运算符</a>
 * <a href="函数">函数</a>
 * <a href="类">类</a>
 * <a href=""></a>
@@ -58,7 +59,7 @@ vscode里安装 code runner插件
 Dart 是单线程的  
 Dart 属于是强类型语言,dart也支持一些弱类型，Dart 中弱类型有var, Object 以及dynamic
 
-
+Dart 是一门词法作用域的编程语言，就意味着变量的作用域是固定的， 简单说变量的作用域在编写代码的时候就已经确定了。 花括号内的是变量可见的作用域。
 
 [风格建议指南](https://dartcn.com/guides/language/effective-dart/design#types)
 
@@ -1023,16 +1024,54 @@ print(new String.fromCharCodes(input));
 ♥  😅  😎  👻  🖖  👍
 ```
 
+# <a name="运算符">运算符</a>
+
+
+* as 将对象强制转换为特定类
+* is 判断是否为指定的类型
+* is! 判断是否不为指定的类型
+  ```dart
+  var obj = {};
+  print(obj is Object); // true
+  print(obj is! Object); // false
+  ```
+
+* ??= 只有当被赋值的变量为 null 时才会赋值给它
+`num ??= 54;`
+
+* 级联运算符(..); 可以实现对同一个对像进行一系列的操作。 除了调用函数， 还可以访问同一对象上的字段属性
+```dart
+class Point {
+  num x;
+  num y;
+  String func(String str) {
+    return str;
+  }
+}
+void main() {
+  var point = Point();
+  point.x = 4;
+  print(point.x); // 4
+  point
+    ..x = 1
+    ..y = 123;
+  print(point.x); // 1
+  print(point.y); // 234
+  print(point.func('i am func')); // i am func
+}
+```
+
+
 # <a name="函数">函数</a>
 main特殊函数，是程序的入口
 ```dart
 void main(){
  .....
 }
-
+```
 所有函数都有返回值，如果没有显示返回，那么默认return null;
 
-函数声明
+* 函数声明
 ```dart
 //指定函数返回值 
 void test1(){
@@ -1041,39 +1080,48 @@ void test1(){
 String test1(){
   return 'a';
 }
-
-//指定参数返回值
+Function test1(){
+  print('aa');
+}
+//指定参数类型
 test2(num a){
   print('bb $a');
 }
-
 //不指定返回值
 test3(String c){
   return c+c;
 }
-
 //箭头函数
 test5(int c) => c+5;
-
 ```
 
-把函数当参数传递
+* 把函数当参数传递
 ```dart
 //参数中有个类型为函数的参数
 void test(Function func,int val){
   func(val); // 调用函数
 }
-
 void test1(int a){
   print(a);
 }
-
-//将函数传递进去
+//将函数作为参数
 test(test1,4); // 4
-
 ```
 
+* 可选参数, 将参数放到 [] 中来标记参数是可选的
+* 可选参数设置默认值,使用 = 来定义;如果没有提供默认值，则默认值为 null。
+```dart
+String say(String firstname, String lastname, [num age = 10]) {
+  return 'I am $firstname $lastname, $age old';
+}
+print(say('Karl','Gallagher'));     // I am Karl Gallagher 10 years old
+print(say('Karl','Gallagher', 13)); // I am Karl Gallagher 13 years old
+```
+
+
 # <a name="类">类</a>
+[](https://www.jianshu.com/p/232271ad2768)
+
 Object是所有类的父类。  
 Object没有父类。  
 一个类只能有一个父类。  
@@ -1113,7 +1161,7 @@ class Point {
   num x;
   num y;
   String func(String str) {
-    return str
+    return str;
   }
 }
 
@@ -1125,7 +1173,52 @@ void main() {
     ..x = 1
     ..y = 123;
   print(point.x); // 1
-  print(point.y); // 234
-  print(point.func('i am func')); // i am func
+  print(point.y); // 123
+  print(point.func('I am func')); // I am func
 }
+```
+* 构造函数
+```dart
+class MyClass{
+  int a;
+  String b;
+  MyClass(int a,String b){
+    this.a = a;
+    this.b = b;
+  }
+  MyClass.fun1(int a){
+    this.a = a;
+  }
+  MyClass.fun2(String b){
+    this.b = b;
+  }
+}
+void main(){
+    var class1 = new MyClass(3, "ccc");
+    var class2 = new MyClass.fun1(4);
+    var class3 = new MyClass.fun2("ddd");
+}
+```
+
+## extends 继承
+## @override,子类重写实例方法
+```dart
+class A {
+  void a() {
+    print(1);
+  }
+}
+class B extends A {
+  @override
+  void a() {
+    print(2);
+  }
+}
+```
+
+## 枚举类型
+```dart
+enum Color { red, green, blue }
+List<Color> colors = Color.values;
+colors // [Color.red, Color.green, Color.blue]
 ```
