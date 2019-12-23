@@ -1,3 +1,5 @@
+[JavaScript设计模式笔记：3个设计原则、14个设计模式、10个技巧（干货）](https://juejin.im/post/5dfde295e51d45580359a663)
+
 https://segmentfault.com/a/1190000014436817
 
 https://segmentfault.com/a/1190000012422198

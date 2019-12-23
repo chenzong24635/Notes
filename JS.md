@@ -1095,13 +1095,13 @@ console.log(p) // {name: 1}
 ```
 
 ## <a name="原型、原型链、原型继承">原型、原型链、原型继承</a>
+[前端面试必备 | 古怪的原型（鸡生蛋还是蛋生鸡）（原型篇：中）](https://juejin.im/post/5dff3e186fb9a016091dfa6a)
 
-
-* 原型(prototype)：
+### 原型(prototype)：
 >
     函数本身就是个包含方法与属性的对象，每个函数都有一个prototype属性,每个对象都有个__proto__属性指向其构造函数的prototype,称为原型。可通过原型为对象扩展属性，实现继承
 
-* 原型链：
+### 原型链：
 >
     当我们访问一个对象的属性时，如果这个对象内部不存在这个属性，就从其原型找这个属性，原型对象也是对象也拥有原型，一层层寻找，直至null（即Object.prototype.__proto__）从而形成了所谓的“原型链”。
 
@@ -1158,13 +1158,28 @@ Object.getPrototypeOf(Object) === Function.prototype //true
 Object.getPrototypeOf(Function.prototype) === Object.prototype //true
 
 
+Object instanceof Function // true 
+
+Object instanceof Object // true 
+
+Function instanceof Object // true 
+
+Function instanceof Function // true
+
+
 
 构造函数不需要显示的返回值。使用new来创建对象(调用构造函数)时，如果return的是非对象(数字、字符串、布尔类型、null、undefined等)会忽而略返回值;如果return的是对象，则返回该对象。
 
 ![prototype](/img/prototype0.png)
 ![prototype](/img/prototype.png)
 
-* 原型继承：
+每个函数的 prototype 属性都会有一个 constructor 属性，这个属性都是指向的函数自己。对于 Object 函数，prototype 有一个 constructor 属性指回了 Object 函数。
+`Object.prototype.constructor === Object //true`
+
+
+
+
+### 原型继承：
 原型中的成员可以被和其相关的对象共享这一特性，可以实现继承。这种实现继承的方式，就叫做原型继承。
 
 [继承方式](details/inherit.md)

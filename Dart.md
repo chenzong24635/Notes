@@ -24,12 +24,15 @@
 # [vscode运行dart文件](https://blog.csdn.net/u010351267/article/details/87865318)
 [Dart SDK下载--Windows](https://gekorm.com/dart-windows/)  
 
+
 vscode里安装 code runner插件
 
 右键点击run code或者点击右上角三角按钮。就可以运行当前代码,运行结果会展示在控制台的`输出`一栏
 
 在setting.json文件里，追加 "code-runner.runInTerminal": true,
 运行结果会展示在控制台的`终端`一栏
+
+或者控制台输入`dart ./demo.dart` 回车运行
 
 ### dart调试
 
