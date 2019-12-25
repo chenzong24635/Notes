@@ -205,15 +205,19 @@ every()、some()、filter()会跳过空位
     console.log(arr2);
 
 ## <a name="reduce()">reduce()</a>
+reduce()接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终为一个值，  
+// reduceRight() (从右到左)  
 
-reduce((sum, item, index, array) => {})  
+reduce(callback(acu, item, index, array),initialValue)  
+>callback执行数组中每个值 (如果没有提供 initialValue则第一个值除外)的函数 
+>>acu：累计器 累计回调的返回值; 它是上一次调用回调时返回的累积值)   
+>>item：当前值  
+>>index：当前索引  
+>>array：源数组  
 
-接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终为一个值，// reduceRight() (从右到左)  
+>initialValue可选,
+作为第一次调用 callback函数时的第一个参数的值。 如果没有提供初始值，则将使用数组中的第一个元素。在没有初始值的空数组上调用 reduce 将报错。
 
-sum：累计器 累计回调的返回值; 它是上一次调用回调时返回的累积值)   
-item：当前值  
-index：当前索引  
-array：源数组
 >
     arr.reduce((prev, now, index, array) => {
       console.log('reduce()-->', '前一个值prev', prev, ';当前索引index:', index, ';值now:', now, '源数组array:', array);

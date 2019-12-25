@@ -73,6 +73,78 @@ TypeScript 非常包容
     或vscode下载code runner插件，右键run code，终端输出
 
 
+* tsconfig.json配置
+```json
+{
+  "compilerOptions": {
+    // 不报告执行不到的代码错误。
+    "allowUnreachableCode": true,
+    // 必须标注为null类型,才可以赋值为null
+    "strictNullChecks": true,
+    // 严格模式, 强烈建议开启
+    "strict": true,
+    // 支持别名导入:
+    // import * as React from "react"
+    "esModuleInterop": true,
+    // 目标js的版本
+    "target": "es5",
+    // 目标代码的模块结构版本
+    "module": "es6",
+    // 在表达式和声明上有隐含的 any类型时报错。
+    "noImplicitAny": true,
+    // 删除注释
+    "removeComments": true,
+    // 保留 const和 enum声明
+    "preserveConstEnums": false,
+    // 生成sourceMap    
+    "sourceMap": true,
+    // 目标文件所在路径
+    "outDir": "./lib",
+    // 编译过程中需要引入的库文件的列表
+    "lib": [
+        "dom",
+        "es7"
+    ],
+    // 额外支持解构/forof等功能
+    "downlevelIteration": true,
+    // 是否生成声明文件
+    "declaration": true,
+    // 声明文件路径
+    "declarationDir": "./lib",
+    // 此处设置为node,才能解析import xx from 'xx'
+    "moduleResolution": "node"
+  },
+  // 入口文件
+  "include": [
+      "src/main.ts"
+  ]
+}
+
+```
+
+* 生成错误提示信息
+```ts
+/**
+ * 一个方法：生成错误提示信息
+ * 
+ * @param {string} message 提示信息，比如`you have a error`
+ * @param {number | string} code 错误码，数字和字符都行
+ * @param {string} type 类型，请写`demo1`或者`demo2`
+ * 
+ * [还不懂？点这里吧](https://www.google.com)
+ * 
+ * ```js
+ * // demo
+ * genErrMsg('demo', 10086)
+ * 
+ * ```
+ */
+function genErrMsg (message: string, code: number | string, type?: ('demo1' | 'demo2')): string {
+  return (message || `网络繁忙，请稍候再试`) + (code ? `(${code})` : ``)
+}
+genErrMsg() //编译出错时，会提示上面注释的信息
+```
+
 # <a name="类型">类型</a>
 Boolean Number String  
 Array Funciton Object Symbol  
@@ -189,6 +261,17 @@ arr.push(true) // error!!!,只能添加string、number类型的元素
 ## <a name="Enum">枚举 enum</a>
 枚举 enum 为一组数值赋予友好的名字。默认，从0开始为元素编号。   
 你也可以手动的指定成员的数值（相应的在其后面的元素编号也会随其变化）
+
+枚举就是枚举值到枚举名进行反向映射
+枚举（Enum）类型用于取值被限定在一定范围内的场景，比如一周只能有七天	
+```ts
+enum Days {Sun, Mon, Tue, Wed, Thu, Fri, Sat};
+console.log(Days["Sun"]); // 0
+console.log(Days[0]); // 'Sun'
+
+enum Days {Sun = 7, Mon = 1, Tue, Wed, Thu, Fri, Sat};
+console.log(Days["Sun"]); // 7
+```
 
 枚举项有两种类型：
 * 常数项（constant member）
@@ -1035,15 +1118,39 @@ let b1: PersonKeys = {age: 1} // error
 
 可以为每个参数添加类型，及函数本身添加返回类型。
 
-在 TypeScript 的类型定义中，=> 用来表示函数的定义，=>左边是参数类型，需要用括号括起来，=>右边是函数返回值类型。
+`在 ts 的类型定义中的=>不同于ES6的=>`，其 => 用来表示函数的定义，=>左边是参数类型，需要用括号括起来，=>右边是函数返回值类型。
+```ts
+let add1: (x: number, y: number) => number = function (x: number, y: number): number {
+    return x + y;
+};
+
+相当于
+
+type Func = (x: number, y: number) => number
+let add1: Func = function (x: number, y: number): number {
+  return x + y;
+};
+```
+
+下方的代码； 第一个 => 是函数的类型定义，第二个 => 为ES6的箭头函数
+```ts
+let add2: (x: number, y: number) => number =  (x: number, y: number): number => {
+    return x + y;
+};
+
+可省略为
+let add3: (x: number, y: number) => number = (x, y) => x + y;
+
+可略为
+let add4= (x: number, y: number) => number => x + y;
+
+```
 
 ### 为函数定义类型
 ```ts
-function add(x: number, y: number): number {
-  return x + y;
-}
+function add1(x: number, y: number): number {return x + y;}
 
-let myAdd = function(x: number, y: number): number { return x + y; };
+let add2 = function(x: number, y: number): number { return x + y; };
 ```
 
 ### 书写完整函数类型
@@ -1086,6 +1193,17 @@ function add(x: number = 0, y: number, z?: string): number { // ok
   return x + y;
 }
 ```
+默认参数
+```ts
+function isValidPasswordLength(
+  password: string,
+  min: number,
+  max: number = Number.MAX_VALUE
+) {
+  return password.length >= min && password.length <= max;
+}
+
+```
 
 ### 剩余参数
 有时，你想同时操作多个参数，或者你并不知道会有多少参数传递进来
@@ -1101,17 +1219,31 @@ let employeeName = buildName("Joseph", "Samuel", "Lucas", "MacKinzie");
 ```
 
 
-### 让函数在运行时才确定参数的类型
+### 使用泛型 让函数在运行时才确定参数的类型
+```ts
+//同时返回 string类型 和number类型
+function getData1(value:string):string{
+  return value;
+}
+function getData2(value:number):number{
+  return value;
+}
+```
+上面的代码冗余，可以使用泛型解决，使参数或返回值类型 在函数调用时才确定
 ```ts
 function getVal<T>(val: T): T {
   return val;
 }
+//在函数调用时确定类型
+getVal<string>('da') 
+getVal<number>(232) 
+getVal<number>('da')  // error!!
 
-// 可以为函数参数传入任何类型
-let a1 = getVal('da')
-let a2 = getVal(232)
-console.log(a1,a2);
+//也可以 为函数参数传入任何类型
+getVal('da')
+getVal(232)
 ```
+
 ### this
 https://www.tslang.cn/docs/handbook/functions.html
 
@@ -1163,19 +1295,39 @@ declare function beforeAll(action: (done: DoneFn) => void, timeout?: number): vo
 declare function beforeAll(action: (done: DoneFn) => void, timeout?: number): void;
 ```
 
-# <a name="class">class</a>
+# <a name="class">class类</a>
 ## class
 可以向属性和方法的参数添加类型
 ```ts
-class Greeter {
-  greeting: string
-  constructor(message: string) {
-    this.greeting = message
+class P{
+  name: string;
+  constructor(name){
+    this.name = name;
   }
-  greet(name: string) {
-    return `Hi ${name}, ${this.greeting}`
+  sayName(): void{
+    console.log(this.name);
   }
 }
+
+class S extends P {
+  age: number;
+  constructor(name,age){
+    super(age);
+    this.age = age;
+    this.name = name;
+  }
+  sayAge(): number{
+    console.log(this.age);
+    return this.age;
+  }
+}
+
+let p = new P('ppp');
+p.sayName();// 'ppp'
+
+let s = new S('sss',23);
+s.sayAge(); // 23
+s.sayName(); // 'sss'
 ```
 
 ## 访问修饰符

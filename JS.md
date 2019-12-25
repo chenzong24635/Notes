@@ -2399,6 +2399,8 @@ API：
 [性能优化](/details/optimization.md)
 
 ## <a name="浏览器渲染">浏览器渲染</a>
+[浏览器渲染详细过程：重绘、重排和 composite 只是冰山一角](https://juejin.im/entry/590801780ce46300617c89b8)
+
 ![render](img/render.png)
 ![render](img/render1.png)
 

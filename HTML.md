@@ -17,6 +17,7 @@
 * <a href="#src和href的区别">src和href的区别</a>
 * <a href="#浏览器内核、私有化前缀">浏览器内核、私有化前缀</a>
 * <a href="#web存储">cookies、sessionStorage 、和 localStorage 的区别</a>
+* <a href="#HTML中的字符实体">HTML中的字符实体</a>
 * <a href="#HTML5的离线储存">HTML5的离线储存</a>
 * <a href="#iframe缺点">iframe缺点</a>
 * <details open>
@@ -391,6 +392,27 @@ token是用户身份的验证方式，我们通常叫它：令牌。最简单的
     对比一：如果两个 token 值相同， 说明用户登录成功过!当前用户处于登录状态!
     对比二：如果没有这个 token 值, 则说明没有登录成功.
     对比三：如果 token 值不同: 说明原来的登录信息已经失效,让用户重新登录.
+
+## <a name="HTML中的字符实体">HTML中的字符实体</a>[![bakTop](./img/backward.png)](#top)
+HTML中某些字符是预留的,预留字符必须被替换为字符实体。
+
+在 HTML 中不能使用小于号（<）和大于号（>），这是因为浏览器会误认为它们是标签。
+
+如果希望正确地显示预留字符，我们必须在 HTML 源代码中使用字符实体（character entities）。
+
+常用：
+|显示结果	|描述|	实体名称|	实体编号|
+|:--|:--|:--|:--|
+|  	| 空格 	| \&nbsp;	|\&#160;|
+| <	| 小于号|	\&lt;	|\&#60;|
+| >	| 大于号|	\&gt;	|\&#62;|
+| &	| 和号	| \&amp;	|\&#38;|
+| "	| 引号	| \&quot;	|\&#34;|
+| '	| 撇号 	| \&apos; (IE不支持)	|\&#39;| 
+|¥	|元（yen）|	\&yen;|	&#165;|
+|© |版权（copyright）|	\&copy;|	\&#169;
+
+[更多](https://www.w3cschool.cn/htmltags/ref-entities.html)
 
 ## <a name="HTML5的离线储存">HTML5的离线储存</a>[![bakTop](./img/backward.png)](#top)
 

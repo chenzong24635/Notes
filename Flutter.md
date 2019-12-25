@@ -62,9 +62,38 @@ maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
 ```
 
 # 概述
-Flutter是谷歌的移动UI框架，可以快速在iOS和Android上构建高质量的原生用户界面。 Flutter可以与现有的代码一起工作。在全世界，Flutter正在被越来越多的开发者和组织使用，并且Flutter是完全免费、开源的。
+Flutter是谷歌的移动UI框架，可以快速在iOS和Android上构建高质量的原生用户界面。 
+* 具有跨平台开发特性，支持IOS、Android、Web三端。
+* 使用Dart语言，目前已经支持同时编译成Web端代码，
+* 自绘UI引擎和编译成原生代码的方式，使得系统的运行时的高性能成为了可能
 
 # 
+
+Dart 类build方法返回的便是Widget，在Flutter中一切都是Widget，包括但不限于
+* 结构性元素，menu，button等
+* 样式类元素，font，color等
+* 布局类元素，padding，margin等
+* 导航
+* 手势
+
+Flutter中Widget可以分为三类，形如React中“展示组件”、“容器组件”，“context”。
+
+* StatelessWidget 无状态 
+Flutter中的“展示组件”，自身不保存状态,是不可变的, 这意味着它们的属性不能改变 - 所有的值都是最终的，外部参数变化就销毁重新创建。尽量使用无状态的组件。
+
+
+* StatefulWidget  
+状态组件就是类似于React中的“容器组件”了，持有的状态可能在widget生命周期中发生变化. 实现一个 stateful widget 至少需要两个类:
+
+一个 StatefulWidget类。
+一个 State类。 StatefulWidget类本身是不变的，但是 State类在widget生命周期中始终存在.
+
+
+* State Management  
+setState()可以很方便的管理组件内的数据，但是Flutter中状态同样是从上往下流转的，因此也会遇到和React中同样的问题，如果组件树太深，逐层状态创建就显得很麻烦了，更不要说代码的易读和易维护性了。
+
+* InheritedWidget  
+context
 
 Flutter App的一切从lib/main.dart文件的main函数开始：
 ```dart
@@ -89,9 +118,38 @@ class MyApp extends StatelessWidget {
   }
 }
 ```
-Dart 类build方法返回的便是Widget，在Flutter中一切都是Widget，包括但不限于
-* 结构性元素，menu，button等
-* 样式类元素，font，color等
-* 布局类元素，padding，margin等
-* 导航
-* 手势
+# [Flutter for Web开发者](https://flutterchina.club/web-analogs/)
+
+# 布局
+Flutter 中拥有需要将近30种内置的 [布局Widget](https://flutterchina.club/widgets/layout/)，其中常用有 Container、Padding、Center、Flex、Stack、Row、Column、ListView 等，下面简单讲解它们的特性和使用。
+
+|类型|作用特点|
+|:--|:--|
+|Container|只有一个子 Widget。默认充满，包含了padding、margin、color、宽高、decoration 等配置。|
+|Padding|只有一个子 Widget。只用于设置Padding，常用于嵌套child，给child设置padding。|
+|Center|只有一个子 Widget。只用于居中显示，常用于嵌套child，给child设置居中。|
+|Stack|可以有多个子 Widget。 子Widget堆叠在一起。|
+|Column|可以有多个子 Widget。垂直布局。|
+|Row|可以有多个子 Widget。水平布局。|
+|Expanded|只有一个子 Widget。在  Column 和  Row 中充满。|
+|ListView|可以有多个子 Widget。自己意会吧。|
+
+* Container  
+```dart
+new Container(
+  ///四周10大小的maring
+  margin: EdgeInsets.all(10.0),
+  height: 120.0,
+  width: 500.0,
+  ///透明黑色遮罩
+  decoration: new BoxDecoration(
+    ///弧度为4.0
+    borderRadius: BorderRadius.all(Radius.circular(4.0)),
+    ///设置了decoration的color，就不能设置Container的color。
+    color: Colors.black,
+    ///边框
+    border: new Border.all(color: Color(GSYColors.subTextColor), width: 0.3)),
+  child:new Text("666666"),
+)
+
+```
