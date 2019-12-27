@@ -4,8 +4,6 @@
 
 [Git飞行规则-问题指南](https://github.com/k88hudson/git-flight-rules/blob/master/README_zh-CN.md)
 
-[git学习](https://learngitbranching.js.org/?demo)
-
 [猴子都能懂的git入门](https://backlog.com/git-tutorial/cn/contents/)
 
 

@@ -149,12 +149,44 @@ map(callback,thisArg)
 >thisArg  
 >>可选的。执行 callback 函数时 使用的this 值(箭头函数时，this指向window)
 
-    arr.map((item, index) => {
-      console.log('map()-->', 'index:', index, ';item:', item)
-      return item + index
-    });
+```js
+arr.map((item, index) => {
+  console.log('map()-->', 'index:', index, ';item:', item)
+  return item + index
+});
 
- 
+['a','b'].map(function (item){
+  console.log(this)
+  return this
+},{}) //返回 [{},{}]
+
+//箭头函数时，this指向window
+['a','b'].map((item) => {
+  console.log(this)
+  return this
+},{}) //返回 [Window, Window]
+```
+
+map函数的回调函数只会被赋过值的项调用，会过滤空数组
+```js
+let arr = new Array(5);
+//等同于 let arr = [,,,,,];
+let arr1 = arr.map(() => {
+  return 1 
+});
+console.log(arr1);
+// [empty × 5];
+
+---
+
+let arr = new Array(5).fill();
+let arr1 = arr.map(() => {
+  return 1 
+});
+console.log(arr1);
+// [1, 1, 1, 1, 1]
+```
+
 ##  <a name="every()、some()、filter()">every()、some()、filter()</a>
 
 >callback(item,index,array)：生成新数组元素的函数，使用三个参数：  

@@ -21,6 +21,8 @@
 
 [常见的CSS图形](https://codepen.io/chenzong24635/pen/xQNyzg)
 
+[animate.css](https://daneden.github.io/animate.css/) +
+[WOW.js](http://www.dowebok.com/demo/131/)
 
 css手册  
 
@@ -28,23 +30,6 @@ css手册
 
 [css手册](http://css.doyoe.com/)
 
-[雪碧图生成](https://www.toptal.com/developers/css/sprite-generator)
-
-动画
-
-[animate.css](https://daneden.github.io/animate.css/) +
-[WOW.js](http://www.dowebok.com/demo/131/)
-
-[AniJS.js](http://anijs.github.io/)基于 CSS3 的动画库
-
-[Vivus](http://maxwellito.github.io/vivus) 一款可以执行SVG路径动画的轻量级JS库
-
-
-[imagehover](http://www.imagehover.io/) 允许您轻松实现可缩放的图像悬停效果。从CSS库中选择超过40种悬停效果类，重量仅为19KB。
-
-CSS-ICON
-
-[cssicon](https://cssicon.space/#/icon/shutdown)
 
 CSS布局、居中
 
@@ -1782,6 +1767,12 @@ format()作用
 
 
 # <a name="移动开发踩坑">移动开发踩坑</a>[![bakTop](./img/backward.png)](#top)
+* a链接点击高亮  
+  ```css
+  -webkit-tap-highlight-color: rgba(0,0,0,0);  
+  tap-highlight-color: rgba(0, 0, 0, 0); 
+  ```
+
 * css属性touch-action:none;  
   >
       该属性会导致安卓页面无法滚动，慎用!
@@ -1791,9 +1782,18 @@ format()作用
   <meta name="format-detection" content="telephone=no" />
   ```
 
+* IOS局部滚动不顺畅(粘手)
+  ```css
+  html,body{
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+    overflow-y: visible;
+  }
+  ```
+
 * IOS 去除手机端input输入框的内阴影
   ```css
-  input{ 
+  input,teaxtarea{ 
       -webkit-appearance: none; 
   }
   ```
@@ -2189,6 +2189,8 @@ user-select:none
 
     放在body中会导致页面缩放失效,不要把-webkit-text-size-adjust设置为全局或者可继承的
 
+    
+
 
 ## <a name="为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"[![bakTop](./img/backward.png)](#top)
 
@@ -2356,8 +2358,8 @@ devicePixelRatio：设备物理像素和设备独立像素的比例   devicePixe
 ```
 
 ## <a name="清除手机端a链接点击高亮">清除手机端a链接点击高亮[![bakTop](./img/backward.png)](#top)
+-webkit-tap-highlight-color: rgba(0,0,0,0);  
 tap-highlight-color: rgba(0, 0, 0, 0);  
--webkit-tap-highlight-color: rgba(0,0,0,0);
 >
 
     //图片作为a标签点击按钮
@@ -2494,7 +2496,7 @@ box-shadow: 0 0 0 1em #000; //不占用盒模型空间
 ## <a name="滚动">滚动</a>[![bakTop](./img/backward.png)](#top)
 
 ## <a name="页面滑动不顺畅的问题">页面滑动不顺畅的问题</a>[![bakTop](./img/backward.png)](#top)
-解决IOS设备局部滚动不顺畅(粘手)
+解决IOS局部滚动不顺畅(粘手)
 除了浏览器原生滚动，自定义的滚动条都会出现这种情况，加以下属性就可以解决：
 >
     html,body{

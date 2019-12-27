@@ -1,6 +1,7 @@
 ﻿
 
-[TS](https://www.tslang.cn/docs/handbook/typescript-in-5-minutes.html)
+[TypeScript-中文文档](https://www.tslang.cn/docs/home.html)  
+[TypeScript-英文文档](https://www.typescriptlang.org/docs/home.html)
 
 [TypeScript 入门教程](https://github.com/xcatliu/typescript-tutorial)
 
@@ -8,6 +9,7 @@
 * <a href="#类型">类型</a>
 * <a href="#泛型">泛型</a>
   * <a href="#Boolean">boolean 布尔值</a>
+  * <a href="#Number">number 数字</a>
   * <a href="#String">string 字符串</a>
   * <a href="#Array">数组</a>
   * <a href="#Tuple">元组 Tuple</a>
@@ -29,7 +31,7 @@
 * <a href="#class">class</a>
 * <a href="#declear">declear声明</a>
 * <a href="#命名空间namespace">命名空间namespace</a>
-* <a href="#"></a>
+* <a href="#tsconfig">tsconfig.json</a>
 
 
 # <a name="准备">准备</a>
@@ -52,8 +54,10 @@ TypeScript 非常包容
 [在node命令行中执行 ts](https://segmentfault.com/a/1190000018797239?utm_source=tag-newest)
 
 安装：
->
-    npm install typescript ts-node -g
+`npm install typescript ts-node -g`
+
+版本查看 
+`tsc -v`    
 
 编译ts -> js： 
 >
@@ -164,8 +168,7 @@ let newBoolean: boolean = new Boolean(1); // error!!!
 let newBoolean: Boolean = new Boolean(1); // ok
 ```
 
-## 数值 : number
-
+## <a name="Number">number 数值</a>
 ```ts
 let num: number = 5;
 let num: number = NaN;
@@ -458,13 +461,23 @@ a4 // null
 ```
 
 和 void相似   
-默认情况下null和undefined是所有类型的子类型。 就是说你可以把 null和undefined赋值给number类型的变量。但当你指定了--strictNullChecks标记，null和undefined只能赋值给void和它们各自
-
+默认情况下null和undefined是所有类型的子类型。 就是说你可以把 null和undefined赋值给number类型的变量。  
 ```ts
-// 这样不会报错
+// tsconfig.json
+{
+  compilerOptions:{
+    "strictNullChecks": flase
+  }
+}
+// 运行编译都不会报错
 let num: number = undefined;
-
 num // undefined
+
+// 但当strictNullChecks设为true，null和undefined只能赋值给void和它们各自;（编译时不会报错，运行会报错）  
+let num: number = undefined;
+let num1: null = undefined;
+num // error : Type 'undefined' is not assignable to type 'number'.
+num1 // err
 ```
 
 ## <a name="Never">never</a>
@@ -495,6 +508,10 @@ function infiniteLoop(): never {
     while (true) {
     }
 }
+
+// 声明不可能存在的交叉类型会被推导为never类型
+let n: boolean & number;
+n = 2; //error!!! 不能将类型“2”分配给类型“never”
 ```
 
 ## <a name="Object">object</a>
@@ -1174,6 +1191,7 @@ let add:(a: number) => void = (x: number): void =>  {
 ```
 
 ### 可选参数和默认参数
+
 用 ? 表示可选的参数,可选参数后面不允许再出现必需参数了
 
 typeScript 会将添加了默认值的参数识别为可选参数,此时就不受「可选参数必须接在必需参数后面」的限制,
@@ -1244,6 +1262,7 @@ getVal('da')
 getVal(232)
 ```
 
+
 ### this
 https://www.tslang.cn/docs/handbook/functions.html
 
@@ -1294,6 +1313,8 @@ declare function beforeAll(action: (done: DoneFn) => void, timeout?: number): vo
 /* OK */
 declare function beforeAll(action: (done: DoneFn) => void, timeout?: number): void;
 ```
+
+
 
 # <a name="class">class类</a>
 ## class
@@ -1447,6 +1468,31 @@ class Car implements Alarm, Light {
 }
 ```
 
+## 构造器类型
+语法：
+`new (p1: T1, p2: T2, ...) => T`
+
+构造器类型的语法和函数类型极为相似，区别是在最前面多了一个 new 关键字:
+```ts
+class TypeA {
+  name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+  say(){
+    return this.name
+  }
+}
+
+// 变量b为构造器类型，和类TypeA的构造器兼容
+let A: new (name: string) => TypeA;
+A = TypeA;
+// b现在是一个类
+let a = new A('type');
+console.log(a.say()); // type
+```
+
+
 # <a name="declear">declear声明</a>
 [参考](https://segmentfault.com/a/1190000020000325)
 
@@ -1495,5 +1541,10 @@ console.log(myname)
 namespace：“内部模块”现在称做“命名空间”
 
 moduleX{ 相当于现在推荐的写法 namespaceX{)
+
+# <a name="tsconfig">tsconfig.json</a>
+[项目配置](https://www.tslang.cn/docs/handbook/tsconfig-json.html)
+
+
 
 # <a name=""></a>

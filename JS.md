@@ -13,9 +13,7 @@
 
   [ECMAScript 6兼容性表](http://kangax.github.io/compat-table/es6/)
 
-  [《TypeScript》](https://www.tslang.cn/docs/home.html)
-
-  [《TypeScript》](https://ts.xcatliu.com/introduction/what-is-typescript.html)
+  [TypeScript](https://www.tslang.cn/docs/home.html)
 
   [axios](https://www.kancloud.cn/yunye/axios/234845)
 
@@ -71,6 +69,7 @@
 * <a href="#设计模式">设计模式</a>
 * <a href="#promise">promise</a>
 * <a href="#async、await">async、await</a>
+* <a href="#class类">class类</a>
 * <a href="#深，浅拷贝">深，浅拷贝</a>
 * <a href="#js延迟加载：defer,async">js延迟加载：defer,async</a>
 * <a href="#重绘和回流">重绘和回流</a>
@@ -240,7 +239,7 @@ JavaScript 是弱类型语言，而且JavaScript 声明变量的时候并没有�
 [demo](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/125)
 
 
-[**BigInt**](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt)   
+* [**BigInt**](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt)   
 
 ES10引入了一种新的数据类型 BigInt（大整数）,来表示大于 2^53 - 1 的整数。BigInt 可以表示任意大的整数。
 
@@ -1464,6 +1463,9 @@ async函数表示函数里面可能会有异步方法，await后面跟一个表�
 [事件执行机制](/details/EventLoop.md)
 
 
+## <a name="class类">ES6 class类</a>
+[class类](/details/class类.md)
+
 ## <a name="深，浅拷贝">深，浅拷贝</a>
 [如何写出一个惊艳面试官的深拷贝](https://juejin.im/post/5d6aa4f96fb9a06b112ad5b1)
 
@@ -1858,10 +1860,15 @@ https://zhuanlan.zhihu.com/p/55064276
 [详情](/details/crossOrigin.md)
 
 ## <a name="常见的web攻击">常见的web攻击</a>
-[参考](https://mp.weixin.qq.com/s?__biz=MzA3NTUzNjk1OA==&mid=2651562103&idx=1&sn=0b52850e0ca268918928629bdb80499f&chksm=84900f26b3e78630bfd3cc5c5d8f02de909b8a27f366c3855a8adf4e0c660819d88689a39f39&scene=0#rd)
+[常见六大Web安全攻防解析](https://juejin.im/post/5c446eb1e51d45517624f7db)
+
+[web 应用常见安全漏洞一览](https://segmentfault.com/a/1190000018004657)
+
+[前端安全系列（一）：如何防止XSS攻击？](https://segmentfault.com/a/1190000016551188)
+
+[前端安全系列之二：如何防止CSRF攻击](https://segmentfault.com/a/1190000016659945)
 
 #### XSS（Cross-Site Scripting，跨站脚本攻击）
-https://segmentfault.com/a/1190000016551188
 
 * 概念
 >
@@ -1889,6 +1896,18 @@ npm install xss --save
     let xss = reauire('xss')  
     console.log(xss('<a onclick="alert(xss)"></a>'))
 
+过滤html代码
+```js
+function filterHtml (str) {
+  return str.replace(/&/ig, "&amp;")
+            .replace(/</ig, "&lt;")
+            .replace(/>/ig, "&gt;")
+            .replace(/\//ig, "&#x2F;")
+            .replace(/"/ig, "&quot;")
+            .replace(/'/ig, "&#x27;")
+            .replace(" ", "&nbsp;")
+}
+```
 
 #### CSRF（Cross-Site Request Forgeries，跨站点请求伪造）
 * 概念

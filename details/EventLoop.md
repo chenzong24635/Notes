@@ -178,4 +178,60 @@ promise2
 settimeout
 ```
 
+再看：
+```js
+async function async1() {
+  console.log("async1 start");
+  await async2();
+  console.log("async1 end");
+  return 'async return';
+}
+async function async2() {
+  console.log("async2");
+}
+console.log("script start");
+setTimeout(function () {
+  console.log("setTimeout");
+}, 0);
+async1().then(function (message) {
+  console.log(message)
+});
+new Promise(function (resolve) {
+  console.log("promise1");
+  resolve();
+}).then(function () {
+  console.log("promise2");
+});
+console.log("script end")
+```
+输出
+```js
+// 执行同步代码，遇到 setTimeout 将其加入到宏任务队列
+script start
 
+// 执行 async1()
+async1 start
+
+// 遇到await 执行右侧表达式后让出线程，阻塞后面代码
+async2
+
+// 执行 Promise 中的同步代码 将 .then 推入到微任务队列
+promise1
+
+// 执行同步代码
+script end
+
+// 继续执行 await 后面的代码
+// 这里需要注意 async 函数返回的是 Promise 对象
+// 将 async1后面的 .then 加入到微任务队列
+async1 end
+
+// 执行前一轮添加到微任务队列的代码
+promise2
+
+// 后一轮微任务队列的代码
+async return
+
+// 开始下一轮evenloop，执行宏任务队列中的任务
+setTimeout
+```

@@ -1502,9 +1502,7 @@ var arr = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
 * filter + indexOf
 >
     var arr = [2,3,4,4,5,2,3,6];
-    var arr2 = arr.filter(function(item,index,self){
-      return self.indexOf(item) === index;
-    });
+    var arr2 = arr.filter((item,index,array)=> array.indexOf(item) === index);
     console.log(arr2);
 
 * 
@@ -1612,30 +1610,38 @@ document.designMode // 查看
 https://zhuanlan.zhihu.com/p/25407758
 
 ## <a name="map(parseInt) 原理解析">['1','2','3'].map(parseInt) 原理解析</a>
-https://juejin.im/post/5c6fab02e51d453eb7801914
-https://www.zhihu.com/question/267702014
+[高频网红面试题['1','2','3'].map(parseInt) 原理解析](https://juejin.im/post/5dbff8735188252ddb2fd25e) 
+[关于数组的 ['1','2','3'].map(parseInt) 的问题?](https://www.zhihu.com/question/267702014)
 
+* ['1','2','3'].map(parseInt)  
+```js
+var arr1 = arr.map(function callback(currentValue[, index[, array]]) { 
+}[, thisArg])
+```
+解析：
 >
+    这个 callback 一共可以接收三个参数，其中第一个参数代表当前被处理的元素，而第二个参数代表该元素的索引。
 
-    var new_array = arr.map(function callback(currentValue[, index[, array]]) { 
-      // Return element for new_array 
-    }[, thisArg])
+    而 parseInt 则是用来解析字符串的，使字符串成为指定基数的整数。
 
-这个 callback 一共可以接收三个参数，其中第一个参数代表当前被处理的元素，而第二个参数代表该元素的索引。
+    parseInt(string, radix)接收两个参数，第一个表示被处理的值（字符串），第二个表示为解析时的基数。
 
-而 parseInt 则是用来解析字符串的，使字符串成为指定基数的整数。
+    parseInt('1', 0)  //radix 为 0 时，且 string 参数不以“0x”和“0”开头时，按照 10 为基数处理。这个时候返回 1；
 
-parseInt(string, radix)接收两个参数，第一个表示被处理的值（字符串），第二个表示为解析时的基数。
+    parseInt('2', 1)  // 基数为 1（1 进制）表示的数中，最大值小于 2，所以无法解析，返回 NaN；
 
-parseInt('1', 0)  //radix 为 0 时，且 string 参数不以“0x”和“0”开头时，按照 10 为基数处理。这个时候返回 1；
+    parseInt('3', 2)  // 基数为 2（2 进制）表示的数中，最大值小于 3，所以无法解析，返回 NaN。
 
-parseInt('2', 1)  // 基数为 1（1 进制）表示的数中，最大值小于 2，所以无法解析，返回 NaN；
+    map 函数返回的是一个数组，所以最后结果为 [1, NaN, NaN]。
 
-parseInt('3', 2)  // 基数为 2（2 进制）表示的数中，最大值小于 3，所以无法解析，返回 NaN。
-
-map 函数返回的是一个数组，所以最后结果为 [1, NaN, NaN]。
+* ['1', '2', '3'].map(parseFloat)  // [1, 2, 3]
+parseFloat不用考虑第二个参数，只需要看第一个参数是否能正常转换为数字就行。
 
 
+* '1 2 3'.replace(/\d/g, parseInt) // "1 NaN 3"  
+replace第二个参数可以是callback函数，这个callback函数里，第一个参数为匹配项的值，第二个参数为匹配项的索引index，第三个参数为整个字符串 即'1 2 3'
+
+* '123'.replace(/\d/g, parseInt) // "1NaNNaN"
 
 ## <a name="比较两个对象是否相等">比较两个对象是否相等</a>
 [链接](https://segmentfault.com/a/1190000008187911)
@@ -2125,27 +2131,16 @@ ___
     }
     </style>
 
-## <a name=""></a>
 
 
 # <a name="面试题">**面试题**</a>
 [Daily-Interview-Question](https://github.com/Advanced-Frontend/Daily-Interview-Question/blob/master/datum/summary.md?tdsourcetag=s_pctim_aiomsg)
 
-[前端基础面试题(JS部分)](https://zhuanlan.zhihu.com/p/28428367) <!-- 1 -->
-
-[前端进阶系列](https://github.com/yygmind/blog)
+[前端基础面试题(JS部分)](https://zhuanlan.zhihu.com/p/28428367) 
 
 [web前端大厂10道经典面试题汇总](https://zhuanlan.zhihu.com/p/57200821)
 
-https://github.com/yygmind/blog 
-
-https://github.com/LiangJunrong/document-library/blob/master/other-library/Interview/PersonalExperience/2019-InterviewPreparation.md#chapter-two-one
-
-https://github.com/markyun/My-blog/tree/master/Front-end-Developer-Questions/Questions-and-Answers
-
-https://github.com/qiu-deqing/FE-interview
-
-https://github.com/foru17/front-end-collect
+[前端进阶系列](https://github.com/yygmind/blog)-木易杨
 
 
 ### 定义一个简单的模板类，使用{}作为转义标记，中间的数字表示替换目标，format实参用来替换模板内标记 
@@ -2171,71 +2166,60 @@ https://github.com/foru17/front-end-collect
         console.log(t.format('http://www.alibaba.com', 'Alibaba', 'Welcome'));
     })();
 
-### 
->
-    function Foo() {
-        getName = function () {
-            console.log(1);
-        }
-        return this;
-    }
-    Foo.getName = function () {
-        console.log(2)
-    }
-    Foo.prototype.getName = function () {
-        console.log(3)
-    }
-    var getName = function () {
-        console.log(4)
-    }
-    function getName() {
-        console.log(5)
-    }
-    Foo.getName();
-    getName();
-    Foo().getName();
-    getName();
-    new Foo.getName();
-    new Foo().getName();
-    new new Foo().getName()
+### 一道题 理解函数的prototype,静态方法，变量提升。。。
+```js
+function Foo() {
+  getName = function () { console.log(1);}
+  return this;
+}
+Foo.getName = function () {console.log(2)}
+Foo.prototype.getName = function () {console.log(3)}
+var getName = function () {console.log(4)}
+function getName() {console.log(5)}
+
+Foo.getName();
+getName();
+Foo().getName();
+getName();
+new Foo.getName();
+new Foo().getName();
+new new Foo().getName()
+```
 
 上面的代码编译后如下(函数声明的优先级先于变量声明):
->
-    function Foo(){
-        getName = function () { console.log(1); };//赋值语句，全局方法
-        return this;
-    }
-    function getName() {console.log(5)}; //全局函数(函数首先被提升)
-    var getName //变量重复声明， 忽略
-    Foo.getName = function () { console.log(2);};//静态方法
-    Foo.prototype.getName = function () { console.log(3);};//原型方法
-    getName = function () {console.log(4);};//getName重新赋值
-
+```js
+function Foo(){
+  getName = function () { console.log(1); };//赋值语句，全局方法
+  return this;
+}
+function getName() {console.log(5)}; //全局函数(函数首先被提升)
+var getName //变量重复声明， 忽略
+Foo.getName = function () { console.log(2);};//静态方法
+Foo.prototype.getName = function () { console.log(3);};//原型方法
+getName = function () {console.log(4);};//getName重新赋值
+```
 
 解析：
->
+```js
+Foo.getName();  //2 
+  //Foo函数上存储的静态方法 
 
-    Foo.getName();  //2 
-      Foo函数上存储的静态方法 
+getName();  //4   
+  //函数声明会提升,函数表达式不提升，先声明getName()函数，然后getName再被重新赋值
 
-    getName();  //4   
-      函数表达式不提升，getName重新赋值
+Foo().getName(); // 1  
+  //先执行了Foo函数，然后调用Foo函数的返回值对象的getName属性函数.Foo函数返回的是window对象，相当于执行 window.getName() ，而window中的getName已经被修改为console.log(1)，所以最终会输出1
 
-    Foo().getName(); // 1  
-      先执行了Foo函数，然后调用Foo函数的返回值对象的getName属性函数.Foo函数返回的是window对象，相当于执行 window.getName() ，而window中的getName已经被修改为console.log(1)，所以最终会输出1
+getName();// 1
+  //直接调用getName函数，相当于 window.getName() ,因为这个变量已经被Foo函数执行时修改了，遂结果与第三问相同，为1
 
-    getName();// 1
-      直接调用getName函数，相当于 window.getName() ,因为这个变量已经被Foo函数执行时修改了，遂结果与第三问相同，为1
+new Foo.getName();//2  
+  //考察的是js的运算符优先级问题 ，new 无参数列表，对应的优先级是18；成员访问操作符(.) , 对应的优先级是19。.优先级大于new，相当于new (Foo.getName)();
+  （https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence）
 
-    new Foo.getName();//2  
-      考察的是js的运算符优先级问题 ，new 无参数列表，对应的优先级是18；成员访问操作符(.) , 对应的优先级是19。.优先级大于new，相当于new (Foo.getName)();
-      （https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence）
+new Foo().getName();  //3 
+  //new 带参数列表，对应的优先级是19，和成员访问操作符.优先级相同。同级运算符，按照从左到右的顺序依次计算。new Foo()先初始化 Foo 的实例化对象，实例上没有getName方法，因此需要原型上去找，即找到了 Foo.prototype.getName，
 
-    new Foo().getName();  //3 
-      new 带参数列表，对应的优先级是19，和成员访问操作符.优先级相同。同级运算符，按照从左到右的顺序依次计算。new Foo()先初始化 Foo 的实例化对象，实例上没有getName方法，因此需要原型上去找，即找到了 Foo.prototype.getName，
-
-    new new Foo().getName();// 3  
-      new 带参数列表，优先级19，因此相当于是 new (new Foo()).getName()；先初始化 Foo 的实例化对象，然后将其原型上的 getName 函数作为构造函数再次 new ，相当于 new ((new Foo()).getName)();
-      
-
-
+new new Foo().getName();// 3  
+  //new 带参数列表，优先级19，因此相当于是 new (new Foo()).getName()；先初始化 Foo 的实例化对象，然后将其原型上的 getName 函数作为构造函数再次 new ，相当于 new ((new Foo()).getName)();
+```

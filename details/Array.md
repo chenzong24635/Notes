@@ -475,22 +475,43 @@ map(callback,thisArg)
 >thisArg  
 >>可选的。执行 callback 函数时 使用的this 值(箭头函数时，this指向window)
 
->
-    arr.map((item, index) => {
-      console.log('map()-->', 'index:', index, ';item:', item)
-      return item + index
-    });
+```js
+arr.map((item, index) => {
+  console.log('map()-->', 'index:', index, ';item:', item)
+  return item + index
+});
 
-    ['a','b'].map(function (item){
-      console.log(this)
-      return this
-    },{}) //返回 [{},{}]
+['a','b'].map(function (item){
+  console.log(this)
+  return this
+},{}) //返回 [{},{}]
 
-    //箭头函数时，this指向window
-    ['a','b'].map((item) => {
-      console.log(this)
-      return this
-    },{}) //返回 [Window, Window]
+//箭头函数时，this指向window
+['a','b'].map((item) => {
+  console.log(this)
+  return this
+},{}) //返回 [Window, Window]
+```
+
+map函数的回调函数只会被赋过值的项调用，会过滤空数组
+```js
+let arr = new Array(5);
+//等同于 let arr = [,,,,,];
+let arr1 = arr.map(() => {
+  return 1 
+});
+console.log(arr1);
+// [empty × 5];
+
+---
+
+let arr = new Array(5).fill();
+let arr1 = arr.map(() => {
+  return 1 
+});
+console.log(arr1);
+// [1, 1, 1, 1, 1]
+```
 
 ## <a name="some()、every()、filter()">some()、every()、filter() -- 不改变原数组</a>
 
@@ -510,50 +531,52 @@ map(callback,thisArg)
 |filter()| 数组形式返回符合元素|返回[]| √|
 
 every()、some()、filter()会跳过空位
->
-    [1,2,,3].every(item => item >= 1) // true
->
+```js
+[1,2,,3].every(item => item >= 1) // true
+```
 
-    let arr = [ 1, 2, 3, 4 ];
-    arr.some((item, index, array) => {
-      console.log(item, index, array)
-      return index > 1 //某个元素索引大于1返回true，否则false
-    })
-    console.log(arr.some(x => x >3));    // 输出  true
-    console.log(arr.some(x => x > 5));    // 输出  false
-____
+```js
+let arr = [ 1, 2, 3, 4 ];
+arr.some((item, index, array) => {
+  console.log(item, index, array)
+  return index > 1 //某个元素索引大于1返回true，否则false
+})
+console.log(arr.some(x => x >3));    // 输出  true
+console.log(arr.some(x => x > 5));    // 输出  false
+```
 
 * every()  
 
 检测数组中是否`所有元素`可以通过检测函数验证。返回Boolean值；（某个元素不满足会立即返回false）  
->
-    let arr = [ 1, 2, 3, 4 ];
-    arr.every((item, index, array) => {
-      console.log(item, index, array)
-      return index>1 //每个元素索引大于1返回true，否则false
-    })
-    console.log(arr.every(x => x < 8));    //输出 true
-    console.log(arr.every(x => x < 4));    //输出 false
-
+```js
+let arr = [ 1, 2, 3, 4 ];
+arr.every((item, index, array) => {
+  console.log(item, index, array)
+  return index>1 //每个元素索引大于1返回true，否则false
+})
+console.log(arr.every(x => x < 8));    //输出 true
+console.log(arr.every(x => x < 4));    //输出 false
+```
 ____
 
 * filter() 
 
 以数组形式返回满足条件的元素，没有返回[]
->
-    arr.filter((item, index, array) => {
-      return index > 1 //返回索引大于1的元素
-    });
+```js
+arr.filter((item, index, array) => {
+  return index > 1 //返回索引大于1的元素
+});
 
-    //过滤空值
-    [1, 2, 0, undefined, null, false, ''].filter(Boolean) //[1.2]
+//过滤空值
+[1, 2, 0, undefined, null, false, ''].filter(Boolean) //[1.2]
 
-    // 利用filter去重
-    var arr = [2,3,4,4,5,2,3,6];
-    var arr2 = arr.filter(function(element,index,self){
-      return self.indexOf(element) === index;
-    });
-    console.log(arr2);
+// 利用filter去重
+var arr = [2,3,4,4,5,2,3,6];
+var arr2 = arr.filter(function(element,index,self){
+  return self.indexOf(element) === index;
+});
+console.log(arr2);
+```
 
 ## <a name="reduce()、reduceRight()">reduce()、reduceRight()</a>
 reduce()接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终为一个值，  

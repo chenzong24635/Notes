@@ -98,6 +98,16 @@ new Promise((resolve, reject) => {
 })
 ```
 
+then 方法接受的参数是函数，而如果传递的并非是一个函数,就会导致前一个 Promise 的结果穿透到下面
+```js
+Promise.resolve(1)
+.then(2)
+.then(Promise.resolve(3))
+.then(console.log)
+
+// 1
+```
+
 ### Promise.prototype.catch()  
 
 catch方法 是.then(null, rejection) 或 .then(undefined, rejection)别名 用于指定发生错误时的回调函数

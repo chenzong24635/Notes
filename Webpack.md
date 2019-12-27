@@ -4,6 +4,10 @@
 
 [一看就懂之webpack高级配置与优化](https://segmentfault.com/a/1190000020320871)
 
+[2020年了,再不会webpack敲得代码就不香了(近万字实战)](https://juejin.im/post/5de87444518825124c50cd36)
+
+[webpack 原理分析与性能优化（2w字精华）](https://juejin.im/post/5e02c524f265da33e347fe61)
+
 * <a href="打包图片资源">打包样式文件中的图片资源</a>
 * <a href=""></a>
 
