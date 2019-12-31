@@ -787,6 +787,21 @@ console.log(spy.sex = "feme"); //调用set函数
 
 ```
 
+## <a name="delete">delete</a>
+[你确定你会使用 delete 吗？](https://juejin.im/post/5e05bf71e51d4557ea02c1e8)
+
+* configurable: false时属性不可配置时，非严格模式返回 false ，严格模式抛出语法错误  
+* delete 不存在的属性时，依然返回 true ，只是 delete 语句没什么作用
+* delete 只对对象自身属性起作用，不能删除原型链上的属性
+* 使用 var 、let、const  声明的属性都是不可配置的， delete 不能删除
+```js
+var obj = {};
+Object.defineProperty(obj, 'name', {configurable: false});
+console.log(delete obj.name);  //   false
+console.log(delete obj.a);  // true
+console.log(obj);  // {name: undefined}
+```
+
 ## <a name="typeof instanceof">typeof 、instanceof 、in</a>
 typeof 
 >

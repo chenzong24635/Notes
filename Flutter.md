@@ -2,11 +2,18 @@
 [官网-中文](https://flutterchina.club/get-started/install/)
 [官网-英文](https://flutter.dev/docs/get-started/install/)
 
+[Flutter实战](https://book.flutterchina.club/intro.html)
+
 [万字长文轻松彻底入门 Flutter，秒变大前端](https://zhuanlan.zhihu.com/p/90836859)
 
+[](https://github.com/chenBingX/CoorChiceArticale/blob/master/Flutter/4.Flutter%E5%B8%B8%E7%94%A8Widget.md)
 [Flutter 布局详解](https://juejin.im/post/5b09fe716fb9a07aa114a6d9)  
 [Flutter 布局（二）- Padding、Align、Center详解](https://juejin.im/post/5b1cb0c46fb9a01e62598d56)  
 [Flutter 布局（三）- FittedBox、AspectRatio、ConstrainedBox详解](https://juejin.im/post/5b2d04eef265da59951fe796)
+
+demo:  
+[gsy_flutter_demo](https://github.com/CarGuo/gsy_flutter_demo)  
+[flutter-osc](https://github.com/yubo725/flutter-osc)
 
 
 # 目录
@@ -256,38 +263,35 @@ State的生命周期有四种状态：
 * 当调用了dispose,State对象处于未加载（unmounted），已经被dispose的State对象没有办法被重新加载（remount）。
 
 
+## Scaffold
+Scaffold 提供了快速构建 MaterialDesign 风格的页面的方案。
+
+
 ## Container
 继承关系: Object > Diagnosticable > DiagnosticableTree > Widget > StatelessWidget > Container
 
 
+
+渐变
 ```dart
-Container(
-  key: , //Container唯一标识符，用于查找更新
-  width: 200,
-  height: 200,
-  padding: EdgeInsets.all(30),
-  margin: EdgeInsets.fromLTRB(10, 20, 0, 50),
-  transform: Matrix4.rotationZ(0.5), //设置变换矩阵，类型为Matrix4
-  alignment: Alignment.topLeft, // 对齐方式
-  constraints: new BoxConstraints.expand(//添加到child上额外的约束条件
-    height:Theme.of(context).textTheme.display1.fontSize * 1.1 + 10.0,
+new Container( // red box
+  child: new Text(
+    "Lorem ipsum",
   ),
-  //color: Colors.blue,  
-  foregroundDecoration: , //绘制在child前面的装饰,可能会遮盖color效果。
-  decoration: new BoxDecoration( //绘制在child后面的装饰
-    color: Colors.orange,
-    borderRadius: BorderRadius.all(Radius.circular(20.0)),//弧度为4.0
-    border: new Border.all(color: Colors.red, width: 10),//边框
-  ),//设置了decoration，就不能设置Container的color，否则报错
-  child: Text(
-    "I am a Container",
-    style:TextStyle(
-      fontSize: 20,
-      color: Colors.white
-    )
-  ),
+  decoration: new BoxDecoration(
+    gradient: new LinearGradient(
+      begin: const Alignment(0.0, -1.0),
+      end: const Alignment(0.0, 0.6),
+      colors: <Color>[
+        const Color(0xffef5350),
+        const Color(0x00ef5350)
+      ],
+    ),
+  ), 
+  padding: new EdgeInsets.all(16.0),
 ),
 ```
+
 
 EdgeInsets 设置padding，margin值
 * EdgeInsets.all(value)  设置四个方向均使用相同数值的填充
@@ -304,29 +308,8 @@ Container是最常的widget。在以下情况会使用到Container，当然并�
 * 需要设置背景图片的时候（也可以使用Stack实现）。
 
 
-## Text
-```dart
-Text(
-  "Hello world",
-  softWrap: true, //是否自动换行（默认true）
-  textAlign:TextAlign.left, // 文本对齐方式
-  textDirection: TextDirection.ltr, // 文本方向
-  overflow: TextOverflow.ellipsis, // 文字溢出
-  maxLines: 2, //最大行数限制
-  textScaleFactor: 2, // 字体显示倍率,相对于父元素字体的大小的倍数
-  style: TextStyle( //文本样式
-    fontSize: 50,
-    fontWeight: FontWeight.bold,
-    color:Colors.red,
-    //color:Color(0xFF0000FF),
-    decoration: TextDecoration.lineThrough, // 下划线位置
-    decorationColor: Colors.purple, // 下划线颜色
-    decorationStyle: TextDecorationStyle.wavy, // 下划线样式
-  )
-),
-```
-## TextSpan 
-## Text.rich
+## Text ,RichText,TextSpan 
+
 
 ## Button 按钮  
 按钮类型：
@@ -335,17 +318,21 @@ Text(
 * OutlineButton：带边框按钮
 * IconButton：带图标按钮
 
+
+
+## Positioned 定位
 ```dart
-OutlineButton(
-  child: Text("我是 OutlineButton" ),
-  color: Colors.blue,
-  textColor: Colors.blue,
-  onPressed: () {},
+
+```
+
+## Directionality 用于确定文本和文字方向
+继承关系: Object > Diagnosticable > DiagnosticableTree > Widget > ProxyWidget > InheritedWidget > Directionality
+
+```dart
+Directionality(
+  textDirection: TextDirection.rtl, // 设置文本方向
+  child:Text('adda'),
 ),
-IconButton(
-  icon: Icon(Icons.add),
-  onPressed: () {},
-)
 ```
 
 
@@ -355,63 +342,22 @@ IconButton(
 * Image.file	加载本地图片文件
 * Image.network	加载网络图片
 * Image.memory	加载Uint8List资源图片
----
-* 属性：
-```dart
-new Directionality(
-  textDirection: TextDirection.ltr, //对齐方向，
-  child: image,
-),
-Image image = Image(
-  image: NetworkImage(url),
-  width: 200.0,
-  height: 500.0,
-  repeat: ImageRepeat.repeat, //重复方式
-  alignment: Alignment.bottomRight, //对其方式
-  fit: BoxFit.scaleDown, //图片适应方式,(拉伸，充满...)
-  centerSlice: new Rect.fromCircle(center: const Offset(100.0, 100.0), radius: 10.0 ), //当图片需要被拉伸显示的时候，centerSlice定义的矩形区域会被拉伸
-  //color和colorBlendMode一般配合使用
-  color: Colors.greenAccent, // 背景色
-  colorBlendMode: BlendMode.colorBurn, // 混合模式
-  matchTextDirection: true, //与Directionality配合使用
-  gaplessPlayback: true, //当ImageProvider发生变化后，重新加载图片的过程中，原图片的展示是否保留。若值为true，保留，若为false，不保留，直接空白等待下一张图片加载。
-),
-```
----
 
-* 网络图片的加载
+ 项目里的资源图片加载,  
+ 需在pubspec.yaml配置文件，添加图片的路径
 ```dart
-Image(
-  image: NetworkImage("https://cn.bing.com/th?id=OHR.FrozenTree_ZH-CN9591258534_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp"),
-  width: 200.0,
-),
-
-或
-
-Image.network("https://cn.bing.com/th?id=OHR.FrozenTree_ZH-CN9591258534_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp"),
-```
-* 项目里的资源图片加载
-```dart
-//需在pubspec.yaml配置文件，添加图片的路径
 flutter:
 
   uses-material-design: true
   assets:
-      - lib/images/a.jpg
-
-Image(
-  image: AssetImage('lib/images/a.jpg'),
-  width: 100.0,
-),
-或者 
-Image.asset("lib/images/a.jpg",width: 100.0),
+      - lib/images // 添加所有图片路径
+      //- lib/images/a.jpg //添加单个
 ```
 
-* 本地文件图片
+## Transform
 ```dart
-Image.file(new File("/Users/gs/Downloads/1.jpeg")),
-```
 
+```
 
 ## 动画
 ```dart
@@ -461,113 +407,19 @@ Flutter中的边界约束，是指widget可以按照指定限定条件，来决�
 |Stack|将其子Widget简单的堆叠在一起,可结合Positioned进行绝对定位|有多个子 Widget|
 |ListView|可滚动的列表|有多个子 Widget|
 
-## [Container](https://api.flutter.dev/flutter/widgets/Container-class.html)  
-容器  
-```dart
-new Container(
-  margin: EdgeInsets.all(10.0), //设置maring
-  height: 120.0,
-  width: 500.0,
-  //设置一个透明黑色遮罩
-  //设置了decoration，就不能设置Container的color。
-  decoration: new BoxDecoration(
-    borderRadius: BorderRadius.all(Radius.circular(4.0)),//弧度为4.0
-    color: Colors.black,
-    border: new Border.all(color: Colors.red, width: 11.3),//边框
-  ),
-  child:new Text(
-    "666666",
-    style: TextStyle(
-      color: Colors.white
-    )
-  ),
-),
-```
+
 
 ## [Padding](https://api.flutter.dev/flutter/widgets/Padding-class.html)
-Flutter中并没有单独的Margin控件，在Container中有margin属性，看源码关于margin的实现。
-```dart
-if (margin != null)
-  current = new Padding(padding: margin, child: current);
-```
-不难看出，Flutter中淡化了margin以及padding的区别，margin实质上也是由Padding实现的。
-
-继承行为：Object > Diagnosticable > DiagnosticableTree > Widget > RenderObjectWidget > SingleChildRenderObjectWidget > Padding
-
-```dart
-new Padding(
-  padding: new EdgeInsets.all(8.0),
-  child: const Card(child: const Text('Hello World!')),
-)
-```
-
-基本上需要间距的地方，它都能够使用。如果在单一的间距场景，使用Padding比Container的成本要小一些，毕竟Container里面包含了多个widget。Padding能够实现的，Container都能够实现，只不过，Container更加的复杂。
-
-## [Align](https://api.flutter.dev/flutter/widgets/Align-class.html)
-```dart
-Align(
-  //widthFactor:, //宽度因子，如果设置的话，Align的宽度就是child的宽度乘以这个值，不能为负数。
-  //heightFactor:,//高度因子，如果设置的话，Align的高度就是child的高度乘以这个值，不能为负数。
-  alignment: Alignment.topRight, //对齐方式
-  //alignment: Alignment(0.2, 0.6),
-  //alignment: FractionalOffset(0.2, 0.6),
-  child: FlutterLogo(
-    size: 60,
-  ),
-),
-```
-
-## [Center](https://api.flutter.dev/flutter/widgets/Center-class.html)
-Center继承自Align，只不过是将alignment设置为Alignment.center，
-其他属性例如widthFactor、heightFactor，布局行为，都与Align完全一样
-
-```dart
-Center(
-  child: Text('Center'),
-),
-```
-
-## [Transform](https://api.flutter.dev/flutter/widgets/Transform-class.html)
-```dart
-Transform(
-  alignment: Alignment.topRight,
-  transform: Matrix4.skewY(0.3)..rotateZ(12.0),
-  child: Container(
-    padding: const EdgeInsets.all(8.0),
-    color: const Color(0xFFE8581C),
-    child: const Text('Transform'),
-  ),
-),
-```
 
 
-## [Expanded](https://api.flutter.dev/flutter/widgets/Expanded-class.html)
-```dart
-Row(
-  children:<Widget>[
-    Expanded(
-      flex: 2,
-      child: Container(
-        color: Colors.red,
-        height: 100,
-      ),
-    ),
-    Expanded(
-      flex: 4,
-      child: Container(
-        color: Colors.amber,
-        height: 100,
-      ),
-    ), 
-  ],
-),
-```
 
 
 ## [Row](https://api.flutter.dev/flutter/widgets/Row-class.html) / [Column](https://api.flutter.dev/flutter/widgets/Column-class.html)
 水平/垂直布局  
 ```dart
 Row(
+  mainAxisAlignment: MainAxisAlignment.end, //主轴
+  crossAxisAlignment: CrossAxisAlignment.center, // 副轴
   children:<Widget>[
     Text('Row'),
     Text('Row'),
@@ -576,6 +428,8 @@ Row(
 ),
 
 Column(
+  mainAxisAlignment: MainAxisAlignment.end,
+  crossAxisAlignment: CrossAxisAlignment.center,
   children:<Widget>[
     Text('Column'),
     Text('Column'),
@@ -583,6 +437,9 @@ Column(
   ],
 ),
 ```
+对于行(Row)来说，主轴是水平方向，横轴垂直方向。对于列（Column）来说，主轴垂直方向，横轴水平方向。
+
+![Axis.jpg](/img/Flutter/Axis.jpg)
 
 
 ## [Wrap](https://api.flutter.dev/flutter/widgets/Wrap-class.html)
@@ -642,34 +499,7 @@ Flex(
 
 ## [Stack](https://api.flutter.dev/flutter/widgets/Stack-class.html)
 ```dart
-Stack(
-  children: <Widget>[
-    Container(
-      width: 100,
-      height: 100,
-      color: Colors.red,
-      child: Align(
-        alignment: Alignment.topRight,
-        child: Text('1')
-      ),
-    ),
-    Container(
-      width: 60,
-      height: 60,
-      color: Colors.green,
-      child: Align(
-        alignment: Alignment.topRight,
-        child: Text('2')
-      ),
-    ),
-    Container(
-      width: 30,
-      height: 30,
-      color: Colors.blue,
-      child: Text('3'),
-    ),
-  ],
-),
+
 ```
 结合Positioned绝对定位
 ```dart
@@ -714,7 +544,23 @@ ListView(
   ],
 )
 ```
+动态数据列表
+```dart
+final List<String> entries = <String>['A', 'B', 'C'];
+final List<int> colorCodes = <int>[600, 500, 100];
 
+ListView.builder(
+  padding: const EdgeInsets.all(8),
+  itemCount: entries.length,
+  itemBuilder: (BuildContext context, int index) {
+    return Container(
+      height: 50,
+      color: Colors.amber[colorCodes[index]],
+      child: Center(child: Text('Entry ${entries[index]}')),
+    );
+  }
+);
+```
 
 # <a name="Flutter for Web开发者">[Flutter for Web开发者](https://flutterchina.club/web-analogs/)</a>
 

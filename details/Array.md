@@ -444,7 +444,7 @@ end : 要复制序列的结束位置，如为负值则从后向前计数。如�
 
 ## <a name="forEach()">forEach()-- 不改变原数组</a>
 遍历数组 ,无法遍历对象, IE不支持  
-`没有返回值 undefined` , `不改变原数组 、能被return中断`
+`没有返回值, undefined` , `不改变原数组 、能被return中断`
 
 forEach(callback,thisArg)
 >callback(item,index,array)：生成新数组元素的函数，使用三个参数：  
