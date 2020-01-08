@@ -112,8 +112,8 @@ npm i git //git安装
   >总之，就是让这个文件回到最近一次git commit或git add时的状态。
 
 `git rm 删除文件`
-* git rm -r fileName //删除本地文件/文件夹
-* git rm -r --cached fileName //删除缓存文件/文件夹；(但仍保留在工作区中),(git push origin 后就能删除仓库文件)
+* git rm -r \<fileName> //删除本地文件/文件夹
+* git rm -r --cached \<fileName> //删除缓存文件/文件夹；(但仍保留在工作区中),(git push origin 后就能删除仓库文件)
 >git rm -r --cached .  //删除所有缓存文件
 
 `文件重命名`

@@ -1,0 +1,82 @@
+[前端面试必备 | 古怪的原型（鸡生蛋还是蛋生鸡）（原型篇：中）](https://juejin.im/post/5dff3e186fb9a016091dfa6a)
+
+
+* 原型(prototype)：
+>
+    函数本身就是个包含方法与属性的对象，每个函数都有一个prototype属性,每个对象都有个__proto__属性指向其构造函数的prototype,称为原型。可通过原型为对象扩展属性，实现继承
+
+* 原型链：
+>
+    当我们访问一个对象的属性时，如果这个对象内部不存在这个属性，就从其原型找这个属性，原型对象也是对象也拥有原型，一层层寻找，直至null（即Object.prototype.__proto__）从而形成了所谓的“原型链”。
+
+查找自身属性（不查找原型链）：obj.hasOwnProperty(prop)
+
+
+
+* 不要再使用 __proto__
+1. __proto__属性没有写入 ES6 的正文，而是写入了附录。
+
+2. 原因是它本质上是一个内部属性，而不是一个正式的对外的 API，只是由于浏览器广泛支持，才被加入了 ES6。
+
+获取对象的原型方法: Object.getPrototypeOf(target) 替代  target.__proto__
+
+* __proto__,prototype区别：
+>
+    js里所有的对象都有__proto__属性(对象，函数)，可称为隐式原型，指向构造该对象的构造函数的原型(prototype)。
+
+    只有函数function才具有prototype(显示原型)属性。这个属性是一个指针，指向一个对象，这个对象的用途就是包含所有实例共享的属性和方法（我们把这个对象叫做原型对象）。
+
+    原型对象有一个属性，叫做constructor，这个属性包含了一个指针，指回原构造函数。
+
+
+* 为什么只有函数有prototype属性
+>
+    JS通过 new来生成对象，但是仅靠构造函数，每次生成的对象都不一样。
+
+    有时候需要在两个对象之间共享属性，由于JS在设计之初没有类的概念，所以JS使用函数的prototype来处理这部分需要被共享的属性，通过函数的prototype来模拟类：
+
+    在 JavaScript 中创建一个函数的时候，JavaScript 引擎会添加一个 prototype 属性给这个函数，这个 prototype 属性指向一个对象，这就是我们所说的原型对象。原型对象默认会有一个 constructor 属性，这个 constructor 指向的就是有 prototype 属性的函数
+
+* 
+>
+    function A(){}
+    var a = new A()
+
+    //a是否为A的实例  
+    a instanceof A // true
+
+`实例的__proto__属性（原型）等于其构造函数的prototype属性`  
+Object.getPrototypeOf(a) === A.prototype // true  
+
+`函数的prototype对象的constructor属性，指向其本身`  
+A.prototype.constructor === A   //true
+A.prototype.constructor === a.constructor //true
+
+`原型链的终点：Object.prototype`  
+Object.getPrototypeOf(Function.prototype) === Object.prototype  //true
+
+Object.getPrototypeOf(Object.prototype) === null //true
+
+
+```js
+`Object是Function的实例`
+`Function是Object的实例`
+
+Object instanceof Function// true
+
+Object instanceof Object// true
+
+Function instanceof Object// true
+
+Function instanceof Function// true
+```
+
+构造函数不需要显示的返回值。使用new来创建对象(调用构造函数)时，如果return的是非对象(数字、字符串、布尔类型、null、undefined等)会忽而略返回值;如果return的是对象，则返回该对象。
+
+![prototype](/img/prototype0.png)
+![prototype](/img/prototype.png)
+
+* 原型继承：
+原型中的成员可以被和其相关的对象共享这一特性，可以实现继承。这种实现继承的方式，就叫做原型继承。
+
+[继承方式](./inherit.md)

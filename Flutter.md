@@ -6,23 +6,17 @@
 
 [万字长文轻松彻底入门 Flutter，秒变大前端](https://zhuanlan.zhihu.com/p/90836859)
 
-[](https://github.com/chenBingX/CoorChiceArticale/blob/master/Flutter/4.Flutter%E5%B8%B8%E7%94%A8Widget.md)
-[Flutter 布局详解](https://juejin.im/post/5b09fe716fb9a07aa114a6d9)  
-[Flutter 布局（二）- Padding、Align、Center详解](https://juejin.im/post/5b1cb0c46fb9a01e62598d56)  
-[Flutter 布局（三）- FittedBox、AspectRatio、ConstrainedBox详解](https://juejin.im/post/5b2d04eef265da59951fe796)
-
-demo:  
-[gsy_flutter_demo](https://github.com/CarGuo/gsy_flutter_demo)  
-[flutter-osc](https://github.com/yubo725/flutter-osc)
-
 
 # 目录
 * <a href="搭建Flutter开发环境">搭建Flutter开发环境</a>
+* <a href="Flutter项目目录结构">Flutter项目目录结构</a>
 * <a href="vscode运行fluter">vscode运行fluter</a>
 * <a href="概述">概述</a>
 * <a href="Widget">Widget</a>
 * <a href="布局">布局</a>
 * <a href="Flutter for Web开发者">Flutter for Web开发者</a>
+* <a href="路由跳转">路由跳转</a>
+* <a href="包管理">包管理</a>
 * <a href="http请求">http请求</a>
 * <a href=""></a>
 
@@ -66,6 +60,23 @@ FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
 [参考](https://blog.csdn.net/u013275973/article/details/81134169)
 
 
+# <a name="Flutter项目目录结构">Flutter项目目录结构</a>
+```dart
+
+┬
+├ android      - Android部分的工程文件
+├ build        - 项目的构建输出目录
+├ ios          - iOS部分的工程文件
+├ lib          - flutter相关代码，也是Flutter项目源码存放的地方
+  ┬
+  └ src        - 包含其他源文件
+  └ main.dart  - 自动生成的项目入口文件，
+├ test         - 测试相关文件
+└ pubspec.yaml - 项目依赖配置文件类似于 package.json
+
+```
+
+
 # <a name="vscode运行fluter">vscode运行fluter</a>
 * ctrl + shift + p
 * 输入 ‘flutter’, 然后选择 ‘Flutter: New Project’
@@ -87,6 +98,29 @@ maven { url 'https://maven.aliyun.com/repository/jcenter' }
 maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
 ```
 
+## 调试
+
+* f5断点调试  
+只需要在 Vscode 上打上一个断点，按 F5 就会停在断点处。通过左边的调试栏，观察断点处的变量以及栈堆情况。
+
+* debugger调试  
+debugger代码调试只能运行在开发阶段  
+debugger()
+
+
+* rendering 调试-布局线调试
+```dart
+import 'package:flutter/rendering.dart';
+
+void main() {
+  //开启rendering调试
+  debugPaintSizeEnabled = !true;
+  runApp(new MyApp());
+}
+
+```
+
+* 真机调试
 
 # <a name="概述">概述</a>
 Flutter是谷歌的移动UI框架，可以快速在iOS和Android上构建高质量的原生用户界面。 
@@ -97,6 +131,8 @@ Flutter是谷歌的移动UI框架，可以快速在iOS和Android上构建高质�
 
 
 # <a name="Widget">Widget</a>
+[Widget](https://flutterchina.club/widgets/widgetindex/)
+
 Dart 类build方法返回的便是Widget，`在Flutter中一切都是Widget`，Widget 是一切的基础，利用响应式模式进行渲染。
 
 |类型|作用特点|
@@ -110,98 +146,13 @@ Dart 类build方法返回的便是Widget，`在Flutter中一切都是Widget`，W
 |Image|图片加载|
 |RaisedButton \| FlatButton \| OutlineButton \| IconButton|按钮 |
 
-
-## 例子：
-```dart
-import 'dart:async';
-import 'package:flutter/material.dart';
-
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Demo',
-      home: MyHomePage('三秒后会改变'),
-      routes: {}
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  final String msg;
-
-  //通过构造方法传值
-  MyHomePage(this.msg);
-
-  //主要是负责创建state
-  @override
-  MyHomePageState createState() => MyHomePageState(msg);
-}
-
-class MyHomePageState extends State<MyHomePage> {
-  String msg;
-
-  MyHomePageState(this.msg);
-
-  @override
-  //初始化，这个函数在生命周期中只调用一次
-  void initState() {
-    super.initState();
-    //定时1秒
-    new Future.delayed(const Duration(seconds: 3), () {
-      setState(() {
-        msg = "我变了";
-      });
-    });
-  }
-
-  @override
-  //销毁
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  //在initState之后调 Called when a dependency of this [State] object changes.
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('title')
-      ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            new Text(msg ?? 'aaaa'),
-            FlatButton(
-              color: Colors.red,
-              textColor: Colors.white,
-              onPressed: () {
-                setState(() {
-                  this.msg += ' 点击了按钮';
-                });
-              },
-              child: Text('Click Me')
-            )
-          ],
-        )
-      )
-    );
-  }
-}
-```
-
 ##  Widget
 Widget 分为 有状态 和 无状态 两种
 
 ### StatelessWidget 无状态 
 自身不保存状态,是不可变的, 这意味着它们的属性不能改变 - 所有的值都是最终的，外部参数变化就销毁重新创建。尽量使用无状态的组件。
+
+它的生命周期相当简单：初始化、通过build()渲染。
 
 无状态变更，UI静态固化的Widget， 页面渲染性能更高。
 
@@ -239,8 +190,22 @@ class MyHomePageState extends State<MyHomePage> {
 
 ```
 
+StatefulWidget生命周期
+|生命周期|调用次数|调用时间|
+|:--|:--|:--|
+| createState| 1| 组件创建时
+| initState| 1| 组件创建时
+| didChangeDependencies| n| 组件创建或状态发生变化
+| build | n| 组件创建或UI重新渲染
+| didUpdateWidget| n| 组件创建或UI重新渲染
+| deactivate | n |State对象将要移除时
+|dispose | 1| state对象被销毁
+
+
+
 ### State  
-setState()可以很方便的管理组件内的数据，但是Flutter中状态同样是从上往下流转的，因此也会遇到和React中同样的问题，如果组件树太深，逐层状态创建就显得很麻烦了，更不要说代码的易读和易维护性了。
+
+定义了StatefulWidget实例的行为，它包含了用于”交互/干预“Widget信息的行为和布局。应用于State的任何更改都会强制重建Widget。
 
 State的生命周期有四种状态：
 
@@ -292,48 +257,12 @@ new Container( // red box
 ),
 ```
 
-
-EdgeInsets 设置padding，margin值
-* EdgeInsets.all(value)  设置四个方向均使用相同数值的填充
-* EdgeInsets.only(left: leftVal,top: topVal,right: rightVal,bottom: bottomVal) 设置某个方向的填充（参数个数为：0-4个）
-* EdgeInsets.fromLTRB(left, top, right, bottom) 设置四个方向的填充(参数必填)
-* EdgeInsets.symmetric(vertical: verticalVal,horizontal: horizontalVal) 设置对称方向的填充，vertical指top和bottom，horizontal指left和right （参数个数为：0-2）
-
-
 Container是最常的widget。在以下情况会使用到Container，当然并不是绝对的，也可以通过其他widget来实现。
 * 需要设置间隔（这种情况下，如果只是单纯的间隔，也可以通过Padding来实现）；
 * 需要设置背景色；
 * 需要设置圆角或者边框的时候（ClipRRect也可以实现圆角效果）；
 * 需要对齐（Align也可以实现）；
 * 需要设置背景图片的时候（也可以使用Stack实现）。
-
-
-## Text ,RichText,TextSpan 
-
-
-## Button 按钮  
-按钮类型：
-* RaisedButton: 凸起的按钮
-* FlatButton：扁平化按钮
-* OutlineButton：带边框按钮
-* IconButton：带图标按钮
-
-
-
-## Positioned 定位
-```dart
-
-```
-
-## Directionality 用于确定文本和文字方向
-继承关系: Object > Diagnosticable > DiagnosticableTree > Widget > ProxyWidget > InheritedWidget > Directionality
-
-```dart
-Directionality(
-  textDirection: TextDirection.rtl, // 设置文本方向
-  child:Text('adda'),
-),
-```
 
 
 ## Image 图片加载
@@ -354,10 +283,6 @@ flutter:
       //- lib/images/a.jpg //添加单个
 ```
 
-## Transform
-```dart
-
-```
 
 ## 动画
 ```dart
@@ -380,7 +305,7 @@ RaisedButton(
 在路由销毁的时候，需要释放动画资源，否则容易导致内存泄漏。
 
 
-# <a name="布局">布局</a>
+## <a name="布局">布局</a>
 Flutter 中拥有需要将近30种内置的 [布局Widget](https://flutterchina.club/widgets/layout/)
 
 Flutter中的边界约束，是指widget可以按照指定限定条件，来决定自身如何占用布局空间。Flutter借鉴了很多React相关的东西，包括一些布局思想，但是它自身没有抽离出布局样式，而是用不同的widget去实现不同的布局，将样式嵌入widget中，用户可以像搭积木一样写布局，写法上跟React很像，只不过没了样式的设定。
@@ -407,119 +332,6 @@ Flutter中的边界约束，是指widget可以按照指定限定条件，来决�
 |Stack|将其子Widget简单的堆叠在一起,可结合Positioned进行绝对定位|有多个子 Widget|
 |ListView|可滚动的列表|有多个子 Widget|
 
-
-
-## [Padding](https://api.flutter.dev/flutter/widgets/Padding-class.html)
-
-
-
-
-## [Row](https://api.flutter.dev/flutter/widgets/Row-class.html) / [Column](https://api.flutter.dev/flutter/widgets/Column-class.html)
-水平/垂直布局  
-```dart
-Row(
-  mainAxisAlignment: MainAxisAlignment.end, //主轴
-  crossAxisAlignment: CrossAxisAlignment.center, // 副轴
-  children:<Widget>[
-    Text('Row'),
-    Text('Row'),
-    Text('Row'),
-  ],
-),
-
-Column(
-  mainAxisAlignment: MainAxisAlignment.end,
-  crossAxisAlignment: CrossAxisAlignment.center,
-  children:<Widget>[
-    Text('Column'),
-    Text('Column'),
-    Text('Column'),
-  ],
-),
-```
-对于行(Row)来说，主轴是水平方向，横轴垂直方向。对于列（Column）来说，主轴垂直方向，横轴水平方向。
-
-![Axis.jpg](/img/Flutter/Axis.jpg)
-
-
-## [Wrap](https://api.flutter.dev/flutter/widgets/Wrap-class.html)
-```dart
-Wrap(
-  spacing: 8.0, // 子Widget间距
-  runSpacing: 4.0, //行间距
-  children: <Widget>[
-    Text('Laurens'),
-    Text('Laurens'),
-    Text('Laurens'),
-    Text('Laurens'),
-    Text('Laurens'),
-    Text('Laurens'),
-    Text('Laurens'),
-    Text('Laurens'),
-    Text('Laurens'),
-    Text('Laurens'),
-  ],
-),
-```
-
-## [Flex](https://api.flutter.dev/flutter/widgets/Flex-class.html)
-Row，Column布局，其实都是继承自Flex，也属于流式布局。
-
-如果轴向不确定，使用Flex，通过修改direction的值设定轴向  
-如果轴向已确定，使用Row，Column，布局更简洁，更有语义化
-
-
-示例中，轴向横向排列，最左边一个固定宽度的Container，右边两个Expanded，各自占剩下的宽度的一半
-```dart
-Flex(
-  direction: Axis.horizontal,
-  children: <Widget>[
-    Container(
-      width: 30,
-      height: 100,
-      color: Colors.blue,
-    ),
-    Expanded(
-      flex: 1,
-      child: Container(
-        height: 100.0,
-        color: Colors.red,
-      ),
-    ),
-    Expanded(
-      flex: 1,
-      child: Container(
-        height: 100.0,
-        color: Colors.green,
-      ),
-    ),
-  ],
-),
-```
-
-## [Stack](https://api.flutter.dev/flutter/widgets/Stack-class.html)
-```dart
-
-```
-结合Positioned绝对定位
-```dart
-Stack(
-  children:<Widget>[
-    Image.network("https://cn.bing.com/th?id=OHR.FrozenTree_ZH-CN9591258534_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp"),
-    Positioned(
-      top: 10,
-      left: 10,
-      child: Text(
-        '这里是定位的文本',
-        style:TextStyle(
-          color: Colors.red,
-          fontSize: 22,
-        )
-      ),
-    ),
-  ]
-),
-```
 
 ## [ListView](https://api.flutter.dev/flutter/widgets/ListView-class.html)
 ```dart
@@ -564,32 +376,149 @@ ListView.builder(
 
 # <a name="Flutter for Web开发者">[Flutter for Web开发者](https://flutterchina.club/web-analogs/)</a>
 
-* 路由跳转
+
+# <a name="包管理">包管理</a>
+Flutter的第三方库文件都在pubspec.yaml文件中，如果要使用某个第三方库，可以打开
+[仓库地址](https://pub.dev/)
+[仓库地址](https://pub.flutter-io.cn/)进行搜索
+
+打开pubspec.yaml文件，在dependencies下添加包的名称和版本：
 ```dart
-Navigator.push(context, MaterialPageRoute(builder: (context){
-  return ListPage();
-}));
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^0.1.2
+  english_words: ^3.1.0
+  json_annotation: ^2.0.0
+  http: ^0.12.0+2
+```
+直接保存（ctrl + s）或点击右上角的Get Packages按钮
+
+# <a name="路由跳转">路由跳转</a>
+## MaterialPageRoute构造函数 跳转
+```dart
+MaterialPageRoute({
+  WidgetBuilder builder, // 是构建路由页面的具体内容，返回值是一个widget。我们通常要实现此回调，返回新路由的实例。
+  RouteSettings settings, // 包含路由的配置信息，如路由名称、是否初始路由（首页）
+  bool maintainState = true, // 默认情况下，当入栈一个新路由时，原来的路由仍然会被保存在内存中，如果想在路由没用的时候释放其所占用的所有资源，可以设置maintainState为false。
+  bool fullscreenDialog = false, // 表示新的路由页面是否是一个全屏的模态对话框，在iOS中，如果fullscreenDialog为true，新页面将会从屏幕底部滑入（而不是水平方向）。
+})
+```
+
+## Navigator 跳转  
+Navigator是Flutter应用开发中的一个路由管理的widget，它通过一个栈来管理一个路由widget集合。通常，当前屏幕显示的页面就是栈顶的路由。Navigator提供了一系列方法来管理路由栈，我们可以使用 push 和 pop 两个操作来进行页面的入栈和出栈。
+
+### push 打开新的页面
+
+返回值是一个Future对象，用以接收新路由出栈（即关闭）时的返回数据。
+
+主要使用两个方法：   
+* 直接 push 一个路由，  
+* pushNamed 一个命名路由地址(需要将路由注册到路由表中)
+
+
+```dart
+//不传值跳转
+Navigator.of(context).push(MaterialPageRoute(builder: (context) => PageA()));
+Navigator.push(context,MaterialPageRoute(builder: (context) => PageA()));
+
+//传值跳转
+Navigator.of(context).push(MaterialPageRoute(builder: (context) => PageB(para: '你好',)));
+
+//
+Navigator.push(context,MaterialPageRoute(builder: (context) => PageA()),).then((data){
+  //接受返回的参数
+  print(data.toString());
+};
 
 或：
-Navigator.pushNamed(context, 'ListPage')
+Navigator.pushNamed(context, '/route1')
 
-//这里的ListPage为路由名 需在 routes里注册
+//这里的ListPage为路由名 ,需要将路由注册到路由表中 
+Navigator.of(context)
+  .pushNamed(
+    '/route1',
+    arguments: {
+      "name": 'hello'
+    }
+	).then((data){
+  	//接受返回的参数
+  	print(data.toString());
+	};
+```
+
+跳转其他页面不返回(从路由栈中移除本页面)
+```dart
+//第一种
+替换跳转路由
+Navigator.of(context).pushReplacementNamed("/login");
+
+//第二种
+跳转到根路由
+Navigator.pushAndRemoveUntil( context, new MaterialPageRoute(builder: (context) => new Page()),(route) => route == null,);
+
+//第三种
+Navigator.of(context).pushNamedAndRemoveUntil("/login", (Route<dynamic> route) => false);
+
+```
+
+
+### pop 返回给上一个页面
+```dart
+//返回上一页
+Navigator.of(context).pop();  //可以传递参数
+```
+
+### 命名路由
+给路由起一个名字，然后可以通过路由名字直接打开新的路由 
+
+路由名称按惯例使用类似路径的结构，应用程序的主页路由默认为“/”，例如，'/ home' 表示 HomeScreen， '/ login' 表示 LoginScreen。
+
+```dart
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Demo',
-      home: MyHomePage(),
-      routes: {
-        "ListPage": (context) => ListPage(),
-        "ListPage1": (context) { return new ListPage1(); },
-      }
+    return  MaterialApp(
+      title: 'Flutter Demo',
+      home:  MyHomePage(title: '应用程序首页'),
+      //注册路由表
+      routes: <String, WidgetBuilder> {
+        '/a': (BuildContext context) => MyPage(title: 'A 页面'),
+        '/b': (BuildContext context) => MyPage(title: 'B 页面'),
+        '/c': (BuildContext context) => MyPage(title: 'C 页面')
+      },
     );
   }
 }
+
 ```
 
+命名路由传参
+```dart
+//注册路由
+routes:{
+  "/new_page":(context)=>EchoRoute(),
+} ,
+//在路由页通过RouteSetting对象获取路由参数
+class EchoRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    //获取路由参数  
+    var args=ModalRoute.of(context).settings.arguments
+    //...省略无关代码
+  }
+}
+
+在打开路由时传递参数
+Navigator.of(context).pushNamed("/new_page", arguments: "hi");
+
+```
+
+
 # <a name="http请求">http请求</a>
+https://juejin.im/post/5d4186b0f265da03c34bd9e7
+
 httpClient在 dart:io库中，不需要引入第三方库就可以使用，示例代码如下：
 
 使用示例
@@ -620,3 +549,48 @@ Future _getByHttpClient() async{
 第三方库
 * [http](https://pub.dev/packages/http)
 * [Dio](https://pub.flutter-io.cn/packages/dio)
+
+# 使用的第三方包
+
+[fluttertoast](https://pub.dev/packages/fluttertoast#-readme-tab-)--弹窗  
+
+[loading](https://pub.dev/packages/modal_progress_hud) --进行网络请求等操作时的loading状态  
+
+[网络图片处理](https://pub.dev/packages/cached_network_image) --缓存网络图片,且带有loading的placeholder
+
+[下拉刷新及上拉加载 ](https://pub.dev/packages/flutter_easyrefresh)
+
+# 创建可重用组件
+```dart
+// Flutter
+class CustomCard extends StatelessWidget {
+  CustomCard({@required this.index, @required this.onPress});
+
+  final index;
+  final Function onPress;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: <Widget>[
+          Text('Card $index'),
+          FlatButton(
+            child: const Text('Press'),
+            onPressed: this.onPress,
+          ),
+        ],
+      )
+    );
+  }
+}
+
+
+// 使用
+CustomCard(
+  index: index,
+  onPress: () { 
+    print('Card $index');
+  },
+)
+```

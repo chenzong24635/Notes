@@ -9,6 +9,8 @@
 
 #  <a name=""></a>
 
+https://juejin.im/post/5e1182def265da5d691039ab
+
 [快速排序](https://segmentfault.com/a/1190000009426421)
 [选择排序](https://segmentfault.com/a/1190000009366805)
 [希尔排序](https://segmentfault.com/a/1190000009461832)

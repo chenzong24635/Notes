@@ -8,14 +8,14 @@
 * <a href="#准备">准备</a>
 * <a href="#类型">类型</a>
 * <a href="#泛型">泛型</a>
-  * <a href="#Boolean">boolean 布尔值</a>
-  * <a href="#Number">number 数字</a>
-  * <a href="#String">string 字符串</a>
+  * <a href="#Boolean">布尔值 boolean </a>
+  * <a href="#Number">数字 number </a>
+  * <a href="#String">字符串 string </a>
   * <a href="#Array">数组</a>
   * <a href="#Tuple">元组 Tuple</a>
   * <a href="#Enum">枚举 enum</a>
   * <a href="#Any">任意类型 :any</a>
-  * <a href="#unkown">unkown</a>
+  * <a href="#unkown">未知的类型：unkown</a>
   * <a href="#联合类型">联合类型(|)  表示取值可以为多种类型中的一种</a>
   * <a href="#Void">void</a>
   * <a href="#Null、Undefined">null、undefined</a>
@@ -394,8 +394,9 @@ let list: any[] = [1, true, "free"];
 list[1] = 100;
 ```
 
-## <a name="unkown">unkown</a>
-TypeScript 3.0引入了一个顶级的unknown类型。 对照于any，unknown是类型安全的。 任何值都可以赋给unknown，但是当没有类型断言或基于控制流的类型细化时unknown不可以赋值给其它类型，除了它自己和any外。 同样地，在unknown没有被断言或细化到一个确切类型之前，是不允许在其上进行任何操作的。
+## <a name="unkown">未知的类型：unkown</a>
+TypeScript 3.0引入了一个顶级的unknown类型。 对照于any，unknown是类型安全的。 
+任何值都可以赋给unknown，但是当没有类型断言或基于控制流的类型细化时unknown不可以赋值给其它类型，除了它自己和any外。 同样地，在unknown没有被断言或细化到一个确切类型之前，是不允许在其上进行任何操作的。
 
 ```ts
 type T00 = unknown & null;  // null
@@ -1028,6 +1029,7 @@ console.log(cow);
 ```
 
 ### keyof 查询健名,类似于JS中的Object.keys()方法
+获取一个对象接口的所有 key 值
 ```ts
 type Person = {
   name: string
@@ -1078,6 +1080,20 @@ console.log(getRectProperty(rect, 'notExist')); // error!!! 类型“"notExist"�
 type T = keyof any;
 相当于
 type T = string | number | symbol
+```
+
+类型复制
+```ts
+type Copy<T> = {
+  [key in keyof T]: T[key]
+}
+
+interface Person {
+  name: string
+  age: number
+}
+
+type Person1 = Copy<Person>
 ```
 
 ### Exclude 允许您从其他类型中删除某些类型。
@@ -1317,7 +1333,7 @@ declare function beforeAll(action: (done: DoneFn) => void, timeout?: number): vo
 
 
 # <a name="class">class类</a>
-## class
+### class
 可以向属性和方法的参数添加类型
 ```ts
 class P{
@@ -1351,7 +1367,35 @@ s.sayAge(); // 23
 s.sayName(); // 'sss'
 ```
 
-## 访问修饰符
+### 用类做接口
+类定义时会创建类的实例类型。即，类可以创建出类型。因此，在允许使用接口时，也允许使用类。
+
+```ts
+class M {
+  x: number
+}
+// 同
+/* interface M {
+  x: number
+} */
+
+let p: M = {
+  x: 31,
+}
+console.log(p); // 31
+
+// 也可被interface,type继承
+interface N extends M{
+  y: string
+}
+
+let p1: N = {
+  x: 31,
+  y: 'y'
+}
+```
+
+### 访问修饰符
 ts可以使用三种访问修饰符:public、private 和 protected
 
 * public 修饰的属性或方法是公有的，可以在任何地方被访问到，`默认所有的属性和方法都是 public 的`;  
@@ -1442,7 +1486,7 @@ abstract class Animal {
 let a = new Animal('Jack'); // error!!! 无法创建抽象类的实例
 ```
 
-## implements 类实现接口
+### implements 类实现接口
 实现（implements）是面向对象中的一个重要概念。一般来讲，一个类只能继承自另一个类，有时候不同类之间可以有一些共有的特性，这时候就可以把特性提取成接口（interfaces），用 implements 关键字来实现。这个特性大大提高了面向对象的灵活性。
 
 ```ts
@@ -1468,7 +1512,7 @@ class Car implements Alarm, Light {
 }
 ```
 
-## 构造器类型
+### 构造器类型
 语法：
 `new (p1: T1, p2: T2, ...) => T`
 

@@ -1,4 +1,5 @@
 [dart代码-线上运行](https://dartpad.cn/)
+[dart代码-线上运行](https://dartpad.dartlang.org/)
 
 [dart-英文](https://dart.dev/guides/language/language-tour)
 [dart-中文](https://dartcn.com/guides/language/language-tour)
@@ -75,6 +76,8 @@ main () {
 ```
 
 `每行代码末尾必须加封号(;) 否则直接报错`
+
+ Dart 的作用域 Dart 没有 「public」「private」等关键字，默认就是公开的，私有变量使用 下划线 _开头。
 
 Dart是强类型语音，没有隐式转换,判断是否相等时`只有==  没有===`
 

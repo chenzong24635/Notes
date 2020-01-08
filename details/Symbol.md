@@ -1,11 +1,11 @@
 <a id="top"></a>
 
-# [Symbol](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol)
+[Symbol](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol)--MDN
 
+[Symbol](https://es6.ruanyifeng.com/#docs/symbol)--阮一峰
 
 * <a href="#概述">概述</a>
 * <a href="#属性、方法">属性、方法</a>
-* <a href="#"></a>
 
 # <a name="概述">概述</a>[![bakTop](../img/backward.png)](#top)
 
@@ -44,7 +44,7 @@ Symbol值作为对象属性名时，不会被常规方法遍历得到，可利�
 
 * Symbol.prototype 原型
 
-* Symbol().description  
+* Symbol().description
   >返回Symbol值的描述  
   >Symbol('a').description //'a'
 

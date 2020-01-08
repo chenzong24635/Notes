@@ -237,31 +237,34 @@ div.item*3>{$}
 
   [stackoverflow](https://stackoverflow.com/)
 
+  [w3cplus-大漠](https://www.w3cplus.com/)  
 
-  [w3cplus-大漠](https://www.w3cplus.com/)
+  [张鑫旭](https://www.zhangxinxu.com/)  
 
-  [张鑫旭](https://www.zhangxinxu.com/)
+  [技术胖](https://jspang.com/)  
 
-  [技术胖](https://jspang.com/)
+  [廖雪峰](https://www.liaoxuefeng.com/)  
 
-  [廖雪峰](https://www.liaoxuefeng.com/)
+`手册、API:`  
+  [DevDocs API](https://devdocs.io/)  
 
-`手册、API:`
+  [Can I Use-兼容性查询](https://caniuse.com/#home)  
 
-  [DevDocs API](https://devdocs.io/)
+  [MDN](https://developer.mozilla.org/zh-CN/docs/Web)  
 
-  [Can I Use-兼容性查询](https://caniuse.com/#home)
+  [W3CSchool](https://www.w3cschool.cn/)  
 
-  [MDN](https://developer.mozilla.org/zh-CN/docs/Web)
+  [手册网](http://www.shouce.ren/)  
 
-  [W3CSchool](https://www.w3cschool.cn/)
+  [印记中文](https://www.docschina.org/)  
 
-  [手册网](http://www.shouce.ren/)
 
-  [印记中文](https://www.docschina.org/)
+`插件：`  
+  [axios](https://www.kancloud.cn/yunye/axios/234845)  
+  [Swiper-轮播图插件](https://www.swiper.com.cn/api/index.html) 
+  [echart](https://www.echartsjs.com/examples/zh/#chart-type-line)
 
-  `UI框架:`
-
+`UI框架:`  
   [Bootstrap](http://www.bootcss.com/)
 
   [vux](https://doc.vux.li/zh-CN/)
@@ -278,11 +281,9 @@ div.item*3>{$}
 
   [WeUI ](https://weui.io/)
 
-  [echart](https://www.echartsjs.com/examples/zh/#chart-type-line)
 
 
-  `图标、图片`：
-
+  `图标、图片：`  
   [icomoon](https://icomoon.io/)
 
   [icon-阿里巴巴](https://www.iconfont.cn/home/index?spm=a313x.7781069.1998910419.2)
@@ -320,6 +321,7 @@ div.item*3>{$}
   * [JS排序？？](/details/sort.md)
   * [JQ](/details/JQ.md)
 
+## [ES](ES.md)
 ## [TypeScript](TS.md)
 ## [正则](/details/RegExp.md)
 ## [AJAX](/details/Ajax.md)

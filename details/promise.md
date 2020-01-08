@@ -1,11 +1,15 @@
-# Promise
+
+[手写一个Promise ](https://github.com/LuckyWinty/fe-weekly-questions/issues/20)
 
 [JS 高级之手写一个Promise,Generator,async和 await【近 1W字】](https://juejin.im/post/5df83b93f265da33f8652ccc)
 
 [【2019 前端进阶之路】站住，你这个Promise！](https://zhuanlan.zhihu.com/p/52714698)
 
-[ES6 Promise](http://es6.ruanyifeng.com/#docs/promise)
+[ES6 入门教程 --Promise](http://es6.ruanyifeng.com/#docs/promise)--阮一峰
 
+# Promise
+
+## 概述
 Promise是一个构造函数（或者类），接受一个函数作为参数，该函数接受resolve，reject两个参数。
 
 Promise 对象代表一个异步操作，有三种状态：
@@ -30,10 +34,10 @@ Promise 对象的状态改变，只有两种可能：
 * 如果不设置回调函数，Promise内部抛出的错误，不会反应到外部。
 * 当处于pending状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。
 
-### 基本用法：  
+## 基本用法：  
 ```js
 new Promise((resolve, reject) => {
-  if (/### 异步操作成功 ###/){
+  if (/## 异步操作成功 ##/){
     resolve('success');
     console.log(2)
   } else {
@@ -43,7 +47,7 @@ new Promise((resolve, reject) => {
 ```
 调用resolve()以后，后面的console.log(2)还是会执行，并且会首先打印出来。这是因为立即 resolved 的 Promise 是在本轮事件循环的末尾执行，总是晚于本轮循环的同步任务
 
-### Promise.resolve()
+## Promise.resolve()
 将现有对象转为 Promise 对象，
 返回一个 fulfilled 状态的 promise
 
@@ -62,7 +66,7 @@ Promise.resolve('success').then(
 )
 ```
 
-### Promise.reject()
+## Promise.reject()
 将现有对象转为 Promise 对象，  
 返回一个 rejected 状态的 promise
 
@@ -81,7 +85,7 @@ Promise.reject('err').then(
 )
 ```
 
-### Promise.prototype.then()  
+## Promise.prototype.then()  
 then 方法返回新的Promise实例  
 then 方法的第一个参数是 resolved 状态的回调函数，第二个参数（可选）是 rejected 状态的回调函数。
 ```js
@@ -108,7 +112,7 @@ Promise.resolve(1)
 // 1
 ```
 
-### Promise.prototype.catch()  
+## Promise.prototype.catch()  
 
 catch方法 是.then(null, rejection) 或 .then(undefined, rejection)别名 用于指定发生错误时的回调函数
 
@@ -170,7 +174,7 @@ Promise.resolve()
 上面的代码因为没有报错，跳过了catch方法，直接执行后面的then方法。此时，要是then方法里面报错，就与前面的catch无关  
 因此用catch方法时写在最后
 
-### Promise.prototype.finally()  
+## Promise.prototype.finally()  
 
 finally 方法用于指定不管 Promise 对象最后状态如何，都会执行的操作。  
 不接收任何参数
@@ -182,7 +186,7 @@ new Promise((resolve, reject) => {})
 .finally(() => {})
 ```
 
-### Promise.all()
+## Promise.all()
 
 将多个Promise实例，包装成一个新的Promise实例  
 
@@ -221,7 +225,7 @@ let p = Promise.all([p1, p2]).
   });
 ```
 
-### Promise.race()
+## Promise.race()
 
 Promise.race()类似于all方法同样是将多个Promise实例，包装成一个新的 Promise 实例。
 
@@ -229,10 +233,10 @@ Promise.race()类似于all方法同样是将多个Promise实例，包装成一�
 
 ```let p = Promise.race([p1, p2]);```
 
-### Promise.try()
+## Promise.try()
 让同步函数同步执行，异步函数异步执行
 
-### Promise.allSettled() ES2020
+## Promise.allSettled() ES2020
 接受一组 Promise 实例作为参数，包装成一个新的 Promise 实例。只有等到所有这些参数实例都返回结果(返回数组)，不管是fulfilled还是rejected，包装实例才会结束。
 
 ```js
@@ -252,12 +256,12 @@ allSettledPromise.then((results) => {
 
 有时候，我们不关心异步操作的结果，只关心这些操作有没有结束。这时，Promise.allSettled()方法就很有用。如果没有这个方法，想要确保所有操作都结束，就很麻烦。Promise.all()方法无法做到这一点。
 
-### Promise.any()
+## Promise.any()
  Promise.any()方法接受一组 Promise 实例作为参数，包装成一个新的 Promise 实例。只要参数实例有一个变成fulfilled状态，包装实例就会变成fulfilled状态；如果所有参数实例都变成rejected状态，包装实例就会变成rejected状态。该方法目前是一个第三阶段的提案 。
 
 Promise.any()跟Promise.race()方法很像，只有一点不同，就是不会因为某个 Promise 变成rejected状态而结束。
 
-### 配合async
+## 配合async
 async函数返回一个 Promise 对象
 ```js
 async function f() {
@@ -268,7 +272,7 @@ f().then(v => console.log(v))
 // "hello world"
 ```
 
-### 异步加载图片
+## 异步加载图片
 ```js
 const preloadImage = function (url) {
   console.log(url)
@@ -281,3 +285,5 @@ const preloadImage = function (url) {
   });
 };
 ```
+
+# 手写Promise

@@ -11,7 +11,7 @@
   * <a href="#concat()">concat()字符串拼接</a>
   * <a href="#includes()">includes()判断是否存在某字符</a>
   * <a href="#startWith()、endWith()">startWith()、endWith()判断是否以某字符开头、结尾</a>
-  * <a href="#padStart()、padEnd()">padStart()、padEnd() 填充字符串头部、尾部</a>
+  * <a href="#padStart()、padEnd()">padStart()、padEnd() 填充字符串头部、尾部 </a>
   * <a href="#repeat()">repeat()重复字符串</a>
   * <a href="#search()">search()检索字符串</a>
   * <a href="#match()、matchAll()">match()、matchAll()检索字符串</a>

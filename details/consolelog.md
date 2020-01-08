@@ -1,5 +1,7 @@
 [Chrome 浏览器前端调试技巧大揭秘](https://mp.weixin.qq.com/s?__biz=MzUzOTM0MTE4OQ==&mid=2247486207&idx=1&sn=217d474172b4752d4451c3cb3c167f77&chksm=fac8b215cdbf3b03be8486e6af1389a0bf049f5ab989f4dd83f692200d60ce84fbe3796f2b8c&scene=0&xtrack=1&key=f7996279e56ff0c960fdcd6fc46af973f3cd29a09a4fb2543272423dd21a14a538eb8d392236fd402ded694ca172c4eedb1ccbbfa3d656a250b047b86c418ac388480eda6c6ab2e3411a209a4d6ea248&ascene=14&uin=MTIxNDM5MTUzOQ%3D%3D&devicetype=Windows+7&version=62060841&lang=zh_CN&pass_ticket=6hbWVbVQi9b8nDPWnQLyNwIhfW%2Fxii%2FBAH6JGd5v7eUzIH49WIfoITbvxT9QEwrs)
 
+[0202年了, Chrome DevTools 你还只会console.log吗](https://juejin.im/post/5e0cb3ba5188253ab46da675)
+
 [Chrome Devtool Performance报告中的DCL, L, FP, FCP, FMP, LCP 的含义](https://juejin.im/post/5dfc709b51882579dc6f7f71)
 
 [Chrome Devtools 高级调试指南（新](https://juejin.im/post/5d9eea84e51d4577eb5d8510)

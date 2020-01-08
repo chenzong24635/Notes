@@ -1,5 +1,9 @@
 [官网-指南](https://www.webpackjs.com/guides/)
 
+https://juejin.im/post/5e116fce6fb9a047ea7472a6
+
+https://github.com/LuckyWinty/fe-weekly-questions/issues/4
+
 [从零开始的Webpack4教程](https://segmentfault.com/a/1190000018534625?share_user=1030000000178452#item-5)
 
 [一看就懂之webpack高级配置与优化](https://segmentfault.com/a/1190000020320871)

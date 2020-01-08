@@ -1,5 +1,7 @@
 [Vue源码简析(版本vue-2.4.4)](https://juejin.im/post/5ab07a63f265da2389258b12)
 
+http://mp.weixin.qq.com/mp/homepage?__biz=MzUxNjQ1NjMwNw==&hid=1&sn=77b9eca3d06307f14d8806231c395ed2&scene=18#wechat_redirect
+
 顺带学习ts
 
 # 目录

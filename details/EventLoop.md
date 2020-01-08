@@ -1,5 +1,6 @@
 # 事件执行机制
 
+https://juejin.im/post/5e143104e51d45414a4715f7?utm_source=gold_browser_extension
 
 [从一道题浅说 JavaScript 的事件循环](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/7)
 

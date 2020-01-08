@@ -262,7 +262,7 @@ fromIndex：表示查找的起始位置。
     console.log(arr.lastIndexOf('b'));    // 输出 1
     console.log(arr.lastIndexOf('e'));    // 输出 -1
 
-### includes()
+### includes() --ES7
 includes(searchElement[, fromIndex=0])
 
 searchElement：查找的元素   

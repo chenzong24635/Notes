@@ -111,6 +111,7 @@ CSS布局、居中
   * <a href="#text-align-last">text-align-last文本中最后一行在被强制换行之前的对齐规则</a>
   * <a href="#writing-mode">writing-mode调整文本排版方向</a>
   * <a href="#改变input placeholder颜色">改变input placeholder颜色</a>
+  * <a href="#input自动填充上背景色">input自动填充上背景色</a>
   * <a href="#selection">selection 改变选中内容的字体、背景颜色</a>
   * <a href="#user-select">user-select 文本是否可选中</a>
   * <a href="#-webkit-text-size-adjust">-webkit-text-size-adjust</a>
@@ -1298,11 +1299,29 @@ matrix(sx, 0, 0, sy, 0, 0) 等同于scale(sx, sy)
 matrix(0, 0, 0, 0, tx, ty) 等同于translate(tx, ty)
 ```
 
-* [ transform的影响](http://www.zhangxinxu.com/wordpress/2015/05/css3-transform-affect/)
+### [ transform的影响](http://www.zhangxinxu.com/wordpress/2015/05/css3-transform-affect/)
 
-transform限制position:fixed的跟随效果，
+#### transform限制position:fixed的跟随效果，
+
 父元素有transform属性（filter属性也会）， fixed 的效果会降级为 absolute。
 
+
+#### [transform 奇数值导致字体模糊](https://www.cnblogs.com/milo-wjh/p/6364138.html)
+[解决](https://stackoverflow.com/questions/20326220/blurry-text-on-transformrotate-in-chrome)
+
+当元素设置有transform，且其值为奇数或小数，同事其整体高度也有奇数时，其内部文字会变模糊
+
+这是因为transform变换会在浏览器上单独创建一个绘画层并重新进行渲染，rotate渲染的时候，由于图层渲染的时候也处理了周围的文字，如果高度为奇数的文字可能会存在半个像素的计算量，浏览器对这半个像素会进行优化渲染，所以边缘会出现模糊的情况。
+
+```css
+.box{
+  transform: translate3d(30px,30px,0);
+
+}
+.box1 { /* 文本模糊 */
+  transform: translate3d(1.5px, 1.5px,0);
+}
+```
 
 <a href="#图片缩放">图片缩放matrix,transform+transition</a>
 
@@ -1830,6 +1849,13 @@ format()作用
 
   ```
 
+* IOS日期显示问题  
+  IOS版本（IOS5及以下）中，对以“-”间隔的字符串时间格式的解析是不成功的
+
+  传入 "2019-12-31"就会呈现出 NaN-NaN-NaN，而其他IOS版本及安卓系统都是没问题的。
+
+  把以"-"间隔的事件字符串替换成以"/"即可
+
 * iconfont 字体某项情况里面加载不出来
 
   ```css
@@ -1904,6 +1930,16 @@ let vConsole = new VConsole(option);
 * 使用calc时运算符之间要有空格 ，否则可能无效 
 
 *  background引入图片的一个缺点是页面的Web可访问性会受到轻微的影响，因为屏幕阅读器和搜索引擎无法正确地获取到图像。可以通过CSS object-fit属性解决(object-position和object-fit只针对替换元素有作用)
+
+* div内置img元素，底部总有间距
+
+原因是img是行内元素，浏览器为下行字符（如：g、y、j、p、q）留下的一些空间，这些字符是会比其他字符多占据底部一些空间（具体以当前字体大小有关），这种规则会影响行内元素img标签（其默认垂直对齐方式是依照基线来的，即vertical-align: baseline），同样行内元素都会和外部元素留这么一丢丢安全距离
+
+解决：  
+img设置 display:block，使其变成块级元素。   
+img设置 vertical-align: top 或者 middle/，使其不再以默认基线为对齐方式；  
+<del>div设置font-size: 0或line-height: 0，进而行高为0；</del>  
+
 
 ## <a name="CSSOM视图模式">CSSOM视图模式</a>[![bakTop](./img/backward.png)](#top)
 [CSSOM视图模式(CSSOM View Module)相关整理](https://www.zhangxinxu.com/wordpress/2011/09/cssom%E8%A7%86%E5%9B%BE%E6%A8%A1%E5%BC%8Fcssom-view-module%E7%9B%B8%E5%85%B3%E6%95%B4%E7%90%86%E4%B8%8E%E4%BB%8B%E7%BB%8D/)-张鑫旭
@@ -2146,6 +2182,20 @@ direction: rtl | ltr
     :-moz-placeholder { color: ; }/*Mozilla Firefox 4 to 18*/
     ::-moz-placeholder { color: ; }/*Mozilla Firefox 19+*/
     :-ms-input-placeholder { color: ; }/*Internet Explorer 10-11 */
+
+## <a name="input自动填充上背景色">input自动填充上背景色</a>[![bakTop](./img/backward.png)](#top)
+>
+    input:-webkit-autofill{
+      box-shadow: 0 0 0px 1000px white inset !important;
+    }
+    select:-webkit-autofill{
+      box-shadow: 0 0 0px 1000px white inset !important;
+    }
+    textarea:-webkit-autofill{
+      box-shadow: 0 0 0px 1000px white inset !important;
+    } 
+
+* autocomplete="off"，直接关闭自动填充
 
 ## <a name="selection">selection 改变选中内容的字体、背景颜色</a>[![bakTop](./img/backward.png)](#top)
 ```css

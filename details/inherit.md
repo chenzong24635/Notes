@@ -2,6 +2,7 @@
 
 [JS继承的六种方式](https://blog.csdn.net/caijixin/article/details/78295676)
 
+https://juejin.im/post/5e02c2916fb9a0160116a2bd
 
 https://github.com/ziyi2/js/blob/master/JS%E7%B1%BB%E5%92%8C%E7%BB%A7%E6%89%BF.md
 
