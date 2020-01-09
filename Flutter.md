@@ -120,7 +120,10 @@ void main() {
 
 ```
 
-* 真机调试
+* 真机调试  
+flutter devices 验证Flutter识别您连接的Android设备。  
+
+
 
 # <a name="概述">概述</a>
 Flutter是谷歌的移动UI框架，可以快速在iOS和Android上构建高质量的原生用户界面。 

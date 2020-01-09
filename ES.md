@@ -40,8 +40,6 @@ ES6 内部使用严格相等运算符（===），判断一个位置是否有值�
 
 ## [Proxy](./details/proxy.md)
 
-## [Proxy](./details/proxy.md)
-
 ## [Promise](./details/promise.md)
 
 ## [async await.md](./details/async_await.md)

@@ -79,7 +79,7 @@ main () {
 
  Dart 的作用域 Dart 没有 「public」「private」等关键字，默认就是公开的，私有变量使用 下划线 _开头。
 
-Dart是强类型语音，没有隐式转换,判断是否相等时`只有==  没有===`
+Dart是强类型语言，没有隐式转换,判断是否相等时`只有==  没有===`
 
 ?? 、??= 属于操作符，如: AA ?? "999" 表示如果 AA 为空，返回999(类似于js的||)；AA ??= "999" 表示如果 AA 为空，给 AA 设置成 999。
 
@@ -136,7 +136,7 @@ var func = list.map((item)=> {
 以下会报错
 ```dart
 
-var list1 = list.map((item)=> (print(item),print(1)));;
+var list1 = list.map((item)=> (print(item),print(1)));
 
 var list1 = list.map(function(item) {
   print(item)
@@ -187,10 +187,10 @@ print(name);
 `String name = 'str';`  
 
 ### Final 和 Const 表示常量
-从来不会被修改的变量， 可以使用 final 或 const, 而不是 var 或者其他类型，
-Final 变量在初始化后值不变；无法在编译时（运行之前）知道这个变量的值 
-Const 变量值在编译时就已经固定
-const比final更加严格
+* 从来不会被修改的变量， 可以使用 final 或 const, 而不是 var 或者其他类型，  
+* Final 变量在初始化后值不变；无需在编译时（运行之前）知道这个变量的值   
+* Const 变量值， 必须在编译时就已经固定  
+* const比final更加严格  
 
 
 ```dart
@@ -199,7 +199,7 @@ print(c); // 2019-12-19 17:50:19.061015
 const d = new DateTime.now(); // 报错, cosnt变量必须在编译时确定其值
 ```
 
-* Const 关键字不仅可以用于声明常量变量。 还可以用来创建常量值，以及声明创建常量值的构造函数。 任何变量都可以拥有常量值。
+Const 关键字不仅可以用于声明常量变量。 还可以用来创建常量值，以及声明创建常量值的构造函数。 任何变量都可以拥有常量值。
 ```dart
 var foo = const [];
 final bar = const [];
@@ -255,28 +255,48 @@ Symbol('a') is Symbol // true
 所有的变量终究是一个对象（一个类的实例）， 所以变量可以使用 构造涵数 进行初始化
 
 ## <a name="Number">Number</a>
-### Number 有两种类型:
+### Number 有两种类型(大小都是64位):
 * int 
 >整数值不大于64位， 具体取决于平台。 在 Dart VM 上， 值的范围从 -263 到 263 - 1. Dart 被编译为 JavaScript 时，使用 JavaScript numbers, 值的范围从 -253 到 253 - 1.
 * double 
 >64位（双精度）浮点数，依据 IEEE 754 标准。
 
 ### 方法：
-* num.parse()字符串转数字:可能会创建一个整型，否则为浮点型对象：  
-* int.parse()字符串转换为整型  
-* double.parse()字符串转换为双浮点型对象 
+* parse()
+  * num.parse()字符串转数字:可能会创建一个整型，否则为浮点型对象：  
+  * int.parse()字符串转换为整型  
+  * double.parse()字符串转换为双浮点型对象 
 
-```dart
-num.parse('111'); // 111
-int.parse('111'); // 111
-double.parse('111'); // 111
-int.parse('a'); // Uncaught Error: FormatException: a
-```
+  ```dart
+  num.parse('111'); // 111
+  int.parse('111'); // 111
+  double.parse('111'); // 111
+  int.parse('a'); // Uncaught Error: FormatException: a
+  ```
 
-parse通过添加 radix 参数，指定整数的进制基数：
-```dart
-int.parse('42', radix: 16); // 66
-```
+  parse通过添加 radix 参数，指定整数的进制基数：
+  ```dart
+  int.parse('42', radix: 16); // 66
+  ```
+
+* toString() 转换为字符串类型
+  ```dart
+  42.5.toString() // '42.5'
+  42.0.toString() // '42.0'
+  42.toString() // '42'
+  ```
+
+* toStringAsFixed 指定小数点后的位数
+  ```dart
+  123.456.toStringAsFixed(2) // '123.45'
+  123.toStringAsFixed(2) // '123.00'
+  ```
+
+* toStringAsPrecision 指定有效数字的位数
+  ```dart
+  123.456.toStringAsPrecision(2) // '1.2e+2'
+  ```
+
 
 ## <a name="String">String</a>
 ### 字符串拼接
@@ -338,25 +358,9 @@ print(r"I am ${name} \n Nice to meet you");
 ```
 
 ### 字符串方法
-转为字符串
-* toString() 转换为字符串类型
-```dart
-42.5.toString() // '42.5'
-42.toString() // '42'
-```
-
-* toStringAsFixed 指定小数点后的位数
-```dart
-123.456.toStringAsFixed(2) // '123.45'
-```
-
-* toStringAsPrecision 指定有效数字的位数
-```dart
-123.456.toStringAsPrecision(2) // '1.2e+2'
-```
 
 字符串查找
-* indexOf,lastIndexOf 查找字符串的索引
+* indexOf,lastIndexOf 查找字符串的索引  
 ```dart
 String str = "aababcc1bc23";
 print(str.indexOf("ab"));//1  第一个符合条件的index
@@ -468,7 +472,7 @@ print(str.trimLeft()); //aab  bcc //去除左边空格
 ## <a name="Boolean">Boolean</a>
 Dart 是强 bool 类型检查，只有bool 类型的值是true 才被认为是true
 
-Dart 下只有 bool 型(true | false)可以用于 if 等判断，不同于JS,在Dart中这种使用方式是不合法的 `if(1){}`
+Dart 下只有 bool 型(true | false)可以用于 if 和assert 等判断，不同于JS,在Dart中这种使用方式是不合法的 `if(1){}`
 
 ```dart
 bool isTrue;
@@ -489,11 +493,11 @@ func(true); // true
 类似于JS的Array
 
 ```dart
-var list1 = List();// 不限定类型，可添加任意类型的数据
-List list2 = List();// 不限定类型，可添加任意类型的数据
+var list1 = List();  //不限定类型，可添加任意类型的数据
+List list2 = List(); //不限定类型，可添加任意类型的数据
 List list3 = List(2);//不限定类型，可添加任意类型的数据
 
-var list4 = [1,2,3];//限定了类型，只能是int
+var list4 = [1,2,3];//限定了类型，类型断言为 int
 var list5 = [2,'3',true];//未限定了类型，任意位置可用任意类型替换
 List list6 = ['a',2,'b',false];//未限定了类型，任意位置可用任意类型
 
@@ -521,10 +525,12 @@ arr1.length; // 3
 
 在 List 字面量之前添加 const 关键字，可以定义 List 类型的编译时常量
 ```dart
-var constantList = const [1, 2, 3];
-constantList = [1];
-print(constantList); // [1]
-constantList[1] = 43; // 报错,Unsupported operation: Cannot modify an unmodifiable list
+var arr = const [1, 2, 3];
+//无法修改列表内容
+arr[1] = 43; // 运行报错,Unsupported operation: Cannot modify an unmodifiable list
+//但可以修改变量值
+arr = [1, 1, 1]; // ok ,
+print(arr); // [1]
 ```
 
 ### List属性
@@ -815,32 +821,10 @@ print(list1); // (0, 1, 2, 3)
 * cast() 将List的泛型提升到其父祖类
 
 
-
-## <a name="Set">Set</a>
-
-Set 是一个元素唯一且无需的集合。
-
-Set实例：  
-var halogens = {'fluorine', 'chlorine', 'bromine', 'iodine', 'astatine'};
-
-var names = {}; // 这样会创建一个 Map ，而不是 Set ;因为先有的 Map 语法，所以 {} 默认是 Map 类型
-
-属性
-* length 
-
-方法
-* add()
-* addAll()  
-```dart
-Set<String> set1 = {"a","b","c"};
-set1.add('o');
-set1.addAll(['g','f']);
-print(set1); // {a, b, c, o, g, f}
-```
-
-
 ## <a name="Map">Map</a>
- Map 是用来关联 keys 和 values 的对象。 keys 和 values 可以是任何类型的对象。在一个 Map 对象中一个 key 只能出现一次
+Map 是用来关联 keys 和 values 的对象。 keys 和 values 可以是任何类型的对象。在一个 Map 对象中一个 key 只能出现一次
+
+Dart 中Map的默认实现是LinkedHashMap，表示元素按添加先后顺序排序。
 
 如果 Map 中不包含所要查找的 key，那么 Map 返回 null：
 ```{"a":1}['c'] // null```
@@ -868,7 +852,7 @@ print(map1); //{1: a, 2: b}
 print(map2); //{1: a, 2: b}
 ```
 
-属性
+### 属性
 * length
 * isEmpty
 * isNotEmpty
@@ -886,7 +870,7 @@ print(map.values);//(1, 2)  value的集合
 print(map.entries);//(MapEntry(a: 1), MapEntry(b: 2))   map迭代的键值对集合
 ```
 
-方法
+### 方法
 * map[键名] = 键值  //添加 | 修改
 ```dart
 Map map = {"a":1,"b":2};
@@ -1010,6 +994,43 @@ map2["d"] = 'd'; // 报错，value的类型已变为int
 print(map2);//{a: 1, b: 2, c: 3, d: 33}
 ```
 
+
+## <a name="Set">Set</a>
+
+Set 是一个元素唯一且无需的集合。
+
+在Dart中，Set默认是LinkedHashSet实现，表示元素按添加先后顺序排序。
+
+Set实例：  
+var halogens = {'fluorine', 'chlorine', 'bromine', 'iodine', 'astatine'};
+
+var names = {}; // 这样会创建一个 Map ，而不是 Set ;因为先有的 Map 语法，所以 {} 默认是 Map 类型
+
+属性
+* length 
+
+方法
+* add()
+* addAll()  
+```dart
+Set<String> set1 = {"a","b","c"};
+set1.add('o');
+set1.addAll(['g','f']);
+print(set1); // {a, b, c, o, g, f}
+```
+
+遍历Set方法: for...in ，forEach
+```dart
+Set<String> set1= {"a","b"};
+//set1.forEach((item) => print(item));
+for(var i in set1){
+  print(i);
+}
+// "a" 
+// "b" 
+```
+
+
 ## <a name="Rune">Rune</a>
 ```dart
 var clapping = '\u{1f44f}';
@@ -1042,6 +1063,20 @@ print(new String.fromCharCodes(input));
 * ??= 只有当被赋值的变量为 null 时才会赋值给它
 `num ??= 54;`
 
+* 扩展运算符(... 和 ...?)
+```dart
+var list1 = [1, 2, 3];
+var list2 = [0, ...list1];
+print(list2); // [0,1,2,3]
+```
+如果扩展对象可能是null，可以使用...?：
+```dart
+var list1;
+var list2 = [0, ...?list1];
+print(list2); //[0]
+```
+
+
 * 级联运算符(..); 可以实现对同一个对像进行一系列的操作。 除了调用函数， 还可以访问同一对象上的字段属性
 ```dart
 class Point {
@@ -1069,7 +1104,6 @@ void main() {
 main特殊函数，是程序的入口
 ```dart
 void main(){
- .....
 }
 ```
 所有函数都有返回值，如果没有显示返回，那么默认return null;

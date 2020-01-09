@@ -28,6 +28,24 @@ Promise 对象的状态改变，只有两种可能：
 
 调用resolve或reject并不会终结 Promise 的参数函数的执行，其后面的代码也会执行，且先率先执行。  
 一般来说，调用resolve或reject以后，Promise 的使命就完成了，因此可return resolve()
+```js
+console.log(1);
+
+new Promise((resolve, reject) => {
+    console.log(2);
+    resolve(3);
+    console.log(4);
+}).then(console.log, console.error);
+
+console.log(5);
+// 输出
+1
+2
+4
+5
+3
+```
+
 
 缺点：
 * 无法取消Promise，一旦新建它就会立即执行，无法中途取消。
@@ -160,7 +178,7 @@ new Promise(function(resolve, reject) {
 
 Promise 对象的错误具有“冒泡”性质，会一直向后传递，直到被捕获为止。也就是说，错误总是会被下一个catch语句捕获。
 
-因此，建议总是使用catch方法（且写在最后），而不使用then方法的第二个参数。
+因此，`建议总是使用catch方法（且写在最后）`，而不使用then方法的第二个参数。
 ```js
 Promise.resolve()
 .catch(function(error) {
