@@ -12,6 +12,7 @@
 * <a href="Flutter项目目录结构">Flutter项目目录结构</a>
 * <a href="vscode运行fluter">vscode运行fluter</a>
 * <a href="概述">概述</a>
+* <a href="基本">基本</a>
 * <a href="Widget">Widget</a>
 * <a href="布局">布局</a>
 * <a href="Flutter for Web开发者">Flutter for Web开发者</a>
@@ -131,6 +132,16 @@ Flutter是谷歌的移动UI框架，可以快速在iOS和Android上构建高质�
 * 使用Dart语言，目前已经支持同时编译成Web端代码，
 * 自绘UI引擎和编译成原生代码的方式，使得系统的运行时的高性能成为了可能
 
+# <a name="基本">基本</a>
+Flutter 中主要有：
+Widget 、Element 、RenderObject 、Layer 四棵树，它们的作用是：
+* Widget ：就是我们平常写的控件，在Flutter中一切都是Widget，它们都是不可变一帧，
+
+* Element ：它是 BuildContext 的实现类，Widget 实现跨帧保存的 state 就是存放在这里，同时它也充当了 Widget 和 RenderObject 之间的桥梁。
+
+* RenderObject ：它才是真正干活（layout、paint）等，同时它才是真实的 “dom” 。
+
+* Layer ：一整块的重绘区域（isRepaintBoundary），决定重绘的影响区域。
 
 
 # <a name="Widget">Widget</a>
@@ -138,21 +149,14 @@ Flutter是谷歌的移动UI框架，可以快速在iOS和Android上构建高质�
 
 Dart 类build方法返回的便是Widget，`在Flutter中一切都是Widget`，Widget 是一切的基础，利用响应式模式进行渲染。
 
-|类型|作用特点|
-|:--|:--|
-|MaterialApp|一般作为APP顶层的主页入口，可配置主题，多语言，路由等|
-|Scaffold |一般用户页面的承载Widget，包含appbar、snackbar、drawer等material design的设定|
-|Appbar|一般用于Scaffold的appbar ，内有标题，二级页面返回按键等，当然不止这些，tabbar等也会需要它 |
-|Text|显示文本，几乎都会用到，主要是通过style设置TextStyle来设置字体样式等。|
-|RichText|富文本，通过设置TextSpan，可以拼接出富文本场景。|
-|TextField|文本输入框 |
-|Image|图片加载|
-|RaisedButton \| FlatButton \| OutlineButton \| IconButton|按钮 |
+
 
 ##  Widget
 Widget 分为 有状态 和 无状态 两种
 
 ### StatelessWidget 无状态 
+继承自Widget类，重写了createElement()方法
+
 自身不保存状态,是不可变的, 这意味着它们的属性不能改变 - 所有的值都是最终的，外部参数变化就销毁重新创建。尽量使用无状态的组件。
 
 它的生命周期相当简单：初始化、通过build()渲染。
@@ -170,28 +174,42 @@ class MyHome extends StatelessWidget {
 }
 ```
 
+### Context
+build方法有一个context参数，它是BuildContext类的一个实例，表示当前widget在widget树中的上下文，每一个widget都会对应一个context对象（因为每一个widget都是widget树上的一个节点）
+
+在子树中获取父级widget的一个示例:
+```dart
+class ContextRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Context测试"),
+      ),
+      body: Container(
+        child: Builder(builder: (context) {
+          // 在Widget树中向上查找最近的父级`Scaffold` widget
+          Scaffold scaffold = context.ancestorWidgetOfExactType(Scaffold);
+          // 直接返回 AppBar的title， 此处实际上是Text("Context测试")
+          return (scaffold.appBar as AppBar).title;
+        }),
+      ),
+    );
+  }
+}
+```
+
 ### StatefulWidget  
-持有的状态可能在widget生命周期中发生变化. 实现一个 stateful widget 至少需要两个类:
+持有的状态可能在widget生命周期中发生变化.
+
+和StatelessWidget一样，StatefulWidget也是继承自Widget类，并重写了createElement()方法，不同的是返回的Element 对象并不相同；另外StatefulWidget类中添加了一个新的接口createState()。
+
+ 实现一个 stateful widget 至少需要两个类:
   * 一个 StatefulWidget类。
   * 一个 State类。 StatefulWidget类本身是不变的，但是 State类在widget生命周期中始终存在.
 
 因状态变更可以导致UI变更的的Widget，涉及到数据渲染场景，都使用StatefulWidget。
-```dart
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({ Key key }) : super(key: key);
 
-  @override
-  MyHomePageState createState() => new MyHomePageState();
-}
-
-class MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return new Container(color: const Color(0xFFFFE306));
-  }
-}
-
-```
 
 StatefulWidget生命周期
 |生命周期|调用次数|调用时间|
@@ -204,7 +222,18 @@ StatefulWidget生命周期
 | deactivate | n |State对象将要移除时
 |dispose | 1| state对象被销毁
 
+![StatefulWidget.jpg](/img/Flutter/StatefulWidget.jpg)
 
+```dart
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({ Key key }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container(color: const Color(0xFFFFE306));
+  }
+}
+```
 
 ### State  
 
@@ -229,84 +258,63 @@ State的生命周期有四种状态：
 * 如果它的子树（subtree）包含需要被移除的State对象，会调用deactivate；
 * 调用dispose,State对象以后都不会被构建；
 * 当调用了dispose,State对象处于未加载（unmounted），已经被dispose的State对象没有办法被重新加载（remount）。
-
-
-## Scaffold
-Scaffold 提供了快速构建 MaterialDesign 风格的页面的方案。
-
-
-## Container
-继承关系: Object > Diagnosticable > DiagnosticableTree > Widget > StatelessWidget > Container
-
-
-
-渐变
 ```dart
-new Container( // red box
-  child: new Text(
-    "Lorem ipsum",
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({ Key key }) : super(key: key);
+
+  @override
+  MyHomePageState createState() => new MyHomePageState();
+}
+
+class MyHomePageState extends State<MyHomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return new Container(color: const Color(0xFFFFE306));
+  }
+}
+```
+
+#### 获取State对象
+* 通过Context获取
+
+context对象有一个ancestorStateOfType(TypeMatcher)方法，该方法可以从当前节点沿着widget树向上查找指定类型的StatefulWidget对应的State对象
+```dart
+Scaffold(
+  appBar: AppBar(
+    title: Text("子树中获取State对象"),
   ),
-  decoration: new BoxDecoration(
-    gradient: new LinearGradient(
-      begin: const Alignment(0.0, -1.0),
-      end: const Alignment(0.0, 0.6),
-      colors: <Color>[
-        const Color(0xffef5350),
-        const Color(0x00ef5350)
-      ],
-    ),
-  ), 
-  padding: new EdgeInsets.all(16.0),
-),
+  body: Center(
+    child: Builder(builder: (context) {
+      return RaisedButton(
+        onPressed: () {
+          // 查找父级最近的Scaffold对应的ScaffoldState对象
+          ScaffoldState _state = context.ancestorStateOfType(
+            TypeMatcher<ScaffoldState>()
+          );
+          //调用ScaffoldState的showSnackBar来弹出SnackBar
+          _state.showSnackBar(
+            SnackBar(
+              content: Text("我是SnackBar"),
+            ),
+          );
+        },
+        child: Text("显示SnackBar"),
+      );
+    }),
+  ),
+)
 ```
 
-Container是最常的widget。在以下情况会使用到Container，当然并不是绝对的，也可以通过其他widget来实现。
-* 需要设置间隔（这种情况下，如果只是单纯的间隔，也可以通过Padding来实现）；
-* 需要设置背景色；
-* 需要设置圆角或者边框的时候（ClipRRect也可以实现圆角效果）；
-* 需要对齐（Align也可以实现）；
-* 需要设置背景图片的时候（也可以使用Stack实现）。
-
-
-## Image 图片加载
-* Image()	通用方法，使用ImageProvider实现，如下方法本质上也是使用的这个方法
-* Image.asset	加载资源图片
-* Image.file	加载本地图片文件
-* Image.network	加载网络图片
-* Image.memory	加载Uint8List资源图片
-
- 项目里的资源图片加载,  
- 需在pubspec.yaml配置文件，添加图片的路径
+* 通用的获取State对象的方法——通过GlobalKey来获取！
 ```dart
-flutter:
-
-  uses-material-design: true
-  assets:
-      - lib/images // 添加所有图片路径
-      //- lib/images/a.jpg //添加单个
+//定义一个globalKey, 由于GlobalKey要保持全局唯一性，我们使用静态变量存储
+static GlobalKey<ScaffoldState> _globalKey= GlobalKey();
+...
+Scaffold(
+    key: _globalKey , //设置key
+    ...  
+)
 ```
-
-
-## 动画
-```dart
-bool _visible=true;
-
-AnimatedOpacity(
-  opacity: _visible ? 1.0:0.0,
-  duration: Duration(milliseconds: 1000),
-  child: Text('看我淡入淡出'),
-),
-RaisedButton(
-  child: Text("显示隐藏"),
-  onPressed: (){
-    setState(() {
-      _visible=!_visible;
-    });
-    },
-),
-```
-在路由销毁的时候，需要释放动画资源，否则容易导致内存泄漏。
-
 
 ## <a name="布局">布局</a>
 Flutter 中拥有需要将近30种内置的 [布局Widget](https://flutterchina.club/widgets/layout/)
@@ -336,47 +344,6 @@ Flutter中的边界约束，是指widget可以按照指定限定条件，来决�
 |ListView|可滚动的列表|有多个子 Widget|
 
 
-## [ListView](https://api.flutter.dev/flutter/widgets/ListView-class.html)
-```dart
-ListView(
-  padding: const EdgeInsets.all(8),
-  children: <Widget>[
-    Container(
-      height: 50,
-      color: Colors.amber[600],
-      child: const Center(child: Text('Entry A')),
-    ),
-    Container(
-      height: 50,
-      color: Colors.amber[500],
-      child: const Center(child: Text('Entry B')),
-    ),
-    Container(
-      height: 50,
-      color: Colors.amber[100],
-      child: const Center(child: Text('Entry C')),
-    ),
-  ],
-)
-```
-动态数据列表
-```dart
-final List<String> entries = <String>['A', 'B', 'C'];
-final List<int> colorCodes = <int>[600, 500, 100];
-
-ListView.builder(
-  padding: const EdgeInsets.all(8),
-  itemCount: entries.length,
-  itemBuilder: (BuildContext context, int index) {
-    return Container(
-      height: 50,
-      color: Colors.amber[colorCodes[index]],
-      child: Center(child: Text('Entry ${entries[index]}')),
-    );
-  }
-);
-```
-
 # <a name="Flutter for Web开发者">[Flutter for Web开发者](https://flutterchina.club/web-analogs/)</a>
 
 
@@ -396,10 +363,14 @@ dependencies:
   json_annotation: ^2.0.0
   http: ^0.12.0+2
 ```
-直接保存（ctrl + s）或点击右上角的Get Packages按钮
+直接保存（ctrl + s）| 点击右上角的Get Packages按钮 | 
 
 # <a name="路由跳转">路由跳转</a>
+
 ## MaterialPageRoute构造函数 跳转
+MaterialPageRoute继承自PageRoute类，PageRoute类是一个抽象类，表示占有整个屏幕空间的一个模态路由页面，它还定义了路由构建及切换时过渡动画的相关接口及属性。
+
+构造函数:
 ```dart
 MaterialPageRoute({
   WidgetBuilder builder, // 是构建路由页面的具体内容，返回值是一个widget。我们通常要实现此回调，返回新路由的实例。
@@ -410,7 +381,7 @@ MaterialPageRoute({
 ```
 
 ## Navigator 跳转  
-Navigator是Flutter应用开发中的一个路由管理的widget，它通过一个栈来管理一个路由widget集合。通常，当前屏幕显示的页面就是栈顶的路由。Navigator提供了一系列方法来管理路由栈，我们可以使用 push 和 pop 两个操作来进行页面的入栈和出栈。
+Navigator是一个路由管理的widget，它通过一个栈来管理一个路由widget集合。通常，当前屏幕显示的页面就是栈顶的路由。Navigator提供了一系列方法来管理路由栈，我们可以使用 push 和 pop 两个操作来进行页面的入栈和出栈。
 
 ### push 打开新的页面
 
@@ -427,7 +398,7 @@ Navigator.of(context).push(MaterialPageRoute(builder: (context) => PageA()));
 Navigator.push(context,MaterialPageRoute(builder: (context) => PageA()));
 
 //传值跳转
-Navigator.of(context).push(MaterialPageRoute(builder: (context) => PageB(para: '你好',)));
+Navigator.of(context).push(MaterialPageRoute(builder: (context) => PageA(para: '你好',)));
 
 //
 Navigator.push(context,MaterialPageRoute(builder: (context) => PageA()),).then((data){
@@ -479,18 +450,20 @@ Navigator.of(context).pop();  //可以传递参数
 路由名称按惯例使用类似路径的结构，应用程序的主页路由默认为“/”，例如，'/ home' 表示 HomeScreen， '/ login' 表示 LoginScreen。
 
 ```dart
+//路由表的定义
+Map<String, WidgetBuilder> routes = {
+  '/a': (BuildContext context) => MyPage(title: 'A 页面'),
+  '/b': (BuildContext context) => MyPage(title: 'B 页面'),
+  '/c': (BuildContext context) => MyPage(title: 'C 页面')
+};
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
       title: 'Flutter Demo',
       home:  MyHomePage(title: '应用程序首页'),
-      //注册路由表
-      routes: <String, WidgetBuilder> {
-        '/a': (BuildContext context) => MyPage(title: 'A 页面'),
-        '/b': (BuildContext context) => MyPage(title: 'B 页面'),
-        '/c': (BuildContext context) => MyPage(title: 'C 页面')
-      },
+      routes: routes,//注册路由表
     );
   }
 }
