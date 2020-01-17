@@ -32,6 +32,7 @@
     * <a href="#sort()">sort() -- 改变原数组</a>
     * <a href="#reverse()">reverse() -- 改变原数组</a>
     * <a href="#flat()">flat()数组扁平化-- 不改变原数组</a>
+    * <a href="#flatMap()">flatMap-- 不改变原数组</a>
     * <a href="#concat()">concat() -- 不改变原数组</a>
     * <a href="#copyWith()">copyWith() -- 改变原数组，但不改变原数组长度</a>
  
@@ -141,6 +142,7 @@ options 可选
     prices.toLocaleString('ja-JP', { style: 'currency', currency: 'JPY' });
 
     // "￥7,￥500,￥8,123,￥12"
+
 
 
 ## <a name="Array.isArray()"> Array.isArray()判断是否为数组</a>
@@ -417,6 +419,44 @@ flat(n)按指定深度递归遍历数组，并返回包含所有遍历到的元�
     console.log(arr3.flat(2));    // 输出 [ 1, 2, 3, 4, 5, 6 ]
 
     console.log(arr3.flat(Infinity));    // 输出 [ 1, 2, 3, 4, 5, 6 ]
+
+## <a name="flatMap()">flatMap() -- 不改变源数组</a>
+首先使用映射函数映射每个元素，然后将结果压缩成一个新数组。它与 map 连着深度值为1的 flat 几乎相同，但 flatMap 通常在合并成一种方法的效率稍微高一些。
+
+arr.flatMap(function callback(currentValue[, index[, array]]) {
+}[, thisArg])
+>callback 可以生成一个新数组中的元素的函数，可以传入三个参数： 
+>>currentValue当前正在数组中处理的元素   
+>>index 可选的。数组中正在处理的当前元素的索引。  
+>>array 可选的。被调用的 map 数组   
+
+>thisArg可选的。执行 callback 函数时 使用的this 值。
+
+```js
+var arr1 = [1, 2, 3, 4];
+
+arr1.map(x => [x * 2]); 
+// [[2], [4], [6], [8]]
+
+arr1.flatMap(x => [x * 2]);
+//会进行一层flat 
+// [2, 4, 6, 8]
+
+arr1.flatMap(x => [[x * 2]]);
+//flat深度只为1，所以只展开一层
+// [[2], [4], [6], [8]]
+```
+
+```js
+let arr1 = ["it's Sunny in", "", "California"];
+
+arr1.map(x => x.split(" "));
+// [["it's","Sunny","in"],[""],["California"]]
+
+arr1.flatMap(x => x.split(" "));
+// ["it's","Sunny","in", "", "California"]
+```
+
 
 ## <a name="concat()">concat() -- 不改变源数组</a>
 合并两个或多个数组，返回新数组，`不改变源数组`  

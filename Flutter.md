@@ -15,7 +15,6 @@
 * <a href="基本">基本</a>
 * <a href="Widget">Widget</a>
 * <a href="布局">布局</a>
-* <a href="Flutter for Web开发者">Flutter for Web开发者</a>
 * <a href="路由跳转">路由跳转</a>
 * <a href="包管理">包管理</a>
 * <a href="http请求">http请求</a>
@@ -124,6 +123,14 @@ void main() {
 * 真机调试  
 flutter devices 验证Flutter识别您连接的Android设备。  
 
+## 打包
+[发布Android版APP](https://flutterchina.club/android-release/)
+
+[发布的IOS版APP](https://flutterchina.club/ios-release/)
+
+[Flutter客户端打包](https://jspang.com/detailed?id=44#toc221)--技术胖
+
+
 
 
 # <a name="概述">概述</a>
@@ -174,7 +181,7 @@ class MyHome extends StatelessWidget {
 }
 ```
 
-### Context
+#### Context
 build方法有一个context参数，它是BuildContext类的一个实例，表示当前widget在widget树中的上下文，每一个widget都会对应一个context对象（因为每一个widget都是widget树上的一个节点）
 
 在子树中获取父级widget的一个示例:
@@ -202,7 +209,7 @@ class ContextRoute extends StatelessWidget {
 ### StatefulWidget  
 持有的状态可能在widget生命周期中发生变化.
 
-和StatelessWidget一样，StatefulWidget也是继承自Widget类，并重写了createElement()方法，不同的是返回的Element 对象并不相同；另外StatefulWidget类中添加了一个新的接口createState()。
+和StatelessWidget一样，StatefulWidget也是继承自Widget类，并重写了createElement()方法，不同的是返回的Element 对象并不相同；  StatefulWidget并没有build方法，而是通过createState方法创建一个state对象，由这个对象负责视图的构建。
 
  实现一个 stateful widget 至少需要两个类:
   * 一个 StatefulWidget类。
@@ -210,6 +217,8 @@ class ContextRoute extends StatelessWidget {
 
 因状态变更可以导致UI变更的的Widget，涉及到数据渲染场景，都使用StatefulWidget。
 
+
+ Flutter中的Widget是不可变的，更新意味着销毁+重建（build）。StatelessWidget是静态的，一旦被创建则无需更新，StatefulWidget的State中使用setState方法更新数据，就会触发该视图的销毁和重建，同时也将间接触发其每一个子Widget的销毁和重建。这意味着，如果我们的跟布局是一个StatefulWidget，在其State中调用一次setState方法，将会触发整个页面所有Widget的销毁和重建。
 
 StatefulWidget生命周期
 |生命周期|调用次数|调用时间|
@@ -316,54 +325,7 @@ Scaffold(
 )
 ```
 
-## <a name="布局">布局</a>
-Flutter 中拥有需要将近30种内置的 [布局Widget](https://flutterchina.club/widgets/layout/)
 
-Flutter中的边界约束，是指widget可以按照指定限定条件，来决定自身如何占用布局空间。Flutter借鉴了很多React相关的东西，包括一些布局思想，但是它自身没有抽离出布局样式，而是用不同的widget去实现不同的布局，将样式嵌入widget中，用户可以像搭积木一样写布局，写法上跟React很像，只不过没了样式的设定。
-
-这样做的好处，我觉得可能是为了统一的渲染。加入样式，会让布局复杂不少，在渲染层面会降低很多性能。因此，Flutter在大的方向上，加入不同类型的布局widget。在小的方向上，只给出很少的定制化的东西，将布局限定在有限的范围内，在完成布局的同时，让整个渲染能够统一，加快了更新和渲染。
-
-但是，缺点也是同样明显，少了很多灵活性，不同的布局方式都被抽离出了widget，大家需要了解的widget非常多，增加了学习成本。
-
-
-常用布局
-
-|类型|作用|特点|
-|:--|:--|:--|
-|Container|一个拥有绘制、定位、调整大小的 widget。默认充满，包含了padding、margin、color、宽高、decoration 等配置。|只有一个子 Widget|
-|Padding|给child设置padding。|只有一个子 Widget|
-|Align|将其子widget对齐，并可以根据子widget的大小自动调整大小。|只有一个子 widget|
-|Center|只用于居中显示，常用于嵌套child，给child设置居中。|只有一个子 Widget|
-|Transform|将其子Widget进行转换（rotate,skew...）|只有一个子 Widget|
-|Expanded|拓展分配子Widget|只有一个子 Widget|
-|Column|垂直布局|有多个子 Widget|
-|Row|水平布局|有多个子 Widget|
-|Wrap|多行显示其子widget，就像可换行的Row|有多个子 Widget|
-|Flex|Flex布局|有多个子 Widget|
-|Stack|将其子Widget简单的堆叠在一起,可结合Positioned进行绝对定位|有多个子 Widget|
-|ListView|可滚动的列表|有多个子 Widget|
-
-
-# <a name="Flutter for Web开发者">[Flutter for Web开发者](https://flutterchina.club/web-analogs/)</a>
-
-
-# <a name="包管理">包管理</a>
-Flutter的第三方库文件都在pubspec.yaml文件中，如果要使用某个第三方库，可以打开
-[仓库地址](https://pub.dev/)
-[仓库地址](https://pub.flutter-io.cn/)进行搜索
-
-打开pubspec.yaml文件，在dependencies下添加包的名称和版本：
-```dart
-dependencies:
-  flutter:
-    sdk: flutter
-
-  cupertino_icons: ^0.1.2
-  english_words: ^3.1.0
-  json_annotation: ^2.0.0
-  http: ^0.12.0+2
-```
-直接保存（ctrl + s）| 点击右上角的Get Packages按钮 | 
 
 # <a name="路由跳转">路由跳转</a>
 
@@ -381,9 +343,12 @@ MaterialPageRoute({
 ```
 
 ## Navigator 跳转  
-Navigator是一个路由管理的widget，它通过一个栈来管理一个路由widget集合。通常，当前屏幕显示的页面就是栈顶的路由。Navigator提供了一系列方法来管理路由栈，我们可以使用 push 和 pop 两个操作来进行页面的入栈和出栈。
+Navigator是一个路由管理的widget，它通过一个栈来管理一个路由widget集合。通常，当前屏幕显示的页面就是栈顶的路由。
 
-### push 打开新的页面
+Navigator类中第一个参数为context的静态方法都对应一个Navigator的实例方法，比如Navigator.push(BuildContext context, Route route) 等价于 Navigator.of(context).push(Route route) ，命名路由相关的方法也是一样的。
+
+### push 跳转路由
+Future push(BuildContext context, Route route)
 
 返回值是一个Future对象，用以接收新路由出栈（即关闭）时的返回数据。
 
@@ -394,11 +359,10 @@ Navigator是一个路由管理的widget，它通过一个栈来管理一个路�
 
 ```dart
 //不传值跳转
-Navigator.of(context).push(MaterialPageRoute(builder: (context) => PageA()));
-Navigator.push(context,MaterialPageRoute(builder: (context) => PageA()));
+Navigator.push(context, MaterialPageRoute(builder: (context) => PageA()));
 
 //传值跳转
-Navigator.of(context).push(MaterialPageRoute(builder: (context) => PageA(para: '你好',)));
+Navigator.push(context, MaterialPageRoute(builder: (context) => PageA(mypara: '你好',)));
 
 //
 Navigator.push(context,MaterialPageRoute(builder: (context) => PageA()),).then((data){
@@ -407,14 +371,14 @@ Navigator.push(context,MaterialPageRoute(builder: (context) => PageA()),).then((
 };
 
 或：
-Navigator.pushNamed(context, '/route1')
+Navigator.pushNamed(context, '/PageA')
 
 //这里的ListPage为路由名 ,需要将路由注册到路由表中 
-Navigator.of(context)
-  .pushNamed(
-    '/route1',
+Navigator
+  .pushNamed(context,
+    '/PageA',
     arguments: {
-      "name": 'hello'
+      "name": 'I am Tom'
     }
 	).then((data){
   	//接受返回的参数
@@ -422,26 +386,41 @@ Navigator.of(context)
 	};
 ```
 
-跳转其他页面不返回(从路由栈中移除本页面)
+### 跳转其他页面不返回(从路由栈中移除本页面)
 ```dart
 //第一种
-替换跳转路由
-Navigator.of(context).pushReplacementNamed("/login");
+替换路由 
+Navigator.pushReplacement(
+  context, 
+  MaterialPageRoute(builder: (context) => PageA()),
+);  
+Navigator.of(context).pushReplacementNamed("/PageA");
 
 //第二种
 跳转到根路由
-Navigator.pushAndRemoveUntil( context, new MaterialPageRoute(builder: (context) => new Page()),(route) => route == null,);
+Navigator.pushAndRemoveUntil(
+  context,
+  MaterialPageRoute(
+    builder: (context) => PageA()
+  ),
+  (route) => route == null,
+);
 
 //第三种
-Navigator.of(context).pushNamedAndRemoveUntil("/login", (Route<dynamic> route) => false);
-
+Navigator.pushNamedAndRemoveUntil(
+  context,
+  "/PageA",
+  (route) => false
+);
 ```
 
 
-### pop 返回给上一个页面
+### pop 返回路由
+bool pop(BuildContext context, [ result ])
+
 ```dart
 //返回上一页
-Navigator.of(context).pop();  //可以传递参数
+Navigator.pop(context);  //可以传递参数
 ```
 
 ### 命名路由
@@ -467,7 +446,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 ```
 
 命名路由传参
@@ -476,15 +454,10 @@ class MyApp extends StatelessWidget {
 routes:{
   "/new_page":(context)=>EchoRoute(),
 } ,
-//在路由页通过RouteSetting对象获取路由参数
-class EchoRoute extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    //获取路由参数  
-    var args=ModalRoute.of(context).settings.arguments
-    //...省略无关代码
-  }
-}
+
+//通过RouteSetting对象获取路由参数
+ModalRoute.of(context).settings.arguments
+
 
 在打开路由时传递参数
 Navigator.of(context).pushNamed("/new_page", arguments: "hi");
@@ -526,15 +499,50 @@ Future _getByHttpClient() async{
 * [http](https://pub.dev/packages/http)
 * [Dio](https://pub.flutter-io.cn/packages/dio)
 
-# 使用的第三方包
+# <a name="资源管理">资源管理</a>
+APP安装包中会包含代码和 assets（资源）两部分。Assets是会打包到程序安装包中的，可在运行时访问。常见类型的assets包括静态数据（例如JSON文件）、配置文件、图标和图片（JPEG，WebP，GIF，动画WebP / GIF，PNG，BMP和WBMP）等。
 
-[fluttertoast](https://pub.dev/packages/fluttertoast#-readme-tab-)--弹窗  
+```yaml
+flutter:
+  assets:
+    - images/  --全部引入
+    - images/my_icon.png  --单个引入
+```
 
-[loading](https://pub.dev/packages/modal_progress_hud) --进行网络请求等操作时的loading状态  
+# <a name="包管理">包管理</a>
+Flutter的第三方库文件都在pubspec.yaml文件中，如果要使用某个第三方库，可以打开
+[仓库地址](https://pub.dev/)
+[仓库地址](https://pub.flutter-io.cn/)进行搜索
 
-[网络图片处理](https://pub.dev/packages/cached_network_image) --缓存网络图片,且带有loading的placeholder
+打开pubspec.yaml文件，在dependencies下添加包的名称和版本：
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
 
-[下拉刷新及上拉加载 ](https://pub.dev/packages/flutter_easyrefresh)
+  cupertino_icons: ^0.1.2
+  english_words: ^3.1.0
+  json_annotation: ^2.0.0
+  http: ^0.12.0+2
+```
+直接保存（ctrl + s）| 点击右上角的Get Packages按钮 | 
+
+* 依赖本地包
+```yaml
+dependencies:
+    pkg1:
+        path: ../../code/pkg1
+```
+
+* 依赖存储在Git仓库中的包
+```yaml
+dependencies:
+  pkg1:
+    git:
+      url: git://github.com/xxx/pkg1.git
+      path: packages/package1 //--指定相对位置
+```
+
 
 # 创建可重用组件
 ```dart
@@ -570,3 +578,4 @@ CustomCard(
   },
 )
 ```
+

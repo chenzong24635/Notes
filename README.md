@@ -2,7 +2,7 @@
 
 
 ### 
-* [vscode快捷键](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf)
+* [vscode快捷键 for Windows](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf)
 
 >
     删除空行：ctrl+h键进行正则匹配：^\s*(?=\r?$)\n
@@ -12,6 +12,12 @@
     多行光标：Shift + Alt + 鼠标左键
 
     跳到某行： Ctrl+ G 然后在弹出的框中输入行数就可以了
+
+    转到文件： Ctrl + P
+
+    显示快捷键： Ctrl + K Ctrl + S
+
+    查看定义： Alt + F12
 
 
 * vsCode 添加浏览器调试和js调试的方法   
