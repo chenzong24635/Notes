@@ -156,13 +156,28 @@ Widget 、Element 、RenderObject 、Layer 四棵树，它们的作用是：
 
 Dart 类build方法返回的便是Widget，`在Flutter中一切都是Widget`，Widget 是一切的基础，利用响应式模式进行渲染。
 
+* Widget实际上就是Element的配置数据，Widget树实际上是一个配置树，而真正的UI渲染树是由Element构成；不过，由于Element是通过Widget生成的，所以它们之间有对应关系，在大多数场景，我们可以宽泛地认为Widget树就是指UI控件树或UI渲染树。
 
+* 一个Widget对象可以对应多个Element对象。这很好理解，根据同一份配置（Widget），可以创建多个实例（Element）。
 
 ##  Widget
 Widget 分为 有状态 和 无状态 两种
 
 ### StatelessWidget 无状态 
 继承自Widget类，重写了createElement()方法
+
+StatelessWidget的类定义：
+```dart
+abstract class StatelessWidget extends Widget {
+  const StatelessWidget({ Key key }) : super(key: key);
+
+  @override
+  StatelessElement createElement() => StatelessElement(this);
+
+  @protected
+  Widget build(BuildContext context);
+}
+```
 
 自身不保存状态,是不可变的, 这意味着它们的属性不能改变 - 所有的值都是最终的，外部参数变化就销毁重新创建。尽量使用无状态的组件。
 
@@ -171,13 +186,30 @@ Widget 分为 有状态 和 无状态 两种
 无状态变更，UI静态固化的Widget， 页面渲染性能更高。
 
 ```dart
-class MyHome extends StatelessWidget {
-  const MyHome({ Key key }) : super(key: key);
+class Echo extends StatelessWidget {
+  const Echo({
+    Key key,  
+    @required this.text,
+    this.backgroundColor:Colors.grey,
+  }):super(key:key);
+
+  final String text;
+  final Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {
-    return new Container(color: const Color(0xFF2DBD3A));
+    return Center(
+      child: Container(
+        color: backgroundColor,
+        child: Text(text),
+      ),
+    );
   }
+}
+
+//使用
+Widget build(BuildContext context) {
+  return Echo(text: "hello world");
 }
 ```
 
@@ -209,9 +241,22 @@ class ContextRoute extends StatelessWidget {
 ### StatefulWidget  
 持有的状态可能在widget生命周期中发生变化.
 
-和StatelessWidget一样，StatefulWidget也是继承自Widget类，并重写了createElement()方法，不同的是返回的Element 对象并不相同；  StatefulWidget并没有build方法，而是通过createState方法创建一个state对象，由这个对象负责视图的构建。
+StatefulWidget也是继承自Widget类，并重写了createElement()方法，不同的是返回的Element 对象并不相同；  StatefulWidget并没有build方法，而是通过createState方法创建一个state对象，由这个对象负责视图的构建。
 
- 实现一个 stateful widget 至少需要两个类:
+StatefulWidget的类定义：
+```dart
+abstract class StatefulWidget extends Widget {
+  const StatefulWidget({ Key key }) : super(key: key);
+
+  @override
+  StatefulElement createElement() => StatefulElement(this);
+
+  @protected
+  State createState();
+}
+```
+
+实现一个 stateful widget 至少需要两个类:
   * 一个 StatefulWidget类。
   * 一个 State类。 StatefulWidget类本身是不变的，但是 State类在widget生命周期中始终存在.
 
