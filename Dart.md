@@ -1,4 +1,5 @@
 [dart代码-线上运行](https://dartpad.cn/)
+[dart代码-线上运行](https://dartpad.dev/)
 [dart代码-线上运行](https://dartpad.dartlang.org/)
 
 [dart-英文](https://dart.dev/guides/language/language-tour)
@@ -81,7 +82,7 @@ main () {
 
 Dart是强类型语言，没有隐式转换,判断是否相等时`只有==  没有===`
 
-?? 、??= 属于操作符，如: AA ?? "999" 表示如果 AA 为空，返回999(类似于js的||)；AA ??= "999" 表示如果 AA 为空，给 AA 设置成 999。
+
 
 控制台打印方法: print()
 
@@ -325,8 +326,8 @@ print('''
   Nice to meet you
 ''');
 //   
-I am Tom
-Nice to meet you
+//I am Tom
+//Nice to meet you
 ```
 
 * r 前缀，可以创建 “原始 raw” 字符串：
@@ -1060,8 +1061,11 @@ print(new String.fromCharCodes(input));
   print(obj is! Object); // false
   ```
 
+* ?? 类似于js的 ||
 * ??= 只有当被赋值的变量为 null 时才会赋值给它
-`num ??= 54;`
+
+如: AA ?? "999" 表示如果 AA 为空，返回999(类似于js的||)；AA ??= "999" 表示如果 AA 为空，给 AA 设置成 999。
+
 
 * 扩展运算符(... 和 ...?)
 ```dart
@@ -1076,7 +1080,7 @@ var list2 = [0, ...?list1];
 print(list2); //[0]
 ```
 
-
+* 整除运算符(~/) :AA ~/999 ///AA 对于 999 整除
 * 级联运算符(..); 可以实现对同一个对像进行一系列的操作。 除了调用函数， 还可以访问同一对象上的字段属性
 ```dart
 class Point {

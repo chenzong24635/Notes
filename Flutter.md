@@ -624,3 +624,14 @@ CustomCard(
 )
 ```
 
+# 常见问题
+
+* This class (or a class which this class inherits from) is marked as '@immutable', but one or more of its instance fields are not final:
+
+
+StatelessWidget是一个不可变的widget，申明的title也应为不可变的。`添加关键字final`即可
+```dart
+class MyBox extends StatelessWidget {
+  final String title;
+  MyBox(this.title);
+```
