@@ -4,7 +4,6 @@
 
 [Flutter实战](https://book.flutterchina.club/intro.html)
 
-[万字长文轻松彻底入门 Flutter，秒变大前端](https://zhuanlan.zhihu.com/p/90836859)
 
 
 # 目录
@@ -216,6 +215,15 @@ Widget build(BuildContext context) {
 #### Context
 build方法有一个context参数，它是BuildContext类的一个实例，表示当前widget在widget树中的上下文，每一个widget都会对应一个context对象（因为每一个widget都是widget树上的一个节点）
 
+context的使用场景
+```dart
+Theme.of(context) //获取主题
+Navigator.push(context, route) //入栈新路由
+Localizations.of(context, type) //获取Local
+context.size //获取上下文大小
+context.findRenderObject() //查找当前或最近的一个祖先RenderObject
+```
+
 在子树中获取父级widget的一个示例:
 ```dart
 class ContextRoute extends StatelessWidget {
@@ -237,6 +245,8 @@ class ContextRoute extends StatelessWidget {
   }
 }
 ```
+
+BuildContext就是widget对应的Element，所以我们可以通过context在StatelessWidget和StatefulWidget的build方法中直接访问Element对象。我们获取主题数据的代码Theme.of(context)内部正是调用了Element的inheritFromWidgetOfExactType()方法
 
 ### StatefulWidget  
 持有的状态可能在widget生命周期中发生变化.

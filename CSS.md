@@ -114,6 +114,7 @@ CSS布局、居中
   * <a href="#input自动填充上背景色">input自动填充上背景色</a>
   * <a href="#selection">selection 改变选中内容的字体、背景颜色</a>
   * <a href="#user-select">user-select 文本是否可选中</a>
+  * <a href="#禁止保存或拷贝图像">禁止保存或拷贝图像</a>
   * <a href="#-webkit-text-size-adjust">-webkit-text-size-adjust</a>
   * <a href="#为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"</a>
   * <a href="#pointer-events">pointer-events 使用指针事件來控制鼠标事件</a>
@@ -2213,9 +2214,16 @@ direction: rtl | ltr
     } 
 ```
 
+
 ## <a name="user-select">user-select 文本是否可选中</a>[![bakTop](./img/backward.png)](#top)
-user-select:none  
--webkit-user-select:none
+```css
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+```
+
 
 语法
 >
@@ -2229,6 +2237,14 @@ user-select:none
     text:可以选择文本
     all：当所有内容作为一个整体时可以被选择。如果双击或者在 上下文上点击子元素，
         那么被选择的部分将是以该子元素 向上回溯的最高祖先元素。
+
+## <a name="禁止保存或拷贝图像">禁止保存或拷贝图像</a>[![bakTop](./img/backward.png)](#top)
+```css
+img {
+  -webkit-touch-callout: none;
+}
+
+```
 
 ## <a name="-webkit-text-size-adjust">-webkit-text-size-adjust: none</a>[![bakTop](./img/backward.png)](#top)
 >

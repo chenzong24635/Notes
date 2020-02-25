@@ -526,7 +526,17 @@ HTML中某些字符是预留的,预留字符必须被替换为字符实体。
 
 [参考](https://segmentfault.com/a/1190000002407912)
 
->
+meta对于移动端的一些特殊属性
+```html
+    <meta name="screen-orientation" content="portrait"> //Android 禁止屏幕旋转
+    <meta name="full-screen" content="yes">             //全屏显示
+    <meta name="browsermode" content="application">     //UC应用模式，使用了application这种应用模式后，页面讲默认全屏，禁止长按菜单，禁止收拾，标准排版，以及强制图片显示。
+    <meta name="x5-orientation" content="portrait">     //QQ强制竖屏
+    <meta name="x5-fullscreen" content="true">          //QQ强制全屏
+    <meta name="x5-page-mode" content="app">            //QQ应用模式
+```
+
+```html
     <!-- 忽略页面中的数字识别为电话，忽略email识别 -->
     <meta name="format-detection" content="telephone=no, email=no" />
 
@@ -586,7 +596,7 @@ HTML中某些字符是预留的,预留字符必须被替换为字符实体。
 
     <!-- QQ应用模式 -->
     <meta name="x5-page-mode" content="app">
-
+```
 
 
 ## <a name="IE hack">IE hack</a>[![bakTop](./img/backward.png)](#top)
