@@ -79,6 +79,7 @@
 * <a href="#函数重载">函数重载</a>
 * <a href="#防抖、节流">防抖、节流</a>
 * <a href="#柯里化">柯里化</a>
+* <a href="#尾调用">尾调用</a>
 * <a href="#n的阶层（尾调用优化）">n的阶层（尾调用优化）</a>
 * <a href="#斐波那契数列">斐波那契数列</a>
 * <a href="#函数缓存">函数缓存</a>
@@ -2056,6 +2057,52 @@ window.atob() 解码，ASCII to Base64
     curried(1)(2)(3) // => [1, 2, 3]
     curried(1, 2)(3) // => [1, 2, 3]
     curried(1, 2, 3) // => [1, 2, 3]
+
+## <a name="尾调用">尾调用 尾递归</a>
+尾调用指的是函数作为另一个函数的最后一条语句被调用。
+
+当全部满足以下条件，尾调用不再创建新的栈帧，而是清除并重用当前栈帧：
+* 尾调用不访问当前栈帧的变量(函数不是一个闭包。)
+* 尾调用是最后一条语句
+* 尾调用的结果作为函数返回
+
+```js
+'use strict'
+function doSomethingElse () {
+  console.log('do something else')
+}
+function doSomething () {
+  return doSomethingElse()
+}
+
+```
+
+```js
+function doSomethingElse () {
+  console.log('do something else')
+}
+function doSomething () {
+  // 无法优化，没有返回
+  doSomethingElse()
+}
+function doSomething () {
+  // 无法优化，返回值又添加了其它操作
+  return 1 + doSomethingElse()
+}
+function doSomething () {
+  // 可能无法优化
+  let result = doSomethingElse
+  return result
+}
+function doSomething () {
+  let number = 1
+  let func = () => number
+  // 无法优化，该函数是一个闭包
+  return func()
+}
+
+```
+
 
 ## <a name="n的阶层（尾调用优化）">n的阶层（尾调用优化）</a>
 1 1 2 3 5 8 13....

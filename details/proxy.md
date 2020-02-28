@@ -11,49 +11,112 @@ ES6 原生提供 Proxy 构造函数，用来生成 Proxy 实例:
 >handler参数是个配置对象，用来定制拦截行为。
 >>若handler是一个空对象，没有任何拦截效果，访问proxy就等同于访问target。
 
->
-    let proxy = new Proxy({}, {
-      get: function (target, key, receiver) {
-        console.log(`getting ${key}!`);
-        return Reflect.get(target, key, receiver);
-      },
-      set: function (target, key, value, receiver) {
-        console.log(`setting ${key}!`);
-        return Reflect.set(target, key, value, receiver);
-      }
-    });
 
-Proxy 支持的拦截操作一览，一共 13 种：
+```js
+let target = {};
+let proxy = new Proxy(target, {});
+proxy.name = 'A';
+console.log(proxy.name, target.name);
+target.age = 12;
+console.log(proxy.age, target.age);
+```   
 
-* get(target, propKey, receiver)：拦截对象属性的读取，比如proxy.foo和proxy['foo']。
->参数:目标对象、属性名和 proxy 实例本身（严格地说，是操作行为所针对的对象）
+# Proxy 支持的拦截操作一览，一共 13 种：
 
-* set(target, propKey, value, receiver)：拦截对象属性的设置，比如proxy.foo = v或proxy['foo'] = v，返回一个布尔值。
->参数:目标对象、属性名、属性值和 Proxy 实例本身，其中最后一个参数可选。
+### get(target, key, receiver)
+拦截对象属性的读取
 
-* has(target, propKey)：拦截propKey in proxy的操作，返回一个布尔值。
-deleteProperty(target, propKey)：拦截delete proxy[propKey]的操作，返回一个布尔值。
->参数：目标对象、需查询的属性名
+>target: 目标对象  
+>key：要读取的键(字符串或者Symbol类型)   
+>receiver：操作的对象( Proxy 实例本身)
 
-* ownKeys(target)：拦截Object.getOwnPropertyNames(proxy)、Object.getOwnPropertySymbols(proxy)、Object.keys(proxy)、for...in循环，返回一个数组。该方法返回目标对象所有自身的属性的属性名，而Object.keys()的返回结果仅包括目标对象自身的可遍历属性。
->参数：目标对象
 
-* getOwnPropertyDescriptor(target, propKey)：拦截Object.getOwnPropertyDescriptor(proxy, propKey)，返回属性的描述对象。
->参数：目标对象、需查询的属性名
+### set(target, key, value, receiver)
+拦截对象属性的设置
 
-* defineProperty(target, propKey, propDesc)：拦截Object.defineProperty(proxy, propKey, propDesc）、Object.defineProperties(proxy, propDescs)，返回一个布尔值。
+>target: 目标对象
+>key：要写入的键
+>value：被写入值
+>receiver：操作的对象
+
+* has(target, key)
+拦截 in操作符 的操作，返回一个布尔值
+
+>target: 目标对象
+>key: 要检查的键
+
+### deleteProperty(target, key)
+拦截delete proxy[key]的操作，返回一个布尔值
+
+### defineProperty(target, key, descriptor)
+拦截Object.defineProperty(proxy, key,descriptor)、Object.defineProperties(proxy, descriptor)，返回一个布尔值。
 >参数：
 
-* preventExtensions(target)：拦截Object.preventExtensions(proxy)，返回一个布尔值。
+### getPrototypeOf(target)
+拦截Object.getPrototypeOf(proxy)，返回一个对象
 
-* getPrototypeOf(target)：拦截Object.getPrototypeOf(proxy)，返回一个对象。
+
+### setPrototypeOf(target, proto)
+拦截Object.setPrototypeOf(proxy, proto)，返回一个布尔值。如果目标对象是函数，那么还有两种额外操作可以拦截。
 
 
-* isExtensible(target)：拦截Object.isExtensible(proxy)，返回一个布尔值。
+### ownKeys(target)
+拦截Object.getOwnPropertyNames(proxy)、Object.getOwnPropertySymbols(proxy)、Object.keys(proxy)、for...in循环，返回一个数组。该方法返回目标对象所有自身的属性的属性名，而Object.keys()的返回结果仅包括目标对象自身的可遍历属性。
+>参数：目标对象
 
-* setPrototypeOf(target, proto)：拦截Object.setPrototypeOf(proxy, proto)，返回一个布尔值。如果目标对象是函数，那么还有两种额外操作可以拦截。
+### getOwnPropertyDescriptor(target, key)
+拦截Object.getOwnPropertyDescriptor(proxy, key)，返回属性的描述对象。
+>参数：目标对象、需查询的属性名
 
-* apply(target, object, args)：拦截 Proxy 实例作为函数调用的操作，比如proxy(...args)、proxy.call(object, ...args)、proxy.apply(...)。
+
+### preventExtensions(target)
+拦截Object.preventExtensions(proxy)，返回一个布尔值。
+
+
+### isExtensible(target)
+拦截Object.isExtensible(proxy)，返回一个布尔值。
+
+
+### apply(target, object, args)
+拦截 Proxy 实例作为函数调用的操作，比如proxy(...args)、proxy.call(object, ...args)、proxy.apply(...)。
 >参数：目标对象、目标对象的上下文对象（this）和目标对象的参数数组。
 
-* construct(target, args)：拦截 Proxy 实例作为构造函数调用的操作，比如new proxy(...args)
+### construct(target, args)
+拦截 Proxy 实例作为构造函数调用的操作，比如new proxy(...args)
+
+```js
+let proxy = new Proxy({}, {
+  get(target, key, receiver) {
+    console.log(`getting--> ${key},值:${target[key]}`);
+    return Reflect.get(target, key, receiver);
+  },
+  set(target, key, value, receiver) {
+    console.log(`setting--> ${key},值:${value}`);
+    return Reflect.set(target, key, value, receiver);
+  },
+  has(target, key) {
+    return Reflect.has(target, key);
+  },
+  deleteProperty(target, key) {
+    return Reflect.deleteProperty(target, key);
+  },
+  setPrototypeOf(target, value){
+    console.log(target,value);
+    return Reflect.setPrototypeOf(target, value);
+  },
+  ownKeys (target) {
+    return Reflect.ownKeys(target).filter(key => {
+      // 排除属性开头带有_的键
+      return typeof key !== 'string' || key[0] !== '_'
+    })
+  },
+});
+proxy.a = 42;
+proxy.c = 'c';
+proxy.a;
+console.log('a' in proxy);
+console.log('b' in proxy);
+console.log(delete proxy.a);
+
+// Object.setPrototypeOf(proxy)
+```

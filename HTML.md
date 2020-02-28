@@ -20,6 +20,7 @@
 * <a href="#HTML中的字符实体">HTML中的字符实体</a>
 * <a href="#HTML5的离线储存">HTML5的离线储存</a>
 * <a href="#iframe缺点">iframe缺点</a>
+* <a href="#Video">Video</a>
 * <details open>
     <summary><a href="#link标签属性">link标签属性</a></summary>
 
@@ -428,6 +429,35 @@ HTML中某些字符是预留的,预留字符必须被替换为字符实体。
 3. 不利于搜索引擎的检索，不利于SEO优化
 
 通过javascript动态给iframe添加src属性值，这样可以解决1,2两个问题。
+
+## <a name="Video">Video</a>[![bakTop](./img/backward.png)](#top)
+[](https://juejin.im/post/5e54c3b4f265da575477918f)
+
+```html
+<video 
+  class="video-source"
+  width="100%"
+  height="240px"  <!-- 如果有封面，请设置高度 -->
+  style="object-fit:cover/fill"
+  autoplay <!-- 自动播放 -->
+  loop <!-- 循环播放 -->
+  preload="auto" <!-- 页面加载完成后载入视频, 如果设置了 autoplay 属性，则忽略该属性--> 
+  controls <!-- 显示播放器控件 --> 
+  muted <!-- 静音 -->
+  playsinline="true"  <!--IOS微信浏览器支持小窗内播放--> 
+  webkit-playsinline="true"  <!--这个属性是ios 10中设置可以让视频在小窗内播放，也就是不是全屏播放-->  
+  x5-video-player-type="h5-page" <!--启用X5内核同层渲染-->
+  x5-video-orientation="h5" <!--播放器支付的方向，landscape横屏，portraint竖屏，默认值为竖屏-->
+  x5-video-player-fullscreen="true" <!--全屏设置，设置为 true 是防止横屏-->
+  <!-- x5-playsinline="true" -->  <!--设置X5内核为行内播放模式，不能和`x5-video-player-type同时设置会覆盖-->
+  x-webkit-airplay="true"  <!--未知-->
+  x5-video-ignore-metadata="true" <!--未知-->
+>
+<source src=""></source>
+</video>
+
+
+```
 
 
 ## <a name="link标签属性">link标签属性</a>[![bakTop](./img/backward.png)](#top)

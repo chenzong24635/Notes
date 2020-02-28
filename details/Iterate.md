@@ -51,7 +51,7 @@ for (key in obj) {
 ```js
 let obj = {a: 1, b: 2}
 for(let item in obj){
-  item = item+2
+  if(obj[item] >1)break;
   console.log(item)
 }
 console.log(obj)
@@ -66,11 +66,38 @@ console.log(obj)
 ```js
 let arr = [1,2,3,4]
 for (item of arr) {
-  if(item >= 3)break
-  item *= 2
+  if(item >= 3)break;
+  item *= 2;
   console.log('item:', item);
 }
 console.log(arr)
+```
+----
+
+for-of 循环不仅支持数组，还支持大多数类数组对象，例如 DOM NodeList 对象。  
+for-of 循环也支持字符串遍历，它将字符串视为一系列的 Unicode 字符来进行遍历：
+```js
+for (let item of "abcd") {
+ console.log(item);
+}
+//输出
+"a"
+"b"
+"c"
+"d"
+```
+---
+同样支持 Map 和 Set 对象遍历
+```js
+let set = new Set([1,2,344]);
+for(let item of set){
+  console.log(item);
+}
+
+let map = new Map([[{a:1},'a1']]);
+for(let item of map){
+  console.log(item);
+}
 ```
 
 ## <a name="for await of">for await of-- 异步迭代器</a>

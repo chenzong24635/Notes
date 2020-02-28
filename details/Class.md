@@ -2,6 +2,7 @@
 [ECMAScript 6 入门-Class 的基本语法](https://es6.ruanyifeng.com/#docs/class) --阮一峰  
 [ECMAScript 6 入门-Class 的继承](https://es6.ruanyifeng.com/#docs/class-extends) --阮一峰
 
+ES的Class
 
 # 概述
 
@@ -36,30 +37,72 @@ class Person {
 * static 静态方法，类自身的方法 (可继承)
 
 
-静态属性  
+## 静态属性  ,静态方法
 ```js
 class Foo {}
-Foo.prop = 1;
+Foo.prop = 1; //静态属性
 ```
-目前只能这样写，因为 ES6 明确规定，Class 内部只有静态方法，没有静态属性。
-
------
+静态属性目前只能这样写，因为 ES6 明确规定，Class 内部只有静态方法，没有静态属性。
 
 ```js
 class Person {
-  public name;
   constructor(name) {
     this.name = name;
   }
-  static say1(){
+  static say1(){ //静态方法
     console.log('static');
   }
-  private say2(){
+  say2(){
     console.log('private');
   }
 }
+Person.age = 99; //静态属性
+Person.say = ()=>console.log('static'); //静态方法
+
 let p = new Person('aaa')
+Person.say(); // 'static'
 Person.say1(); // 'static'
+p.say2(); // 'private'
+
+// 实例不能继承类的静态方法、属性
+console.log(Person.age, p.age);//99 undefined
 ```
 
-# Class继承
+## Class继承 extends
+父类的静态方法，可以被子类继承
+
+```js
+class Person {
+  constructor(name) {
+    //通过new.target来确定类是如何被调用的，
+    //一般而言new.target等于类的构造函数。
+    console.log('new.target: ' + new.target);
+    console.log('new.target.name: ' + new.target.name);
+    this.name = name;
+  }
+  static say1(){ //静态方法
+    console.log('static:' + this.name);
+  }
+  say2(){
+    console.log('private:' + this.name);
+  }
+}
+Person.age = 99; //静态属性
+Person.say = ()=>console.log('static'); //静态方法
+
+class A extends Person{
+  constructor(name){
+    // this.name = name + '1'; //ReferenceError
+    // 在子类的构造函数中，只有调用super之后，才可以使用this关键字，否则会报错。这是因为子类实例的构建，基于父类实例，只有super方法才能调用父类实例。
+    super(name);
+    this.name = name + '12';
+  }
+}
+
+console.log(Person.name); // Person
+
+A.say1();
+
+let a= new A('Tom');
+a.say2();
+```

@@ -58,6 +58,11 @@ FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
 [参考](https://blog.csdn.net/jia__/article/details/92620921)
 [参考](https://blog.csdn.net/u013275973/article/details/81134169)
 
+* Waiting for another flutter command to release the startup lock
+
+    打开flutter的安装目录/bin/cache/  
+    删除lockfile文件  
+    重启
 
 # <a name="Flutter项目目录结构">Flutter项目目录结构</a>
 ```dart
@@ -178,7 +183,8 @@ abstract class StatelessWidget extends Widget {
 }
 ```
 
-自身不保存状态,是不可变的, 这意味着它们的属性不能改变 - 所有的值都是最终的，外部参数变化就销毁重新创建。尽量使用无状态的组件。
+`自身不保存状态,是不可变的`, 一旦被创建成功就不再关注任何数据变化，外部参数变化就销毁重新创建。
+尽量使用无状态的组件。
 
 它的生命周期相当简单：初始化、通过build()渲染。
 
@@ -273,7 +279,8 @@ abstract class StatefulWidget extends Widget {
 因状态变更可以导致UI变更的的Widget，涉及到数据渲染场景，都使用StatefulWidget。
 
 
- Flutter中的Widget是不可变的，更新意味着销毁+重建（build）。StatelessWidget是静态的，一旦被创建则无需更新，StatefulWidget的State中使用setState方法更新数据，就会触发该视图的销毁和重建，同时也将间接触发其每一个子Widget的销毁和重建。这意味着，如果我们的跟布局是一个StatefulWidget，在其State中调用一次setState方法，将会触发整个页面所有Widget的销毁和重建。
+ `Flutter中的Widget是不可变的`，更新意味着销毁+重建（build）。StatelessWidget是静态的，一旦被创建则无需更新，  StatefulWidget的State中使用setState方法更新数据，就会触发该视图的销毁和重建，同时也将间接触发其每一个子Widget的销毁和重建。  
+ 这意味着，`如果根布局是一个StatefulWidget，在其State中调用一次setState方法，将会触发整个页面所有Widget的销毁和重建。`
 
 StatefulWidget生命周期
 |生命周期|调用次数|调用时间|
@@ -380,7 +387,15 @@ Scaffold(
 )
 ```
 
+# 
+Flutter的组件之间传递参数常用的4种方式：属性传值、InheritedWidget组件、Notification和EventBus。
 
+|方式|数据流动方式|使用场景|
+|:--|:--|:--
+|属性传值|父->子|简单数据传递
+|InheritWidget|父->子|跨层数据传递
+|Notification|子->父|状态通知
+|EventBus|发布订阅|消息批量同步
 
 # <a name="路由跳转">路由跳转</a>
 

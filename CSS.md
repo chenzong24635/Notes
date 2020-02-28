@@ -2367,61 +2367,7 @@ devicePixelRatio：设备物理像素和设备独立像素的比例   devicePixe
     }
 ```
 
-各种dpr兼容 
-```css
-    .min-device-pixel-ratio(@scale2, @scale3) {
-        @media screen and (min-device-pixel-ratio: 2), (-webkit-min-device-pixel-ratio: 2) {
-            transform: @scale2;
-        }
-        @media screen and (min-device-pixel-ratio: 3), (-webkit-min-device-pixel-ratio: 3) {
-            transform: @scale3;
-        }
-    }
 
-    //border
-    .border-1px(@color: #000, @radius: 2px, @style: solid) {
-        &::before {
-            content: "";
-            pointer-events: none;
-            display: block;
-            position: absolute;
-            left: 0;
-            top: 0;
-            transform-origin: 0 0;
-            border: 1px @style @color;
-            border-radius: @radius;
-            box-sizing: border-box;
-            width: 100%;
-            height: 100%;
-            @media screen and (min-device-pixel-ratio: 2), (-webkit-min-device-pixel-ratio: 2) {
-                width: 200%;
-                height: 200%;
-                border-radius: @radius * 2;
-                transform: scale(.5);
-            }
-            @media screen and (min-device-pixel-ratio: 3), (-webkit-min-device-pixel-ratio: 3) {
-                width: 300%;
-                height: 300%;
-                border-radius: @radius * 3;
-                transform: scale(.33);
-            }
-        }
-    }
-
-    //border-top
-    .border-top-1px(@color: #000, @style: solid) {
-        &::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            border-top: 1px @style @color;
-            transform-origin: 0 0;
-            .min-device-pixel-ratio(scaleY(.5), scaleY(.33));
-        }
-    }
-```
 
 ## <a name="清除手机端a链接点击高亮">清除手机端a链接点击高亮[![bakTop](./img/backward.png)](#top)
 -webkit-tap-highlight-color: rgba(0,0,0,0);  

@@ -73,16 +73,34 @@ Symbol值作为对象属性名时，不会被常规方法遍历得到，可利�
 * Symbol.hasInstance：指向一个内部方法，当其他对象使用instanceof运算符判断是否为此对象的实例时会调用此方法
 
 * Symbol.isConcatSpreadable：指向一个布尔值，定义对象用于Array.prototype.concat()时是否可展开
+```js
+const obj = {
+  0: 'hello',
+  1: 'world',
+  length: 2,
+  [Symbol.isConcatSpreadable]: true
+}
+const message = ['Hi'].concat(obj)
+console.log(message) // ['Hi', 'hello', 'world']
+```
 
 * Symbol.species：指向一个构造函数，当实例对象使用自身构造函数时会调用指定的构造函数
 
 * Symbol.match：指向一个函数，当实例对象被String.prototype.match()调用时会重新定义match()的行为
+```js
+const smatch = {
+  [Symbol.match] (value) {
+    return value.length
+  },
+}
+'abc'.match(smatch); //'3
+```
 
 * Symbol.replace：指向一个函数，当实例对象被String.prototype.replace()调用时会重新定义replace()的行为
-
 * Symbol.search：指向一个函数，当实例对象被String.prototype.search()调用时会重新定义search()的行为
-
 * Symbol.split：指向一个函数，当实例对象被String.prototype.split()调用时会重新定义split()的行为
+
+
 
 * Symbol.iterator：指向一个默认遍历器方法，当实例对象执行for-of时会调用指定的默认遍历器
 
