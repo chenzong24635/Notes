@@ -897,6 +897,10 @@ line-height:normal(默认)  | number  | lenght |  percent  |  inherit;
 height高度一样
 
 ### vertical-align
+
+[文章](https://juejin.im/post/5e64ee1df265da573e6734ed)
+
+[CSS世界：]()
 >
     线类，如 baseline（默认值）、top、middle、bottom；
     文本类，如 text-top、text-bottom；  

@@ -1,19 +1,19 @@
 <a id="top"></a>
 
+# 
 [Vue官网](http://doc.vue-js.com/v2/guide/)
 
 [Vue.js 技术揭秘](https://ustbhuangyi.github.io/vue-analysis/prepare/flow.html)
 
 [Vue资源精选(组件、插件...)](http://vue.awesometiny.com/)
 
-# <a name="vue-element-admin">vue-element-admin</a>
-后台页面模板，基于 vue 和 element-ui实现
 
-[vue-element-admin](https://panjiachen.github.io/vue-element-admin-site/zh/guide/)
+# 参考文章
+[30 道 Vue 面试题，内含详细讲解（涵盖入门到精通，自测 Vue 掌握程度）](https://juejin.im/post/5d59f2a451882549be53b170)
 
-[手摸手，带你用vue撸后台](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
 
-#
+# 
+
 <details open>
   <summary>
     目录
@@ -23,7 +23,7 @@
 * <a href="#MVC、MVP、MVVM">MVC、MVP、MVVM</a>  
 * <a href="#SPA">SPA SSR</a>
 * <a href="#双向数据绑定原理、实现">双向数据绑定原理、实现:Object.defineProperty、proxy</a>
-* <a href="#单向数据流">单向数据流</a> 
+* <a href="#单向数据流">Vue单向数据流</a> 
 * <a href="#生命周期">生命周期</a>
 * <a href="#监听组件的生命周期">监听组件的生命周期</a>
 * <a href="#组件销毁时，清除定时器">组件销毁时，清除定时器</a>
@@ -31,7 +31,6 @@
 * <a href="#解决对象新增属性不能响应的问题"> vm.$set() 解决对象新增属性不能响应的问题</a>
 * <a href="#Vue检测数组的变动">Vue检测数组的变动</a>
 * <a href="#组件中 data 为什么是一个函数">组件中 data 为什么是一个函数</a>
-* <a href="#样式绑定">样式绑定：class、style</a>
 * <a href="#v-if和v-show 的区别">v-if和v-show 的区别</a>
 * <a href="#v-for 遍历避免同时使用 v-if">v-for 遍历避免同时使用 v-if</a>
 * <a href="#v-model 的原理">v-model 的原理</a>
@@ -165,10 +164,11 @@ MVVM优点:
 
     可测试。界面素来是比较难于测试的，而现在测试可以针对ViewModel来写。
 
-# <a name="SPA">SPA SSR</a>[![bakTop](./img/backward.png)](#top)    
-### SPA
->
-    SPA（ single-page application ）仅在 Web 页面初始化时加载相应的 HTML、JavaScript 和 CSS。一旦页面加载完成，SPA 不会因为用户的操作而进行页面的重新加载或跳转；取而代之的是利用路由机制实现 HTML 内容的变换，UI 与用户的交互，避免页面的重新加载。
+# <a name="SPA">SPA SSR SEO</a>[![bakTop](./img/backward.png)](#top)    
+[文章](https://www.jianshu.com/p/fcb98533bc18)
+
+## SPA
+SPA（  ）单页面应用。仅在 Web 页面初始化时加载相应的 HTML、JavaScript 和 CSS。一旦页面加载完成，SPA 不会因为用户的操作而进行页面的重新加载或跳转；取而代之的是利用路由机制实现 HTML 内容的变换，UI 与用户的交互，避免页面的重新加载。
 
 * 优点：
 >
@@ -186,28 +186,23 @@ MVVM优点:
 
     SEO 难度较大：由于所有的内容都在一个页面中动态替换显示，所以在 SEO 上其有着天然的弱势。
 
-* 常见框架
->
-    AngularJS
-    React
-    Vue.js
 
-### SSR
->
-    SSR是 Server-Side Rendering(服务器端渲染)的缩写，
+## SSR
+SSR是 Server-Side Rendering(服务器端渲染)的缩写，
 
-    在普通的SPA中，一般是将框架及网站页面代码发送到浏览器，然后在浏览器中生成和操作DOM（这里也是第一次访问SPA网站在同等带宽及网络延迟下比传统的在后端生成HTML发送到浏览器要更慢的主要原因），  
-    可以将SPA应用打包到服务器上，在服务器上渲染出HTML，发送到浏览器，这样的HTML页面还不具备交互能力，所以还需要与SPA框架配合，在浏览器上“混合”成可交互的应用程序。所以，只要能合理地运用SSR技术，不仅能一定程度上解决首屏慢的问题，还能获得更好的SEO。
+在普通的SPA中，一般是将框架及网站页面代码发送到浏览器，然后在浏览器中生成和操作DOM（这里也是第一次访问SPA网站在同等带宽及网络延迟下比传统的在后端生成HTML发送到浏览器要更慢的主要原因），    
+
+可以将SPA应用打包到服务器上，在服务器上渲染出HTML，发送到浏览器，这样的HTML页面还不具备交互能力，所以还需要与SPA框架配合，在浏览器上“混合”成可交互的应用程序。所以，只要能合理地运用SSR技术，不仅能一定程度上解决首屏慢的问题，还能获得更好的SEO。
 
 * SSR的优点
 >
-    更快的响应时间，不用等待所有的JS都下载完成，浏览器便能显示比较完整的页面了。
+    更利于首屏渲染，更快的响应时间，不用等待所有的JS都下载完成，浏览器便能显示比较完整的页面了。
 
     更好的SEO，我们可以将SEO的关键信息直接在后台就渲染成HTML，而保证搜索引擎的爬虫都能爬取到关键数据。
 
 * SSR缺点
 >
-    相对于仅仅需要提供静态文件的服务器，SSR中使用的渲染程序自然会占用更多的CPU和内存资源
+    服务器压力大，相对于仅仅需要提供静态文件的服务器，SSR中使用的渲染程序自然会占用更多的CPU和内存资源
 
     一些常用的浏览器API可能无法正常使用，比如window、docment和alert等，如果使用的话需要对运行的环境加以判断
 
@@ -217,11 +212,21 @@ MVVM优点:
 
     可能会由于某些因素导致服务器端渲染的结果与浏览器端的结果不一致
 
-* SSR常用框架
+* SSR常用框架  
+[Vue.js 的Nuxt](https://nuxtjs.org/guide/installation)  
+[React 的 Next](https://nextjs.org/)
 
-Vue.js 的 [Nuxt](https://nuxtjs.org/guide/installation)  
-React 的 [Next](https://nextjs.org/)
+## SEO
+SEO（Search Engine Optimization），搜索引擎优化。SEO是一种通过了解搜索引擎的运作规则（如何抓取网站页面，如何索引以及如何根据特定的关键字展现搜索结果排序等）来调整网站，以提高该网站在搜索引擎中某些关键词的搜索结果排名。
 
+
+## 总结
+服务器端渲染会先向后端请求数据，生成完整首屏HTML后返回给客户端
+
+客户端渲染会等待JS下载，解析完之后再向服务器请求数据，等待过程中是什么也没有的，所以会出现首屏白页的情况
+
+![服务端渲染](./img/Vue/服务端渲染.png) 
+![客户端渲染](./img/Vue/客户端渲染.png)
 
 # <a name="双向数据绑定原理、实现">双向数据绑定原理、实现:Object.defineProperty、proxy</a>[![bakTop](./img/backward.png)](#top)    
 [Vue 核心之数据双向绑定](https://juejin.im/post/5d421bcf6fb9a06af23853f1#comment)
@@ -365,33 +370,36 @@ proxy双向绑定-简
 >
     当一个Vue实例创建时，vue会遍历data选项的属性，用 Object.defineProperty 将它们转为 getter/setter并且在内部追踪相关依赖，在属性被访问和修改时通知变化。 每个组件实例都有相应的 watcher 程序实例，它会在组件渲染的过程中把属性记录为依赖，之后当依赖项的 setter 被调用时，会通知 watcher 重新计算，从而致使它关联的组件得以更新。
 
-# <a name="单向数据流">单向数据流</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="单向数据流">Vue单向数据流</a>[![bakTop](./img/backward.png)](#top)  
 父组件可以向子组件传递数据，但是子组件不能直接修改父组件的状态。  
 防止从子组件意外改变父级组件的状态，从而导致你的应用的数据流向难以理解。
 
 如所有的 prop 都使得其父子 prop 之间形成了一个单向下行绑定  
 当你想要在子组件去修改 props 时，两种情况
-1. 定义一个 data 属性，并用 prop 的值初始化它。
->
-    props: ['count'],
-    data() {
-      return {
-        counter: this.count
-      }
-    }
+1. prop 用来传递一个初始值, 定义一个 data 属性，并用 prop 的值初始化它。
+```js
+props: ['size'],
+data: function () {
+  return {
+    counter: this.size
+  }
+}
+```
 
-2. 定义一个计算属性，处理 prop 的值并返回。
->
-    props: ['count'],
-    computed: {
-      add: function () {
-        return this.count++
-      }
-    }
+2. prop 以一种原始的值传入且需要进行转换,定义一个计算属性，处理 prop 的值并返回。
+```js
+props: ['size'],
+computed: {
+  normalizedSize: function () {
+    return this.size.trim().toLowerCase()
+  }
+}
+
+```
 
 # <a name="生命周期">生命周期</a>[![bakTop](./img/backward.png)](#top)  
 [Vue2.0生命周期](https://segmentfault.com/a/1190000008010666)  
-[参考](https://www.cnblogs.com/yuliangbin/p/9348156.html)
+[Vue父子组件生命周期执行顺序及钩子函数的个人理解](https://www.cnblogs.com/yuliangbin/p/9348156.html)
 
 Vue 实例有一个完整的生命周期，也就是从开始创建、初始化数据、编译模版、挂载 Dom -> 渲染、更新 -> 渲染、卸载等一系列过程，我们称这是 Vue 的生命周期。
 
@@ -552,71 +560,98 @@ beforeDestroy : 可以做一个确认停止事件的确认框 (如：确认是�
 
 [$once、$on、$off的使用](https://cn.vuejs.org/v2/guide/components-edge-cases.html#%E7%A8%8B%E5%BA%8F%E5%8C%96%E7%9A%84%E4%BA%8B%E4%BB%B6%E4%BE%A6%E5%90%AC%E5%99%A8)
 
-# <a name="computed watch methods">computed watch methods</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="computed watch methods">computed watch methods用法，区别</a>[![bakTop](./img/backward.png)](#top)  
 [computed和watch的细节全面分析](https://segmentfault.com/a/1190000012948175)
 
-[watch](https://cn.vuejs.org/v2/api/#watch)
+[Vue文档-watch](https://cn.vuejs.org/v2/api/#watch)
 
-[computed](https://cn.vuejs.org/v2/api/#computed)
+[Vue文档-computed](https://cn.vuejs.org/v2/api/#computed)
 
-用法、区别：
->
-    computed watch前两者自动追踪数据，执行相关函数，methods需手动调用；
+## 用法、区别：
+* computed watch前两者自动追踪数据，执行相关函数，methods需手动调用；  
 
-    watch 监听某个数据的变化，执行相关操作;无缓存性，页面重新渲染时值不变化也会执行; watch的对象必须事先声明
-   
-    computed 是计算属性,依赖其它属性值，并且值有缓存;只有在它的相关依赖发生改变时才会重新取值; computed的对象无需声明（声明会报错）
+* computed 是`计算属性`,依赖其它属性值，并且值有缓存(页面重新渲染值不变化,计算属性会立即返回之前的计算结果，而不必再次执行函数);  
+  只有在它的相关依赖发生改变时才会重新取值; computed的对象无需声明（声明会报错）
 
-    数据变化的同时进行异步操作或者是比较大的开销，那么watch为最佳选择
+* watch `监听`某个数据的变化，执行相关操作;无缓存性(页面重新渲染时值不变化也会执行); watch的对象必须事先声明  
 
-    // watch
-    data: {
-      firstName: 'Foo',
-      lastName: 'Bar',
-      fullName: 'Foo Bar'
+* 数据变化的同时进行异步操作或者是比较大的开销，那么watch为最佳选择  
+
+## 基本使用：
+```js
+// watch
+data: {
+  firstName: 'Foo',
+  lastName: 'Bar',
+  fullName: 'Foo Bar'
+},
+watch: {
+  firstName(val) {
+    this.fullName = val + ' ' + this.lastName
+  },
+  lastName(val) {
+    this.fullName = this.firstName + ' ' + val
+  }
+}
+
+//computed
+data: {
+  firstName: 'Foo',
+  lastName: 'Bar'
+},
+
+computed: {
+  // 仅读取
+  fullName() {
+    return this.firstName + ' ' + this.lastName
+  }
+}
+
+//computed：get(),set()用法
+computed: {
+  // 读取和设置
+  fullName:{
+    get(){
+      return this.firstName + ' ' + this.lastName
     },
-    watch: {
-      firstName(val) {
-        this.fullName = val + ' ' + this.lastName
-      },
-      lastName(val) {
-        this.fullName = this.firstName + ' ' + val
-      }
+    set(val){
+      //监视当前属性值的变化，当属性值发生变化时执行，更新相关的属性数据
+      //val就是fullName的最新属性值
+      var names = val.split(' ')
+      this.firstName = names[0]
+      this.lastName = names[names.length - 1]
     }
-
-    //computed
-    data: {
-      firstName: 'Foo',
-      lastName: 'Bar'
-    },
-    computed: {
-      fullName() {
-        return this.firstName + ' ' + this.lastName
-      }
-    }
-
-watch：深度监听
-
-//最初绑定的时候是不会执行的，要等到 监听值 改变时才执行监听计算;但当immediate: true 时绑定就立即执行
->
-    watch: {
-      'obj.a': {
-        handler(newName, oldName) {
-          console.log('obj.a changed');
-        },
-        immediate: true,//立即执行
-        deep: true //深度监听
-      }
-    }    
-
-# <a name="解决对象新增属性不能响应的问题">vm.$set() 解决对象新增属性不能响应的问题</a>[![bakTop](./img/backward.png)](#top)  
-受现代 JavaScript 的限制 ，Vue 无法检测到对象属性的添加或删除。
-
-Vue 提供了 Vue.set (object, propertyName, value) / vm.$set (object, propertyName, value)来实现为对象添加响应式属性
-
+  }
+}
 ```
 
+## watch：深度监听
+最初绑定的时候是不会执行的，要等到 `监听值改变`才执行监听计算;  
+但当设置`immediate: true`时就立即执行
+
+`deep: true` 监听复杂数据类型需用深度监听
+```js
+watch: {
+  'obj.a': {
+    //深度监听对应的函数名必须为handler,否则无效果,因为watcher里面对应的是对handler的调用
+    handler(newName, oldName) {
+      console.log('obj.a changed');
+    },
+    immediate: true,//立即执行
+    deep: true //深度监听
+  }
+}  
+```  
+
+# <a name="解决对象新增属性不能响应的问题">vm.$set() 解决对象新增属性不能响应的问题</a>[![bakTop](./img/backward.png)](#top)  
+[Vue文档-深入响应式原理](https://cn.vuejs.org/v2/guide/reactivity.html)
+
+受现代 JavaScript 的限制 ，Vue 无法检测到对象属性的添加或删除。
+
+Vue 提供了 Vue.set (object, propertyName, value)来实现为对象添加响应式属性
+
 示例：
+```vue
 <template>
   <div>
     <ul>
@@ -645,19 +680,23 @@ export default {
 }
 </script>
 <style></style>
+```
 点击button会发现，obj.b 已经成功添加，但是视图并未刷新：
-原因在于在Vue实例创建时，obj.b并未声明，因此就没有被Vue转换为响应式的属性，自然就不会触发视图的更新，这时就需要使用Vue的全局api: Vue.set() 、 $set() 
-
+原因在于在Vue实例创建时，obj.b并未声明，因此就没有被Vue转换为响应式的属性，自然就不会触发视图的更新，这时就需要使用Vue的全局api: Vue.set() 
+```js
 addObjB () {
   // this.obj.b = 'obj.b'
   this.$set(this.obj, 'b', 'obj.b')
   console.log(this.obj)
 }
-$set()方法相当于手动的去把obj.b处理成一个响应式的属性，此时视图也会跟着改变了：
 ```
+$set()方法相当于手动的去把obj.b处理成一个响应式的属性，此时视图也会跟着改变了：
 
-# <a name="Vue检测数组的变动">[Vue检测数组的变动](https://cn.vuejs.org/v2/guide/list.html#%E6%95%B0%E7%BB%84%E6%9B%B4%E6%96%B0%E6%A3%80%E6%B5%8B)</a>[![bakTop](./img/backward.png)](#top)  
-Vue 能检测以下数组的变动
+
+# <a name="Vue检测数组的变动">Vue检测数组的变动</a>[![bakTop](./img/backward.png)](#top)  
+[Vue文档-深入响应式原理](https://cn.vuejs.org/v2/guide/reactivity.html)
+
+### Vue 能检测以下数组的变动
 ```js
 push()
 pop()
@@ -668,15 +707,14 @@ sort()
 reverse()
 ```
 
-Vue 不能检测以下数组的变动
+### Vue 不能检测以下数组的变动
+1. 当你利用索引直接设置一个数组项时，例如：vm.items[indexOfItem] = newValue  
 
-* 当你利用索引直接设置一个数组项时，例如：vm.items[indexOfItem] = newValue
+2. 当你修改数组的长度时，例如：vm.items.length = newLength
 
-* 当你修改数组的长度时，例如：vm.items.length = newLength
 
-```js
 举例：
-
+```js
 var vm = new Vue({
   data: {
     items: ['a', 'b', 'c']
@@ -689,15 +727,15 @@ vm.items.length = 2 // 不是响应性的
 解决第一个问题：
 ```js
 
-    Vue.set(vm.items, indexOfItem, newValue) 
-      //或使用 vm.$set，Vue.set的一个别名
-      vm.$set(vm.items, indexOfItem, newValue)
+vm.$set(vm.items, indexOfItem, newValue)
 
-    vm.items.splice(indexOfItem, 1, newValue)
+vm.items.splice(indexOfItem, 1, newValue)
 ```
 
 解决第二类问题：
-```vm.items.splice(newLength)```
+```js
+vm.items.splice(newLength)
+```
 
 
 # <a name="组件中 data 为什么是一个函数">组件中 data 为什么是一个函数</a>[![bakTop](./img/backward.png)](#top)  
@@ -724,142 +762,45 @@ vm.items.length = 2 // 不是响应性的
     })
 ```
 
-# <a name="样式绑定">样式绑定：class、style</a>[![bakTop](./img/backward.png)](#top)  
-
-### class绑定
-普通绑定
->
-    <div class="static" :class="{ active: isActive, 'text-danger': hasError }"></div>
-
-    data() {
-      return {
-        isActive: true,
-        hasError: false
-      }
-    }
-
-绑定数据里的一个对象
-> 
-
-    <div v-bind:class="classObject"></div>
-    data() {
-      return {
-        classObject: {
-          active: true,
-          'text-danger': false
-        }
-      }
-    }
-
-    绑定返回对象的计算属性
-    data() {
-      return {
-        isActive: true,
-        error: null
-      }
-    },
-    computed: {
-      classObject: function () {
-        return {
-          active: this.isActive && !this.error,
-          'text-danger': this.error && this.error
-        }
-      }
-    }
-
-数组方式绑定
->
-    <div v-bind:class="[activeClass, errorClass]">
-    data() {
-      return {
-        activeClass: 'active',
-        errorClass: 'text-danger'
-      }
-    }
-
-    根据条件切换class， 三元表达式 
-    <div v-bind:class="[isActive ? activeClass : '', errorClass]">
-
-### style绑定
-CSS 属性名可以用驼峰式（camelCase）或短横分隔命名（kebab-case）
-
->
-    <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
-    data() {
-      return {
-        activeColor: 'red',
-        fontSize: 30
-      }
-    }
-
-绑定到一个样式对象
->
-
-    <div v-bind:style="styleObject"></div>
-    data() {
-      return {
-        styleObject: {
-          color: 'red',
-          fontSize: '13px'
-        }
-      }
-    }
-
-    绑定计算属性
-    data() {
-      return {
-        color: 'red',
-        fontSize: '13px'
-      }
-    },
-    computed: {
-      styleObject: function () {
-        return {
-          fontSize: '1' + this.fontSize,
-          color: this.red
-        }
-      }
-    }
-
-数组绑定
->
-    <div v-bind:style="[baseStyles, overridingStyles]">
-
-    data() {
-      return {
-        baseStyles:{},
-        overridingStyles:{}
-      }
-    }
-
 # <a name="v-if和v-show 的区别">v-if和v-show 的区别</a>[![bakTop](./img/backward.png)](#top)  
 >
-    v-if 切换状态时会造成 dom 的销毁和重建，初始渲染条件为 false 时，将不会渲染元素；
+    v-if是真正的条件渲染，因为它会确保在切换过程中条件块内的事件监听器和子组件适当地被销毁和重建；也是惰性的：切换状态时会造成 dom 的销毁和重建，初始渲染条件为 false 时，将不会渲染元素；
 
     v-show 只是简单的display控制显隐藏，不管初始条件如何，元素总会被渲染；
     
     v-if适用于很少改变条件的场景，v-show适用于频繁切换条件的场景。
 
 # <a name="v-for 遍历避免同时使用 v-if">v-for 遍历避免同时使用 v-if</a>[![bakTop](./img/backward.png)](#top)  
->
-    v-for 比 v-if 优先级高，如果每一次都需要遍历整个数组，将会影响速度，尤其是当之需要渲染很小一部分的时候，必要情况下应该替换成 computed 属性。
+v-for 比 v-if 优先级高，如果每一次都需要遍历整个数组，将会影响速度，尤其是当只需要渲染很小一部分的时候，必要情况下应该替换成 computed 属性。
 
 推荐：
-```html
+```vue
+<template>
 <ul>
   <li
-    v-for="user in activeUsers"
-    :key="user.id">
-    {{ user.name }}
+    v-for="item in activeLists"
+    :key="item.id">
+    {{ item.name }}
   </li>
 </ul>
-computed: {
-  activeUsers: function () {
-    return this.users.filter(function (user) {
-      return user.isActive
-    })
+</template>
+
+<script>
+export default{
+  data(){
+    return{
+      lists: [],
+    }
+  },
+  computed: {
+    activeLists() {
+      return this.lists.filter((item) => {
+        return item.isActive
+      })
+    }
   }
 }
+</script>
 ```
 
 不推荐：
