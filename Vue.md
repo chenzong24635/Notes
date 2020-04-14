@@ -25,7 +25,7 @@
 * <a href="#SPA">SPA SSR</a>
 * <a href="#双向数据绑定原理、实现">双向数据绑定原理、实现:Object.defineProperty、proxy</a>
 * <a href="#单向数据流">Vue单向数据流</a> 
-* <a href="#v-model 的原理">v-model 的原理</a>
+* <a href="#v-model原理">v-model原理</a>
 * <a href="#生命周期">生命周期</a>
 * <a href="#监听组件的生命周期">监听组件的生命周期</a>
 * <a href="#组件销毁时，清除定时器">组件销毁时，清除定时器</a>
@@ -399,7 +399,7 @@ computed: {
 }
 ```
 
-# <a name="v-model 的原理">v-model 的原理</a>[![bakTop](./img/backward.png)](#top)
+# <a id="v-model原理" name="v-model原理">v-model原理</a>[![bakTop](./img/backward.png)](#top)
 在 vue 项目中主要使用 v-model 指令在表单 input、textarea、select 等元素上创建双向数据绑定，我们知道 v-model 本质上不过是语法糖，v-model 在内部为不同的输入元素使用不同的属性并抛出不同的事件：
 
 text 和 textarea 元素使用 value 属性和 input 事件；
@@ -408,29 +408,12 @@ select 字段将 value 作为 prop 并将 change 作为事件。
 
 以 input  表单元素为例：
 ```html
-<input v-model='something'>
+<input v-model='val'>
 相当于
-<input v-bind:value="something" v-on:input="something = $event.target.value">
+<input :value="val" @input="val = $event.target.value">
 ```
 
-如果在自定义组件中，v-model 默认会利用名为 value 的 prop 和名为 input 的事件，如下所示：
-```js
-父组件：
-<ModelChild v-model="message"></ModelChild>
-
-子组件：
-<div>{{value}}</div>
-
-props:{
-    value: String
-},
-methods: {
-  test1(){
-     this.$emit('input', '小红')
-  },
-},
-
-```
+<a href="#自定义组件双向绑定">自定义组件双向绑定</a>
 
 # <a name="生命周期">生命周期</a>[![bakTop](./img/backward.png)](#top)  
 [Vue2.0生命周期](https://segmentfault.com/a/1190000008010666)  
@@ -2100,9 +2083,57 @@ export default {
 }
 ```
 
-### 自定义组件双向绑定
+### <a name="自定义组件双向绑定">自定义组件双向绑定</a> [![bakTop](./img/backward.png)](#model原理)
 [通过组件 model 选项实现](https://cn.vuejs.org/v2/api/#model)
 
+父组件
+```js
+<div>
+  <p>{{iptVal}}</p>
+  <my-checkbox v-model="iptVal"  @update="update"></my-checkbox>
+</div>
+
+export default {
+  components:{
+    myCheckbox
+  },
+  data(){
+      return{
+        iptVal: ''
+      }
+  },
+  methods: {
+    update(val){
+      console.log('获取自子组件的值：',val);
+      console.log('父组件的iptVal：',this.iptVal);
+    }
+  }
+}
+```
+
+子组件
+```js
+<input :value="iptVal" type="text" @input="numChange($event.target.value)">
+export default {
+  model: {
+    prop: 'iptVal',
+    event: 'update'
+  },
+  props: {
+    iptVal: {
+      type: String,
+    }
+  },
+
+  methods: {
+    numChange(val) {
+      console.log('子组件的iptVal：',val);
+      this.$emit('update', val);
+    }
+  }
+}
+</script>
+```
 
 
 
