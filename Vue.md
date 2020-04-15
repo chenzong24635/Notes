@@ -31,7 +31,6 @@
 * <a href="#Vue事件绑定原理">Vue事件绑定原理</a>
 
 * <a href="#响应式数据原理、实现">响应式数据原理、实现:Object.defineProperty、proxy</a>
-* <a href="#单向数据流">Vue单向数据流</a> 
 
 * <a href="#v-model原理">v-model原理</a>
 * <a href="#自定义组件双向绑定">使用model选项实现自定义组件双向绑定</a>
@@ -48,6 +47,8 @@
 * <a href="#slot">slot插槽</a>
 * <a href="#组件中key作用">组件中key作用</a>
 * <a href="#虚拟DOM">虚拟DOM</a>
+* <a href="#Vue模板编译过程">Vue模板编译过程</a>
+
 * <a href="#keep-alive">keep-alive</a>
 * <a href="#页面滚动">页面滚动</a>
 * <a href="#路由vue-router">路由vue-router</a>
@@ -57,7 +58,7 @@
   * <a href="#页面跳转方法">页面跳转方法</a>
   * <a href="#页面url参数获取">页面url参数获取</a>
   * <a href="#导航守卫">导航守卫</a>
-  * <a href="#多个路由共用一个页面操作">多个路由共用一个页面操作</a>
+  * <a href="#多个路由共用一个组件操作">多个路由共用一个组件,组件如何重新渲染</a>
   * <a href="#单页面多路由区域操作">单页面多路由区域操作</a>
   * <a href="#刷新当前路由方法">刷新当前路由方法</a>
   * <a href="#mode">mode: hash | history区别</a>
@@ -393,31 +394,6 @@ proxy双向绑定-简
 >
     当一个Vue实例创建时，vue会遍历data选项的属性，用 Object.defineProperty 将它们转为 getter/setter并且在内部追踪相关依赖，在属性被访问和修改时通知变化。 每个组件实例都有相应的 watcher 程序实例，它会在组件渲染的过程中把属性记录为依赖，之后当依赖项的 setter 被调用时，会通知 watcher 重新计算，从而致使它关联的组件得以更新。
 
-# <a name="单向数据流">Vue单向数据流</a>[![bakTop](./img/backward.png)](#top)  
-父组件可以向子组件传递数据，但是子组件不能直接修改父组件的状态。  
-防止从子组件意外改变父级组件的状态，从而导致你的应用的数据流向难以理解。
-
-如所有的 prop 都使得其父子 prop 之间形成了一个单向下行绑定  
-当你想要在子组件去修改 props 时，两种情况
-1. prop 用来传递一个初始值, 定义一个 data 属性，并用 prop 的值初始化它。
-```js
-props: ['size'],
-data: function () {
-  return {
-    counter: this.size
-  }
-}
-```
-
-2. prop 以一种原始的值传入且需要进行转换,定义一个计算属性，处理 prop 的值并返回。
-```js
-props: ['size'],
-computed: {
-  normalizedSize: function () {
-    return this.size.trim().toLowerCase()
-  }
-}
-```
 
 # <a  name="v-model原理">v-model原理</a>[![bakTop](./img/backward.png)](#top)
 在 vue 项目中主要使用 v-model 指令在表单 input、textarea、select 等元素上创建双向数据绑定，我们知道 v-model 本质上不过是语法糖，v-model 在内部为不同的输入元素使用不同的属性并抛出不同的事件：
@@ -819,9 +795,10 @@ export default {
 # <a name="解决对象新增属性不能响应的问题">vm.$set() 解决对象新增属性不能响应的问题</a>[![bakTop](./img/backward.png)](#top)  
 [Vue文档-深入响应式原理](https://cn.vuejs.org/v2/guide/reactivity.html)
 
-受现代 JavaScript 的限制 ，Vue 无法检测到对象属性的添加或删除。
+在实例初始化的时候，遍历data里所有的属性，并使用 Object.defineProperty 把这些属性全部转为 getter/setter。
+实例初始化完之后再添加的数据，无法侦测。
 
-Vue 提供了 Vue.set (object, propertyName, value)来实现为对象添加响应式属性
+Vue 提供了 Vue.set (target,key,val)来实现为对象添加响应式属性
 
 示例：
 ```vue
@@ -1093,6 +1070,12 @@ key是给每一个vnode的唯一id,可以依靠key,更准确, 更快的拿到old
 
 [参考](https://juejin.im/post/5d36cc575188257aea108a74#heading-1)
 
+
+# <a name="Vue模板编译过程">Vue模板编译过程</a>[![bakTop](./img/backward.png)](#top) 
+```
+首先会先将模版通过解析器，解析成AST（抽象语法树），然后再通过优化器，遍历AST树，将里面的所有静态节点找出来，并打上标志，这样可以避免在数据更新进行重新生成新的Vnode的时候做一些无用的功夫，和diff算法对比时进行一些无用的对比，因为静态节点这辈子是什么样就是什么样的了，不会变化。接着，代码生成器会将这颗AST编译成代码字符串，这段字符串会别Vdom里面的createElement函数调用，最后生成Vnode。
+
+```
 
 # <a name="Vue的数据为什么频繁变化但只会更新一次">Vue的数据为什么频繁变化但只会更新一次</a>[![bakTop](./img/backward.png)](#top)  
 Vue 异步执行 DOM 更新。Vue在观察到数据变化时并不是直接更新DOM，而是开启一个队列，并缓冲在同一事件循环中发生的所有数据改变。在缓冲时会去除重复数据，从而避免不必要的计算和DOM操作。然后，在下一个事件循环tick中，Vue刷新队列并执行实际工作。
@@ -1510,8 +1493,15 @@ beforeRouteLeave (to, from, next) {
 }
 ```
 
-##  <a name="多个路由共用一个页面操作">多个路由共用一个页面操作</a>[![bakTop](./img/backward.png)](#top)  
-1. watch
+##  <a name="多个路由共用一个组件操作">多个路由共用一个组件,组件如何重新渲染</a>[![bakTop](./img/backward.png)](#top)  
+* router-view上加上一个唯一的key
+```html
+<div id="app">
+  <router-view :key="$route.fullPath" />
+</div>
+```
+
+* watch监听
 ```js
 当路由变化时，watch里的路由监听函数都会被触发，可以在这个函数中对页面的数据进行重新加载的操作。
 watch:{
@@ -1523,7 +1513,7 @@ watch:{
 }
 ```
 
-2. beforeRouteUpdate  // 组件内的守卫
+* beforeRouteUpdate  // 组件内的守卫
 ```js
 //设置id参数 判断是否相同
 beforeRouteUpdate (to, from, next) {
@@ -1560,108 +1550,107 @@ export default new Router({
 ```
 
 App.vue
->
-    <router-link to="/">首页</router-link> | 
-    <router-link to="/hi">Hi页面</router-link> 
+```html
+<router-link to="/">首页</router-link> | 
+<router-link to="/hi">Hi页面</router-link> 
 
-    <router-view ></router-view>
-    <router-view name="left" style="float:left;width:50%;background-color:#ccc;height:300px;"></router-view>
+<router-view ></router-view>
+<router-view name="left" style="float:left;width:50%;background-color:#ccc;height:300px;"></router-view>
 
-    <router-view name="right" style="float:right;width:50%;background-color:#c0c;height:300px;"></router-view>
-
+<router-view name="right" style="float:right;width:50%;background-color:#c0c;height:300px;"></router-view>
+```
 
 ##  <a name="刷新当前路由方法">刷新当前路由方法</a>[![bakTop](./img/backward.png)](#top)  
 
 * 相当于f5刷新，页面会有卡顿的情况
->
-
-    this.$router.go(0)
-    location.reload() 
-   
+```js
+this.$router.go(0)
+location.reload() 
+```
 
 * beforeRouteEnter 先进入空白页再在空白页跳转回到上一个页面，
->
-    
-    // 要刷新的页面
-    refresh () {
-      this.$router.replace({
-        path: '/refresh',
-        query: {
-          t: Date.now()
-        }
-      })
+```js
+// 要刷新的页面
+refresh () {
+  this.$router.replace({
+    path: '/refresh',
+    query: {
+      t: Date.now()
     }
+  })
+}
 
-    // 空白页 
-    <script>
-    export default {
-      beforeRouteEnter(to, from, next) {
-        next(vm => {//
-          vm.$router.replace(from.path)
-        })
-      }
-    }
-    </script>
+// 空白页 
+<script>
+export default {
+  beforeRouteEnter(to, from, next) {
+    next(vm => {//
+      vm.$router.replace(from.path)
+    })
+  }
+}
+</script>
+```
 
 * 用provide /inject组合实现
->
-    //在App.vue,声明reload方法，控制router-view的显示或隐藏，从而控制页面的再次加载。
-    <template>
-      <div id="app">
-        <router-view v-if="isRouterAlive"></router-view>
-      </div>
-    </template>
+```js
+//在App.vue,声明reload方法，控制router-view的显示或隐藏，从而控制页面的再次加载。
+<template>
+  <div id="app">
+    <router-view v-if="isRouterAlive"></router-view>
+  </div>
+</template>
 
-    <script>
-    export default {
-      name: 'App',
-      provide () {
-        return {
-          reload: this.reload
-        }
-      },
-      data () {
-        return {
-          isRouterAlive: true
-        }
-      },
-      methods: {
-        reload () {
-          this.isRouterAlive = false
-          this.$nextTick(function () {
-            this.isRouterAlive = true
-          })
-        }
-      }
+<script>
+export default {
+  name: 'App',
+  provide () {
+    return {
+      reload: this.reload
     }
-    </script>
+  },
+  data () {
+    return {
+      isRouterAlive: true
+    }
+  },
+  methods: {
+    reload () {
+      this.isRouterAlive = false
+      this.$nextTick(function () {
+        this.isRouterAlive = true
+      })
+    }
+  }
+}
+</script>
 
-    //组件注入reload方法，在需要刷新的时候调用this.reload()
-    <script>
-    export default {
-      inject:['reload'],
-      data(){
-        return {
-        }
-      }
+//组件注入reload方法，在需要刷新的时候调用this.reload()
+<script>
+export default {
+  inject:['reload'],
+  data(){
+    return {
     }
-    </script>
+  }
+}
+</script>
+```
 
 * router-view上加上一个唯一的key
 简单的在 router-view上加上一个唯一的key，来保证路由切换时都会重新渲染触发钩子了,
 默认让key等于当时的时间戳，当切换当前路由的时候改变时间戳为现在的时间戳，同样也可以达到刷新路由的目的
->
+```js
+<router-view :key="key"></router-view>
 
-    <router-view :key="key"></router-view>
-
-    computed: {
-      key() {
-        // 只要保证 key 唯一性就可以了，保证不同页面的 key 不相同
-        return this.$route.fullPath
-        // return this.$route.name !== undefined? this.$route.name + +new Date(): this.$route + +new Date()
-      }
-    }
-
+computed: {
+  key() {
+    // 只要保证 key 唯一性就可以了，保证不同页面的 key 不相同
+    return this.$route.fullPath
+    // return this.$route.name !== undefined? this.$route.name + +new Date(): this.$route + +new Date()
+  }
+}
+```
 
 
 ##  <a name="mode">路由模式 hash | history区别</a>[![bakTop](./img/backward.png)](#top)  
@@ -1812,7 +1801,10 @@ https://juejin.im/post/5b5bfd5b6fb9a04fdd7d687a
 ## 
 [vuex页面刷新数据丢失的解决办法](https://blog.csdn.net/guzhao593/article/details/81435342)
 
+window.addEventListener有一个方法可以监听页面刷新 "beforeunload"
+
 ```js
+//app.vue
 export default {
   name: 'App',
   created () {
@@ -1827,6 +1819,24 @@ export default {
     })
   }
 }
+```
+[兼容iOS端](https://www.jianshu.com/p/15221e9d388b)
+
+在IOS中 beforeunload 已经废弃且 sessionStorage 是无法被存储的
+
+```js
+// 兼容iOS端微信无法存取sessionStorage的问题
+// 在页面加载时读取localStorage里的状态信息
+if (localStorage.getItem('store')) {
+  this.$store.replaceState(Object.assign({}, this.$store.state, JSON.parse(localStorage.getItem('store'))));
+}
+// 在页面刷新时将vuex里的信息保存到localStorage里
+window.addEventListener('pagehide', () => {
+  localStorage.setItem('store', JSON.stringify(this.$store.state));
+});
+
+// 在登录和注销界面增加
+localStorage.removeItem('store');
 ```
 
 ## vuex-persistedstate插件
@@ -1873,7 +1883,7 @@ const eventBus = new Vue()
 Vue.prototype.eventBus = eventBus //绑定为全局对象
 
 //接收事件 监听当前实例上的自定义事件
-this.eventBus.$on( event, callback )
+this.eventBus.$on( event, callback)
 
 //发送事件 触发当前实例上的事件
 this.eventBus.$emit( event,  [...args])
@@ -1884,6 +1894,33 @@ this.eventBus.$off( [event, callback] )
 移除某事件   eventBus.$off('testEvent')
 ```
 
+实例
+```js
+// main.js
+const eventBus = new Vue();
+Vue.prototype.eventBus = eventBus;
+
+//组件A-触发事件
+<p @click="add"> add</p>
+
+add(){
+  this.eventBus.$emit('myadd',{
+    num: this.num++
+  })
+}
+
+
+//组件B-接收事件
+created(){
+  this.eventBus.$on('myadd', params => {
+    console.log(params);
+  })
+}
+beforeDestroy(){
+  bus.$off('myadd')
+}
+```
+
 ### 注意
 1. `调用$emit时，必须已经事先$on`，否则将无法监听到事件，也就是说对组件是有一定的同时存在的要求的。(注：路由切换时，新路由组件先created，旧路由组件再destoryed，部分情况可以分别写入这两个生命周期，见此问题)。
 
@@ -1891,7 +1928,7 @@ this.eventBus.$off( [event, callback] )
 
 3. 数据非“长效”数据，无法保存，只在$emit后生效
 
-## props, $emit -- 父子组件通信 
+## props/$emit -- 父子 
 [props-api](https://cn.vuejs.org/v2/guide/components-props.html)
 
 父组件向子组件传值：通过绑定属性来向子组件传入数据，子组件通过 Props 属性获取对应数据。  
@@ -1922,16 +1959,16 @@ props: {
   //设置带默认值的对象
   propsD: {
     type: Object,
-    default: function () {  // 对象或数组默认值必须从一个工厂函数获取
+    default: function () {  // 对象或数组 设置默认值必须从一个工厂函数获取
       return { message: 'hello' }
     }
   },
 
   // 自定义验证函数
   propE: {
-    validator: function (value) {
+    validator: function (val) {
       // 这个值必须匹配下列字符串中的一个
-      return ['success', 'warning', 'danger'].indexOf(value) !== -1
+      return ['success', 'warning', 'danger'].includes(val)
     }
   }
 }
@@ -2006,6 +2043,82 @@ methods: {
     console.log(msg)//我是子传给父组件的数据
   }
 }
+```
+
+### [props单向数据流](https://cn.vuejs.org/v2/guide/components-props.html#%E5%8D%95%E5%90%91%E6%95%B0%E6%8D%AE%E6%B5%81)
+
+父组件可以向子组件传递数据，但是子组件不能直接修改父组件的状态。  
+防止从子组件意外改变父级组件的状态，从而导致你的应用的数据流向难以理解。
+
+如所有的 prop 都使得其父子 prop 之间形成了一个单向下行绑定  
+当你想要在子组件去修改 props 时，两种情况
+1. prop 用来传递一个初始值, 定义一个 data 属性，并用 prop 的值初始化它。
+```js
+props: ['size'],
+data: function () {
+  return {
+    counter: this.size
+  }
+}
+```
+
+2. prop 以一种原始的值传入且需要进行转换,定义一个计算属性，处理 prop 的值并返回。
+```js
+props: ['size'],
+computed: {
+  normalizedSize: function () {
+    return this.size.trim().toLowerCase()
+  }
+}
+```
+
+
+## $parent/$children & ref -- 父子
+### $parent / $children  
+
+指定已创建的实例之父实例，在两者之间建立父子关系。子实例可以用 this.$parent 访问父实例，子实例被推入父实例的 $children 数组中。 
+this.$parent
+this.$children[0]
+
+需要注意的是：父组件里访问 $children，最早须在 mounted 生命周期后； 
+因为在此之前子组件还未构建完成
+
+组件加载渲染过程：
+```js
+父 beforeCreate -> 父 created -> 父 beforeMount -> 
+子 beforeCreate -> 子 created -> 子 beforeMount -> 子 mounted -> 
+父 mounted
+```
+
+
+### ref：如果在普通的 DOM 元素上使用，引用指向的就是 DOM 元素；如果用在子组件上，引用就指向组件实例
+```js
+// 子组件 B 
+export default {
+  data () {
+    return {
+      title: 'Vue.js'
+    }
+  },
+  methods: {
+    sayHello () {
+      window.alert('Hello');
+    }
+  }
+}
+// 父组件 A
+<template>
+  <B ref="comB"></B>
+</template>
+<script>
+  export default {
+    mounted () {
+      const comB = this.$refs.comB;
+      console.log(comB.title);  // Vue.js
+      comB.sayHello();  // 弹窗
+    }
+  }
+</script>
 ```
 
 ## $attrs/$listeners -- 父子|隔代
@@ -2150,7 +2263,7 @@ export default {
       //改变对象属性，会改变
       this.obj.a += 1;//此时B，C等后代组件的 obj.a 值会改变
 
-      //对象重新复制，不会改变
+      //对象重新赋值，则不会改变
       // this.obj= {b:222};//此时B，C等后代组件的 obj 值不会改变
     }
   }
@@ -2160,11 +2273,12 @@ export default {
   inject: ['name','obj'],
   mounted () {
     console.log(this.name);  // 浪里行舟
+    console.log(this.obj);  // {num: 1}
   }
 }
 // C.vue
 export default {
-  inject: ['name','obj'],
+  inject: ['name'],
   mounted () {
     console.log(this.name);  // 浪里行舟
   }
@@ -2172,46 +2286,11 @@ export default {
 ```
 [provide与inject 怎么实现数据响应式](https://juejin.im/post/5cde0b43f265da03867e78d3#heading-16)
 
-## $parent / $children & ref --- 父子
-* $parent / $children 
-
-指定已创建的实例之父实例，在两者之间建立父子关系。子实例可以用 this.$parent 访问父实例，子实例被推入父实例的 $children 数组中。 
-this.$parent
-this.$children[0]
-
-
-* ref：如果在普通的 DOM 元素上使用，引用指向的就是 DOM 元素；如果用在子组件上，引用就指向组件实例
-```js
-// 子组件 B 
-export default {
-  data () {
-    return {
-      title: 'Vue.js'
-    }
-  },
-  methods: {
-    sayHello () {
-      window.alert('Hello');
-    }
-  }
-}
-// 父组件 A
-<template>
-  <B ref="comB"></B>
-</template>
-<script>
-  export default {
-    mounted () {
-      const comB = this.$refs.comB;
-      console.log(comB.title);  // Vue.js
-      comB.sayHello();  // 弹窗
-    }
-  }
-</script>
-```
 
 # <a name="vue项目性能优化">Vue开发技巧 + 性能优化</a>[![bakTop](./img/backward.png)](#top)  
 [10个Vue开发技巧助力成为更好的工程师](https://juejin.im/post/5e8a9b1ae51d45470720bdfa)
+[这 10 个技巧让你成为一个更好的 Vue 开发者](https://juejin.im/post/5e8286f6e51d4546c72dfff0)
+
 [Vue 项目性能优化](https://juejin.im/post/5d548b83f265da03ab42471d)
 
 ## 路由参数解耦
@@ -2262,10 +2341,18 @@ export default {
 }
 ```
 
-## 函数式组件
+## 函数式组件 functional
 [函数式组件](https://cn.vuejs.org/v2/guide/render-function.html#%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6)
 
-当组件没有管理任何状态，也没有监听任何传递给它的状态，也没有生命周期方法。实际上，它只是一个接受一些 prop 的函数。在这样的场景下，我们可以将组件标记为 functional，这意味它无状态 (没有响应式数据)，也没有实例 (没有 this 上下文)。一个函数式组件就像这样：
+定义：
+* Stateless(无状态)： 没有响应式数据
+* Instanceless(无实例)：组件自身没有实例，即没有 this 上下文
+
+特点：渲染开销低
+
+应用：  
+当组件没有管理任何状态，也没有监听任何传递给它的状态，也没有生命周期方法。实际上，它只是一个接受一些 prop 的函数。在这样的场景下，我们可以将组件标记为 functional。
+
 
 
 子组件使用 函数式组件
@@ -2315,6 +2402,21 @@ export default {
 }
 ```
 
+### 动态指令参数
+```js
+<button @[clickType]="myFunc">{{clickType}}</button>
+data(){
+  return {
+    clickType: 'click'
+  }
+},
+methods: {
+  myFunc(){
+    this.clickType = this.clickType === 'click' ? 'dblclick' : 'click';
+  }
+}
+
+```
 
 
 
