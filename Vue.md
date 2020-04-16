@@ -8,9 +8,8 @@
 [Vue资源精选(组件、插件...)](http://vue.awesometiny.com/)
 
 
-# 参考文章
-[30 道 Vue 面试题，内含详细讲解（涵盖入门到精通，自测 Vue 掌握程度）](https://juejin.im/post/5d59f2a451882549be53b170)
-
+<!-- [30 道 Vue 面试题，内含详细讲解（涵盖入门到精通，自测 Vue 掌握程度）](https://juejin.im/post/5d59f2a451882549be53b170) -->
+<!-- [Vue源码阅读 - 依赖收集原理](https://segmentfault.com/a/1190000015562213) -->
 
 # 
 
@@ -40,17 +39,16 @@
 * <a href="#Vue检测数组的变动">Vue检测数组的变动</a>
 * <a href="#Vue的数据为什么频繁变化但只会更新一次">Vue的数据为什么频繁变化但只会更新一次</a>
 * <a href="#$nextTick">$nextTick</a> 
+* <a href="#组件中key作用">组件中key作用</a>
 
 * <a href="#组件中 data 为什么是一个函数">组件中 data 为什么是一个函数</a>
-* <a href="#v-if和v-show 的区别">v-if和v-show 的区别</a>
+* <a href="#v-if和v-show的区别">v-if和v-show的区别</a>
 * <a href="#v-for 遍历避免同时使用 v-if">v-for 遍历避免同时使用 v-if</a>
 * <a href="#slot">slot插槽</a>
-* <a href="#组件中key作用">组件中key作用</a>
 * <a href="#虚拟DOM">虚拟DOM</a>
 * <a href="#Vue模板编译过程">Vue模板编译过程</a>
 
 * <a href="#keep-alive">keep-alive</a>
-* <a href="#页面滚动">页面滚动</a>
 * <a href="#路由vue-router">路由vue-router</a>
   * <a href="#base">base</a>
   * <a href="#this.$route 和 this.$router区别">this.$route 和 this.$router区别</a>
@@ -63,7 +61,7 @@
   * <a href="#刷新当前路由方法">刷新当前路由方法</a>
   * <a href="#mode">mode: hash | history区别</a>
   * <a href="#切换页面时自动滚动到顶部">切换页面时自动滚动到顶部</a>
-  * <a href="#设置页面title">设置页面title</a>
+  * <a href="#切换页面时设置title">切换页面时设置title</a>
 * <a href="#路由权限">路由权限</a>
 * <a href="#vuex">vuex</a>
 * <a href="#vuex数据持久化">vuex数据持久化</a>
@@ -109,55 +107,27 @@ var newArr1 = arr.map(function (item) {
     return item * 2;
 });
 ```
+
+
 # <a name="Vue的运行机制简述">Vue的运行机制简述</a>[![bakTop](./img/backward.png)](#top)  
 [参考](https://juejin.im/post/5cd8a7c1f265da037a3d0992#heading-13)
 
 # <a name="MVC、MVP、MVVM">MVC、MVP、MVVM</a>[![bakTop](./img/backward.png)](#top)  
-[基于Vue实现一个简易MVVM](https://juejin.im/post/5cd8a7c1f265da037a3d0992#heading-0)
+[基于Vue实现一个简易MVVM](https://juejin.im/post/5cd8a7c1f265da037a3d0992)
 
-[MVC、MVP、MVVM三种区别及适用场合](https://blog.csdn.net/victoryzn/article/details/78392128)
+[MVC，MVP 和 MVVM 的图示](http://www.ruanyifeng.com/blog/2015/02/mvcmvp_mvvm.html)
 
-
-[MVC,MVP,MVVM浅析](https://segmentfault.com/a/1190000006840458)
-
-### MVC(Model-view-Controller)
-<img src="img/mvc.png" width="50%"/>
-
-
-* View（视图）：检测用户的键盘、鼠标等行为，传递调用Controller执行应用逻辑。View更新需要重新获取Model的数据。  
-* Controller（控制器）：View和Model之间协作的应用逻辑或业务逻辑处理。
-* Model（模型）：Model变更后，通过观察者模式通知View更新视图。
-
-
-### MVP(Model-View-Presenter)
-<img src="img/mvp.png" width="50%"/>
-
->
-
-    Presenter: 负责完成View于Model间的交互和业务逻辑
-
->
-
-    各部分之间的通信，都是双向的。
-
-    View 与 Model 不发生联系，都通过 Presenter 传递。
-
-    View 非常薄，不部署任何业务逻辑，称为"被动视图"（Passive View），即没有任何主动性，而 Presenter非常厚，所有逻辑都部署在那里。
 
 ### MVVM(Model-View-ViewModel)
+<img src="img/Vue/mvvm.png" width="50%"/>
 
-<img src="img/mvvm.png" width="50%"/>
-<img src="img/mvvm1.png" width="50%"/>
+<img src="img/Vue/mvvm1.png" width="50%"/>
 
-Model-View-ViewModel
+* View: 代表视图层，负责将数据模型渲染到页面上 ;也就是用户界面。前端主要由 HTML 和 CSS 来构建 。
 
-```html
-View: 代表视图层，负责将数据模型渲染到页面上 ;也就是用户界面。前端主要由 HTML 和 CSS 来构建 。
+* Model: 代表数据模型，泛指后端进行的各种业务逻辑处理和数据操控，对于前端来说就是后端提供的 api 接口。
 
-ViewModel:通过双向绑定把View和Model进行同步交互，不需要手动操作DOM的一种设计思想。前端开发者对从后端获取的 Model 数据进行转换处理，做二次封装，以生成符合 View 层使用预期的视图数据模型
-
-Model:代表数据模型，泛指后端进行的各种业务逻辑处理和数据操控，对于前端来说就是后端提供的 api 接口。
-```
+* ViewModel: 通过双向绑定把View和Model进行同步交互，不需要手动操作DOM的一种设计思想。前端开发者对从后端获取的 Model 数据进行转换处理，做二次封装，以生成符合 View 层使用预期的视图数据模型
 
 View 和 Model 之间并没有直接的联系，而是通过ViewModel进行交互，Model 和 ViewModel 之间的交互是双向的， 因此View 数据的变化会同步到Model中，而Model 数据的变化也会立即反应到View 上。
 
@@ -177,33 +147,33 @@ MVVM优点:
 ```
 
 # <a name="SPA">SPA SSR SEO</a>[![bakTop](./img/backward.png)](#top)    
-[文章](https://www.jianshu.com/p/fcb98533bc18)
+[浅谈SPA、SEO、SSR](https://www.jianshu.com/p/fcb98533bc18)
+[30 道 Vue 面试题，内含详细讲解](https://juejin.im/post/5d59f2a451882549be53b170#heading-1)
 
-## SPA
-SPA（  ）单页面应用。仅在 Web 页面初始化时加载相应的 HTML、JavaScript 和 CSS。一旦页面加载完成，SPA 不会因为用户的操作而进行页面的重新加载或跳转；取而代之的是利用路由机制实现 HTML 内容的变换，UI 与用户的交互，避免页面的重新加载。
+## SPA（Single Page Application）单页面应用
+仅在 Web 页面初始化时加载相应的 HTML、JavaScript 和 CSS。一旦页面加载完成，SPA 不会因为用户的操作而进行页面的重新加载或跳转；取而代之的是利用路由机制实现 HTML 内容的变换，UI 与用户的交互，避免页面的重新加载。
 
 * 优点：
 >
     用户体验好、快，内容的改变不需要重新加载整个页面，避免了不必要的跳转和重复渲染；
 
-    一定程度上减少了后端服务器的压力（不用管页面逻辑和渲染）；
+    服务器压力小；
 
     前后端职责分离，架构清晰，前端进行交互逻辑，后端负责数据处理；
 
 * 缺点：
 >
-    初次加载耗时多：会等待所有 Vue 编译后的 js 文件都下载完成后，才开始进行页面的渲染,所以首屏渲染需要一定的时间
+    初次加载耗时较长：会等待所有编译后的 js、CSS 文件都下载完成后，才开始进行页面的渲染,所以首屏渲染需要一定的时间
 
     前进后退路由管理：由于单页应用在一个页面中显示所有的内容，所以不能使用浏览器的前进后退功能，所有的页面切换需要自己建立堆栈管理；
 
     SEO 难度较大：因为 SPA 页面的内容是通过 Ajax 获取，而搜索引擎爬取工具并不会等待 Ajax 异步完成后再抓取页面内容，所以在 SPA 中是抓取不到页面通过 Ajax 获取到的内容。
 
 
-## SSR
+## SSR(Server-Side Rendering) 服务器端渲染 
 [Vue SSR 指南](https://ssr.vuejs.org/zh/)
-[Vue SSR 踩坑之旅](https://juejin.im/post/5cb6c36e6fb9a068af37aa35)--我是你的超级英雄
-
-SSR是 Server-Side Rendering(服务器端渲染)的缩写，  
+[Vue SSR 踩坑之旅](https://juejin.im/post/5cb6c36e6fb9a068af37aa35)
+ 
 在客户端将标签渲染成的整个 html 片段的工作在服务端完成，服务端形成的html 片段直接返回给客户端这个过程就叫做服务端渲染。
 
 在普通的SPA中，一般是将框架及网站页面代码发送到浏览器，然后在浏览器中生成和操作DOM（这里也是第一次访问SPA网站在同等带宽及网络延迟下比传统的在后端生成HTML发送到浏览器要更慢的主要原因），    
@@ -232,8 +202,8 @@ SSR是 Server-Side Rendering(服务器端渲染)的缩写，
 [Vue.js 的Nuxt](https://nuxtjs.org/guide/installation)  
 [React 的 Next](https://nextjs.org/)
 
-## SEO
-SEO（Search Engine Optimization），搜索引擎优化。SEO是一种通过了解搜索引擎的运作规则（如何抓取网站页面，如何索引以及如何根据特定的关键字展现搜索结果排序等）来调整网站，以提高该网站在搜索引擎中某些关键词的搜索结果排名。
+## SEO（Search Engine Optimization）搜索引擎优化
+SEO是一种通过了解搜索引擎的运作规则（如何抓取网站页面，如何索引以及如何根据特定的关键字展现搜索结果排序等）来调整网站，以提高该网站在搜索引擎中某些关键词的搜索结果排名。
 
 
 ## 总结
@@ -253,7 +223,14 @@ Vue的事件分为2种，一种是原生事件绑定，还有一种是组件的�
 
 
 # <a name="响应式数据原理、实现">响应式数据原理、实现:Object.defineProperty、proxy</a>[![bakTop](./img/backward.png)](#top)    
-[Vue 核心之数据双向绑定](https://juejin.im/post/5d421bcf6fb9a06af23853f1)
+Vue主要通过以下4个步骤实现响应式数据:  
+* 实现一个监听器「Observer」：对数据对象进行遍历，包括子属性对象的属性，利用Object.defineProperty()在属性上都加上getter和setter，这样后，给对象的某个值赋值，就会触发setter，那么就能监听到数据变化
+* 实现一个解析器「Compile」：解析Vue模板指令，将模板中的变量都替换成数据，然后初始化渲染页面视图，并将每个指令对应的节点绑定更新函数，添加监听数据的订阅者，一旦数据有变动，收到通知，调用更新函数进行数据更新
+* 实现一个订阅者「Watcher」：Watcher订阅者是Observer和Compile之间通信的桥梁，主要任务是订阅Observer中的属性值变化的消息，当收到属性值变化的消息时，触发解析器Compile中对应的更新函数
+* 实现一个订阅器「Dep」：订阅器采用发布-订阅设计模式，用来收集订阅者Watcher，对监听器Observer和订阅者Watcher进行统一管理
+
+
+[0 到 1 掌握：Vue 核心之数据双向绑定](https://juejin.im/post/5d421bcf6fb9a06af23853f1)
 
 [深入浅出Vue响应式原理](https://juejin.im/post/5d229bfc5188252d707f3ac6)
 
@@ -300,22 +277,24 @@ Object.defineProperty(obj, prop, descriptor)
 定义出来的属性，默认是不可枚举，不可更改，不可配置【无法delete】
 
 基本用法
->
-    let obj = {};
-    let temp = 'base';
-    Object.defineProperty(obj, 'name', {
-        get() {
-            console.log("读取成功");
-            return temp
-        },
-        set(value) {
-            console.log("设置成功");
-            temp = value;
-        }
-    });
-    obj.name = 'change';
-    console.log(obj.name);
-
+```js
+let obj = {
+  name: 'Tom'
+};
+let temp = 'base';
+Object.defineProperty(obj, 'name', {
+    get() {
+        console.log("读取成功");
+        return temp
+    },
+    set(value) {
+        console.log("设置成功");
+        temp = value;
+    }
+});
+obj.name = 'change';
+console.log(obj.name);
+```
 
 https://juejin.im/post/5acc17cb51882555745a03f8  
 
@@ -663,9 +642,9 @@ beforeDestroy -> destroyed
 # <a name="computed watch methods">computed watch methods用法，区别</a>[![bakTop](./img/backward.png)](#top)  
 [computed和watch的细节全面分析](https://segmentfault.com/a/1190000012948175)
 
-[Vue文档-watch](https://cn.vuejs.org/v2/api/#watch)
+[官网-watch](https://cn.vuejs.org/v2/api/#watch)
 
-[Vue文档-computed](https://cn.vuejs.org/v2/api/#computed)
+[官网-computed](https://cn.vuejs.org/v2/api/#computed)
 
 ## 用法、区别：
 * computed watch前两者自动追踪数据，执行相关函数，methods需手动调用；  
@@ -675,15 +654,18 @@ beforeDestroy -> destroyed
 
 * watch `监听`某个数据的变化，执行相关操作;无缓存性(页面重新渲染时值不变化也会执行); watch的对象必须事先声明  
 
+* 当需要进行数值计算，并且依赖于其它数据时，应该使用 computed，可以利用 computed 的缓存特性，  
 * 数据变化的同时进行异步操作或者是比较大的开销，那么watch为最佳选择  
 
 ## 基本使用：
 ```js
 // watch
-data: {
-  firstName: 'Foo',
-  lastName: 'Bar',
-  fullName: 'Foo Bar'
+data() {
+  return {
+    firstName: 'Foo',
+    lastName: 'Bar',
+    fullName: 'Foo Bar'
+  }
 },
 watch: {
   firstName(val) {
@@ -695,9 +677,11 @@ watch: {
 }
 
 //computed
-data: {
-  firstName: 'Foo',
-  lastName: 'Bar'
+data() {
+  return {
+    firstName: 'Foo',
+    lastName: 'Bar',
+  }
 },
 
 computed: {
@@ -727,7 +711,7 @@ computed: {
 
 ## watch：深度监听
 最初绑定的时候是不会执行的，要等到 `监听值改变`才执行监听计算;  
-但当设置`immediate: true`时就立即执行
+但当设置`immediate: true`时初始化的时候就会自动触发
 
 `deep: true` 监听复杂数据类型需用深度监听
 ```js
@@ -789,16 +773,12 @@ export default {
 ```
 `注意，不应该使用箭头函数来定义 watcher 函数 (例如 searchQuery: newValue => this.updateAutocomplete(newValue))。理由是箭头函数绑定了父级作用域的上下文，所以 this 将不会按照期望指向 Vue 实例，`
 
-
-
-
 # <a name="解决对象新增属性不能响应的问题">vm.$set() 解决对象新增属性不能响应的问题</a>[![bakTop](./img/backward.png)](#top)  
 [Vue文档-深入响应式原理](https://cn.vuejs.org/v2/guide/reactivity.html)
 
-在实例初始化的时候，遍历data里所有的属性，并使用 Object.defineProperty 把这些属性全部转为 getter/setter。
-实例初始化完之后再添加的数据，无法侦测。
-
-Vue 提供了 Vue.set (target,key,val)来实现为对象添加响应式属性
+在实例初始化的时候，遍历data里所有的属性，并使用 Object.defineProperty 把这些属性全部转为 getter/setter。  
+对于已经创建的实例，Vue 不允许动态添加根级别的响应式属性  
+但是，可以使用 Vue.set (object, propertyName, value)方法向嵌套对象添加响应式属性
 
 示例：
 ```vue
@@ -889,48 +869,61 @@ vm.items.splice(newLength)
 
 
 # <a name="组件中data为什么是一个函数">组件中 data 为什么是一个函数</a>[![bakTop](./img/backward.png)](#top)  
-为什么组件中的 data 必须是一个函数，然后 return 一个对象，而 new Vue 实例里，data 可以直接是一个对象？
-
-因为组件是用来复用的，且 JS 里对象是引用关系，如果组件中 data 是一个对象，那么这样作用域没有隔离，子组件中的 data 属性值会相互影响，  
-
-如果组件中 data 选项是一个函数，每次返回的都是一个新对象，组件实例之间的 data 属性值不会互相影响；而 new Vue 的实例，是不会被复用的，因此不存在引用对象的问题。
-
-```js
-    // data
-    data() {
-      return {
-        message: "子组件",
-        childName:this.name
-      }
-    }
-
-    // new Vue
-    new Vue({
-      el: '#app',
-      router,
-      template: '<App/>',
-      components: {App}
-    })
+[组件中的data为什么是函数](https://juejin.im/post/5e8dd5266fb9a03c703fb168#heading-9)
+```
+  为什么组件中的 data 必须是一个函数，然后 return 一个对象，而 new Vue 实例里，data 可以直接是一个对象？
 ```
 
-# <a name="v-if和v-show 的区别">v-if和v-show 的区别</a>[![bakTop](./img/backward.png)](#top)  
->
-    v-if是真正的条件渲染，因为它会确保在切换过程中条件块内的事件监听器和子组件适当地被销毁和重建；也是惰性的：切换状态时会造成 dom 的销毁和重建，初始渲染条件为 false 时，将不会渲染元素；
+如果组件里 data 直接写了一个对象的话，那么如果你在模板中多次声明这个组件，组件中的 data 会指向同一个引用。  
+此时如果在某个组件中对 data 进行修改，会导致其他组件里的 data 也被污染。 而如果使用函数的话，每个组件里的 data 会有单独的引用，这个问题就可以避免了。
 
-    v-show 只是简单的display控制显隐藏，不管初始条件如何，元素总会被渲染；
-    
-    v-if适用于很少改变条件的场景，v-show适用于频繁切换条件的场景。
+# <a name="v-if和v-show的区别">v-if和v-show的区别</a>[![bakTop](./img/backward.png)](#top)  
+[官网解释](https://cn.vuejs.org/v2/guide/conditional.html#v-if-vs-v-show)
+
+```html
+v-if 是“真正”的条件渲染，因为它会确保在切换过程中条件块内的事件监听器和子组件适当地被销毁和重建。
+
+v-if 也是惰性的：如果在初始渲染时条件为假，则什么也不做——直到条件第一次变为真时，才会开始渲染条件块。
+
+v-show 只是简单的display控制显隐藏，不管初始条件如何，元素总会被渲染；
+```
+v-if 有更高的切换开销，而 v-show 有更高的初始渲染开销。  
+因此，v-if适用于很少改变条件的场景，v-show适用于频繁切换条件的场景。
 
 # <a name="v-for 遍历避免同时使用 v-if">v-for 遍历避免同时使用 v-if</a>[![bakTop](./img/backward.png)](#top)  
-v-for 比 v-if 优先级高，如果每一次都需要遍历整个数组，将会影响速度，尤其是当只需要渲染很小一部分的时候，必要情况下应该替换成 computed 属性。
+[官网解释](https://cn.vuejs.org/v2/guide/conditional.html#v-if-%E4%B8%8E-v-for-%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8)
+
+[风格指南-避免 v-if 和 v-for 用在一起](https://cn.vuejs.org/v2/style-guide/#%E9%81%BF%E5%85%8D-v-if-%E5%92%8C-v-for-%E7%94%A8%E5%9C%A8%E4%B8%80%E8%B5%B7%E5%BF%85%E8%A6%81)
+
+v-for 具有比 v-if 更高的优先级; 
 
 推荐：
-```vue
+```html
+isShow为false时，不会渲染列表，
+如果将 v-if="isShow" 放在li标签里，列表依旧会渲染
+<template>
+<ul v-if="isShow">
+  <li
+    v-for="item in lists"
+    :key="item.id"
+  >
+    {{ item.name }}
+  </li>
+</ul>
+</template>
+```
+
+当只需要渲染很小一部分的时候，可以通过 computed 过滤掉无需渲染的列表。
+而不是在 li 标签里使用  v-if="item.isActive"   
+
+推荐：
+```html
 <template>
 <ul>
   <li
     v-for="item in activeLists"
-    :key="item.id">
+    :key="item.id"
+  >
     {{ item.name }}
   </li>
 </ul>
@@ -967,69 +960,81 @@ export default{
 ```
 
 # <a name="slot">slot插槽</a>[![bakTop](./img/backward.png)](#top)  
+[官网-插槽](https://cn.vuejs.org/v2/guide/components-slots.html)
+
 父组件来控制 插槽显示状态、内容  
 子组件控制 插槽位置
 
+### 普通插槽
+```html
+//父组件
+<template>
+  <div>
+    我是父组件
+    <slot-one>
+      <p style="color:red">我是父组件插槽内容</p>
+    </slot-one>
+  </div>
+</template>
+<script>
+import slotOne from '@/pages/slotOne.vue'
 
-普通插槽
->
-    //父组件
-    <template>
-      <div>
-        我是父组件
-        <slot-one>
-          <p style="color:red">我是父组件插槽内容</p>
-        </slot-one>
-      </div>
-    </template>
-    import slotOne from '@/pages/slotOne.vue'
+export default {
+  components:{
+    slotOne
+  }
+}
+</script>
 
-    export default {
-      components:{
-        slotOne
-      }
-    }
+//子组件：slotOne.vue
+<template>
+  <div>
+    <div>我是slotOne组件</div>
+    <slot></slot>
+  </div>
+</template>
+```
 
-    //子组件：slotOne.vue
-    <template>
-      <div>
-        <div>我是slotOne组件</div>
-        <slot></slot>
-      </div>
-    </template>
+### 具名插槽
 
-具名插槽
->
-    //父组件
-    <template>
-      <div>
-        我是父组件
-        <slot-two>
-          <p>我是普通插槽</p>
-          <template slot="header">
-            <p>我是name为header的slot</p>
-          </template>
-          <p slot="footer">我是name为footer的slot</p>
-        </slot-two>
-      </div>
-    </template>
-    import slotTwo from '@/pages/slotTwo.vue'
-    export default {
-      components:{
-        slotTwo
-      }
-    }
+父组件使用：  
+* slot="header"
+* v-slot:header (注意 v-slot 只能添加在 <template> 上)  
+  >v-slot:缩写# ；等同于 #header
 
-    //slotTwo.vue
-    <template>
-      <div>
-        <div>slottwo</div>
-        <slot name="header"></slot>
-        <slot></slot>
-        <slot name="footer"></slot>
-      </div>
-    </template>
+```html
+//父组件
+<template>
+  <div>
+    我是父组件
+    <slot-two>
+      <p>我是普通插槽</p>
+      <template slot="header">
+        <p>我是name为header的slot</p>
+      </template>
+      <p slot="footer">我是name为footer的slot</p>
+    </slot-two>
+  </div>
+</template>
+<script>
+import slotTwo from '@/pages/slotTwo.vue'
+export default {
+  components:{
+    slotTwo
+  }
+}
+</script>
 
+//slotTwo.vue
+<template>
+  <div>
+    <div>slottwo</div>
+    <slot name="header"></slot>
+    <slot></slot>
+    <slot name="footer"></slot>
+  </div>
+</template>
+```
 
 # <a name="组件中key作用">组件中key作用</a>[![bakTop](./img/backward.png)](#top)  
 
@@ -1044,12 +1049,16 @@ export default{
 为了给 Vue 一个提示，以便它能跟踪每个节点的身份，从而重用和重新排序现有元素，你需要为每项提供一个唯一 key 属性：
 ```
 
-[Vue API-key](https://cn.vuejs.org/v2/api/#key)
+请用字符串或数值类型的值作为 v-for 的 key。
+
+[VueAPI-key](https://cn.vuejs.org/v2/api/#key)
 ```html
 key 的特殊属性主要用在 Vue 的虚拟 DOM 算法，在新旧 nodes 对比时辨识 VNodes。如果不使用 key，Vue 会使用一种最大限度减少动态元素并且尽可能的尝试修复/再利用相同类型元素的算法。使用 key，它会基于 key 的变化重新排列元素顺序，并且会移除 key 不存在的元素。
 
 有相同父元素的子元素必须有独特的 key。重复的 key 会造成渲染错误
 ```
+
+* 总结： 
 
 key是给每一个vnode的唯一id,可以依靠key,更准确, 更快的拿到oldVnode中对应的vnode节点。
 
@@ -1059,16 +1068,21 @@ key是给每一个vnode的唯一id,可以依靠key,更准确, 更快的拿到old
 2. 更快  
 利用key的唯一性生成map对象来获取对应节点，比遍历方式更快。 
 
-为了标识独有dom，key值一般我们取类似id这种唯一且 不变的变量，如果仅为了区分dom，切元素不会频繁更新（增删改）则可使用index索引
 
 * 为什么某些情况(增删改)不能用 index 作为 key  
 操作数据更新时有bug，如删除某项时，删除了另一项
-[参考](https://www.zhihu.com/question/61064119/answer/766607894)
 
-# <a name="虚拟DOM">虚拟DOM</a>[![bakTop](./img/backward.png)](#top)  
+[Vue2.0 v-for 中 :key 到底有什么用？](https://www.zhihu.com/question/61064119/answer/766607894)
+
+[为什么 Vue 中不要用 index 作为 key？（diff 算法详解）](https://juejin.im/post/5e8694b75188257372503722)
+
+为了标识独有dom，key值一般我们取类似id这种唯一且 不变的变量，如果仅为了区分dom，元素不会频繁更新, 则可使用index索引
+
+
+# <a name="虚拟DOM">虚拟 DOM</a>[![bakTop](./img/backward.png)](#top)  
 [参考](https://www.jianshu.com/p/af0b398602bc?tdsourcetag=s_pctim_aiomsg)
 
-[参考](https://juejin.im/post/5d36cc575188257aea108a74#heading-1)
+[参考](https://juejin.im/post/5d36cc575188257aea108a74)
 
 
 # <a name="Vue模板编译过程">Vue模板编译过程</a>[![bakTop](./img/backward.png)](#top) 
@@ -1141,89 +1155,27 @@ methods: {
     this.msg = "b"
     console.log(this.$refs.msgDiv.textContent) //'a' 
     this.$nextTick(function(){
-        console.log(this.$refs.msgDiv.textContent) // 'b'
+      console.log(this.$refs.msgDiv.textContent) // 'b'
     })
   }
 }
 ```
+
+因为 $nextTick() 返回一个 Promise 对象，所以可以使用async/await：
+
+```js
+async changeMsg() {
+  this.msg = "b"
+  console.log(this.$refs.msgDiv.textContent) //'a' 
+  await this.$nextTick();
+  console.log(this.$refs.msgDiv.textContent) // 'b'
+}
+```
+
 Vue在观察到数据变化时并不是直接更新DOM，而是开启一个队列，并缓冲在同一事件循环中发生的所有数据改变。在缓冲时会去除重复数据，从而避免不必要的计算和DOM操作。然后，在下一个事件循环tick中，Vue刷新队列并执行实际工作。
 
 
 `总之，在数据变化后要执行的某个操作，而这个操作需要使用随数据改变而改变的DOM结构的时候，这个操作都应该放进Vue.nextTick()的回调函数中。`
-
-# <a name="页面滚动">页面滚动</a>[![bakTop](./img/backward.png)](#top)  
-
-切换路由时滚到头部
-```js
-const router = new Router({
-  routes: [...],
-  scrollBehavior (to, from, savedPosition) {
-    // return 期望滚动到哪个的位置
-    // savedPosition当且仅当在浏览器前进后退按钮触发时才可用
-    if (to.hash) { //模拟“滚动到锚点”的行为：
-      return {
-        selector: to.hash
-      }
-    }
-    if (savedPosition) {
-      //如果返回savedPosition,那么在点击后退按钮时就会表现的像原生浏览器一样，返回的页面会滚动过到之前按钮点击跳转的位置
-      return savedPosition
-    } else {
-      return { x: 0, y: 0 }
-    }
-  }
-})
-```
-异步滚动
-```js
-scrollBehavior(to, from, savedPosition) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve({ x: 0, y: 0 })
-    }, 500)
-  })
-} 
-
-```
-
-新增内容时，滚到底部（如聊天）
-```js
-<div class="scroll-here" ref="scrollHere"></div>
-
-// 监听lists列表 ，变化就触发滚动
-watch: {
-  lists(){
-    setTimeout(this.scrollBottom,1000)
-  }
-},
-methods: {
-  scrollBottom() {
-    this.$nextTick(() => {
-      /* 无效？？？
-      this.$refs.lists.scrollTop = this.$refs.lists.scrollHeight
-      document.body.scrollTop = this.$refs.lists.scrollHeight
-      ; */
-      // document.querySelector('.scroll-here').scrollIntoView()
-      this.$refs.scrollHere.scrollIntoView()
-    });
-  },
-}
-```
-
-```js
-document.documentElement.scrollTop = 300
-
-this.$nextTick(() => {
-  // ref绑定元素不能是display:none;
-  // 在this.$nextTick里执行
-  <!-- this.$refs.DOM.scrollBy(0, 300) -->
-  this.$refs.DOM.scrollTo(0, 300)
-})
-
-document.getElementById('ID').scrollIntoView()
-
-window.scrollTo(0, 0)
-```
 
 # <a name="keep-alive">keep-alive</a>[![bakTop](./img/backward.png)](#top)  
 [keep-alive](https://cn.vuejs.org/v2/api/#keep-alive)
@@ -1268,14 +1220,16 @@ export default[
   } 
 ]
 
+<div id="app">
   <!--会被缓存的组件-->
-<keep-alive>
-  <router-view v-if="$route.meta.keepAlive"></router-view>
-</keep-alive>
+  <keep-alive>
+    <router-view v-if="$route.meta.keepAlive"></router-view>
+  </keep-alive>
 
-<!--不会被缓存的组件-->
-<router-view v-if="!$route.meta.keepAlive">
-</router-view>
+  <!--不会被缓存的组件-->
+  <router-view v-if="!$route.meta.keepAlive">
+  </router-view>
+</div>
 ```
 
 
@@ -1744,49 +1698,70 @@ popstate
 
  支持所有 JavaScript 运行环境，如 Node.js 服务器端。如果发现没有浏览器的 API，路由会自动强制进入这个模式.
 
-##  <a name="切换页面时自动滚动到顶部">切换页面时自动滚动到顶部, 设置页面title</a>[![bakTop](./img/backward.png)](#top)  
->
-    new Router({
-      scrollBehavior: () => ({ y: 0 }), //路由跳转后页面回到顶部
-      routes: [...]
-    })
+##  <a name="切换页面时自动滚动到顶部">切换页面时自动滚动到顶部</a>[![bakTop](./img/backward.png)](#top)  
+```js
+//路由跳转后页面回到顶部
+new Router({
+  routes: [...],
+  scrollBehavior: () => ({ y: 0 }),
+})
 
-    new Router({
-      routes: [...],
-      scrollBehavior (to, from, savedPosition) {
-        // return 期望滚动到哪个的位置
+//期望滚动到哪个的位置
+new Router({
+  routes: [...],
+  scrollBehavior (to, from, savedPosition) {
+    // savedPosition当且仅当在浏览器前进后退按钮触发时才可用
 
-        if (to.hash) { //模拟“滚动到锚点”的行为：
-          return {
-            selector: to.hash
-          }
-        }
-        if (savedPosition) {
-          return savedPosition
-        } else {
-          return { x: 0, y: 0 }
-        }
+    if (to.hash) { //模拟“滚动到锚点”的行为：
+      return {
+        selector: to.hash
       }
-    })
->
+    }
 
-    const router = new Router({
-      routes:[...]
-    })
-
-    router.beforeEach((to, from, next) => {
-      window.scrollTo(0, 0)//切换页面时滚动条自动滚动到顶部
-
-      if (to.meta.title) {//判断是否有标题
-        //设置页面title
-        document.title = to.meta.title
+    if (savedPosition) {
+      //如果返回savedPosition,那么在点击后退按钮时就会表现的像原生浏览器一样，返回的页面会滚动过到之前按钮点击跳转的位置
+      return savedPosition
+    } else {
+      if (from.meta.keepAlive) { //如果 keepAlive 的话，保存停留的位置
+        from.meta.savedPosition = document.body.scrollTop
       }
+      return { x: 0, y: to.meta.savedPosition || 0 }
+      // return { x: 0, y: 0 }
+    }
+  }
+})
+```
+其他滚动： 
+* window.scrollTo(0, 0)  
+```js
+window.scrollTo({ 
+  top: 0, 
+  behavior: "smooth" //平滑滚动
+});
+```
 
-      next()//执行进入路由，如果不写就不会进入目标页
-    })
+* document.documentElement.scrollTop = 0
 
-    export default router
 
+##  <a name="切换页面时设置title">切换页面时设置title</a>[![bakTop](./img/backward.png)](#top)  
+```js
+const router = new Router({
+  routes:[...]
+})
+
+router.beforeEach((to, from, next) => {
+  window.scrollTo(0, 0)//切换页面时滚动条自动滚动到顶部
+
+  if (to.meta.title) {//判断是���有标题
+    //设置页面title
+    document.title = to.meta.title
+  }
+
+  next()//执行进入路由，如果不写就不会进入目标页
+})
+
+export default router
+```
 
 # <a name="路由权限">路由权限</a>[![bakTop](./img/backward.png)](#top)  
 https://juejin.im/post/5b5bfd5b6fb9a04fdd7d687a
@@ -2403,8 +2378,9 @@ export default {
 ```
 
 ### 动态指令参数
-```js
+```html
 <button @[clickType]="myFunc">{{clickType}}</button>
+<script>
 data(){
   return {
     clickType: 'click'
@@ -2415,10 +2391,8 @@ methods: {
     this.clickType = this.clickType === 'click' ? 'dblclick' : 'click';
   }
 }
-
+</script>
 ```
-
-
 
 ## 代码层面的优化
 
@@ -2426,22 +2400,23 @@ methods: {
 * computed 和 watch  区分使用场景
 * v-for 遍历必须为 item 添加 key，且避免同时使用 v-if
 
-* 长列表性能优化
-
-  ```js
-  /* Vue 会通过 Object.defineProperty 对数据进行劫持，来实现视图响应数据的变化，然而有些时候我们的组件就是纯粹的数据展示，不会有任何改变 
-  通过 Object.freeze 方法来冻结一个对象,可以减少组件初始化的时间
-  */
-  export default {
-    data: () => ({
+* 长列表性能优化  
+Vue 会通过 Object.defineProperty 对数据进行劫持，来实现视图响应数据的变化，然而有些时候我们的组件就是纯粹的数据展示，不会有任何改变  
+通过 Object.freeze 方法来冻结一个对象,可以减少组件初始化的时间
+```js
+export default {
+  data(){
+    return {
       users: {}
-    }),
-    async created() {
-      const users = await axios.get("/api/users");
-      this.users = Object.freeze(users);
     }
-  };
-  ```
+  },
+  async created() {
+    const users = await axios.get("xxx");
+    this.users = Object.freeze(users);
+  }
+};
+```
+
 * 事件的销毁  
     ```js
     /* 在 js 内使用 addEventListener 等方式是不会自动销毁的 */
