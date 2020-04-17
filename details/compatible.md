@@ -21,7 +21,7 @@
 
 * <a href="#"></a>
 # <a name="window.scrollTo、window.scrollBy、scrollIntoView()">window.scrollTo、window.scrollBy、scrollIntoView()</a>
-
+绝对滚动：左上角（0，0）
 >
     window.scrollTo(0, 0);
 

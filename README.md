@@ -859,6 +859,50 @@ fr.onprogress
       }
     })
 
+## 
+下载图片
+```html
+  <button id="downloadImg">下载图片</button>
+<script>
+let btn=document.getElementById('downloadImg');
+btn.onclick = downloadImg;
+
+// 通过src获取图片的blob对象
+function getImageBlob(url, cb) {
+  let xhr = new XMLHttpRequest();
+  xhr.open("get", url, true);
+  xhr.responseType = "blob";
+  xhr.onload =  () => {
+    console.log(xhr);
+      if (xhr.status == 200) {
+        cb(xhr.response);
+      }
+  };
+  xhr.send();
+}
+// 点击下载图片
+function downloadImg(){
+  console.log(2);
+  let reader = new FileReader();
+  getImageBlob(
+    'https://b-gold-cdn.xitu.io/v3/static/img/simplify-logo.3e3c253.svg', 
+    function(blob){
+      // 读取来看下下载的内容 最终生成的字符串
+      reader.readAsDataURL(blob);
+      // 生成下载用的URL对象
+      let url = URL.createObjectURL(blob);
+      // 生成一个a标签，并模拟点击，即可下载，批量下载同理
+      let downloadAnchorNode = document.createElement('a')
+      downloadAnchorNode.setAttribute("href", url);
+      downloadAnchorNode.setAttribute("download", "下载图片")
+      downloadAnchorNode.click();
+      downloadAnchorNode.remove();
+  })
+};
+
+  </script>
+```
+
 ## <a name="打印">打印</a>
 [参考](https://www.jianshu.com/p/d19d66ef8d7e)
 

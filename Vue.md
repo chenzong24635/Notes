@@ -442,11 +442,14 @@ export default {
 
 
 # <a name="生命周期">生命周期</a>[![bakTop](./img/backward.png)](#top)  
+[官网-生命周期钩子](https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%92%A9%E5%AD%90)
+
 [Vue2.0生命周期](https://segmentfault.com/a/1190000008010666)  
 
 [Vue父子组件生命周期执行顺序及钩子函数的个人理解](https://www.cnblogs.com/yuliangbin/p/9348156.html)
 
 [「进击的前端工程师」从源码解读Vue生命周期，让面试官对你刮目相看](https://juejin.im/post/5d1b464a51882579d824af5b)
+
 
 ## 生命周期
 Vue 实例有一个完整的生命周期，也就是从开始创建、初始化数据、编译模版、挂载 Dom -> 渲染、更新 -> 渲染、卸载等一系列过程，我们称这是 Vue 的生命周期,有时也叫它们生命周期钩子。
@@ -504,6 +507,8 @@ btn.addEventListener("click",function(){
 * beforeDestroy: 实例销毁前发生；此时，实例仍然完全可用。可以在这时进行善后收尾工作，比如清除计时器。
 
 * destroyed：销毁完成后发生；对data的改变不会再触发周期函数，说明此时vue实例已经解除了事件监听以及和dom的绑定，但是dom结构依然存在
+
+* errorCaptured： 当捕获一个来自子孙组件的错误时被调用
 
 
 ## 生命周期的一些使用方法：
@@ -870,6 +875,9 @@ vm.items.splice(newLength)
 
 # <a name="组件中data为什么是一个函数">组件中 data 为什么是一个函数</a>[![bakTop](./img/backward.png)](#top)  
 [组件中的data为什么是函数](https://juejin.im/post/5e8dd5266fb9a03c703fb168#heading-9)
+
+[风格指南](https://cn.vuejs.org/v2/style-guide/#%E7%BB%84%E4%BB%B6%E6%95%B0%E6%8D%AE%E5%BF%85%E8%A6%81)
+
 ```
   为什么组件中的 data 必须是一个函数，然后 return 一个对象，而 new Vue 实例里，data 可以直接是一个对象？
 ```
@@ -879,6 +887,8 @@ vm.items.splice(newLength)
 
 # <a name="v-if和v-show的区别">v-if和v-show的区别</a>[![bakTop](./img/backward.png)](#top)  
 [官网解释](https://cn.vuejs.org/v2/guide/conditional.html#v-if-vs-v-show)
+
+
 
 ```html
 v-if 是“真正”的条件渲染，因为它会确保在切换过程中条件块内的事件监听器和子组件适当地被销毁和重建。
@@ -966,12 +976,14 @@ export default{
 子组件控制 插槽位置
 
 ### 普通插槽
+一个不带 name 的 \<slot> 出口会带有隐含的名字“default”
+
 ```html
 //父组件
 <template>
   <div>
     我是父组件
-    <slot-one>
+    <slot-one >
       <p style="color:red">我是父组件插槽内容</p>
     </slot-one>
   </div>
@@ -995,11 +1007,44 @@ export default {
 </template>
 ```
 
-### 具名插槽
+### 后备内容
+有时为一个插槽设置具体的后备 (也就是默认的) 内容是很有用的，它只会在没有提供内容的时候被渲染。
+
+```html
+//父组件
+<template>
+  <div>
+    我是父组件
+    <slot-one></slot-one> <!-- 此时会显示子组件的 后备内容-->
+    <slot-one>我不当备胎</slot-one>
+  </div>
+</template>
+<script>
+import slotOne from '@/pages/slotOne.vue'
+
+export default {
+  components:{
+    slotOne
+  }
+}
+</script>
+
+//子组件：slotOne.vue
+<template>
+  <div>
+    <div>我是slotOne组件</div>
+    <slot-one>我是备胎</slot-one>
+  </div>
+</template>
+```
+
+
+### 具名插槽 ,作用域插槽
+作用域插槽：让插槽内容能够访问子组件中才有的数据
 
 父组件使用：  
 * slot="header"
-* v-slot:header (注意 v-slot 只能添加在 <template> 上)  
+* v-slot:header (注意 v-slot 只能添加在 \<template> 上)  
   >v-slot:缩写# ；等同于 #header
 
 ```html
@@ -1007,31 +1052,38 @@ export default {
 <template>
   <div>
     我是父组件
-    <slot-two>
+    <slot-one>
       <p>我是普通插槽</p>
       <template slot="header">
-        <p>我是name为header的slot</p>
+        <p>我是名为header的slot</p>
       </template>
-      <p slot="footer">我是name为footer的slot</p>
-    </slot-two>
+      <p slot="footer">我是名为footer的slot</p>
+
+      <template v-slot:otherSlot="slotProps">
+        访问 otherSlot插槽 的数据：{{slotProps}}
+      </template>
+    </slot-one>
   </div>
 </template>
 <script>
-import slotTwo from '@/pages/slotTwo.vue'
+import slotOne from '@/pages/slotOne.vue'
 export default {
   components:{
-    slotTwo
+    slotOne
   }
 }
 </script>
 
-//slotTwo.vue
+//子组件：slotOne.vue
 <template>
   <div>
-    <div>slottwo</div>
+    <div>我是slotOne组件</div>
     <slot name="header"></slot>
     <slot></slot>
     <slot name="footer"></slot>
+
+    <p>----</p>
+    <slot name="slotProps" :user="user" num="1"></slot>
   </div>
 </template>
 ```
@@ -1723,10 +1775,9 @@ new Router({
       return savedPosition
     } else {
       if (from.meta.keepAlive) { //如果 keepAlive 的话，保存停留的位置
-        from.meta.savedPosition = document.body.scrollTop
+        from.meta.savedPosition = document.documentElement.scrollTop
       }
       return { x: 0, y: to.meta.savedPosition || 0 }
-      // return { x: 0, y: 0 }
     }
   }
 })
@@ -2323,7 +2374,7 @@ export default {
 * Stateless(无状态)： 没有响应式数据
 * Instanceless(无实例)：组件自身没有实例，即没有 this 上下文
 
-特点：渲染开销低
+特点：渲染开销低，对性能有好处
 
 应用：  
 当组件没有管理任何状态，也没有监听任何传递给它的状态，也没有生命周期方法。实际上，它只是一个接受一些 prop 的函数。在这样的场景下，我们可以将组件标记为 functional。
