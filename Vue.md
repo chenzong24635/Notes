@@ -76,8 +76,10 @@
 * <a href="#vue-cli2快速创建项目">vue-cli2快速创建项目</a>
 * <a href="#vue-cli3配置">vue-cli3配置</a>
 * <a href="#静态资源处理">静态资源处理：图片等</a>
+
 * <a href="#打包">打包时常见问题及解决</a>
 * <a href="#插件">插件</a>
+  * <a href="#全局引入 less 变量">全局引入 less 变量</a>
 * <a href="#其他">其他</a>
   * <a href="#rem">rem</a>
   * <a href="#"></a>
@@ -2925,7 +2927,23 @@ process.env.BASE_URL + 'img/temp.jpg'
     使用帮助：nginx -h
 
 # <a name="插件">插件</a>[![bakTop](./img/backward.png)](#top)  
+## <a name="全局引入 less 变量">全局引入 less 变量</a>[![bakTop](./img/backward.png)](#top)  
+```vue add style-resources-loader```  安装 style-resources-loader
+
+安装完成之后，命令行会让你选择预处理器，我们选择 less!
+
+安装完预处理器 会在项目的 vue.config.js 里面生成一段代码，我们只需要将 less 文件路径放入其中
+```js
+pluginOptions: {
+    'style-resources-loader': {
+      preProcessor: 'less',
+      patterns: [path.resolve(__dirname, 'src/assets/css/index.less')]
+    }
+  }
+```
+
 [Vue资源精选(组件、插件...)](http://vue.awesometiny.com/)
+
 
 ## [vue-baidu-map(百度地图)](https://github.com/Dafrok/vue-baidu-map)
 

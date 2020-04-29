@@ -1,4 +1,15 @@
+# insertAdjacentHTML
+insertAdjacentHTML(position, text) 将指定的文本解析为 Element 元素，并将结果节点插入到DOM树中的指定位置。它不会重新解析它正在使用的元素，因此它不会破坏元素内的现有元素。这避免了额外的序列化步骤，使其比直接使用innerHTML操作更快。
+  beforebegin：元素自身的前面。  
+  afterbegin：插入元素内部的第一个子节点之前。  
+  beforeend：插入元素内部的最后一个子节点之后。  
+  afterend：元素自身的后面。  
 
+安全问题
+使用 insertAdjacentHTML 插入用户输入的HTML内容的时候，需要转义之后才能使用。
+如果只是为了插入文本内容（而不是HTML节点），不建议使用这个方法，建议使用node.textContent 或者 node.insertAdjacentText()。因为这样不需要经过HTML解释器的转换，性能会好一点。
+
+# CustomEvent
 
 # IntersectionObserver 判断元素是否进入了"视口"（viewport）
 [详情](http://www.ruanyifeng.com/blog/2016/11/intersectionobserver_api.html)

@@ -524,6 +524,7 @@ https://www.jianshu.com/p/5f9027722204
     cloneNode(boolean)复制节点： newNode=oldNode.cloneNode(boolean) ; 
       参数可选复制节点,接受一个布尔值参数， true表示深复制（复制节点及其所有子节点），  false表示浅复制（复制节点本身，不复制子节点）;默认是false 。
 
+
 * 查找节点
 >
     document.querySelector() // 查找第一个 （id,className, tgaName)

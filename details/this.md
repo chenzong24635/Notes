@@ -7,6 +7,7 @@
 
 [5种this绑定全面解析](https://github.com/yygmind/blog/issues/20)
 
+https://mp.weixin.qq.com/s/1iw1MBfitockO5U0ZJIeXQ
 
 this的值是在执行的时候才能确认，定义的时候不能确认—— 因为this是执行上下文环境的一部分，而执行上下文需要在代码执行之前确定，而不是定义的时候
 
