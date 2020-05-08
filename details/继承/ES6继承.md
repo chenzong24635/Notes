@@ -1,0 +1,66 @@
+# <a name="ES6 继承">ES6 继承</a>
+
+ES6中引入了class关键字，class可以通过extends关键字实现继承  
+class关键字只是原型的语法糖，JavaScript继承仍然是基于原型实现的。
+
+```js  
+class Super{
+  constructor (myname){
+    this.myname = myname
+  }
+  static walk(){ //静态函数
+    //this.name是函数名，不是参数name
+    console.log('walk，','调用者:' + this.name)
+  }
+  sayName(){
+    console.log(this.myname)
+  }
+}
+
+class Sub extends Super{
+  constructor(myname, age){ //这个方法会被默认添加,可省略
+    super(myname)//调用父类的constructor()
+    //子类必须在constructor方法中调用super方法，否则新建实例时会报错。
+    //这是因为子类自己的this对象，必须先通过父类的构造函数完成塑造，得到与父类同样的实例属性和方法，然后再对其进行加工，加上子类自己的实例属性和方法。
+    //如果不调用super方法，子类就得不到this对象。
+    this.age = age
+  }
+}
+
+let super1 = new Super('我是super1', 0)
+let sub1 = new Sub('我是sub1', 11)
+let sub2 = new Sub('我是sub2', 22)
+
+Super.walk() //walk，函数:Super
+Sub.walk() //walk，函数:Sub
+
+console.log(sub1); // {myname: "我是sub1", age: 11}
+console.log(sub2); // {myname: "我是sub2", age: 22}
+
+super1.sayName()//我是super1  
+sub1.sayName()//我是sub1
+```
+
+extends继承的核心代码如下，其实现和上述的寄生组合式继承方式一样
+```js
+function _inherits(subType, superType) {
+  // 创建对象，创建父类原型的一个副本
+  // 增强对象，弥补因重写原型而失去的默认的constructor 属性
+  // 指定对象，将新创建的对象赋值给子类的原型
+  subType.prototype = Object.create(superType && superType.prototype, {
+    constructor: {
+      value: subType,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  });
+  
+  if (superType) {
+    Object.setPrototypeOf 
+      ? Object.setPrototypeOf(subType, superType) 
+      : subType.__proto__ = superType;
+  }
+}
+
+```

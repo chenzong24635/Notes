@@ -319,7 +319,7 @@ div.item*3>{$}
     * [Array](/details/Array.md)
     * [Math](/details/Math.md)
     * [Date](/details/Date.md)
-    * [Function??](/details/Function.md)
+    * [Function](/details/Function.md)
     * [Set、Map](/details/Set、Map.md)
   * --
   * [JS遍历方法](/details/Iterate.md) 

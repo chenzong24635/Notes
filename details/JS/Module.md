@@ -10,27 +10,104 @@
 * 块的内部数据与实现是私有的, 只是向外部暴露一些接口(方法)与外部其它模块通信
 
 模块化的好处
+* 可复用性
+* 可维护性
 * 避免命名冲突(减少命名空间污染)
 * 更好的分离, 按需加载
-* 更高复用性
-* 高可维护
 
-### IIFE
-使用自执行函数来编写模块化，特点：在一个单独的函数作用域中执行代码，避免变量冲突。
 
+| CommonJs | AMD | CMD | ES6 |
+|:--|:--|:--|:--|
+|1 |2|3|45|
+
+### 全局function模式: 函数封装
+```js
+function fn1(){
+  //do something
+}
+function fn2(){
+  //do something
+}
+```
+
+优点
+  * 有一定的功能隔离和封装
+
+缺点 
+* 污染全局变量
+* 模块之间的关系模糊
+
+### namespace模式 : 对象封装
+```js
+let module1 = {
+  fn1(){},
+  fn2(){},
+}
+```
+
+优点: 
+ * 减少了全局变量，一定程度上优化了命名冲突  
+ * 有一定的模块封装和隔离
+
+缺点: 
+  * 并没有实质上改变命名冲突的问题
+  * 外部可以随意修改内部成员变量，还是容易产生意外风险
+
+### IIFE: 自执行函数
+在一个单独的函数作用域中执行代码，避免变量冲突。
+```js
 (function(){
+  // do something
+})()
+```
+
+引入依赖
+```js
+(function(window){
+  function fn1() {}
+  function fn2() {}
+
+  function fn0() {} //内部私有方法
+
+  //导出暴露的属性，方法
+  window.module1 = { fn1, fn2 }
+})(window)
+
+console.log(module1) // {fn1: f fn1(), fn2: f fn2()}
+```
+或者
+```js
+let module1 = (function(){
+  function fn1() {}
+  function fn2() {}
+  return { fn1, fn2 }
 })()
 
-### CommonJS
-CommonJS的核心思想就是通过 require 方法来同步加载所要依赖的其他模块，然后通过exports 或者 module.exports 来导出需要暴露的接口
+console.log(module1) // {fn1: f fn1(), fn2: f fn2()}
+```
 
+
+优点
+  * 实现了基本的封装
+  * 只暴露对外的方法操作，有了 public 和 private 的概念
+缺点
+  * 模块依赖关系模糊
+
+### 模块规范
+
+### CommonJS
+主要用于服务端Nodejs 中, 每个文件就是一个模块，有自己的作用域。在一个文件里面定义的变量、函数、类，都是私有的，对其他文件不可见。在服务器端，模块的加载是运行时同步加载的；在浏览器端，模块需要提前编译打包处理。
+
+CommonJS的核心思想就是通过 require 方法来同步加载所要依赖的其他模块，然后通过exports 或者 module.exports 来导出需要暴露的接口;  
+
+特点
 * 一个文件就是一个模块，拥有单独的作用域  
 * 普通方式定义的 变量、函数、对象都属于该模块内  
 * 引入模块：require(xxx)
-* 导出模块：module.exports = value 或 exports.xxx = value
+* 导出模块：module.exports = xxx 或 module.exports.xxx = xxx
 
 ```js
-module.exports.name = 'tom';
+// module.exports.name = 'tom';
 module.exports = {
   name:'tom'
 };
@@ -42,22 +119,44 @@ var mod = require('./index');
 
 模块可以多次加载，但只会在第一次加载的时候运行一次，然后运行结果就被缓存了，以后再加载，就直接读取缓存结果；
 
-模块的加载顺序，按照代码的出现顺序是同步加载的;
+模块的加载顺序，按照代码的出现顺序是`同步加载`的;
 
 
 ### AMD
-* 异步加载模块，允许指定回调函数
-* 在使用 require.js 的时候，必须提前加载所有模块。
-* 引入模块：require([module], callback)
-* 导出模块：define(id, [depends], callback)
-
 [require.js](https://github.com/requirejs/requirejs)
+
+RequireJS的基本思想是，通过define方法，将代码定义为模块；通过require方法，实现代码的模块加载。
+
+特点
+* `异步加载`模块，允许指定回调函数
+* 在使用 require.js 的时候，必须提前加载所有模块。
+* 引入模块：require([moduleName], callback)
+  >
+      moduleName,引入的模块数组
+      callback，即为依赖模块加载成功之后执行的回调函数（前端异步的通用解决方案），
+
+* 导出模块：define(id, [dependence], callback)
+  >
+      id,一个可选参数，说白了就是给模块取个名字，但是却是模块的唯一标识。如果没有提供则取脚本的文件名
+      dependence，引入的模块数组
+      callback，工厂方法，模块初始化的一些操作。如果是函数，应该只被执行一次。如果是对象，则为模块的输出值
+
+
 
 ### CMD 
 模块的加载是异步的，通过按需加载的方式，而不是必须在模块开始就加载所有的依赖。  
 CMD规范整合了CommonJS和AMD规范的特点。
     
 [sea.js](https://github.com/seajs/seajs)
+
+```js
+//定义没有依赖的模块
+define(function(require, exports, module){
+  exports.xxx = value
+  module.exports = value
+})
+
+```
 
 ### ES6modules
 

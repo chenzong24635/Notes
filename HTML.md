@@ -43,11 +43,98 @@
     * 其他
       
   </details> 
+* <a href="#通过meta代码强制浏览器使用WebKit内核极速模式">通过meta代码强制浏览器使用WebKit内核极速模式</a>
 * <a href="#IE hack">IE hack</a>
 * <a href="#aria与role">aria与role</a>
 * <a href="#CSS和JS的位置会影响页面效率，为什么">CSS和JS的位置会影响页面效率，为什么？</a>
 * <a href="#未使用自适应写的PC页面在手机上显示不全的问题">未使用自适应写的PC页面在手机上显示不全的问题</a>
 </details>
+
+# HTML 5.2新增标签、属性
+[What’s New in HTML 5.2?](https://bitsofco.de/whats-new-in-html-5-2/)
+
+### \<dialog\>标签 -- 创建对话框
+默认是隐藏的
+
+#### 属性
+* open 显示
+
+### 方法
+* show() 弹框形式显示
+* close() 关闭
+* showModal() 模态框形式显示
+
+### 使用
+```html
+<button id="open">Open Dialog</button>
+<button id="close">Close Dialog</button>
+
+<dialog id="dialog">
+  <h2>Dialog Title</h2>
+  <p>Dialog content and other stuff will go here</p>
+</dialog>
+
+<script>
+const dialog = document.getElementById("dialog");
+
+document.getElementById("open").addEventListener("click", () => {
+  dialog.show();
+});
+
+document.getElementById("close").addEventListener("click", () => {
+  dialog.close();
+});
+</script>
+
+```
+
+### allowpaymentrequest 属性 -- 允许 iframe 内部网页使用  Payment Request API
+Payment Request API是结账的形式本地替代。它旨在通过将检索付款信息的处理移到浏览器上，而不是将每个网站上的单独结帐表格移到浏览器，从而为用户提供一种标准化且一致的网上支付方法。
+
+在HTML 5.2之前，无法通过嵌入文档中的iframe发出这些付款请求。这使得第三方嵌入式支付解决方案（例如，Stripe，Paystack）基本上无法利用此API，因为它们的支付接口通常在iframe中处理。
+
+### rel="apple-touch-icon" --  iOS设置网页 icon
+
+```js
+<link rel="apple-touch-icon" sizes="32x32" href="path/to/icon32.png"> /* IOS */
+<link rel="icon" sizes="16x16" href="path/to/icon16.png">  /* 其他设备 */
+```
+
+### 允许多个\<main\>
+HTML 5.2之前，\<main\>在DOM中必须唯一，以使页面有效。
+
+HTML 5.2允许一个页面中同时存在多个 \<main\> 标签，不过只能有一个显示的，其他都要用 hidden 属性隐藏。
+必须使用hidden属性隐藏 使用display: none; or visibility: hidden无效
+```html
+<main>...</main>
+<main hidden>...</main>
+<main hidden>...</main>
+```
+
+### \<legend\> 中可使用标题元素
+HTML 5.2 之前，\<legend\> 中只能使用纯文本，HTML 5.2 开始，可以使用标题元素了。
+
+```html
+<fieldset>
+    <legend><h2>Basic Information</h2></legend>
+</fieldset>
+```
+
+### 新的无效实践
+\<p\> 中的无效内容  
+以下三类元素不能作为 \<p\> 段落的内容。  
+* 行内块、表格元素（inline blocks、inline tables）
+* 浮动元素（float）
+* 定位元素（position block-level elements）
+
+
+strict doctype  
+HTML4 和 XHTML1 的严格文档类型声明（strict doctype）不再是有效 HTML。
+```html
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+```
 
 # <a name="HTML">**HTML**</a>[![bakTop](./img/backward.png)](#top)
 
@@ -626,6 +713,21 @@ meta对于移动端的一些特殊属性
 
     <!-- QQ应用模式 -->
     <meta name="x5-page-mode" content="app">
+```
+## <a name="通过meta代码强制浏览器使用WebKit内核极速模式">通过meta代码强制浏览器使用WebKit内核极速模式</a>[![bakTop](./img/backward.png)](#top)
+
+```html
+<!-- 强制Chromium内核，作用于360浏览器、QQ浏览器等国产双核浏览器 -->
+<meta name="renderer" content="webkit"/>
+
+<!-- 强制Chromium内核，作用于其他双核浏览器 -->
+<meta name="force-rendering" content="webkit"/>
+
+<!-- 如果有安装 Google Chrome Frame 插件则强制为Chromium内核，否则强制本机支持的最高版本IE内核，作用于IE浏览器 -->
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+
+<!-- 当低版本IE用户访问时就会跳转到升级提示页，避免不必要的资源加载，降低网站服务器开销。 -->
+<script>/*@cc_on window.location.href="http://support.dmeng.net/upgrade-your-browser.html?referrer="+encodeURIComponent(window.location.href); @*/</script>
 ```
 
 

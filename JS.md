@@ -214,10 +214,25 @@ JavaScript 是弱类型语言，而且JavaScript 声明变量的时候并没有�
 [JavaScript思维导图](https://github.com/lidaguang1989/javascript-knowhow)
 
 ### 数据类型：
-1. 基本数据类型：[Undefined、Null](./details/Undefined、Null.md)、[Boolean](./details/Boolean.md)、[Number](./details/Number.md)、[String](./details/String)、[Symbol](./details/Symbol)  ---值传递 --栈内存
-2. 复杂（引用）数据类型:[Object](./details/Object.md)    --地址传递--堆内存
+基本数据类型：
+  * [Undefined、Null](./details/JS数据类型/Undefined、Null.md)
+  * [Boolean](./details/JS数据类型/Boolean.md)
+  * [Number](./details/JS数据类型/Number.md)
+  * [String](./details/JS数据类型/String)
+  * [Symbol](./details/JS数据类型/Symbol)  ---值传递 --栈内存
 
-* 两类型的区别：存储位置不同；
+复杂（引用）数据类型:
+  * [Object](./details/JS数据类型/Object.md)    --地址传递--堆内存
+    * [Array](./details/JS数据类型/Array.md)
+    * [Set、Map](/details/JS数据类型/Set、Map.md)
+    * [Function](./details/JS数据类型/Function.md)
+    * [Date](./details/JS数据类型/Date.md)
+    * [Math](./details/JS数据类型/Math.md)
+    * [RegExp](./details/JS数据类型/RegExp.md)
+    * [Error](./details/JS数据类型/Error.md)
+
+
+两类型的区别：存储位置不同；
 >
     基本数据类型直接存储在栈(stack)中的简单数据段，占据空间小、大小固定，属于被频繁使用数据，所以放入栈中存储；
 

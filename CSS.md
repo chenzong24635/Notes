@@ -706,6 +706,8 @@ clear 属性只有块级元素才有效的，而::after 等伪元素默认都是
 
 ## <a name="格式化上下文">格式化上下文BFC、IFC、FFC、GFC</a>[![bakTop](./img/backward.png)](#top)
 
+https://juejin.im/post/5ea45801e51d4546d4399055
+
 格式化上下文即Formatting context，它是指页面上的一个局部独立渲染区域，根据Formatting context中包含的是元素类型的不同，分为BFC(块级格式上下文)、IFC(行内格式化上下文)、FFC(自适应格式化上下文)、GFC(网格布局格式化上下文)
 
 
@@ -766,14 +768,13 @@ BFC的作用
 行内格式化上下文IFC(Inlinel Formatting context)
 
 布局规则：
->
-    子元素水平方向横向排列，并且垂直方向起点为元素顶部。
-    在垂直方向上，子元素会以不同形式来对齐（vertical-align）。
-    能把在一行上的框都完全包含进去的一个矩形区域，被称为该行的行框（line box）。行框的宽度是由包含块（containing box）和与其中的浮动来决定。
-    IFC中的“line box”一般左右边贴紧其包含块，但float元素会优先排列。
-    IFC中的“line box”高度由 CSS 行高计算规则来确定，同个IFC下的多个line box高度可能会不同。
-    当 inline-level boxes的总宽度少于包含它们的line box时，其水平渲染规则由 text-align 属性值来决定。
-    当一个“inline box”超过父元素的宽度时，它会被分割成多个boxes，这些 oxes 分布在多个“line box”中。如果子元素未设置强制换行的情况下，“inline box”将不可被分割，将会溢出父元素。
+* 子元素水平方向横向排列，并且垂直方向起点为元素顶部。
+* 在垂直方向上，子元素会以不同形式来对齐（vertical-align）。
+* 能把在一行上的框都完全包含进去的一个矩形区域，被称为该行的行框（line box）。行框的宽度是由包含块（containing box）和与其中的浮动来决定。
+* IFC中的“line box”一般左右边贴紧其包含块，但float元素会优先排列。
+* IFC中的“line box”高度由 CSS 行高计算规则来确定，同个IFC下的多个line box高度可能会不同。
+* 当 inline-level boxes的总宽度少于包含它们的line box时，其水平渲染规则由 text-align 属性值来决定。
+* 当一个“inline box”超过父元素的宽度时，它会被分割成多个boxes，这些 oxes 分布在多个“line box”中。如果子元素未设置强制换行的情况下，“inline box”将不可被分割，将会溢出父元素。
 
 
 
