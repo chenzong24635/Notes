@@ -8,6 +8,9 @@ https://juejin.im/post/5e143104e51d45414a4715f7?utm_source=gold_browser_extensio
 
 [微任务、宏任务与Event-Loop](https://juejin.im/post/5b73d7a6518825610072b42b)
 
+[Tasks, microtasks, queues and schedules](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/)
+
+
 #### 浏览器的渲染进程是多线程的
 
 1. GUI渲染线程

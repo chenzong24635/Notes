@@ -112,6 +112,7 @@ CSS布局、居中
   * <a href="#writing-mode">writing-mode调整文本排版方向</a>
   * <a href="#改变input placeholder颜色">改变input placeholder颜色</a>
   * <a href="#input自动填充上背景色">input自动填充上背景色</a>
+  * <a href="#取消部分浏览器数字输入控件的操作按钮">取消部分浏览器数字输入控件的操作按钮</a>
   * <a href="#selection">selection 改变选中内容的字体、背景颜色</a>
   * <a href="#user-select">user-select 文本是否可选中</a>
   * <a href="#禁止保存或拷贝图像">禁止保存或拷贝图像</a>
@@ -2202,6 +2203,19 @@ direction: rtl | ltr
     } 
 
 * autocomplete="off"，直接关闭自动填充
+
+## <a name="取消部分浏览器数字输入控件的操作按钮">取消部分浏览器数字输入控件的操作按钮</a>[![bakTop](./img/backward.png)](#top)
+```css
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+```
 
 ## <a name="selection">selection 改变选中内容的字体、背景颜色</a>[![bakTop](./img/backward.png)](#top)
 ```css

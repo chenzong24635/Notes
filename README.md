@@ -1544,48 +1544,8 @@ var arr = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
     }
 
 ## <a name="数组去重">数组去重</a>
-[JS高性能数组去重](https://www.cnblogs.com/wisewrong/p/9642264.html)
+[数组去重](/details/数组去重.md)
 
-* Set
->
-    [...new Set([2,3,4,4,5,2,3,6])]        --> [2,3,4,5,6]  
-    Array.from(new Set([2,3,4,4,5,2,3,6])) --> [2,3,4,5,6]  
-
-* filter + indexOf
->
-    var arr = [2,3,4,4,5,2,3,6];
-    var arr2 = arr.filter((item,index,array)=> array.indexOf(item) === index);
-    console.log(arr2);
-
-* 
-> includes
-    function unique(arr) {
-        const newArray = [];
-        arr.forEach(item => {
-            if (!newArray.includes(item)) {
-                newArray.push(item);
-            }
-        });
-        return newArray;
-    }
-    var array = [2,3,4,4,5,2,3,6];
-    unique(array);
-
-
-*  for...of + Object 利用对象的key不会重复的特性
->
-    var arr = [2,3,4,4,5,2,3,6];
-    var obj = {}; //重复次数
-    var arr2 = []; //去重后的数组
-    for(var i = 0 ;i< arr.length;i++){
-      if( !obj[arr[i]] ){
-          obj[arr[i]] = 1;
-          arr2.push(arr[i]);
-      } else {
-        obj[arr[i]]++
-      }
-    }
-    console.log(arr2);
 
 ## <a name="数组扁平化+去重"> 数组扁平化+去重</a>
 ` Array.from(new Set(arr.flat(Infinity)))`

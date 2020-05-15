@@ -45,6 +45,7 @@
     git add README.md
     git commit -m "first commit"
     git remote add origin https://github.com/chenzong24635/仓库名.git   //关联远程仓库
+    //git remote -v 查看已关联的远程仓库
     //,若报错: remote origin already exists. 先运行  git remote rm origin  	  
     git push -u origin master  //提交到你的仓库
 
@@ -52,15 +53,19 @@
 
 
 # <a name="将本地代码文件夹作为新分支添加到远程仓库">将本地代码文件夹作为新分支添加到远程仓库</a>
->
-    git init 
-    git add .  // 将文件添加到暂存区
-    git commit -m 'newbranch first push' // 将暂存区文件提交到仓库
-    git checkout -b <新分支名> // 新建分支并切换到该分支
-    git remote add origin <仓库地址>  // 关联远程仓库
-      >git remote -v  // 查看已关联的远程仓库
-    git push --set-upstream origin <新分支名> // 推送当前分支并将远程设置为上游
+* git init 
+* git add .  // 将文件添加到暂存区
+* git commit -m 'newbranch first push' // 将暂存区文件提交到仓库
+* git checkout -b <新分支名> // 新建分支并切换到该分支
+* git remote add origin <仓库地址>  // 关联远程仓库
+  >git remote -v  // 查看已关联的远程仓库
+* git push origin <新分支名> // 推送当前分支并将远程设置为上游
+  >git push --set-upstream origin <新分支名> // 推送当前分支并将远程设置为上游
 
+# <a name="修改分支名称">修改分支名称</a>
+* git branch -m oldName newName // 本地分支重命名(还没有推送到远程)
+* git push --delete origin oldName // 删除远程分支
+* git push origin newName // 上传新命名的本地分支
 
 # <a name="git基本命令">git基本命令</a>
 npm i git //git安装
