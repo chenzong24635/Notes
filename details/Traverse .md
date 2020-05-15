@@ -1,20 +1,23 @@
 # 目录
 * <a href="#遍历方法">**遍历方法**</a>
-  * <a href="#for">for</a>
-  * <a href="#for in">for in</a>
-  * <a href="#for of">for of</a>
-  * <a href="#forEach()">forEach()</a>
-  * <a href="#map()">map()</a>
-  * <a href="#every()、some()、filter()">every()、some()、filter()</a>
-  * <a href="#reduce()">reduce()</a>
+  * <a href="#for">for--遍历数组</a>
+  * <a href="#for of">for of--遍历数组</a>
+  * <a href="#forEach()">forEach()--遍历数组</a>
+  * <a href="#map()">map()--遍历数组</a>
+  * <a href="#every()、some()、filter()">every()、some()、filter()--遍历数组</a>
+  * <a href="#reduce()">reduce()--遍历数组</a>
   * <a href="#entries()、keys()、values()">entries()、keys()、values()--遍历数组</a>
+  * <a href="#for in">for in--遍历对象</a>
   * <a href="#Object.entries()、Object.keys()、Object.values()">Object.entries()、Object.keys()、Object.values()、Object.fromEntries()--遍历对象</a>
   * <a href="#Object.getOwnPropertyNames()">Object.getOwnPropertyNames()、Object.getOwnPropertySymbols()、Reflect.ownKeys()--遍历对象,返回键名</a>
   * <a href="#"></a>
 
 # <a name="遍历方法">**遍历方法**</a>
+
+## 数组
 ```js
-let arr = ['a', 'b'];
+let number = 1000000
+let arr = Array(number).fill(1).concat(Array(number).fill(2));
 let obj = {
   'a': 'a1',
   'b': 'b1'
@@ -24,39 +27,22 @@ let obj = {
 ## <a name="for">for</a>
 `能被break, continue,  return（函数中）中断`  
 ```js
-for (let i = 0,len = arr.length; i < len ; i++) {
-  console.log('key:', i, 'val:', arr[i])
-  break;
+function traverse (arr) {
+  for (let i = 0,len = arr.length; i < len ; i++) {
+    // console.log(i);
+    // if(i === 1)break;
+    // if(i === 1)continue;
+    // if(i === 1) return
+  }
 }
+
+console.time()
+console.log(traverse(arr))
+console.timeEnd()
+
+default: 3.075927734375ms
 ```
 
-## <a name="for in">for...in --遍历对象--遍历的是索引（键名）</a>
-`能被break, continue,  return中断`    
-`for in更适合遍历对象，不要使用for in遍历数组。`
-
-* 遍历的是索引（键名）
-* 遍历顺序有可能不是按照实际的内部顺序
-* for in环遍历对象自身的和继承的可枚举属性（不含 Symbol 属性）
-
-```ts
-for (key in obj) { 
-  if (myObject.hasOwnProperty(key)) { //判断某属性是否是该对象的实例属性
-　　　　console.log(key);
-　　  }
-  console.log('key:', key, ';val:', obj[key]);
-}
-```
-
-不会改变原对象
-```js
-let obj = {a: 1, b: 2}
-for(let item in obj){
-  if(obj[item] >1)break;
-  console.log(item)
-}
-console.log(obj)
-
-```
 
 ## <a name="for of">for...of--遍历数组--遍历的是键值</a>
 `能被break, continue,  return中断`      
@@ -64,13 +50,20 @@ console.log(obj)
 
 不会改变原数组
 ```js
-let arr = [1,2,3,4]
-for (item of arr) {
-  if(item >= 3)break;
-  item *= 2;
-  console.log('item:', item);
+function traverse (arr) {
+  for (item of arr) {
+    // console.log(i);
+    // if(i === 1)break;
+    // if(i === 1)continue;
+    // if(i === 1) return
+  }
 }
-console.log(arr)
+
+console.time()
+console.log(traverse(arr))
+console.timeEnd()
+
+default: 27.97705078125ms
 ```
 ----
 
@@ -105,44 +98,45 @@ for await (let item of arr) {}
 
 for await of可以用来遍历具有Symbol.asyncIterator方法的数据结构，也就是异步迭代器，且会等待前一个成员的状态改变后才会遍历到下一个成员，相当于async函数内部的await。
 
->
-    function Gen (time) {
-      return new Promise(function (resolve, reject) {
-        setTimeout(function () {
-          resolve(time)
-        }, time)
-      })
-    }
+```js
+function Gen (time) {
+  return new Promise(function (resolve, reject) {
+    setTimeout(function () {
+      resolve(time)
+    }, time)
+  })
+}
 
-    // for of遍历
-    async function test () {
-      let arr = [Gen(2000), Gen(100), Gen(3000)]
-      for (let item of arr) {
-        console.log(Date.now(), item.then(console.log))
-      }
-    }
-    test()
-    //输出
-      1576030907652 Promise {<pending>}
-      1576030907652 Promise {<pending>}
-      1576030907652 Promise {<pending>}
-      Promise {<resolved>: undefined}
-      100
-      2000
-      3000
+// for of遍历
+function test () {
+  let arr = [Gen(2000), Gen(100), Gen(3000)]
+  for (let item of arr) {
+    console.log(Date.now(), item.then(console.log))
+  }
+}
+test()
+//输出
+  1576030907652 Promise {<pending>}
+  1576030907652 Promise {<pending>}
+  1576030907652 Promise {<pending>}
+  Promise {<resolved>: undefined}
+  100
+  2000
+  3000
 
-    // for await of遍历
-    async function test () {
-      let arr = [Gen(2000), Gen(100), Gen(3000)]
-      for await (let item of arr) {
-        console.log(Date.now(), item)
-      }
-    }
-    test()
-    //输出
-      1575536194608 2000
-      1575536194608 100
-      1575536195608 3000
+// for await of遍历
+async function test () {
+  let arr = [Gen(2000), Gen(100), Gen(3000)]
+  for await (let item of arr) {
+    console.log(Date.now(), item)
+  }
+}
+test()
+//输出
+  1575536194608 2000
+  1575536194608 100
+  1575536195608 3000
+```
 
 ##  <a name="forEach">forEach()</a>
 `遍历数组 ,无法遍历对象,跳过空位  `   
@@ -294,6 +288,35 @@ reduce(callback(acu, item, index, array),initialValue)
     }
 
 
+## <a name="for in">for...in --遍历对象--遍历的是索引（键名）</a>
+`能被break, continue,  return中断`    
+`for in更适合遍历对象，不要使用for in遍历数组。`
+
+* 遍历的是索引（键名）
+* 遍历顺序有可能不是按照实际的内部顺序
+* for in环遍历对象自身的和继承的可枚举属性（不含 Symbol 属性）
+
+```ts
+for (key in obj) { 
+  if (myObject.hasOwnProperty(key)) { //判断某属性是否是该对象的实例属性
+　　　console.log(key);
+　}
+  console.log('key:', key, ';val:', obj[key]);
+}
+```
+
+不会改变原对象
+```js
+let obj = {a: 1, b: 2}
+for(let item in obj){
+  if(obj[item] >1)break;
+  console.log(item)
+}
+console.log(obj)
+
+```
+
+
 ## <a name="entries()、keys()、values()">entries()、keys()、values()——用于遍历数组。它们都返回一个遍历器对象</a>
 entries(): 键/值对迭代器  
 keys():键迭代器  
@@ -380,6 +403,3 @@ Object.fromEntries //可以将数组转换为对象 -->数组格式：[[key,val]
     console.log(Object.getOwnPropertySymbols(obj)); // [Symbol(syb)]
     console.log(Reflect.ownKeys(obj)); // ["num", "str",Symbol(syb)]
 
-
-## <a name=""></a>
-## <a name=""></a>

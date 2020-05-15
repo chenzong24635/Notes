@@ -5,7 +5,7 @@
     图
   </summary>
   
-  ![Array](../img/Array.png)
+  ![Array](../../img/Array.png)
 </details>
 
 * <a href="#"></a>
