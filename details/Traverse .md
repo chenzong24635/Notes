@@ -24,6 +24,17 @@ let obj = {
 }
 ```
 
+使用try catch 跳出循环
+```js
+try {
+  // dosomething
+  throw new Error("跳出循环")
+} catch(e) {
+  console.log(e)
+};
+
+```
+
 ## <a name="for">for</a>
 `能被break, continue,  return（函数中）中断`  
 ```js
@@ -42,6 +53,7 @@ console.timeEnd()
 
 default: 3.075927734375ms
 ```
+
 
 
 ## <a name="for of">for...of--遍历数组--遍历的是键值</a>

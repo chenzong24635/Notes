@@ -1,9 +1,11 @@
 <a id="top"></a>
 
-[MDN-HTML文档](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Reference)
+# [常用链接](/details/website/HTML.md)
+
+# 目录
 
 <details open>
-  <summary>目录</summary>
+  <summary></summary>
 
 * <a href="#HTML">**HTML**</a>
 

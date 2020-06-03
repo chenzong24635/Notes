@@ -2,7 +2,7 @@
 
 [前端模块化详解(完整版)](https://juejin.im/post/5c17ad756fb9a049ff4e0a62)
 
-[深入浅出 JavaScript 模块化](https://juejin.im/post/5e14193c5188253ab76cdcb3)
+[项目地址](/details/模块化)
 
 # Module
 什么是模块
@@ -37,7 +37,7 @@ function fn2(){
 * 污染全局变量
 * 模块之间的关系模糊
 
-### namespace模式 : 对象封装
+### namespace模式: 对象封装
 ```js
 let module1 = {
   fn1(){},
@@ -129,7 +129,7 @@ RequireJS的基本思想是，通过define方法，将代码定义为模块；�
 
 特点
 * `异步加载`模块，允许指定回调函数
-* 在使用 require.js 的时候，必须提前加载所有模块。
+* 在使用 require.js 的时候，`必须提前加载所有模块`。
 * 引入模块：require([moduleName], callback)
   >
       moduleName,引入的模块数组
@@ -144,10 +144,13 @@ RequireJS的基本思想是，通过define方法，将代码定义为模块；�
 
 
 ### CMD 
-模块的加载是异步的，通过按需加载的方式，而不是必须在模块开始就加载所有的依赖。  
 CMD规范整合了CommonJS和AMD规范的特点。
     
 [sea.js](https://github.com/seajs/seajs)
+
+特点
+* `异步加载`
+* `按需加载`，而不是必须在模块开始就加载所有的依赖
 
 ```js
 //定义没有依赖的模块
@@ -193,7 +196,7 @@ var m = 1;
 function f() {};
 export {m， f};
 
-// 正确写法三
+// 正确写法三, 改名导出
 var m = 1;
 function f() {};
 export {m as M, f};
@@ -202,16 +205,16 @@ export {m as M, f};
 
 import：导入模块 //动态加载只有在用到的时候才会去加载 
 >import命令输入的变量都是只读的，因为它的本质是输入接口。
-* 默认导入：import Person from "person.js"  
-* 整体导入：import * as Person from "person.js"  
-* 按需导入：import { age, name, sex } from "person.js"  
-* 改名导入：import { name as newName } from "person.js"  
-* 自执导入：import "person.js"  
-* 复合导入：import Person, { name } from "person.js"  
+* 默认引入：import Person from "person.js"  
+* 整体引入：import * as Person from "person.js"  
+* 按需引入：import { age, name, sex } from "person.js"  
+* 改名引入：import { name as newName } from "person.js"  
+* 自执引入：import "person.js"  
+* 复合引入：import Person, { name } from "person.js"  
 
 
-使用export default时，对应的import语句不需要使用大括号；  
-使用export时，对应的import语句需要使用大括号。
+使用export default时，默认导出，对应的import 默认引入（不需要使用大括号）；  
+使用export时，按需导出，对应的import 按需引入（需要使用大括号）。
 ```js
 // 第一组
 export default function P() { // 输出
@@ -258,17 +261,54 @@ export { foo, bar };
 当前模块不能直接使用foo和bar。
 
 
+使用1  type="module"
+```js
+ <script type="module">
+```
+
+使用2
+```js
+1. 安装依赖
+npm init
+npm install babel-cli browserify -g 
+npm install babel-preset-es2015 --save-dev
+
+2. 定义.babelrc文件
+{
+  "presets": ["es2015"]
+}
+
+3. 编译并在index.html中引入
+babel src -d lib  // 使用Babel将ES6编译为ES5代码(但包含CommonJS语法)
+browserify lib/app.js -o lib/bundle.js // 使用Browserify编译js
+<script src="js/lib/bundle.js"></script> //在index.html文件中引入
+```
+
+
 ES6 模块与 CommonJS 模块的差异
 * CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。  
 * CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。
 
-# Module加载
+第二个差异是因为 CommonJS 加载的是一个对象（即module.exports属性），该对象只有在脚本运行完才会生成。而 ES6 模块不是对象，它的对外接口只是一种静态定义，在代码静态解析阶段就会生成。
+
+### 总结
+
+* CommonJS规范主要用于服务端编程，加载模块是同步的，这并不适合在浏览器环境，因为同步意味着阻塞加载，浏览器资源是异步加 载的，因此有了AMD CMD解决方案。
+* AMD规范在浏览器环境中异步加载模块，而且可以并行加载多个模块。不过，AMD规范开发成本高，代码的阅读和书写比较困难，模块定 义方式的语义不顺畅。
+* CMD规范与AMD规范很相似，都用于浏览器编程，依赖就近，延迟执行，可以很容易在Node.js中运行。不过，依赖SPM 打包，模块的加载逻辑偏重
+* ES6 在语言标准的层面上，实现了模块功能，而且实现得相当简单，完全可以取代 CommonJS 和 AMD 规范，成为浏览器和服务器通用的模块解决方案。
+
+
+
+
+# 
 `<script src="index.js" defer async></script>`  
-defer是“渲染完再执行”，多个defer脚本 按顺序加载  
-async是“下载完就执行”，多个async脚本 不能保证按顺序加载
+defer是“渲染完再执行”(要等到整个页面在内存中正常渲染结束（DOM 结构完全生成，以及其他脚本执行完成）)，多个defer脚本 按顺序加载  
+
+async是“下载完就执行”(一旦下载完，渲染引擎就会中断渲染，执行这个脚本以后，再继续渲染。)，多个async脚本 不能保证按顺序加载
 
 
-浏览器加载：加入type="module"属性 ;是异步加载，不会造成堵塞浏览器，即等到整个页面渲染完，再执行模块脚本，等同于defer属性。
+浏览器加载 ES6 模块：加入type="module"属性 ;是异步加载，不会造成堵塞浏览器，即等到整个页面渲染完，再执行模块脚本，等同于defer属性。 
 `<script type="module" src="./index.js"></script>`
 
 

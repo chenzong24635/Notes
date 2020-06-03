@@ -2,10 +2,25 @@
 
 http://mp.weixin.qq.com/mp/homepage?__biz=MzUxNjQ1NjMwNw==&hid=1&sn=77b9eca3d06307f14d8806231c395ed2&scene=18#wechat_redirect
 
-顺带学习ts
+[Vue.js 技术揭秘](https://github.com/ustbhuangyi/vue-analysis)-github
+[Vue.js 技术揭秘](https://ustbhuangyi.github.io/vue-analysis/v2/prepare/)-电子书
 
-# 目录
-![vue-source.jpg](../img/Vue/vue-source.jpg)
+
+# Vue.js 源码目录设计
+```js
+src
+├── compiler        # 编译相关 
+├── core            # 核心代码 
+├── platforms       # 不同平台的支持
+├── server          # 服务端渲染
+├── sfc             # .vue 文件解析
+├── shared          # 共享代码
+```
+
+* compiler 目录包含 Vue.js 所有编译相关的代码。它包括把模板解析成 ast 语法树，ast 语法树优化，代码生成等功能。
+* core 目录包含了 Vue.js 的核心代码，包括内置组件、全局 API 封装，Vue 实例化、观察者、虚拟 DOM、工具函数等等
+
+![vue-source.jpg](../../img/Vue/vue-source.jpg)
 
 # cached 创建纯函数的缓存
 ```js

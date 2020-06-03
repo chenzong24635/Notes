@@ -1,10 +1,11 @@
 <a id="top"></a>
 
+###
 
-### 
-* [vscode快捷键 for Windows](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf)
+- [vscode 快捷键 for Windows](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf)
 
 >
+
     删除空行：ctrl+h键进行正则匹配：^\s*(?=\r?$)\n
 
     格式化代码： Shift + Alt + F
@@ -19,55 +20,52 @@
 
     查看定义： Alt + F12
 
+- vsCode 添加浏览器调试和 js 调试的方法
 
-* vsCode 添加浏览器调试和js调试的方法   
+安装插件 Debugger for Chrome
 
-安装插件Debugger for Chrome
-
-直接按F5,在launch.json文件中的配置如下
+直接按 F5,在 launch.json 文件中的配置如下
 
 ```json
 {
-
   "version": "0.2.0",
-  "configurations": [{
-          "name": "谷歌浏览器", //运行html文件，用谷歌浏览器打开
-          "type": "chrome",
-          "request": "launch",
-          "url": "${file}",
-          "sourceMaps": true,
-          "webRoot": "${workspaceRoot}"
+  "configurations": [
+    {
+      "name": "谷歌浏览器", //运行html文件，用谷歌浏览器打开
+      "type": "chrome",
+      "request": "launch",
+      "url": "${file}",
+      "sourceMaps": true,
+      "webRoot": "${workspaceRoot}"
+    },
+    {
+      "name": "nodeLauch", //单独调试js，即可以直接运行js
+      "type": "node",
+      "request": "launch",
+      "program": "${file}", //这个配置成你要调试的文件、${file}当前打开的文件
+      "stopOnEntry": false,
+      "args": [],
+      "cwd": "${workspaceRoot}",
+      "runtimeExecutable": null,
+      "runtimeArgs": ["--nolazy"],
+      "env": {
+        "NODE_ENV": "development"
       },
-      {
-          "name": "nodeLauch", //单独调试js，即可以直接运行js
-          "type": "node",
-          "request": "launch",
-          "program": "${file}", //这个配置成你要调试的文件、${file}当前打开的文件
-          "stopOnEntry": false,
-          "args": [],
-          "cwd": "${workspaceRoot}",
-          "runtimeExecutable": null,
-          "runtimeArgs": [
-              "--nolazy"
-          ],
-          "env": {
-              "NODE_ENV": "development"
-          },
-          "console": "internalConsole",
-          "preLaunchTask": "",
-          "sourceMaps": false,
-          "outDir": null
-      }
+      "console": "internalConsole",
+      "preLaunchTask": "",
+      "sourceMaps": false,
+      "outDir": null
+    }
   ]
 }
 ```
 
+###
 
-### 
 <details open>
   <summary>markdown 语法</summary>
 
-  [Markdown 语法说明](https://www.appinn.com/markdown/)
+[Markdown 语法说明](https://www.appinn.com/markdown/)
 
 <!-- * css样式：可在markdown里写css样式,一般写在头部
 >
@@ -88,337 +86,360 @@
     }
   </style> -->
 
+- 分级标题
 
+  >
 
-* 分级标题
->
-    # 一级标题
-    ## 二级标题
-    ### 三级标题
-    #### 四级标题
-    ##### 五级标题
-    ###### 六级标题  <!--最多6级标题-->  
+      # 一级标题
+      ## 二级标题
+      ### 三级标题
+      #### 四级标题
+      ##### 五级标题
+      ###### 六级标题  <!--最多6级标题-->
 
-* 对齐方式
->
-    <center>行中心对齐</center>
-    <p align="left">行左对齐</p>
-    <p align="right">行右对齐</p>
+- 对齐方式
 
-* 跳转
->
-    [点击跳转](#5)  //限数字 1,1.5之类
-    <a id="5">跳转到这</a>
+  >
 
-    里面也能放图片
-    [![img](./img/backward.png)](#backward)
-    [<img src="./img/backward.png" width="20px" />](#backward)
->
-    <a href="#点击跳转">点击跳转</a>
-    <a name="点击跳转">跳转到这</a>
+      <center>行中心对齐</center>
+      <p align="left">行左对齐</p>
+      <p align="right">行右对齐</p>
 
-* 代码折叠、展开
->  
-    <details open>
-      <summary>伸/缩</summary>
-      open：展开   
-      测试内容,
-      IE不支持
-    </details>
+- 跳转
 
-* 文章中添加代码
+  >
 
-1. 使用反引号 :
->
-    `let a = 0`
-2. 使用制表符或者至少4个空格进行缩进的行: 
->
+      [点击跳转](#5)  //限数字 1,1.5之类
+      <a id="5">跳转到这</a>
+
+      里面也能放图片
+      [![img](./img/backward.png)](#backward)
+      [<img src="./img/backward.png" width="20px" />](#backward)
+
+  >
+
+      <a href="#点击跳转">点击跳转</a>
+      <a name="点击跳转">跳转到这</a>
+
+- 代码折叠、展开
+
+  >
+
+      <details open>
+        <summary>伸/缩</summary>
+        open：展开
+        测试内容,
+        IE不支持
+      </details>
+
+- 文章中添加代码
+
+1.  使用反引号 :
+    >
+        `let a = 0`
+2.  使用制表符或者至少 4 个空格进行缩进的行:
 
     >
+
+        >
+            let a = 0
+
+3.  推荐
+    >
+        ```js
         let a = 0
-3. 推荐  
+        ```
+
+        //```后面添加js是为了增加代码可读性
+
+- 生成多行相同代码
+  div.item\*3>{\$}
+
   >
-      ```js
-      let a = 0
-      ```
-      
-      //```后面添加js是为了增加代码可读性
 
-* 生成多行相同代码
-div.item*3>{$}
->
-    <div class="item">1</div>
-    <div class="item">2</div>
-    <div class="item">3</div>
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
 
-* 换行
-两长段落之间没有空行 ，如何换行
->
-    段落末尾空两格 （space + space）
+- 换行
+  两长段落之间没有空行 ，如何换行
 
-* 表格
->
-    | Tables | Are  | Cool |
-    |:--|:---------:|----:|
-    | 靠左对齐 | 居中对齐  | 靠右对齐 |
-    | *斜体* | **加粗**     | `渲染效果`
-    | 书写时原始文字可以不用对整齐  |   |   |
+  >
+
+      段落末尾空两格 （space + space）
+
+- 表格
+  >
+      | Tables | Are  | Cool |
+      |:--|:---------:|----:|
+      | 靠左对齐 | 居中对齐  | 靠右对齐 |
+      | *斜体* | **加粗**     | `渲染效果`
+      | 书写时原始文字可以不用对整齐  |   |   |
 
 >
+
     冒号: 在第二行中不同的位置表示对齐方式，在无冒号：的情况下默认靠左对齐
     标题元件(表头)至少需要3个---来分隔
     最外面的竖线|可以省略，书写的时候也可以不必需让原始的文字对得很整齐
 
-* 分割线
->
-    * * *
-    ***
-    *****
-    - - -
-    -----------
+- 分割线
 
-* 强调——粗体和斜体
->
-    *斜体*    
-    **粗体** 
-    ~~删除线~~  
+  >
 
-* 链接
->
-    1. aa<a.com>aa
+      * * *
+      ***
+      *****
+      - - -
+      -----------
 
-    2. [链接文字](链接地址)
+- 强调——粗体和斜体
+
+  >
+
+      *斜体*
+      **粗体**
+      ~~删除线~~
+
+- 链接
+
+  >
+
+      1. aa<a.com>aa
+
+      2. [链接文字](链接地址)
 
 多次引用同一链接
+
 >
+
     // []里的内容要一致
     [链接文字][]
 
     //这个不会显示
     [链接文字]: http://www.aaa.com/
+
 >
-    [github][1]  
+
+    [github][1]
     [1]:https://github.com
 
+- 特殊字符
 
-* 特殊字符
-
-| 特殊字符 | 描述 | 字符代码 |
-|:--|:--|:--|
-| 	|空格符	|\&nbsp;|
-| <	|小于号	|\&lt;|
-| >	|大于号|\&gt;|
-| &	|和号	|\&amp;|
-| ￥	|人民币|\&yen;|
-| ©	|版权	|\&copy;|
-| ®	|注册商标	|\&reg;|
-| °C|	摄氏度	|\&deg;C|
-| ±	|正负号	|\&plusmn;|
-| ×	|乘号	|\&times;|
-| ÷	|除号	|\&divide;|
-| ²	|平方（上标²）|\&sup2;|
-| ³	|立方（上标³）|	\&sup3;|
+| 特殊字符 | 描述           | 字符代码  |
+| :------- | :------------- | :-------- |
+|          | 空格符         | \&nbsp;   |
+| <        | 小于号         | \&lt;     |
+| >        | 大于号         | \&gt;     |
+| &        | 和号           | \&amp;    |
+| ￥       | 人民币         | \&yen;    |
+| ©        | 版权           | \&copy;   |
+| ®        | 注册商标       | \&reg;    |
+| °C       | 摄氏度         | \&deg;C   |
+| ±        | 正负号         | \&plusmn; |
+| ×        | 乘号           | \&times;  |
+| ÷        | 除号           | \&divide; |
+| ²        | 平方（上标 ²） | \&sup2;   |
+| ³        | 立方（上标 ³） | \&sup3;   |
 
 </details>
 
-###  
+###
+
 <details >
   <summary>
   常用网站：论坛、社区、博客、网站、手册
   </summary>
 
-  [Github](https://github.com/chenzong24635)
+[Github](https://github.com/chenzong24635)
 
-  [前端工具集](https://github.com/nieweidong/fetool)
+[前端工具集](https://github.com/nieweidong/fetool)
 
-  [前端导航网](http://jsdig.com/)
+[前端导航网](http://jsdig.com/)
 
-  [CSDN](https://www.csdn.net/)
+[CSDN](https://www.csdn.net/)
 
-  [开源中国](https://www.oschina.net/)
+[开源中国](https://www.oschina.net/)
 
-  [掘金](https://juejin.im/timeline)
+[掘金](https://juejin.im/timeline)
 
-  [SegmentFault](https://segmentfault.com/) 
+[SegmentFault](https://segmentfault.com/)
 
-  [stackoverflow](https://stackoverflow.com/)
+[stackoverflow](https://stackoverflow.com/)
 
-  [w3cplus-大漠](https://www.w3cplus.com/)  
+[w3cplus-大漠](https://www.w3cplus.com/)
 
-  [张鑫旭](https://www.zhangxinxu.com/)  
+[张鑫旭](https://www.zhangxinxu.com/)
 
-  [技术胖](https://jspang.com/)  
+[技术胖](https://jspang.com/)
 
-  [廖雪峰](https://www.liaoxuefeng.com/)  
+[廖雪峰](https://www.liaoxuefeng.com/)
 
 `手册、API:`  
-  [DevDocs API](https://devdocs.io/)  
+ [DevDocs API](https://devdocs.io/)
 
-  [Can I Use-兼容性查询](https://caniuse.com/#home)  
+[Can I Use-兼容性查询](https://caniuse.com/#home)
 
-  [MDN](https://developer.mozilla.org/zh-CN/docs/Web)  
+[MDN](https://developer.mozilla.org/zh-CN/docs/Web)
 
-  [W3CSchool](https://www.w3cschool.cn/)  
+[W3CSchool](https://www.w3cschool.cn/)
 
-  [手册网](http://www.shouce.ren/)  
+[手册网](http://www.shouce.ren/)
 
-  [印记中文](https://www.docschina.org/)  
-
+[印记中文](https://www.docschina.org/)
 
 `插件：`  
-  [axios](https://www.kancloud.cn/yunye/axios/234845)  
-  [Swiper-轮播图插件](https://www.swiper.com.cn/api/index.html) 
-  [echart](https://www.echartsjs.com/examples/zh/#chart-type-line)
+ [axios](https://www.kancloud.cn/yunye/axios/234845)  
+ [Swiper-轮播图插件](https://www.swiper.com.cn/api/index.html)
+[echart](https://www.echartsjs.com/examples/zh/#chart-type-line)
 
-`UI框架:`  
-  [Bootstrap](http://www.bootcss.com/)
+`图标、图片：`  
+ [icomoon](https://icomoon.io/)
 
-  [vux](https://doc.vux.li/zh-CN/)
+[icon-阿里巴巴](https://www.iconfont.cn/home/index?spm=a313x.7781069.1998910419.2)
 
-  [vant](https://youzan.github.io/vant/#/zh-CN/toast)
+[font-awesome](https://www.thinkcmf.com/font/search.html)
 
-  [mint-ui](http://mint-ui.github.io/docs/#/)
+[Squoosh 图片压缩](https://squoosh.app/)
 
-  [Element](http://element-cn.eleme.io/#/zh-CN/component/installation)
-
-  [iView](http://v1.iviewui.com/components/button)
-
-  [jqweui](http://jqweui.com/components)
-
-  [WeUI ](https://weui.io/)
-
-
-
-  `图标、图片：`  
-  [icomoon](https://icomoon.io/)
-
-  [icon-阿里巴巴](https://www.iconfont.cn/home/index?spm=a313x.7781069.1998910419.2)
-
-  [font-awesome](https://www.thinkcmf.com/font/search.html)
-
-  [Squoosh图片压缩](https://squoosh.app/)
-  
 </details>
 
 ---
 
-# 
+#
 
 **前端页面由哪三层构成：结构层、表示层、行为层。**
 
 ## [HTML](HTML.md)
-## [CSS](CSS.md)
-## [JS](JS.md) 
 
-  * [Undefined、Null](/details/Undefined、Null.md)
-  * [Boolean](/details/Boolean.md)
-  * [Number](/details/Number.md)
-  * [String](/details/String.md)
-  * [Symbol](/details/Symbol.md)
-  * [Object](/details/Object.md)
-    * [Array](/details/Array.md)
-    * [Math](/details/Math.md)
-    * [Date](/details/Date.md)
-    * [Function](/details/Function.md)
-    * [Set、Map](/details/Set、Map.md)
-  * --
-  * [JS遍历方法](/details/Iterate.md) 
-  * [JS兼容](/details/compatible.md)
-  * [JS排序？？](/details/sort.md)
-  * [JQ](/details/JQ.md)
+## [CSS](CSS.md)
+
+## [JS](JS.md)
+
+- [Undefined、Null](/details/Undefined、Null.md)
+- [Boolean](/details/Boolean.md)
+- [Number](/details/Number.md)
+- [String](/details/String.md)
+- [Symbol](/details/Symbol.md)
+- [Object](/details/Object.md)
+  - [Array](/details/Array.md)
+  - [Math](/details/Math.md)
+  - [Date](/details/Date.md)
+  - [Function](/details/Function.md)
+  - [Set、Map](/details/Set、Map.md)
+- --
+- [JS 遍历方法](/details/Iterate.md)
+- [JS 兼容](/details/compatible.md)
+- [JS 排序？？](/details/sort.md)
+- [JQ](/details/JQ.md)
 
 ## [ES](ES.md)
+
 ## [TypeScript](TS.md)
-## [正则](/details/RegExp.md)
+
+## [正则](/details/JS数据类型/RegExp.md)
+
 ## [AJAX](/details/Ajax.md)
+
 ## [跨域](/details/crossOrigin.md)
-## [HTTP](HTTP.md)  
+
+## [HTTP](HTTP.md)
 
 ## [Vue](Vue.md)
+
 ## [Vuex](/details/vuex.md)
+
 ## [小程序](Applet.md)
+
 ## [WebSocket](/details/WebSocket.md)
 
-
 ## [Git](Git.md)
+
 ## [Node](Node.md)
+
 ## [console.log](/details/consolelog.md)
 
 ## [其他-待整理](others.md)
 
 ## 常用
+
 <details open>
   <summary>
   <a href="#常用">目录</a>
   </summary>
 
-  * <a href="#手机号验证">手机号验证</a>
-  * <a href="#邮箱验证">邮箱验证</a>
-  * <a href="#密码验证">密码验证</a>
+- <a href="#手机号验证">手机号验证</a>
+- <a href="#邮箱验证">邮箱验证</a>
+- <a href="#密码验证">密码验证</a>
 
-  * <a href="#保留小数点后两位-不足则补零">保留小数点后两位-不足则补零</a>
-  * <a href="#浮点型+-*/">浮点型+-*/</a>
-  * <a href="#时间戳、日期 的转换">时间戳、日期 的转换</a>
-  * <a href="#浏览器判断">浏览器、手机类型判断navigator.userAgent</a>
-  * <a href="#页面url属性">页面url属性</a>
-  * <a href="#解析url为对象">解析url为对象</a>
-  * <a href="#FileReader">FileReader，图片转base64、blob，canvas图片压缩</a>
-  * <a href="#图片转base64">图片转base64</a>
-  * <a href="#图片转blob下载">图片转blob下载下载</a>
-  * <a href="#打印">打印</a>
-  * <a href="#base64数据导出文件">base64数据导出文件，文件下载</a>
-  * <a href="#实现模糊搜索结果的关键词高亮显示">实现模糊搜索结果的关键词高亮显示</a>
-  * <a href="#判断字符串长度">判断字符串长度</a>
-  * <a href="#0.1+0.2">0.1+0.2!=0.3 原因，解决</a>
-  * <a href="#移动端点透问题">移动端点透问题(click 300ms延迟)</a>
-  * <a href="#随机字符串">随机字符串</a>
-  * <a href="#随机HEX色值">随机HEX色值</a>
-  * <a href="#随机6个数字">随机6个数字</a>
-  * <a href="#范围内随机数，包括两个数在内">范围内随机数</a>
-  * <a href="#数字千分位">数字千分位</a>
-  * <a href="#统计字符串中同一字符出现次数">统计字符串中同一字符出现次数</a>
-  * <a href="#查找字符串中出现最多的字符和个数">查找字符串中出现最多的字符和个数</a>
-  * <a href="#类数组转化为数组">类数组转化为数组</a>
-  * <a href="#判断是否回文、实现回文">判断是否回文、实现回文</a>
-  * <a href="#两位大整数相加">两位大整数相加</a>
-  * <a href="#实现f(a)(b)与f(a,b)一样的效果">实现f(a)(b)与f(a,b)一样的效果</a>
-  * <a href="#无限累加的函数 add">实现一个无限累加的函数add(1)(2)(3)...</a>
-  * <a href="#数组无序排列">数组无序排列</a>
-  * <a href="#数组扁平化">数组扁平化:n维数组展开成一维数组</a>
-  * <a href="#数组去重">数组去重</a>
-  * <a href="#数组扁平化+去重">数组扁平化+去重</a>
-  * <a href="#数组排序">数组排序</a>
+- <a href="#requestAnimationFrame">requestAnimationFrame</a>
+- <a href="#判断网络状态">判断网络状态</a>
+- <a href="#延迟函数delay">延迟函数 delay</a>
 
-  * <a href="#unicode转中文">unicode转中文</a>
-  * <a href="#取消选择，防止复制，禁止剪切、粘贴">取消选择，防止复制，禁止剪切、粘贴</a>
-  * <a href="#网页是否可编辑">网页是否可编辑</a>
-  * <a href="#逗号操作符">逗号操作符</a>
+- <a href="#保留小数点后两位-不足则补零">保留小数点后两位-不足则补零</a>
+- <a href="#浮点型+-*/">浮点型+-\*/</a>
+- <a href="#时间戳、日期 的转换">时间戳、日期 的转换</a>
+- <a href="#浏览器判断">浏览器、手机类型判断 navigator.userAgent</a>
+- <a href="#页面url属性">页面 url 属性</a>
+- <a href="#解析url为对象">解析 url 为对象</a>
+- <a href="#FileReader">FileReader，图片转 base64、blob，canvas 图片压缩</a>
+- <a href="#下载图片">下载图片</a>
+- <a href="#打印">打印</a>
+- <a href="#base64数据导出文件">base64 数据导出文件，文件下载</a>
+- <a href="#实现模糊搜索结果的关键词高亮显示">实现模糊搜索结果的关键词高亮显示</a>
+- <a href="#判断字符串长度">判断字符串长度</a>
+- <a href="#0.1+0.2">0.1+0.2!=0.3 原因，解决</a>
+- <a href="#移动端点透问题">移动端点透问题(click 300ms 延迟)</a>
+- <a href="#随机字符串">随机字符串</a>
+- <a href="#随机HEX色值">随机 HEX 色值</a>
+- <a href="#随机6个数字">随机 6 个数字</a>
+- <a href="#范围内随机数，包括两个数在内">范围内随机数</a>
+- <a href="#数字千分位">数字千分位</a>
+- <a href="#统计字符串中同一字符出现次数">统计字符串中同一字符出现次数</a>
+- <a href="#查找字符串中出现最多的字符和个数">查找字符串中出现最多的字符和个数</a>
+- <a href="#类数组转化为数组">类数组转化为数组</a>
+- <a href="#判断是否回文、实现回文">判断是否回文、实现回文</a>
+- <a href="#两位大整数相加">两位大整数相加</a>
+- <a href="#实现f(a)(b)与f(a,b)一样的效果">实现 f(a)(b)与 f(a,b)一样的效果</a>
+- <a href="#无限累加的函数 add">实现一个无限累加的函数 add(1)(2)(3)...</a>
+- <a href="#数组无序排列">数组无序排列</a>
+- <a href="#数组扁平化">数组扁平化:n 维数组展开成一维数组</a>
+- <a href="#数组去重">数组去重</a>
+- <a href="#数组扁平化+去重">数组扁平化+去重</a>
+- <a href="#数组排序">数组排序</a>
 
-  * <a href="#一道setTimeout面试题">一道setTimeout面试题</a>
-  * <a href="#map(parseInt) 原理解析">['1','2','3'].map(parseInt) 原理解析</a>
-  * <a href="#Array.apply(null,Array(3))与Array(3)区别">Array.apply(null,Array(3))与Array(3)区别</a>
+- <a href="#unicode转中文">unicode 转中文</a>
+- <a href="#将字符串复制到剪贴板">将字符串复制到剪贴板</a>
+- <a href="#取消选择，防止复制，禁止剪切、粘贴">取消选择，防止复制，禁止剪切、粘贴</a>
+- <a href="#网页是否可编辑">网页是否可编辑</a>
+- <a href="#逗号操作符">逗号操作符</a>
 
-  * <a href="#页面加载进度条">页面加载进度条</a>
-  * <a href="#vue实现数字动态翻牌的效果">vue实现数字动态翻牌的效果</a>
-  
-  <a href="#"></a>
+- <a href="#一道setTimeout面试题">一道 setTimeout 面试题</a>
+- <a href="#map(parseInt) 原理解析">['1','2','3'].map(parseInt) 原理解析</a>
+- <a href="#Array.apply(null,Array(3))与Array(3)区别">Array.apply(null,Array(3))与 Array(3)区别</a>
 
-  * <a href="#面试题">**面试题**</a>
+- <a href="#页面加载进度条">页面加载进度条</a>
+- <a href="#vue实现数字动态翻牌的效果">vue 实现数字动态翻牌的效果</a>
 
+<a href="#"></a>
+
+- <a href="#面试题">**面试题**</a>
 
 </details>
-
 
 # <a name="常用">**常用**</a>
 
 ## <a name="手机号验证">手机号验证</a>
+
 >
+
     function isPhone(tel) {
       return /^1[0-9]{10}$/.test(tel.toString())
     }
 
 ## <a name="邮箱验证">邮箱验证</a>
+
 >
+
     function isEmail(val) {
       let reg = /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
       let  res=reg.test(val);
@@ -427,14 +448,18 @@ div.item*3>{$}
     }
 
 ## <a name="身份证验证">身份证验证</a>
+
 >
+
     function isCardNo(number) {
         var regx = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
         return regx.test(number);
     }
 
 ## <a name="密码验证">密码验证</a>
+
 >
+
     function pswLen(val) {// -- 6位数 、字母+数字
       let reg = /^(?!\d+$)(?![a-zA-Z]+$)[a-zA-Z\d]+$/;
       let bool = reg.test(val);
@@ -443,7 +468,131 @@ div.item*3>{$}
       if (len >= 6 && bool) return true
       return false
     }
+
+## <a name="requestAnimationFrame">requestAnimationFrame</a>
+
+[requestAnimationFrame](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestAnimationFrame)
+
+告诉浏览器——你希望执行一个动画，并且要求浏览器在下次重绘之前调用指定的回调函数更新动画。该方法需要传入一个回调函数作为参数，该回调函数会在浏览器下一次重绘之前执行
+
+window.requestAnimationFrame(callback);
+
+> 下一次重绘之前更新动画帧所调用的函数(即上回调函数)。该回调函数会被传入 DOMHighResTimeStamp 参数，该参数与 performance.now()的返回值相同，它表示 requestAnimationFrame() 开始去执行回调函数的时刻。
+
+若你想在浏览器下次重绘之前继续更新下一帧动画，那么回调函数自身必须再次调用 window.requestAnimationFrame()
+
+优势：由系统决定回调函数的执行时机。60Hz 的刷新频率，那么每次刷新的间隔中会执行一次回调函数，不会引起丢帧，不会卡顿。
+
+平滑滚到头部
+
+```js
+const scrollToTop = () => {
+  const top = document.documentElement.scrollTop || document.body.scrollTop;
+  if (top > 0) {
+    window.requestAnimationFrame(scrollToTop);
+    window.scrollTo(0, top - top / 8);
+  }
+};
+```
+
+// 调用
+scrollToTop()
+
+## <a name="检查指定的元素在视口中是否可见">检查指定的元素在视口中是否可见</a>
+
+```js
+const elementIsVisibleInViewport = (el, partiallyVisible = false) => {
+  const { top, left, bottom, right } = el.getBoundingClientRect();
+  const { innerHeight, innerWidth } = window;
+  return partiallyVisible
+    ? ((top > 0 && top < innerHeight) ||
+        (bottom > 0 && bottom < innerHeight)) &&
+        ((left > 0 && left < innerWidth) || (right > 0 && right < innerWidth))
+    : top >= 0 && left >= 0 && bottom <= innerHeight && right <= innerWidth;
+};
+
+// 事例
+elementIsVisibleInViewport(el); // 需要左右可见
+elementIsVisibleInViewport(el, true); // 需要全屏(上下左右)可以见
+```
+
+## <a name="判断网络状态">判断网络状态</a>
+
+- [navigator.onLine](https://developer.mozilla.org/zh-CN/docs/Web/API/NavigatorOnLine/onLine)返回 Boolean 值
+
+非常简单，但是并不准确：
+navigator.onLine 只会在机器未连接到局域网或路由器时返回 false，其他情况下均返回 true。
+也就是说，机器连接上路由器后，即使这个路由器没联通网络，navigator.onLine 仍然返回 true。
+
+- [navigator.connection](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/connection)
+
+返回值：
+
+```js
+NetworkInformation {
+  onchange: null, // 有值代表网络状态变更
+  effectiveType: "4g", //网络类型 2g 3g 4g
+  rtt: 50, //估算的往返时间
+  downlink: 10, //宽带有效值  等于0时  表示无网络
+  saveData: false // 打开/请求数据保护模式
+}
+```
+
+- 事件监听 online 和 offline
+
+```js
+function jugeNet(){
+  let el = document.body;
+  let onlineFn = function () {
+    console.log("online");
+  }
+  let offlineFn = function () {
+    console.log("offline");
+  }
+
+  if (el.addEventListener) {
+    window.addEventListener("online", onlineFn, true);
+    window.addEventListener("offline", offlineFn, true);
+  }
+  else if (el.attachEvent) {
+    window.attachEvent("ononline",onlineFn);
+    window.attachEvent("onoffline", offlineFn);
+  }
+  else {
+    window.ononline = onlineFn
+    window.onoffline = offlineFn
+  }
+}
+```
+
+## <a name="延迟函数delay">延迟函数 delay</a>
+
+因为 async await 本身就是 promise+generator 的语法糖。所以 await 后面的代码是 microtask。
+
+```js
+const delay = (ms) => new Promise((resolve, reject) => setTimeout(resolve, ms));
+
+const getData = (status) =>
+  new Promise((resolve, reject) => {
+    status ? resolve("done") : reject("fail");
+  });
+const getRes = async (data) => {
+  try {
+    const res = await getData(data);
+    const timestamp = new Date().getTime();
+    await delay(1000);
+    console.log(res, new Date().getTime() - timestamp);
+  } catch (error) {
+    console.log(error);
+  }
+};
+getRes(true); // 隔了1秒
+// Promise {<pending>}
+// done 1000
+```
+
 ## <a name="保留小数点后两位-不足则补零">保留小数点后两位-不足则补零</a>
+
 ```
 function returnFloat(value) {
   var value = Math.round(parseFloat(value) * 100) / 100;
@@ -461,8 +610,10 @@ function returnFloat(value) {
 }
 ```
 
-## <a name="浮点型+-*/">浮点型+-*/</a>
-* 加
+## <a name="浮点型+-*/">浮点型+-\*/</a>
+
+- 加
+
 ```
 function accAdd(arg1, arg2) {
   let r1, r2, m;
@@ -473,8 +624,9 @@ function accAdd(arg1, arg2) {
 }
 ```
 
-* 减
-```    
+- 减
+
+```
 function accDec(arg1, arg2) {
   let r1, r2, m, n;
   try { r1 = arg1.toString().split(".")[1].length } catch (e) { r1 = 0 }
@@ -485,8 +637,9 @@ function accDec(arg1, arg2) {
   return ((arg1 * m - arg2 * m) / m).toFixed(n);
 }
 ```
-    
-* 乘
+
+- 乘
+
 ```
 function accMul(arg1, arg2) {
   let m = 0, s1 = arg1.toString(), s2 = arg2.toString();
@@ -496,7 +649,8 @@ function accMul(arg1, arg2) {
 }
 ```
 
-* 除
+- 除
+
 ```
 function accDiv(arg1, arg2) {
   let t1 = 0, t2 = 0, r1, r2;
@@ -508,25 +662,28 @@ function accDiv(arg1, arg2) {
 }
 ```
 
-
 ## <a name="时间戳、日期 的转换">时间戳、日期 的转换</a>
+
 [Date](/details/Date.md)
 
-## <a name="浏览器判断">浏览器、手机类型判断navigator.userAgent</a>
-使用navigator.userAgent属性 PC端、手机端、iPad判断 ，ie、火狐、其他浏览器判断， 微信浏览器判断， Android、IOS判断
+## <a name="浏览器判断">浏览器、手机类型判断 navigator.userAgent</a>
 
-* navigator为Window对象的一个属性，指向了一个包含浏览器相关信息的对象。
-常用到的属性：
-* navigator.appVersion 浏览器的平台和版本信息
-* navigator.appName 浏览器的名称 
-* navigator.language 浏览器使用的语言 
-* navigator.platform 浏览器操作系统平台 
-* navigator.userAgent 浏览器的user-agent信息,客户机发送服务器的user-agent 头部的值
+使用 navigator.userAgent 属性 PC 端、手机端、iPad 判断 ，ie、火狐、其他浏览器判断， 微信浏览器判断， Android、IOS 判断
 
-----
+- navigator 为 Window 对象的一个属性，指向了一个包含浏览器相关信息的对象。
+  常用到的属性：
+- navigator.appVersion 浏览器的平台和版本信息
+- navigator.appName 浏览器的名称
+- navigator.language 浏览器使用的语言
+- navigator.platform 浏览器操作系统平台
+- navigator.userAgent 浏览器的 user-agent 信息,客户机发送服务器的 user-agent 头部的值
+
+---
+
 浏览器判断：
 
-* PC端、手机端、iPad
+- PC 端、手机端、iPad
+
 ```
     if (/Android|Windows Phone|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
       console.log("手机端");
@@ -537,16 +694,18 @@ function accDiv(arg1, arg2) {
     }
 ```
 
-* 微信内置浏览器
+- 微信内置浏览器
+
 ```
     if (navigator.userAgent.toLowerCase().match(/MicroMessenger/i) === "micromessenger") {
       console.log("微信")
-    } else { 
+    } else {
       console.log("非微信")
-    } 
+    }
 ```
 
-* IE 、火狐、其他
+- IE 、火狐、其他
+
 ```
 
     if (navigator.userAgent.toLowerCase().indexOf("firefox") >=0) { // 若-1为其他，否则火狐
@@ -558,7 +717,8 @@ function accDiv(arg1, arg2) {
     }
 ```
 
-* Android、IOS
+- Android、IOS
+
 ```
     if(/android/ig.test(navigator.userAgent)){
       console.log("Android");
@@ -573,60 +733,67 @@ function accDiv(arg1, arg2) {
         isWeixin: Boolean(navigator.userAgent.match(/MicroMessenger/ig)),
     }
 ```
-## <a name="页面url属性">页面url属性</a>
+
+## <a name="页面url属性">页面 url 属性</a>
+
 new URL('http://www.aaa.com/bbb.aspx?name=1')
 
->hash: ""  
->host: "www.aaa.com:8080"  
->hostname: "www.aaa.com"  
->href: "http://www.aaa.com:8080/bbb.aspx?name=1"  
->origin: "http://www.aaa.com:8080"  
->password: ""  
->pathname: "/bbb.aspx"  
->port: "8080"  
->protocol: "http:"  
->search: "?name=1"  
->searchParams: URLSearchParams {}
->username: ""
+> hash: ""  
+> host: "www.aaa.com:8080"  
+> hostname: "www.aaa.com"  
+> href: "http://www.aaa.com:8080/bbb.aspx?name=1"  
+> origin: "http://www.aaa.com:8080"  
+> password: ""  
+> pathname: "/bbb.aspx"  
+> port: "8080"  
+> protocol: "http:"  
+> search: "?name=1"  
+> searchParams: URLSearchParams {}
+> username: ""
 
-* hash (URL中在井号“#”后面的分段)
-  >window.location.hash  
-  >new URL(url).hash
+- hash (URL 中在井号“#”后面的分段)
 
-* host (URL 的主机部分包含端口号)
+  > window.location.hash  
+  > new URL(url).hash
 
-* href (URL整个地址字符串)
+- host (URL 的主机部分包含端口号)
 
-* hostname (URL 的主机部分不含端口号)
+- href (URL 整个地址字符串)
 
-* origin (只读属性，返回具有URL来源的Unicode序列化USVString。Origin的结构是由传入的URL类型决定的，对于http或https 的链接，得到的Origin将会为 协议（http/https）+ (://) + 域名 + (:端口)，一般情况下，默认端口将会被忽略。对于BLOB 链接，Origin返回的则是BLOB：后面的部分)
+- hostname (URL 的主机部分不含端口号)
 
-* userName和password属性也是可写属性，它能提取域名前的用户名和密码部分的内容
+- origin (只读属性，返回具有 URL 来源的 Unicode 序列化 USVString。Origin 的结构是由传入的 URL 类型决定的，对于 http 或 https 的链接，得到的 Origin 将会为 协议（http/https）+ (://) + 域名 + (:端口)，一般情况下，默认端口将会被忽略。对于 BLOB 链接，Origin 返回的则是 BLOB：后面的部分)
+
+- userName 和 password 属性也是可写属性，它能提取域名前的用户名和密码部分的内容
+
   ```js
-  url = new URL('https://username1:password1@www.grapecity.com.cn');
+  url = new URL("https://username1:password1@www.grapecity.com.cn");
 
-  console.log(url.username,url.password);
+  console.log(url.username, url.password);
   //username1 password1
   ```
 
-* pathname (URL的第一个斜杠(/) 后面除参数外的部分)
+- pathname (URL 的第一个斜杠(/) 后面除参数外的部分)
 
-* port (URL的端口号)
-  >(默认的80端口返回空字符)
+- port (URL 的端口号)
 
-* protocol (URL 的协议部分,一般是指类似http:，https:，ftp:，file:等这样的协议)
+  > (默认的 80 端口返回空字符)
 
-* search (URL地址参数?后面的部分)
+- protocol (URL 的协议部分,一般是指类似 http:，https:，ftp:，file:等这样的协议)
 
-* searchParams属性  
-search属性只为我们获取了整个参数字符串，如果有把字符串解析为键值对，这时候searchParams属性就派上了用场，该属性将获得一个URLSearchParams对象，该对象具有列出查询字符串键值对列表的能力，例如，要获取参数列表，我们可以这样使用。
->new URL('http://www.aaa.com/bbb.aspx?name=1').searchParams.get('name') // 1
->new URLSearchParams(window.loaction.search).get('name')
+- search (URL 地址参数?后面的部分)
 
+- searchParams 属性  
+  search 属性只为我们获取了整个参数字符串，如果有把字符串解析为键值对，这时候 searchParams 属性就派上了用场，该属性将获得一个 URLSearchParams 对象，该对象具有列出查询字符串键值对列表的能力，例如，要获取参数列表，我们可以这样使用。
+  > new URL('http://www.aaa.com/bbb.aspx?name=1').searchParams.get('name') // 1
+  > new URLSearchParams(window.loaction.search).get('name')
 
 ### 获取 url 中的参数值
+
 ### new URL
+
 new URL('https://www.aaa.com')
+
 ```
 hash: ""
 host: "www.aaa.com"
@@ -643,6 +810,7 @@ username: ""
 ```
 
 #### js 获取 url 中的参数值
+
 >
 
     地址链接参数
@@ -682,17 +850,19 @@ username: ""
     Request = GetRequest();
     // Request['参数1'];
 
+## <a name="解析url为对象">解析 url 为对象</a>
 
-## <a name="解析url为对象">解析url为对象</a>
 [URLSearchParams](https://developer.mozilla.org/zh-CN/docs/Web/API/URLSearchParams) 定义了一些实用的方法来处理 URL 的查询字符串。
+
 >
+
     var paramsString = "q=URLUtils.searchParams&topic=api"
     var searchParams = new URLSearchParams(paramsString);
 
     for (let p of searchParams) {
       console.log(p);
     }
-    //output 
+    //output
     ["q", "URLUtils.searchParams"]
     ["topic", "api"]
 
@@ -707,8 +877,8 @@ username: ""
     searchParams.delete("topic");
     searchParams.toString(); // "q=URLUtils.searchParams"
 
-
 >
+
     //url里有= 字符会报错
     //?a=5&b=321===ad&c=a
     searchObj = search => JSON.parse(`{"${decodeURIComponent(search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=?/g, '":"')}"}`);
@@ -716,8 +886,9 @@ username: ""
     searchObj(window.location.search)
 
 >
+
     let url = 'http://www.aaa.com/?a=a1&b=123&c=打算'
-    
+
     function parseParam(url) {
       const paramsStr = /.+\?(.+)$/.exec(url)[1]; // 将 ? 后面的字符串取出来
       const paramsArr = paramsStr.split('&'); // 将字符串以 & 分割后存到数组中
@@ -742,172 +913,18 @@ username: ""
     }
     console.log(parseParam(url)) //{a: "a1", b: 123, c: "打算"}
 
-## <a name="FileReader">FileReader，图片转base64、blob，canvas图片压缩</a>
-[文档](https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader)
+## <a name="下载图片">下载图片</a>
 
-读取存储在用户计算机上的文件（或原始数据缓冲区）的内容，使用 File 或 Blob 对象指定要读取的文件或数据。
-
-* 常用
-
-let fr = new FileReader()
-
-readyStatus
->文件状态
->>EMPTY	0	还没有加载任何数据.  
->>LOADING	1	数据正在被加载.  
->>DONE	2	已完成全部的读取请求.  
-
-fr.result
->文件的内容。该属性仅在读取操作完成后才有效，数据的格式取决于使用哪个方法来启动读取操作。
-
-fr.readAsDataURL(file)
->转换成base64格式
-
-fr.readAsText(file) 
->转换成字符串格式,返回文件内容的纯文本格式
->对于媒体文件（图片、音频、视频），其内部组成并不是按字符排列，会产生乱码
-
-fr.readAsArrayBuffer(file)
->转换成ArrayBuffer格式
-
-fr.abort()
->中止读取操作。在返回时，readyState属性为DONE
-
-fr.loadstart
->处理loadstart事件。该事件在读取操作开始时触发。
-
-fr.onload = function (e) { console.log(e.target.result) }
->处理load事件。该事件在读取操作完成时触发
-
-fr.onloadend
->处理loadend事件。该事件在读取操作结束时（要么成功，要么失败）触发。
-
-fr.onabort
-处理abort事件。该事件在读取操作被中断时触发。
-
-fr.onprogress
->处理progress事件。该事件在读取Blob时触发。
-
-预览并上传的图片 | 文本内容
->
-    <input type="file" name='file' id="file">
-    <input type="file" accept="image/*" name='file' id="file">
-    <input type="file" accept="txt/*" name='file' id="file">
-
-
-    document.querySelector('#file').addEventListener('change', function(e) {
-      let fr = new FileReader();
-      // base64
-      fr.readAsDataURL(this.files[0]); //e.target.files[0]
-      fr.onload = function(e) {
-        console.log(e)
-        let img = new Image()
-        img.src = e.target.result || fr.result || this.result;
-        document.body.appendChild(img)
-      };
-
-      // 使用canvas进行图片压缩
-      /* fr.onload = function(e) {
-        let img = new Image();
-        img.src = e.target.result
-        img.onload = function (){
-          let canvas = document.createElement('canvas');  
-          let context = canvas.getContext("2d");  
-          canvas.width = img.width; // 设置canvas的画布宽度为图片宽度  
-          canvas.height = img.height;  
-          context.drawImage(img, 0, 0, canvas.width, canvas.height) // 在canvas上绘制图片  
-          let dataUrl = canvas.toDataURL('image/jpeg', 0.9) // 0.9为压缩比，可根据需要设置，设置过小会影响图片质量
-          document.body.appendChild(canvas)
-        } 
-      };*/
-
-      //blob
-      /* fr.readAsArrayBuffer(this.files[0]);
-      fr.onload=function(e){
-        let blob = new Blob([fr.result],{type:"text/plain"});
-        let img = new Image()
-        img.src = URL.createObjectURL(blob); // 将file文件转换为一个URL地址
-        document.body.appendChild(img)
-        console.log(e)
-        console.log(blob)
-      } */
-
-      // txt
-      fr.readAsText(this.files[0]);
-      fr.onload = function(e) {
-        console.log(e)
-        let div = document.createElement('div')
-        div.innerHTML = e.target.result
-        document.body.appendChild(div)
-      };
-      
-    })
-
-多图上传
->
-    <input type="file" accept="image/*" multiple name='file' id="file">
-
-    document.querySelector('#file').addEventListener('change',function (e) {
-      for (var i = 0; i < e.target.files.length; i++) {
-        let fr = new FileReader();
-        fr.readAsDataURL(e.target.files[i]);
-        fr.onload = function(e) {
-          let img = new Image();
-          img.src = e.target.result || fr.result || this.result;
-          document.body.appendChild(img);
-        };
-      }
-    })
-
-## 
-下载图片
 ```html
-  <button id="downloadImg">下载图片</button>
-<script>
-let btn=document.getElementById('downloadImg');
-btn.onclick = downloadImg;
 
-// 通过src获取图片的blob对象
-function getImageBlob(url, cb) {
-  let xhr = new XMLHttpRequest();
-  xhr.open("get", url, true);
-  xhr.responseType = "blob";
-  xhr.onload =  () => {
-    console.log(xhr);
-      if (xhr.status == 200) {
-        cb(xhr.response);
-      }
-  };
-  xhr.send();
-}
-// 点击下载图片
-function downloadImg(){
-  console.log(2);
-  let reader = new FileReader();
-  getImageBlob(
-    'https://b-gold-cdn.xitu.io/v3/static/img/simplify-logo.3e3c253.svg', 
-    function(blob){
-      // 读取来看下下载的内容 最终生成的字符串
-      reader.readAsDataURL(blob);
-      // 生成下载用的URL对象
-      let url = URL.createObjectURL(blob);
-      // 生成一个a标签，并模拟点击，即可下载，批量下载同理
-      let downloadAnchorNode = document.createElement('a')
-      downloadAnchorNode.setAttribute("href", url);
-      downloadAnchorNode.setAttribute("download", "下载图片")
-      downloadAnchorNode.click();
-      downloadAnchorNode.remove();
-  })
-};
-
-  </script>
 ```
 
 ## <a name="打印">打印</a>
+
 [参考](https://www.jianshu.com/p/d19d66ef8d7e)
 
-
 >
+
     此方法，要打印的内容要包含在id为print中,否则打印时定义的css会失效!!!
     //可能未引入原先写在head标签的css
     <div id="print">
@@ -934,7 +951,7 @@ function downloadImg(){
         // 头中的screen换成打印样式print
         headHtml = headHtml.replace('screen', 'screen, print');
         //重新写入文档流
-        let str = 
+        let str =
           '<html>' +
           headHtml  +
           '<body>' +
@@ -946,31 +963,34 @@ function downloadImg(){
     }
 
 >
+
     function printout() {
         //打开一个新的窗口
         let newWindow = window.open();
 
-        // 是新窗口获得焦点  
+        // 是新窗口获得焦点
         newWindow.focus();
 
-        //保存写入内容  
+        //保存写入内容
         let newContent = "<html><head><meta charset='utf-8'/><title>打印</title></head><body>"
         newContent += document.getElementById("print").outerHTML;
         newContent += "</body></html>"
 
-        // 将HTML代码写入新窗口中  
+        // 将HTML代码写入新窗口中
         newWindow.document.write(newContent);
         newWindow.print();
 
-        // close layout stream 
+        // close layout stream
         newWindow.document.close();
         //关闭打开的临时窗口
         newWindow.close();
         return false;
     };
 
-## <a name="base64数据导出文件">base64数据导出文件，文件下载</a>
+## <a name="base64数据导出文件">base64 数据导出文件，文件下载</a>
+
 >
+
     downloadFile('dsd','./tets.md')
     function downloadFile(filename, data){
       let DownloadLink = document.createElement('a');
@@ -995,7 +1015,9 @@ function downloadImg(){
     }
 
 ## <a name="实现模糊搜索结果的关键词高亮显示">[实现模糊搜索结果的关键词高亮显示](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/141)</a>
+
 >
+
     <div class="input">
         <input type="text" oninput="search(event)">
         <ul class="options"></ul>
@@ -1029,12 +1051,10 @@ function downloadImg(){
         }
     </script>
 
+## <a name="判断字符串长度">判断字符串长度(英文占 1 个字符，中文汉字占 2 个字符)</a>
 
-
-
-## <a name="判断字符串长度">判断字符串长度(英文占1个字符，中文汉字占2个字符)</a>
-    
 >
+
     function strLength(str) {
       var len = 0;
       for (var i = 0, strLen = str.length; i < strLen ; i++) {
@@ -1043,68 +1063,73 @@ function downloadImg(){
         }
         else {
           len ++;
-        }  
+        }
       }
       return len;
     }
+
 >
+
     //通过正则将所有双字节字符替换为2个单字节字符，在去取长度
     function getStrLength(str){
-        return str.replace(/[\u0391-\uFFE5]/g,"aa").length; 
+        return str.replace(/[\u0391-\uFFE5]/g,"aa").length;
     }
 
-ASCII码由一个字节中的7位表示，范围共128个字符。而且ASCII码只能表示英文，数字和常用标点符号，编码在1-127之间。  
-Unicode码可以表示所有字符，编码范围很大，能表示65000多个字符，其中汉字占40000多个。Unicode码包含ASCII码  
+ASCII 码由一个字节中的 7 位表示，范围共 128 个字符。而且 ASCII 码只能表示英文，数字和常用标点符号，编码在 1-127 之间。  
+Unicode 码可以表示所有字符，编码范围很大，能表示 65000 多个字符，其中汉字占 40000 多个。Unicode 码包含 ASCII 码
 
-汉字转换为Unicode码后，其编码值都是大于127的; unicode双字节字符编码范围:\u0391-\uFFE5;    
+汉字转换为 Unicode 码后，其编码值都是大于 127 的; unicode 双字节字符编码范围:\u0391-\uFFE5;  
 一个汉字占两个字节，其余语言占一个字节。
 
-
 ## <a name="0.1+0.2">0.1+0.2!=0.3</a>
-* 原因：
+
+- 原因：
 
 在进制转换和进阶运算的过程中出现精度损失。
 
-JavaScript 中的 number 类型就是浮点型，数字和浮点精度的处理相同，JavaScript 中的浮点数采用IEEE-754 格式的规定，这是一种二进制表示法，可以精确地表示分数，比如1/2，1/8，1/1024，每个浮点数占64位。但是，二进制浮点数表示法并不能精确的表示类似0.1这样 的简单的数字，会有舍入误差。  
-由于采用二进制，JavaScript 也不能有限表示 1/10、1/2 等这样的分数。在二进制中，1/10(0.1)被表示为0.00110011001100110011…… 注意 0011 是无限重复的，这是舍入误差造成的，所以对于 0.1 + 0.2 这样的运算，操作数会先被转成二进制，然后再计算：  
+JavaScript 中的 number 类型就是浮点型，数字和浮点精度的处理相同，JavaScript 中的浮点数采用 IEEE-754 格式的规定，这是一种二进制表示法，可以精确地表示分数，比如 1/2，1/8，1/1024，每个浮点数占 64 位。但是，二进制浮点数表示法并不能精确的表示类似 0.1 这样 的简单的数字，会有舍入误差。  
+由于采用二进制，JavaScript 也不能有限表示 1/10、1/2 等这样的分数。在二进制中，1/10(0.1)被表示为 0.00110011001100110011…… 注意 0011 是无限重复的，这是舍入误差造成的，所以对于 0.1 + 0.2 这样的运算，操作数会先被转成二进制，然后再计算：  
 0.1 => 0.0001 1001 1001 1001…（无限循环）  
 0.2 => 0.0011 0011 0011 0011…（无限循环）  
 双精度浮点数的小数部分最多支持 52 位，所以两者相加之后得到这么一串 0.0100110011001100110011001100110011001100...因浮点数小数位的限制而截断的二进制数字，这时候，再把它转换为十进制，就成了 0.30000000000000004。
 
-* 解决：
->
-    先升幂再降幂
+- 解决：
 
-    使用内置的 toPrecision() 和 toFixed() 方法，注意，返回值字符串。
+  >
 
-    Number.EPSILON(极小的常量; === Math.pow(2, -52))
-        //设置“能够接受的误差范围”。
-        function withinErrorMargin (left, right) {
-          return Math.abs(left - right) < Number.EPSILON;
-        }
+      先升幂再降幂
 
-        withinErrorMargin(0.1 + 0.2, 0.3) // true
+      使用内置的 toPrecision() 和 toFixed() 方法，注意，返回值字符串。
 
+      Number.EPSILON(极小的常量; === Math.pow(2, -52))
+          //设置“能够接受的误差范围”。
+          function withinErrorMargin (left, right) {
+            return Math.abs(left - right) < Number.EPSILON;
+          }
 
+          withinErrorMargin(0.1 + 0.2, 0.3) // true
 
-## <a name="移动端点透问题">移动端点透问题(click 300ms延迟) </a>
+## <a name="移动端点透问题">移动端点透问题(click 300ms 延迟) </a>
+
 https://codepen.io/chenzong24635/pen/jROWmM
 
 https://juejin.im/post/5ce764a2f265da1b8c19645a
 
-在移动端开发中，有时会出现click点透的问题
+在移动端开发中，有时会出现 click 点透的问题
 
-touch触摸事件
+touch 触摸事件
+
 >
+
     touchstart：手指触摸到屏幕会触发
     touchmove：当手指在屏幕上移动时，会触发
     touchend：当手指离开屏幕时，会触发
     touchcancel：可由系统进行的触发，比如手指触摸屏幕的时候，突然alert了一下，或者系统中其他打断了touch的行为，则可以触发该事件
 
- 
+tap 触碰事件
 
-tap触碰事件
 >
+
     一般用于代替click事件
 
     tap: 手指碰一下屏幕会触发
@@ -1112,35 +1137,44 @@ tap触碰事件
     singleTap: 手指碰一下屏幕会触发
     doubleTap: 手指双击屏幕会触发
 
-A是遮罩层，B是正常的DOM，C是B上的某个元素，是个链接。场景是点击A的时候A消失，结果点到了C，页面发生了跳转，
+A 是遮罩层，B 是正常的 DOM，C 是 B 上的某个元素，是个链接。场景是点击 A 的时候 A 消失，结果点到了 C，页面发生了跳转，
 
 #### 点透的出现场景：
-1. A/B两个层上下z轴重叠。
-2. 上层的A点击后消失或移开。（这一点很重要）
-3. B元素本身有默认click事件（如a标签） 或 B绑定了click事件。
-在以上情况下，点击A/B重叠的部分，就会出现点透的现象。
+
+1. A/B 两个层上下 z 轴重叠。
+2. 上层的 A 点击后消失或移开。（这一点很重要）
+3. B 元素本身有默认 click 事件（如 a 标签） 或 B 绑定了 click 事件。
+   在以上情况下，点击 A/B 重叠的部分，就会出现点透的现象。
 
 #### 为什么会出现点透
- click延迟
 
-在移动端不使用click而用touch事件代替触摸是因为click事件有着明显的延迟，具体touchstart与click的区别如下：
+click 延迟
 
-1. 
+在移动端不使用 click 而用 touch 事件代替触摸是因为 click 事件有着明显的延迟，具体 touchstart 与 click 的区别如下：
+
+1.
+
 >
+
     touchstart：在这个DOM（或冒泡到这个DOM）上手指触摸开始即能立即触发
-2. 
+
+2.
+
 >
+
     click：在这个DOM（或冒泡到这个DOM）上手指触摸开始，且手指未曾在屏幕上移动（某些浏览器允许移动一个非常小的位移值），且在这个在这个dom上手指离开屏幕，且触摸和离开屏幕之间的间隔时间较短（某些浏览器不检测间隔时间，也会触发click）才能触发
 
     事件的触发时间按由早到晚排列为：touchstart 早于 touchend 早于 click。亦即click的触发是有延迟的，这个时间大概在300ms左右。
 
-    由于我们在touchstart阶段就已经隐藏了罩层A，当click被触发时候，能够被点击的元素则是其下的B元素，根据click事件的触发规则：只有在被触发时，当前有click事件的元素显示，且在面朝用户的最前端时，才触发click事件。  
+    由于我们在touchstart阶段就已经隐藏了罩层A，当click被触发时候，能够被点击的元素则是其下的B元素，根据click事件的触发规则：只有在被触发时，当前有click事件的元素显示，且在面朝用户的最前端时，才触发click事件。
     由于B绑定了click事件（或者B本身默认存在click事件），所以B的click事件被触发，产生了点透的情况。
 
 #### 解决方案
 
-0. 
+0.
+
 >
+
     以下可以通过 hack 技巧，不添加 fastClick 也能修复延迟的问题
 
     禁用缩放
@@ -1160,22 +1194,26 @@ A是遮罩层，B是正常的DOM，C是B上的某个元素，是个链接。场�
 
     <meta name="viewport" content="width=device-width" />
 
+1.
 
-
-1. 
 >
+
     对于B元素本身没有默认click事件的情况（无a标签等），应统一使用touch事件，统一代码风格，并且由于click事件在移动端的延迟要大很多，不利于用户体验，所以关于触摸事件应尽量使用touch相关事件。
 
-2. 
-   对于B元素本身存在默认click事件的情况,应及时取消A元素的默认点击事件，从而阻止click事件的产生。因为 触发事件顺序：touchstart 早于 touchend 早于 click
->
-    document.querySelector('#A').addEventListener('touchend', function(event) {
-      event.preventDefault();
-    })
+2.  对于 B 元素本身存在默认 click 事件的情况,应及时取消 A 元素的默认点击事件，从而阻止 click 事件的产生。因为 触发事件顺序：touchstart 早于 touchend 早于 click
 
-3. 
-A 300ms延迟消失
+    >
+
+        document.querySelector('#A').addEventListener('touchend', function(event) {
+          event.preventDefault();
+        })
+
+3.
+
+A 300ms 延迟消失
+
 >
+
     let A = document.querySelector('#A')
     A.addEventListener('touchend', function(event) {
       let timer = setTimeout(() => {
@@ -1183,20 +1221,21 @@ A 300ms延迟消失
       }, 300)
     })
 
-4. 
-fastclick库地址 ：https://github.com/ftlabs/fastclick
+4.
+
+fastclick 库地址 ：https://github.com/ftlabs/fastclick
+
 >
+
     在原生的js前直接加上
     window.addEventListener( "load", function() {
       FastClick.attach( document.body );
     }, false )
 
-
-
-
-
 ## <a name="随机字符串">随机字符串</a>
+
 >
+
     Math.random().toString(36).slice(2)
 
     Math.random().toString(36).slice(-6)// 随机6位字符串
@@ -1208,7 +1247,8 @@ fastclick库地址 ：https://github.com/ftlabs/fastclick
     如果基数没有指定，则默认使用 10
 
 >
-    function a(n) {  
+
+    function a(n) {
       let str = 'abcdefghijklmnopqrstuvwxyz9876543210';
       let tmp = '',
           i = 0,
@@ -1219,91 +1259,102 @@ fastclick库地址 ：https://github.com/ftlabs/fastclick
       return tmp;
     }
 
-## <a name="随机HEX色值">随机HEX色值 </a>
- RandomColor = () => "#" + Math.floor(Math.random() * 0xffffff).toString(16).padEnd(6, "0");
+## <a name="随机HEX色值">随机 HEX 色值 </a>
 
-## <a name="随机6个数字">随机6个数字 </a>
-Math.floor(Math.random() * 999999)  
+RandomColor = () => "#" + Math.floor(Math.random() \* 0xffffff).toString(16).padEnd(6, "0");
 
-Math.random().toString().slice(-6) / 1  
+## <a name="随机6个数字">随机 6 个数字 </a>
+
+Math.floor(Math.random() \* 999999)
+
+Math.random().toString().slice(-6) / 1
 
 Math.random().toFixed(6).slice(-6) / 1
 
 ## <a name="范围内随机数，包括两个数在内">范围内随机数</a>
+
 >
+
     // 小数
     const number =(min, max) => Math.random() * (max - min) + min
 
     // 整数
     const number = = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-    
 
 ## <a name="数字千分位">数字千分位 </a>
-1. toLocaleString()
->   
-    var a = 123456;
-    a.toLocaleString() //'123,456'
 
-2. reg
->
+1.  toLocaleString()
 
-    function thousandth (num) {
-      return num && num
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-        //.replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,')
-    }
-    //$&  表示整个被匹配的字符串
+    >
 
-    //最多只支持 小数点后三位
-    thousandth(1662367864) //"1,662,367,864" 
-    thousandth(16623.678)//"16,623.678"  
-    thousandth(16623.6786)//"16,623.67,86" ???
+        var a = 123456;
+        a.toLocaleString() //'123,456'
 
+2.  reg
 
-3. reduce
->
-    function thousandth(num) {//12345678
-      var str = num + '';
-      str = str.split("").reverse()
-      // ["8", "7", "6", "5", "4", "3", "2", "1"]
-      return str.reduce((prev, next, index) => {
-        return ((index % 3) ? next : (next + ',')) + prev;
-      })
-    }
+    >
 
-4. for
->
-    function thousand(num) {
-      var str = ''
-      num = (num + '').split('') //数组
-      for(var i = num.length-1,j=0; i>=0 ; i--, j++) {
-        //每隔三位加逗号，过滤数组的最后一位  
-        if(j%3 === 0 && j!=0){
-          num.splice(i,1,num[i],',')//当前索引后 添加','
+        function thousandth (num) {
+          return num && num
+            .toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+            //.replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,')
         }
-      }
-      return num.join('')
-    }
+        //$&  表示整个被匹配的字符串
 
-4. for
->
-    function format(num){  
-      var str="";//字符串累加  
-      num = num+'';//数字转字符串
-      for(var i=num.length- 1,j=1;i>=0;i--,j++){  
-        if(j%3==0 && i!=0){//每隔三位加逗号，过滤正好在第一个数字的情况  
-          str+=num[i]+",";//加千分位逗号  
-          continue;  
-        }  
-        str+=num[i];//倒着累加数字
-      }  
-      return str.split('').reverse().join("");//字符串=>数组=>反转=>字符串  
-    }
+        //最多只支持 小数点后三位
+        thousandth(1662367864) //"1,662,367,864"
+        thousandth(16623.678)//"16,623.678"
+        thousandth(16623.6786)//"16,623.67,86" ???
 
+3)  reduce
+
+    >
+
+        function thousandth(num) {//12345678
+          var str = num + '';
+          str = str.split("").reverse()
+          // ["8", "7", "6", "5", "4", "3", "2", "1"]
+          return str.reduce((prev, next, index) => {
+            return ((index % 3) ? next : (next + ',')) + prev;
+          })
+        }
+
+4)  for
+
+    >
+
+        function thousand(num) {
+          var str = ''
+          num = (num + '').split('') //数组
+          for(var i = num.length-1,j=0; i>=0 ; i--, j++) {
+            //每隔三位加逗号，过滤数组的最后一位
+            if(j%3 === 0 && j!=0){
+              num.splice(i,1,num[i],',')//当前索引后 添加','
+            }
+          }
+          return num.join('')
+        }
+
+5)  for
+    >
+        function format(num){
+          var str="";//字符串累加
+          num = num+'';//数字转字符串
+          for(var i=num.length- 1,j=1;i>=0;i--,j++){
+            if(j%3==0 && i!=0){//每隔三位加逗号，过滤正好在第一个数字的情况
+              str+=num[i]+",";//加千分位逗号
+              continue;
+            }
+            str+=num[i];//倒着累加数字
+          }
+          return str.split('').reverse().join("");//字符串=>数组=>反转=>字符串
+        }
 
 ## <a name="统计字符串中同一字符出现次数">统计字符串中同一字符出现次数</a>
+
 >
+
     str.split('').reduce((val, count) => (val[count]++ || (val[count] = 1), val), {})
     //
     function thousand(str){
@@ -1320,6 +1371,7 @@ Math.random().toFixed(6).slice(-6) / 1
 ## <a name="查找字符串中出现最多的字符和个数">查找字符串中出现最多的字符和个数</a>
 
 >
+
     let str = "abcabcabcbbccccc";
     let num = 0;
     let char = '';
@@ -1333,38 +1385,43 @@ Math.random().toFixed(6).slice(-6) / 1
     str.replace(re,($0,$1) => {
         if(num < $0.length){
             num = $0.length;
-            char = $1;        
+            char = $1;
         }
     });
     console.log(`字符最多的是${char}，出现了${num}次`);
 
 ## <a name="类数组转化为数组">类数组转化为数组</a>
+
 >
-    
-    [].slice.call(arguments) | Array.prototype.slice.call(arguments)  
-    Array.from(arguments)  
+
+    [].slice.call(arguments) | Array.prototype.slice.call(arguments)
+    Array.from(arguments)
     [...arguments]
 
-
 ## <a name="判断是否回文、实现回文">判断是否回文、实现回文</a>
-* 判断是否回文
->
-    function isPalindrome(line) {  
-    line += "";//转为字符串
-    line=line.replace(/\W/g, '').toLowerCase();   //替换非单词字符串，转换为小写  
-    return line === line.split("").reverse().join("");  
-    }
 
-* 实现回文
->
-    let arr=[1,2,3,4];
-    let temp=arr.join().split(',');
-    temp.pop();
-    temp.reverse();
-    console.log(arr.concat(temp).join())
+- 判断是否回文
+
+  >
+
+      function isPalindrome(line) {
+      line += "";//转为字符串
+      line=line.replace(/\W/g, '').toLowerCase();   //替换非单词字符串，转换为小写
+      return line === line.split("").reverse().join("");
+      }
+
+- 实现回文
+  >
+      let arr=[1,2,3,4];
+      let temp=arr.join().split(',');
+      temp.pop();
+      temp.reverse();
+      console.log(arr.concat(temp).join())
 
 ## <a name="两位大整数相加">两位大整数相加</a>
+
 >
+
     function sumStrings(a,b){
       console.log(a);
       console.log(b);
@@ -1389,8 +1446,8 @@ Math.random().toFixed(6).slice(-6) / 1
     4. 将两个位置上的数进行相加，若大于9，则需要进位，即，将c的值存为true，这样当进行相加时，true会进行变量提升为1
     5. 输出最后结果的时候，由于前面可能存在0，所以使用字符串的replace方法将前面的0去掉。
 
-
 >
+
     function func(a,b){
       a = a + ''
       b = b + ''
@@ -1417,24 +1474,28 @@ Math.random().toFixed(6).slice(-6) / 1
       return result.reverse().join('').toString()
     }
 
-## <a name="实现f(a)(b)与f(a,b)一样的效果">实现f(a)(b)与f(a,b)一样的效果</a>
+## <a name="实现f(a)(b)与f(a,b)一样的效果">实现 f(a)(b)与 f(a,b)一样的效果</a>
 
 >
+
     function f(m, n){
       if (m !== undefined && n !== undefined) { return m + n}
       else { return function(a){  return m + a;} }
     }
 
 >
+
     function f(...arg){
       if(arg.length == 2){ return arg[0]+arg[1];}
       else return function(x){ return  Number(...arg.join(''))+x}
     }
 
-## <a name="无限累加的函数 add">实现一个无限累加的函数add(1)(2)(3)...</a>
+## <a name="无限累加的函数 add">实现一个无限累加的函数 add(1)(2)(3)...</a>
 
-1. 
+1.
+
 >
+
     打印函数时会自动调用 toString()方法，函数 add(a) 返回一个闭包 s(b)，函数 s() 中累加计算 a = a + b，只需要重写sum.toString()方法返回变量 a 就可以了。
     alert()会调用valueOf或toString方法
 
@@ -1448,35 +1509,40 @@ Math.random().toFixed(6).slice(-6) / 1
     }
     add(1)(2)(3)
 
-    执行add(1);   
+    执行add(1);
     返回的是里面的  s  函数， 通过闭包，s 函数里面可以访问到 变量 a=1;  所以 当我们 alert(add(1)); 的时候， 调用的 toSting（）方法会将作用域（原型链）里面的 a = 1 弹出来。
 
     执行add(1)(2);
     等价于s(2);  这里面相当于 把 2 传递给 s()函数里面的 b , 让作用域（原型链）里面的 a = a+b ,此时 a = 3， 继续保存在作用域中了。 然后还是返回 s 函数。
 
-    执行 add(1)(2)(3); 
+    执行 add(1)(2)(3);
     等价于s(3);和上面 b) 中的分析一样，只是更新了作用域中的 a = 6 了，然后同样是返回 s 函数
 
 
     console.log(add(1)(2)(3)); // f 6 --输出函数
     alert(add(1)(2)(3)); //6 -- 输出字符串
-    
-1. 
+
+1.
+
 >
+
     function add(x) {
-      var c = 0; 
+      var c = 0;
       return function(x) {
         c = c + x ;
         arguments.callee.toString = function(){
           return c;
-        }; 
+        };
         return arguments.callee;
       }(x);
-    }; 
-   add(1)(2)(3)
+    };
 
-2. 
+add(1)(2)(3)
+
+2.
+
 >
+
     function add (a){
         if(!isFinite(add.i)){
           add.i = a
@@ -1490,71 +1556,80 @@ Math.random().toFixed(6).slice(-6) / 1
     }
     add(1)(2)(3)
 
-
-
 ## <a name="数组无序排列">数组无序排列</a>
+
 arr.sort(()=>Math.random() - 0.5)
 
 arr.sort((a-b)=>a-b) 升序  
 arr.sort((a-b)=>b-a) 降序
+
 >
+
     如果调用该方法时没有使用参数，将按字母顺序对数组中的元素进行排序，说得更精确点，是按照字符编码的顺序进行排序。要实现这一点，首先应把数组的元素都转换成字符串（如有必要），以便进行比较。
 
+## <a name="数组扁平化">数组扁平化:n 维数组展开成一维数组 </a>
 
-## <a name="数组扁平化">数组扁平化:n维数组展开成一维数组  </a>
-var arr = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10]; 
+var arr = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
 
-* flatten
+- flatten
+
+  >
+
+      foo.flat(Infinity) // Array.prototype.flat()用于将嵌套的数组“拉平”，变成一维的数组。该方法返回一个新数组，对原数据没有影响。默认只会“拉平”一层，如果想要“拉平”多层的嵌套数组，可以将flat()方法的参数写成一个整数，表示想要拉平的层数，默认为1。
+
+- reduce + flatten
+
+  >
+
+      function flatten(arr){
+        return arr.reduce((prev,now)=>{
+          return prev.concat(Array.isArray(now) ? fun2(now) : now)
+        },[])
+      }
+      // flatten = (ary) => ary.reduce((pre, now) => pre.concat(Array.isArray(now) ? flatten(now) : now), []);
+
+- toString | join + split
+
+  >
+
+      arr.join().split(",")
+      arr.toString().split(",")
+      //返回的内容都是字符串，arr.toString().split(",").map(Number)
+      // ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+
+-
+
 >
-    foo.flat(Infinity) // Array.prototype.flat()用于将嵌套的数组“拉平”，变成一维的数组。该方法返回一个新数组，对原数据没有影响。默认只会“拉平”一层，如果想要“拉平”多层的嵌套数组，可以将flat()方法的参数写成一个整数，表示想要拉平的层数，默认为1。
 
-* reduce + flatten
->
-    function flatten(arr){
-      return arr.reduce((prev,now)=>{
-        return prev.concat(Array.isArray(now) ? fun2(now) : now)
-      },[])
-    }
-    // flatten = (ary) => ary.reduce((pre, now) => pre.concat(Array.isArray(now) ? flatten(now) : now), []);
-
-* toString | join + split
->
-    arr.join().split(",") 
-    arr.toString().split(",") 
-    //返回的内容都是字符串，arr.toString().split(",").map(Number)
-    // ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-
-* 
->
     flatten= (arr)=>Array.isArray(arr) ? [].concat(...arr.map(flatten)) : arr;
     flatten(foo); // [1, 2, 3, "4", 5, "6", 7, 8, 9, 10]
 
-* for 
->
-    function flatten(arr) {
-      let res = []
-      for(let i = 0; i < arr.length; i++) {
-        if(Array.isArray(arr[i])){
-          res = res.concat(flatted(arr[i]))
-        } else {
-          res.push(arr[i])
+- for
+  >
+      function flatten(arr) {
+        let res = []
+        for(let i = 0; i < arr.length; i++) {
+          if(Array.isArray(arr[i])){
+            res = res.concat(flatted(arr[i]))
+          } else {
+            res.push(arr[i])
+          }
         }
+        return res
       }
-      return res
-    }
 
 ## <a name="数组去重">[数组去重](/details/数组去重.md)</a>
 
-
 ## <a name="数组扁平化+去重"> 数组扁平化+去重</a>
-` Array.from(new Set(arr.flat(Infinity)))`
+
+`Array.from(new Set(arr.flat(Infinity)))`
 
 ## <a name="数组排序"> 数组排序</a>
+
 [排序](/details/sort.md)
 
+## <a name="自动触发onclick事件">自动触发 onclick 事件</a>
 
-
-##  <a name="自动触发onclick事件">自动触发onclick事件</a>
     if(document.all) { // IE
       document.getElementById("clickMe").click();
     }
@@ -1564,8 +1639,10 @@ var arr = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
       document.getElementById("clickMe").dispatchEvent(e);
     }
 
-## <a name="unicode转中文">unicode转中文</a>
+## <a name="unicode转中文">unicode 转中文</a>
+
 >
+
     document.onmousewheel = function (evt) {
       var e = evt || window.event;
       if(e.preventDefault && e.ctrlKey) e.preventDefault();
@@ -1578,15 +1655,41 @@ var arr = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
     var str = "\u6D77\u66D9\u4E2D\u5FC3\u83DC\u5E02\u573A" ;
     unescape(str.replace(/\\u/g, '%u'))
 
+## <a name="将字符串复制到剪贴板">将字符串复制到剪贴板</a>
+
+```js
+const copyToClipboard = (str) => {
+  const el = document.createElement("textarea");
+  el.value = str;
+  el.setAttribute("readonly", "");
+  el.style.position = "absolute";
+  el.style.left = "-9999px";
+  document.body.appendChild(el);
+  const selected =
+    document.getSelection().rangeCount > 0
+      ? document.getSelection().getRangeAt(0)
+      : false;
+  el.select();
+  document.execCommand("copy");
+  document.body.removeChild(el);
+  if (selected) {
+    document.getSelection().removeAllRanges();
+    document.getSelection().addRange(selected);
+  }
+};
+
+copyToClipboard("Lorem ipsum");
+```
+
 ## <a name="取消选择，防止复制，禁止剪切、粘贴">取消选择，防止复制，禁止剪切、粘贴</a>
+
 取消选择 obj.onselectstart = () => return false  
-    CSS: -moz-user-select:none  仅对FF有效
+ CSS: -moz-user-select:none 仅对 FF 有效
 
-禁止右键 document.oncontextmenu= () =>  false  
-禁止复制 document.oncopy= () =>  false  
-禁止粘贴 document.onpaste= () =>  false  
-禁止剪切 document.oncut= () =>  false  
-
+禁止右键 document.oncontextmenu= () => false  
+禁止复制 document.oncopy= () => false  
+禁止粘贴 document.onpaste= () => false  
+禁止剪切 document.oncut= () => false
 
 >
 
@@ -1599,38 +1702,46 @@ var arr = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
 
 >
 
-
 ## <a name="网页是否可编辑">网页是否可编辑</a>
-网页最后编辑时间：  document.lastModified  
+
+网页最后编辑时间： document.lastModified
 
 控制、查看网页是否可编辑  
-document.body.contentEditable=true | false  控制当前文档是否可编辑 ，权限比designMode高
+document.body.contentEditable=true | false 控制当前文档是否可编辑 ，权限比 designMode 高
 document.body.isContentEditable //查看
 
-document.designMode='on'  | 'off'  控制当前文档是否可编辑 
+document.designMode='on' | 'off' 控制当前文档是否可编辑
 document.designMode // 查看
 
 ## <a name="逗号操作符">逗号操作符</a>
 
- 对它的每个操作对象求值（从左至右），返回最后一个操作对象的值
- >
+对它的每个操作对象求值（从左至右），返回最后一个操作对象的值
+
+>
+
     var f = (function f(){ return '1'; }, function g(){ return 2; })();
     console.log(f) //2
 
-## <a name="一道setTimeout面试题">一道setTimeout面试题</a>
+## <a name="一道setTimeout面试题">一道 setTimeout 面试题</a>
+
 https://zhuanlan.zhihu.com/p/25407758
 
 ## <a name="map(parseInt) 原理解析">['1','2','3'].map(parseInt) 原理解析</a>
-[高频网红面试题['1','2','3'].map(parseInt) 原理解析](https://juejin.im/post/5dbff8735188252ddb2fd25e) 
+
+[高频网红面试题['1','2','3'].map(parseInt) 原理解析](https://juejin.im/post/5dbff8735188252ddb2fd25e)
 [关于数组的 ['1','2','3'].map(parseInt) 的问题?](https://www.zhihu.com/question/267702014)
 
-* ['1','2','3'].map(parseInt)  
+- ['1','2','3'].map(parseInt)
+
 ```js
-var arr1 = arr.map(function callback(currentValue[, index[, array]]) { 
+var arr1 = arr.map(function callback(currentValue[, index[, array]]) {
 }[, thisArg])
 ```
+
 解析：
+
 >
+
     这个 callback 一共可以接收三个参数，其中第一个参数代表当前被处理的元素，而第二个参数代表该元素的索引。
 
     而 parseInt 则是用来解析字符串的，使字符串成为指定基数的整数。
@@ -1645,23 +1756,24 @@ var arr1 = arr.map(function callback(currentValue[, index[, array]]) {
 
     map 函数返回的是一个数组，所以最后结果为 [1, NaN, NaN]。
 
-* ['1', '2', '3'].map(parseFloat)  // [1, 2, 3]
-parseFloat不用考虑第二个参数，只需要看第一个参数是否能正常转换为数字就行。
-
+- ['1', '2', '3'].map(parseFloat) // [1, 2, 3]
+  parseFloat 不用考虑第二个参数，只需要看第一个参数是否能正常转换为数字就行。
 
 * '1 2 3'.replace(/\d/g, parseInt) // "1 NaN 3"  
-replace第二个参数可以是callback函数，这个callback函数里，第一个参数为匹配项的值，第二个参数为匹配项的索引index，第三个参数为整个字符串 即'1 2 3'
+  replace 第二个参数可以是 callback 函数，这个 callback 函数里，第一个参数为匹配项的值，第二个参数为匹配项的索引 index，第三个参数为整个字符串 即'1 2 3'
 
 * '123'.replace(/\d/g, parseInt) // "1NaNNaN"
 
 ## <a name="比较两个对象是否相等">比较两个对象是否相等</a>
+
 [链接](https://segmentfault.com/a/1190000008187911)
 
->
-JSON.stringify()
+> JSON.stringify()
 
 //深度判断
+
 >
+
     function deepCompare(x, y) {
       var i, l, leftChain, rightChain;
       function compare2Objects(x, y) {
@@ -1672,7 +1784,7 @@ JSON.stringify()
           return true;
         }
 
-        // Compare primitives and functions.     
+        // Compare primitives and functions.
         // Check if both arguments link to the same object.
         // Especially useful on the step where we compare prototypes
         if (x === y) {
@@ -1764,9 +1876,8 @@ JSON.stringify()
       return true;
     }
 
+## <a name="Array.apply(null,Array(3))与Array(3)区别">Array.apply(null,Array(3))与 Array(3)区别</a>
 
-
-## <a name="Array.apply(null,Array(3))与Array(3)区别">Array.apply(null,Array(3))与Array(3)区别</a>
 https://www.jianshu.com/p/6c7d0b18d4ca
 
 >
@@ -1778,32 +1889,33 @@ https://www.jianshu.com/p/6c7d0b18d4ca
     Array(3) //是一个只有length,没有元素和索引的空数组
     //结果 [empty × 3] // [,,]
 
->  如何设为[0,0,0...]
+> 如何设为[0,0,0...]
 
     Array.apply(null, Array(n)).map(()=>0) // n个0 [0,0,0,....]
     Array.apply(null, {length: n}).map(()=>0)
     ES6方法：new Array(n).fill(0)
 
-
 ## <a name="页面加载进度条">页面加载进度条</a>
+
 >
-    首先，咱们要想知道页面是否加载完毕，需要知道以下几点： 
-    1.document.onreadystatechange 页面加载状态改变时的事件 
+
+    首先，咱们要想知道页面是否加载完毕，需要知道以下几点：
+    1.document.onreadystatechange 页面加载状态改变时的事件
     2.document.readyState 页面当前文档的状态 :有四种状态
-        uninitialized 还未开始载入 
+        uninitialized 还未开始载入
         loading 载入中
-        interactive 已加载，文档和永和可以开始交互 
-        complete 载入完成 
-        
+        interactive 已加载，文档和永和可以开始交互
+        complete 载入完成
+
 
     document.onreadystatechange = function () {//即在加载的过程中执行下面的代码
         if(document.readyState=="complete"){//complete加载完成
-            
+
         }
     }
 
+### 通过 css3 来制作进度条小动画
 
-### 通过css3来制作进度条小动画
 ![loading](img/loading.png)
 
     .loading {
@@ -1880,8 +1992,8 @@ https://www.jianshu.com/p/6c7d0b18d4ca
       }
     }
 
+### 根据当前页面加载图片数/页面所有图片数 实现加载进度条
 
-###  根据当前页面加载图片数/页面所有图片数 实现加载进度条
     .loading1 {
       width: 100%;
       height: 100%;
@@ -1959,8 +2071,10 @@ https://www.jianshu.com/p/6c7d0b18d4ca
         });
     </script>
 
-###  根据文件加载顺序来 实现加载进度条
+### 根据文件加载顺序来 实现加载进度条
+
 >
+
     设置几个加载进度节点,加载到时则实现加载动画
     .line {
       position: fixed;
@@ -1974,38 +2088,41 @@ https://www.jianshu.com/p/6c7d0b18d4ca
     <header>
         <img src='img.jpg'>
     </header>
-    
+
     <script>
         $('.line').animate({width:'10%'},100);
     </script>
-    
+
     <section class='banner'>
         <img src='img.jpg'>
     </section>
-    
+
     <script>
         $('.line').animate({width:'60%'},100);
     </script>
-    
+
     <footer'>
         <img src='img.jpg'>
     </footer>
-    
+
     <script>
         $('.line').animate({width:'100%'},100,function(){
             $('.line').fadeOut(); // 底部加载完成后隐藏进度条
         });
     </script>
 
-___
+---
 
-## <a name="vue实现数字动态翻牌的效果">vue实现数字动态翻牌的效果</a>
+## <a name="vue实现数字动态翻牌的效果">vue 实现数字动态翻牌的效果</a>
+
 [原文](https://juejin.im/post/5de8bf5851882512480a73dc#heading-0)
+
 >
+
     <!--
       writing-mode: vertical-lr，使数字竖直排版，
       2d移动 transform: translate(-50%, -40%); y值控制移动至哪个数字，
-      transition 控制transform属性有动画效果 
+      transition 控制transform属性有动画效果
     -->
     <template>
       <div class="chartNum">
@@ -2034,7 +2151,7 @@ ___
               setTimeout(() => {
                   this.toOrderNum(12654) // 这里输入数字即可调用
               }, 500);
-              
+
           },
           methods: {
                   // 设置文字滚动
@@ -2142,20 +2259,20 @@ ___
     }
     </style>
 
-
-
 # <a name="面试题">**面试题**</a>
+
 [Daily-Interview-Question](https://github.com/Advanced-Frontend/Daily-Interview-Question/blob/master/datum/summary.md?tdsourcetag=s_pctim_aiomsg)
 
-[前端基础面试题(JS部分)](https://zhuanlan.zhihu.com/p/28428367) 
+[前端基础面试题(JS 部分)](https://zhuanlan.zhihu.com/p/28428367)
 
-[web前端大厂10道经典面试题汇总](https://zhuanlan.zhihu.com/p/57200821)
+[web 前端大厂 10 道经典面试题汇总](https://zhuanlan.zhihu.com/p/57200821)
 
 [前端进阶系列](https://github.com/yygmind/blog)-木易杨
 
+### 定义一个简单的模板类，使用{}作为转义标记，中间的数字表示替换目标，format 实参用来替换模板内标记
 
-### 定义一个简单的模板类，使用{}作为转义标记，中间的数字表示替换目标，format实参用来替换模板内标记 
- >   
+>
+
     (function (window) {
         function fn(str) {
             this.str = str;
@@ -2177,16 +2294,27 @@ ___
         console.log(t.format('http://www.alibaba.com', 'Alibaba', 'Welcome'));
     })();
 
-### 一道题 理解函数的prototype,静态方法，变量提升。。。
+### 一道题 理解函数的 prototype,静态方法，变量提升，运算符优先级。。。
+
 ```js
 function Foo() {
-  getName = function () { console.log(1);}
+  getName = function () {
+    console.log(1);
+  };
   return this;
 }
-Foo.getName = function () {console.log(2)}
-Foo.prototype.getName = function () {console.log(3)}
-var getName = function () {console.log(4)}
-function getName() {console.log(5)}
+Foo.getName = function () {
+  console.log(2);
+};
+Foo.prototype.getName = function () {
+  console.log(3);
+};
+var getName = function () {
+  console.log(4);
+};
+function getName() {
+  console.log(5);
+}
 
 Foo.getName();
 getName();
@@ -2194,43 +2322,58 @@ Foo().getName();
 getName();
 new Foo.getName();
 new Foo().getName();
-new new Foo().getName()
+new new Foo().getName();
 ```
 
 上面的代码编译后如下(函数声明的优先级先于变量声明):
+
 ```js
-function Foo(){
-  getName = function () { console.log(1); };//赋值语句，全局方法
+function Foo() {
+  getName = function () {
+    console.log(1);
+  }; //赋值语句，全局方法
   return this;
 }
-function getName() {console.log(5)}; //全局函数(函数首先被提升)
-var getName //变量重复声明， 忽略
-Foo.getName = function () { console.log(2);};//静态方法
-Foo.prototype.getName = function () { console.log(3);};//原型方法
-getName = function () {console.log(4);};//getName重新赋值
+function getName() {
+  console.log(5);
+} //全局函数(函数首先被提升)
+var getName; //变量重复声明， 忽略
+Foo.getName = function () {
+  console.log(2);
+}; //静态方法
+Foo.prototype.getName = function () {
+  console.log(3);
+}; //原型方法
+getName = function () {
+  console.log(4);
+}; //getName重新赋值
 ```
 
 解析：
-```js
-Foo.getName();  //2 
-  //Foo函数上存储的静态方法 
+![运算符优先级](img/运算符优先级.png)
 
-getName();  //4   
+```js
+Foo.getName();  //2
+  //Foo函数上存储的静态方法
+
+getName();  //4
   //函数声明会提升,函数表达式不提升，先声明getName()函数，然后getName再被重新赋值
 
-Foo().getName(); // 1  
+Foo().getName(); // 1
   //先执行了Foo函数，然后调用Foo函数的返回值对象的getName属性函数.Foo函数返回的是window对象，相当于执行 window.getName() ，而window中的getName已经被修改为console.log(1)，所以最终会输出1
 
 getName();// 1
   //直接调用getName函数，相当于 window.getName() ,因为这个变量已经被Foo函数执行时修改了，遂结果与第三问相同，为1
 
-new Foo.getName();//2  
+new Foo.getName();//2
   //考察的是js的运算符优先级问题 ，new 无参数列表，对应的优先级是18；成员访问操作符(.) , 对应的优先级是19。.优先级大于new，相当于new (Foo.getName)();
   （https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence）
 
-new Foo().getName();  //3 
+new Foo().getName();  //3
   //new 带参数列表，对应的优先级是19，和成员访问操作符.优先级相同。同级运算符，按照从左到右的顺序依次计算。new Foo()先初始化 Foo 的实例化对象，实例上没有getName方法，因此需要原型上去找，即找到了 Foo.prototype.getName，
 
-new new Foo().getName();// 3  
+new new Foo().getName();// 3
   //new 带参数列表，优先级19，因此相当于是 new (new Foo()).getName()；先初始化 Foo 的实例化对象，然后将其原型上的 getName 函数作为构造函数再次 new ，相当于 new ((new Foo()).getName)();
 ```
+
+https://juejin.im/post/5e9bdcaf6fb9a03c4f3f9e32

@@ -1,3 +1,5 @@
+https://github.com/goldbergyoni/nodebestpractices/blob/master/README.chinese.md
+
 # 镜像
 淘宝npm镜像  
     搜索地址：http://npm.taobao.org/  

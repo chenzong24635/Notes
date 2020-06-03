@@ -1,29 +1,10 @@
 
-## <a name=""></a>
-<details open>
-  <summary>
-    链接
-  </summary>
+# [常用链接](/details/website/JS-ES-TS#ES.md)
 
-  [MDN-JavaScript 标准内置对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects)
-
-  [《JavaScript 教程》- 网道](https://wangdoc.com/javascript/index.html)
-
-  [现代 JavaScript 教程](http://zh.javascript.info/)
-
-  [《ECMAScript 6 入门》](http://es6.ruanyifeng.com/)- 阮一峰
-
-  [ECMAScript 6兼容性表](http://kangax.github.io/compat-table/es6/)
-
-  [《TypeScript》](https://www.tslang.cn/docs/home.html)
-
-  [《TypeScript》](https://ts.xcatliu.com/introduction/what-is-typescript.html)
-
-</details>
+# 目录
 
 <details open>
   <summary>
-    目录
   </summary>
 
 * <a href="#运算符优先级">运算符优先级</a>
@@ -100,7 +81,7 @@
 
 # <a name="运算符优先级">运算符优先级</a>
 ![运算符优先级](img/运算符优先级.png)
-[查看更多--MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence)
+[MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence)
 
 #  <a name="运算符">运算符</a>
 ##  <a name="加运算符">+运算符</a>
@@ -2053,12 +2034,10 @@ window.atob() 解码，ASCII to Base64
 >  
     function curry(fn) {
       var len = fn.length
-      return function curried() {
-        var args = [].slice.call(arguments)
+      return function curried(...args) {
         if(args.length < len) {
-          return function() {
-            var argsInner = [].slice.call(arguments)
-            return curried.apply(this, args.concat(argsInner))
+          return function(...args2) {
+            return curried.apply(this, args.concat(args2))
           }
         } else {
           return fn.apply(this, args)

@@ -34,7 +34,7 @@ Math 是一个内置对象， 它具有数学常数和函数的属性和方法�
 如果任一参数不能转换为数值，则返回NaN  
 如果没有参数，结果为Infinity。
 
-* Math.random()  
+* [Math.random()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Math/random)  
 返回[0，1)间的伪随机数
 
 * Math.round(x)  

@@ -47,7 +47,7 @@
     git remote add origin https://github.com/chenzong24635/仓库名.git   //关联远程仓库
     //git remote -v 查看已关联的远程仓库
     //,若报错: remote origin already exists. 先运行  git remote rm origin  	  
-    git push -u origin master  //提交到你的仓库
+    git push  origin master  //提交到你的仓库
 
     或者git push --force --set-upstream origin master // 强制替换所有内容
 

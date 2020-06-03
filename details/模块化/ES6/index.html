@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html;" charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>ES6</title>
+    <style>
+    </style>
+  </head>
+  <body>
+    <script  src="lib/bundle.js"></script>
+
+    <!-- <script type="module" async> /* 浏览器加载 ES6 模块，加入type="module"属性.默认 defer */
+      import {foo1, bar1, add1} from './src/module1.js';
+      foo1()
+      bar1()
+      add1(1,2)
+    </script>
+    <script type="module" async>
+      import {foo2, bar2} from './src/module2.js';
+      foo2()
+      bar2()
+      
+    </script> -->
+  </body>
+</html>
