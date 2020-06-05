@@ -5,7 +5,7 @@
 
 [Vue.js 技术揭秘](https://ustbhuangyi.github.io/vue-analysis/prepare/flow.html)
 
-[Vue资源精选(组件、插件...)](http://vue.awesometiny.com/)
+[Vue 插件-组件](/details/Vue/插件-组件.md)
 
 
 <!-- [30 道 Vue 面试题，内含详细讲解（涵盖入门到精通，自测 Vue 掌握程度）](https://juejin.im/post/5d59f2a451882549be53b170) -->
@@ -25,7 +25,6 @@
 * <a href="#生命周期">生命周期</a>
 * <a href="#监听组件的生命周期">监听组件的生命周期</a>
 
-* <a href="#组件销毁时，清除定时器">组件销毁时，清除定时器</a>
 * <a href="#computed watch methods">computed watch methods</a>
 * <a href="#Vue事件绑定原理">Vue事件绑定原理</a>
 
@@ -47,6 +46,7 @@
 * <a href="#slot">slot插槽</a>
 * <a href="#虚拟DOM">虚拟DOM</a>
 * <a href="#Vue模板编译过程">Vue模板编译过程</a>
+* <a href="#extend,mixins,extends,components,install等">vue中extend，mixins，extends，components,install的几个操作</a>
 
 * <a href="#keep-alive">keep-alive</a>
 * <a href="#路由vue-router">路由vue-router</a>
@@ -68,22 +68,12 @@
 
 * <a href="#组件通信方法">组件通信方法</a>
 
-* <a href="#vue项目性能优化">Vue开发技巧 + 性能优化</a>
-
-* <a href="#CDN引入">CDN引入</a>
+* <a href="#vue项目性能优化">Vue开发技巧+性能优化</a>
 * <a href="#UI组件">UI组件常见问题</a>
-
-
-* <a href="#vue-cli2快速创建项目">vue-cli2快速创建项目</a>
 * <a href="#vue-cli3配置">vue-cli3配置</a>
-* <a href="#静态资源处理">静态资源处理：图片等</a>
-
-* <a href="#打包">打包时常见问题及解决</a>
-* <a href="#插件">插件</a>
-  * <a href="#全局引入 less 变量">全局引入 less 变量</a>
-* <a href="#其他">其他</a>
-  * <a href="#rem">rem</a>
-  * <a href="#"></a>
+* <a href="#静态资源处理">静态资源处理</a>
+* <a href="#打包时常见问题及解决">打包时常见问题及解决</a>
+* <a href="#rem">rem</a>
 
 </details>
 
@@ -391,58 +381,6 @@ select 字段将 value 作为 prop 并将 change 作为事件。
 <input :value="val" @input="val = $event.target.value">
 ```
 
-# <a name="自定义组件双向绑定">使用model选项实现自定义组件双向绑定</a>[![bakTop](./img/backward.png)](#top)
-[model](https://cn.vuejs.org/v2/api/#model)
-
-父组件
-```js
-<div>
-  <p>{{iptVal}}</p>
-  <my-checkbox v-model="iptVal"  @update="update"></my-checkbox>
-</div>
-
-export default {
-  components:{
-    myCheckbox
-  },
-  data(){
-      return{
-        iptVal: ''
-      }
-  },
-  methods: {
-    update(val){
-      console.log('获取自子组件的值：',val);
-      console.log('父组件的iptVal：',this.iptVal);
-    }
-  }
-}
-```
-
-子组件
-```js
-<input :value="iptVal" type="text" @input="numChange($event.target.value)">
-export default {
-  model: {
-    prop: 'iptVal',
-    event: 'update'
-  },
-  props: {
-    iptVal: {
-      type: String,
-    }
-  },
-
-  methods: {
-    numChange(val) {
-      console.log('子组件的iptVal：',val);
-      this.$emit('update', val);
-    }
-  }
-}
-</script>
-```
-
 
 # <a name="生命周期">生命周期</a>[![bakTop](./img/backward.png)](#top)  
 [官网-生命周期钩子](https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%92%A9%E5%AD%90)
@@ -581,71 +519,40 @@ beforeDestroy -> destroyed
     父 destroyed
 
 
-# <a name="监听组件的生命周期">监听组件的生命周期</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="监听组件的生命周期">监听子组件的生命周期</a>[![bakTop](./img/backward.png)](#top)  
 
 父组件监听到子组件挂载 mounted就做一些逻辑处理
 
 常规的写法可能如下：
 ```js
-    // Parent.vue
-    <Child @mounted="doSomething"/>
+// Parent.vue
+<Child @mounted="doSomething"/>
 
-    // Child.vue
-    mounted() {
-      this.$emit("mounted");
-    }
+// Child.vue
+mounted() {
+  this.$emit("mounted");
+}
 ```
 
 通过 @hook来监听，子组件不需要任何处理，只需要在父组件引用的时候即可：
 ```js
-    //  Parent.vue
-    <Child @hook:mounted="doSomething" ></Child>
-    doSomething() {
-      console.log('父组件监听到 mounted 钩子函数 ...');
-    },
-        
-    //  Child.vue
-    mounted(){
-      console.log('子组件触发 mounted 钩子函数 ...');
-    },    
-        
-    // 以上输出顺序为：
-    // 子组件触发 mounted 钩子函数 ...
-    // 父组件监听到 mounted 钩子函数 ...     
+//  Parent.vue
+<Child @hook:mounted="doSomething" ></Child>
+doSomething() {
+  console.log('父组件监听到 mounted 钩子函数 ...');
+},
+    
+//  Child.vue
+mounted(){
+  console.log('子组件触发 mounted 钩子函数 ...');
+},    
+    
+// 以上输出顺序为：
+// 子组件触发 mounted 钩子函数 ...
+// 父组件监听到 mounted 钩子函数 ...     
 ```
 其它的生命周期事件，例如： created， updated等都可监听
 
-# <a name="组件销毁时，清除定时器">组件销毁时，清除定时器</a>[![bakTop](./img/backward.png)](#top)  
-* beforeDestroy,destroyed周期清除
->
-    data() {            
-      return {                              
-        timer: null  // 定时器名称          
-      }        
-    },
-    mounted() {
-      this.timer = setTimeout(() => {
-        // 某些操作
-      }, 1000)
-    },
-    beforeDestroy() {
-      clearTimeout(this.timer);        
-    }
-
-* 通过$once这个事件侦听器器在定义完定时器之后的位置来清除定时器
->
-    mounted() {
-      const timer = null
-      timer = setTimeout(() => {
-        // 某些操作
-      }, 1000)
-      // 通过$once来监听定时器，在beforeDestroy钩子可以被清除。
-      this.$once('hook:beforeDestroy', () => {            
-        clearTimeout(timer);                                    
-      })
-    },
-
-[$once、$on、$off的使用](https://cn.vuejs.org/v2/guide/components-edge-cases.html#%E7%A8%8B%E5%BA%8F%E5%8C%96%E7%9A%84%E4%BA%8B%E4%BB%B6%E4%BE%A6%E5%90%AC%E5%99%A8)
 
 # <a name="computed watch methods">computed watch methods用法，区别</a>[![bakTop](./img/backward.png)](#top)  
 [computed和watch的细节全面分析](https://segmentfault.com/a/1190000012948175)
@@ -738,7 +645,7 @@ watch: {
 ### 触发监听执行多个方法
 使用数组可以设置多项，形式包括字符串、函数、对象
 
-```ts
+```html
 <template>
   <div>{{name}}</div>
 </template>
@@ -1145,6 +1052,45 @@ key是给每一个vnode的唯一id,可以依靠key,更准确, 更快的拿到old
 首先会先将模版通过解析器，解析成AST（抽象语法树），然后再通过优化器，遍历AST树，将里面的所有静态节点找出来，并打上标志，这样可以避免在数据更新进行重新生成新的Vnode的时候做一些无用的功夫，和diff算法对比时进行一些无用的对比，因为静态节点这辈子是什么样就是什么样的了，不会变化。接着，代码生成器会将这颗AST编译成代码字符串，这段字符串会别Vdom里面的createElement函数调用，最后生成Vnode。
 
 ```
+# <a name="extend,mixins,extends,components,install等">Vue.extend,Vue.component,mixins,extends,install的几个操作</a>[![bakTop](./img/backward.png)](#top) 
+
+### [Vue.extend](https://cn.vuejs.org/v2/api/#Vue-extend)
+
+* 参数：{Object} options  
+* 用法: 使用基础 Vue 构造器，创建一个“子类”。参数是一个包含组件选项的对象。
+
+Vue.extend实际是创建一个构造器,对应的初始化构造器,并将其挂载到标签上
+
+### [Vue.component](https://cn.vuejs.org/v2/api/#Vue-component)
+* 参数：  
+  {string} id  
+  {Function | Object} [definition]
+
+用法：注册或获取全局组件。注册还会自动使用给定的 id 设置组件的名称
+
+```js
+// 注册组件，传入一个扩展过的构造器
+Vue.component('my-component', Vue.extend({ /* ... */ }))
+
+// 注册组件，传入一个选项对象 (自动调用 Vue.extend)
+Vue.component('my-component', { /* ... */ })
+
+// 获取注册的组件 (始终返回构造器)
+var MyComponent = Vue.component('my-component')
+```
+
+### [extends](https://cn.vuejs.org/v2/api/#extends)
+* 类型：Object | Function
+* 详细：
+  允许声明扩展另一个组件 (可以是一个简单的选项对象或构造函数)，而无需使用 Vue.extend。这主要是为了便于扩展单文件组件。
+
+### [mixins](https://cn.vuejs.org/v2/api/#mixins)
+* 类型：Array\<Object\>
+* 详细：  
+  mixins 选项接收一个混入对象的数组。这些混入对象可以像正常的实例对象一样包含实例选项，这些选项将会被合并到最终的选项中，使用的是和 Vue.extend() 一样的选项合并逻辑。也就是说，如果你的混入包含一个 created 钩子，而创建组件本身也有一个，那么两个函数都会被调用。
+
+  Mixin 钩子按照传入顺序依次调用，并在调用组件自身的钩子之前被调用。
+
 
 # <a name="Vue的数据为什么频繁变化但只会更新一次">Vue的数据为什么频繁变化但只会更新一次</a>[![bakTop](./img/backward.png)](#top)  
 Vue 异步执行 DOM 更新。Vue在观察到数据变化时并不是直接更新DOM，而是开启一个队列，并缓冲在同一事件循环中发生的所有数据改变。在缓冲时会去除重复数据，从而避免不必要的计算和DOM操作。然后，在下一个事件循环tick中，Vue刷新队列并执行实际工作。
@@ -1339,6 +1285,25 @@ https://router.vuejs.org/zh
 
     this.$router.go(1)  等同于 history.forward()
     this.$router.go(-1) 等同于 history.back()
+
+* resolve()
+\<router-link\>标签实现新窗口打开 添加属性 target="_blank" 
+```html
+<router-link target="_blank" to="/home">home</router-link>
+```
+
+编程式导航
+```js
+this.$routerr.resolve(location, current?, append?)
+
+seeShare(){
+  let routeUrl = this.$router.resolve({
+      path: "/home",
+      query: {id: 'a'}
+  });
+  window.open(routeUrl .href, '_blank');
+}
+```
 
 ##  <a name="页面跳转方法">页面跳转方法</a>[![bakTop](./img/backward.png)](#top)  
 `如果提供了 path，params会被忽略，所以用params方式传参要用name来引入`
@@ -1837,7 +1802,6 @@ export default router
 https://juejin.im/post/5b5bfd5b6fb9a04fdd7d687a
 
 
-
 # <a name="vuex">vuex</a>[![bakTop](./img/backward.png)](#top)  
 [详情](/details/Vuex.md)
 
@@ -1912,264 +1876,12 @@ const store = new Vuex.Store({
 });
 ```
 
-
 # <a name="组件通信方法">组件通信方法</a>[![bakTop](./img/backward.png)](#top)  
 [组件通信方法](/details/Vue/组件通信.md)
 
 
-# <a name="vue项目性能优化">Vue开发技巧 + 性能优化</a>[![bakTop](./img/backward.png)](#top)  
-[10个Vue开发技巧助力成为更好的工程师](https://juejin.im/post/5e8a9b1ae51d45470720bdfa)
-[这 10 个技巧让你成为一个更好的 Vue 开发者](https://juejin.im/post/5e8286f6e51d4546c72dfff0)
-
-[Vue 项目性能优化](https://juejin.im/post/5d548b83f265da03ab42471d)
-
-## 路由参数解耦
-[路由组件传参](https://router.vuejs.org/zh/guide/essentials/passing-props.html#%E5%B8%83%E5%B0%94%E6%A8%A1%E5%BC%8F)
-
-一般用法,与 $route 的耦合
-```js
-export default {
-  methods: {
-    getParamsId() {
-      return this.$route.params.id
-    }
-  }
-}
-```
-
-正确的做法是通过 props 解耦
-```js
-const router = new VueRouter({
-  routes: [{
-    path: '/user/:id',
-    component: User,
-
-    //布尔模式
-    props: true
-
-    //对象模式
-    /* props: {
-      newsletterPopup: false
-    } */
-
-    //函数模式
-    /* props: (route) => ({
-      id: route.params.id
-    }) */
-  }]
-})
-
-将路由的 props 属性设置为 true 后，组件内可通过 props 接收到 params 参数
-
-export default {
-  props: ['id'],
-  methods: {
-    getParamsId() {
-      return this.id
-    }
-  }
-}
-```
-
-## 函数式组件 functional
-[函数式组件](https://cn.vuejs.org/v2/guide/render-function.html#%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6)
-
-定义：
-* Stateless(无状态)： 没有响应式数据
-* Instanceless(无实例)：组件自身没有实例，即没有 this 上下文
-
-特点：渲染开销低，对性能有好处
-
-应用：  
-当组件没有管理任何状态，也没有监听任何传递给它的状态，也没有生命周期方法。实际上，它只是一个接受一些 prop 的函数。在这样的场景下，我们可以将组件标记为 functional。
-
-
-
-子组件使用 函数式组件
-```html
-<template functional>
-  <div class="list">
-      <div class="item" v-for="item in props.list" :key="item.id" @click="props.itemClick(item)">
-          <p>{{item.title}}</p>
-          <p>{{item.content}}</p>
-      </div>
-  </div>
-</template>
-```
-
-父组件
-```js
-<template>
-  <div>
-    <List :list="list" :itemClick="func" />
-  </div>
-</template>
-import List from '@/components/List.vue'
-export default {
-  components: {
-      List
-  },
-  data() {
-    return {
-      list: [
-        {
-          title: 'title1',
-          content: 'content1'
-        },
-        {
-          title: 'title2',
-          content: 'content2'
-        },
-      ],
-      currentItem: ''
-    }
-  },
-  methods: {
-    func(val){
-      console.log(val);
-    }
-  }
-}
-```
-
-### 动态指令参数
-```html
-<button @[clickType]="myFunc">{{clickType}}</button>
-<script>
-data(){
-  return {
-    clickType: 'click'
-  }
-},
-methods: {
-  myFunc(){
-    this.clickType = this.clickType === 'click' ? 'dblclick' : 'click';
-  }
-}
-</script>
-```
-
-## 代码层面的优化
-
-* v-if 和 v-show 区分使用场景
-* computed 和 watch  区分使用场景
-* v-for 遍历必须为 item 添加 key，且避免同时使用 v-if
-
-* 长列表性能优化  
-Vue 会通过 Object.defineProperty 对数据进行劫持，来实现视图响应数据的变化，然而有些时候我们的组件就是纯粹的数据展示，不会有任何改变  
-通过 Object.freeze 方法来冻结一个对象,可以减少组件初始化的时间
-```js
-export default {
-  data(){
-    return {
-      users: {}
-    }
-  },
-  async created() {
-    const users = await axios.get("xxx");
-    this.users = Object.freeze(users);
-  }
-};
-```
-
-* 事件的销毁  
-    ```js
-    /* 在 js 内使用 addEventListener 等方式是不会自动销毁的 */
-    created() {
-      addEventListener('click', this.click, false);
-
-      let timer = setTimeout(()=>{});
-      //或者 通过$once来监听定时器，在beforeDestroy钩子可以被清除。
-      /* this.$once('hook:beforeDestroy', () => {
-        clearTimeout(timer);
-      }) */
-
-      this.timer = timer;
-    },
-    beforeDestroy() {
-      removeEventListener('click', this.click, false);
-
-      clearTimeout(this.timer);
-    }
-    ```
-* 图片资源懒加载  
-  ```js
-    //安装插件
-    npm install vue-lazyload --save-dev
-
-    //man.js 中引入并使用
-    import VueLazyload from 'vue-lazyload'
-    
-    //直接使用
-    Vue.use(VueLazyload)
-
-    //或者添加自定义选项
-    Vue.use(VueLazyload, {
-      preLoad: 1.3,
-      error: 'dist/error.png',
-      loading: 'dist/loading.gif',
-      attempt: 1
-    })
-
-    //将 img 标签的 src 属性直接改为 v-lazy 
-    <img v-lazy="/static/img/1.png">
-  ```
-
-* 路由懒加载  
-
-    Vue  是单页面应用，会有很多的路由引入 ，打包后的文件很大，当进入首页时，加载的资源过多，页面会出现白屏的情况，不利于用户体验。如果我们能把不同路由对应的组件分割成不同的代码块，然后当路由被访问的时候才加载对应的组件，这样就更加高效了。这样会大大提高首屏显示的速度，但是可能其他的页面的速度就会降下来。
-
-    ```js
-    //import Foo from './Foo.vue'
-
-    // 懒加载
-    const Foo = () => import('./Foo.vue')
-    //或者
-    //const Foo = resolve => require(['./Foo.vue'], resolve)
-    ```
-
-* 第三方插件的按需引入
-* 优化无限列表性能
-如果你的应用存在非常长或者无限滚动的列表，那么需要采用 窗口化 的技术来优化性能，只需要渲染少部分区域的内容，减少重新渲染组件和创建 dom 节点的时间。 你可以参考以下开源项目 [vue-virtual-scroll-list](https://github.com/tangbc/vue-virtual-scroll-list) 和[vue-virtual-scroller](https://github.com/Akryum/vue-virtual-scroller)  来优化这种无限列表的场景的。
-
-* 服务端渲染 SSR or 预渲染
-
-
-## 首屏优化
-[Vue CLI 首屏优化技巧](https://segmentfault.com/a/1190000019499007)
-
-## 骨架屏
-[骨架屏](https://www.jianshu.com/p/eacac700630e)
-骨架屏就是在页面数据尚未加载前先给用户展示出页面的大致结构，直到请求数据返回后再渲染页面，补充进需要显示的数据内容。常用于文章列表、动态列表页等相对比较规则的列表页面。
-<img src="./img/skeleton.jpg">
-
-
-# <a name="CDN引入">CDN引入</a>[![bakTop](./img/backward.png)](#top) 
-国内的CDN服务推荐使用[BootCDN](https://www.bootcdn.cn/)
-
-index.html
-```html
-<!-- CDN引入外部资源 -->
-<script src="//cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
-<script src="//cdn.bootcss.com/vuex/3.0.1/vuex.min.js"></script>
-<script src="//cdn.bootcss.com/vue-router/3.0.1/vue-router.min.js"></script>
-<script src="//cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
-<script src="//unpkg.com/iview@1.0.1/dist/iview.min.js"></script>
-```
-
-[vue.config.js配置externals](https://webpack.js.org/configuration/externals/)
-```js
-configureWebpack: {
-  externals: {
-    'vue': 'Vue',
-    'vuex': 'Vuex',
-    'vue-router': 'VueRouter',
-    'axios': 'axios',
-    'iView': 'iview',
-    // 'element-ui': 'ELEMENT',
-  },
-},
-```
+# <a name="vue项目性能优化">Vue开发技巧+性能优化</a>[![bakTop](./img/backward.png)](#top)  
+[Vue开发技巧+性能优化](/details/Vue/Vue开发技巧+性能优化.md)
 
 
 # <a name="UI组件">UI组件常见问题</a>[![bakTop](./img/backward.png)](#top)  
@@ -2199,139 +1911,6 @@ configureWebpack: {
 ></el-autocomplete>
 ```
 
-# <a name="vue-cli2快速创建项目">vue-cli2快速创建项目</a>[![bakTop](./img/backward.png)](#top)  
-
-npm install --global vue-cli //  vue-cli安装  
-vue init webpack vuedemo  
-输入命令后，会跳出几个选项让你回答：  
->
-    Project name (baoge)： -----项目名称，直接回车，按照括号中默认名字（注意这里的名字不能有大写字母，如果有会报错Sorry, name can no longer contain capital letters）
-
-    Project description (A Vue.js project)： ----项目描述，也可直接点击回车，使用默认名字
-
-    Author ()： ----作者名
-
-    Runtime + Compiler: recommended for most users 运行加编译，既然已经说了推荐，就选它了
-
-    Runtime-only: about 6KB lighter min+gzip, but templates (or any Vue-specificHTML) are ONLY allowed in .vue files - render functions are required elsewhere 仅运行时，已经有推荐了就选择第一个了
-
-    Install vue-router? (Y/n) 是否安装vue-router，这是官方的路由，大多数情况下都使用，这里就输入“y”后回车即可。
-
-    Use ESLint to lint your code? (Y/n) 是否使用ESLint管理代码，ESLint是个代码风格管理工具，是用来统一代码风格的，一般项目中都会使用。
-      > Pick an ESLint preset (Use arrow keys) 选择一个ESLint预设，编写vue项目时的代码风格，直接y回车
-      
-      > Setup unit tests with Karma + Mocha? (Y/n) 是否安装单元测试，选择安装y回车
-
-    Setup e2e tests with Nightwatch(Y/n)? 是否安装e2e测试 ，选择安装y回车
-
-## 生成文件目录后，使用 npm / cnpm安装依赖
-npm install
-
-安装淘宝镜像 npm config set registry https://registry.npm.taobao.org  
->cnpm安装  npm install -g cnpm --registry=https://registry.npm.taobao.org
-
-切换镜像 npm set registry https://registry.npm.taobao.org/
-
-查看当前镜像 npm config get registry
-
-## 启动项目 npm run dev 
-如果浏览器打开之后，没有加载出页面，有可能是本地的 8080 端口被占用，需要修改一下配置文件 config里的index.js  
-
-dev --> port
-
-## 打包上线 npm run build
->
-    打开config/index.js，将其中build的assetsPublicPath值改为’./’
-    组件的路径不能使用@/../static   只能使用../../../static这个时候，打包过后的登陆页面引用图片路径错误，多了一个/static/css
-      修改build文件夹下边的utils.js文件
-      if (options.extract) {
-        return ExtractTextPlugin.extract({
-          use: loaders,
-          fallback: 'vue-style-loader',
-          publicPath:'../../'  //此处添加publicPath:'../../'
-        })
-      } else {
-        return ['vue-style-loader'].concat(loaders)
-      }
-
-    在项目开发完成之后，npm run build 来进行打包工作。注意，自己的项目文件都需要放到 src 文件夹下。
-    打包完成后，会生成 dist 文件夹，如果已经修改了文件路径，可以直接打开本地文件查看。项目上线时，只需要将 dist 文件夹放到服务器就行了。
-
-## 查看所有注入的命令 npx vue-cli-service help
-
-## 查看打包后各文件的体积 npm run build --report 
-如果你是vue-cli2初始化的项目，会默认安装webpack-bundle-analyzer插件，该插件可以帮助我们查看项目的体积结构对比和项目中用到的所有依赖。也可以直观看到各个模块体积在整个项目中的占比
-
-npm install webpack-bundle-analyzer --save-dev
-
-vue.config.js配置
->
-    module.exports = {
-      chainWebpack: config => {
-        if (process.env.use_analyzer) {
-          config
-            .plugin('webpack-bundle-analyzer')
-            .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
-        }
-      }
-    }
-
-npm i cross-env -D  
-由于windows下不支持xxx=xxx这种写法。为了支持这种写法，用npm安装cross-env
-
-修改package.json
->
-    "scripts": {
-      "analyzer": "cross-env use_analyzer=true npm run build"
-    },
-
-npm run analyzer
-
-
-## dependencies 与 devdependencies 区别
->
-    –-save会把依赖包名称添加到package.json文件dependencies键下
-    –-save-dev则添加到package.json文件devDependencies键下
-
-    dependencies ----- 生产环境中需要的依赖，即正常运行该包时所需要的依赖项。 
-    devDependencies -- 开发时用的依赖项，它们不会被部署到生产环境。
-
----
->
-
-    ├── build/                      ## webpack 编译任务配置文件: 开发环境与生产环境
-    │   └── ...
-    ├── config/                     
-    │   ├── index.js                ## 项目核心配置
-    │   └── ...
-    ├ ── node_module/               ##项目中安装的依赖模块
-       ── src/
-    │   ├── main.js                 ## 程序入口文件
-    │   ├── App.vue                 ## 程序入口vue组件
-    │   ├── components/             ## 组件
-    │   │   └── ...
-    │   └── assets/                 ## 资源文件夹，一般放一些静态资源文件
-    │       └── ...
-    ├── static/                     ## 纯静态资源 (直接拷贝到dist/static/里面)
-    ├── test/
-    │   └── unit/                   ## 单元测试
-    │   │   ├── specs/              ## 测试规范
-    │   │   ├── index.js            ## 测试入口文件
-    │   │   └── karma.conf.js       ## 测试运行配置文件
-    │   └── e2e/                    ## 端到端测试
-    │   │   ├── specs/              ## 测试规范
-    │   │   ├── custom-assertions/  ## 端到端测试自定义断言
-    │   │   ├── runner.js           ## 运行测试的脚本
-    │   │   └── nightwatch.conf.js  ## 运行测试的配置文件
-    ├── .babelrc                    ## babel 配置文件
-    ├── .editorconfig               ## 编辑配置文件
-    ├── .gitignore                  ## 用来过滤一些版本控制的文件，比如node_modules文件夹 
-    ├── index.html                  ## index.html 入口模板文件
-    └── package.json                ## 项目文件，记载着一些命令和依赖还有简要的项目描述信息 
-    └── README.md                   ##介绍自己这个项目的，可参照github上star多的项目。
-    build/
-
-
 # <a name="vue-cli3配置">vue-cli3配置</a>[![bakTop](./img/backward.png)](#top)  
 [参考](https://blog.csdn.net/qq_36407748/article/details/80739787)
 
@@ -2345,129 +1924,77 @@ npm install -D @vue/cli //局部安装
 vue create projectName
 
 * vue.config.js
->
-    const path = require('path');
-    function resolve(dir) {
-      return path.join(__dirname, dir)
-    }
-    module.exports = {
-      publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
-      //baseUrl (Vue CLI 3.3已弃用)
+```js
+const path = require('path');
+function resolve(dir) {
+  return path.join(__dirname, dir)
+}
+module.exports = {
+  publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+  //baseUrl (Vue CLI 3.3已弃用)
 
-      outputDir: "dist", // 在npm run build时 生成文件的目录 
+  outputDir: "dist", // 在npm run build时 生成文件的目录 
 
-      assetsDir: "static", // 放置生成的静态资源的目录
-      
-      indexPath: "index.html", // 指定生成的 index.html 的输出路径 (相对于 outputDir)。也可以是一个绝对路径。
+  assetsDir: "static", // 放置生成的静态资源的目录
+  
+  indexPath: "index.html", // 指定生成的 index.html 的输出路径 (相对于 outputDir)。也可以是一个绝对路径。
 
-      lintOnSave: true, // 保存时检验格式
+  lintOnSave: true, // 保存时检验格式
 
-      productionSourceMap: false, // 生产环境是否生成map文件
+  productionSourceMap: false, // 生产环境是否生成map文件
 
-      lintOnSave: process.env.NODE_ENV !== 'production', // eslint检验
+  lintOnSave: process.env.NODE_ENV !== 'production', // eslint检验
 
-      chainWebpack: config => { 
-        // 自定义路径名
-        config.resolve.alias
-          .set('@', resolve('src'))
-          .set('_c', resolve('src/components'))
-      },
+  chainWebpack: config => { 
+    // 自定义路径名
+    config.resolve.alias
+      .set('@', resolve('src'))
+      .set('_c', resolve('src/components'))
+  },
 
-      devServer:{ // 代理
-        open: true,// 启动服务器后是否打开浏览器
-        host: 'localhost',
-        port: 8080, 
-        https: false, 
-        hotOnly: false,
-        
-        proxy: { // 代理
-          '/api': {
-            target: '要跨域的域名',
-            ws: true,
-            changeOrigin: true
-          },
-          '/foo': {
-            target: '<other_url>'
-          }
-        },
-      }  
-    }
-
-* 引用public文件夹内文件
-process.env.BASE_URL + 'img/temp.jpg'
-
-
-* 打包时不生成.map文件，map文件的作用
->
-    productionSourceMap: false
-
-    作用：项目打包后，代码都是经过压缩加密的，如果运行时报错，输出的错误信息无法准确得知是哪里的代码报错。  
-    有了map就可以像未加密的代码一样，准确的输出是哪一行哪一列有错。
-    但是我们在生成环境是不需要.map文件的
-
-* [引用public文件路径](https://cli.vuejs.org/zh/guide/html-and-static-assets.html#public-%E6%96%87%E4%BB%B6%E5%A4%B9)
->
-    <img :src="`${publicPath}img.png`">
-
-    data () {
-      return {
-        publicPath: process.env.BASE_URL
-      }
-    }
-
-* vue-cli项目创建时，git bash箭头选择无效问题
->
-    选择git bash 的安装目录，找到bash.bashrc文件
-
-    文件末未添加 ：
-    alias vue='winpty vue.cmd'
+  devServer:{ // 代理
+    open: true,// 启动服务器后是否打开浏览器
+    host: 'localhost',
+    port: 8080, 
+    https: false, 
+    hotOnly: false,
     
-    重启git bash 即可
-
-## <a name="proxy跨域设置">vue-cli2 proxy跨域设置</a>[![bakTop](./img/backward.png)](#top)  
->
-    // config/index.js
-    //配置跨域请求,注意配置完之后需要重启编译该项目
-    proxyTable: {
-      //请求名字变量可以自己定义
+    proxy: { // 代理
       '/api': {
-        target: 'http://www.thenewstep.cn', // 请求的接口域名或IP地址，开头是http或https
-        // secure: false,  // 如果是https接口，需要配置这个参数
-        changeOrigin: true, // 是否跨域，如果接口跨域，需要进行这个参数配置
-        pathRewrite: {
-          '^/api': ''//表示需要rewrite重写路径  
-        }
-      }
+        target: '要跨域的域名',
+        ws: true,
+        changeOrigin: true
+      },
     },
-
-
+  }  
+}
+```
 
 # <a name="静态资源处理">静态资源处理</a>[![bakTop](./img/backward.png)](#top)  
 
-## 处理静态资源
 [参考](http://vuejs-templates.github.io/webpack/static.html)
 
-  #### 图片路径 
-    1. 相对URL，例如./assets/logo.png将被解释为模块依赖性。它们将替换为基于Webpack输出配置的自动生成的URL。
+#### 图片路径 
+1. 相对URL，例如./assets/logo.png将被解释为模块依赖性。它们将替换为基于Webpack输出配置的自动生成的URL。
 
-    2. 未加前缀的URL(同相对URL)，例如，assets/logo.png将被视为与相对URL相同并被翻译成./assets/logo.png。
+2. 未加前缀的URL(同相对URL)，例如，assets/logo.png将被视为与相对URL相同并被翻译成./assets/logo.png。
 
-    3. 带有前缀的URL~被视为模块请求，类似于require('some-module/image.png')。如果要利用Webpack的模块解析配置，则需要使用此前缀。例如，如果您有解析别名assets，则需要使用\<img src="~assets/logo.png" >以确保遵守别名。
+3. 带有前缀的URL~被视为模块请求，类似于require('some-module/image.png')。如果要利用Webpack的模块解析配置，则需要使用此前缀。例如，如果您有解析别名assets，则需要使用\<img src="~assets/logo.png" >以确保遵守别名。
 
-    4. 根相对URL，如/assets/logo.png根本不处理。--打包后图片不加载
+4. 根相对URL，如/assets/logo.png根本不处理。--打包后图片不加载
 
-  #### src/assets和static/区别
+#### src/assets和static/区别
 
-      能被 webpack 追踪到的静态资源，如 img 标签引入的图片， 可以放到 assets 里，
-      而webpack无法追踪到的图片，如通过 css backgrount-image 引入的图片，只能放到 static 目录。
+能被 webpack 追踪到的静态资源，如 img 标签引入的图片， 可以放到 assets 里，
+而webpack无法追踪到的图片，如通过 css backgrount-image 引入的图片，只能放到 static 目录。
 
-      相同点：资源在html中使用，都是可以的。
+相同点：资源在html中使用，都是可以的。
 
-      不同点：使用assets下面的资源，在js中使用的话，路径要经过webpack中file-loader编译，路径不能直接写。
+不同点：使用assets下面的资源，在js中使用的话，路径要经过webpack中file-loader编译，路径不能直接写。
 
-      assets中的文件会经过webpack打包，重新编译，推荐该方式。而static中的文件，不会经过编译static中的文件只是复制一遍而已。简单来说，static中建议放一些外部第三方，自己的放到assets，别人的放到static中。
+assets中的文件会经过webpack打包，重新编译，推荐该方式。而static中的文件，不会经过编译static中的文件只是复制一遍而已。简单来说，static中建议放一些外部第三方，自己的放到assets，别人的放到static中。
 
-      注意：如果把图片放在assets与static中，html页面可以使用；但在动态绑定中，assets路径的图片会加载失败，因为webpack使用的是commenJS规范，必须使用require才可以
+注意：如果把图片放在assets与static中，html页面可以使用；但在动态绑定中，assets路径的图片会加载失败，因为webpack使用的是commenJS规范，必须使用require才可以
 
 1. 图片路径为static
 >
@@ -2493,224 +2020,24 @@ process.env.BASE_URL + 'img/temp.jpg'
       }
     }
 
-
-
-# <a name="打包">打包时常见问题及解决</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="打包时常见问题及解决">打包时常见问题及解决</a>[![bakTop](./img/backward.png)](#top)  
 
 ## vue中打包后出现css中文本超出部分隐藏显示省略号失效
->
-    原因：webpack打包后-webkit-box-orient被移除，所以导致失效。
+原因：webpack打包后-webkit-box-orient被移除，所以导致失效。
 
-    解决：该属性前后添加/*! autoprefixer: off */ /* autoprefixer: on */
-     .ovh {
-        display: -webkit-box; /*作为弹性伸缩盒子模型显示*/
-        -webkit-line-clamp: 2; /*显示的行数；如果要设置2行加...则设置为2*/
-        overflow: hidden;
-        text-overflow: ellipsis; /* 溢出用省略号*/
+解决：该属性前后添加/*! autoprefixer: off */ /* autoprefixer: on */
+```css
+.ovh {
+  display: -webkit-box; /*作为弹性伸缩盒子模型显示*/
+  -webkit-line-clamp: 2; /*显示的行数；如果要设置2行加...则设置为2*/
+  overflow: hidden;
+  text-overflow: ellipsis; /* 溢出用省略号*/
 
-        /*! autoprefixer: off */ 
-        -webkit-box-orient: vertical;/*伸缩盒子的子元素排列：从上到下*/
-        /* autoprefixer: on */
-      }
-
-## vue-cli2打包后打开 index.html 空白,某些图片字体文件加载不出来解决办法
-
-1. 修改config下面的index.js中bulid模块导出的路径
->
-    build: {
-      //修改此处路径
-      assetsPublicPath: './',
-    }
-
-2. build下utils.js文件
->
-    if (options.extract) {
-      return ExtractTextPlugin.extract({
-        use: loaders,
-        fallback: 'vue-style-loader',
-          //此处添加publicPath:'../../'
-        publicPath:'../../'
-      })
-    } else {
-      return ['vue-style-loader'].concat(loaders)
-    }
-
-3. 使用了mode：history
->
-    src里边router/index.js路由配置里边默认模式是hash，如果你改成了history模式的话，打开也会是一片空白。
-    dist包不是服务器跟目录，在index.htm里手动给js和css添加dist目录即可/dist/；
-
-    mode: 'history',
-    base: '/dist/', 
-    //base: process.env.BASE_URL
-
-
-## nginx
-* 基本命令
->
-    启动服务：start nginx
-    退出服务：nginx -s quit
-    强制关闭服务：nginx -s stop
-    重载服务：nginx -s reload　　（重载服务配置文件，类似于重启，服务不会中止）
-    验证配置文件：nginx -t
-    使用配置文件：nginx -c "配置文件路径"
-    使用帮助：nginx -h
-
-# <a name="插件">插件</a>[![bakTop](./img/backward.png)](#top)  
-## <a name="全局引入 less 变量">全局引入 less 变量</a>[![bakTop](./img/backward.png)](#top)  
-```vue add style-resources-loader```  安装 style-resources-loader
-
-安装完成之后，命令行会让你选择预处理器，我们选择 less!
-
-安装完预处理器 会在项目的 vue.config.js 里面生成一段代码，我们只需要将 less 文件路径放入其中
-```js
-pluginOptions: {
-    'style-resources-loader': {
-      preProcessor: 'less',
-      patterns: [path.resolve(__dirname, 'src/assets/css/index.less')]
-    }
-  }
+  /*! autoprefixer: off */ 
+  -webkit-box-orient: vertical;/*伸缩盒子的子元素排列：从上到下*/
+  /* autoprefixer: on */
+}
 ```
-
-[Vue资源精选(组件、插件...)](http://vue.awesometiny.com/)
-
-
-## [vue-baidu-map(百度地图)](https://github.com/Dafrok/vue-baidu-map)
-
-## [vue-amap(高德地图)](https://elemefe.github.io/vue-amap/#/zh-cn/introduction/install)
-
-## [国际化插件-vue-i18n](https://link.zhihu.com/?target=https%3A//github.com/kazupon/vue-i18n)
-
-## echart 
-* 重新渲染(重新绘制,重新加载数据) 解决数据更新后图表不更新
->
-    this.myChart.setOption(this.option,true);
-
->
-    document.getElementById('div的ID').setAttribute('_echarts_instance_', '')
-    //这样的操作会重新渲染echarts的div容器结构,也就是重新操作了dom,会影响性能
-    
-* 动态设置高度  
->
-    <div  id="myChart1" :style="{width:'650px'}" ref="myEchart1"></div>
-    let myChart = this.$echarts.init(document.getElementById('myChart1'))
-    this.myChart1 = myChart
-    myChart.setOption(this.option1,true);
-    // 动态设置高度
-    myChart.getDom().style.height = res.result.chartX.length * 10  + "px";
-    myChart.resize();
-
-
-## 轮播图--VueAwesomeSwiper
-https://segmentfault.com/a/1190000014609379
-
-https://blog.csdn.net/wcy7916/article/details/87357007
-
-[3.X-API](https://3.swiper.com.cn/api/pagination/2014/1217/70.html)  
-[API](https://www.swiper.com.cn/api/index.html)
-
-api同swiper
-// notNextTick是一个组件自有属性，如果notNextTick设置为true，组件则不会通过NextTick来实例化swiper，也就意味着你可以在第一时间获取到swiper对象，假如你需要刚加载遍使用获取swiper对象来做什么事，那么这个属性一定要是true
->
-    swiperOption: {
-      notNextTick: true,
-      swiperOption: { // swiper options 所有的配置同swiper官方api配置
-        autoplay: true, // 可设置数值来指定播放速度
-        speed: 400, // 滑动速度
-        direction : 'horizontal', // 滑动方向
-        loop: true, //是否循环
-        navigation: { // 上一张、下一张
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-        pagination: { // 圆点
-          el: '.swiper-pagination',
-          clickable: true, // 点击滑动
-          type: 'custom',
-          renderCustom: function (swiper, current, total) { // 自定义分页器样式
-            const activeColor = '##168fed'
-            const normalColor = '##aeaeae'
-            let color = ''
-            let paginationStyle = ''
-            let html = ''
-            for (let i = 1; i <= total; i++) {
-              if (i === current) {
-                  color = activeColor
-              } else {
-                  color = normalColor
-              }
-              paginationStyle = `background:${color};opacity:1;margin-right:20px;width:20px;height:20px;transform:skew(15deg);border-radius:0;`
-              html += `<span class="swiper-pagination-bullet" style=${paginationStyle}></span>`
-            }
-            return html
-          }
-        },
-        initialSlide: 0, // 设定初始化时slide的索引
-        grabCursor: true, // 小手掌抓取滑动
-        setWrapperSize: true,
-        autoHeight: true,
-        scrollbar: '.swiper-scrollbar', // 滚动条
-        on: { // 滑动之后回调函数
-          slideChangeTransitionEnd: function(){
-            console.log(this.activeIndex);//切换结束时，告诉我现在是第几个slide
-          },
-        },
-      }
-    }
-
-    // 如果你需要得到当前的swiper对象来做一些事情，你可以像下面这样定义一个方法属性来获取当前的swiper对象，同时notNextTick必须为true
-    computed: {
-    swiper() {
-      return this.$refs.mySwiper.swiper
-    }
-    },
-    mounted() {
-    // 然后你就可以使用当前上下文内的swiper对象去做你想做的事了
-    console.log('this is current swiper instance object', this.swiper)
-    // this.swiper.slideTo(3, 1000, false)
-    }
-
-
-# <a name="其他">其他</a>[![bakTop](./img/backward.png)](#top)  
-## 组件引用 自定义路径名
->
-    build -- webpack.base.conf.js
-    module.exports -- resolve --a>lias
-
-    'vue$': 'vue/dist/vue.esm.js',
-    '@': resolve('src'),
-    'styles': resolve('src/assets/styles'), // 自己配置
-
-    在main.js直接 styles，其他地方需要加波浪线 ‘ ~ ’
-
-    使用：@/commponents/a.vue
-
-## Vue 用 axios 调用本地的 json 文件，
-  json 必须存放在 “ static ” 文件夹下，static 目录是 vue-cli 向外暴露的静态文件夹，所有静态数据都应该放到static目录中。
-  #### 调本地json文件
-  import data from '@/assets/json/index/swiper1.json'
-  console.log(data)
-
-## 修改组件css  /deep/ 或 >>>   
-    // less和sass中不支持 >>> 
-    .wrap /deep/ .vux-header {
-      background-color: ##3cc51f;
-    }
-
-## 修改Vux组件中样式变量（组件颜色）
-    修改build/webpack.base.conf.js
-    module.exports = vuxLoader.merge(webpackConfig, {
-      plugins:[
-        {name: 'vux-ui'},
-        {name: 'less-theme', path: 'src/assets/style/dy.less'}//自定义的Less文件路径
-      ]
-    })
-
-    自定义dy.less内容
-    @tabbar-text-active-color: ##ff0d00;
-
-    最后需要重新启动项目，不然配置不起效果
-
 
 # <a name="rem">rem</a>[![bakTop](./img/backward.png)](#top)  
 >    

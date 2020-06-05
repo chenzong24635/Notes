@@ -23,21 +23,22 @@ webpack简单点来说就就是一个配置文件，所有的魔力都是在这�
 * output 出口 让webpack把处理完成的文件放在哪里
 * module 模块 要用什么不同的模块来处理各种类型的文件
 
+# 指南
+https://www.webpackjs.com/guides/installation/
+
 # 安装
-npm i -g webpack  //全局安装
-npm i -D webpack@\<version> //本地安装 特点版本
+* npm i -g webpack webpack-cli //全局安装webpack webpack-cli(使用 webpack 4+ 版本，你还需要安装 CLI)
+* npm i -D webpack webpack-cli //安装到当前项目  
+* npm i -D webpack@\<version> //安装特点版本到当前项目  
+* npm i -D webpack@beta // 安装最新体验版本到当前项目  
 
-npm i -g webpack-cli // webpack 4+ 版本，你还需要安装 CLI。
-
-npm i -D webpack@beta> // 安装最新体验版本到当前项目
-
-# 建立项目
+# [建立项目](https://www.webpackjs.com/guides/getting-started/#%E5%9F%BA%E6%9C%AC%E5%AE%89%E8%A3%85)
 建一个文件夹，然后新建一个package.json的文件在项目根目录下
->
-    mkdir webpack
-    cd webpack
-    npm init
-    一直点回车
+```js
+mkdir webpack-learn && cd webpack-learn
+npm init -y
+npm i webpack webpack-cli -D
+```
 
 # [核心概念](https://www.webpackjs.com/concepts/)
 * entry：配置入口文件的地址，可以是单一入口，也可以是多入口。
@@ -69,6 +70,8 @@ module.exports = {
 ```
 
 ## <a name="Loaders">Loaders</a>
+[所有loaders](https://www.webpackjs.com/loaders/)
+
 Loaders是Webpack最重要的功能之一，通过使用不同的Loader，Webpack可以的脚本和工具，从而对不同的文件格式进行特定处理。
 
 简单的举几个Loaders使用例子：
@@ -85,12 +88,14 @@ Loaders的配置:
 * include/exclude:手动添加必须处理的文件（文件夹）或屏蔽不需要处理的文件（文件夹）（可选）；
 * query：为loaders提供额外的设置选项（可选）。
 
-## <a name="加载CSS">加载CSS: [style-loader css-loader](https://webpack.js.org/loaders/style-loader)</a>
-npm install --save-dev style-loader // 处理css文件中的url()等
-npm install --save-dev css-loader // 将css插入到页面的style标签
-npm install --save-dev less-loader less  // less
+## <a name="加载CSS">加载CSS: style-loader css-loader less-loader...</a>
+
+npm install -D style-loader // 通过注入\<style\>标签将css添加到DOM
+npm install -D css-loader // 解析 @import 和 url()的css文件
+npm install -D less-loader less  // less
 
 ```js
+// 注意顺序不能乱，加载顺序从下至上，从右到左，
 module: {
   rules: [
     {
@@ -105,8 +110,8 @@ module: {
 }
 ```
 
-## <a name="自动添加CSS3前缀">自动添加CSS3前缀： [postcss-loader autoprefixer](https://webpack.js.org/loaders/postcss-loader/) </a>
-npm install --save-dev postcss-loader autoprefixer
+## <a name="自动添加CSS3前缀">自动添加CSS3前缀：postcss-loader autoprefixer</a>
+npm i -D postcss-loader autoprefixer
 
 postCSS推荐在项目根目录（和webpack.config.js同级），建立一个postcss.config.js文件。
 
@@ -134,8 +139,10 @@ rules: [
 ]
 ```
 
-## <a name="加载图片">加载图片、字体: [file-loader](https://www.webpackjs.com/loaders/file-loader/)  [url-loader](https://www.webpackjs.com/loaders/url-loader/)</a>
+## <a name="加载图片">加载图片、字体：file-loader url-loader</a>
 npm install file-loader url-loader --save-dev
+
+url-loader 依赖 file-loader。url-loader封装了file-loader
 
 * file-loader：  
 
@@ -149,40 +156,62 @@ url-loader 功能类似于 file-loader，但是在文件大小（单位 byte）�
 
 url-loader 把资源文件转换为 URL，file-loader 也是一样的功能。不同之处在于 url-loader 更加灵活，它可以把小文件转换为 base64 格式的 URL，从而减少网络请求次数。
 
-url-loader 依赖 file-loader。url-loader封装了file-loader
 
 ```js
 module: {
   rules: [
     {
-      test: /\.(png|svg|jpg|gif)$/,
+      test: /\.(png|svg|jpg|gif)$/, //匹配图片文件后缀名称
       use: [{
-        loader:'url-loader',
+        loader:'file-loader',
         options:{
-          limit: 100*1024,
-          name: "[name]_[hash].[ext]",
-          outputPath:'images/',
+          name: "[name]_[hash:6].[ext]", //文件名,hash（默认32位）值为6位，ext自动补全文件扩展名
+          outputPath:'images/', //在output基础上，修改输出图片文件的位置
+          publicPath: '../dist/images/'  //修改背景图引入url的路径
         }
       }]
     },
     {
-      test: /\.(woff|woff2|eot|ttf|otf)$/,
+      test: /\.(png|svg|jpg|gif)$/,
+      use: [{
+        loader:'url-loader',
+        options:{
+          limit: 2 * 1024,
+        }
+      }]
+    },
+  ]
+}
+```
+
+## <a name="加载数据">加载数据,如 CSV、TSV 和 XML：csv-loader xml-loader</a>
+npm install --save-dev csv-loader xml-loader
+
+JSON格式是内置的，无需配置
+
+```js
+module: {
+  rules:[
+    {
+      test: /\.(csv|tsv)$/,
       use: [
-        'url-loader'
+        'csv-loader'
+      ]
+    },
+    {
+      test: /\.xml$/,
+      use: [
+        'xml-loader'
       ]
     }
   ]
 }
 ```
-* test:/.(png|jpg|gif)/是匹配图片文件后缀名称。
-* use：是指定使用的loader和loader的配置参数。
-* limit：是把小于100*1024B的文件打成Base64的格式，写入JS。
-* outputPath: 打包后的图片放到指定的文件夹下
 
 ## <a name="html的图片">html的图片: html-withimg-loader</a>
 解决webpack不识别html中img标签src引入的图片
 
-npm install --save-dev html-withimg-loader
+npm i -D html-withimg-loader
 
 ```js
 rules: [
@@ -193,12 +222,50 @@ rules: [
 ]
 ```
 
-## <a name="文件分离">[文件分离：extract-text-webpack-plugin](https://webpack.docschina.org/plugins/extract-text-webpack-plugin/)</a>
-npm install --save-dev extract-text-webpack-plugin
+
+
+## <a name="JS语法转换babel-loader">JS语法转换babel-loader</a>
+npm i -D babel-loader @babel/core @babel/preset-env webpack
+
+```js
+rules: [
+  {
+    test: /\.m?js$/,
+    exclude: /(node_modules|bower_components)/,
+    use: {
+      loader: 'babel-loader',
+      options: {
+        presets: ['@babel/preset-env']
+      }
+    }
+  }
+]
+```
+
+## <a name="JS语法检查">JS语法检查eslint-loader</a>
+npm install eslint-loader eslint --save-dev
+
+```js
+module: {
+  rules: [
+    {
+      test: /\.js$/,
+      exclude: /node_modules/,
+      loader: 'eslint-loader',
+      use: ['babel-loader', 'eslint-loader'],
+    },
+  ],
+},
+```
+
+## <a name="文件分离">文件分离：extract-text-webpack-plugin</a>
+npm i -D extract-text-webpack-plugin
 
 从一个或多个包中提取文本到单独的文件中。
 
 `由于webpack v4 extract-text-webpack-plugin不能用于CSS`。请改用[mini-css-extract-plugin](https://webpack.docschina.org/plugins/mini-css-extract-plugin/)。
+
+npm i -D mini-css-extract-plugin
 
 ```js
 module.exports = {
@@ -242,45 +309,8 @@ rules: [
 ]
 ```
 
-## <a name="将单个文件或整个目录复制到构建目录">[将单个文件或整个目录复制到构建目录 copy-webpack-plugin](https://www.webpackjs.com/plugins/copy-webpack-plugin/)</a>
-适合用于拷贝一些静态资源，如图片等
-npm install --save-dev copy-webpack-plugin
-
-```js
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-plugins: [
-  new CopyWebpackPlugin([
-    { from: path.resolve(__dirname, 'public'), to: '../dist/public' }
-  ])
-]
-```
-
-## <a name="加载数据">加载数据,如 CSV、TSV 和 XML</a>
-npm install --save-dev csv-loader xml-loader
-
-JSON格式是内置的，无需配置
-
-```js
-module: {
-  rules:[
-    {
-      test: /\.(csv|tsv)$/,
-      use: [
-        'csv-loader'
-      ]
-    },
-    {
-      test: /\.xml$/,
-      use: [
-        'xml-loader'
-      ]
-    }
-  ]
-}
-```
-
-## <a name="打包html文件">[打包html文件 html-webpack-plugin](https://www.webpackjs.com/plugins/html-webpack-plugin/)</a>
-npm install --save-dev html-webpack-plugin 
+## <a name="打包生成index.html">打包生成index.html:  html-webpack-plugin</a>
+npm i -D html-webpack-plugin 
 
 生成一个 HTML5 文件， 其中包括使用 script 标签的 body 中的所有 webpack 包
 
@@ -317,52 +347,19 @@ module.exports = {
 }
 ```
 
-## <a name="清理dist文件夹">[清理dist文件夹: clean-webpack-plugin](https://www.npmjs.com/package/clean-webpack-plugin) </a>
-npm install --save-dev clean-webpack-plugin 
+## <a name="清理dist文件夹">清理dist文件夹: clean-webpack-plugin </a>
+npm i -D clean-webpack-plugin 
 
 ```js
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin }  = require('clean-webpack-plugin');
 
 plugins: [
-  new CleanWebpackPlugin(['dist'])
+  new CleanWebpackPlugin()
 ]
 ```
 
-## <a name="JS语法转换babel-loader">[JS语法转换babel-loader](https://webpack.js.org/loaders/babel-loader)</a>
-npm install -D babel-loader @babel/core @babel/preset-env webpack
 
-```js
-rules: [
-  {
-    test: /\.m?js$/,
-    exclude: /(node_modules|bower_components)/,
-    use: {
-      loader: 'babel-loader',
-      options: {
-        presets: ['@babel/preset-env']
-      }
-    }
-  }
-]
-```
-
-## <a name="JS语法检查">[JS语法检查eslint-loader](https://webpack.js.org/loaders/eslint-loader)</a>
-npm install eslint-loader eslint --save-dev
-
-```js
-module: {
-  rules: [
-    {
-      test: /\.js$/,
-      exclude: /node_modules/,
-      loader: 'eslint-loader',
-      use: ['babel-loader', 'eslint-loader'],
-    },
-  ],
-},
-```
-
-## <a name="JS压缩">[JS压缩terser-webpack-glugin](https://www.npmjs.com/package/terser-webpack-plugin)</a>
+## <a name="JS压缩">JS压缩terser-webpack-glugin</a>
 因为最新版的uglifyjs-webpack-plugin插件已经不支持es6语法,用插件terser-webpack-plugin代替
 
 npm install terser-webpack-plugin --save-dev
@@ -379,8 +376,8 @@ module.exports = {
 }
 ```
 
-## <a name="webpack-dev-server">[热更新webpack-dev-server](https://www.webpackjs.com/configuration/dev-server/)</a>
-npm install webpack-dev-server –save-dev
+## <a name="webpack-dev-server">热更新webpack-dev-server</a>
+npm i -D webpack-dev-server 
 
 ```js
 devServer:{
@@ -403,9 +400,29 @@ package.json添加
 ```
 终端输入 npm run server
 
-## <a name=""></a>
-## <a name=""></a>
+## <a name="将单个文件或整个目录复制到构建目录">将单个文件或整个目录复制到构建目录 copy-webpack-plugin</a>
+适合用于拷贝一些静态资源，如图片等
+npm install --save-dev copy-webpack-plugin
 
+```js
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+plugins: [
+  new CopyWebpackPlugin([
+    { from: path.resolve(__dirname, 'public'), to: '../dist/public' }
+  ])
+]
+```
 
+## <a name="">分析依赖体积：webpack-bundle-analyzer</a>
+
+```js
+npm i webpack-bundle-analyzer -D
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+plugins:[
+  new BundleAnalyzerPlugin(),
+]
+
+npm run build --report
+```
 
 

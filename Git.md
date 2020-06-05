@@ -325,6 +325,7 @@ git config core.ignorecase true | false //配置git 使其对文件名大小写�
     git checkout filename
 
 # <a name="vue-cli项目创建时，git bash箭头选择无效问题">vue-cli项目创建时，git bash箭头选择无效问题</a>
+
 >
     选择git的安装目录，进入etc文件夹 找到bash.bashrc文件
 
