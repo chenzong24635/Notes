@@ -1,8 +1,6 @@
 # [`vuex 官网`](https://vuex.vuejs.org/zh/)
 
-[Vuex概念浓缩版记录](https://juejin.im/post/5cee430bf265da1b94212bf5)
-
-![img](img/vuex.png)
+![img](/img/Vue/vuex.png)
 # 基本
 >
     const store = new Vuex.Store({
@@ -17,7 +15,6 @@
     })
 
 # State  
-https://vuex.vuejs.org/zh/guide/state.html
 ## state
 >
     store.state 来获取状态对象
@@ -72,8 +69,6 @@ https://vuex.vuejs.org/zh/guide/state.html
     }
 
 # Getter
-https://vuex.vuejs.org/zh/guide/getters.html
-
 ## getters
 当需要从state 中派生出一些状态，例如对列表进行过滤并计数 使用getter
 
@@ -121,7 +116,6 @@ https://vuex.vuejs.org/zh/guide/getters.html
     })
 
 # Mutation
-https://vuex.vuejs.org/zh/guide/mutations.html
 ## mutations
 mutation是更改state的唯一方法  
 
@@ -199,7 +193,6 @@ mutation是更改state的唯一方法
     }  
 
 # Action
-https://vuex.vuejs.org/zh/guide/actions.html
 ## actions
 Action 提交的是 mutation，而不是直接变更状态。  
 Action 可以包含任意异步操作  
@@ -277,6 +270,17 @@ store.dispatch 可以处理被触发的 action 的处理函数返回的 Promise�
 
 
 # Module
-https://vuex.vuejs.org/zh/guide/modules.html
 
 将 store 分割成模块（module）。每个模块拥有自己的 state、mutation、action、getter、甚至是嵌套子模块——从上至下进行同样方式的分割：
+
+# 
+## 为什么 Vuex 的 mutation 中不能做异步操作？
+
+Vuex中所有的状态更新的唯一途径都是mutation，异步操作通过 Action 来提交 mutation实现，这样使得我们可以方便地跟踪每一个状态的变化，从而让我们能够实现一些工具帮助我们更好地了解我们的应用。
+
+每个mutation执行完成后都会对应到一个新的状态变更，这样devtools就可以打个快照存下来，然后就可以实现 time-travel 了。如果mutation支持异步操作，就没有办法知道状态是何时更新的，无法很好的进行状态的追踪，给调试带来困难。
+
+## 为什么不直接分发mutation,而要通过分发action之后提交 mutation变更状态
+mutation 必须同步执行，我们可以在 action 内部执行异步操作  
+
+可以进行一系列的异步操作，并且通过提交 mutation 来记录 action 产生的副作用（即状态变更）

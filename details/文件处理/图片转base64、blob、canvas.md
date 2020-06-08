@@ -32,15 +32,15 @@
         canvas.height = height;  
         context.drawImage(img, 0, 0, width, height) // 在canvas上绘制图片  
 
-        //canvas转为blob显示图片
+        // canvas转为blob显示图片
         // canvas.toBlob(function(blob) {
         //   let img = new Image()
-        //     img.src = URL.createObjectURL(blob); // 将file文件转换为一个URL地址
-        //     document.body.appendChild(img)
-        //   }, file.type || 'image/png')  
-          
+        //   img.src = URL.createObjectURL(blob); // 将file文件转换为一个URL地址
+        //   document.body.appendChild(img)
+        // }, file.type || 'image/png', 0.9)  
+
         //canvas显示图片  
-        let dataUrl = canvas.toDataURL('image/jpeg', 0.9) // 0.9为压缩比，可根据需要设置，设置过小会影响图片质量
+        let dataUrl = canvas.toDataURL(file.type ||'image/jpeg', 0.9) // 0.9为压缩比，可根据需要设置，设置过小会影响图片质量
         document.body.appendChild(canvas)
       } 
     }; */

@@ -1,6 +1,6 @@
 * <a href="#vue项目性能优化">Vue开发技巧+性能优化</a>
-  * <a href="#全局引入less变量">全局引入less变量</a>
-  * <a href="#CDN引入">CDN引入</a>
+  * <a href="#v-if和v-show的区别">v-if和v-show的区别</a>
+  * <a href="#v-for 遍历避免同时使用 v-if">v-for 遍历避免同时使用 v-if</a>
   * <a href="#路由懒加载">路由懒加载</a>
   * <a href="#批量注册全局组件">批量注册全局组件</a>
   * <a href="#批量注册全局filter">批量注册全局filter</a>
@@ -12,73 +12,101 @@
   * <a href="#事件的销毁">事件的销毁 beforeDestroy $once('hook:beforeDestroy')</a>
   * <a href="#图片资源懒加载">图片资源懒加载</a>
   * <a href="#优化无限列表性能">优化无限列表性能</a>
-  * <a href="#首屏优化">首屏优化</a>
-  * <a href="#骨架屏">骨架屏</a>
+  * <a href="#全局引入less变量">全局引入less变量</a>
   * <a href="#CDN引入">CDN引入</a>
+  * <a href="#骨架屏">骨架屏</a>
 
-# <a name="vue项目性能优化">Vue开发技巧 + 性能优化</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="vue项目性能优化">Vue开发技巧 + 性能优化</a>[![bakTop](/img/backward.png)](#top)  
 [10个Vue开发技巧助力成为更好的工程师](https://juejin.im/post/5e8a9b1ae51d45470720bdfa)
 [这 10 个技巧让你成为一个更好的 Vue 开发者](https://juejin.im/post/5e8286f6e51d4546c72dfff0)
 
-[Vue 开发必须知道的 36 个技巧【近1W字】](https://juejin.im/post/5d9d386fe51d45784d3f8637#comment)
+[Vue 开发必须知道的 36 个技巧【近1W字】](https://juejin.im/post/5d9d386fe51d45784d3f8637)
+
+[Vue CLI 首屏优化技巧](https://segmentfault.com/a/1190000019499007)
 
 [Vue 项目性能优化](https://juejin.im/post/5d548b83f265da03ab42471d)
 
-* v-if 和 v-show 区分使用场景
-* computed 和 watch  区分使用场景
-* v-for 遍历必须为 item 添加 key，且避免同时使用 v-if
-* 第三方插件的按需引入
-* 服务端渲染 SSR or 预渲染
+# <a name="v-if和v-show的区别">v-if和v-show的区别</a>[![bakTop](./img/backward.png)](#top)  
+[官网解释](https://cn.vuejs.org/v2/guide/conditional.html#v-if-vs-v-show)
 
-## <a name="全局引入less变量">全局引入less变量</a>[![bakTop](./img/backward.png)](#top)  
-```npm i style-resources-loader -D```  安装 style-resources-loader
+```html
+v-if 是“真正”的条件渲染，因为它会确保在切换过程中条件块内的事件监听器和子组件适当地被销毁和重建。
 
-安装完成之后，命令行会让你选择预处理器，我们选择 less!
+v-if 也是惰性的：如果在初始渲染时条件为假，则什么也不做——直到条件第一次变为真时，才会开始渲染条件块。
 
-安装完预处理器 会在项目的 vue.config.js 里面生成一段代码，我们只需要将 less 文件路径放入其中
-```js
-pluginOptions: {
-    'style-resources-loader': {
-      preProcessor: 'less',
-      patterns: [path.resolve(__dirname, 'src/assets/css/index.less')]
+v-show 只是简单的display控制显隐藏，不管初始条件如何，元素总会被渲染；
+```
+v-if 有更高的切换开销，而 v-show 有更高的初始渲染开销。  
+因此，v-if适用于很少改变条件的场景，v-show适用于频繁切换条件的场景。
+
+# <a name="v-for 遍历避免同时使用 v-if">v-for 遍历避免同时使用 v-if</a>[![bakTop](./img/backward.png)](#top)  
+[官网解释](https://cn.vuejs.org/v2/guide/conditional.html#v-if-%E4%B8%8E-v-for-%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8)
+
+[风格指南-避免 v-if 和 v-for 用在一起](https://cn.vuejs.org/v2/style-guide/#%E9%81%BF%E5%85%8D-v-if-%E5%92%8C-v-for-%E7%94%A8%E5%9C%A8%E4%B8%80%E8%B5%B7%E5%BF%85%E8%A6%81)
+
+v-for 具有比 v-if 更高的优先级; 
+
+推荐：
+```html
+isShow为false时，不会渲染列表，
+如果将 v-if="isShow" 放在li标签里，列表依旧会渲染
+<template>
+<ul v-if="isShow">
+  <li
+    v-for="item in lists"
+    :key="item.id">
+    {{ item.name }}
+  </li>
+</ul>
+</template>
+```
+
+当只需要渲染很小一部分的时候，可以通过 computed 过滤掉无需渲染的列表。
+而不是在 li 标签里使用  v-if="item.isActive"   
+
+推荐：
+```html
+<template>
+<ul>
+  <li
+    v-for="item in activeLists"
+    :key="item.id">
+    {{ item.name }}
+  </li>
+</ul>
+</template>
+
+<script>
+export default{
+  data(){
+    return{
+      lists: [],
+    }
+  },
+  computed: {
+    activeLists() {
+      return this.lists.filter((item) => {
+        return item.isActive
+      })
     }
   }
+}
+</script>
 ```
 
-样式穿透
-* less使用  /deep/
-* scss使用 ::v-deep
-* stylus使用 >>>
-
-## <a name="CDN引入">CDN引入</a>[![bakTop](./img/backward.png)](#top) 
-国内的CDN服务推荐使用[BootCDN](https://www.bootcdn.cn/)
-
-index.html
+不推荐：v-for,v-if 同时使用 
 ```html
-<!-- CDN引入外部资源 -->
-<script src="//cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
-<script src="//cdn.bootcss.com/vuex/3.0.1/vuex.min.js"></script>
-<script src="//cdn.bootcss.com/vue-router/3.0.1/vue-router.min.js"></script>
-<script src="//cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
-<script src="//unpkg.com/iview@1.0.1/dist/iview.min.js"></script>
+<ul>
+  <li
+    v-for="user in users"
+    v-if="user.isActive"
+    :key="user.id">
+    {{ user.name }}
+  </li>
+</ul>
 ```
 
-[vue.config.js配置externals](https://webpack.js.org/configuration/externals/)
-```js
-configureWebpack: {
-  externals: {
-    'vue': 'Vue',
-    'vuex': 'Vuex',
-    'vue-router': 'VueRouter',
-    'axios': 'axios',
-    'iView': 'iview',
-    // 'element-ui': 'ELEMENT',
-  },
-},
-```
-
-
-## <a name="自定义组件双向绑定">使用model选项实现自定义组件双向绑定</a>[![bakTop](./img/backward.png)](#top)
+## <a name="自定义组件双向绑定">model,.sync选项实现自定义组件双向绑定</a>[![bakTop](/img/backward.png)](#top)
 [Vue中从v-model，model，.sync到双向数据传递，再到双向数据绑定](https://blog.csdn.net/Qin_Shuo/article/details/82693919)
 
 ### v-model
@@ -166,6 +194,7 @@ export default {
   }
 </script>
 ```
+注意带有 .sync 修饰符的 v-bind 不能和表达式一起使用 (例如 v-bind:title.sync="doc.title + 'abcd'" 是无效的)
 
 ### [model](https://cn.vuejs.org/v2/api/#model)
 
@@ -219,7 +248,123 @@ export default {
 </script>
 ```
 
-## <a name="异步组件">异步组件,路由懒加载</a>[![bakTop](./img/backward.png)](#top)  
+## <a name="render函数">render函数</a>[![bakTop](/img/backward.png)](#top)  
+场景:有些代码在 template 里面写会重复很多,可使用 render 函数
+```html
+// 初级
+<template>
+ <div>
+    <h1 v-if="level == 1"><slot></slot></h1>
+    <h2 v-if="level == 2"><slot></slot></h2>
+    <h3 v-if="level == 3"><slot></slot></h3>
+    <h4 v-if="level == 4"><slot></slot></h4>
+    <h5 v-if="level == 5"><slot></slot></h5>
+    <h6 v-if="level == 6"><slot></slot></h6>
+  </div>
+</template>
+
+// 优化版,利用 render 函数减小了代码重复率
+<template>
+  <div>
+    <child :level="1">我是h1</child>
+    <child :level="2">我是h2</child>
+  </div>
+</template>
+<script>
+  export default {
+    components: {
+      child: ()=> import('./child.vue')
+    },
+  }
+</script>
+
+//child.vue
+<script>
+  export default {
+    props: {
+      level: {
+        require: true,
+        type: Number,
+      }
+    },
+    render(createElement) {
+      return createElement('h' + this.level, this.$slots.default);
+    }
+  };
+</script>
+```
+
+template和render函数的区别：
+* template适合简单的组件封装，render函数适合复杂的组件封装
+* template理解起来相对简单，但灵活性不高，性能低，而render灵活性较高，对使用者要求亦高
+* render函数渲染没有编译过程，相当于把代码直接给程序，所以容易出现错误，对使用者要求高
+* render函数较template优先级别高
+
+
+## <a name="动态组件">动态组件</a>[![bakTop](/img/backward.png)](#top)
+[动态组件](https://cn.vuejs.org/v2/guide/components.html#%E5%8A%A8%E6%80%81%E7%BB%84%E4%BB%B6)
+
+有的时候，在不同组件之间进行动态切换是非常有用的，比如在一个多标签的界面里：
+
+通过 Vue 的 \<component\> 元素加一个特殊的 is attribute 来实现
+```html
+<template>
+  <div>
+    <button
+      v-for="tab in tabs"
+      v-bind:key="tab"
+      v-bind:class="['tab-button', { active: currentTab === tab }]"
+      v-on:click="currentTab = tab"
+    >
+      {{ tab }}
+    </button>
+    <component v-bind:is="currentTabComponent" class="tab"></component>
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        currentTab: "a",
+        tabs: ["a", "b", "c"]
+      }
+    },
+    components: {
+      "tab-a": {
+        template: '<div>A</div>'
+      },
+      "tab-b": {
+        template: '<div>B</div>'
+      },
+      "tab-c": {
+        template: '<div>C</div>'
+      },
+    },
+    computed: {
+      currentTabComponent: function() {
+        return "tab-" + this.currentTab.toLowerCase();
+      }
+    }
+  }
+</script>
+```
+
+* [在动态组件上使用 keep-alive](https://cn.vuejs.org/v2/guide/components-dynamic-async.html#%E5%9C%A8%E5%8A%A8%E6%80%81%E7%BB%84%E4%BB%B6%E4%B8%8A%E4%BD%BF%E7%94%A8-keep-alive)
+
+
+
+每次切换新标签的时候，Vue 都创建了一个新的 currentTabComponent 实例。
+
+有时会想保持这些组件的状态，以避免反复重渲染导致的性能问题
+```html
+<!-- 失活的组件将会被缓存！-->
+<keep-alive>
+  <component v-bind:is="currentTabComponent"></component>
+</keep-alive>
+```
+
+## <a name="异步组件">异步组件,路由懒加载</a>[![bakTop](/img/backward.png)](#top)  
 [异步组件-vue官网](https://cn.vuejs.org/v2/guide/components-dynamic-async.html#%E5%BC%82%E6%AD%A5%E7%BB%84%E4%BB%B6)
 
 Vue 允许你以一个工厂函数的方式定义你的组件，这个工厂函数会异步解析你的组件定义。Vue 只有在这个组件需要被渲染的时候才会触发该工厂函数，且会把结果缓存起来供未来重渲染。
@@ -269,7 +414,7 @@ const AsyncComponent = () => ({
 })
 ```
 
-## <a name="递归组件">递归组件</a>[![bakTop](./img/backward.png)](#top)  
+## <a name="递归组件">递归组件</a>[![bakTop](/img/backward.png)](#top)  
 [递归组件-vue官网](https://cn.vuejs.org/v2/guide/components-edge-cases.html#%E9%80%92%E5%BD%92%E7%BB%84%E4%BB%B6)
 
 组件是可以在它们自己的模板中调用自身的。不过它们只能通过 name 选项来做这件事：
@@ -390,7 +535,13 @@ export default {
 ![](/img/Vue/递归组件-result.jpg)
 
 
-## <a name="批量注册全局组件">批量注册全局组件</a>[![bakTop](./img/backward.png)](#top)  
+## <a name="批量注册全局组件">批量注册全局组件</a>[![bakTop](/img/backward.png)](#top)  
+
+* require.context(arg1,arg2,arg3)
+  >arg1 - 读取文件的路径  
+  >arg2 - 是否遍历文件的子目录  
+  >arg3 - 匹配文件的正则  
+
 
 globalComponent.js  
 ```js
@@ -412,14 +563,8 @@ import globalComponent from '@/lib/globalComponent.js'
 Vue.use(globalComponent)
 ```
 
-### require.context()
-require.context(arg1,arg2,arg3)
->arg1 - 读取文件的路径  
->arg2 - 是否遍历文件的子目录  
->arg3 - 匹配文件的正则  
-
-
-## <a name="批量注册全局filter">批量注册全局filter</a>[![bakTop](./img/backward.png)](#top)  
+## <a name="批量注册全局filter">批量注册全局filter</a>[![bakTop](/img/backward.png)](#top)  
+filters/index.js
 ```js
 const filters = {
   fn: ()=>{}
@@ -435,7 +580,13 @@ export default {
 }
 ```
 
-## <a name="路由参数解耦">路由参数解耦 props</a>[![bakTop](./img/backward.png)](#top)  
+main.js
+```js
+import filters from '@/filters'
+Vue.use(filters)
+```
+
+## <a name="路由参数解耦">路由参数解耦 props</a>[![bakTop](/img/backward.png)](#top)  
 [路由组件传参](https://router.vuejs.org/zh/guide/essentials/passing-props.html#%E5%B8%83%E5%B0%94%E6%A8%A1%E5%BC%8F)
 
 一般用法,与 $route 的耦合
@@ -482,7 +633,7 @@ export default {
 }
 ```
 
-## <a name="函数式组件">函数式组件 functional</a>[![bakTop](./img/backward.png)](#top)  
+## <a name="函数式组件">函数式组件 functional</a>[![bakTop](/img/backward.png)](#top)  
 [函数式组件](https://cn.vuejs.org/v2/guide/render-function.html#%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6)
 
 定义：
@@ -561,7 +712,7 @@ methods: {
 ```
 
 
-## <a name="长列表性能优化">长列表性能优化 Object.freeze</a>[![bakTop](./img/backward.png)](#top) 
+## <a name="长列表性能优化">长列表性能优化 Object.freeze</a>[![bakTop](/img/backward.png)](#top) 
 
 Vue 会通过 Object.defineProperty 对数据进行劫持，来实现视图响应数据的变化，然而有些时候我们的组件就是纯粹的数据展示，不会有任何改变  
 
@@ -580,7 +731,7 @@ export default {
 };
 ```
 
-## <a name="debounce使用">debounce使用 beforeDestroy或$once</a>[![bakTop](./img/backward.png)](#top) 
+## <a name="debounce使用">debounce使用 beforeDestroy或$once</a>[![bakTop](/img/backward.png)](#top) 
 当一个按钮多次点击时会导致多次触发事件，可以结合场景是否立即执行immediate
 
 ```js
@@ -594,7 +745,7 @@ methods：{
 }
 ```
 
-##  <a name="多个路由共用一个组件操作">多个路由共用一个组件,组件如何重新渲染</a>[![bakTop](./img/backward.png)](#top)  
+##  <a name="多个路由共用一个组件操作">多个路由共用一个组件,组件如何重新渲染</a>[![bakTop](/img/backward.png)](#top)  
 * router-view上加上一个唯一的key
 ```html
 <div id="app">
@@ -625,7 +776,7 @@ beforeRouteUpdate (to, from, next) {
 }
 ```
 
-## <a name="事件的销毁">事件的销毁 beforeDestroy, $once('hook:beforeDestroy')</a>[![bakTop](./img/backward.png)](#top) 
+## <a name="事件的销毁">事件的销毁 beforeDestroy, $once('hook:beforeDestroy')</a>[![bakTop](/img/backward.png)](#top) 
 在 js 内使用 定时器, addEventListener 等方式是不会自动销毁的 
 
 * beforeDestroy,destroyed周期清除
@@ -662,7 +813,7 @@ mounted() {
 [$once、$on、$off的使用](https://cn.vuejs.org/v2/guide/components-edge-cases.html#%E7%A8%8B%E5%BA%8F%E5%8C%96%E7%9A%84%E4%BA%8B%E4%BB%B6%E4%BE%A6%E5%90%AC%E5%99%A8)
 
 
-## <a name="图片资源懒加载">图片资源懒加载</a>[![bakTop](./img/backward.png)](#top) 
+## <a name="图片资源懒加载">图片资源懒加载</a>[![bakTop](/img/backward.png)](#top) 
 
 ```js
 //安装插件
@@ -689,20 +840,209 @@ Vue.use(VueLazyload, {
 
 
 
-## <a name="优化无限列表性能">优化无限列表性能</a>[![bakTop](./img/backward.png)](#top) 
+## <a name="优化无限列表性能">优化无限列表性能</a>[![bakTop](/img/backward.png)](#top) 
 
 如果你的应用存在非常长或者无限滚动的列表，那么需要采用 窗口化 的技术来优化性能，只需要渲染少部分区域的内容，减少重新渲染组件和创建 dom 节点的时间。 你可以参考以下开源项目 [vue-virtual-scroll-list](https://github.com/tangbc/vue-virtual-scroll-list) 和[vue-virtual-scroller](https://github.com/Akryum/vue-virtual-scroller)  来优化这种无限列表的场景的。
 
 
-## <a name="首屏优化">首屏优化</a>[![bakTop](./img/backward.png)](#top) 
-[Vue CLI 首屏优化技巧](https://segmentfault.com/a/1190000019499007)
+## <a name="全局引入less变量">全局引入less变量</a>[![bakTop](/img/backward.png)](#top)  
+```npm i style-resources-loader -D```  安装 style-resources-loader
 
-## <a name="骨架屏">骨架屏</a>[![bakTop](./img/backward.png)](#top) 
+安装完成之后，命令行会让你选择预处理器，我们选择 less!
+
+安装完预处理器 会在项目的 vue.config.js 里面生成一段代码，我们只需要将 less 文件路径放入其中
+```js
+pluginOptions: {
+    'style-resources-loader': {
+      preProcessor: 'less',
+      patterns: [path.resolve(__dirname, 'src/assets/css/index.less')]
+    }
+  }
+```
+
+样式穿透
+* less使用  /deep/
+* scss使用 ::v-deep
+* stylus使用 >>>
+
+
+## <a name="SVG封装">SVG封装</a>[![bakTop](/img/backward.png)](#top) 
+[SVG封装](./SVG封装.md)
+
+## <a name="CDN引入">CDN引入</a>[![bakTop](/img/backward.png)](#top) 
+
+国内的CDN服务推荐使用[BootCDN](https://www.bootcdn.cn/)
+
+index.html
+```html
+<!-- CDN引入外部资源 -->
+<script src="//cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+<script src="//cdn.bootcss.com/vuex/3.0.1/vuex.min.js"></script>
+<script src="//cdn.bootcss.com/vue-router/3.0.1/vue-router.min.js"></script>
+<script src="//cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
+<script src="//unpkg.com/iview@1.0.1/dist/iview.min.js"></script>
+```
+
+[vue.config.js配置externals](https://webpack.js.org/configuration/externals/)
+```js
+configureWebpack: {
+  externals: {
+    'vue': 'Vue',
+    'vuex': 'Vuex',
+    'vue-router': 'VueRouter',
+    'axios': 'axios',
+    'iView': 'iview',
+    // 'element-ui': 'ELEMENT',
+  },
+},
+```
+
+优化写法
+
+public/index.html添加
+```html
+<head>
+  <!-- 使用CDN加速的CSS文件，配置在vue.config.js下 -->
+  <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.css) { %>
+    <link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="preload" as="style" />
+    <link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="stylesheet" />
+  <% } %>
+  <title><%= htmlWebpackPlugin.options.title %></title>
+</head>
+```
+
+vue.config.js
+```js
+// cdn预加载使用
+const externals = {
+  vue: 'Vue',
+  'vue-router': 'VueRouter',
+  vuex: 'Vuex',
+  axios: 'axios'
+}
+const cdn = {
+  // 开发环境
+  dev: {
+    css: [],
+    js: []
+  },
+  // 生产环境
+  build: {
+    css: [],
+    js: [
+      "//cdn.bootcss.com/vue/2.6.11/vue.min.js",
+      "//cdn.bootcss.com/vuex/3.1.3/vuex.min.js",
+      "//cdn.bootcss.com/vue-router/3.1.6/vue-router.min.js",
+      "//cdn.bootcss.com/axios/0.19.2/axios.min.js"
+    ]
+  }
+}
+
+module.exports = {
+  chainWebpack(config) {
+    // 添加CDN参数到 htmlWebpackPlugin 配置中， 详见public/index.html 修改
+    config.plugin('html').tap(args => {
+      if (process.env.NODE_ENV === 'production') {
+          args[0].cdn = cdn.build
+      }
+      if (process.env.NODE_ENV === 'development') {
+          args[0].cdn = cdn.dev
+      }
+      return args
+    })
+  }
+}
+```
+
+## <a name="骨架屏">骨架屏</a>[![bakTop](/img/backward.png)](#top) 
 
 [骨架屏](https://www.jianshu.com/p/eacac700630e)
 骨架屏就是在页面数据尚未加载前先给用户展示出页面的大致结构，直到请求数据返回后再渲染页面，补充进需要显示的数据内容。常用于文章列表、动态列表页等相对比较规则的列表页面。
-<img src="./img/skeleton.jpg">
+<img src="../../img/skeleton.jpg">
 
 
+## 插件-打包优化
+
+### 对vue-cli内部的 webpack 配置进行更细粒度的修改
+vue.config.js
+```js
+module.exports = {
+  configureWebpack: (config) => {
+    config.optimization.minimizer('terser').tap((args) => {
+      // 去除生产环境console
+      args[0].terserOptions.compress.drop_console = true
+      return args
+    })
+  }
+}  
+```
+
+### webpack-bundle-analyzer 打包后模块大小分析
+npm install -g webpack-bundle-analyzer 
+
+vue.config.js
+```js
+const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer')
+
+module.exports = {
+  configureWebpack: (config) => {
+    if (process.env.NODE_ENV === 'production') {
+      config.plugins.push(new BundleAnalyzerPlugin())
+    } else {
+    }
+  },
+  // 或者
+  /* chainWebpack: (config) => {
+    if (process.env.NODE_ENV === 'production') {
+      if (process.env.npm_config_report) {
+        config
+          .plugin('webpack-bundle-analyzer')
+          .use(BundleAnalyzerPlugin)
+          .end();
+        config.plugins.delete('prefetch')
+      }
+    } else {
+    }
+  }, */
+}
+```
+npm run build --report
+
+### compression-webpack-plugin 开启gzip压缩
+```js
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
+
+configureWebpack: (config) => {
+  if (process.env.NODE_ENV === 'production') {
+    config.plugins.push(
+      new CompressionWebpackPlugin({
+        filename: '[path].gz[query]',
+        algorithm: 'gzip',
+        test: /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i, // 匹配文件名
+        threshold: 10240, //对超过 10*1024 的数据进行压缩
+        minRatio: 0.8,
+        deleteOriginalAssets: false //是否删除原文件
+      })
+    )
+  }
+}
+```
+
+## 报错
+vue.runtime.esm.js?2b0e:619 [Vue warn]: You are using the runtime-only build of Vue where the template compiler is not available. Either pre-compile the templates into render functions, or use the compiler-included build.
 
 
+这里引用的是`vue.runtime.esm.js`，造成的不能正常运行，  
+在 vue.config.js 修改引用文件为 `vue.esm.js`
+```js
+const path = require('path')
+function resolve (dir) {
+  return path.join(__dirname,dir)
+}
+module.exports = {
+  chainWebpack: config => {
+    config.resolve.alias
+      .set('vue$','vue/dist/vue.esm.js') // key,value自行定义，比如.set('@@', resolve('src/components'))
+  },
+}
+```

@@ -8,7 +8,7 @@
 [Vue 插件-组件](/details/Vue/插件-组件.md)
 
 
-<!-- [30 道 Vue 面试题，内含详细讲解（涵盖入门到精通，自测 Vue 掌握程度）](https://juejin.im/post/5d59f2a451882549be53b170) -->
+[30 道 Vue 面试题，内含详细讲解（涵盖入门到精通，自测 Vue 掌握程度）](https://juejin.im/post/5d59f2a451882549be53b170)
 <!-- [Vue源码阅读 - 依赖收集原理](https://segmentfault.com/a/1190000015562213) -->
 
 # 
@@ -32,21 +32,16 @@
 
 * <a href="#v-model原理">v-model原理</a>
 * <a href="#自定义组件双向绑定">使用model选项实现自定义组件双向绑定</a>
-
-
 * <a href="#解决对象新增属性不能响应的问题"> vm.$set() 解决对象新增属性不能响应的问题</a>
 * <a href="#Vue检测数组的变动">Vue检测数组的变动</a>
 * <a href="#Vue的数据为什么频繁变化但只会更新一次">Vue的数据为什么频繁变化但只会更新一次</a>
 * <a href="#$nextTick">$nextTick</a> 
 * <a href="#组件中key作用">组件中key作用</a>
-
 * <a href="#组件中 data 为什么是一个函数">组件中 data 为什么是一个函数</a>
-* <a href="#v-if和v-show的区别">v-if和v-show的区别</a>
-* <a href="#v-for 遍历避免同时使用 v-if">v-for 遍历避免同时使用 v-if</a>
 * <a href="#slot">slot插槽</a>
 * <a href="#虚拟DOM">虚拟DOM</a>
 * <a href="#Vue模板编译过程">Vue模板编译过程</a>
-* <a href="#extend,mixins,extends,components,install等">vue中extend，mixins，extends，components,install的几个操作</a>
+* <a href="#Vue.use,Vue.extend,Vue.component,mixins,extends">Vue.use,Vue.extend,Vue.component,mixins,extends</a>
 
 * <a href="#keep-alive">keep-alive</a>
 * <a href="#路由vue-router">路由vue-router</a>
@@ -68,9 +63,9 @@
 
 * <a href="#组件通信方法">组件通信方法</a>
 
+* <a href="#vue-cli3配置">vue-cli3配置</a>
 * <a href="#vue项目性能优化">Vue开发技巧+性能优化</a>
 * <a href="#UI组件">UI组件常见问题</a>
-* <a href="#vue-cli3配置">vue-cli3配置</a>
 * <a href="#静态资源处理">静态资源处理</a>
 * <a href="#打包时常见问题及解决">打包时常见问题及解决</a>
 * <a href="#rem">rem</a>
@@ -141,7 +136,6 @@ MVVM优点:
 
 # <a name="SPA">SPA SSR SEO</a>[![bakTop](./img/backward.png)](#top)    
 [浅谈SPA、SEO、SSR](https://www.jianshu.com/p/fcb98533bc18)
-[30 道 Vue 面试题，内含详细讲解](https://juejin.im/post/5d59f2a451882549be53b170#heading-1)
 
 ## SPA（Single Page Application）单页面应用
 仅在 Web 页面初始化时加载相应的 HTML、JavaScript 和 CSS。一旦页面加载完成，SPA 不会因为用户的操作而进行页面的重新加载或跳转；取而代之的是利用路由机制实现 HTML 内容的变换，UI 与用户的交互，避免页面的重新加载。
@@ -381,6 +375,24 @@ select 字段将 value 作为 prop 并将 change 作为事件。
 <input :value="val" @input="val = $event.target.value">
 ```
 
+如果在自定义组件中，v-model 默认会利用名为 value 的 prop 和名为 input 的事件，如下所示
+```html
+父组件：
+<ModelChild v-model="message"></ModelChild>
+
+子组件：
+<div>{{value}}</div>
+
+props:{
+    value: String
+},
+methods: {
+  test1(){
+     this.$emit('input', '小红')
+  },
+},
+```
+[Vue开发技巧+性能优化](/details/Vue/Vue开发技巧+性能优化.md/#自定义组件双向绑定)
 
 # <a name="生命周期">生命周期</a>[![bakTop](./img/backward.png)](#top)  
 [官网-生命周期钩子](https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%92%A9%E5%AD%90)
@@ -793,91 +805,9 @@ vm.items.splice(newLength)
 ```
 
 如果组件里 data 直接写了一个对象的话，那么如果你在模板中多次声明这个组件，组件中的 data 会指向同一个引用。  
+
 此时如果在某个组件中对 data 进行修改，会导致其他组件里的 data 也被污染。 而如果使用函数的话，每个组件里的 data 会有单独的引用，这个问题就可以避免了。
 
-# <a name="v-if和v-show的区别">v-if和v-show的区别</a>[![bakTop](./img/backward.png)](#top)  
-[官网解释](https://cn.vuejs.org/v2/guide/conditional.html#v-if-vs-v-show)
-
-
-
-```html
-v-if 是“真正”的条件渲染，因为它会确保在切换过程中条件块内的事件监听器和子组件适当地被销毁和重建。
-
-v-if 也是惰性的：如果在初始渲染时条件为假，则什么也不做——直到条件第一次变为真时，才会开始渲染条件块。
-
-v-show 只是简单的display控制显隐藏，不管初始条件如何，元素总会被渲染；
-```
-v-if 有更高的切换开销，而 v-show 有更高的初始渲染开销。  
-因此，v-if适用于很少改变条件的场景，v-show适用于频繁切换条件的场景。
-
-# <a name="v-for 遍历避免同时使用 v-if">v-for 遍历避免同时使用 v-if</a>[![bakTop](./img/backward.png)](#top)  
-[官网解释](https://cn.vuejs.org/v2/guide/conditional.html#v-if-%E4%B8%8E-v-for-%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8)
-
-[风格指南-避免 v-if 和 v-for 用在一起](https://cn.vuejs.org/v2/style-guide/#%E9%81%BF%E5%85%8D-v-if-%E5%92%8C-v-for-%E7%94%A8%E5%9C%A8%E4%B8%80%E8%B5%B7%E5%BF%85%E8%A6%81)
-
-v-for 具有比 v-if 更高的优先级; 
-
-推荐：
-```html
-isShow为false时，不会渲染列表，
-如果将 v-if="isShow" 放在li标签里，列表依旧会渲染
-<template>
-<ul v-if="isShow">
-  <li
-    v-for="item in lists"
-    :key="item.id"
-  >
-    {{ item.name }}
-  </li>
-</ul>
-</template>
-```
-
-当只需要渲染很小一部分的时候，可以通过 computed 过滤掉无需渲染的列表。
-而不是在 li 标签里使用  v-if="item.isActive"   
-
-推荐：
-```html
-<template>
-<ul>
-  <li
-    v-for="item in activeLists"
-    :key="item.id"
-  >
-    {{ item.name }}
-  </li>
-</ul>
-</template>
-
-<script>
-export default{
-  data(){
-    return{
-      lists: [],
-    }
-  },
-  computed: {
-    activeLists() {
-      return this.lists.filter((item) => {
-        return item.isActive
-      })
-    }
-  }
-}
-</script>
-```
-
-不推荐：
-```html
-<ul>
-  <li
-    v-for="user in users"
-    v-if="user.isActive"
-    :key="user.id">
-    {{ user.name }}
-  </li>
-</ul>
-```
 
 # <a name="slot">slot插槽</a>[![bakTop](./img/backward.png)](#top)  
 [官网-插槽](https://cn.vuejs.org/v2/guide/components-slots.html)
@@ -1052,7 +982,16 @@ key是给每一个vnode的唯一id,可以依靠key,更准确, 更快的拿到old
 首先会先将模版通过解析器，解析成AST（抽象语法树），然后再通过优化器，遍历AST树，将里面的所有静态节点找出来，并打上标志，这样可以避免在数据更新进行重新生成新的Vnode的时候做一些无用的功夫，和diff算法对比时进行一些无用的对比，因为静态节点这辈子是什么样就是什么样的了，不会变化。接着，代码生成器会将这颗AST编译成代码字符串，这段字符串会别Vdom里面的createElement函数调用，最后生成Vnode。
 
 ```
-# <a name="extend,mixins,extends,components,install等">Vue.extend,Vue.component,mixins,extends,install的几个操作</a>[![bakTop](./img/backward.png)](#top) 
+# <a name="Vue.use,Vue.extend,Vue.component,mixins,extends">Vue.use,Vue.extend,Vue.component,mixins,extends等</a>[![bakTop](./img/backward.png)](#top) 
+### [Vue.use](https://cn.vuejs.org/v2/api/#Vue-use)
+* 参数：{Object | Function} plugin  
+* 用法：  
+    安装 Vue.js 插件。如果插件是一个对象，必须提供 install 方法。如果插件是一个函数，它会被作为 install 方法。install 方法调用时，会将 Vue 作为参数传入。
+
+    该方法需要在调用 new Vue() 之前被调用。
+
+    当 install 方法被同一个插件多次调用，插件将只会被安装一次。
+
 
 ### [Vue.extend](https://cn.vuejs.org/v2/api/#Vue-extend)
 
@@ -1060,6 +999,32 @@ key是给每一个vnode的唯一id,可以依靠key,更准确, 更快的拿到old
 * 用法: 使用基础 Vue 构造器，创建一个“子类”。参数是一个包含组件选项的对象。
 
 Vue.extend实际是创建一个构造器,对应的初始化构造器,并将其挂载到标签上
+
+```js
+// 创建构造器
+var Profile = Vue.extend({
+  template: '<p>{{firstName}} {{lastName}} aka {{alias}}</p>',
+  data: function () {
+    return {
+      firstName: 'Walter',
+      lastName: 'White',
+      alias: 'Heisenberg'
+    }
+  }
+})
+// 创建 Profile 实例，并挂载到一个元素上。
+new Profile().$mount('#mount-point')
+
+// 全局注册
+Vue.component('Profile',Profile)
+
+//局部注册
+export default{
+  components: {
+    Profile
+  }
+}
+```
 
 ### [Vue.component](https://cn.vuejs.org/v2/api/#Vue-component)
 * 参数：  
@@ -1082,7 +1047,19 @@ var MyComponent = Vue.component('my-component')
 ### [extends](https://cn.vuejs.org/v2/api/#extends)
 * 类型：Object | Function
 * 详细：
-  允许声明扩展另一个组件 (可以是一个简单的选项对象或构造函数)，而无需使用 Vue.extend。这主要是为了便于扩展单文件组件。
+  允许声明扩展另一个组件 (可以是一个简单的选项对象或构造函数)，而无需使用 Vue.extend。这主要是为了便于扩展单文件组件。  
+
+和 mixins 类似,只不过接收的参数是简单的选项对象或构造函数,所以extends只能单次扩展一个组件
+
+```js
+var CompA = { ... }
+
+// 在没有调用 `Vue.extend` 时候继承 CompA
+var CompB = {
+  extends: CompA,
+  ...
+}
+```
 
 ### [mixins](https://cn.vuejs.org/v2/api/#mixins)
 * 类型：Array\<Object\>
@@ -1090,6 +1067,94 @@ var MyComponent = Vue.component('my-component')
   mixins 选项接收一个混入对象的数组。这些混入对象可以像正常的实例对象一样包含实例选项，这些选项将会被合并到最终的选项中，使用的是和 Vue.extend() 一样的选项合并逻辑。也就是说，如果你的混入包含一个 created 钩子，而创建组件本身也有一个，那么两个函数都会被调用。
 
   Mixin 钩子按照传入顺序依次调用，并在调用组件自身的钩子之前被调用。
+
+```js
+export default{
+  mixins:[mixinA, mixinxB, ...]
+}
+```
+
+
+### extends,mixins
+extends,mixins都是为了拓展组件
+
+extends 只能单次扩展一个组件，优先与 mixins 调用
+mixins 可多个， 钩子按照传入顺序依次调用
+
+```html
+<script>
+  let extend = {
+    data() {
+      return {extendData:'我是extend的data'}
+    },
+    created(){
+      console.log('这是extend的created');
+    },
+    methods:{
+      getSum(){
+        console.log('这是extend的getSum里面的方法');
+      },
+      fn(type){
+        console.log(`这是${type}调用 extend的 Fn方法`);
+      },
+    }
+  }
+
+  let mixin1 = {
+    data() {
+      return {extendData:'我是mixin1的data'}
+    },
+    created() {
+      this.fn('mixin1');
+      console.log('这是mixin1的created');
+    },
+    methods: {
+      getSum() {
+        console.log('这是mixin1的getSum里面的方法');
+      }
+    }
+  }
+  let mixin2 = {
+    data() {
+      return {extendData:'我是mixin2的data'}
+    },
+    created() {
+      console.log('这是mixin2的created');
+    },
+    methods: {
+      getSum() {
+        console.log('这是mixin2的getSum里面的方法');
+      }
+    }
+  }
+
+  export default {
+    data() {
+      return {mixinData:'我是vue实例的data'}
+    },
+    created() {
+      console.log('这是vue实例的created');
+    },
+    methods:{
+      getSum() {
+        console.log('这是vue实例里面getSum的方法');
+      }
+    },
+    mixins: [mixin1,mixin2],
+    extends: extend
+  }
+</script>
+
+//输出
+
+这是extend的created
+这是mixin1调用 extend 的Fn方法
+这是mixin1的created
+这是mixin2的created
+这是vue实例的created
+这是vue实例里面getSum的方法
+```
+执行顺序： extends > mixins > 实例自身
 
 
 # <a name="Vue的数据为什么频繁变化但只会更新一次">Vue的数据为什么频繁变化但只会更新一次</a>[![bakTop](./img/backward.png)](#top)  
@@ -1100,17 +1165,36 @@ Vue 异步执行 DOM 更新。Vue在观察到数据变化时并不是直接更�
 # <a name="$nextTick">$nextTick</a>[![bakTop](./img/backward.png)](#top)  
 [简单理解Vue中的nextTick](https://www.jianshu.com/p/a7550c0e164f)
 
-源码路径：src\core\util\next-tick.js
-
 ### 原理：
 Vue中DOM更新是异步的，$nextTick是DOM更新完成后执行的
 在下次 DOM 更新循环结束之后执行延迟回调。  
+
+源码路径：src\core\util\next-tick.js
+```js
+if (typeof Promise !== 'undefined' && isNative(Promise)) {
+  ....
+} else if (!isIE && typeof MutationObserver !== 'undefined' && (
+  isNative(MutationObserver) ||
+  // PhantomJS and iOS 7.x
+  MutationObserver.toString() === '[object MutationObserverConstructor]'
+)) {
+  ....
+} else if (typeof setImmediate !== 'undefined' && isNative(setImmediate)) {
+  // setImmediate 从技术上讲，它利用了（宏）任务队列，
+  // 但它仍然是比setTimeout更好的选择。
+  ...
+} else {
+  timerFunc = () => {
+    setTimeout(flushCallbacks, 0)
+  }
+}
+```
 
 nextTick主要使用了宏任务和微任务。根据执行环境分别尝试采用
   * Promise
   * MutationObserver
   * setImmediate
-  * 如果执行环境不支持，会采用 setTimeout(fn, 0)代替。
+  * 以上都不支持，最后再使用 setTimeout 
 
 ### 使用场景：
 * 在修改数据之后立即使用这个方法，可获取更新后的 DOM数据
@@ -1879,38 +1963,6 @@ const store = new Vuex.Store({
 # <a name="组件通信方法">组件通信方法</a>[![bakTop](./img/backward.png)](#top)  
 [组件通信方法](/details/Vue/组件通信.md)
 
-
-# <a name="vue项目性能优化">Vue开发技巧+性能优化</a>[![bakTop](./img/backward.png)](#top)  
-[Vue开发技巧+性能优化](/details/Vue/Vue开发技巧+性能优化.md)
-
-
-# <a name="UI组件">UI组件常见问题</a>[![bakTop](./img/backward.png)](#top)  
-* 组件事件触发不了  
-
-加.native`@key.native`
-
-* element UI 自定义传参的解决方法
-
-这里的handleSelect默认绑定的参数是选中的那条数据。如果一个页面有好几个相同的组件，要想知道选的是哪个？
-```html
-<el-autocomplete
-    v-model="state4"
-    :fetch-suggestions="querySearchAsync"
-    placeholder="请输入内容"
-    @select="handleSelect"
-></el-autocomplete>
-```
-解决方案：
-```html
-<el-autocomplete
-    v-model="state4"
-    :fetch-suggestions="querySearchAsync"
-    placeholder="请输入内容"
-    @select="((item)=>{handleSelect(item, index)})"
-    // 写个闭包就可以了，index表示第几个组件
-></el-autocomplete>
-```
-
 # <a name="vue-cli3配置">vue-cli3配置</a>[![bakTop](./img/backward.png)](#top)  
 [参考](https://blog.csdn.net/qq_36407748/article/details/80739787)
 
@@ -1970,6 +2022,108 @@ module.exports = {
 }
 ```
 
+* configureWebpack  
+>Type: object | Function
+
+[configureWebpack:简单的配置方式](https://cli.vuejs.org/zh/guide/webpack.html#%E7%AE%80%E5%8D%95%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F)
+
+如果这个值是一个对象，则会通过 webpack-merge 合并到最终的配置中。
+
+如果这个值是一个函数，则会接收被解析的配置作为参数。该函数既可以修改配置并不返回任何东西，也可以返回一个被克隆或合并过的配置版本。
+
+configureWebpack为 object 形式  
+该对象将会被 webpack-merge 合并入最终的 webpack 配置。
+```js
+module.exports = {
+  configureWebpack: {
+    plugins: [
+      new xxx()
+    ]
+  }
+}
+```
+
+如果你需要基于环境有条件地配置行为，或者想要直接修改配置，那就换成一个函数 (该函数会在环境变量被设置之后懒执行)。该方法的第一个参数会收到已经解析好的配置。在函数内，你可以直接修改配置，或者返回一个将会被合并的对象：
+
+configureWebpack为 函数 形式
+```js
+const resolve = dir => {
+  return path.resolve(__dirname, dir)
+}
+
+configureWebpack: config => {
+  // config为被解析的配置
+  Object.assign(config, {
+    // 开发生产共同配置，新增一些别名设置
+    resolve: {
+      alias: {
+        // '@': path.resolve(__dirname, './src'),
+        '@': resolve('src'),
+        '@c': resolve('src/components'),
+
+      } // 别名配置
+    }
+
+    if (process.env.NODE_ENV === 'production') {
+      // 为生产环境修改配置...
+      // config.plugins.push(new xxxx())
+    } else {
+      // 为开发环境修改配置...
+    }
+  })
+}
+```
+
+* chainWebpack:
+>Type: Function
+
+[chainWebpack:链式操作 (高级)](https://cli.vuejs.org/zh/guide/webpack.html#%E7%AE%80%E5%8D%95%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F)
+
+```js
+module.exports = {
+  chainWebpack: config => {
+    config.resolve.alias
+      .set('@', resolve('src'))
+      .set('_c', resolve('src/components'))
+      .end()
+  }
+}
+
+```  
+
+# <a name="vue项目性能优化">Vue开发技巧+性能优化</a>[![bakTop](./img/backward.png)](#top)  
+[Vue开发技巧+性能优化](/details/Vue/Vue开发技巧+性能优化.md)
+
+
+# <a name="UI组件">UI组件常见问题</a>[![bakTop](./img/backward.png)](#top)  
+* 组件事件触发不了  
+
+加.native`@key.native`
+
+* element UI 自定义传参的解决方法
+
+这里的handleSelect默认绑定的参数是选中的那条数据。如果一个页面有好几个相同的组件，要想知道选的是哪个？
+```html
+<el-autocomplete
+    v-model="state4"
+    :fetch-suggestions="querySearchAsync"
+    placeholder="请输入内容"
+    @select="handleSelect"
+></el-autocomplete>
+```
+解决方案：
+```html
+<el-autocomplete
+    v-model="state4"
+    :fetch-suggestions="querySearchAsync"
+    placeholder="请输入内容"
+    @select="((item)=>{handleSelect(item, index)})"
+    // 写个闭包就可以了，index表示第几个组件
+></el-autocomplete>
+```
+
+
+
 # <a name="静态资源处理">静态资源处理</a>[![bakTop](./img/backward.png)](#top)  
 
 [参考](http://vuejs-templates.github.io/webpack/static.html)
@@ -1997,14 +2151,19 @@ assets中的文件会经过webpack打包，重新编译，推荐该方式。而s
 注意：如果把图片放在assets与static中，html页面可以使用；但在动态绑定中，assets路径的图片会加载失败，因为webpack使用的是commenJS规范，必须使用require才可以
 
 1. 图片路径为static
->
-    <img class="img-title" src="static/images/index/b-t.jpg" alt="">
+```html
+<img class="img-title" src="static/images/index/b-t.jpg" alt="">
 
-    onerror图片
-    * <img :src="item.pic" alt="" onerror="this.src='static/images/errorImg.jpg'">
-    * <img :src="item.pic" alt="" :onerror="errorImg'">
-      data下: errorImg: 'this.src="' + require('../../assets/images/common/errorImg.jpg') + '"',
-
+onerror图片
+<img :src="item.pic" alt="" onerror="this.src='static/images/errorImg.jpg'">
+或者
+<img :src="item.pic" alt="" :onerror="errorImg'">
+data() {
+  return {
+    errorImg: 'this.src="' + require('@/assets/images/common/errorImg.jpg') + '"'
+  }
+}
+```
 2. assets
 >
     <img class="img-title" src="../assets/images/index/m-t.jpg" alt="">

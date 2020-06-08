@@ -22,3 +22,11 @@ canvas.toDataURL(type, encoderOptions)
 * 如果画布的高度或宽度是0，那么会返回字符串“data:,”。  
 * 如果传入的类型非“image/png”，但是返回的值以“data:image/png”开头，那么该传入的类型是不支持的。  
 * Chrome支持“image/webp”类型。  
+
+## toBlob
+[toBlob--MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLCanvasElement/toBlob)
+
+canvas.toBlob(callback, type, encoderOptions)
+>callback:回调函数，可获得一个单独的Blob对象参数。  
+>type:DOMString类型，指定图片格式，默认格式为image/png。  
+>encoderOptions:Number类型，值在0与1之间，当请求图片格式为image/jpeg或者image/webp时用来指定图片展示质量。如果这个参数的值不在指定类型与范围之内，则使用默认值，其余参数将被忽略。
