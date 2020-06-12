@@ -62,14 +62,15 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
   * script(整体代码)
   * setTimeout
   * setInterval
+  * setImmediate(Node.js 环境)
   * I/O、UI交互事件
   * postMessage
   * MessageChannel
-  * setImmediate(Node.js 环境)
+  * requestAnimationFrame(浏览器环境)
 
 * micro-task(微任务)
   * Promise.then、catch、finally
-  * MutaionObserver
+  * MutaionObserver (html5新特性, 浏览器环境)
   * process.nextTick(Node.js 环境)
 >
 

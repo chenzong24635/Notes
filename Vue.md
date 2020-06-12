@@ -8,7 +8,7 @@
 [Vue 插件-组件](/details/Vue/插件-组件.md)
 
 
-[30 道 Vue 面试题，内含详细讲解（涵盖入门到精通，自测 Vue 掌握程度）](https://juejin.im/post/5d59f2a451882549be53b170)
+
 <!-- [Vue源码阅读 - 依赖收集原理](https://segmentfault.com/a/1190000015562213) -->
 
 # 
@@ -583,6 +583,7 @@ mounted(){
 
 * 当需要进行数值计算，并且依赖于其它数据时，应该使用 computed，可以利用 computed 的缓存特性，  
 * 数据变化的同时进行异步操作或者是比较大的开销，那么watch为最佳选择  
+* Computed本质是一个具备缓存的watcher,内部实现了一个惰性的 watcher
 
 ## 基本使用：
 ```js
@@ -751,9 +752,12 @@ $set()方法相当于手动的去把obj.b处理成一个响应式的属性，此
 
 
 # <a name="Vue检测数组的变动">Vue检测数组的变动</a>[![bakTop](./img/backward.png)](#top)  
-[Vue文档-深入响应式原理](https://cn.vuejs.org/v2/guide/reactivity.html)
+[Vue文档-深入响应式原理](https://cn.vuejs.org/v2/guide/reactivity.html)  
 
-### Vue 能检测以下数组的变动
+vue使用了函数劫持的方式，重写了数组部分方法，Vue将data中的数组进行了原型链重写，指向了自己定义的数组原型方法，当调用数组api时，可以通知依赖更新。
+如果数组中包含着引用类型，会对数组中的引用类型再次递归遍历进行监控。这样就实现了监测数组变化。
+
+### Vue 重写了以下数组的方法，能检测其变动
 ```js
 push()
 pop()
@@ -794,20 +798,21 @@ vm.items.splice(indexOfItem, 1, newValue)
 vm.items.splice(newLength)
 ```
 
+[源码解析](/details/Vue/Vue2-Source/数组方法劫持重写.md)
 
-# <a name="组件中data为什么是一个函数">组件中 data 为什么是一个函数</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="组件中data为什么是一个函数">为什么组件中的 data 必须是一个函数，然后 return 一个对象，而 new Vue 实例里，data 可以直接是一个对象？</a>[![bakTop](./img/backward.png)](#top)  
 [组件中的data为什么是函数](https://juejin.im/post/5e8dd5266fb9a03c703fb168#heading-9)
 
 [风格指南](https://cn.vuejs.org/v2/style-guide/#%E7%BB%84%E4%BB%B6%E6%95%B0%E6%8D%AE%E5%BF%85%E8%A6%81)
 
-```
-  为什么组件中的 data 必须是一个函数，然后 return 一个对象，而 new Vue 实例里，data 可以直接是一个对象？
-```
 
-如果组件里 data 直接写了一个对象的话，那么如果你在模板中多次声明这个组件，组件中的 data 会指向同一个引用。  
+同一个组件被复用多次，会创建多个实例。这些实例用的是同一个构造函数，如果 data 是一个对象的话。那么所有组件都共享了同一个对象。
 
 此时如果在某个组件中对 data 进行修改，会导致其他组件里的 data 也被污染。 而如果使用函数的话，每个组件里的 data 会有单独的引用，这个问题就可以避免了。
 
+为了保证组件的数据独立性要求每个组件必须通过 data 函数返回一个对象作为组件的状态。
+
+而 new Vue 的实例，是不会被复用的，因此不存在引用对象的问题。
 
 # <a name="slot">slot插槽</a>[![bakTop](./img/backward.png)](#top)  
 [官网-插槽](https://cn.vuejs.org/v2/guide/components-slots.html)
@@ -972,16 +977,12 @@ key是给每一个vnode的唯一id,可以依靠key,更准确, 更快的拿到old
 
 
 # <a name="虚拟DOM">虚拟 DOM</a>[![bakTop](./img/backward.png)](#top)  
-[参考](https://www.jianshu.com/p/af0b398602bc?tdsourcetag=s_pctim_aiomsg)
-
-[参考](https://juejin.im/post/5d36cc575188257aea108a74)
-
+[源码解析](\details\Vue\Vue2-Source\虚拟DOM.md)
 
 # <a name="Vue模板编译过程">Vue模板编译过程</a>[![bakTop](./img/backward.png)](#top) 
-```
-首先会先将模版通过解析器，解析成AST（抽象语法树），然后再通过优化器，遍历AST树，将里面的所有静态节点找出来，并打上标志，这样可以避免在数据更新进行重新生成新的Vnode的时候做一些无用的功夫，和diff算法对比时进行一些无用的对比，因为静态节点这辈子是什么样就是什么样的了，不会变化。接着，代码生成器会将这颗AST编译成代码字符串，这段字符串会别Vdom里面的createElement函数调用，最后生成Vnode。
+[源码解析](\details\Vue\Vue2-Source\模板编译.md)
 
-```
+
 # <a name="Vue.use,Vue.extend,Vue.component,mixins,extends">Vue.use,Vue.extend,Vue.component,mixins,extends等</a>[![bakTop](./img/backward.png)](#top) 
 ### [Vue.use](https://cn.vuejs.org/v2/api/#Vue-use)
 * 参数：{Object | Function} plugin  

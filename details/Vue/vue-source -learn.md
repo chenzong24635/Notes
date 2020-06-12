@@ -1,5 +1,9 @@
 [Vue源码简析(版本vue-2.4.4)](https://juejin.im/post/5ab07a63f265da2389258b12)
 
+https://github.com/qq281113270/vue
+
+https://juejin.im/post/5e04411f6fb9a0166049a073#comment
+
 http://mp.weixin.qq.com/mp/homepage?__biz=MzUxNjQ1NjMwNw==&hid=1&sn=77b9eca3d06307f14d8806231c395ed2&scene=18#wechat_redirect
 
 [Vue.js 技术揭秘](https://github.com/ustbhuangyi/vue-analysis)-github

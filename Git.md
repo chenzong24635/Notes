@@ -36,7 +36,7 @@
     token: bb7d41e1e039fdd294a6819e7305b73bd066d9a1
     sync.gist: 0e3b4eb383f938cbacac6b443dd818a0
 
-    Gist ID:372add5a8785e01a4c7850cadd69314f。
+    Gist ID:372add5a8785e01a4c7850cadd69314f
 
 # <a name="创建项目提交到仓库">创建项目提交到仓库</a>
 >
@@ -126,10 +126,10 @@ npm i git //git安装
 
 `git remote 远程仓库`
 * git remote // 查看你已经配置的远程仓库服务器
-  * git remote -v  //查看已关联远端库
-  * git remote add origin http://github.com/chenzong24635/仓库名.git //添加远端仓库关联
-  * git remote rm origin  //删除远端仓库关联
-  * git remote rename origin newOrigin  // 修改远程仓库的简写名
+* git remote -v  //查看已关联远端库
+* git remote add origin http://github.com/chenzong24635/仓库名.git //添加远端仓库关联
+* git remote rm origin  //删除远端仓库关联
+* git remote rename origin newOrigin  // 修改远程仓库的简写名
 
 `git branch 分支`
 * git branch //查看当前所有分支  
@@ -139,13 +139,18 @@ npm i git //git安装
 * git branch -d \<branchName>  //删除分支  
 * git push origin --delete \<branchName>  //删除远程分支  
 * git checkout \<branchName> | git switch \<branchName> //切换分支  
-* git checkout -b \<branchName> | git switch -c \<branchName> //创建 + 切换分支  
-* git merge \<branchName>  //合并某分支到当前分支  
-* git branch --merged  // 查看哪些分支已经合并到当前分支  
-* git branch --no-merged  // 查看哪些分支尚未合并到当前分支  
+* git checkout -b \<branchName> | git switch -c \<branchName> //创建 + 切换分支   
 * git checkout branch -- file  //将你的某个文件还原到某个分支的版本
 * git branch --set-upstream-to \<branchName> origin/\<branchName>  //建立本地分支和远程分支的关联
 
+
+`gti merge 合并分支`
+* git merge \<branchName>  //合并某分支到当前分支  
+  > 若报错 refusing to merge unrelated histories （拒绝合并无关的历史）  
+  > 使用 git merge \<branchName> --allow-unrelated-histories
+
+* git branch --merged  // 查看哪些分支已经合并到当前分支  
+* git branch --no-merged  // 查看哪些分支尚未合并到当前分支 
 
 `git tag 标签` 给历史中的某一个提交打上标签,常使用其来标记发布结点（v1.0 等等） 
 * git tag // 列出已有的标签
@@ -153,10 +158,10 @@ npm i git //git安装
 * git show \<tagName> // 查看标签信息与对应的提交信息
   >输出显示了打标签者的信息、打标签的日期时间、附注信息，然后显示具体的提交信息。
 
-* git tag v1.4 // 添加标签(轻量标签)
+* git tag \<tagName> // 添加标签(轻量标签)
   >本质上是将提交校验和存储到一个文件中——没有保存任何其他信息。 不需要使用 -a、-s 或 -m 选项
 
-*  git tag -a v1.4 -m "my version 1.4" // 添加带有说明的标签  
+*  git tag -a \<tagName> -m "my version 1.4" // 添加带有说明的标签  
    >-a指定标签名  
    >-m指定说明的信息。如果没有，Git 会运行编辑器要求你输入信息
 
@@ -167,6 +172,7 @@ npm i git //git安装
 * git push origin :refs/tags/\<tagName> // 删除远程标签
   >需先删除本地：git tag -d \<tagName>
 
+* git push origin \<tagName1> \<tagName2>// 推送单个或多个本地标签到远程
 * git push origin --tags // 推送所有本地标签到远程
 
 `git status 查看文件状态`

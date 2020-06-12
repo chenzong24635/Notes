@@ -18,15 +18,18 @@
 
 # <a name="vue项目性能优化">Vue开发技巧 + 性能优化</a>[![bakTop](/img/backward.png)](#top)  
 [10个Vue开发技巧助力成为更好的工程师](https://juejin.im/post/5e8a9b1ae51d45470720bdfa)
+
 [这 10 个技巧让你成为一个更好的 Vue 开发者](https://juejin.im/post/5e8286f6e51d4546c72dfff0)
+
+[30 道 Vue 面试题，内含详细讲解（涵盖入门到精通，自测 Vue 掌握程度）](https://juejin.im/post/5d59f2a451882549be53b170)
 
 [Vue 开发必须知道的 36 个技巧【近1W字】](https://juejin.im/post/5d9d386fe51d45784d3f8637)
 
 [Vue CLI 首屏优化技巧](https://segmentfault.com/a/1190000019499007)
 
-[Vue 项目性能优化](https://juejin.im/post/5d548b83f265da03ab42471d)
+[Vue 项目性能优化 — 实践指南（网上最全 / 详细）](https://juejin.im/post/5d548b83f265da03ab42471d)
 
-# <a name="v-if和v-show的区别">v-if和v-show的区别</a>[![bakTop](./img/backward.png)](#top)  
+## <a name="v-if和v-show的区别">v-if和v-show的区别</a>[![bakTop](./img/backward.png)](#top)  
 [官网解释](https://cn.vuejs.org/v2/guide/conditional.html#v-if-vs-v-show)
 
 ```html
@@ -39,7 +42,7 @@ v-show 只是简单的display控制显隐藏，不管初始条件如何，元素
 v-if 有更高的切换开销，而 v-show 有更高的初始渲染开销。  
 因此，v-if适用于很少改变条件的场景，v-show适用于频繁切换条件的场景。
 
-# <a name="v-for 遍历避免同时使用 v-if">v-for 遍历避免同时使用 v-if</a>[![bakTop](./img/backward.png)](#top)  
+## <a name="v-for 遍历避免同时使用 v-if">v-for 遍历避免同时使用 v-if</a>[![bakTop](./img/backward.png)](#top)  
 [官网解释](https://cn.vuejs.org/v2/guide/conditional.html#v-if-%E4%B8%8E-v-for-%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8)
 
 [风格指南-避免 v-if 和 v-for 用在一起](https://cn.vuejs.org/v2/style-guide/#%E9%81%BF%E5%85%8D-v-if-%E5%92%8C-v-for-%E7%94%A8%E5%9C%A8%E4%B8%80%E8%B5%B7%E5%BF%85%E8%A6%81)
@@ -198,11 +201,14 @@ export default {
 
 ### [model](https://cn.vuejs.org/v2/api/#model)
 
-允许一个自定义组件在使用 v-model 时定制 prop 和 event。默认情况下，一个组件上的 v-model 会把 value 用作 prop 且把 input 用作 event，但是一些输入类型比如单选框和复选框按钮可能想使用 value prop 来达到不同的目的。使用 model 选项可以回避这些情况产生的冲突。
+允许一个自定义组件在使用 v-model 时定制 prop 和 event。  
+默认情况下，一个组件上的 v-model 会把 value 用作 prop 且把 input 用作 event，但是一些输入类型比如单选框和复选框按钮可能想使用 value prop 来达到不同的目的。使用 model 选项可以回避这些情况产生的冲突。
 
 父组件使用
 ```html
 <model-input v-model="val" />
+<input type="text" v-model="val">
+
 ```
 
 子组件
@@ -248,7 +254,7 @@ export default {
 </script>
 ```
 
-## <a name="render函数">render函数</a>[![bakTop](/img/backward.png)](#top)  
+## <a name="render函数">使用render函数 优化代码</a>[![bakTop](/img/backward.png)](#top)  
 场景:有些代码在 template 里面写会重复很多,可使用 render 函数
 ```html
 // 初级
@@ -386,6 +392,8 @@ Vue.component(
   // 这个 `import` 函数会返回一个 `Promise` 对象。
   () => import(/* webpackChunkName: 'async-webpack-example' */'./my-async-component')
 )
+
+注释的webpackChunkName作用： 把某个路由下的所有组件都打包在同个异步块 (chunk) 中
 ```
 
 局部
@@ -413,6 +421,20 @@ const AsyncComponent = () => ({
   timeout: 3000
 })
 ```
+
+路由懒加载：
+```js
+const Foo = () => import(/* webpackChunkName: "group-foo" */ './Foo.vue')
+```
+
+打包后发现一些页面文件很小，只有几K  
+通过配置webpack的特殊注释，将一些按需加载的路由打包到同一个js文件
+```js
+const Foo = () => import(/* webpackChunkName: "group-foo" */ './Foo.vue')
+const Bar = () => import(/* webpackChunkName: "group-foo" */ './Bar.vue')
+const Baz = () => import(/* webpackChunkName: "group-foo" */ './Baz.vue')
+```
+
 
 ## <a name="递归组件">递归组件</a>[![bakTop](/img/backward.png)](#top)  
 [递归组件-vue官网](https://cn.vuejs.org/v2/guide/components-edge-cases.html#%E9%80%92%E5%BD%92%E7%BB%84%E4%BB%B6)
@@ -837,9 +859,6 @@ Vue.use(VueLazyload, {
 <img v-lazy="/static/img/1.png">
 ```
 
-
-
-
 ## <a name="优化无限列表性能">优化无限列表性能</a>[![bakTop](/img/backward.png)](#top) 
 
 如果你的应用存在非常长或者无限滚动的列表，那么需要采用 窗口化 的技术来优化性能，只需要渲染少部分区域的内容，减少重新渲染组件和创建 dom 节点的时间。 你可以参考以下开源项目 [vue-virtual-scroll-list](https://github.com/tangbc/vue-virtual-scroll-list) 和[vue-virtual-scroller](https://github.com/Akryum/vue-virtual-scroller)  来优化这种无限列表的场景的。
@@ -961,21 +980,8 @@ module.exports = {
 <img src="../../img/skeleton.jpg">
 
 
-## 插件-打包优化
-
-### 对vue-cli内部的 webpack 配置进行更细粒度的修改
-vue.config.js
-```js
-module.exports = {
-  configureWebpack: (config) => {
-    config.optimization.minimizer('terser').tap((args) => {
-      // 去除生产环境console
-      args[0].terserOptions.compress.drop_console = true
-      return args
-    })
-  }
-}  
-```
+## Webpack 层面的优化
+https://juejin.im/post/5d548b83f265da03ab42471d#heading-12
 
 ### webpack-bundle-analyzer 打包后模块大小分析
 npm install -g webpack-bundle-analyzer 
@@ -1019,14 +1025,15 @@ configureWebpack: (config) => {
         filename: '[path].gz[query]',
         algorithm: 'gzip',
         test: /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i, // 匹配文件名
-        threshold: 10240, //对超过 10*1024 的数据进行压缩
-        minRatio: 0.8,
-        deleteOriginalAssets: false //是否删除原文件
+        threshold: 10240, // 对超过 10*1024 的数据进行压缩
+        minRatio: 0.8, // 压缩比例，值为0 ~ 1
+        deleteOriginalAssets: false // 是否删除原文件
       })
     )
   }
 }
 ```
+
 
 ## 报错
 vue.runtime.esm.js?2b0e:619 [Vue warn]: You are using the runtime-only build of Vue where the template compiler is not available. Either pre-compile the templates into render functions, or use the compiler-included build.
