@@ -36,10 +36,17 @@ function fn2(){
 缺点 
 * 污染全局变量
 * 模块之间的关系模糊
+* 没有私有空间，所有模块内的成员都可以在模块外部被访问或者修改；
+* 一旦模块增多，容易产生命名冲突；
+* 无法管理模块与模块之间的依赖关系；
 
 ### namespace模式: 对象封装
 ```js
 let module1 = {
+  fn1(){},
+  fn2(){},
+}
+let module2 = {
   fn1(){},
   fn2(){},
 }
@@ -55,19 +62,13 @@ let module1 = {
 
 ### IIFE: 自执行函数
 在一个单独的函数作用域中执行代码，避免变量冲突。
-```js
-(function(){
-  // do something
-})()
-```
 
-引入依赖
 ```js
 (function(window){
   function fn1() {}
   function fn2() {}
 
-  function fn0() {} //内部私有方法
+  function fn0() {} //内部私有方法,未对外暴露
 
   //导出暴露的属性，方法
   window.module1 = { fn1, fn2 }
@@ -94,6 +95,9 @@ console.log(module1) // {fn1: f fn1(), fn2: f fn2()}
   * 模块依赖关系模糊
 
 ### 模块规范
+在这几种方式中虽然都解决了模块代码的组织问题，但模块加载的问题却被忽略了，我们都是通过 script 标签的方式直接在页面中引入的这些模块，这意味着模块的加载并不受代码的控制，时间久了维护起来会十分麻烦。
+
+更为理想的方式应该是在页面中引入一个 JS 入口文件，其余用到的模块可以通过代码控制，按需加载进来。
 
 ### CommonJS
 主要用于服务端Nodejs 中, 每个文件就是一个模块，有自己的作用域。在一个文件里面定义的变量、函数、类，都是私有的，对其他文件不可见。在服务器端，模块的加载是运行时同步加载的；在浏览器端，模块需要提前编译打包处理。
@@ -119,34 +123,58 @@ var mod = require('./index');
 
 模块可以多次加载，但只会在第一次加载的时候运行一次，然后运行结果就被缓存了，以后再加载，就直接读取缓存结果；
 
-模块的加载顺序，按照代码的出现顺序是`同步加载`的;
+CommonJS 模块的加载顺序，按照代码的出现顺序是`同步加载`的,
 
+所以只有加载完成才能执行后面的操作。像Node.js主要用于服务器的编程，加载的模块文件一般都已经存在本地硬盘，所以加载起来比较快，不用考虑异步加载的方式，所以CommonJS规范比较适用。
+但如果是浏览器环境，要从服务器加载模块，这是就必须采用异步模式。所以就有了 AMD CMD 解决方案。
 
-### AMD
-[require.js](https://github.com/requirejs/requirejs)
+### AMD（Asynchronous Module Definition）
+[require.js](https://github.com/requirejs/requirejs)实现了 AMD 模块化规范，本身也是一个非常强大的模块加载器。
 
 RequireJS的基本思想是，通过define方法，将代码定义为模块；通过require方法，实现代码的模块加载。
 
 特点
 * `异步加载`模块，允许指定回调函数
 * 在使用 require.js 的时候，`必须提前加载所有模块`。
-* 引入模块：require([moduleName], callback)
-  >
-      moduleName,引入的模块数组
-      callback，即为依赖模块加载成功之后执行的回调函数（前端异步的通用解决方案），
 
-* 导出模块：define(id, [dependence], callback)
-  >
-      id,一个可选参数，说白了就是给模块取个名字，但是却是模块的唯一标识。如果没有提供则取脚本的文件名
-      dependence，引入的模块数组
-      callback，工厂方法，模块初始化的一些操作。如果是函数，应该只被执行一次。如果是对象，则为模块的输出值
+引入模块：require([moduleName], callback)
+>
+    moduleName,引入的模块数组
+    callback，即为依赖模块加载成功之后执行的回调函数（前端异步的通用解决方案）
+
+```js
+require(['module1'], function(moduleA) {
+  moduleA.showMsg()
+})
+```
 
 
+导出模块：define(id?, [dependence]?, callback)
+>
+    id:可选参数，模块的唯一标识。如果没有提供则取脚本的文件名
+    dependence:可选参数，当前模块依赖,数组形式
+    callback，工厂方法，模块初始化的一些操作。如果是函数，应该只被执行一次。如果是对象，则为模块的输出值
+
+```JS
+define(['module2', 'jquery'], function(module2) {
+  let name = 'Tom'
+  console.log(module2);
+  console.log($);
+  function showMsg() {
+    console.log(module2.getMsg() + ', ' + name)
+  }
+  // 暴露模块
+  return { showMsg }
+})
+
+```
+
+[代码](/details/模块化/AMD)
 
 ### CMD 
 CMD规范整合了CommonJS和AMD规范的特点。
     
-[sea.js](https://github.com/seajs/seajs)
+[sea.js](https://github.com/seajs/seajs)实现CMD规范
 
 特点
 * `异步加载`
@@ -155,15 +183,37 @@ CMD规范整合了CommonJS和AMD规范的特点。
 ```js
 //定义没有依赖的模块
 define(function(require, exports, module){
-  exports.xxx = value
-  module.exports = value
+  // exports.name = 'Tom'
+  module.exports = {
+    name: 'Tom'
+  }
 })
-
 ```
 
-### ES6modules
+```js
+//定义有依赖的模块
+define(function(require, exports, module){
+  //引入依赖模块(同步)
+  var module2 = require('./module2')
+  //引入依赖模块(异步)
+  require.async('./module3', function (module3) {
+  })
 
-exprot 导出模块  
+  module2.fn1() //使用引入模块暴露的方法属性
+  //暴露模块
+  module.exports = {
+    name: 'Tom'
+  }
+})
+```
+
+[代码](/details/模块化/CMD)
+
+
+### ES modules
+ES Modules 是 ECMAScript 2015（ES6）中定义的模块系统
+
+exprot：导出模块  
 export 可以导出的是一个对象中包含的多个属性，方法。(在一个文件或模块中`可存在多个`)  
 export default  只能导出一个可以不具名的对象。(在一个文件或模块中`仅可存在一个`)
 * 默认导出：export default Person(导入时可指定模块任意名称，无需知晓内部真实名称)  
@@ -300,6 +350,8 @@ ES6 模块与 CommonJS 模块的差异
 * CMD规范与AMD规范很相似，都用于浏览器编程，依赖就近，延迟执行，可以很容易在Node.js中运行。不过，依赖SPM 打包，模块的加载逻辑偏重
 
 * ES6 在语言标准的层面上，实现了模块功能，而且实现得相当简单，完全可以取代 CommonJS 和 AMD 规范，成为浏览器和服务器通用的模块解决方案。
+
+[代码](/details/模块化/ES6)
 
 
 # 

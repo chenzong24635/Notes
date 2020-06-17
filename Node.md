@@ -1,24 +1,56 @@
-https://github.com/goldbergyoni/nodebestpractices/blob/master/README.chinese.md
+# Node
 
-# 镜像
-淘宝npm镜像  
-    搜索地址：http://npm.taobao.org/  
-    registry地址：http://registry.npm.taobao.org/  
+- [x] 步骤一
+- [x] 步骤二
+  - [ ] 步骤2.2
+  - [ ] 步骤2.3
+- [ ] 步骤三
 
-cnpmjs镜像  
-    搜索地址：http://cnpmjs.org/  
-    registry地址：http://r.cnpmjs.org/
 
-安装淘宝镜像 npm config set registry https://registry.npm.taobao.org  
->cnpm安装  npm install -g cnpm --registry=https://registry.npm.taobao.org
+## path.join, path.resolve的详细介绍
+* path.join([path1][, path2][, ...]) 连接路径
 
-切换镜像 npm set registry https://registry.npm.taobao.org/
+连接任意多个路径字符串。要连接的多个路径可做为参数传入
+```js
+const path = require('path')
+let myPath1 = path.join('/a','b');  // \a\b
+let myPath2 = path.join('/a','/b'); // \a\b
+let myPath3 = path.join('/a','./b'); // \a\b
+let myPath4 = path.join('./a','./b'); // a\b
+let myPath5 = path.join('/a', 'b', 'c/d', 'e', '..'); // \a\b\c\d
+```
 
-查看当前镜像 npm  get registry
->查看详细信息 npm info express
+//不合法的字符串将抛出异常 
+```js
+path.join('a', {}, 'b') 
+```
 
+* path.resolve([from ...], to) 路径解析
+
+将多个路径解析为 绝对路径
+```js
+const path = require('path')
+let myPath1 = path.resolve('/a','b');  // D:\a\b
+let myPath2 = path.resolve('/a','/b'); // D:\b
+let myPath3 = path.resolve('/a','./b'); // D:\a\b
+let myPath4 = path.resolve('./a','./b'); // D:\node-learn\a\b
+let myPath5 = path.resolve('/a', 'b', 'c/d', 'e', '..'); // D:\a\b\c\d
+```
+
+* 对比
+
+```js
+const path = require('path');
+console.log(__dirname); // D:\node-learn
+let myPath1 = path.join(__dirname,'/a/b');    // D:\node-learn\a\b
+let myPath2 = path.join(__dirname,'./a/b');   // D:\node-learn\a\b
+let myPath3 = path.resolve(__dirname,'/a/b'); // D:\a\b
+let myPath4 = path.resolve(__dirname,'./a/b');// D:\node-learn\a\b
+```
 
 # <a name="npm ">npm指令</a>
+https://github.com/goldbergyoni/nodebestpractices/blob/master/README.chinese.md
+
 ``` js
 npm init 在此目录生成package.json文件，可以添加-y | --yes 参数则默认所有配置为默认yes
 
@@ -62,13 +94,28 @@ npm prune 移除当前不在package.json中但是存在node_modules中的依赖
 npm link 不使用npm install 而连接某个依赖包，通常用作开发本地依赖包
 ```
 
- --save 简写 -S  
- --save-dev 简写 -D
+## 镜像
+淘宝npm镜像  
+* 搜索地址：http://npm.taobao.org/  
+* registry地址：http://registry.npm.taobao.org/  
 
-# dependencies 与 devdependencies 区别
+cnpmjs镜像  
+* 搜索地址：http://cnpmjs.org/  
+* registry地址：http://r.cnpmjs.org/
+
+安装淘宝镜像 npm config set registry https://registry.npm.taobao.org   
+cnpm安装  npm install -g cnpm --registry=https://registry.npm.taobao.org
+
+切换镜像 npm set registry https://registry.npm.taobao.org/
+
+查看当前镜像 npm  get registry  
+查看详细信息 npm info express
+
+
+## dependencies 与 devdependencies 区别
 >
-    –-save会把依赖包名称添加到package.json文件dependencies下
-    –-save-dev则添加到package.json文件devDependencies下
+    –-save（简写 -S ）会把依赖包名称添加到package.json文件dependencies下
+    –-save-dev（简写 -D）则添加到package.json文件devDependencies下
 
     dependencies ----- 生产环境中需要的依赖，即正常运行该包时所需要的依赖项。 
     devDependencies -- 开发时用的依赖项，它们不会被部署到生产环境。    

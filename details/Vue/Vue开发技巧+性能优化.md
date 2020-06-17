@@ -113,6 +113,8 @@ export default{
 [Vue中从v-model，model，.sync到双向数据传递，再到双向数据绑定](https://blog.csdn.net/Qin_Shuo/article/details/82693919)
 
 ### v-model
+一个组件上的 v-model 默认会利用名为 value 的 prop 和名为 input 的事件
+
 ```<input v-model='val'>```  
 相当于  
 ```<input :value="val" @input="val = $event.target.value">```
@@ -202,6 +204,7 @@ export default {
 ### [model](https://cn.vuejs.org/v2/api/#model)
 
 允许一个自定义组件在使用 v-model 时定制 prop 和 event。  
+
 默认情况下，一个组件上的 v-model 会把 value 用作 prop 且把 input 用作 event，但是一些输入类型比如单选框和复选框按钮可能想使用 value prop 来达到不同的目的。使用 model 选项可以回避这些情况产生的冲突。
 
 父组件使用
@@ -330,12 +333,6 @@ template和render函数的区别：
 
 <script>
   export default {
-    data() {
-      return {
-        currentTab: "a",
-        tabs: ["a", "b", "c"]
-      }
-    },
     components: {
       "tab-a": {
         template: '<div>A</div>'
@@ -346,6 +343,12 @@ template和render函数的区别：
       "tab-c": {
         template: '<div>C</div>'
       },
+    },
+    data() {
+      return {
+        currentTab: "a",
+        tabs: ["a", "b", "c"]
+      }
     },
     computed: {
       currentTabComponent: function() {
@@ -557,7 +560,7 @@ export default {
 ![](/img/Vue/递归组件-result.jpg)
 
 
-## <a name="批量注册全局组件">批量注册全局组件</a>[![bakTop](/img/backward.png)](#top)  
+## <a name="批量注册全局组件">require.context 批量注册全局组件</a>[![bakTop](/img/backward.png)](#top)  
 
 * require.context(arg1,arg2,arg3)
   >arg1 - 读取文件的路径  
@@ -588,11 +591,12 @@ Vue.use(globalComponent)
 ## <a name="批量注册全局filter">批量注册全局filter</a>[![bakTop](/img/backward.png)](#top)  
 filters/index.js
 ```js
+// 定义需要全局的filter
 const filters = {
   fn: ()=>{}
 }
 
-//批量注册全局filter
+// 批量注册全局filter
 export default {
   install(Vue) {
     Object.keys(filters).forEach(item => {

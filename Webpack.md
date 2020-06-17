@@ -43,9 +43,9 @@ webpack默认支持JS模块和JSON模块
 # [建立项目](https://www.webpackjs.com/guides/getting-started/#%E5%9F%BA%E6%9C%AC%E5%AE%89%E8%A3%85)
 建一个文件夹，然后新建一个package.json的文件在项目根目录下
 ```js
-mkdir webpack-learn && cd webpack-learn
-npm init -y
-npm i webpack webpack-cli -D
+mkdir webpack-learn && cd webpack-learn // 新建且切换文件夹
+npm init -y // 生成package.json
+npm i webpack webpack-cli -D // 安装webpack到当前项目
 ```
 
 npx webpack 运行
@@ -58,7 +58,7 @@ npx webpack 运行
 * mode：模式，none(默认) | production(生产模式) | development(开发模式)
   >mode: process.env.NODE_ENV
 
-# [webpack.config.js 所有配置](https://webpack.js.org/configuration/devtool/)
+[webpack.config.js 所有配置](https://webpack.js.org/configuration/devtool/)
 
 在webpack.config.js配置
 ```js
@@ -68,9 +68,14 @@ module.exports = {
   mode: '', // 当前构建环境
   module: {},// 模块，配置 loader
   plugins: [],// 插件，配置 plugin
+
+  resolve: {}, // 配置如何解析模块
   devServer: {},// 配置webpack开发服务功能
+  devtool: '',// 代码映射
 }
 ```
+
+
 
 ### [entry 入口文件](https://webpack.js.org/configuration/entry-context/#entry)
 
@@ -107,9 +112,71 @@ output: {
 ```
 
 ### [mode 当前的构建环境](https://webpack.js.org/configuration/mode/)
-* production  生产环境 (默认值)
-* development 开发环境
-* none 
+* production  生产环境 (默认值)--启动内置优化插件，自动优化打包结果，打包速度偏慢
+* development 开发环境--自动优化打包速度，添加一些调试过程中的辅助插件
+* none --运行最原始的打包，不做任何额外处理
+
+```js
+module.exports = {
+  mode: 'production'
+}
+```
+命令行终端使用mode模式
+```js
+npx webpack --mode=production
+```
+
+### [resolve 配置如何解析模块](https://webpack.js.org/configuration/resolve/)
+```js
+resolve: {
+  //优化模块查找路径
+  modules: [resolve("./node_modules")],
+  //创建别名以更轻松地导入或需要某些模块
+  alias: {
+    'vue$':'vue/dist/vue.runtime.esm.js', // $表示精确匹配
+    '@': path.resolve(__dirname,'./src'),
+    'assets': path.resolve(__dirname,'./src/assets'),
+  },
+  
+  // 如果多个文件共享相同的名称，但具有不同的扩展名，
+  // webpack会根据此配置解析确定的文件后缀按顺序(由左到右)
+  extensions:['*','.js','.json','.vue']
+}
+```
+
+### [externals 外部扩展](https://www.webpackjs.com/configuration/externals/)
+
+externals配置选项提供了「从输出的 bundle 中排除依赖」的方法。相反，所创建的 bundle 依赖于那些存在于用户环境(consumer's environment)中的依赖
+
+防止将某些 import 的包(package)打包到 bundle 中，而是在运行时(runtime)再去从外部获取这些扩展依赖
+
+* CDN 引入
+
+public/index.html
+```html
+<script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.15/lodash.core.min.js" ></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+```
+
+webpack.config.js
+```js
+externals: {
+  jquery: 'jQuery',
+  // lodash: '_'
+  lodash: {
+    commonjs: "lodash",//如果我们的库运行在Node.js环境中，import _ from 'lodash'等价于const _ = require('lodash')
+    commonjs2: "lodash",//同上
+    amd: "lodash",//如果我们的库使用require.js等加载,等价于 define(["lodash"], factory);
+    root: "_"//如果我们的库在浏览器中使用，需要提供一个全局的变量‘_’，等价于 var _ = (window._) or (_);
+  }
+}
+```
+
+这样就剥离了那些不需要改动的依赖模块，换句话，下面展示的代码还可以正常运行：
+```js
+import $ from 'jquery';
+console.log($);
+```
 
 ### [devtool 代码映射](https://webpack.js.org/configuration/devtool/)
 源代码与打包后的代码的映射关系，通过sourceMap定位到源代码。
@@ -124,12 +191,12 @@ output: {
 * cheap-module-source-map
 * ...
 
+![soruce-map](/img/soruce-map.png)
+
+
 推荐使用：
 * devtool:"cheap-module-eval-source-map",// development 开发环境配置
 * devtool:"cheap-module-source-map", // production 生产模式配置
-
-
-
 
 
 ### module 模块
@@ -144,6 +211,7 @@ webpack默认支持JS模块和JSON模块
 
 ```js
 module:{
+  noParse: /jquery|lodash/, //loaders解析时忽略 正则匹配的文件
   rules:[
     {
       test:/\.xxx$/,//指定匹配规则
@@ -157,14 +225,13 @@ module:{
 
 ### plugin 插件
 
-plugin 可以在webpack运⾏到某个阶段的时候，帮你做⼀些事情，类似于生
+plugin 可以在webpack运行到某个阶段的时候，帮你做某些事情，类似于生
 命周期的概念
 
-扩展插件，在 Webpack 构建流程中的特定时机注⼊扩展逻辑来改变构建结
+扩展插件，在 Webpack 构建流程中的特定时机注入扩展逻辑来改变构建结
 果或做你想要的事情。
 
 作用于整个构建过程
-
 
 
 # 常用loader,plugins
@@ -188,6 +255,9 @@ Loaders的配置:
 * use：loader名称，就是你要使用模块的名称，这个选项也必须进行配置，否则报错；
 * include/exclude:手动添加必须处理的文件（文件夹）或屏蔽不需要处理的文件（文件夹）（可选）；
 * query：为loaders提供额外的设置选项（可选）。
+
+exclude一般用于排除 /node_modules/ ，缩小文件匹配范围,提高打包编译速度
+>exclude: /node_modules/
 
 ## <a name="加载CSS">加载CSS: style-loader css-loader less-loader...</a>
 
@@ -383,25 +453,85 @@ rules: [
 ]
 ```
 
+## <a name="babel">JS语法转换 babel-loader</a>
+npm i babel-loader @babel/preset-env @babel/core -D 
 
+npm i @babel/polyfill -S // 安装到生产模式
 
-## <a name="JS语法转换babel-loader">JS语法转换babel-loader</a>
-npm i -D babel-loader @babel/core @babel/preset-env webpack
+babel-loader 是webpack 与 babel的通信桥梁  
+@babel/preset-env 只会将 ES6/7/8语法转换为ES5语法，但是对新api并不会转换 例如(promise、Generator、Set、Maps、Proxy等)
 
+babel-polyfill 转换es的新特性
+
+webpack.config.js
 ```js
-rules: [
-  {
-    test: /\.m?js$/,
-    exclude: /(node_modules|bower_components)/,
-    use: {
-      loader: 'babel-loader',
-      options: {
-        presets: ['@babel/preset-env']
-      }
-    }
+const path = require('path');
+function resolve(dir) {
+  return path.resolve(__dirname, dir)
+}
+
+module.exports = {
+  module:{
+    entry: ["@babel/polyfill",path.resolve(__dirname,'./src/index.js')], // 入口文件
+    rules:[
+      {
+        test:/\.js$/,
+        use:{
+          loader:'babel-loader',// babel-loader只会将 ES6/7/8语法转换为ES5语法,需配合babel-polyfill
+          // loader:'babel-loader?cacheDirectory=true', 
+          //缓存中读取，以避免在每次运行时运行潜在昂贵的 Babel 重新编译
+          // cacheDirectory=true将使用默认的缓存目录(node_modules/.cache/babel-loader)，如果在任何根目录下都没有找到 node_modules 目录，将会降级回退到操作系统默认的临时文件目录。
+
+          options:{
+            presets:['@babel/preset-env']
+          }
+        },
+        exclude:/node_modules/
+      },
+    ]
   }
-]
+}
 ```
+
+babel.config.js
+```js
+module.exports = {
+  //语法转换插件 preset-env
+  presets: [
+    [
+      "@babel/preset-env",
+      {
+        targets: {
+          "browsers": ["> 1%", "last 2 versions", "not ie <= 8"]
+        },
+        corejs: 2, //新版本需要指定核心库版本
+        useBuiltIns: "usage", //按需注入
+      },
+    ],
+  ],
+};
+```
+useBuiltIns 选项是 babel 7 的新功能,这个选项告诉 babel 如何配
+置 @babel/polyfill
+* entry: 需要在 webpack 的入口文件 import "@babel/polyfill" 一次。 babel
+会根据你的使⽤情况导⼊垫⽚，没有使用的功能不会被导入相应的垫片。 
+* usage: 不需要 import ，全自动检测，但是要安装@babel/polyfill 。（试验阶段）  
+* false: 如果你 import "@babel/polyfill" ，它不会排除掉没有使用的垫片，程序体积会庞
+大。(不推荐)
+
+
+----
+* @babel/cli: 为babel的脚手架工具
+* @babel/core: babel-core是作为babel的核心存在，babel的核心api都在这个模块里面，比如：transform，用于字符串转码得到AST
+* babel-loader: webpack 就是用于编译JavaScript代码 
+* @babel/preset-env : 官方解释“用于编写下一代JavaScript的编译器”，编译成浏览器认识的JavaScript标准
+* @babel/polyfill ES6语法转换
+* @babel/preset-react: 用于编译react的jsx，开发react应用必备
+* @babel/plugin-proposal-class-properties: 解析class类的属性
+* @babel/plugin-proposal-decorators: 解析装饰器模式语法，如使用react-redux的@connect
+* @babel/plugin-proposal-export-default-from: 解析export xxx from 'xxx'语法
+
+
 
 ## <a name="JS语法检查">JS语法检查eslint-loader</a>
 npm install eslint-loader eslint --save-dev
@@ -417,6 +547,53 @@ module: {
     },
   ],
 },
+```
+
+## <a name="HappyPack">HappyPack 开启多进程Loader转换</a>
+在webpack构建过程中，实际上耗费时间大多数用在loader解析转换以及代码的压缩中。日常开发中我们需要使用Loader对js，css，图片，字体等文件做转换操作，并且转换的文件数据量也是非常大。由于js单线程的特性使得这些转换操作不能并发处理文件，而是需要一个个文件进行处理。
+
+HappyPack的基本原理是将这部分任务分解到多个子进程中去并行处理，子进程处理完成后把结果发送到主进程中，从而减少总的构建时间
+
+
+npm i -D happypack
+```js
+const os = require('os'); // 系统操作函数
+// 根据 当前电脑系统的内核数量 指定线程池个数 
+const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
+// 也可以指定线程池个数
+//const happyThreadPool = HappyPack.ThreadPool({ size: 2 })
+
+rules: [
+  {
+    test: /\.css?$/,
+    include: path.resolve(__dirname, "./src"),
+    use: [
+      {
+      // 一个loader对应一个id，对应plugins设置的HappyPack的id
+      loader: "happypack/loader?id=styles"
+      }
+    ]
+  },
+]
+//在plugins中增加
+plugins:[
+  new HappyPack({
+    // 唯一的标识符id，来代表当前的HappyPack是HappPack来处理一类特定的文件
+    id: "css",
+    // 用法和Loader配置中一样
+    loaders: [
+      "style-loader",
+      {
+        loader: 'css-loader',
+        options: {
+          sourceMap: true,
+        }
+      },
+      'postcss-loader',
+      "less-loader",
+    ]
+  }),
+]
 ```
 
 ## <a name="plugins">plugins</a>
@@ -507,6 +684,15 @@ module.exports = {
       index: "./src/index.js", // 指定打包输出的chunk名为index
       foo: "./src/foo.js" // 指定打包输出的chunk名为foo
   },
+  output: {
+    filename: '[name].bundle.js' // [name] 是入口名称
+  },
+  optimization: {
+    splitChunks: {
+      // 自动提取所有公共模块到单独 bundle
+      chunks: 'all'
+    }
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: "./public/index.html", // 要打包输出哪个文件，可以使用相对路径
@@ -567,10 +753,11 @@ npm install terser-webpack-plugin --save-dev
 const TerserPlugin  = require('terser-webpack-plugin');
 
 module.exports = {
-   optimization: {
+  //optimization 告诉webpack使用TerserPlugin或Optimization.minimizer中指定的插件最小化捆绑包
+  optimization: { 
     minimize: true,
-    minimizer: [new TerserPlugin(
-      {
+    minimizer: [
+      new TerserPlugin({
         test: /\.js(\?.*)?$/i, // 匹配文件
         include: /\/includes/, // 匹配文件夹
         exclude: /\/excludes/, // 排除文件夹
@@ -579,11 +766,12 @@ module.exports = {
         parallel: true, // 启用/禁用多进程并行运行
         parallel: 4, // 启用多进程并行运行并设置并发运行次数
         sourceMap: false, //启用/禁用映射
-      }
-    )],
+      })
+    ],
   }
 }
 ```
+[optimization配置详情](https://webpack.js.org/configuration/optimization/)
 
 ## <a name="生成gzip压缩的文件">生成gzip压缩的文件</a>
 npm i compression-webpack-plugin -D
@@ -618,30 +806,131 @@ module.exports = {
 svg、eot 和 ttf 这三种格式的字体文件可以使用 CompressionWebpackPlugin 进行压缩，并且配合Nginx的gzip_types配置，woff和woff2格式的字体文件不需要gzip。
 
 
-## <a name="webpack-dev-server">提取公共代码 splitChunks</a>
+## <a name="SplitChunksPlugin">提取公共代码 SplitChunksPlugin</a>
 SplitChunksPlugin 是 webpack 4+ 版本内置的插件, 所以无需安装
 
+[详情](https://webpack.js.org/plugins/split-chunks-plugin/)
 ```js
 optimization: {
+  usedExports: true, // 哪些导出的模块被使用了，再做打包
   // 提取公共部分
-  splitChunks: { 
+  splitChunks: {
+    chunks: 'all', // 选择哪些块进行优化: "initial"（初始化） | "all"(默认就是all) | "async"（动态加载）
+    minSize: 0, // 生成块的最小大小（以字节为单位）默认0
+    minRemainingSize: 0,
+    maxSize: 0,
+    minChunks: 1, // 拆分前必须共享模块的最小块数，默认1
+    maxAsyncRequests: 1, //  最大异步请求数， 默认1
+    maxInitialRequests: 1, // // 最大初始化请求书，默认1
+    automaticNameDelimiter: '~', // 为创建的块设置名称前缀
     cacheGroups: {
-      commons: {
-        name: 'commons', //提取出来的文件命名
+      commons: { // 将第三方模块提取出来
+        name: 'commons', // 要缓存的 分隔出来的 chunk 名称
+        priority: 1, //  缓存组优先级
         chunks: 'initial', //initial表示提取入口文件的公共部分
-        minChunks: 2, //表示提取公共部分最少的文件数
+        minChunks: 2, // 重复2次使用的时候需要抽离出来
         minSize: 0 //表示提取公共部分最小的大小
-      },
-      vendor: {
-        priority: 1, //添加权重
-        test: /node_modules/, //把这个目录下符合下面几个条件的库抽离出来
-        chunks: 'initial', //刚开始就要抽离
-        minChunks: 2//重复2次使用的时候需要抽离出来
       },
     }
   }
 }
 ```
+
+## <a name="tree shaking">tree shaking</a>
+#### CSS tree shaking  
+[purifycss-webpack](https://www.npmjs.com/package/purifycss-webpack)
+
+npm i  purifycss-webpack purify-css glob -D
+
+```js
+const glob = require('glob'); 
+const PurifyCSSPlugin = require("purifycss-webpack");
+
+plugins: [
+  //这个插件 应当在 MiniCssExtractPlugin 之后使用; 否则，它不起作用：
+  new PurifyCSS({
+    paths: glob.sync([
+      // 要做 CSS Tree Shaking 的路径文件
+      resolve('./public/*.html'), // 请注意，我们同样需要对 html ⽂件进⾏ tree shaking
+      resolve('./src/*.js'),
+    ]),
+  }),
+]
+```
+
+#### JS tree shaking  
+只支持ES Modules 模块 （import方式引入），不支持commonjs的方式引入
+
+只要mode是production就会默认生效，develpoment下 tree shaking 是不生效的
+
+```js
+//util.js
+export const add = (a, b) => {
+ return a + b;
+};
+export const minus = (a, b) => {
+ return a - b;
+};
+
+//index.js
+import { add } from "./util";
+add(1, 2);
+
+//webpack.config.js
+optimization: {
+  usedExports: true // 哪些导出的模块被使用了，再做打包
+}
+
+minus 方法未使用，会被摇掉
+```
+
+为什么很多资料都说 babel-loader 会导致 Tree-shaking 失效，但当我们实际尝试后又发现并没有失效？
+
+其实，这是因为在最新版本（8.x）的 babel-loader 中，已经自动帮我们关闭了对 ES Modules 转换的插件
+
+可以在 babel-loader 的配置中强制开启 ES Modules 转换插件
+```js
+module: {
+  rules: [
+    {
+      test: /\.js$/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: [
+            [
+              '@babel/preset-env',
+              { 
+                modules: 'commonjs', //开启 ES Modules 转换,默认auto
+              } 
+            ]
+          ]
+        }
+      }
+    }
+  ]
+},
+optimization: {
+  usedExports: true
+}
+```
+
+Webpack 4 中新增了一个 sideEffects 特性，它允许我们通过配置标识我们的代码是否有副作用，从而提供更大的压缩空间。
+>模块的副作用指的就是模块执行的时候除了导出成员，是否还做了其他的事情。
+
+sideEffects: boolean | string[]
+
+
+//package.json配置
+```json
+//如果所有代码都不包含 side effect，我们就可以简单地将该属性标记为 false
+"sideEffects":false //正常对所有模块进行 tree shaking , 仅生产模式有效，需要配合usedExports
+
+//数组形式
+"sideEffects":['*.css','@babel/polyfill'] // 排除需要保留副作用的模块路径
+```
+
+因为官网把对 sideEffects 特性的介绍跟 Tree-shaking 混到了一起，所以很多人误认为它们之间是因果关系，其实它们没有什么太大的关系。
 
 
 ## <a name="webpack-dev-server">HMR 热模块替换 webpack-dev-server</a>
@@ -669,13 +958,21 @@ module.exports = {
     open: true, // 在服务器启动后打开浏览器
     host:'localhost', // 服务器的IP地址，可以使用IP也可以使用localhost
     compress:true, // 服务端压缩是否开启
-    port: 9000, // 服务端口号
+    port: 8080, // 服务端口号
+    hot: true,// 开启 HMR 特性，如果资源不支持 HMR 会 fallback 到 live reloading
     hotOnly: true, // true时即便HMR不生效，浏览器也不自动刷新
     proxy: { // 跨域代理
       "/api": {
-        target: "http://xxx.com"
+        target: "http://xxx.com", //请求地址
+        // 因为默认代理服务器会以我们实际在浏览器中请求的主机名，也就是 localhost:8080 作为代理请求中的主机名。而一般服务器需要根据请求的主机名判断是哪个网站的请求
+        changeOrigin: true // 以实际代理请求地址中的主机名去请求，也就是我们正常请求这个地址的主机名是什么，实际请求时就会设置成什么。
+        pathRewrite: {
+          '^/api' : 'newApi' // 替换掉代理地址中的 /api
+        }
       }
     }
+    // 代理后请求接口地址：
+    // http://localhost:8080/api/xxxx --> http://xxx.com/newApi/xxxx  
   }
   plugins:[
     new Webpack.HotModuleReplacementPlugin()
@@ -692,17 +989,52 @@ package.json添加
 终端输入 npm run server
 
 ## <a name="拷贝静态资源">拷贝静态资源  copy-webpack-plugin</a>
-将单个文件或整个目录复制到构建目录  
-适合用于拷贝一些静态资源，如图片等
-npm install --save-dev copy-webpack-plugin
+有些不需要参与构建的静态文件，如 favicon 等。
+
+一般我们建议，把这类文件统一放在项目根目录下的 static 目录中
+
+npm i copy-webpack-plugin -D
 
 ```js
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 plugins: [
-  new CopyWebpackPlugin([
-    { from: path.resolve(__dirname, 'public'), to: '../dist/public' }
-  ])
+  new CopyWebpackPlugin({
+    patterns: [
+      { 
+        from: path.resolve(__dirname, 'static'), // 需要拷贝的目录
+        to: 'static'
+      },
+    ],
+  }),
 ]
+```
+
+## <a name="CDN资源引入">CDN资源引入</a>
+
+国内的CDN服务推荐使用[BootCDN](https://www.bootcdn.cn/)
+
+index.html
+```html
+<!-- CDN引入外部资源 -->
+<script src="//cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+<script src="//cdn.bootcss.com/vuex/3.0.1/vuex.min.js"></script>
+<script src="//cdn.bootcss.com/vue-router/3.0.1/vue-router.min.js"></script>
+<script src="//cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
+<script src="//unpkg.com/iview@1.0.1/dist/iview.min.js"></script>
+```
+
+[vue.config.js配置externals](https://webpack.js.org/configuration/externals/)
+```js
+configureWebpack: {
+  externals: {
+    'vue': 'Vue',
+    'vuex': 'Vuex',
+    'vue-router': 'VueRouter',
+    'axios': 'axios',
+    'iView': 'iview',
+    // 'element-ui': 'ELEMENT',
+  },
+},
 ```
 
 ## <a name="分析打包依赖体积">分析打包依赖体积：webpack-bundle-analyzer</a>
@@ -738,125 +1070,6 @@ module.exports = smp.wrap({
 })
 ```
 
-## <a name="babel">babel</a>
-npm i babel-loader @babel/preset-env @babel/core -D 
-
-npm i @babel/polyfill -S // 安装到生产模式
-
-babel-loader 是webpack 与 babel的通信桥梁  
-@babel/preset-env 只会将 ES6/7/8语法转换为ES5语法，但是对新api并不会转换 例如(promise、Generator、Set、Maps、Proxy等)
-
-babel-polyfill 转换es的新特性
-
-webpack.config.js
-```js
-const path = require('path');
-function resolve(dir) {
-  return path.resolve(__dirname, dir)
-}
-
-module.exports = {
-  module:{
-    entry: ["@babel/polyfill",path.resolve(__dirname,'./src/index.js')], // 入口文件
-    rules:[
-      {
-        test:/\.js$/,
-        use:{
-          loader:'babel-loader',
-          options:{
-            presets:['@babel/preset-env']
-          }
-        },
-        exclude:/node_modules/
-      },
-    ]
-  }
-}
-```
-
-babel.config.js
-```js
-module.exports = {
-  //语法转换插件 preset-env
-  presets: [
-    [
-      "@babel/preset-env",
-      {
-        targets: {
-          "browsers": ["> 1%", "last 2 versions", "not ie <= 8"]
-        },
-        corejs: 2, //新版本需要指定核心库版本
-        useBuiltIns: "usage", //按需注入
-      },
-    ],
-  ],
-};
-```
-useBuiltIns 选项是 babel 7 的新功能,这个选项告诉 babel 如何配
-置 @babel/polyfill
-* entry: 需要在 webpack 的入口文件 import "@babel/polyfill" 一次。 babel
-会根据你的使⽤情况导⼊垫⽚，没有使用的功能不会被导入相应的垫片。 
-* usage: 不需要 import ，全自动检测，但是要安装@babel/polyfill 。（试验阶段）  
-* false: 如果你 import "@babel/polyfill" ，它不会排除掉没有使用的垫片，程序体积会庞
-大。(不推荐)
-
-
-----
-* @babel/cli: 为babel的脚手架工具
-* @babel/core: babel-core是作为babel的核心存在，babel的核心api都在这个模块里面，比如：transform，用于字符串转码得到AST
-* babel-loader: webpack 就是用于编译JavaScript代码 
-* @babel/preset-env : 官方解释“用于编写下一代JavaScript的编译器”，编译成浏览器认识的JavaScript标准
-* @babel/polyfill ES6语法转换
-* @babel/preset-react: 用于编译react的jsx，开发react应用必备
-* @babel/plugin-proposal-class-properties: 解析class类的属性
-* @babel/plugin-proposal-decorators: 解析装饰器模式语法，如使用react-redux的@connect
-* @babel/plugin-proposal-export-default-from: 解析export xxx from 'xxx'语法
-
-
-## <a name="eslint">eslint</a>
-npm i eslint eslint-loader -D
-
-.eslintrc是ESlint的配置文件，我们需要在项目的根目录下增加.eslintrc文件。
-```js
-{
-  "parser": "babel-eslint",
-  "env": {
-      "browser": true,
-      "es6": true,
-      "node": true
-  },
-  "globals" : {
-    "Action"       : false,
-    "__DEV__"      : false,
-    "__PROD__"     : false,
-    "__DEBUG__"    : false,
-    "__DEBUG_NEW_WINDOW__" : false,
-    "__BASENAME__" : false
-  },
-  "parserOptions": {
-      "ecmaVersion": 6,
-      "sourceType": "module"
-  },
-  "extends": "airbnb",
-  "rules": {
-      "semi": [0],
-      "react/jsx-filename-extension": [0]
-  }}
-
-```
-
-webpack.config.js
-```js
-```
-
-packack.json
-```json
-{
-    "scripts": {
-        "eslint": "eslint --ext .js --ext .jsx src/"
-    }
-}
-```
 
 ## <a name="搭建vue开发环境">搭建vue开发环境</a>
 
@@ -1071,7 +1284,6 @@ plugins: [
 package.json配置
 ```js
 "scripts": {
-  
 	"serve": "cross-env NODE_ENV=development webpack-dev-server  --config ./webpack.config.js --open",
 	"build": "cross-env NODE_ENV=production webpack-dev-server  --config ./webpack.config.js"
 }
@@ -1085,38 +1297,12 @@ npm i -D  webpack-merge // 合并配置
 新增 webpack.prod.js -生产环境配置文件
 
 
-
-## <a name="externals">externals</a>
-[externals外部扩展](https://www.webpackjs.com/configuration/externals/)
-
-externals配置选项提供了「从输出的 bundle 中排除依赖」的方法。相反，所创建的 bundle 依赖于那些存在于用户环境(consumer's environment)中的依赖
-
-防止将某些 import 的包(package)打包到 bundle 中，而是在运行时(runtime)再去从外部获取这些扩展依赖
-
-* CDN 引入
-
-public/index.html
-```html
-<script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.15/lodash.core.min.js" ></script>
-<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-```
-
-webpack.config.js
+## 魔法注释
 ```js
-externals: {
-  jquery: 'jQuery',
-  // lodash: '_'
-  lodash: {
-    commonjs: "lodash",//如果我们的库运行在Node.js环境中，import _ from 'lodash'等价于const _ = require('lodash')
-    commonjs2: "lodash",//同上
-    amd: "lodash",//如果我们的库使用require.js等加载,等价于 define(["lodash"], factory);
-    root: "_"//如果我们的库在浏览器中使用，需要提供一个全局的变量‘_’，等价于 var _ = (window._) or (_);
-  }
-}
+import(/* webpackChunkName: 'posts' */'./posts/posts')
+  .then(({ default: posts }) => {
+    mainElement.appendChild(posts())
+  })
 ```
 
-这样就剥离了那些不需要改动的依赖模块，换句话，下面展示的代码还可以正常运行：
-```js
-import $ from 'jquery';
-console.log($);
-```
+# Parcel 

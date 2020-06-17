@@ -1,11 +1,14 @@
 <a id="top"></a>
 
-###
+### 
 
 - [vscode 快捷键 for Windows](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf)
 
 >
+    折叠所有区域代码:  Ctrl + K Ctrl + 0
 
+    展开所有折叠区域代码：Ctrl + K  Ctrl + J 
+    
     删除空行：ctrl+h键进行正则匹配：^\s*(?=\r?$)\n
 
     格式化代码： Shift + Alt + F
@@ -60,7 +63,7 @@
 }
 ```
 
-###
+### 
 
 <details open>
   <summary>markdown 语法</summary>
@@ -208,7 +211,21 @@
 
       2. [链接文字](链接地址)
 
-多次引用同一链接
+- 添加复选框
+```
+- [x] 1
+- [x] 2
+  - [ ] 2.1
+  - [ ] 2.2
+- [ ] 3
+```
+* [x] 1
+* [x] 2
+  * [ ] 2.1
+  * [ ] 2.2
+* [ ] 3
+
+- 多次引用同一链接
 
 >
 
@@ -243,7 +260,7 @@
 
 </details>
 
-###
+### 
 
 <details >
   <summary>
@@ -305,7 +322,7 @@
 
 ---
 
-#
+# 
 
 **前端页面由哪三层构成：结构层、表示层、行为层。**
 
