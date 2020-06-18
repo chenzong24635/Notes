@@ -1,21 +1,9 @@
 [官网-指南](https://www.webpackjs.com/guides/)
 
-https://mp.weixin.qq.com/s?__biz=Mzg5ODA5NTM1Mw==&mid=2247485340&idx=1&sn=9b674f577c1f8e693caec2faf5ece19c&chksm=c066860af7110f1c6d6da987d0317115929b8bd43f3f063eb20c966f316adda8b85f4e8525be&scene=126&sessionid=1587000785&key=e49a71585c6776d7cdfb10639fffd83b1f7eef70e47e781bddcd006f6753f9e0e99cc8c7e715ff4e1d36ac2301befd444de4d8232ccb6f72f9888d1191fed5f04ad60d23fa672b32d650657aa6346e68&ascene=1&uin=MTIxNDM5MTUzOQ%3D%3D&devicetype=Windows+7&version=62080079&lang=zh_CN&exportkey=AyXmuUQO5Gf3QBrFEB%2BEz%2Bs%3D&pass_ticket=oN3yCLKmUuPsCBlHcAjaCwU3Tphw7q2Mnjc9%2FirUP7BOkfsyRFoDdeoUVOwzI8nu
-
+[2020年了,再不会webpack敲得代码就不香了(近万字实战)](https://juejin.im/post/5de87444518825124c50cd36)
 
 [webpack打包原理 ? 看完这篇你就懂了 !](https://juejin.im/post/5e116fce6fb9a047ea7472a6)
 
-[Webpack4+Babel7优化70%速度](https://juejin.im/post/5c763885e51d457380771ab0)
-
-[](https://github.com/LuckyWinty/fe-weekly-questions/issues/4)
-
-[从零开始的Webpack4教程](https://segmentfault.com/a/1190000018534625?share_user=1030000000178452#item-5)
-
-[一看就懂之webpack高级配置与优化](https://segmentfault.com/a/1190000020320871)
-
-[2020年了,再不会webpack敲得代码就不香了(近万字实战)](https://juejin.im/post/5de87444518825124c50cd36)
-
-[webpack 原理分析与性能优化（2w字精华）](https://juejin.im/post/5e02c524f265da33e347fe61)
 
 * <a href=""></a>
 
@@ -127,9 +115,11 @@ npx webpack --mode=production
 ```
 
 ### [resolve 配置如何解析模块](https://webpack.js.org/configuration/resolve/)
+resolve.modules 的默认值是［'node_modules'］，含义是先去当前目录的 node_modules 目录下去找我们想找的模块，如果没找到就去上一级目录 ../node_modules 中找，再没有就去 ../../node_modules 中找，以此类推。 这和 Node.js 的模块寻找机制很相似。
+
 ```js
 resolve: {
-  //优化模块查找路径
+  //指明绝对路径，优化模块查找路径
   modules: [resolve("./node_modules")],
   //创建别名以更轻松地导入或需要某些模块
   alias: {
@@ -143,6 +133,8 @@ resolve: {
   extensions:['*','.js','.json','.vue']
 }
 ```
+
+
 
 ### [externals 外部扩展](https://www.webpackjs.com/configuration/externals/)
 
@@ -211,7 +203,7 @@ webpack默认支持JS模块和JSON模块
 
 ```js
 module:{
-  noParse: /jquery|lodash/, //loaders解析时忽略 正则匹配的文件
+  noParse: /jquery|lodash/, // loaders解析时忽略 正则匹配的文件
   rules:[
     {
       test:/\.xxx$/,//指定匹配规则
@@ -386,26 +378,18 @@ url-loader 把资源文件转换为 URL，file-loader 也是一样的功能。�
 module: {
   rules: [
     {
-      test: /\.(png|svg|jpg|gif)$/, //匹配图片文件后缀名称
-      use: [{
-        loader:'file-loader',
-        options:{
-          name: "[name]_[hash:6].[ext]", //文件名,hash（默认32位）值为6位，ext自动补全文件扩展名
-          outputPath:'images/', //在output基础上，修改输出图片文件的位置
-          publicPath: './dist/images/'  //修改背景图引入url的路径
-        }
-      }]
-    },
-    {
       test: /\.(png|svg|jpg|gif)$/,
       use: [{
         loader:'url-loader',
         options:{
-          limit: 2 * 1024,
+          limit: 2 * 1024, //如果文件小于限制的大小。则会返回 base64 编码，否则使用 file-loader 将文件移动到输出的目录中
+          esModule: false, //启用CommonJS模块语法,否则图片路径会解析为 [object%20Module]
           fallback: {
             loader: 'file-loader',
             options: {
-              name: '[name].[hash:6].[ext]'
+              name: '[name]_[hash:6].[ext]', //文件名,hash（默认32位）值为6位，ext自动补全文件扩展名
+              // outputPath:'images/', //在output基础上，修改输出图片文件的位置
+              // publicPath: './dist/images/',  //修改背景图引入url的路径
             }
           }
         }
@@ -549,52 +533,6 @@ module: {
 },
 ```
 
-## <a name="HappyPack">HappyPack 开启多进程Loader转换</a>
-在webpack构建过程中，实际上耗费时间大多数用在loader解析转换以及代码的压缩中。日常开发中我们需要使用Loader对js，css，图片，字体等文件做转换操作，并且转换的文件数据量也是非常大。由于js单线程的特性使得这些转换操作不能并发处理文件，而是需要一个个文件进行处理。
-
-HappyPack的基本原理是将这部分任务分解到多个子进程中去并行处理，子进程处理完成后把结果发送到主进程中，从而减少总的构建时间
-
-
-npm i -D happypack
-```js
-const os = require('os'); // 系统操作函数
-// 根据 当前电脑系统的内核数量 指定线程池个数 
-const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
-// 也可以指定线程池个数
-//const happyThreadPool = HappyPack.ThreadPool({ size: 2 })
-
-rules: [
-  {
-    test: /\.css?$/,
-    include: path.resolve(__dirname, "./src"),
-    use: [
-      {
-      // 一个loader对应一个id，对应plugins设置的HappyPack的id
-      loader: "happypack/loader?id=styles"
-      }
-    ]
-  },
-]
-//在plugins中增加
-plugins:[
-  new HappyPack({
-    // 唯一的标识符id，来代表当前的HappyPack是HappPack来处理一类特定的文件
-    id: "css",
-    // 用法和Loader配置中一样
-    loaders: [
-      "style-loader",
-      {
-        loader: 'css-loader',
-        options: {
-          sourceMap: true,
-        }
-      },
-      'postcss-loader',
-      "less-loader",
-    ]
-  }),
-]
-```
 
 ## <a name="plugins">plugins</a>
 [plugins-英文网站](https://webpack.js.org/plugins/)
@@ -605,7 +543,7 @@ npm i -D mini-css-extract-plugin
 
 从一个或多个包中提取文本到单独的文件中。
 
-`由于webpack v4 extract-text-webpack-plugin不能用于CSS`。请用[mini-css-extract-plugin](https://webpack.docschina.org/plugins/mini-css-extract-plugin/)。
+`由于webpack v4 extract-text-webpack-plugin不能用于CSS`。
 
 最好将mini-css-extract-plugin用于生产模式，因为该插件使用目前会导致HMR功能缺失。因此在平常的开发模式中，我们还是使用style-loader。
 
@@ -672,10 +610,24 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 plugins: [
   new HtmlWebpackPlugin({
     title: '标题',
-    template:'./public/index.html'
+    template:'./public/index.html',
+    minify: {
+      // 压缩HTML文件
+      removeComments: true, // 移除HTML中的注释
+      collapseWhitespace: true, // 删除空白符与换行符
+      minifyCSS: true, // 压缩内联css
+    },
+    // inject: true, //默认true
   })
 ]
+
 ```
+inject:
+* true：默认值，script 标签位于 html 文件的 body 底部
+* body：script 标签位于 html 文件的 body 底部（同 true）
+* head：script 标签位于 head 标签内
+* false：不插入生成的 js 文件，只是单纯的生成一个 html 文件
+
 
 多入口打包(必须配置 chunks)
 ```js
@@ -747,6 +699,7 @@ plugins: [
 ## <a name="JS压缩">JS压缩terser-webpack-glugin</a>
 npm install terser-webpack-plugin --save-dev
 
+Webpack4.0 默认是使用 terser-webpack-plugin 这个压缩插件，在此之前是使用 uglifyjs-webpack-plugin;  
 因为最新版的uglifyjs-webpack-plugin插件已经不支持es6语法,用插件terser-webpack-plugin代替
 
 ```js
@@ -764,7 +717,7 @@ module.exports = {
         cache: true, // 启用/禁用文件缓存
         cache: 'path/to/cache', // 启用文件缓存并设置缓存目录的路径
         parallel: true, // 启用/禁用多进程并行运行
-        parallel: 4, // 启用多进程并行运行并设置并发运行次数
+        parallel: 4, // 启用多进程并行运行并设置并发运行次数,默认是 os.cpus().length - 1
         sourceMap: false, //启用/禁用映射
       })
     ],
@@ -807,7 +760,7 @@ svg、eot 和 ttf 这三种格式的字体文件可以使用 CompressionWebpackP
 
 
 ## <a name="SplitChunksPlugin">提取公共代码 SplitChunksPlugin</a>
-SplitChunksPlugin 是 webpack 4+ 版本内置的插件, 所以无需安装
+SplitChunksPlugin 是 webpack 4+ 版本内置的插件, 无需安装
 
 [详情](https://webpack.js.org/plugins/split-chunks-plugin/)
 ```js
@@ -836,7 +789,7 @@ optimization: {
 }
 ```
 
-## <a name="tree shaking">tree shaking</a>
+## <a name="tree shaking">tree shaking, CSS:purifycss-webpack</a>
 #### CSS tree shaking  
 [purifycss-webpack](https://www.npmjs.com/package/purifycss-webpack)
 
@@ -851,7 +804,7 @@ plugins: [
   new PurifyCSS({
     paths: glob.sync([
       // 要做 CSS Tree Shaking 的路径文件
-      resolve('./public/*.html'), // 请注意，我们同样需要对 html ⽂件进⾏ tree shaking
+      resolve('./public/*.html'), // 请注意，我们同样需要对 html 文件进行tree shaking
       resolve('./src/*.js'),
     ]),
   }),
@@ -1035,6 +988,117 @@ configureWebpack: {
     // 'element-ui': 'ELEMENT',
   },
 },
+```
+
+## <a name="DllPlugin">DllPlugin 抽离第三方模块</a>
+DllPlugin webpack内置
+
+// webpack.dll.config.js
+```js
+const path = require("path");
+const webpack = require("webpack");
+module.exports = {
+  mode: 'production',
+  entry: {
+    vendor: ['vue','element-ui'] 
+  },
+  output: {
+    path: path.resolve(__dirname, 'public/dll'), // 打包后文件输出的位置
+    filename: '[name].dll.js',
+    library: '[name]_library' 
+     // 这里需要和webpack.DllPlugin中的`name: '[name]_library',`保持一致。
+  },
+  plugins: [
+    new webpack.DllPlugin({
+      path: path.resolve(__dirname, '[name]-manifest.json'),
+      name: '[name]_library', 
+      context: __dirname
+    })
+  ]
+};
+```
+
+webpack.config.js
+```js
+module.exports = {
+  plugins: [
+    new webpack.DllReferencePlugin({
+      context: __dirname,
+      manifest: require('./vendor-manifest.json')
+    }),
+    new CopyWebpackPlugin({ // 拷贝生成的文件到dist目录 这样每次不必手动去cv
+      patterns: [
+        {
+          from: 'public/dll', // 要拷贝的文件
+          to:'dll', // 生成的文件夹
+        },
+      ],
+    }),
+  ]
+};
+```
+
+package.json
+```js
+"dll": "webpack --config build/webpack.dll.config.js"
+```
+
+npm run dll后会在根目录生成 static/js/vendor.dll.js
+
+在public/index.html引入
+```js
+<script src="dll/vendor.dll.js"></script>
+```
+
+这样如果我们没有更新第三方依赖包，打包的时候会发现我们的打包速度明显有所提升。因为我们已经通过 DllPlugin 将第三方依赖包抽离出来了。
+
+更新依赖包后，需要再次 npm run dll
+
+## <a name="HappyPack">HappyPack 开启多进程Loader转换</a>
+在webpack构建过程中，实际上耗费时间大多数用在loader解析转换以及代码的压缩中。日常开发中我们需要使用Loader对js，css，图片，字体等文件做转换操作，并且转换的文件数据量也是非常大。由于js单线程的特性使得这些转换操作不能并发处理文件，而是需要一个个文件进行处理。
+
+HappyPack的基本原理是将这部分任务分解到多个子进程中去并行处理，子进程处理完成后把结果发送到主进程中，从而减少总的构建时间
+
+
+npm i -D happypack
+```js
+const os = require('os'); // 系统操作函数
+// 根据 当前电脑系统的内核数量 指定线程池个数 
+const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
+// 也可以指定线程池个数
+//const happyThreadPool = HappyPack.ThreadPool({ size: 2 })
+
+rules: [
+  {
+    test: /\.css?$/,
+    include: path.resolve(__dirname, "./src"),
+    use: [
+      {
+      // 一个loader对应一个id，对应plugins设置的HappyPack的id
+      loader: "happypack/loader?id=styles"
+      }
+    ]
+  },
+]
+//在plugins中增加
+plugins:[
+  new HappyPack({
+    // 唯一的标识符id，来代表当前的HappyPack是HappPack来处理一类特定的文件
+    id: "css",
+    // 用法和Loader配置中一样
+    loaders: [
+      "style-loader",
+      {
+        loader: 'css-loader',
+        options: {
+          sourceMap: true,
+        }
+      },
+      'postcss-loader',
+      "less-loader",
+    ]
+  }),
+]
 ```
 
 ## <a name="分析打包依赖体积">分析打包依赖体积：webpack-bundle-analyzer</a>
@@ -1297,12 +1361,78 @@ npm i -D  webpack-merge // 合并配置
 新增 webpack.prod.js -生产环境配置文件
 
 
-## 魔法注释
+# 魔法注释
 ```js
 import(/* webpackChunkName: 'posts' */'./posts/posts')
-  .then(({ default: posts }) => {
-    mainElement.appendChild(posts())
-  })
 ```
 
-# Parcel 
+# Webpack 中 hash、chunkhash 和 contenthash 的区别 
+
+[参考](https://juejin.im/post/5d70aee4f265da03f12e7ab2)
+
+在webpack中有三种hash可以配置:
+* hash
+* chunkhash
+* contenthas
+
+#### hash
+
+只有一个 hash ，所有文件的 hash 都是相同,修改任何文件都会导致所有文件的 hash 发生改变
+```js
+output: {
+  filename: '[name].[hash].js',
+  path: path.join(__dirname, 'dist')
+}
+```
+所以使用 hash 无法实现前端静态资源在浏览器上长缓存，这时候应该使用 chunkhash。
+
+#### chunkhash
+
+当有多个chunk，形成多个bundle时，如果只有一个chunk和一个bundle内容变了，其他的bundle的hash都会发生变化，因为大家都是公用的一个hash，这个时候chunkhash的作用就出来了。  
+它根据不同的入口文件(Entry)进行依赖文件解析、构建对应的 chunk，生成对应的哈希值。
+
+所以每次编译之后，每个 chunk 的 hash 都是不同的。对于每个 chunk 来说，如果该 chunk 代码不变，那么 hash 也将保持不变，从而实现该资源在浏览器上长缓存。
+```js
+entry: {
+    index: "./src/index.js",
+    footer: "./src/footer.js"
+  },
+output: {
+  filename: '[name].[chunkhash].js',
+  path: path.join(__dirname, 'dist')
+}
+```
+
+但是，使用 chunkhash 存在一个问题：当在一个 JS 文件中引入了 CSS 文件，编译后它们的 hash 是相同的。而且，只要 JS 文件内容发生改变，与其关联的 CSS 文件 hash 也会改变。
+
+针对这种情况，可以把 CSS 从 JS 中抽离出来并使用 contenthash。
+
+#### contenthash 
+使用 mini-css-extract-plugin 或 extract-text-webpack-plugin 把 CSS 文件抽离出来：
+
+```js
+// mini-css-extract-plugin
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader'
+        ]
+      }
+    ]
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css'
+    })
+  ]
+}
+```
+
+
+注意，当使用contenthash时，如果仅修改js文件，css文件的hash不会变化，但是仅修改css的文件，js文件的hash也会变化。
