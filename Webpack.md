@@ -2,7 +2,12 @@
 
 [2020年了,再不会webpack敲得代码就不香了(近万字实战)](https://juejin.im/post/5de87444518825124c50cd36)
 
+[带你深度解锁Webpack系列(优化篇)](https://juejin.im/post/5e6cfdc85188254913107c1f)
+
+[一步步从零开始用 webpack 搭建一个大型项目](https://juejin.im/post/5de06aa851882572d672c1ad#comment)
+
 [webpack打包原理 ? 看完这篇你就懂了 !](https://juejin.im/post/5e116fce6fb9a047ea7472a6)
+
 
 
 * <a href=""></a>
@@ -130,7 +135,8 @@ resolve: {
   
   // 如果多个文件共享相同的名称，但具有不同的扩展名，
   // webpack会根据此配置解析确定的文件后缀按顺序(由左到右)
-  extensions:['*','.js','.json','.vue']
+  //如果你要对它进行配置，记住将频率最高的后缀放在第一位，并且控制列表的长度，以减少尝试次数。
+  extensions:['*','.js','.json','.vue'] // 默认['.js', '.json']
 }
 ```
 
@@ -203,7 +209,6 @@ webpack默认支持JS模块和JSON模块
 
 ```js
 module:{
-  noParse: /jquery|lodash/, // loaders解析时忽略 正则匹配的文件
   rules:[
     {
       test:/\.xxx$/,//指定匹配规则
@@ -214,6 +219,15 @@ module:{
   ]
 }
 ```
+* noParse 
+
+如果一些第三方模块没有AMD/CommonJS规范版本，可以使用 noParse 来标识这个模块，这样 Webpack 会引入这些模块，但是不进行转化和解析，从而提升 Webpack 的构建性能 ，例如：jquery 、lodash。
+
+```js
+module:{
+  noParse: /jquery|lodash/, // loaders解析时忽略 正则匹配的文件
+}  
+```  
 
 ### plugin 插件
 
@@ -248,7 +262,7 @@ Loaders的配置:
 * include/exclude:手动添加必须处理的文件（文件夹）或屏蔽不需要处理的文件（文件夹）（可选）；
 * query：为loaders提供额外的设置选项（可选）。
 
-exclude一般用于排除 /node_modules/ ，缩小文件匹配范围,提高打包编译速度
+`exclude一般用于排除 /node_modules/ ，缩小文件匹配范围,提高编译效率`
 >exclude: /node_modules/
 
 ## <a name="加载CSS">加载CSS: style-loader css-loader less-loader...</a>
@@ -438,6 +452,7 @@ rules: [
 ```
 
 ## <a name="babel">JS语法转换 babel-loader</a>
+
 npm i babel-loader @babel/preset-env @babel/core -D 
 
 npm i @babel/polyfill -S // 安装到生产模式
@@ -516,6 +531,8 @@ useBuiltIns 选项是 babel 7 的新功能,这个选项告诉 babel 如何配
 * @babel/plugin-proposal-export-default-from: 解析export xxx from 'xxx'语法
 
 
+[不容错过的 Babel7 知识](https://juejin.im/post/5ddff3abe51d4502d56bd143)
+
 
 ## <a name="JS语法检查">JS语法检查eslint-loader</a>
 npm install eslint-loader eslint --save-dev
@@ -533,6 +550,25 @@ module: {
 },
 ```
 
+
+## <a name="cache-loader">loader缓存 cache-loader</a>
+在一些性能开销较大的 loader 之前添加 cache-loader，将结果缓存中磁盘中。默认保存在 node_modueles/.cache/cache-loader 目录下。
+
+npm i cache-loader -D
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        use: ['cache-loader', ...loaders],
+        include: path.resolve('src'),
+      },
+    ],
+  },
+};
+
+```
 
 ## <a name="plugins">plugins</a>
 [plugins-英文网站](https://webpack.js.org/plugins/)
@@ -667,7 +703,9 @@ npm i -D clean-webpack-plugin
 const { CleanWebpackPlugin }  = require('clean-webpack-plugin');
 
 plugins: [
-  new CleanWebpackPlugin()
+  new CleanWebpackPlugin({
+    // cleanOnceBeforeBuildPatterns:['**/*', '!dll', '!dll/**'] //不删除dll目录下的文件
+  })
 ]
 ```
 
@@ -932,6 +970,13 @@ module.exports = {
   ]
 }
 ```
+在入口文件中新增:
+```js
+// 修改代码，不会造成整个页面的刷新
+if(module && module.hot) { 
+    module.hot.accept()
+}
+```
 
 package.json添加
 ```js
@@ -939,6 +984,7 @@ package.json添加
     "server":"webpack-dev-server"
  },
 ```
+
 终端输入 npm run server
 
 ## <a name="拷贝静态资源">拷贝静态资源  copy-webpack-plugin</a>
@@ -1054,11 +1100,33 @@ npm run dll后会在根目录生成 static/js/vendor.dll.js
 
 更新依赖包后，需要再次 npm run dll
 
+## <a name="IgnorePlugin">IgnorePlugin 忽略第三方包指定目录</a>
+webpack 的内置插件，作用是忽略第三方包指定目录。
+
+例如: moment (2.24.0版本) 会将所有本地化内容和核心功能一起打包，我们就可以使用 IgnorePlugin 在打包时忽略本地化内容。
+
+```js
+module.exports = {
+  //...
+  plugins: [
+    //忽略 moment 下的 ./locale 目录
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+  ]
+}
+```
+
+在使用的时候，如果我们需要指定语言，那么需要我们手动的去引入语言包，例如，引入中文语言包:
+```js
+import moment from 'moment';
+import 'moment/locale/zh-cn';// 手动引入
+```
+
 ## <a name="HappyPack">HappyPack 开启多进程Loader转换</a>
 在webpack构建过程中，实际上耗费时间大多数用在loader解析转换以及代码的压缩中。日常开发中我们需要使用Loader对js，css，图片，字体等文件做转换操作，并且转换的文件数据量也是非常大。由于js单线程的特性使得这些转换操作不能并发处理文件，而是需要一个个文件进行处理。
 
 HappyPack的基本原理是将这部分任务分解到多个子进程中去并行处理，子进程处理完成后把结果发送到主进程中，从而减少总的构建时间
 
+但当你的项目不是很复杂时，不需要配置 happypack，因为进程的分配和管理也需要时间，并不能有效提升构建速度，甚至会变慢。
 
 npm i -D happypack
 ```js

@@ -40,7 +40,7 @@
         // }, file.type || 'image/png', 0.9)  
 
         //canvas显示图片  
-        let dataUrl = canvas.toDataURL(file.type ||'image/jpeg', 0.9) // 0.9为压缩比，可根据需要设置，设置过小会影响图片质量
+        let dataUrl = canvas.toDataURL(file.type ||'image/jpeg', 0.9) // 0.9为压缩比，可根据需要设置，设置过小会影响图片质量,//返回base64
         document.body.appendChild(canvas)
       } 
     }; */
