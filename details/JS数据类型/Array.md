@@ -758,5 +758,36 @@ next().done 用于指示迭代器是否完成：在每次迭代时进行更新�
       return result
     }
 
-## <a name="()"></a>
-## <a name="()"></a>
+# <a name=""></a>
+
+```js
+intersect(arr1, arr2) { // 交集, 数组arr1与arr2都有的
+  return arr1.filter(item=>arr2.includes(item))
+},
+diff (arr1, arr2) { // 差集，数组arr1相对于arr2所没有的
+  return arr1.filter(item=>!arr2.includes(item))
+},
+union(arr1, arr2) { // 并集，两数组合并+去重
+  // return arr1.filter(item=>!arr2.includes(item)).concat(arr2)
+  return [...new Set([...arr1,...arr2])]
+},
+complement(arr1, arr2) { // 补集，两个数组各自没有的集合
+  // return [...this.diff(arr1, arr2),...this.diff(arr2, arr1)]
+  return [...arr1.filter(item=>!arr2.includes(item)),...arr2.filter(item=>!arr1.includes(item))]
+},
+
+let arr1 = [1,2,3,4,5]
+let arr2 = [5,6,7,8,9]
+
+let a1 = this.intersect(arr1, arr2)
+console.log(a1); // [5]
+
+let a2 = this.diff(arr1, arr2)
+console.log(a2); // [1, 2, 3, 4]
+
+let a3 = this.union(arr1, arr2)
+console.log(a3); // [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+let a4 = this.complement(arr1, arr2)
+console.log(a4); //  [1, 2, 3, 4, 6, 7, 8, 9]
+```

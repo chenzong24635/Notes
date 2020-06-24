@@ -1,4 +1,9 @@
+# requestAnimationFrame
+
 # insertAdjacentHTML
+
+
+
 insertAdjacentHTML(position, text) 将指定的文本解析为 Element 元素，并将结果节点插入到DOM树中的指定位置。它不会重新解析它正在使用的元素，因此它不会破坏元素内的现有元素。这避免了额外的序列化步骤，使其比直接使用innerHTML操作更快。
   beforebegin：元素自身的前面。  
   afterbegin：插入元素内部的第一个子节点之前。  

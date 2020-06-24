@@ -31,7 +31,6 @@
 * <a href="#响应式数据原理、实现">响应式数据原理、实现:Object.defineProperty、proxy</a>
 
 * <a href="#v-model原理">v-model原理</a>
-* <a href="#自定义组件双向绑定">使用model选项实现自定义组件双向绑定</a>
 * <a href="#解决对象新增属性不能响应的问题"> vm.$set() 解决对象新增属性不能响应的问题</a>
 * <a href="#Vue检测数组的变动">Vue检测数组的变动</a>
 * <a href="#Vue的数据为什么频繁变化但只会更新一次">Vue的数据为什么频繁变化但只会更新一次</a>
@@ -1888,7 +1887,7 @@ https://juejin.im/post/5b5bfd5b6fb9a04fdd7d687a
 
 
 # <a name="vuex">vuex</a>[![bakTop](./img/backward.png)](#top)  
-[详情](/details/Vuex.md)
+[详情](/details/Vue/Vuex.md)
 
 
 # <a name="vuex数据持久化">vuex数据持久化</a>[![bakTop](./img/backward.png)](#top)  

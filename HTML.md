@@ -9,8 +9,8 @@
 
 * <a href="#HTML">**HTML**</a>
 
-* <a href="#语义化">语义化</a>
 * <a href="#XHTML、HTML区别">XHTML、HTML区别</a>
+* <a href="#语义化">语义化</a>
 * <a href="#Doctype作用 标准模式、兼任模式区别">Doctype作用？标准模式、兼任模式区别</a>
 * <a href="#HTML5 为什么只需要写">HTML5 为什么只需要写 \<!DOCTYPE HTML\></a>
 * <a href="#渐进增强与优雅降级">渐进增强与优雅降级-----开发方式，设计理念</a>
@@ -21,7 +21,8 @@
 * <a href="#web存储">cookies、sessionStorage 、和 localStorage 的区别</a>
 * <a href="#HTML中的字符实体">HTML中的字符实体</a>
 * <a href="#HTML5的离线储存">HTML5的离线储存</a>
-* <a href="#iframe缺点">iframe缺点</a>
+* <a href="#table优缺点">table优缺点</a>
+* <a href="#iframe缺点">iframe优缺点</a>
 * <a href="#Video">Video</a>
 * <details open>
     <summary><a href="#link标签属性">link标签属性</a></summary>
@@ -52,118 +53,42 @@
 * <a href="#未使用自适应写的PC页面在手机上显示不全的问题">未使用自适应写的PC页面在手机上显示不全的问题</a>
 </details>
 
-# HTML 5.2新增标签、属性
-[What’s New in HTML 5.2?](https://bitsofco.de/whats-new-in-html-5-2/)
-
-### \<dialog\>标签 -- 创建对话框
-默认是隐藏的
-
-#### 属性
-* open 显示
-
-### 方法
-* show() 弹框形式显示
-* close() 关闭
-* showModal() 模态框形式显示
-
-### 使用
-```html
-<button id="open">Open Dialog</button>
-<button id="close">Close Dialog</button>
-
-<dialog id="dialog">
-  <h2>Dialog Title</h2>
-  <p>Dialog content and other stuff will go here</p>
-</dialog>
-
-<script>
-const dialog = document.getElementById("dialog");
-
-document.getElementById("open").addEventListener("click", () => {
-  dialog.show();
-});
-
-document.getElementById("close").addEventListener("click", () => {
-  dialog.close();
-});
-</script>
-
-```
-
-### allowpaymentrequest 属性 -- 允许 iframe 内部网页使用  Payment Request API
-Payment Request API是结账的形式本地替代。它旨在通过将检索付款信息的处理移到浏览器上，而不是将每个网站上的单独结帐表格移到浏览器，从而为用户提供一种标准化且一致的网上支付方法。
-
-在HTML 5.2之前，无法通过嵌入文档中的iframe发出这些付款请求。这使得第三方嵌入式支付解决方案（例如，Stripe，Paystack）基本上无法利用此API，因为它们的支付接口通常在iframe中处理。
-
-### rel="apple-touch-icon" --  iOS设置网页 icon
-
-```js
-<link rel="apple-touch-icon" sizes="32x32" href="path/to/icon32.png"> /* IOS */
-<link rel="icon" sizes="16x16" href="path/to/icon16.png">  /* 其他设备 */
-```
-
-### 允许多个\<main\>
-HTML 5.2之前，\<main\>在DOM中必须唯一，以使页面有效。
-
-HTML 5.2允许一个页面中同时存在多个 \<main\> 标签，不过只能有一个显示的，其他都要用 hidden 属性隐藏。
-必须使用hidden属性隐藏 使用display: none; or visibility: hidden无效
-```html
-<main>...</main>
-<main hidden>...</main>
-<main hidden>...</main>
-```
-
-### \<legend\> 中可使用标题元素
-HTML 5.2 之前，\<legend\> 中只能使用纯文本，HTML 5.2 开始，可以使用标题元素了。
-
-```html
-<fieldset>
-    <legend><h2>Basic Information</h2></legend>
-</fieldset>
-```
-
-### 新的无效实践
-\<p\> 中的无效内容  
-以下三类元素不能作为 \<p\> 段落的内容。  
-* 行内块、表格元素（inline blocks、inline tables）
-* 浮动元素（float）
-* 定位元素（position block-level elements）
-
-
-strict doctype  
-HTML4 和 XHTML1 的严格文档类型声明（strict doctype）不再是有效 HTML。
-```html
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-```
+* <a href="#HTML 5.2">HTML 5.2新增标签、属性</a>
 
 # <a name="HTML">**HTML**</a>[![bakTop](./img/backward.png)](#top)
+
+## <a name="XHTML、HTML区别">XHTML、HTML区别</a>[![bakTop](./img/backward.png)](#top)
+
+HTML: 超文本标记语言（HyperText Markup Language），是一种基于标准通用标记语言（SGML）的应用，是一种非常灵活的置标语言，   
+XHTML: 可扩展的超文本标记语言（Extensible HyperText Markup Language），基于XML(XML是SGML的一个子集)。  
+XML: 可扩展的标记语言（Extensible Markup Language），主要用于存储数据和结构；  
+
+---
+XHTML特性：
+* XHTML 与 HTML4 几乎是相同的  
+* XHTML是更为严格纯净的HTML版  
+* XHTML是作为一种xml应用被重新定义的HTML  
+* XHTML文档必须拥有根元素、元素必须被关闭、元素必须被正确地嵌套、标签应该使用小写
 
 ## <a name="语义化">语义化及好处</a>[![bakTop](./img/backward.png)](#top)
 
 语义化是指通过HTML标记表示页面包含的信息，包含了HTML标签的语义化和css命名的语义化。
 
- HTML标签的语义化是指：通过使用包含语义的标签（如h1-h6）恰当地表示文档结构 ；
+HTML标签的语义化是指：通过使用包含语义的标签（如h1-h6）恰当地表示文档结构 ；
 
- css命名的语义化是指：为html标签添加有意义的class，id补充未表达的语义，如Microformat通过添加符合规则的class描述信息
+css命名的语义化是指：为html标签添加有意义的class，id补充未表达的语义，如Microformat通过添加符合规则的class描述信息
 
 好处:
->
-    易于用户阅读，去掉样式后页面呈现清晰的结构  
-    搜索引擎更好地理解页面，有利于SEO  
-    有利于开发和维护，语义化更具可读性  
-    方便其他设备解析，如盲人阅读器根据语义渲染网页  
+* 易于用户阅读，去掉样式后页面呈现清晰的结构  
+* 搜索引擎更好地理解页面，有利于SEO   
+* 有利于开发和维护，语义化更具可读性  
+* 方便其他设备解析，如盲人阅读器根据语义渲染网页
 
-## <a name="XHTML、HTML区别">XHTML、HTML区别</a>[![bakTop](./img/backward.png)](#top)
+## <a name="HTML5 为什么只需要写">HTML5 为什么只需要写 \<!DOCTYPE HTML\></a>[![bakTop](./img/backward.png)](#top)
 
-HTML是一种基于标准通用标记语言（SGML）的应用，是一种非常灵活的置标语言，  
-而XHTML则基于可扩展标记语言（XML），XML是SGML的一个子集。
+HTML5 不基于 SGML，因此不需要对DTD进行引用，但是需要 DOCTYPE 来规范浏览器的行为（让浏览器按照它们应该的方式来运行）
 
-XHTML 与 HTML4 几乎是相同的  
-XHTML是更为严格纯净的HTML版  
-XHTML是作为一种xml应用被重新定义的HTML  
-XHTML文档必须拥有根元素、元素必须被关闭、元素必须被正确地嵌套、标签应该使用小写
+HTML4.01基于SGML,所以需要对DTD进行引用，才能告知浏览器文档所使用的文档类型。
 
 ## <a name="HTML5新标签">[HTML5新标签](https://www.w3school.com.cn/html/html5_new_elements.asp)</a>[![bakTop](./img/backward.png)](#top)
 >
@@ -244,23 +169,17 @@ XHTML文档必须拥有根元素、元素必须被关闭、元素必须被正确
     step
 
 
-
-## <a name="HTML5 为什么只需要写">HTML5 为什么只需要写 \<!DOCTYPE HTML\></a>[![bakTop](./img/backward.png)](#top)
-
-HTML5 不基于 SGML，因此不需要对DTD进行引用，但是需要doctype来规范浏览器的行为（让浏览器按照它们应该的方式来运行）
-
-HTML4.01基于SGML,所以需要对DTD进行引用，才能告知浏览器文档所使用的文档类型。
-
 ## <a name="Doctype作用 标准模式、混杂模式区别">Doctype作用？标准模式、混杂模式区别</a>[![bakTop](./img/backward.png)](#top)
 
 documnet type(文档类型的简写),位于HTML文档的第一行，告知浏览器用什么规范解析
 DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 
-在标准模式中，浏览器根据规范呈现页面；在混杂模式中，页面以一种比较宽松的向后兼容的方式显示。
->
-    判断方法：document.compatMode 
-    1. 标准模式：CSS1Compat
-    2. 混杂模式：BackCompat	
+在标准模式中，浏览器根据规范呈现页面；  
+在混杂模式中，页面以一种比较宽松的向后兼容的方式显示。
+
+判断方法：document.compatMode 
+* 标准模式：CSS1Compat
+* 混杂模式：BackCompat	
 
 常见dotype：
 >
@@ -284,10 +203,9 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 优雅降级：一开始就构建完整功能，在针对底版本浏览器兼容
 
 区别：  
->
-    优雅降级是从复杂的现状开始，并试图减少用户体验的供给，  
-    渐进增强则从基础的的版本开始，并不断扩充，以适应未来环境的需要。  
-    优雅降级意味着往回看；而渐进增强则意味着朝前看，同时保证其根基处于安全地带
+* 优雅降级是从复杂的现状开始，并试图减少用户体验的供给，  
+* 渐进增强则从基础的的版本开始，并不断扩充，以适应未来环境的需要。  
+* 优雅降级意味着往回看；而渐进增强则意味着朝前看，同时保证其根基处于安全地带
 
 ## <a name="块级元素、内联元素">块级元素、内联元素（行内元素、行内块级元素）</a>[![bakTop](./img/backward.png)](#top)
 
@@ -302,6 +220,7 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 * 行内元素：display:inline.
 >
     不会独占一行,相邻的行内元素会排列在同一行里,直到一行排不下,才会换行,其宽度随元素的内容而变化.  
+
     行内元素设置width,height属性无效，它的长度高度主要根据内容决定.  
     行内元素的margin和padding属性,水平方向(padding-left,padding-right,margin-left,margin- right)产生边距效果,但定义竖直方向(padding-top,padding-bottom,margin-top,margin-bottom)无效
 
@@ -339,42 +258,43 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 
 ## <a name="HTML全局属性有哪些">HTML全局属性有哪些</a>[![bakTop](./img/backward.png)](#top)
 
-    accesskey属性允许你设置一个或者多个键盘快捷键，快速聚焦到页面元素
-        <input type="text" name="name" accesskey="n"/>  
-        chrome：alt + n即可聚焦到该input
-        firefox ctrl + alt + n即可聚焦到该input
-        IE alt + n | ctrl + alt + n
-
-    id: 元素id，文档内唯一
-    class:为元素设置类标识
-    contenteditable: 指定元素内容是否可编辑(true, false)
-    data-*: 为元素增加自定义属性
-    dir: 设置元素文本方向(auto、ltr、rtl)
-    draggable: 设置元素是否可拖拽
-    hidden: 隐藏元素
-    lang: 元素内容的的语言
-    style: 行内css样式
-    title: 元素相关的建议信息
-    tabindex: 使用tab键时的访问顺序。当设置为-1的时候，不会被选中。当为0时在所有大于0的之后
+* id: 元素id，文档内唯一  
+* class: 为元素设置类标识  
+* contenteditable: 指定元素内容是否可编辑(true, false)  
+* data-*: 为元素增加自定义属性  
+* dir: 设置元素文本方向(auto、ltr、rtl)  
+* draggable: 设置元素是否可拖拽  
+* hidden: 隐藏元素  
+* lang: 元素内容的的语言  
+* style: 行内css样式  
+* title: 元素相关的建议信息  
+* tabindex: 使用tab键时的访问顺序。当设置为-1的时候，不会被选中。当为0时在所有大于0的之后  
+* accesskey属性允许你设置一个或者多个键盘快捷键，快速聚焦到页面元素  
+  >
+      <input type="text" name="name" accesskey="n"/>  
+      chrome：alt + n即可聚焦到该input
+      firefox ctrl + alt + n即可聚焦到该input
+      IE alt + n | ctrl + alt + n
 
 ## <a name="src和href的区别">src和href的区别</a>[![bakTop](./img/backward.png)](#top)
 
-href（Hypertext Reference）
->
-    指向网络资源所在的位置, 用于在当前文档和引用资源间确定联系, 加载css。表达的是超链接。比如a元素、link元素。
+* href（Hypertext Reference） 
 
-src（source）
->
-    是指向外部资源的位置，指向的内容将会嵌入到文档中当前标签所在位置；在请求src资源时会将其指向的资源下载并应用到文档内，例如js脚本，img图片和frame等元素。 
-    当浏览器解析到该元素时，会暂停其他资源的下载和处理，直到将该资源加载、编译、执行完毕，图片和框架等元素也如此，类似于将所指向资源嵌入当前标签内。这也是为什么将js脚本放在底部而不是头部。
+指向网络资源所在的位置, 用于在当前文档和引用资源间确定联系, 加载css。表达的是超链接。比如a元素、link元素。
+
+* src（source）
+
+是指向外部资源的位置，指向的内容将会嵌入到文档中当前标签所在位置；在请求src资源时会将其指向的资源下载并应用到文档内，例如js脚本，img图片和frame等元素。 
+
+当浏览器解析到该元素时，会暂停其他资源的下载和处理，直到将该资源加载、编译、执行完毕，图片和框架等元素也如此，类似于将所指向资源嵌入当前标签内。这也是为什么将js脚本放在底部而不是头部。
 
 `总而言之，src用于替换当前元素；href用于在当前文档和引用资源之间建立联系。`
 
 ## <a name="浏览器内核、私有化前缀">浏览器内核、私有化前缀</a>[![bakTop](./img/backward.png)](#top)
 
 #### 主要分为：
-    渲染引擎(layout engineer或Rendering Engine)
-    JS引擎
+* 渲染引擎(layout engineer或Rendering Engine)
+* JS引擎
     
 #### 渲染引擎：
 >
@@ -402,11 +322,9 @@ https://zhuanlan.zhihu.com/p/61704951
 [cookie](/details/cookie.md)
 
 ### 区别
->
+cookie是网站为了标示用户身份而储存在用户本地终端（Client Side）上的数据（通常经过加密）。cookie数据始终在同源的http请求中携带（即使不需要），记会在浏览器和服务器间来回传递。
 
-    cookie是网站为了标示用户身份而储存在用户本地终端（Client Side）上的数据（通常经过加密）。cookie数据始终在同源的http请求中携带（即使不需要），记会在浏览器和服务器间来回传递。
-
-    sessionStorage和localStorage不会自动把数据发给服务器，仅在本地保存。
+sessionStorage和localStorage不会自动把数据发给服务器，仅在本地保存。
 
 * 存储大小：
 >
@@ -421,13 +339,11 @@ https://zhuanlan.zhihu.com/p/61704951
 
 * 作用域:
 >
-
     sessionStorage不在不同的浏览器窗口中共享，即使是同一个页面；
     localStorage 在所有同源窗口中都是共享的；cookie也是在所有同源窗口中都是共享的。
 
 * Storage方法
 >
-
     setItem(key, value) 保存数据
     getItem(key) 读取数据
     removeItem(key) 删除键值为key的存储内容
@@ -511,11 +427,33 @@ HTML中某些字符是预留的,预留字符必须被替换为字符实体。
     离线存储可以将站点的一些文件存储在本地，在没有网络的时候还是可以访问到以缓存的对应的站点页面，其中这些文件可以包括html，js，css，img等等文件，但其实即使在有网络的时候，浏览器也会优先使用已离线存储的文件，返回一个200（from cache）头。这跟HTTP的缓存使用策略是不同的。
 
 
-## <a name="iframe缺点">iframe缺点</a>[![bakTop](./img/backward.png)](#top)
+## <a name="table优缺点">table优缺点</a>[![bakTop](./img/backward.png)](#top)
+优点：
+* 写表格方便快捷，样式统一，居中对齐
+* 兼容性好
 
-1. 会阻塞主页面的onload事件
-2. iframe和主页面共享连接池，而浏览器对相同域的连接有限制，所以会影响页面的并行加载.
-3. 不利于搜索引擎的检索，不利于SEO优化
+缺点：  
+* table要比其它html标记占更多的字节,(延迟下载时间，占用服务器更多的流量资源)
+* table会阻挡浏览器渲染引擎的渲染顺序,(会延迟页面的生成速度，让用户等待更久的时间)
+* 灵活性差，比如要通多td才能设置tr的border属性；
+* 在某些浏览器中table里的文字的拷贝会出现问题
+* 代码臃肿，当在table中套用table的时候，阅读代码会显得异常混乱；
+* 混乱的colspan与rowspan，用来布局时，频繁使用他们会造成整个文档顺序混乱；
+* 深层的嵌套，导致搜索引擎读取困难，同时还很大程度上增加了代码冗余；
+* table对对于页面布局来说，从语义上看是不正确的。(它描述的是表现，而不是内容。)
+
+
+
+## <a name="iframe缺点">iframe优缺点</a>[![bakTop](./img/backward.png)](#top)
+优点：
+* 实现无刷新文件上传；
+* 跨域通信；
+* 解决了加载缓慢的第三方内容如图标和广告等的加载问题。
+
+缺点：
+* 会阻塞主页面的onload事件
+* iframe和主页面共享连接池，而浏览器对相同域的连接有限制，所以会影响页面的并行加载.
+* 不利于搜索引擎的检索，不利于SEO优化
 
 通过javascript动态给iframe添加src属性值，这样可以解决1,2两个问题。
 
@@ -544,10 +482,7 @@ HTML中某些字符是预留的,预留字符必须被替换为字符实体。
 >
 <source src=""></source>
 </video>
-
-
 ```
-
 
 ## <a name="link标签属性">link标签属性</a>[![bakTop](./img/backward.png)](#top)
 ### <a name="网页标题引入图标">网页标题引入图标</a>[![bakTop](./img/backward.png)](#top)
@@ -559,7 +494,69 @@ HTML中某些字符是预留的,预留字符必须被替换为字符实体。
 
 ### <a name="预加载页面资源prefetch、prefetch">预加载页面资源prefetch、prefetch</a>[![bakTop](./img/backward.png)](#top)
 
-[参考](https://mp.weixin.qq.com/s?__biz=MzAxODE2MjM1MA==&mid=2651557145&idx=2&sn=275f6a2cd5698993ac37c30d1272b6d9&chksm=80255ad8b752d3ced93788a47c1c0e09b358f520e427095282805ae38568d391ffb841629fc5&scene=0&xtrack=1&key=f7996279e56ff0c926f68429b9d715f81f365434df8bef8ae0fdc0f07356e1153e13ec7efaadcdcee3ee2a269ca1e1d26d64b4456b49e9d4a9470ffdb5dff4e18fb06a01c2606003c0a2f1d538732c1f&ascene=14&uin=MTIxNDM5MTUzOQ%3D%3D&devicetype=Windows+7&version=62060841&lang=zh_CN&pass_ticket=6hbWVbVQi9b8nDPWnQLyNwIhfW%2Fxii%2FBAH6JGd5v7eUzIH49WIfoITbvxT9QEwrs)
+#### dns-prefetch
+```html
+<link rel="dns-prefetch" href="xxx.com">
+
+提前进行域名解析，如：大型网站的网页中引用了大量很多其他域名的资源  
+如果网站的所有的资源基本都在本域名下，那么这个基本没有什么作用。因为Chrome在访问你的网站就帮你缓存了
+```
+
+#### preload 
+preload 提供了一种声明式的命令，让浏览器提前加载指定资源(加载后并不执行)，同时不阻塞文档 onload 事件，在需要执行的时候再执行(script标签加载时执行)。
+
+使用 preload 后，不管资源是否使用都将提前加载,提升资源加载的优先级
+
+优点
+* 将加载和执行分离开，可不阻塞渲染和 document 的 onload 事件
+* 提前加载指定资源，不再出现依赖的font字体隔了一段时间才刷出
+
+href: 预加载的资源  
+as: 标明资源类型
+```html
+<!-- 获取字体时必须加上crossorigin属性，就如使用CORS的匿名模式获取一样。是的，即使你的字体与页面同域 -->
+<link rel="preload" href="/xxx.woff" as="font" crossorigin>
+<link rel="preload" href="/xxx.css" as="style">
+<link rel="preload" href="/xxx.js" as="script">
+```
+
+让 preload的 CSS 样式表立即生效吗
+```html
+<link rel="preload" href="xxx.css" onload="this.rel=stylesheet" as="style">
+```
+
+
+使用 preload 后，Chrome 会有一个警告：
+```
+The resource xxxx was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+```
+
+作用
+
+Preload是为了让当前页面的关键资源尽早被发现和加载，从而提升首屏渲染性能。
+
+#### Prefetch 
+浏览器会在空闲的时候，下载资源，当有页面使用的时候，直接从缓存中读取。其实是把决定是否和什么时间加载这个资源的决定权交给浏览器。
+
+如果在prefetch还没下载完的时候，浏览器发现script标签也引用了同样的资源，浏览器会再次发起请求，这样会造成加载了两次，所以不要在当前页面马上就要用的资源上用prefetch，要用preload。
+
+```html
+<link href="xxx.js" rel="prefetch">
+```
+
+作用
+
+Prefetch是为了提前加载下一个导航所需的资源，提升下一次导航的首屏渲染性能。但也可以用来在当前页面提前加载运行过程中所需的资源，加速响应。
+
+
+同时使用preload prefetch加载同一资源，会重复加载
+```html
+<link href="main.js" rel="preload">
+<link href="main.js" rel="prefetch">
+
+main.js会加载两次
+```
+
 
 ## <a name="base标签">base标签</a>[![bakTop](./img/backward.png)](#top)
 >
@@ -760,8 +757,6 @@ meta对于移动端的一些特殊属性
     <div role="checkbox" aria-checked="checked"></div>
     辅助工具就会知道，这个div实际上是个checkbox的角色，为选中状态。
 
-## <a name=""></a>
-## <a name=""></a>
 
 ## <a name="CSS和JS的位置会影响页面效率，为什么">CSS和JS的位置会影响页面效率，为什么？</a>[![bakTop](./img/backward.png)](#top)
 css在加载过程中不会影响到DOM树的生成，但是会影响到Render树的生成，进而影响到layout，所以一般来说，style的link标签需要尽量放在head里面，因为在解析DOM树的时候是自上而下的，而css样式又是通过异步加载的，这样的话，解析DOM树下的body节点和加载css样式能尽可能的并行，加快Render树的生成的速度。
@@ -781,5 +776,90 @@ js脚本应该放在底部，原因在于js线程与GUI渲染线程是互斥的�
 	  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=0.3, maximum-scale=1.0, minimum-scale=0.3">
 
 
-## <a name=""></a>[![bakTop](./img/backward.png)](#top)
-## <a name=""></a>[![bakTop](./img/backward.png)](#top)
+
+# <a name="HTML 5.2">HTML 5.2新增标签、属性</a>[![bakTop](./img/backward.png)](#top)
+
+[What’s New in HTML 5.2?](https://bitsofco.de/whats-new-in-html-5-2/)
+
+### \<dialog\>标签 -- 创建对话框
+默认是隐藏的
+
+#### 属性
+* open 显示
+
+### 方法
+* show() 弹框形式显示
+* close() 关闭
+* showModal() 模态框形式显示
+
+### 使用
+```html
+<button id="open">Open Dialog</button>
+<button id="close">Close Dialog</button>
+
+<dialog id="dialog">
+  <h2>Dialog Title</h2>
+  <p>Dialog content and other stuff will go here</p>
+</dialog>
+
+<script>
+const dialog = document.getElementById("dialog");
+
+document.getElementById("open").addEventListener("click", () => {
+  dialog.show();
+});
+
+document.getElementById("close").addEventListener("click", () => {
+  dialog.close();
+});
+</script>
+
+```
+
+### allowpaymentrequest 属性 -- 允许 iframe 内部网页使用  Payment Request API
+Payment Request API是结账的形式本地替代。它旨在通过将检索付款信息的处理移到浏览器上，而不是将每个网站上的单独结帐表格移到浏览器，从而为用户提供一种标准化且一致的网上支付方法。
+
+在HTML 5.2之前，无法通过嵌入文档中的iframe发出这些付款请求。这使得第三方嵌入式支付解决方案（例如，Stripe，Paystack）基本上无法利用此API，因为它们的支付接口通常在iframe中处理。
+
+### rel="apple-touch-icon" --  iOS设置网页 icon
+
+```js
+<link rel="apple-touch-icon" sizes="32x32" href="path/to/icon32.png"> /* IOS */
+<link rel="icon" sizes="16x16" href="path/to/icon16.png">  /* 其他设备 */
+```
+
+### 允许多个\<main\>
+HTML 5.2之前，\<main\>在DOM中必须唯一，以使页面有效。
+
+HTML 5.2允许一个页面中同时存在多个 \<main\> 标签，不过只能有一个显示的，其他都要用 hidden 属性隐藏。
+必须使用hidden属性隐藏 使用display: none; or visibility: hidden无效
+```html
+<main>...</main>
+<main hidden>...</main>
+<main hidden>...</main>
+```
+
+### \<legend\> 中可使用标题元素
+HTML 5.2 之前，\<legend\> 中只能使用纯文本，HTML 5.2 开始，可以使用标题元素了。
+
+```html
+<fieldset>
+    <legend><h2>Basic Information</h2></legend>
+</fieldset>
+```
+
+### 新的无效实践
+\<p\> 中的无效内容  
+以下三类元素不能作为 \<p\> 段落的内容。  
+* 行内块、表格元素（inline blocks、inline tables）
+* 浮动元素（float）
+* 定位元素（position block-level elements）
+
+
+strict doctype  
+HTML4 和 XHTML1 的严格文档类型声明（strict doctype）不再是有效 HTML。
+```html
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+```

@@ -280,7 +280,4 @@ Vuex中所有的状态更新的唯一途径都是mutation，异步操作通过 A
 
 每个mutation执行完成后都会对应到一个新的状态变更，这样devtools就可以打个快照存下来，然后就可以实现 time-travel 了。如果mutation支持异步操作，就没有办法知道状态是何时更新的，无法很好的进行状态的追踪，给调试带来困难。
 
-## 为什么不直接分发mutation,而要通过分发action之后提交 mutation变更状态
-mutation 必须同步执行，我们可以在 action 内部执行异步操作  
-
-可以进行一系列的异步操作，并且通过提交 mutation 来记录 action 产生的副作用（即状态变更）
+[参考尤大回答](https://www.zhihu.com/question/48759748/answer/112823337)

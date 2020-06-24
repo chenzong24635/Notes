@@ -169,40 +169,46 @@
 
 # <a name="JS">**JS**</a>
 
-JS的特点：无需编译、弱类型、基于对象、事件驱动  
+JS的特点：无需编译、单线程、弱类型、基于对象、事件驱动
 JS的组成：核心( ECMAScript) , 文档对象模型(DOM), 浏览器对象模型(BOM)
 
 JavaScript 是弱类型语言，而且JavaScript 声明变量的时候并没有预先确定的类型， 变量的类型就是其值的类型
 
->  
-    任何 JavaScript 语句是可以加标签的，在语句前加冒号即可：
+JavaScript的单线程，与它的用途有关。作为浏览器脚本语言，JavaScript的主要用途是与用户互动，以及操作DOM。这决定了它只能是单线程，否则会带来很复杂的同步问题。比如，假定JavaScript同时有两个线程，一个线程在某个DOM节点上添加内容，另一个线程删除了这个节点，这时浏览器应该以哪个线程为准？
 
-    firstStatement: var i = 1;
-        
-    大部分时候，这个东西类似于注释，没有任何用处。唯一有作用的时候是：与完成记录类型中的 target 相配合，用于跳出多层循环。
 
-        outer: while(true) {
-          inner: while(true) {
-              break outer;
-          }
-        }
-        console.log("finished")
-        
-    break/continue 语句如果后跟了关键字，会产生带 target 的完成记录。一旦完成记录带了 target，那么只有拥有对应 label 的循环语句会消费它。
+语句标签
+```js
+任何 JavaScript 语句是可以加标签的，在语句前加冒号即可：
+
+firstStatement: var i = 1;
+    
+大部分时候，这个东西类似于注释，没有任何用处。唯一有作用的时候是：与完成记录类型中的 target 相配合，用于跳出多层循环。
+
+    outer: while(true) {
+      inner: while(true) {
+          break outer;
+      }
+    }
+    console.log("finished")
+    
+break/continue 语句如果后跟了关键字，会产生带 target 的完成记录。一旦完成记录带了 target，那么只有拥有对应 label 的循环语句会消费它。
+```
 
 ## <a name="数据类型、内置对象">数据类型、内置对象</a>
 [JavaScript思维导图](https://github.com/lidaguang1989/javascript-knowhow)
 
 ### 数据类型：
-基本数据类型：
+基本数据类型： ---值传递 --栈内存
   * [Undefined、Null](./details/JS数据类型/Undefined、Null.md)
   * [Boolean](./details/JS数据类型/Boolean.md)
   * [Number](./details/JS数据类型/Number.md)
   * [String](./details/JS数据类型/String)
-  * [Symbol](./details/JS数据类型/Symbol)  ---值传递 --栈内存
+  * [Symbol](./details/JS数据类型/Symbol) 
+  * [BigInt](./details/JS数据类型/BigInt) 
 
-复杂（引用）数据类型:
-  * [Object](./details/JS数据类型/Object.md)    --地址传递--堆内存
+复杂（引用）数据类型:   --地址传递--堆内存
+  * [Object](./details/JS数据类型/Object.md) 
     * [Array](./details/JS数据类型/Array.md)
     * [Set、Map](/details/JS数据类型/Set、Map.md)
     * [Function](./details/JS数据类型/Function.md)
@@ -224,36 +230,14 @@ JavaScript 是弱类型语言，而且JavaScript 声明变量的时候并没有�
 
 ![堆栈](./img/堆栈.jpg)
 
-对象的键名只能是字符串和 Symbol 类型。    
-其他类型的键名会被转换成字符串类型。    
-对象转字符串默认会调用 toString 方法。   
+
+对象的键名的转换:
+* 对象的键名只能是字符串和 Symbol 类型。    
+* 其他类型的键名会被转换成字符串类型。    
+* 对象转字符串默认会调用 toString 方法。   
+
 [demo](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/125)
 
-
-[**BigInt**](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt)   
-
-ES10引入了一种新的数据类型 BigInt（大整数）,来表示大于 2^53 - 1 的整数。BigInt 可以表示任意大的整数。
-
-创建 BigInt 类型,只需要在数字后面加上n(123n) 或者BigInt(value) 转化，value 为数字或数字字符串 。也可以用二进制、八进制或十六进制表示
-```js
-123n  
-
-BigInt(123) // 123n
-BigInt('123') // 123n
-BigInt(false) // 0n
-BigInt(true) // 1n 
-
-typeof 123n  // "bigint"
-Number(111111111n) // 111111111
-
-123n == 123 // true  
-123n === 123 // false
-8n/3n // 2n
-```
-
-除一元加号(+)运算符外,会与 asm.js 冲突，所有算术运算符都可用于BigInt
-
-它在某些方面类似于 Number ，但是也有几个关键的不同点：不能用于 Math 对象中的方法；不能和任何 Number 实例混合运算，两者必须转换成同一种类型。在两种类型来回转换时要小心，因为 BigInt 变量在转换成 Number 变量时可能会丢失精度。
 
 ### 内置对象
 Object 是 JavaScript 中所有对象的父对象  
@@ -268,8 +252,7 @@ document对象是Documentd对象（HTML 文档对象）的一个只读引用，w
 >
     Object.prototype.toString.call([]) // "[object Array]"
     Object.prototype.toString.call({}) // "[object Object]"
-
->
+    
     ([] instanceof Array) // true
     ({} instanceof Array) // false
 
@@ -292,11 +275,10 @@ JSONP则是一种跨域数据交互协议。
 [你不知道的 JSON.stringify() 的威力](https://juejin.im/post/5decf09de51d45584d238319)
 
 * 定义:
->
 
-    JavaScript 对象表示法（JavaScript Object Notation）
-    是轻量级的文本数据交换格式,用于存储和交换文本数据领域，与xml类似但比xml更简洁，更快，更易解析
-    JSON 的网络媒体类型是 application/json。
+JavaScript 对象表示法（JavaScript Object Notation）
+是轻量级的文本数据交换格式,用于存储和交换文本数据领域，与xml类似但比xml更简洁，更快，更易解析
+JSON 的网络媒体类型是 application/json。
 
 * 相比XML，JSON的优势如下：  
 -- 没有结束标签，长度更短，读写更快  
@@ -331,11 +313,11 @@ JSON.stringify(obj, replacer, space) //把javascript对象转换为JSON字符串
 >第二个参数（数组形式| 函数） 
 
 >>数组形式：指定需要转成字符串的属性，只对对象的属性有效，对数组无效。
-```
-JSON.stringify({"a":1,"b":2},['a'])
+  ```
+  JSON.stringify({"a":1,"b":2},['a'])
 
-输出：
-"{"a":1}"
+  输出：
+  "{"a":1}"
 ```
 
 >>函数：(key, value)=>{},每一组键/值对都会调用此函数，该函数返回一个值，作为键的值变换到结果字符串中，如果返回 undefined，则该成员被忽略。
@@ -361,36 +343,39 @@ value: 2
 >>字符串：（不超过10个字符），该字符串会添加在每行前面。  
 
 
-
 #### JSONP: 
 是 json 的一种"使用模式"，是种跨域数据交互协议，可以让网页从别的域名（网站）那获取资料，即跨域读取数据
 
 
 ## <a name="BOM 浏览器对象模型">BOM 浏览器对象模型</a>
->
-    BOM 是 Browser Object Model 的缩写，即浏览器对象模型。
-    当一个浏览器页面初始化时，会在内存创建一个全局的对象，用以描述当前窗口的属性和状态，这个全局对象全局对象被称为浏览器对象模型，即BOM。
-    BOM的核心对象就是window，window 对象也是BOM的顶级对象，其中包含了浏览器的 6个核心模块：
 
-1. document - 即文档对象，渲染引擎在解析HTML代码时，会为每一个元素生成对应的DOM对象，由于元素之间有层级关系，因此整个HTML代码解析完以后，会生成一个由不同节点组成的树形结构，俗称DOM树，document 用于描述DOM树的状态和属性，并提供了很多操作DOM的API。
-2. frames - HTML 子框架，即在浏览器里嵌入另一个窗口，父框架和子框架拥有独立的作用域和上下文。
-3. history - 以栈(FIFO)的形式保存着页面被访问的历史记录，页面前进即入栈，页面返回即出栈。用于将窗口的历史浏览记录用文档和文档状态列表的形式表示。
-4. location - 表示该窗口中当前显示的文档的URL.。
-5. navigator - 用来描述浏览器本身，包括浏览器的名称、版本、语言、系统平台、用户特性字符串等信息。
-6. screen - 提供了浏览器显示屏幕的相关属性，比如显示屏幕的宽度和高度，可用宽度和高度。
+BOM 是 Browser Object Model 的缩写，即浏览器对象模型。
+
+当一个浏览器页面初始化时，会在内存创建一个全局的对象，用以描述当前窗口的属性和状态，这个全局对象全局对象被称为浏览器对象模型，即BOM。
+
+BOM的核心对象就是window，window 对象也是BOM的顶级对象，其中包含了浏览器的 6个核心模块：
+
+* document - 即文档对象，渲染引擎在解析HTML代码时，会为每一个元素生成对应的DOM对象，由于元素之间有层级关系，因此整个HTML代码解析完以后，会生成一个由不同节点组成的树形结构，俗称DOM树，document 用于描述DOM树的状态和属性，并提供了很多操作DOM的API。
+* frames - HTML 子框架，即在浏览器里嵌入另一个窗口，父框架和子框架拥有独立的作用域和上下文。
+* history - 以栈(FIFO)的形式保存着页面被访问的历史记录，页面前进即入栈，页面返回即出栈。用于将窗口的历史浏览记录用文档和文档状态列表的形式表示。
+* location - 表示该窗口中当前显示的文档的URL.。
+* navigator - 用来描述浏览器本身，包括浏览器的名称、版本、语言、系统平台、用户特性字符串等信息。
+* screen - 提供了浏览器显示屏幕的相关属性，比如显示屏幕的宽度和高度，可用宽度和高度。
 
 常用的对话框也属于挂载在window对象上的方法：alert(); confirm(); prompt();
 
 ## <a name="DOM 文档对象模型">DOM-文档对象模型</a>
->
 
-  DOM 是 Document Object Model 的缩写，即 文档对象模型，是所有浏览器公共遵守的标准，DOM 将HTML和XML文档映射成一个由不同节点组成的树型结构，俗称DOM树。
-  其核心对象是document，用于描述DOM树的状态和属性，并提供对应的DOM操作API。
+DOM 是 Document Object Model 的缩写，即 文档对象模型，是所有浏览器公共遵守的标准，DOM 将HTML和XML文档映射成一个由不同节点组成的树型结构，俗称DOM树。
+
+其核心对象是document，用于描述DOM树的状态和属性，并提供对应的DOM操作API。
 
 #### DOM 被划分为1级、2级、3级，共3个级别：
-1. 1级DOM -，由DOM核心与DOM HTML两个模块组成。DOM核心能映射以XML为基础的文档结构，允许获取和操作文档的任意部分。DOM HTML通过添加HTML专用的对象与函数对DOM核心进行了扩展。
-2. 2级DOM - 鉴于1级DOM仅以映射文档结构为目标，DOM 2级面向更为宽广。通过对原有DOM的扩展，2级DOM通过对象接口增加了对鼠标和用户界面事件（DHTML长期支持鼠标与用户界面事件）、范围、遍历（重复执行DOM文档）和层叠样式表（CSS）的支持。同时也对DOM 1的核心进行了扩展，从而可支持XML命名空间。
-3. 3级DOM - 通过引入统一方式载入和保存文档和文档验证方法对DOM进行进一步扩展，DOM3包含一个名为“DOM载入与保存”的新模块，DOM核心扩展后可支持XML1.0的所有内容，包括XML Infoset、 XPath、和XML Base。
+* 1级DOM -，由DOM核心与DOM HTML两个模块组成。DOM核心能映射以XML为基础的文档结构，允许获取和操作文档的任意部分。DOM HTML通过添加HTML专用的对象与函数对DOM核心进行了扩展。
+
+* 2级DOM - 鉴于1级DOM仅以映射文档结构为目标，DOM 2级面向更为宽广。通过对原有DOM的扩展，2级DOM通过对象接口增加了对鼠标和用户界面事件（DHTML长期支持鼠标与用户界面事件）、范围、遍历（重复执行DOM文档）和层叠样式表（CSS）的支持。同时也对DOM 1的核心进行了扩展，从而可支持XML命名空间。
+
+* 3级DOM - 通过引入统一方式载入和保存文档和文档验证方法对DOM进行进一步扩展，DOM3包含一个名为“DOM载入与保存”的新模块，DOM核心扩展后可支持XML1.0的所有内容，包括XML Infoset、 XPath、和XML Base。
 
 
 #### DOM事件
@@ -401,8 +386,9 @@ value: 2
 * DOM3：对DOM2增加了内容模型 (DTD 、Schemas) 和文档验证。
 
 ##### 事件流: 捕获事件流、冒泡事件流。
-1. 捕获事件流从根节点开始执行，一直往子节点查找执行，直到查找执行到目标节点。
-2. 冒泡事件流从目标节点开始执行，一直往父节点冒泡查找执行，直到查到到根节点。
+捕获事件流从根节点开始执行，一直往子节点查找执行，直到查找执行到目标节点。
+
+冒泡事件流从目标节点开始执行，一直往父节点冒泡查找执行，直到查到到根节点。
 
 DOM事件流：捕获阶段 -> 目标阶段 -> 冒泡阶段  
 DOM事件捕获流程:window > document > documentElement(html标签) > body > ...> 目标对象
@@ -464,7 +450,7 @@ https://www.jianshu.com/p/5f9027722204
 阻止默认行为：
 >
     event = e || window.event //w3c | IE
-    event.preventDefault() || event.returnValue = false
+    event.preventDefault() || event.returnValue = false //w3c | IE
 
 阻止冒泡：
 >
@@ -476,14 +462,13 @@ https://www.jianshu.com/p/5f9027722204
     event.target || event.srcElement // w3c  | IE
 
 ## <a name="mouseover、mouseout、mouseenter、mouseleave区别与联系">mouseover、mouseout、mouseenter、mouseleave区别与联系</a>
->
-    mouseover/mouseout是标准事件，所有浏览器都支持；mouseenter/mouseleave是IE5.5引入的特有事件后来被DOM3标准采纳，现代标准浏览器也支持
+mouseover/mouseout是标准事件，所有浏览器都支持；mouseenter/mouseleave是IE5.5引入的特有事件后来被DOM3标准采纳，现代标准浏览器也支持
 
-    mouseover/mouseout是冒泡事件；mouseenter/mouseleave不冒泡。需要为多个元素监听鼠标移入/出事件时，推荐mouseover/mouseout托管，提高性能
+mouseover/mouseout是冒泡事件；mouseenter/mouseleave不冒泡。需要为多个元素监听鼠标移入/出事件时，推荐mouseover/mouseout托管，提高性能
 
-    不论鼠标指针穿过被选元素或其子元素，都会触发 mouseover 事件，对应 mouseout。
-    
-    只有在鼠标指针穿过被选元素时，才会触发 mouseenter 事件，对应 mouseleave。
+不论鼠标指针穿过被选元素或其子元素，都会触发 mouseover 事件，对应 mouseout。
+
+只有在鼠标指针穿过被选元素时，才会触发 mouseenter 事件，对应 mouseleave。
 
 ## <a name="DOM常用属性">DOM常用属性</a>
 * parentNode  // 当前元素的父节点对象
@@ -499,44 +484,58 @@ https://www.jianshu.com/p/5f9027722204
 * innerText // 元素的自身及子代所有文本值，只是文本内容，不包括html代码
 
 * nodeType // 节点的类型,
->元素节点，2：属性节点，3：文本节点。
+  >1 元素节点
+  >2 属性节点
+  >3 文本节点
+  >8 注释节点
+  >9 整个文档（DOM树的根节点）
+
+  ```html
+  <div class="div"><!-- 注释 --><p class="p">文本</p></div>
+
+  <script>
+    let div = document.querySelector('.div')
+    console.log(div.nodeType); //1
+    console.log(div.getAttributeNode('class').nodeType); //2
+    console.log(div.childNodes[0].childNodes[0].nodeType); // 3
+    console.log(div.childNodes[1].nodeType); // 8
+    console.log(document.nodeType); // 9
+  </script>  
+  ```
+
 * nodeName // 节点节点名称，返回值为大写 （如：DIV，P）
 
 ## <a name="DOM操作">DOM操作—怎样添加、移除、移动、复制、创建和查找节点?</a>
-* 创建新节点
->
-    document.createDocumentFragment()    //创建一个DOM片段
-    document.createElement()   //创建一个元素节点
-    document.createTextNode()   //创建一个文本节点
-    document.createAttribute() // 创建一个属性节点,如class
+#### 创建新节点
+* document.createDocumentFragment()    //创建一个DOM片段
+* document.createElement()   //创建一个元素节点
+* document.createTextNode()   //创建一个文本节点
+* document.createAttribute() // 创建一个属性节点,如class
 
-* 添加、移除、替换、插入、克隆
->
-    appendChild(childNode)  添加节点
-    insertBefore(newChild,oldChild) 添加节点
-    removeChild(childNode) 删除节点    
-    replaceChild(newNode,oldNode）替换节点
-    cloneNode(boolean)复制节点： newNode=oldNode.cloneNode(boolean) ; 
-      参数可选复制节点,接受一个布尔值参数， true表示深复制（复制节点及其所有子节点），  false表示浅复制（复制节点本身，不复制子节点）;默认是false 。
+#### 添加、移除、替换、插入、克隆
+* appendChild(childNode)  添加节点
+* insertBefore(newChild,oldChild) 添加节点
+* removeChild(childNode) 删除节点    
+* replaceChild(newNode,oldNode）替换节点
+* cloneNode(boolean)复制节点： newNode=oldNode.cloneNode(boolean) ; 
+  参数可选复制节点,接受一个布尔值参数， true表示深复制（复制节点及其所有子节点），  false表示浅复制（复制节点本身，不复制子节点）;默认是false 。
 
 
-* 查找节点
->
-    document.querySelector() // 查找第一个 （id,className, tgaName)
-    document.querySelectorAll() //查找所有 （id,className, tgaName)
-    document.getElementById()    //通过元素Id，唯一性
-    document.getElementsByClassName() //通过元素classname
-    document.getElementsByTagName()    //通过标签名称
-    document.getElementsByName()  //通过元素的Name属性的值(IE容错能力较强，会得到一个数组，其中包括id等于name值的)
+#### 查找节点
+* document.querySelector() // 查找第一个 （id,className, tgaName)
+* document.querySelectorAll() //查找所有 （id,className, tgaName)
+* document.getElementById() //通过元素Id查找，唯一性
+* document.getElementsByClassName() //通过元素classname查找(返回数组)
+* document.getElementsByTagName() //通过标签名称查找(返回数组)
+* document.getElementsByName()  //通过元素的Name属性的值查找(返回数组)
 
-* 操作属性的方法
->
-    getAttribute(attrName)  //获取属性值
-    setAttribute(attrName,attrValue)  //设置属性
-    removeAttribute(attrName)  //移除属性
-    hasAttribute(attrName) //判断是否存在该属性
-    getAttributeNode(attrName) // 获取属性节点
-    setAttributeNode(attrName) // 设置属性节点
+#### 操作属性的方法
+* getAttribute(attrName)  //获取属性值
+* setAttribute(attrName,attrValue)  //设置属性
+* removeAttribute(attrName)  //移除属性
+* hasAttribute(attrName) //判断是否存在该属性
+* getAttributeNode(attrName) // 获取属性节点
+* setAttributeNode(attrName) // 设置属性节点
 
 ## <a name="获取元素属性">获取元素属性innerHTML、outerHTML、innerText 、outerText、value</a>
 >
@@ -548,7 +547,7 @@ https://www.jianshu.com/p/5f9027722204
     </div>
 
 
-* innerHTML()
+#### innerHTML()
 
 在读模式下，innerHTML 返回其所有子节点（包括元素、注释和文本节点）对应的 HTML 标签。
 >
@@ -564,12 +563,13 @@ https://www.jianshu.com/p/5f9027722204
 >   
     let cnt = '<p class="2">2222</p>'
     box.innerHTML = cnt
-    替换div.box里的所有内容为 cnt
+    //会替换 div.box 里的所有内容为 cnt
+
 ![innerHTML](/img/innerHTML.png) 
 
-* outerHTML
+#### outerHTML
 
-在读模式下，outerHTML 返回自身及其所有子节点（包括元素、注释和文本节点）对应的 HTML 标签。
+在读模式下，outerHTML 返回自身及其所有子节点（包括元素、注释和文本节点）对应的 HTML 标签。(同innerHTML)
 >
     let box = document.querySelector('.box')
     box.outerHTML
@@ -585,10 +585,12 @@ https://www.jianshu.com/p/5f9027722204
 >
     let cnt = '<p>outerHTML</p>'
     box.outerHTML = cnt 
+    //会替换掉 div.box 为 cnt
+
 ![outerHTML](/img/outerHTML.png) 
 
 
-* innerText
+#### innerText
 
 在读模式下，它会按照由浅入深的顺序，将子文档树中的所有文本拼接起来
 >
@@ -603,11 +605,13 @@ https://www.jianshu.com/p/5f9027722204
 在写模式下，会删除元素的所有子节点，插入包含相应文本值的文本节点(不会解析标签。。)
 >
     box.innerText = '<p>innerText</p>' 
+    //<p>不会解析为标签，会当作字符串
+
 ![innerText](/img/innerText.png) 
 
-* outerText
+#### outerText
 
-在读模式下，与 innerText 完全一样 
+在读模式下，(同innerText)
 >
     box.outerText
     返回
@@ -620,42 +624,57 @@ https://www.jianshu.com/p/5f9027722204
 在写模式下，会删除元素的所有子节点，插入包含相应文本值的文本节点(不会解析标签。。)
 >
     box.outerText = '<p>outerText</p>' 
+    //<p>不会解析为标签，会当作字符串，同时会替换掉 box
 
 ![outerText](/img/outerText.png) 
 
-* value  
-可设置或返回文本框的值
+#### value  
+设置或返回文本框的值
 >
     <input type="text" class="ipt" value="111">
     document.querySelector('.ipt').value
     document.querySelector('.ipt').value = 222
 
 ## <a name="变量、函数声明提升">变量、函数声明提升</a>
->
-    (1) 变量声明提升：变量申明在进入执行上下文就完成了。
-    只要变量在代码中进行了声明，无论它在哪个位置上进行声明， js引擎都会将它的声明放在范围作用域的顶部；
+(1) 变量声明提升：变量申明在进入执行上下文就完成了。
+只要变量在代码中进行了声明，无论它在哪个位置上进行声明， js引擎都会将它的声明放在范围作用域的顶部；
 
-    (2) 函数声明提升：执行代码之前会先读取函数声明，意味着可以把函数申明放在调用它的语句后面。
-    只要函数在代码中进行了声明，无论它在哪个位置上进行声明， js引擎都会将它的声明放在范围作用域的顶部；
+(2) 函数声明提升：执行代码之前会先读取函数声明，意味着可以把函数申明放在调用它的语句后面。
+只要函数在代码中进行了声明，无论它在哪个位置上进行声明， js引擎都会将它的声明放在范围作用域的顶部；
 
-    (3) 变量or函数声明：函数声明会覆盖变量声明，但不会覆盖变量赋值。
-        同一个名称标识a，即有变量声明var a，又有函数声明function a() {}，不管二者声明的顺序，函数声明会覆盖变量声明，也就是说，此时a的值是声明的函数function a() {}。注意：如果在变量声明的同时初始化a，或是之后对a进行赋值，此时a的值为变量的值。因为变量、函数声明提升，赋值在其之后才运行；如: var a = 1; function a() { return true; } console.log(a); ==> 1
+(3) 变量or函数声明：函数声明会覆盖变量声明，但不会覆盖变量赋值。
 
-<b>let 命名不存在变量提升</b>
+```js
+var a = 1;
+function a() { return true; }
+console.log(a); // 1
+```
+变量，函数声明提升,函数声明会覆盖变量声明，a再复制为1
+
+等同于
+```js
+function a() { return true; }
+a=1
+console.log(a); // 1
+```
+
+
+`let 命名不存在变量提升`
 
 ### 函数声明，函数形参，变量名 同名时优先级：
 函数形参 > 函数声明 > 变量名
->
 
-    var foo = {n:1};
-    (function foo(foo) {
-        var foo;
-        console.log(foo.n);//1 --形参
-        foo.n=3; // --改变形参的n赋值
-        var foo = {n:2};//重新声明定义foo 
-        console.log(foo.n);// 2
-    })(foo); //存入全局的foo变量 作为 形参
-    console.log(foo.n); //3
+```js
+var foo = {n:1};
+(function foo(foo) {
+    var foo;
+    console.log(foo.n);//1 --形参
+    foo.n=3; // --改变形参的n赋值
+    var foo = {n:2};//重新声明定义foo 
+    console.log(foo.n);// 2
+})(foo); //存入全局的foo变量 作为 形参
+console.log(foo.n); //3
+```
 
 ## <a name="立即执行函数">立即执行函数IIFE</a>
 定义:
@@ -667,11 +686,7 @@ https://www.jianshu.com/p/5f9027722204
     +function(){}()
     ....
 
-作用：创建一个独立的作用域。
-
-好处：
->
-    防止变量弥散到全局，以免各种js库冲突。隔离作用域避免污染，或者截断作用域链，避免闭包造成引用变量无法释放。利用立即执行特性，返回需要的业务函数或对象，避免每次通过条件判断来处理
+作用：创建一个独立的作用域。避免与全局作用域内的其他变量命名冲突或污染全局命名空间
 
 场景：一般用于框架、插件等场景
 
@@ -682,7 +697,7 @@ https://www.jianshu.com/p/5f9027722204
 
 访问器属性 2 个特性: get(获取),set(设置)
 
-get,set 与 wriable,value 是互斥的,如果有交集设置会报错
+get,set 与 writable,value 是互斥的,如果有交集设置会报错
 
 ### configurable可配置
 
@@ -692,64 +707,64 @@ get,set 与 wriable,value 是互斥的,如果有交集设置会报错
 * 值为false为不可重新定义
 * 默认值为true 
 
-简单的说 ，设置这个为false之后，就不能删除这个属性或修改这个属性（属性值不影响），这个属性就是这个对象固有的，删除不了
->
+简单的说 ，设置configurable为false之后，就不能删除这个属性或修改这个属性（属性值不影响），这个属性就是这个对象固有的，删除不了
 
-    var obj = Object.create({},{
-        "a":{
-          value :1,
-          configurable :false,
-          enumerable: true,
-          writable: true
-        },
-    });
+```js
+var obj = Object.create({},{
+    "a":{
+      value :1,
+      configurable :false,
+      enumerable: true,
+      writable: true
+    },
+});
 
-    delete obj.a// 删除失败，普通模式没有提示或错误，严格模式会有TypeError
-    obj.a = 2;
-    console.log(obj.a);//正常使用，输出结果为 2
-
+delete obj.a// 删除失败，普通模式没有提示或错误，严格模式会有TypeError
+obj.a = 2;
+console.log(obj.a);//正常使用，输出结果为 2
+```
 
 ### enumerable可枚举
 
 对象属性是否可通过for-in循环，flase为不可循环，默认值为true 
 简单的说，当你想用 for-in 遍历这个对象的时候，正常会输出每一个属性，但当你设置false时，这个属性就不会被for-in 遍历读到
->    
-
-    var obj = {
-        a: 1,
-        b: 2,
-        c: 3
-    };
-    obj = Object.create(obj, {
-        "a": {
-            value: 1,
-            configurable: true,
-            enumerable: false,
-            writable: true
-        }
-    });
-
-    for(var i in obj) {
-        console.log(i); //输出b，c 不会输出a，a已经设置不被枚举
+```js
+var obj = {
+    a: 1,
+    b: 2,
+    c: 3
+};
+obj = Object.create(obj, {
+    "a": {
+        value: 1,
+        configurable: true,
+        enumerable: false,
+        writable: true
     }
+});
+
+for(var i in obj) {
+    console.log(i); //输出b，c 不会输出a，a已经设置不被枚举
+}
+```
 
 ### writable可修改
 
 对象属性是否可修改,flase为不可修改，默认值为true 
 
 设置不可修改后，可以理解为常量，不能对属性值进行修改
->
-
-    var obj = Object.create({},{
-        "a":{
-          value :1,
-          configurable :true,
-          enumerable :true,
-          writable:false
-        },
-    });
-    obj.a = 2;//普通模式不会抛异常，严格模式会抛出TypeError
-    console.log(obj.a);//输出1 ，不可被修改
+```js
+var obj = Object.create({},{
+    "a":{
+      value :1,
+      configurable :true,
+      enumerable :true,
+      writable:false
+    },
+});
+obj.a = 2;//普通模式不会抛异常，严格模式会抛出TypeError
+console.log(obj.a);//输出1 ，不可被修改
+```
 
 ### value属性值
 任何属性的值都保存在value中，哪怕值是一个函数。
@@ -766,11 +781,11 @@ var spy = {
 };
 Object.defineProperty(spy,"sex",{
 	get: function () {
-		console.log("get");
+		console.log("调用get函数");
 		return this.name;
 	},
 	set: function (val) {
-    console.log("set");
+    console.log("调用set函数");
 		return val;
 	}
 })
@@ -780,32 +795,44 @@ console.log(spy.sex = "feme"); //调用set函数
 ```
 
 ## <a name="typeof instanceof">typeof 、instanceof 、in</a>
-typeof 
->
-    typeof 能够正确的判断基本数据类型，但是除了 null, typeof null输出的是对象
-    在使用 typeof 运算符时采用引用类型存储值会出现一个问题，无论引用的是什么类型的对象，它都返回 “object”。
+#### typeof 
+typeof 能够正确的判断基本数据类型，但是除了 null, typeof null输出的是对象  
+在使用 typeof 运算符时采用引用类型存储值会出现一个问题，无论引用的是什么类型的对象，它都返回 “object”。
 
 |  | typeof |
 :-:| :-:|
 | Boolean    | "boolean"
 | Number     | "number"
 | String     | "string"
-| Object     | "object"
-| Null       | "object"
 | Undefined  | "undefined"
+| Null       | "object"
 | Symbol     | "symbol"
+| Object     | "object"
+| BigInt     | "bigint"
 | Function   | "function"
 
+`typeof原理`： 不同的对象在底层都表示为二进制，在Javascript中二进制前（低）三位存储其类型信息。
+* 000: 对象
+* 010: 浮点数
+* 100：字符串
+* 110： 布尔
+* 1： 整数
 
-instanceof
+但是，undefined 和 null 有点特殊的
+null：所有机器码均为0
+undefined：用 −2^30 整数来表示
+
+由于null的二进制表示全为0，自然前三位也是0，所以执行typeof时会返回"object"。
+
+#### instanceof
+instanceof 是通过原型链判断的，判断实例对象在其原型链中是否存在一个构造函数的 prototype 属性。  
+
+A instanceof B, 在A的原型链中层层查找，是否有原型等于 B.__proto__，如果一直找到A的原型链的顶端(null;即 Object.prototype.__proto__),仍然不等于B.prototype，那么返回false，否则返回true.
+
 >
     语法：object instanceof constructor
         （要检测的对象）    （某个构造函数）
     描述：instanceof 运算符用来检测 constructor.prototype 是否存在于参数 object 的原型链上。
-
->  
-    instanceof 是通过原型链判断的，判断实例对象在其原型链中是否存在一个构造函数的 prototype 属性。  
-    A instanceof B, 在A的原型链中层层查找，是否有原型等于 B.__proto__，如果一直找到A的原型链的顶端(null;即 Object.prototype.__proto__),仍然不等于B.prototype，那么返回false，否则返回true.
 
 
 >
@@ -813,9 +840,9 @@ instanceof
     p = new P()
     console.log(p instanceof P) //true    
 
-in
+#### in
+in 操作符会检查属性是否存在对象及其 [[Prototype]] 原型链中。检查的是某个属性名是否存在
 >
-    操作符会检查属性是否存在对象及其 [[Prototype]] 原型链中。检查的是某个属性名是否存在
     var obj = {a:1}
     Object.prototype.b = 2
     'a' in obj // true
@@ -825,15 +852,15 @@ in
     对于数组来说，4 in [2, 4, 6] 结果返回 false，因为 [2, 4, 6] 这个数组中包含的属性名是0，1，2 ，没有4。
 
 
-hasOwnProperty()
+#### hasOwnProperty()
+hasOwnProperty 只会检查属性是否存在对象中，不会向上检查其原型链。
 >
-    只会检查属性是否存在对象中，不会向上检查其原型链。
     var obj = {a:1}
     Object.prototype.b = 2
     obj.hasOwnProperty('a') // true
     obj.hasOwnProperty('b') // false
 
-    所有普通对象都可以通过 Object.prototype 的委托来访问 hasOwnProperty(...)，但是对于一些特殊对象（ Object.create(null) 创建）没有连接到 Object.prototype，这种情况必须使用 Object.prototype.hasOwnProperty.call(obj, "a")，显示绑定到 obj 上。
+所有普通对象都可以通过 Object.prototype 的委托来访问 hasOwnProperty(...)，但是对于一些特殊对象（ Object.create(null) 创建）没有连接到 Object.prototype，这种情况必须使用 Object.prototype.hasOwnProperty.call(obj, "a")，显示绑定到 obj 上。
 
 
 ## <a name="异步编程有哪几种方法">异步编程有哪几种方法</a>
@@ -845,18 +872,16 @@ hasOwnProperty()
 ### 回调函数
 >
     如果f1是一个很耗时的任务，可以考虑改写f1，把f2写成f1的回调函数。
-    　　function f1(callback){
-    　　　　setTimeout(function () {
-    　　　　　　callback();// f1的任务代码
-    　　　　}, 1000);
-    　　}
-    执行代码就变成下面这样：f1(f2);
+　　function f1(callback){
+　　　　setTimeout(function () {
+　　　　　　callback();// f1的任务代码
+　　　　}, 1000);
+　　}
+    f1(f2); // 执行代码
  
 优点：简单、容易理解和部署
 
-
-缺点：
-回调地狱，不能用 try catch 捕获错误，不能 return；
+缺点：回调地狱，不能用 try catch 捕获错误，不能 return；
 
 
 ### 事件监听
@@ -876,41 +901,17 @@ hasOwnProperty()
 
 发布订阅模式，有一个事件池，用来给你订阅(注册)事件，当你订阅的事件发生时就会通知你，然后你就可以去处理此事件
 
-[designMode](/details/designMode#发布订阅模式.md)
-
-### Promises
->
-
-    function fn(arg) {
-      return new Promise((resolve, reject) => {
-        if(true) {
-          resolve(arg())
-        } else {
-          reject('err')
-        }
-      })
-    }
-    function fn1(){
-      console.log('fn1')
-      return 'fn1'
-    }
-    function fn2(){
-      console.log('fn2')
-      return 'fn2'
-    }
-    fn(fn1).then(fn2).catch((err) => {
-      console.log('err:',err)
-    });
-
-    
-
-    * 一旦状态改变，就不再变化，任何时候都可以得到这个结果。
-
-每一个异步任务返回一个Promise对象，该对象有一个then方法，允许指定回调函数
+[发布订阅模式](/details/设计模式/发布订阅模式.md)
 
 ### Generator
+[Generator](/details/JS/Generator.md)
+
+### Promise
+[Promise](/details/JS/Promise.md)
 
 ### async await
+[async_await](/details/JS/async_await.md)
+
 >
     async function asyncFuns() {
       await fn1()
@@ -934,7 +935,6 @@ hasOwnProperty()
 
     首先函数 b 先执行，在执行到 await 10 之前变量 a 还是 0，因为 await 内部实现了 generator ，generator会保留堆栈中东西，所以这时候a = 0被保存了下来；
     因为 await 是异步操作，后来的表达式不返回 Promise 的话，就会包装成 Promise.reslove(返回值)，然后会去执行函数外的同步代码；
-
 
 
 ## <a name="事件委托">事件委托(代理)delegate</a>
@@ -2328,6 +2328,5 @@ WebAssembly 是一种新的字节码格式，主流浏览器都已经支持 WebA
     加载快：由于文件体积小，再加上无需解释执行，WebAssembly 能更快的加载并实例化，减少运行前的等待时间；
     兼容性问题少：WebAssembly 是非常底层的字节码规范，制订好后很少变动，就算以后发生变化,也只需在从高级语言编译成字节码过程中做兼容。可能出现兼容性问题的地方在于 JS 和 WebAssembly 桥接的 JS 接口。
 
-## <a name=""></a>
 
 

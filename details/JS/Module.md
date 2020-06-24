@@ -213,7 +213,9 @@ define(function(require, exports, module){
 ### ES modules
 ES Modules 是 ECMAScript 2015（ES6）中定义的模块系统
 
-exprot：导出模块  
+
+
+#### exprot：导出模块  
 export 可以导出的是一个对象中包含的多个属性，方法。(在一个文件或模块中`可存在多个`)  
 export default  只能导出一个可以不具名的对象。(在一个文件或模块中`仅可存在一个`)
 * 默认导出：export default Person(导入时可指定模块任意名称，无需知晓内部真实名称)  
@@ -230,31 +232,26 @@ export 1;
 var m = 1;
 export m;
 
-// 报错
-function f() {}
-export f;
 ```
-上面代码，因为没有提供对外的接口。输出的都为值 1，不是接口
+上面两种写法都会报错，因为没有提供对外的接口。第一种写法直接输出 1，第二种写法通过变量m，还是直接输出 1。1只是一个值，不是接口。
 
 ```js
 // 正确写法一
 export var m = 1;
-export function f() {};
 
 // 正确写法二
 var m = 1;
-function f() {};
-export {m， f};
+export {m};
 
 // 正确写法三, 改名导出
 var m = 1;
-function f() {};
-export {m as M, f};
+export {m as M};
 ```
 
 
-import：导入模块 //动态加载只有在用到的时候才会去加载 
->import命令输入的变量都是只读的，因为它的本质是输入接口。
+#### import：导入模块 //动态加载只有在用到的时候才会去加载 
+`import命令输入的变量都是只读的，因为它的本质是输入接口。`也就是说，不允许在加载模块的脚本里面，改写接口。
+
 * 默认引入：import Person from "person.js"  
 * 整体引入：import * as Person from "person.js"  
 * 按需引入：import { age, name, sex } from "person.js"  
@@ -291,9 +288,12 @@ import {a, b} from './index.js'
 
 //除了指定加载某个输出值，还可以使用整体加载，即用星号（*）指定一个对象，所有输出值都加载在这个对象上面。
 import  * as name  from './index.js'
+//name.a, name.b
 ```
 
-复合模式：export命令和import命令结合在一起写成一行，变量实质没有被导入当前模块，相当于对外转发接口，导致当前模块无法直接使用其导入变量
+#### 复合模式：
+export命令和import命令结合在一起写成一行，变量实质没有被导入当前模块，相当于对外转发接口，导致当前模块无法直接使用其导入变量
+
 * 默认导入导出：export { default } from "person"
 * 整体导入导出：export * from "person"
 * 按需导入导出：export { age, name, sex } from "person"
@@ -311,6 +311,7 @@ export { foo, bar };
 当前模块不能直接使用foo和bar。
 
 
+#### 使用
 使用1  type="module"
 ```js
  <script type="module">
@@ -335,7 +336,7 @@ browserify lib/app.js -o lib/bundle.js // 使用Browserify编译js
 ```
 
 
-ES6 模块与 CommonJS 模块的差异
+### ES6 模块与 CommonJS 模块的差异
 * CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。  
 * CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。
 
@@ -351,10 +352,14 @@ ES6 模块与 CommonJS 模块的差异
 
 * ES6 在语言标准的层面上，实现了模块功能，而且实现得相当简单，完全可以取代 CommonJS 和 AMD 规范，成为浏览器和服务器通用的模块解决方案。
 
+CommonJs模块和ES6块的区别
+
+* CommonJs模块输出的是一个值的拷贝，也就是说，一旦输出一个值，模块内部的变化就影响不到这个值。ES6 模块是动态引用，并且不会缓存值，模块里面的变量绑定其所在的模块。
+
+* CommonJs模块是运行时加载，ES6模块是编译时输出接口。
+
 [代码](/details/模块化/ES6)
-
-
-# 
+# async defer
 `<script src="index.js" defer async></script>`  
 defer是“渲染完再执行”(要等到整个页面在内存中正常渲染结束（DOM 结构完全生成，以及其他脚本执行完成）)，多个defer脚本 按顺序加载  
 

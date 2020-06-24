@@ -51,9 +51,6 @@
 * <a href="#CSS hack">CSS hack</a>
 
 
-* <a href="#移动开发踩坑">移动开发踩坑</a>
-* <a href="#移动端页面调试">移动端页面调试</a>
-
 * <a href="#一些css属性及其他">**一些css属性及其他**</a>
 
   * <a href="#注意事项">注意事项</a>
@@ -297,10 +294,10 @@ css2伪类和伪元素都是用单冒号，所有的浏览器都兼容，
 
 | 值 |	说明
 |:-|:-|
-| none	|设置Content，如果指定成Nothing
-| normal	|设置content，如果指定的话，正常，默认是"none"（该是| nothing）
-| string	|设置Content到你指定的文本
-| attr(attribute)	| 可以读取该元素的属性值如 attr(href) , attr(title) , 或者自定义的属性值如 attr(data-content)。
+| none	|默认值
+| normal	|正常
+| string	|指定的文本
+| attr(attribute)	| 读取该元素的属性值如 attr(href) , attr(title) , 或者自定义的属性值如 attr(data-content)。
 | url(url)	| 设置某种媒体（图像，声音，视频等内容）
 | counter|	设定计数器内容(序列只是 1、2、3、4)
 | counters|	设定计数器内容（可自定义序列）
@@ -308,7 +305,7 @@ css2伪类和伪元素都是用单冒号，所有的浏览器都兼容，
 | close-quote	|添加闭合引号
 | no-open-quote	|移除开始引号
 | no-close-quote	| 移除闭合引号
-| inherit	| 指定的content属性的值，应该从父元素继承
+| inherit	| 从父元素继承
 
 * 特点：
 
@@ -338,69 +335,75 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
 >第一个参数是counter-increment定义的属性值,用来告诉该文档插入的计数器标识符名称是什么。
 >第二个是用来设置计数器的风格，有点类似于list-style-type。默认情况之下取值为十制，但你也可以重置这个样式风格，比如upper-roman或者upper-alpha等。
 
->
-    ol {
-      counter-reset: name 3;
-      list-style-type: none;
-      /* display: none; */
-      visibility: visible;
-    }
-    li::before {
-      counter-increment: name ; 
-      content: counters(name, ".") " "; 
-    }
+```html
+<style>
+  ol {
+    counter-reset: name 0;
+    list-style-type: none;
+    /* display: none; */
+    visibility: visible;
+  }
+  li::before {
+    counter-increment: name ; 
+    /* counter-increment: name 2;  */
+    content: counters(name, ".") " "; 
+  }
+</style>
+<ol>
+  <li>
+    a
     <ol>
+      <li>aa</li>
       <li>
-        a
+        aaa
         <ol>
-          <li>b</li>
-          <li>
-            c
-            <ol>
-              <li>c1</li>
-              <li>c2</li>
-            </ol>
-          </li>
+          <li>aaaa</li>
+          <li>aaaa</li>
         </ol>
       </li>
     </ol>
+  </li>
+  <li>b</li>
+  <li>c</li>
+</ol>
+```    
 ![counter](/img/counter.jpg)
 
 
 ## <a name="CSS书写顺序、规范">CSS书写顺序、命名规范</a>[![bakTop](./img/backward.png)](#top)
 
-* 书写顺序
->
-    1.位置属性(position, top, right, z-index,display, float等)  
-    2.大小(width, height, padding, margin,border)
-    3.文字系列(font, line-height, letter-spacing,color- text-align等)
-    4.背景 颜色(background, color等)
-    5.其他(animation, transition等)
+#### 书写顺序
+*  位置属性(position, top, right, z-index,display, float等)  
+*  大小(width, height, padding, margin,border)
+*  文字系列(font, line-height, letter-spacing,color- text-align等)
+*  背景 颜色(background, color等)
+* 其他(animation, transition等)
 
-* 书写规范
->
-    属性缩写
-    去掉小数点前的 0
-    使用单引号
-    避免使用复杂的选择器，层级越少越好 建议选择器的嵌套最好不要超过三层
-    尽量使用简写属性(padding,margin,background,font...)
-    声明结束都应该带一个分号
-    颜色尽量用三位字符表示 #AAA
-    除16进制颜色和字体设置外，CSS文件中的所有的代码都应该小写
+#### 书写规范
+* 属性缩写
+* 去掉小数点前的 0
+* 使用单引号
+* 避免使用复杂的选择器，层级越少越好 建议选择器的嵌套最好不要* 超过三层
+* 尽量使用简写属性(padding,margin,background,font...)
+* 声明结束都应该带一个分号
+* 颜色尽量用三位字符表示 #AAA
+* 除16进制颜色和字体设置外，CSS文件中的所有的代码都应该小写
 
-* 命名规范
+#### 命名规范
 
 正确命名 CSS 中的类名可以让你的代码变得更易理解和维护
 
-连字符（-） .box-left{}  
+* 连字符（-） .box-left{}  
 
-BEM  
->B 代表区块  
->E 代表元素  
->M 代表修饰符  
->>.letter-top-red
+* BEM  
+  >B 代表区块  
+  >E 代表元素  
+  >M 代表修饰符 
+  .block{}
+  .block__element{}
+  .block--modifier{}
 
-使用 js- 类名:用这种方法来表明这个 DOM 元素和 JavaScript 代码的关联。
+* 使用 js- 类名:用这种方法来表明这个 DOM 元素和 JavaScript 代码的关联。
 >
     <div class="site-navigation js-site-navigation">
     </div>
@@ -1745,137 +1748,6 @@ format()作用
     </style>
 
 
-# <a name="移动开发踩坑">移动开发踩坑</a>[![bakTop](./img/backward.png)](#top)
-* a链接点击高亮  
-  ```css
-  -webkit-tap-highlight-color: rgba(0,0,0,0);  
-  tap-highlight-color: rgba(0, 0, 0, 0); 
-  ```
-
-* css属性touch-action:none;  
-  >
-      该属性会导致安卓页面无法滚动，慎用!
-
-* iOS 禁止识别长串数字为电话
-  ```html
-  <meta name="format-detection" content="telephone=no" />
-  ```
-
-* IOS局部滚动不顺畅(粘手)
-  ```css
-  html,body{
-    -webkit-overflow-scrolling: touch;
-    overflow-scrolling: touch;
-    overflow-y: visible;
-  }
-  ```
-
-* IOS 去除手机端input输入框的内阴影
-  ```css
-  input,teaxtarea{ 
-      -webkit-appearance: none; 
-  }
-  ```
-
-* iOS input输入框光标错位  
-  >
-      fixed定位引起的，改成absolute就解决了
-
-* IOS 点击input不聚焦问题,调不起键盘
-  ```js
-  js强制性给加上点击事件，点击后给input框聚集光标。
-  cilckTextarea(){
-      document.getElementsByClassName('cont-inp')[0].focus();
-  },
-  ```
-
-* iOS 取消input在输入的时候英文首字母的默认大写
-  ```html
-    <input type="text" autocapitalize="none">
-  ```
-
-* IOS 微信打开网页键盘弹起后页面上滑，导致弹框里的按钮响应区域错位  
-  `手动把滚动条滚到底部`如：
-  ```js
-  import Vue from 'vue';
-  Vue.directive('blur', {
-      'bind'(el) {
-          el.addEventListener("click", function(){
-              window.scrollTo(0,0);
-          })
-      }
-  }); 
-  //在点击页面提交按钮的时候，把滚动条滚到底部就OK了
-
-  ```
-
-* IOS日期显示问题  
-  IOS版本（IOS5及以下）中，对以“-”间隔的字符串时间格式的解析是不成功的
-
-  传入 "2019-12-31"就会呈现出 NaN-NaN-NaN，而其他IOS版本及安卓系统都是没问题的。
-
-  把以"-"间隔的事件字符串替换成以"/"即可
-
-* iconfont 字体某项情况里面加载不出来
-
-  ```css
-  引入iconfont字体的时候，需要按照顺序把字体依次引入
-  移动端字体图标加载顺序应该为 eto,svg,woff,ttf
-  @font-face {
-      font-family: "djicon";
-      src: url('./iconfont.eot'); /* IE9*/
-      src: url('./iconfont.svg#iconfont') format('svg'), /* iOS 4.1- */
-      url('./iconfont.woff') format('woff'), /* chrome、firefox */
-      url('./iconfont.ttf') format('truetype'); /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-  }
-  // 参考文档：https://www.cnblogs.com/Megasu/p/4305116.html
-  ```
-
-* 上传图片，iPhone7 iPhone7p在上传图片的时候，传不过去图片的name  
-  ```js
-  手动添加图片name
-  let data = new FormData();
-  data.append("fileName", file[0],file[0].name); 
-
-  ```
-
-* 一些情况下对非可点击元素如(label,span)监听click事件，ios下不会触发
-  ```css
-  cursor: pointer;
-  ```
-
-* 禁用元素的默认指针事件
-  ```css
-  pointer-events: none;
-  ```
-
-# <a name="移动端页面调试">移动端页面调试</a>[![bakTop](./img/backward.png)](#top)
-
-* [vconsole--使用教程](https://github.com/Tencent/vConsole/blob/dev/doc/tutorial_CN.md)
-
-npm 安装使用   
-```js
-npm install vconsole
-let vConsole = new VConsole(option);
-```
-
-[CDN引入](https://www.bootcdn.cn/vConsole/)
-```js
-<script src="https://cdn.bootcss.com/vConsole/3.3.4/vconsole.min.js"></script>
-```
-*  [Weinre远程调试工具](https://segmentfault.com/a/1190000010017457)
-[移动端开发调试工具神器--Weinre使用方法](https://blog.csdn.net/seanxwq/article/details/80763861)
-
-```js
-本地全局安装weinre , 命令行：npm install -g weinre
-在本地启动一个检测器：weinre --httpPort 8080 --boundHost 1.2.3.4 （IP为本地IP地址）
-在浏览器访问此地址：http://1.2.3.4:8080
-把script，放在你需要调试的页面里：
-<script src="http://1.2.3.4:8080/target/target-script-min.js#anonymous"></script>
-打开链接：http://1.2.3.4:8080/client/#anonymous
-
-```
-
 
 # <a name="一些css属性及其他">**一些css属性及其他**</a>[![bakTop](./img/backward.png)](#top)
 
@@ -2144,27 +2016,22 @@ direction: rtl | ltr
     :-ms-input-placeholder { color: ; }/*Internet Explorer 10-11 */
 
 ## <a name="input自动填充上背景色">input自动填充上背景色</a>[![bakTop](./img/backward.png)](#top)
+* 
 >
-    input:-webkit-autofill{
-      box-shadow: 0 0 0px 1000px white inset !important;
+    :-webkit-autofill{
+      box-shadow: 0 0 0px 1000px #fff inset !important;
     }
-    select:-webkit-autofill{
-      box-shadow: 0 0 0px 1000px white inset !important;
-    }
-    textarea:-webkit-autofill{
-      box-shadow: 0 0 0px 1000px white inset !important;
-    } 
 
 * autocomplete="off"，直接关闭自动填充
 
 ## <a name="取消部分浏览器数字输入控件的操作按钮">取消部分浏览器数字输入控件的操作按钮</a>[![bakTop](./img/backward.png)](#top)
 ```css
-input[type="number"] {
+input[type="number"] { /* firefox */
   -moz-appearance: textfield;
 }
 
 input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
+input[type="number"]::-webkit-outer-spin-button { /* chrome */
   margin: 0;
   -webkit-appearance: none;
 }
@@ -2172,19 +2039,23 @@ input[type="number"]::-webkit-outer-spin-button {
 
 ## <a name="selection">selection 改变选中内容的字体、背景颜色</a>[![bakTop](./img/backward.png)](#top)
 ```css
-    ::selection { 
-        background: #fff; 
-        color: #333; 
-    } 
-    ::-webkit-selection { 
-        background: #fff; 
-        color: #333; 
-    }
-    ::-moz-selection { 
-        background: #fff; 
-        color: #333; 
-    } 
+::-moz-selection { 
+  background-color: red; 
+  color: #333; 
+} 
+::-webkit-selection { 
+  background-color: red; 
+  color: #333; 
+}
+::selection { 
+  background-color: red; 
+  color: #333; 
+}
 ```
+
+意外发现 
+
+background-color为 #fff 或者 transparent 时，文本不可选中
 
 
 ## <a name="user-select">user-select 文本是否可选中</a>[![bakTop](./img/backward.png)](#top)
@@ -2219,15 +2090,12 @@ img {
 ```
 
 ## <a name="-webkit-text-size-adjust">-webkit-text-size-adjust: none</a>[![bakTop](./img/backward.png)](#top)
->
 
-    Chrome 中文界面下默认会将小于 12px 的文本强制按照 12px 显示；
+Chrome 中文界面下默认会将小于 12px 的文本强制按照 12px 显示；
 
-    可关闭字体大小自动调整功能; 
+可关闭字体大小自动调整功能; 
 
-    放在body中会导致页面缩放失效,不要把-webkit-text-size-adjust设置为全局或者可继承的
-
-    
+放在body中会导致页面缩放失效,不要把-webkit-text-size-adjust设置为全局或者可继承的
 
 
 ## <a name="为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"[![bakTop](./img/backward.png)](#top)
@@ -2261,10 +2129,10 @@ img {
 
 例如：要禁用按钮上的默认指针事件
 ```css
-    .button-disabled {
-      opacity: .5;
-      pointer-events: none;
-    }
+.button.disabled {
+  opacity: .5;
+  pointer-events: none;
+}
 ```
 
 ## <a name="透明方格的绘制">透明方格的绘制</a>[![bakTop](./img/backward.png)](#top)
