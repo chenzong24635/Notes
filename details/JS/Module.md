@@ -336,11 +336,8 @@ browserify lib/app.js -o lib/bundle.js // 使用Browserify编译js
 ```
 
 
-### ES6 模块与 CommonJS 模块的差异
-* CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。  
-* CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。
 
-第二个差异是因为 CommonJS 加载的是一个对象（即module.exports属性），该对象只有在脚本运行完才会生成。而 ES6 模块不是对象，它的对外接口只是一种静态定义，在代码静态解析阶段就会生成。
+
 
 ### 总结
 
@@ -352,13 +349,17 @@ browserify lib/app.js -o lib/bundle.js // 使用Browserify编译js
 
 * ES6 在语言标准的层面上，实现了模块功能，而且实现得相当简单，完全可以取代 CommonJS 和 AMD 规范，成为浏览器和服务器通用的模块解决方案。
 
-CommonJs模块和ES6块的区别
+```CommonJs模块和ES6块的区别```
 
 * CommonJs模块输出的是一个值的拷贝，也就是说，一旦输出一个值，模块内部的变化就影响不到这个值。ES6 模块是动态引用，并且不会缓存值，模块里面的变量绑定其所在的模块。
 
 * CommonJs模块是运行时加载，ES6模块是编译时输出接口。
+  >
+      是因为 CommonJS 加载的是一个对象（即module.exports属性），该对象只有在脚本运行完才会生成。
+      而 ES6 模块不是对象，它的对外接口只是一种静态定义，在代码静态解析阶段就会生成。
 
 [代码](/details/模块化/ES6)
+
 # async defer
 `<script src="index.js" defer async></script>`  
 defer是“渲染完再执行”(要等到整个页面在内存中正常渲染结束（DOM 结构完全生成，以及其他脚本执行完成）)，多个defer脚本 按顺序加载  

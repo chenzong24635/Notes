@@ -1429,6 +1429,9 @@ npm i -D  webpack-merge // 合并配置
 新增 webpack.prod.js -生产环境配置文件
 
 
+# [Webpack优化](/details/WEB性能优化/Webpack优化.md)
+
+
 # 魔法注释
 ```js
 import(/* webpackChunkName: 'posts' */'./posts/posts')
@@ -1504,3 +1507,4 @@ module.exports = {
 
 
 注意，当使用contenthash时，如果仅修改js文件，css文件的hash不会变化，但是仅修改css的文件，js文件的hash也会变化。
+
