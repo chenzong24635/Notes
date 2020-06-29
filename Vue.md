@@ -8,7 +8,7 @@
 [Vue 插件-组件](/details/Vue/插件-组件.md)
 
 
-
+[Vue开发技巧+性能优化](/details/Vue/Vue开发技巧+性能优化.md)
 <!-- [Vue源码阅读 - 依赖收集原理](https://segmentfault.com/a/1190000015562213) -->
 
 # 
@@ -34,7 +34,7 @@
 * <a href="#解决对象新增属性不能响应的问题"> vm.$set() 解决对象新增属性不能响应的问题</a>
 * <a href="#Vue检测数组的变动">Vue检测数组的变动</a>
 * <a href="#Vue的数据为什么频繁变化但只会更新一次">Vue的数据为什么频繁变化但只会更新一次</a>
-* <a href="#$nextTick">$nextTick</a> 
+* <a href="#nextTick">nextTick</a> 
 * <a href="#组件中key作用">组件中key作用</a>
 * <a href="#组件中 data 为什么是一个函数">组件中 data 为什么是一个函数</a>
 * <a href="#slot">slot插槽</a>
@@ -76,6 +76,8 @@
 Vue 是一套用于构建用户界面的渐进式MVVM框架
 
 Vue 采用自底向上增量开发的设计,Vue的核心库只关心视图渲染，且由于渐进式的特性，Vue便于与第三方库或既有项目整合。
+
+Vue没有完全遵循 MVVM 模型，但是 Vue 的设计也受到了它的启发。因此在文档中经常会使用 vm (ViewModel 的缩写) 这个变量名表示 Vue 实例。
 
 Vue 完全有能力驱动采用单文件组件和Vue生态系统支持的库开发的复杂单页应用。
 
@@ -200,6 +202,142 @@ SEO是一种通过了解搜索引擎的运作规则（如何抓取网站页面�
 ![服务端渲染](./img/Vue/服务端渲染.png) 
 ![客户端渲染](./img/Vue/客户端渲染.png)
 
+
+# <a name="生命周期">生命周期</a>[![bakTop](./img/backward.png)](#top)  
+[官网-生命周期钩子](https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%92%A9%E5%AD%90)
+
+[Vue2.0生命周期](https://segmentfault.com/a/1190000008010666)  
+
+[Vue父子组件生命周期执行顺序及钩子函数的个人理解](https://www.cnblogs.com/yuliangbin/p/9348156.html)
+
+[「进击的前端工程师」从源码解读Vue生命周期，让面试官对你刮目相看](https://juejin.im/post/5d1b464a51882579d824af5b)
+
+
+## 生命周期
+Vue 实例有一个完整的生命周期，也就是从开始创建、初始化数据、编译模版、挂载 Dom -> 渲染、更新 -> 渲染、卸载等一系列过程，我们称这是 Vue 的生命周期,有时也叫它们生命周期钩子。
+
+钩子函数:  
+>
+    钩子函数是Windows消息处理机制的一部分，通过设置“钩子”，应用程序可以在系统级对所有消息、事件进行过滤，访问在正常情况下无法访问的消息。钩子的本质是一段用以处理系统消息的程序，通过系统调用，把它挂入系统。---百度
+
+[JavaScript：理解事件、事件处理函数、钩子函数、回调函数](https://www.jianshu.com/p/a0c580ed3432)
+
+一般认为，钩子函数就是回调函数的一种，其实还是有差异的，差异地方就是：触发的时机不同。
+
+钩子函数 Hook
+//在按钮点击时候立即执行钩子函数
+```js
+let btn = document.getElementById("btn");
+btn.onclick = function(){
+    console.log(this.onclick); //function
+}
+```
+回调函数：  
+//给按钮绑定了一个监听器，消息捕获的过程不能参与，而在捕获执行完毕的时候，回调函数才会执行。
+```js
+let btn = document.getElementById("btn");
+btn.addEventListener("click",function(){
+  console.log(this.onclick);//null
+});
+```
+
+钩子函数在捕获消息的第一时间就执行，而回调函数是捕获结束时，最后一个被执行的。
+钩子函数和回调函数都是事件处理函数
+
+----
+
+![生命周期](/img/Vue/lifeCycle.jpg)
+
+## 各个生命周期作用：
+
+* beforeCreated阶段: 实例创建前发生；数据对象data和vue实例的挂载元素$el都为undefined，还未初始化。 
+
+* created阶段: 实例创建完成后发生；完成data初始化，$el还没有。此时无法与操作DOM，但可以通过vm.$nextTick来访问。
+
+* beforeMount阶段：挂载前发生；完成了data和$el初始化，但还是挂载之前为虚拟的dom节点，data.message还未替换。 此时也可以对数据进行更改，但不会触发updated。
+
+* mounted阶段：挂载完成后发生；$el挂载完成，data数据渲染。
+
+* beforeUpdate：更新前发生；也就是响应式数据发生更新，虚拟dom重新渲染之前被触发，你可以在当前阶段进行更改数据，不会造成重新渲染。
+
+* updated: 更新完成后发生；当前阶段组件Dom已完成更新。`避免在此期间更改数据，因为这可能会导致无限循环的更新。`
+
+* activated: keep-alive组件被激活时调用
+
+* deactivated: keep-alive组件被停用时调用
+
+* beforeDestroy: 实例销毁前发生；此时，实例仍然完全可用。可以在这时进行善后收尾工作，比如清除计时器。
+
+* destroyed：销毁完成后发生；对data的改变不会再触发周期函数，说明此时vue实例已经解除了事件监听以及和dom的绑定，但是dom结构依然存在
+
+* errorCaptured： 当捕获一个来自子孙组件的错误时被调用
+
+
+## 生命周期的一些使用方法：
+
+* beforecreate: 可以在这加个loading事件，在加载实例时触发  
+
+* created: 初始化完成时的事件写在这里，如在这结束loading事件，异步请求也适宜在这里调用  
+
+* mounted: 挂载元素，获取到DOM节点  
+
+* updated: 任何数据的更新,如果要做统一的业务逻辑处理使用此钩子函数  
+
+* beforeDestroy: 页面退出前操作(如：确认是否退出登录)
+
+* Vue的所有生命周期函数都是自动绑定到this的上下文上。所以，你这里使用箭头函数的话，就会出现this指向的父级作用域，就会报错
+
+## 在哪个生命周期内调用异步请求？
+可以在钩子函数 created、beforeMount、mounted 中进行调用，因为在这三个钩子函数中，data 已经创建，可以将服务端端返回的数据进行赋值。  
+推荐在 created 钩子函数中调用异步请求，因为在 created 钩子函数中调用异步请求有以下优点：
+* 能更快获取到服务端数据，减少页面 loading 时间；
+* ssr 只支持 beforeCreate和created 钩子函数，所以放在 created 中有助于一致性；
+
+## 调用钩子的顺序 
+```js
+name ->  
+components ->  
+extend/mixins ->  
+props -> 
+data ->  
+computed -> 
+watch ->  
+filters ->  
+beforeCreated -> created ->  
+beforeMount -> mounted ->  
+beforeUpdate -> updated ->  
+activated -> deactivate ->  
+beforeDestroy -> destroyed
+```
+
+
+
+## 父子组件生命周期调用顺序？
+
+加载渲染过程
+>
+    父 beforeCreate -> 父 created -> 父 beforeMount -> 
+    子 beforeCreate -> 子 created -> 子 beforeMount -> 子 mounted -> 
+    父 mounted
+
+
+子组件更新过程
+>
+    父 beforeUpdate -> 
+    子 beforeUpdate -> 子 updated -> 
+    父 updated
+
+
+父组件更新过程
+>
+    父 beforeUpdate ->  父 updated
+
+
+销毁过程
+>
+    父 beforeDestroy -> 
+    子 beforeDestroy -> 子 destroyed -> 
+    父 destroyed
 
 # <a name="Vue事件绑定原理">Vue事件绑定原理</a>[![bakTop](./img/backward.png)](#top)  
 
@@ -391,143 +529,7 @@ methods: {
   },
 },
 ```
-[Vue开发技巧+性能优化](/details/Vue/Vue开发技巧+性能优化.md/#自定义组件双向绑定)
-
-# <a name="生命周期">生命周期</a>[![bakTop](./img/backward.png)](#top)  
-[官网-生命周期钩子](https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%92%A9%E5%AD%90)
-
-[Vue2.0生命周期](https://segmentfault.com/a/1190000008010666)  
-
-[Vue父子组件生命周期执行顺序及钩子函数的个人理解](https://www.cnblogs.com/yuliangbin/p/9348156.html)
-
-[「进击的前端工程师」从源码解读Vue生命周期，让面试官对你刮目相看](https://juejin.im/post/5d1b464a51882579d824af5b)
-
-
-## 生命周期
-Vue 实例有一个完整的生命周期，也就是从开始创建、初始化数据、编译模版、挂载 Dom -> 渲染、更新 -> 渲染、卸载等一系列过程，我们称这是 Vue 的生命周期,有时也叫它们生命周期钩子。
-
-钩子函数:  
->
-    钩子函数是Windows消息处理机制的一部分，通过设置“钩子”，应用程序可以在系统级对所有消息、事件进行过滤，访问在正常情况下无法访问的消息。钩子的本质是一段用以处理系统消息的程序，通过系统调用，把它挂入系统。---百度
-
-[JavaScript：理解事件、事件处理函数、钩子函数、回调函数](https://www.jianshu.com/p/a0c580ed3432)
-
-一般认为，钩子函数就是回调函数的一种，其实还是有差异的，差异地方就是：触发的时机不同。
-
-钩子函数 Hook
-//在按钮点击时候立即执行钩子函数
-```js
-let btn = document.getElementById("btn");
-btn.onclick = function(){
-    console.log(this.onclick); //function
-}
-```
-回调函数：  
-//给按钮绑定了一个监听器，消息捕获的过程不能参与，而在捕获执行完毕的时候，回调函数才会执行。
-```js
-let btn = document.getElementById("btn");
-btn.addEventListener("click",function(){
-  console.log(this.onclick);//null
-});
-```
-
-钩子函数在捕获消息的第一时间就执行，而回调函数是捕获结束时，最后一个被执行的。
-钩子函数和回调函数都是事件处理函数
-
-----
-
-![生命周期](/img/Vue/lifeCycle.jpg)
-
-## 各个生命周期作用：
-
-* beforeCreated阶段: 实例创建前发生；数据对象data和vue实例的挂载元素$el都为undefined，还未初始化。 
-
-* created阶段: 实例创建完成后发生；完成data初始化，$el还没有。此时无法与操作DOM，但可以通过vm.$nextTick来访问。
-
-* beforeMount阶段：挂载前发生；完成了data和$el初始化，但还是挂载之前为虚拟的dom节点，data.message还未替换。 此时也可以对数据进行更改，但不会触发updated。
-
-* mounted阶段：挂载完成后发生；$el挂载完成，data数据渲染。
-
-* beforeUpdate：更新前发生；也就是响应式数据发生更新，虚拟dom重新渲染之前被触发，你可以在当前阶段进行更改数据，不会造成重新渲染。
-
-* updated: 更新完成后发生；当前阶段组件Dom已完成更新。`避免在此期间更改数据，因为这可能会导致无限循环的更新。`
-
-* activated: keep-alive组件被激活时调用
-
-* deactivated: keep-alive组件被停用时调用
-
-* beforeDestroy: 实例销毁前发生；此时，实例仍然完全可用。可以在这时进行善后收尾工作，比如清除计时器。
-
-* destroyed：销毁完成后发生；对data的改变不会再触发周期函数，说明此时vue实例已经解除了事件监听以及和dom的绑定，但是dom结构依然存在
-
-* errorCaptured： 当捕获一个来自子孙组件的错误时被调用
-
-
-## 生命周期的一些使用方法：
-
-* beforecreate: 可以在这加个loading事件，在加载实例时触发  
-
-* created: 初始化完成时的事件写在这里，如在这结束loading事件，异步请求也适宜在这里调用  
-
-* mounted: 挂载元素，获取到DOM节点  
-
-* updated: 任何数据的更新,如果要做统一的业务逻辑处理使用此钩子函数  
-
-* beforeDestroy: 页面退出前操作(如：确认是否退出登录)
-
-* Vue的所有生命周期函数都是自动绑定到this的上下文上。所以，你这里使用箭头函数的话，就会出现this指向的父级作用域，就会报错
-
-## 在哪个生命周期内调用异步请求？
-可以在钩子函数 created、beforeMount、mounted 中进行调用，因为在这三个钩子函数中，data 已经创建，可以将服务端端返回的数据进行赋值。  
-推荐在 created 钩子函数中调用异步请求，因为在 created 钩子函数中调用异步请求有以下优点：
-* 能更快获取到服务端数据，减少页面 loading 时间；
-* ssr 只支持 beforeCreate和created 钩子函数，所以放在 created 中有助于一致性；
-
-## 调用钩子的顺序 
-```js
-name ->  
-components ->  
-extend/mixins ->  
-props -> 
-data ->  
-computed -> 
-watch ->  
-filters ->  
-beforeCreated -> created ->  
-beforeMount -> mounted ->  
-beforeUpdate -> updated ->  
-activated -> deactivate ->  
-beforeDestroy -> destroyed
-```
-
-
-
-## 父子组件生命周期调用顺序？
-
-加载渲染过程
->
-    父 beforeCreate -> 父 created -> 父 beforeMount -> 
-    子 beforeCreate -> 子 created -> 子 beforeMount -> 子 mounted -> 
-    父 mounted
-
-
-子组件更新过程
->
-    父 beforeUpdate -> 
-    子 beforeUpdate -> 子 updated -> 
-    父 updated
-
-
-父组件更新过程
->
-    父 beforeUpdate ->  父 updated
-
-
-销毁过程
->
-    父 beforeDestroy -> 
-    子 beforeDestroy -> 子 destroyed -> 
-    父 destroyed
+[Vue开发技巧+性能优化#自定义组件双向绑定](/details/Vue/Vue开发技巧+性能优化.md/#自定义组件双向绑定)
 
 
 # <a name="监听组件的生命周期">监听子组件的生命周期</a>[![bakTop](./img/backward.png)](#top)  
@@ -564,6 +566,31 @@ mounted(){
 ```
 其它的生命周期事件，例如： created， updated等都可监听
 
+# <a name="单向数据流">单向数据流</a>[![bakTop](./img/backward.png)](#top)  
+父组件可以向子组件传递数据，但是子组件不能直接修改父组件的状态。  
+防止从子组件意外改变父级组件的状态，从而导致你的应用的数据流向难以理解。
+
+如所有的 prop 都使得其父子 prop 之间形成了一个单向下行绑定  
+当你想要在子组件去修改 props 时，两种情况
+* prop 用来传递一个初始值, 定义一个 data 属性，并用 prop 的值初始化它。
+```js
+props: ['size'],
+data: function () {
+  return {
+    counter: this.size
+  }
+}
+```
+
+* prop 以一种原始的值传入且需要进行转换,定义一个计算属性，处理 prop 的值并返回。
+```js
+props: ['size'],
+computed: {
+  normalizedSize: function () {
+    return this.size.trim().toLowerCase()
+  }
+}
+```
 
 # <a name="computed watch methods">computed watch methods用法，区别</a>[![bakTop](./img/backward.png)](#top)  
 [computed和watch的细节全面分析](https://segmentfault.com/a/1190000012948175)
@@ -813,6 +840,57 @@ vm.items.splice(newLength)
 
 而 new Vue 的实例，是不会被复用的，因此不存在引用对象的问题。
 
+# <a name="修饰符">修饰符</a>[![bakTop](./img/backward.png)](#top)  
+[事件修饰符](https://cn.vuejs.org/v2/guide/events.html#%E4%BA%8B%E4%BB%B6%E4%BF%AE%E9%A5%B0%E7%AC%A6)
+* .native 将原生事件绑定到组件
+* .stop 阻止冒泡
+* .prevent 阻止默认行为
+* .capture 事件捕获
+* .self
+* .once 事件将只会触发一次
+* .passive 事件的默认行为立即触发
+
+使用修饰符时，顺序很重要；相应的代码会以同样的顺序产生。  
+因此，用 v-on:click.prevent.self 会阻止所有的点击，而 v-on:click.self.prevent 只会阻止对元素自身的点击。
+
+[表单修饰符](https://cn.vuejs.org/v2/guide/forms.html#%E4%BF%AE%E9%A5%B0%E7%AC%A6)
+* .lazy v-model在input的 change 事件后同步
+* .number 输入值转为数值类型
+* .trim 过滤输入框的首尾空白符
+
+[.sync 修饰符](https://cn.vuejs.org/v2/guide/components-custom-events.html#sync-%E4%BF%AE%E9%A5%B0%E7%AC%A6)
+
+[按键修饰符](https://cn.vuejs.org/v2/guide/events.html#%E6%8C%89%E9%94%AE%E4%BF%AE%E9%A5%B0%E7%AC%A6)
+
+* .enter
+* .tab
+* .delete 删除和退格键
+* .esc
+* .space
+* .up
+* .down
+* .left
+* .right
+
+
+# <a name="指令">指令</a>[![bakTop](./img/backward.png)](#top)  
+[指令](https://cn.vuejs.org/v2/api/#%E6%8C%87%E4%BB%A4)
+* v-text 渲染文本
+* v-html 渲染html
+* v-show 是否显示
+* v-if 是否渲染
+* v-else 
+* v-else-if
+* v-for 列表循环
+* v-on  绑定事件监听器
+* v-bind  绑定属性
+* v-model 双向绑定
+* v-slot 提供具名插槽或需要接收 prop 的插槽
+* v-pre 跳过此元素和它的子元素的编译
+* v-clock 在编译结束后，才显示
+* v-once 仅渲染一次
+
+
 # <a name="slot">slot插槽</a>[![bakTop](./img/backward.png)](#top)  
 [官网-插槽](https://cn.vuejs.org/v2/guide/components-slots.html)
 
@@ -851,7 +929,7 @@ export default {
 </template>
 ```
 
-### 后备内容
+### 插槽默认值
 有时为一个插槽设置具体的后备 (也就是默认的) 内容是很有用的，它只会在没有提供内容的时候被渲染。
 
 ```html
@@ -877,35 +955,48 @@ export default {
 <template>
   <div>
     <div>我是slotOne组件</div>
-    <slot-one>我是备胎</slot-one>
+    <slot>我是备胎</slot>
   </div>
 </template>
 ```
 
 
 ### 具名插槽 ,作用域插槽
-作用域插槽：让插槽内容能够访问子组件中才有的数据
-
-父组件使用：  
-* slot="header"
+具名插槽: 多个插槽时，便于区分
 * v-slot:header (注意 v-slot 只能添加在 \<template> 上)  
   >v-slot:缩写# ；等同于 #header
+* slot="header" `自 2.6.0 起被废弃`
+
+作用域插槽：让插槽内容能够访问子组件中才有的数据
+* v-slot:header="slotProps" //所有插槽属性
+* slot="header" slot-scope="slotProps" //所有插槽属性 `自 2.6.0 起被废弃`
+* v-slot:header="{user}" //解构插槽属性：user 
 
 ```html
 //父组件
 <template>
   <div>
     我是父组件
-    <slot-one>
+    <slot-one >
       <p>我是普通插槽</p>
-      <template slot="header">
-        <p>我是名为header的slot</p>
+      <template v-slot:header>
+        <p>我是具名插槽 header</p>
       </template>
-      <p slot="footer">我是名为footer的slot</p>
+      <template #footer>
+        <p>我是具名插槽 footer</p>
+      </template>
 
-      <template v-slot:otherSlot="slotProps">
-        访问 otherSlot插槽 的数据：{{slotProps}}
+      <template #main="slotProps">
+        我是作用域插槽main: 用于访问插槽所有数据：{{slotProps}}
       </template>
+      <!-- 解构插槽 Prop -->
+      <!-- <template #main="{user}">
+        我是作用域插槽main: 用于访问插槽某些数据：{{user}}
+      </template> -->
+      <!-- 解构插槽 Prop 重命名 -->
+      <!-- <template #main="{user: newUser}">
+        我是作用域插槽main: 用于访问插槽某些数据：{{newUser}}
+      </template> -->
     </slot-one>
   </div>
 </template>
@@ -1162,105 +1253,9 @@ Vue 异步执行 DOM 更新。Vue在观察到数据变化时并不是直接更�
 
 由于VUE的数据驱动视图更新是异步的，即修改数据的当下，视图不会立刻更新，而是等同一事件循环中的所有数据变化完成之后，再统一进行视图更新。在同一事件循环中的数据变化后，DOM完成更新，立即执行nextTick(callback)内的回调。
 
-# <a name="$nextTick">$nextTick</a>[![bakTop](./img/backward.png)](#top)  
-[简单理解Vue中的nextTick](https://www.jianshu.com/p/a7550c0e164f)
+# <a name="nextTick">nextTick</a>[![bakTop](./img/backward.png)](#top)  
 
-### 原理：
-Vue中DOM更新是异步的，$nextTick是DOM更新完成后执行的
-在下次 DOM 更新循环结束之后执行延迟回调。  
-
-源码路径：src\core\util\next-tick.js
-```js
-if (typeof Promise !== 'undefined' && isNative(Promise)) {
-  ....
-} else if (!isIE && typeof MutationObserver !== 'undefined' && (
-  isNative(MutationObserver) ||
-  // PhantomJS and iOS 7.x
-  MutationObserver.toString() === '[object MutationObserverConstructor]'
-)) {
-  ....
-} else if (typeof setImmediate !== 'undefined' && isNative(setImmediate)) {
-  // setImmediate 从技术上讲，它利用了（宏）任务队列，
-  // 但它仍然是比setTimeout更好的选择。
-  ...
-} else {
-  timerFunc = () => {
-    setTimeout(flushCallbacks, 0)
-  }
-}
-```
-
-nextTick主要使用了宏任务和微任务。根据执行环境分别尝试采用
-  * Promise
-  * MutationObserver
-  * setImmediate
-  * 以上都不支持，最后再使用 setTimeout 
-
-### 使用场景：
-* 在修改数据之后立即使用这个方法，可获取更新后的 DOM数据
-
-* 在Vue生命周期的created()钩子函数进行的DOM操作一定要放在Vue.nextTick()的回调函数中  
-在created()钩子函数执行的时候DOM 其实并未进行任何渲染，而此时进行DOM操作无异于徒劳，所以此处一定要将DOM操作的js代码放进Vue.nextTick()的回调函数中。与之对应的就是mounted()钩子函数，因为该钩子函数执行时所有的DOM挂载和渲染都已完成，此时在该钩子函数中进行任何DOM操作都不会有问题 。
-
-
-### 什么时候需要用的$nextTick()
-如：你在Vue生命周期的created()钩子函数进行的DOM操作一定要放在Vue.nextTick()的回调函数中。原因是在created()钩子函数执行的时候DOM 其实并未进行任何渲染，而此时进行DOM操作无异于徒劳，所以此处一定要将DOM操作的js代码放进Vue.nextTick()的回调函数中。  
-
-而在mounted钩子函数中，因为该钩子函数执行时所有的DOM挂载和渲染都已完成，此时在该钩子函数中进行任何DOM操作都不会有问题，无需Vue.nextTick() 。
-
-```js
-created(){
-  console.log('created',this.$el);
-  this.$nextTick(()=>{
-    console.log('created-nextTick', this.$el);
-  })
-}
-mounted(){
-  console.log('mounted',this.$el);
-}
-
-// 输出
-//created undefined
-//mounted <div></div>
-//created-nextTick <div></div>
-```
-
-### 实例
-```js
-<div ref="msgDiv">{{msg}}</div>
-<button @click="changeMsg">点击我</button>
-
-data(){
-  return {
-    msg: "a"
-  }
-},     
-methods: {
-  changeMsg() {
-    this.msg = "b"
-    console.log(this.$refs.msgDiv.textContent) //'a' 
-    this.$nextTick(function(){
-      console.log(this.$refs.msgDiv.textContent) // 'b'
-    })
-  }
-}
-```
-
-因为 $nextTick() 返回一个 Promise 对象，所以可以使用async/await：
-
-```js
-async changeMsg() {
-  this.msg = "b"
-  console.log(this.$refs.msgDiv.textContent) //'a' 
-  await this.$nextTick();
-  console.log(this.$refs.msgDiv.textContent) // 'b'
-}
-```
-
-Vue在观察到数据变化时并不是直接更新DOM，而是开启一个队列，并缓冲在同一事件循环中发生的所有数据改变。在缓冲时会去除重复数据，从而避免不必要的计算和DOM操作。然后，在下一个事件循环tick中，Vue刷新队列并执行实际工作。
-
-
-`总之，在数据变化后要执行的某个操作，而这个操作需要使用随数据改变而改变的DOM结构的时候，这个操作都应该放进Vue.nextTick()的回调函数中。`
+[nextTick](/details/Vue/Vue2-Source/nextTick.md)
 
 # <a name="keep-alive">keep-alive</a>[![bakTop](./img/backward.png)](#top)  
 [keep-alive](https://cn.vuejs.org/v2/api/#keep-alive)

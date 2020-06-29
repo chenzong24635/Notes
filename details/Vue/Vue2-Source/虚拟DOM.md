@@ -10,7 +10,38 @@ VirtualDOM映射到真实DOM要经历VNode的create、diff、patch等阶段。
 新旧 children 中的节点只有顺序是不同的时候，最佳的操作应该是通过移动元素的位置来达到更新的目的。
 需要在新旧 children 的节点中保存映射关系，以便能够在旧 children 的节点中找到可复用的节点。key也就是children中节点的唯一标识。
 
-作者：童欧巴
-链接：https://juejin.im/post/5e649e3e5188252c06113021
-来源：掘金
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+## Virtual DOM
+
+V2.x 使用了 Virtual DOM（虚拟 DOM）来更新 DOM 节点，提升渲染性能。
+
+Vue的 \<template>内容  在 Vue.js 编译阶段，会解析为 Virtual DOM
+
+Virtual DOM 结构类似 ast，
+Virtual DOM是 dom解析， ast是语法解析
+
+
+
+
+正常的 DOM 节点在 HTML 中是这样的：
+```html
+<div id="main">
+  <p>文本</p>
+</div>
+```
+
+用 Virtual DOM 创建生成 JS 对象
+```js
+const vNode = {
+  tag: 'div',
+  attributes: {
+    id: 'main'
+  },
+  children: [
+    {
+      tag: 'p',
+      attributes: null,
+      text: '文本'
+    }
+  ]
+}
+```

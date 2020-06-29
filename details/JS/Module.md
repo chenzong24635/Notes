@@ -100,6 +100,8 @@ console.log(module1) // {fn1: f fn1(), fn2: f fn2()}
 更为理想的方式应该是在页面中引入一个 JS 入口文件，其余用到的模块可以通过代码控制，按需加载进来。
 
 ### CommonJS
+[CommonJS规范](http://wiki.commonjs.org/wiki/CommonJS)  
+
 主要用于服务端Nodejs 中, 每个文件就是一个模块，有自己的作用域。在一个文件里面定义的变量、函数、类，都是私有的，对其他文件不可见。在服务器端，模块的加载是运行时同步加载的；在浏览器端，模块需要提前编译打包处理。
 
 CommonJS的核心思想就是通过 require 方法来同步加载所要依赖的其他模块，然后通过exports 或者 module.exports 来导出需要暴露的接口;  
@@ -109,6 +111,7 @@ CommonJS的核心思想就是通过 require 方法来同步加载所要依赖的
 * 普通方式定义的 变量、函数、对象都属于该模块内  
 * 引入模块：require(xxx)
 * 导出模块：module.exports = xxx 或 module.exports.xxx = xxx
+>输出的是一个值的拷贝，输出之后就不能改变了，会缓存起来
 
 ```js
 // module.exports.name = 'tom';
@@ -128,7 +131,9 @@ CommonJS 模块的加载顺序，按照代码的出现顺序是`同步加载`的
 所以只有加载完成才能执行后面的操作。像Node.js主要用于服务器的编程，加载的模块文件一般都已经存在本地硬盘，所以加载起来比较快，不用考虑异步加载的方式，所以CommonJS规范比较适用。
 但如果是浏览器环境，要从服务器加载模块，这是就必须采用异步模式。所以就有了 AMD CMD 解决方案。
 
-### AMD（Asynchronous Module Definition）
+### AMD（Asynchronous Module Definition）异步模块定义
+[AMD规范](https://github.com/amdjs/amdjs-api/wiki/AMD)
+
 [require.js](https://github.com/requirejs/requirejs)实现了 AMD 模块化规范，本身也是一个非常强大的模块加载器。
 
 RequireJS的基本思想是，通过define方法，将代码定义为模块；通过require方法，实现代码的模块加载。
@@ -171,14 +176,18 @@ define(['module2', 'jquery'], function(module2) {
 
 [代码](/details/模块化/AMD)
 
-### CMD 
-CMD规范整合了CommonJS和AMD规范的特点。
+### CMD (Common Module Definition)通用模块定义
+[CMD规范](https://github.com/cmdjs/specification/blob/master/draft/module.md)
+
+CMD整合了CommonJS和AMD规范的特点。
     
 [sea.js](https://github.com/seajs/seajs)实现CMD规范
 
 特点
 * `异步加载`
 * `按需加载`，而不是必须在模块开始就加载所有的依赖
+
+
 
 ```js
 //定义没有依赖的模块
@@ -210,10 +219,32 @@ define(function(require, exports, module){
 [代码](/details/模块化/CMD)
 
 
+### UMD(Universal Module Definition)通用模块定义
+[UMD规范](https://github.com/umdjs/umd)
+
+UMD主要用来解决CommonJS模式和AMD模式代码不能通用的问题，并同时还支持老式的全局变量规范。
+```js
+// bundle.js
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+    (global = global || self, global.myBundle = factory());
+}(this, (function () { 'use strict';
+
+    var main = () => {
+        return 'hello world';
+    };
+
+    return main;
+
+})));
+```
+* 判断define为函数，并且是否存在define.amd，来判断是否为AMD规范,
+* 判断module是否为一个对象，并且是否存在module.exports来判断是否为CommonJS规范
+* 如果以上两种都没有，设定为原始的代码规范。
+
 ### ES modules
 ES Modules 是 ECMAScript 2015（ES6）中定义的模块系统
-
-
 
 #### exprot：导出模块  
 export 可以导出的是一个对象中包含的多个属性，方法。(在一个文件或模块中`可存在多个`)  
@@ -335,10 +366,6 @@ browserify lib/app.js -o lib/bundle.js // 使用Browserify编译js
 <script src="js/lib/bundle.js"></script> //在index.html文件中引入
 ```
 
-
-
-
-
 ### 总结
 
 * CommonJS规范主要用于服务端编程，加载模块是同步的，这并不适合在浏览器环境，因为同步意味着阻塞加载，浏览器资源是异步加载的，因此有了AMD CMD解决方案。
@@ -349,13 +376,14 @@ browserify lib/app.js -o lib/bundle.js // 使用Browserify编译js
 
 * ES6 在语言标准的层面上，实现了模块功能，而且实现得相当简单，完全可以取代 CommonJS 和 AMD 规范，成为浏览器和服务器通用的模块解决方案。
 
-```CommonJs模块和ES6块的区别```
+```ES6模块与CommonJS模块的差异```
+[参考](https://es6.ruanyifeng.com/#docs/module-loader#ES6-%E6%A8%A1%E5%9D%97%E4%B8%8E-CommonJS-%E6%A8%A1%E5%9D%97%E7%9A%84%E5%B7%AE%E5%BC%82)
 
-* CommonJs模块输出的是一个值的拷贝，也就是说，一旦输出一个值，模块内部的变化就影响不到这个值。ES6 模块是动态引用，并且不会缓存值，模块里面的变量绑定其所在的模块。
+* CommonJs模块输出的是一个值的拷贝，也就是说，一旦输出一个值，模块内部的变化就影响不到这个值。ES6 模块输出的是值的引用，是动态引用，并且不会缓存值，模块里面的变量绑定其所在的模块。
 
 * CommonJs模块是运行时加载，ES6模块是编译时输出接口。
   >
-      是因为 CommonJS 加载的是一个对象（即module.exports属性），该对象只有在脚本运行完才会生成。
+      是因为 CommonJS 加载的是一个对象（即module.exports属性），该对象只有在脚本运行完才会生成。  
       而 ES6 模块不是对象，它的对外接口只是一种静态定义，在代码静态解析阶段就会生成。
 
 [代码](/details/模块化/ES6)

@@ -30,7 +30,7 @@
 [Vue 项目性能优化 — 实践指南（网上最全 / 详细）](https://juejin.im/post/5d548b83f265da03ab42471d)
 
 ## <a name="v-if和v-show的区别">v-if和v-show的区别</a>[![bakTop](./img/backward.png)](#top)  
-[官网解释](https://cn.vuejs.org/v2/guide/conditional.html#v-if-vs-v-show)
+[vue官网](https://cn.vuejs.org/v2/guide/conditional.html#v-if-vs-v-show)
 
 ```html
 v-if 是“真正”的条件渲染，因为它会确保在切换过程中条件块内的事件监听器和子组件适当地被销毁和重建。
@@ -38,12 +38,15 @@ v-if 是“真正”的条件渲染，因为它会确保在切换过程中条件
 v-if 也是惰性的：如果在初始渲染时条件为假，则什么也不做——直到条件第一次变为真时，才会开始渲染条件块。
 
 v-show 只是简单的display控制显隐藏，不管初始条件如何，元素总会被渲染；
+注意：v-show 是添加/移除 display: none; 属性 因此 v-show 由 false 切换 true 后 ，元素的 display 依旧为原先值，而不是 display: block
+
 ```
+
 v-if 有更高的切换开销，而 v-show 有更高的初始渲染开销。  
 因此，v-if适用于很少改变条件的场景，v-show适用于频繁切换条件的场景。
 
 ## <a name="v-for 遍历避免同时使用 v-if">v-for 遍历避免同时使用 v-if</a>[![bakTop](./img/backward.png)](#top)  
-[官网解释](https://cn.vuejs.org/v2/guide/conditional.html#v-if-%E4%B8%8E-v-for-%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8)
+[vue官网](https://cn.vuejs.org/v2/guide/conditional.html#v-if-%E4%B8%8E-v-for-%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8)
 
 [风格指南-避免 v-if 和 v-for 用在一起](https://cn.vuejs.org/v2/style-guide/#%E9%81%BF%E5%85%8D-v-if-%E5%92%8C-v-for-%E7%94%A8%E5%9C%A8%E4%B8%80%E8%B5%B7%E5%BF%85%E8%A6%81)
 
@@ -109,7 +112,7 @@ export default{
 </ul>
 ```
 
-## <a name="自定义组件双向绑定">model,.sync选项实现自定义组件双向绑定</a>[![bakTop](/img/backward.png)](#top)
+## <a name="自定义组件双向绑定">v-model,model,.sync选项实现自定义组件双向绑定</a>[![bakTop](/img/backward.png)](#top)
 [Vue中从v-model，model，.sync到双向数据传递，再到双向数据绑定](https://blog.csdn.net/Qin_Shuo/article/details/82693919)
 
 ### v-model
@@ -131,17 +134,16 @@ export default{
 <template>
   <div>
     <input
-      :value="vmodelVal"
+      :value="value"
       @input="handleInput"
     />
   </div>
 </template>
 <script>
 export default {
-  name: "VModelInput",
   props: {
-    vmodelVal: {
-      type: String,
+    value: {
+      type: [String, Number],
       default: ''
     }
   },
@@ -155,6 +157,53 @@ export default {
 </script>
 ```
 
+### [model](https://cn.vuejs.org/v2/api/#model)
+
+允许一个自定义组件在使用 v-model 时定制 prop 和 event。  
+
+默认情况下，一个组件上的 v-model 会把 value 用作 prop 且把 input 用作 event，但是一些输入类型比如单选框和复选框按钮可能想使用 value prop 来达到不同的目的。使用 model 选项可以回避这些情况产生的冲突。
+
+父组件使用
+```html
+<model-input v-model="val" />
+<input  v-model="val">
+
+```
+
+子组件
+```html
+<template>
+  <div>
+    <input
+      :value="value"
+      @blur="handleInput"
+    />
+  </div>
+</template>
+<script>
+export default {
+  //自定义prop和event，作为v-model触发依据
+  model: {
+    prop: 'value',
+    event: 'blur',
+  },
+  props: {
+    value: {
+      type: [String, Number],
+      default: ''
+    }
+  },
+  methods:{
+    handleInput(event){
+      console.log(event.target.value);
+      this.$emit('blur',event.target.value)
+      //自定义组件中使用v-model都需要通过$emit触发
+      //触发的方法 必须和 model.event 相同
+    }
+  }
+}
+```
+
 ### .sync
 [.sync 修饰符](https://cn.vuejs.org/v2/guide/components-custom-events.html#sync-%E4%BF%AE%E9%A5%B0%E7%AC%A6)
 
@@ -166,7 +215,9 @@ export default {
     @update:syncVal="val = $event"
   /> -->
   <!-- 使用 .sync语法简写 -->
-  <sync-input :syncVal.sync="val" />
+  <sync-input 
+    :syncVal.sync="val"
+ />
 
   <input v-model="val"><!-- v-model -->
 </div>
@@ -182,10 +233,9 @@ export default {
 </template>
 <script>
   export default {
-    name: "SyncInput",
     props: {
       syncVal: {
-        type: String,
+        type: [String, Number],
         default: ''
       }
     },
@@ -199,65 +249,13 @@ export default {
   }
 </script>
 ```
+但 .sync 可以设置很多个
+
 注意带有 .sync 修饰符的 v-bind 不能和表达式一起使用 (例如 v-bind:title.sync="doc.title + 'abcd'" 是无效的)
 
-### [model](https://cn.vuejs.org/v2/api/#model)
-
-允许一个自定义组件在使用 v-model 时定制 prop 和 event。  
-
-默认情况下，一个组件上的 v-model 会把 value 用作 prop 且把 input 用作 event，但是一些输入类型比如单选框和复选框按钮可能想使用 value prop 来达到不同的目的。使用 model 选项可以回避这些情况产生的冲突。
-
-父组件使用
-```html
-<model-input v-model="val" />
-<input type="text" v-model="val">
-
-```
-
-子组件
-```html
-<template>
-  <div>
-    <input
-      :value="modelVal"
-      @[methodType]="handleInput"
-    />
-  </div>
-</template>
-<script>
-const methodType = 'input'
-// const methodType = 'click'
-export default {
-  name: "ModelInput",
-  //自定义prop和event，作为v-model触发依据
-  model:{
-    prop:'modelVal',
-    event: methodType
-  },
-  data() {
-    return {
-      methodType
-    }
-  },
-  props: {
-    modelVal: {
-      type: String,
-      default: ''
-    }
-  },
-  methods:{
-    handleInput(event){
-      console.log(event.target.value);
-      this.$emit(this.methodType, event.target.value)
-      //自定义组件中使用v-model都需要通过$emit触发
-      //触发的方法 必须和 model.event 相同
-    }
-  }
-}
-</script>
-```
 
 ## <a name="render函数">使用render函数 优化代码</a>[![bakTop](/img/backward.png)](#top)  
+[渲染函数 & JSX-vue官网](https://cn.vuejs.org/v2/guide/render-function.html)
 场景:有些代码在 template 里面写会重复很多,可使用 render 函数
 ```html
 // 初级
@@ -297,7 +295,10 @@ export default {
       }
     },
     render(createElement) {
-      return createElement('h' + this.level, this.$slots.default);
+      return createElement(
+        'h' + this.level,  // 标签名称
+        this.$slots.default // 子节点数组
+      );
     }
   };
 </script>
@@ -321,28 +322,22 @@ template和render函数的区别：
   <div>
     <button
       v-for="tab in tabs"
-      v-bind:key="tab"
-      v-bind:class="['tab-button', { active: currentTab === tab }]"
-      v-on:click="currentTab = tab"
+      :key="tab"
+      :class="['tab-button', { active: currentTab === tab }]"
+      @click="currentTab = tab"
     >
       {{ tab }}
     </button>
-    <component v-bind:is="currentTabComponent" class="tab"></component>
+    <component :is="currentTabComponent" class="tab"></component>
   </div>
 </template>
 
 <script>
   export default {
     components: {
-      "tab-a": {
-        template: '<div>A</div>'
-      },
-      "tab-b": {
-        template: '<div>B</div>'
-      },
-      "tab-c": {
-        template: '<div>C</div>'
-      },
+      "tab-a": ()=>import('./A.vue'),
+      "tab-b":  ()=>import('./B.vue'),
+      "tab-c": ()=>import('./C.vue'),
     },
     data() {
       return {
@@ -359,19 +354,87 @@ template和render函数的区别：
 </script>
 ```
 
-* [在动态组件上使用 keep-alive](https://cn.vuejs.org/v2/guide/components-dynamic-async.html#%E5%9C%A8%E5%8A%A8%E6%80%81%E7%BB%84%E4%BB%B6%E4%B8%8A%E4%BD%BF%E7%94%A8-keep-alive)
-
+#### [在动态组件上使用 keep-alive](https://cn.vuejs.org/v2/guide/components-dynamic-async.html#%E5%9C%A8%E5%8A%A8%E6%80%81%E7%BB%84%E4%BB%B6%E4%B8%8A%E4%BD%BF%E7%94%A8-keep-alive)
 
 
 每次切换新标签的时候，Vue 都创建了一个新的 currentTabComponent 实例。
 
 有时会想保持这些组件的状态，以避免反复重渲染导致的性能问题
 ```html
-<!-- 失活的组件将会被缓存！-->
+<!-- 组件缓存-->
 <keep-alive>
-  <component v-bind:is="currentTabComponent"></component>
+  <component :is="currentTabComponent"></component>
 </keep-alive>
 ```
+
+#### is的作用
+
+`<component :is="currentTabComponent" class="tab"></component>`里is动态绑定的是一个组件对象（Object），它直接指向 A / B / C 三个组件中的一个。除了直接绑定一个 Object，还可以是一个 String，比如标签名、组件名。
+
+下面的这个组件，将原生的按钮 button 进行了封装，如果传入了 prop: to，那它会渲染为一个 \<a> 标签，用于打开这个链接地址，如果没有传入 to，就当作普通 button 使用。
+
+```html
+<!-- button.vue -->
+<template>
+  <component :is="tagName" v-bind="tagProps">
+    <slot></slot>
+  </component>
+</template>
+<script>
+  export default {
+    props: {
+      // 链接地址
+      to: {
+        type: String,
+        default: ''
+      },
+      // 链接打开方式，如 _blank
+      target: {
+        type: String,
+        default: '_self'
+      }
+    },
+    computed: {
+      // 动态渲染不同的标签
+      tagName () {
+        return this.to === '' ? 'button' : 'a';
+      },
+      // 如果是链接，把这些属性都绑定在 component 上
+      tagProps () {
+        let props = {};
+
+        if (this.to) {
+          props = {
+            target: this.target,
+            href: this.to
+          }
+        }
+
+        return props;
+      }
+    }
+  }
+</script>
+```
+
+使用组件
+```html
+<template>
+  <div>
+    <i-button>普通按钮</i-button>
+    <i-button to="https://juejin.im">链接按钮</i-button>
+    <i-button to="https://juejin.im" target="_blank">新窗口打开链接按钮</i-button>
+  </div>
+</template>
+<script>
+  import iButton from '../components/a.vue';
+
+  export default {
+    components: { iButton }
+  }
+</script>
+```
+
 
 ## <a name="异步组件">异步组件,路由懒加载</a>[![bakTop](/img/backward.png)](#top)  
 [异步组件-vue官网](https://cn.vuejs.org/v2/guide/components-dynamic-async.html#%E5%BC%82%E6%AD%A5%E7%BB%84%E4%BB%B6)
@@ -442,9 +505,11 @@ const Baz = () => import(/* webpackChunkName: "group-foo" */ './Baz.vue')
 ## <a name="递归组件">递归组件</a>[![bakTop](/img/backward.png)](#top)  
 [递归组件-vue官网](https://cn.vuejs.org/v2/guide/components-edge-cases.html#%E9%80%92%E5%BD%92%E7%BB%84%E4%BB%B6)
 
-组件是可以在它们自己的模板中调用自身的。不过它们只能通过 name 选项来做这件事：
+递归组件:组件是在它们自己的模板中调用自身。
 
-必须给一个条件来限制数量，否则会抛出错误: max stack size exceeded，所以请确保递归调用是条件性的 (例如使用一个最终会得到 false 的 v-if)。
+实现一个递归组件的必要条件是:
+* 必须在组件中设置一个 name 选项
+* 必须给一个条件来限制数量，否则会抛出错误: max stack size exceeded，所以请确保递归调用是条件性的 (例如使用一个最终会得到 false 的 v-if)。
 
 
 当你的数据结构如下时，就需要递归组件
@@ -534,7 +599,11 @@ export default {
   <li class="">
     -{{list.title}}
     <ul  v-if="hasChild" style="padding-left: 10px">
-      <list-item v-for="item in list.children"  :list="item" :key="item.id" />
+      <list-item 
+        v-for="item in list.children"
+        :list="item" 
+        :key="item.id" 
+      />
     </ul>
   </li>
 </template>
@@ -558,6 +627,8 @@ export default {
 
 显示结果  
 ![](/img/Vue/递归组件-result.jpg)
+
+[树形控件Tree](./details/树形控件Tree.md)
 
 
 ## <a name="批量注册全局组件">require.context 批量注册全局组件</a>[![bakTop](/img/backward.png)](#top)  
@@ -1053,6 +1124,13 @@ mounted() {
 
 [$once、$on、$off的使用](https://cn.vuejs.org/v2/guide/components-edge-cases.html#%E7%A8%8B%E5%BA%8F%E5%8C%96%E7%9A%84%E4%BA%8B%E4%BB%B6%E4%BE%A6%E5%90%AC%E5%99%A8)
 
+
+## <a name="了解选项合并策略,自定义生命周期钩子函数">了解选项合并策略,自定义生命周期钩子函数</a>[![bakTop](/img/backward.png)](#top) 
+打开多标签时，解除非当前浏览标签的事件
+
+[来源](https://juejin.im/post/5ef6d1325188252e75366ab5#heading-13)
+
+Vue.config.optionMergeStrategies //通过这个api去自定义选项的合并策略。
 
 ## <a name="图片资源懒加载">图片资源懒加载</a>[![bakTop](/img/backward.png)](#top) 
 

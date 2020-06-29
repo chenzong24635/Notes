@@ -1,3 +1,6 @@
+[Vue技术内幕](http://caibaojian.com/vue-design/art/1start-learn.html)
+
+
 [Vue源码简析(版本vue-2.4.4)](https://juejin.im/post/5ab07a63f265da2389258b12)
 
 https://github.com/qq281113270/vue
@@ -10,7 +13,9 @@ http://mp.weixin.qq.com/mp/homepage?__biz=MzUxNjQ1NjMwNw==&hid=1&sn=77b9eca3d063
 [Vue.js 技术揭秘](https://ustbhuangyi.github.io/vue-analysis/v2/prepare/)-电子书
 
 
-# Vue.js 源码目录设计
+## 了解Vue
+
+#### Vue.js 源码主要目录
 ```js
 src
 ├── compiler        # 编译相关 
@@ -26,7 +31,27 @@ src
 
 ![vue-source.jpg](../../img/Vue/vue-source.jpg)
 
-# cached 创建纯函数的缓存
+
+#### 从 Vue 的构建配置了解其不同的构建输出
+
+如果按照输出的模块形式分类，那么 Vue 有三种不同的构建输出，分别是：
+* UMD
+* CommonJS
+* ES Module，
+
+打开 scripts/config.js 文件，发现三个构建配置的入口是相同的，即 web/entry-runtime.js 文件，但是输出的格式(format)是不同的，分别是 cjs、es 以及 umd。
+
+每种模块形式又分别输出了 
+* 运行时版：entry-runtime.js
+* 完整版：entry-runtime-with-compiler.js
+
+完整版比运行时多了 compiler，它的作用是：将 template 编译为 render 函数。
+
+scripts/config.js里 build 构建生成 dist 目录对应的文件
+
+
+# 
+## cached 创建纯函数的缓存
 ```js
 function cached (fn) {
   let cache = Object.create(null);
@@ -53,7 +78,7 @@ upcased('im a str')
 第二次再执行这个函数，结果直接取缓存 cache对象 key对应的value,而不必执行upcase函数
 ```
 
-# camelize: 连字符转驼峰
+## camelize: 连字符转驼峰
 ```js
 const camelizeRE = /-(\w)/g;
 const camelize = cached(str => {
@@ -66,7 +91,7 @@ const camelize = cached(str => {
 camelize('a-b') // aB
 ```
 
-# hyphenate：:驼峰转连字符
+## hyphenate：:驼峰转连字符
 ```js
 const hyphenateRE = /\B([A-Z])/g;
 const hyphenate = cached((str: string): string => {
@@ -76,7 +101,7 @@ const hyphenate = cached((str: string): string => {
 hyphenate('aB') // a-b
 ```
 
-# once：只调用一次的函数
+## once：只调用一次的函数
 ```js
 function once (fn: Function): Function {
   let called = false
