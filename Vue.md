@@ -18,7 +18,7 @@
     目录
   </summary>
 
-* <a href="#概述">概述</a>  
+* <a href="#了解">了解</a>  
 * <a href="#Vue的运行机制简述">Vue的运行机制简述</a>
 * <a href="#MVC、MVP、MVVM">MVC、MVP、MVVM</a>  
 * <a href="#SPA">SPA SSR</a>
@@ -72,10 +72,12 @@
 </details>
 
 
-# <a name="概述">概述</a>[![bakTop](./img/backward.png)](#top)  
-Vue 是一套用于构建用户界面的渐进式MVVM框架
+# <a name="了解">了解</a>[![bakTop](./img/backward.png)](#top)  
+Vue (读音 /vjuː/，类似于 view) 是一套用于构建用户界面的渐进式框架。
 
-Vue 采用自底向上增量开发的设计,Vue的核心库只关心视图渲染，且由于渐进式的特性，Vue便于与第三方库或既有项目整合。
+与其它大型框架不同的是，Vue 被设计为可以自底向上逐层应用。Vue 的核心库只关注视图层，不仅易于上手，还便于与第三方库或既有项目整合
+
+核心思想是由数据驱动视图
 
 Vue没有完全遵循 MVVM 模型，但是 Vue 的设计也受到了它的启发。因此在文档中经常会使用 vm (ViewModel 的缩写) 这个变量名表示 Vue 实例。
 
@@ -96,6 +98,9 @@ var newArr1 = arr.map(function (item) {
     return item * 2;
 });
 ```
+
+# <a name="对比其他框架">对比其他框架</a>[![bakTop](./img/backward.png)](#top)  
+[对比其他框架-vue官网](https://doc.vue-js.com/v2/guide/comparison.html)
 
 
 # <a name="Vue的运行机制简述">Vue的运行机制简述</a>[![bakTop](./img/backward.png)](#top)  
@@ -532,39 +537,6 @@ methods: {
 [Vue开发技巧+性能优化#自定义组件双向绑定](/details/Vue/Vue开发技巧+性能优化.md/#自定义组件双向绑定)
 
 
-# <a name="监听组件的生命周期">监听子组件的生命周期</a>[![bakTop](./img/backward.png)](#top)  
-
-父组件监听到子组件挂载 mounted就做一些逻辑处理
-
-常规的写法可能如下：
-```js
-// Parent.vue
-<Child @mounted="doSomething"/>
-
-// Child.vue
-mounted() {
-  this.$emit("mounted");
-}
-```
-
-通过 @hook来监听，子组件不需要任何处理，只需要在父组件引用的时候即可：
-```js
-//  Parent.vue
-<Child @hook:mounted="doSomething" ></Child>
-doSomething() {
-  console.log('父组件监听到 mounted 钩子函数 ...');
-},
-    
-//  Child.vue
-mounted(){
-  console.log('子组件触发 mounted 钩子函数 ...');
-},    
-    
-// 以上输出顺序为：
-// 子组件触发 mounted 钩子函数 ...
-// 父组件监听到 mounted 钩子函数 ...     
-```
-其它的生命周期事件，例如： created， updated等都可监听
 
 # <a name="单向数据流">单向数据流</a>[![bakTop](./img/backward.png)](#top)  
 父组件可以向子组件传递数据，但是子组件不能直接修改父组件的状态。  

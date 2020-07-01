@@ -1088,6 +1088,43 @@ beforeRouteUpdate (to, from, next) {
 }
 ```
 
+## <a name="监听组件的生命周期">监听组件的生命周期@hook</a>[![bakTop](/img/backward.png)](#top) 
+
+父组件监听到子组件挂载 mounted就做一些逻辑处理
+
+常规的写法可能如下：
+
+```js
+// Parent.vue
+<Child @mounted="doSomething"/>
+
+// Child.vue
+mounted() {
+  this.$emit("mounted");
+}
+```
+
+通过 @hook来监听，子组件不需要任何处理，只需要在父组件引用的时候即可：
+```js
+//  Parent.vue
+<Child @hook:mounted="doSomething" ></Child>
+doSomething() {
+  console.log('父组件监听到 子组件的 mounted 钩子 ...');
+},
+    
+//  Child.vue
+mounted(){
+  console.log('子组件触发 mounted 钩子 ...');
+},    
+    
+// 以上输出顺序为：
+// 子组件触发 mounted 钩子 ...
+// 父组件监听到 mounted 钩子 ...     
+```
+其它的生命周期事件，例如：beforeCreate, created， updated等都可监听
+
+
+
 ## <a name="事件的销毁">事件的销毁 beforeDestroy, $once('hook:beforeDestroy')</a>[![bakTop](/img/backward.png)](#top) 
 在 js 内使用 定时器, addEventListener 等方式是不会自动销毁的 
 
