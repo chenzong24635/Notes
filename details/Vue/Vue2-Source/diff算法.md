@@ -1,3 +1,5 @@
+https://segmentfault.com/a/1190000010090659
+
 diff 算法是一种通过同层的树节点进行比较的高效算法，避免了对树进行逐层搜索遍历，所以时间复杂度只有 O(n)。diff 算法的在很多场景下都有应用，例如在 Vue 虚拟 dom 渲染成真实 dom 的新旧 VNode 节点比较更新时，就用到了该算法。diff 算法有两个比较显著的特点：
 
 * 比较只会在同层级进行, 不会跨层级比较。
@@ -17,4 +19,4 @@ Vue2的核心Diff算法采用了双端比较的算法，同时从新旧children�
 
 * \src\core\vdom\patch.js
 
-https://juejin.im/post/5eb3b77c6fb9a0436b221e2f#heading-1
+https://juejin.im/post/5eb3b77c6fb9a0436b221e2f

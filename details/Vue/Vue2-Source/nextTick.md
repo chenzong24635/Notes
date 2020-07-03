@@ -1,6 +1,10 @@
 [异步更新队列](https://cn.vuejs.org/v2/guide/reactivity.html#%E5%BC%82%E6%AD%A5%E6%9B%B4%E6%96%B0%E9%98%9F%E5%88%97)
 
-源码地址：src\core\util\next-tick.js
+源码路径：src\core\util\next-tick.js
+
+### 前置
+[EventLoop](/details/EventLoop.md)
+
 
 ### 参数：
 * {Function} [callback]
@@ -8,14 +12,12 @@
 
 ### 用法
 
-Vue 在更新 DOM 时是异步执行的。只要侦听到数据变化，Vue 将开启一个队列，并缓冲在同一事件循环中发生的所有数据变更。如果同一个 watcher 被多次触发，只会被推入到队列中一次。然后，在下一个事件循环tick中，Vue刷新队列并执行实际工作。
+Vue 在更新 DOM 时是异步执行的。只要侦听到数据变化，Vue 将开启一个队列，并缓冲在同一事件循环中发生的所有数据变更。如果同一个 watcher 被多次触发，只会被推入到队列中一次。然后，在下一个事件循环tick中，Vue刷新队列并执行实际(已去重的) 工作。
 
-nextTick作用是在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。
+`nextTick作用`是在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。
 
 
 ### 源码
-
-源码
 ```js
 if (typeof Promise !== 'undefined' && isNative(Promise)) {
   // 如果支持Promise

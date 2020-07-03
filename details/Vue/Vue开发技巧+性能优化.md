@@ -1,20 +1,5 @@
 * <a href="#vue项目性能优化">Vue开发技巧+性能优化</a>
-  * <a href="#v-if和v-show的区别">v-if和v-show的区别</a>
-  * <a href="#v-for 遍历避免同时使用 v-if">v-for 遍历避免同时使用 v-if</a>
-  * <a href="#路由懒加载">路由懒加载</a>
-  * <a href="#批量注册全局组件">批量注册全局组件</a>
-  * <a href="#批量注册全局filter">批量注册全局filter</a>
-  * <a href="#路由参数解耦">路由参数解耦</a>
-  * <a href="#函数式组件">函数式组件</a>
-  * <a href="#长列表性能优化">长列表性能优化Object.freeze</a>
-  * <a href="#debounce使用">debounce使用</a>
-  * <a href="#多个路由共用一个组件操作">多个路由共用一个组件,组件如何重新渲染</a>
-  * <a href="#事件的销毁">事件的销毁 beforeDestroy $once('hook:beforeDestroy')</a>
-  * <a href="#图片资源懒加载">图片资源懒加载</a>
-  * <a href="#优化无限列表性能">优化无限列表性能</a>
-  * <a href="#全局引入less变量">全局引入less变量</a>
-  * <a href="#CDN引入">CDN引入</a>
-  * <a href="#骨架屏">骨架屏</a>
+
 
 # <a name="vue项目性能优化">Vue开发技巧 + 性能优化</a>[![bakTop](/img/backward.png)](#top)  
 [10个Vue开发技巧助力成为更好的工程师](https://juejin.im/post/5e8a9b1ae51d45470720bdfa)
@@ -307,9 +292,11 @@ export default {
 template和render函数的区别：
 * template适合简单的组件封装，render函数适合复杂的组件封装
 * template理解起来相对简单，但灵活性不高，性能低，而render灵活性较高，对使用者要求亦高
+* template最终会解析为render函数
 * render函数渲染没有编译过程，相当于把代码直接给程序，所以容易出现错误，对使用者要求高
 * render函数较template优先级别高
 
+[详情](https://github.com/vuejs/vue/blob/dev/src/platforms/web/entry-runtime-with-compiler.js#L34-L81)
 
 ## <a name="动态组件">动态组件</a>[![bakTop](/img/backward.png)](#top)
 [动态组件](https://cn.vuejs.org/v2/guide/components.html#%E5%8A%A8%E6%80%81%E7%BB%84%E4%BB%B6)
@@ -630,6 +617,66 @@ export default {
 
 [树形控件Tree](./details/树形控件Tree.md)
 
+## <a name="函数式组件">函数式组件 functional</a>[![bakTop](/img/backward.png)](#top)  
+[函数式组件](https://cn.vuejs.org/v2/guide/render-function.html#%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6)
+
+定义：
+* Stateless(无状态)： 没有响应式数据
+* Instanceless(无实例)：组件自身没有实例，即没有 this 上下文
+
+特点：渲染开销低，对性能有好处
+
+应用：  
+当组件没有管理任何状态，也没有监听任何传递给它的状态，也没有生命周期方法。实际上，它只是一个接受一些 prop 的函数。在这样的场景下，我们可以将组件标记为 functional。
+
+
+
+子组件使用 函数式组件
+```html
+<template functional>
+  <div class="list">
+      <div class="item" v-for="item in props.list" :key="item.id" @click="props.itemClick(item)">
+          <p>{{item.title}}</p>
+          <p>{{item.content}}</p>
+      </div>
+  </div>
+</template>
+```
+
+父组件
+```js
+<template>
+  <div>
+    <List :list="list" :itemClick="func" />
+  </div>
+</template>
+import List from '@/components/List.vue'
+export default {
+  components: {
+      List
+  },
+  data() {
+    return {
+      list: [
+        {
+          title: 'title1',
+          content: 'content1'
+        },
+        {
+          title: 'title2',
+          content: 'content2'
+        },
+      ],
+      currentItem: ''
+    }
+  },
+  methods: {
+    func(val){
+      console.log(val);
+    }
+  }
+}
+```
 
 ## <a name="批量注册全局组件">require.context 批量注册全局组件</a>[![bakTop](/img/backward.png)](#top)  
 
@@ -945,103 +992,9 @@ export default {
 }
 ```
 
-## <a name="函数式组件">函数式组件 functional</a>[![bakTop](/img/backward.png)](#top)  
-[函数式组件](https://cn.vuejs.org/v2/guide/render-function.html#%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6)
+## <a name="SVG封装">SVG封装</a>[![bakTop](/img/backward.png)](#top) 
+[SVG封装](./SVG封装.md)
 
-定义：
-* Stateless(无状态)： 没有响应式数据
-* Instanceless(无实例)：组件自身没有实例，即没有 this 上下文
-
-特点：渲染开销低，对性能有好处
-
-应用：  
-当组件没有管理任何状态，也没有监听任何传递给它的状态，也没有生命周期方法。实际上，它只是一个接受一些 prop 的函数。在这样的场景下，我们可以将组件标记为 functional。
-
-
-
-子组件使用 函数式组件
-```html
-<template functional>
-  <div class="list">
-      <div class="item" v-for="item in props.list" :key="item.id" @click="props.itemClick(item)">
-          <p>{{item.title}}</p>
-          <p>{{item.content}}</p>
-      </div>
-  </div>
-</template>
-```
-
-父组件
-```js
-<template>
-  <div>
-    <List :list="list" :itemClick="func" />
-  </div>
-</template>
-import List from '@/components/List.vue'
-export default {
-  components: {
-      List
-  },
-  data() {
-    return {
-      list: [
-        {
-          title: 'title1',
-          content: 'content1'
-        },
-        {
-          title: 'title2',
-          content: 'content2'
-        },
-      ],
-      currentItem: ''
-    }
-  },
-  methods: {
-    func(val){
-      console.log(val);
-    }
-  }
-}
-```
-
-### 动态指令参数
-```html
-<button @[clickType]="myFunc">{{clickType}}</button>
-<script>
-data(){
-  return {
-    clickType: 'click'
-  }
-},
-methods: {
-  myFunc(){
-    this.clickType = this.clickType === 'click' ? 'dblclick' : 'click';
-  }
-}
-</script>
-```
-
-
-## <a name="长列表性能优化">长列表性能优化 Object.freeze</a>[![bakTop](/img/backward.png)](#top) 
-
-Vue 会通过 Object.defineProperty 对数据进行劫持，来实现视图响应数据的变化，然而有些时候我们的组件就是纯粹的数据展示，不会有任何改变  
-
-通过 Object.freeze 方法来冻结一个对象,可以减少组件初始化的时间
-```js
-export default {
-  data(){
-    return {
-      users: {}
-    }
-  },
-  async created() {
-    const users = await axios.get("xxx");
-    this.users = Object.freeze(users);
-  }
-};
-```
 
 ## <a name="debounce使用">debounce使用 beforeDestroy或$once</a>[![bakTop](/img/backward.png)](#top) 
 当一个按钮多次点击时会导致多次触发事件，可以结合场景是否立即执行immediate
@@ -1162,12 +1115,33 @@ mounted() {
 [$once、$on、$off的使用](https://cn.vuejs.org/v2/guide/components-edge-cases.html#%E7%A8%8B%E5%BA%8F%E5%8C%96%E7%9A%84%E4%BA%8B%E4%BB%B6%E4%BE%A6%E5%90%AC%E5%99%A8)
 
 
-## <a name="了解选项合并策略,自定义生命周期钩子函数">了解选项合并策略,自定义生命周期钩子函数</a>[![bakTop](/img/backward.png)](#top) 
-打开多标签时，解除非当前浏览标签的事件
 
-[来源](https://juejin.im/post/5ef6d1325188252e75366ab5#heading-13)
 
-Vue.config.optionMergeStrategies //通过这个api去自定义选项的合并策略。
+## <a name="长列表性能优化">长列表性能优化 Object.freeze</a>[![bakTop](/img/backward.png)](#top) 
+
+Vue 会通过 Object.defineProperty 对数据进行劫持，来实现视图响应数据的变化，然而有些时候我们的组件就是纯粹的数据展示，不会有任何改变  
+
+通过 Object.freeze 方法来冻结一个对象,可以减少组件初始化的时间
+```js
+export default {
+  data(){
+    return {
+      users: {}
+    }
+  },
+  async created() {
+    const users = await axios.get("xxx");
+    this.users = Object.freeze(users);
+  }
+};
+```
+
+## <a name="优化无限列表性能">优化无限列表性能</a>[![bakTop](/img/backward.png)](#top) 
+
+如果你的应用存在非常长或者无限滚动的列表，那么需要采用 窗口化 的技术来优化性能，只需要渲染少部分区域的内容，减少重新渲染组件和创建 dom 节点的时间。 你可以参考以下开源项目 [vue-virtual-scroll-list](https://github.com/tangbc/vue-virtual-scroll-list) 和[vue-virtual-scroller](https://github.com/Akryum/vue-virtual-scroller)  来优化这种无限列表的场景的。
+
+
+
 
 ## <a name="图片资源懒加载">图片资源懒加载</a>[![bakTop](/img/backward.png)](#top) 
 
@@ -1193,9 +1167,6 @@ Vue.use(VueLazyload, {
 <img v-lazy="/static/img/1.png">
 ```
 
-## <a name="优化无限列表性能">优化无限列表性能</a>[![bakTop](/img/backward.png)](#top) 
-
-如果你的应用存在非常长或者无限滚动的列表，那么需要采用 窗口化 的技术来优化性能，只需要渲染少部分区域的内容，减少重新渲染组件和创建 dom 节点的时间。 你可以参考以下开源项目 [vue-virtual-scroll-list](https://github.com/tangbc/vue-virtual-scroll-list) 和[vue-virtual-scroller](https://github.com/Akryum/vue-virtual-scroller)  来优化这种无限列表的场景的。
 
 
 ## <a name="全局引入less变量">全局引入less变量</a>[![bakTop](/img/backward.png)](#top)  
@@ -1218,9 +1189,6 @@ pluginOptions: {
 * scss使用 ::v-deep
 * stylus使用 >>>
 
-
-## <a name="SVG封装">SVG封装</a>[![bakTop](/img/backward.png)](#top) 
-[SVG封装](./SVG封装.md)
 
 ## <a name="CDN引入">CDN引入</a>[![bakTop](/img/backward.png)](#top) 
 

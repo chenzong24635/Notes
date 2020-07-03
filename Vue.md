@@ -77,7 +77,7 @@ Vue (读音 /vjuː/，类似于 view) 是一套用于构建用户界面的渐进
 
 与其它大型框架不同的是，Vue 被设计为可以自底向上逐层应用。Vue 的核心库只关注视图层，不仅易于上手，还便于与第三方库或既有项目整合
 
-核心思想是由数据驱动视图
+核心思想是由数据驱动视图。所谓数据驱动，是指视图是由数据驱动生成的，我们对视图的修改，不会直接操作 DOM，而是通过修改数据。
 
 Vue没有完全遵循 MVVM 模型，但是 Vue 的设计也受到了它的启发。因此在文档中经常会使用 vm (ViewModel 的缩写) 这个变量名表示 Vue 实例。
 
@@ -352,156 +352,7 @@ Vue的事件分为2种，一种是原生事件绑定，还有一种是组件的�
 
 
 # <a name="响应式数据原理、实现">响应式数据原理、实现:Object.defineProperty、proxy</a>[![bakTop](./img/backward.png)](#top)    
-Vue主要通过以下4个步骤实现响应式数据:  
-* 实现一个监听器「Observer」：对数据对象进行遍历，包括子属性对象的属性，利用Object.defineProperty()在属性上都加上getter和setter，这样后，给对象的某个值赋值，就会触发setter，那么就能监听到数据变化
-* 实现一个解析器「Compile」：解析Vue模板指令，将模板中的变量都替换成数据，然后初始化渲染页面视图，并将每个指令对应的节点绑定更新函数，添加监听数据的订阅者，一旦数据有变动，收到通知，调用更新函数进行数据更新
-* 实现一个订阅者「Watcher」：Watcher订阅者是Observer和Compile之间通信的桥梁，主要任务是订阅Observer中的属性值变化的消息，当收到属性值变化的消息时，触发解析器Compile中对应的更新函数
-* 实现一个订阅器「Dep」：订阅器采用发布-订阅设计模式，用来收集订阅者Watcher，对监听器Observer和订阅者Watcher进行统一管理
-
-
-[0 到 1 掌握：Vue 核心之数据双向绑定](https://juejin.im/post/5d421bcf6fb9a06af23853f1)
-
-[深入浅出Vue响应式原理](https://juejin.im/post/5d229bfc5188252d707f3ac6)
-
-Vue 数据双向绑定主要是指：数据变化更新视图，视图变化更新数据
-
-Vue2 采用数据劫持结合发布—订阅模式的方法，通过 Object.defineProperty() 来劫持各个属性的 setter，getter，在数据变动时发布消息给订阅者，触发相应的监听回调,实现数据双向绑定
-
-
-Object.defineProperty无法监控到数组下标的变化，导致直接通过数组的下标给数组设置值，不能实时响应。 为了解决这个问题，经过vue内部处理后可以使用以下几种方法来监听数组
->
-    push()
-    pop()
-    shift()
-    unshift()
-    splice()
-    sort()
-    reverse()
-
-
-Vue3 则使用 Proxy
-
-
-![img](./img/vuexys.png)
-
-[实现双向绑定Proxy比defineproperty优劣如何?](https://juejin.im/post/5acd0c8a6fb9a028da7cdfaf)
-
-
-### 区别：
->
-    Object.definedProperty 的作用是劫持一个对象的属性，劫持属性的getter和setter方法，在对象的属性发生变化时进行特定的操作。而 Proxy 劫持的是整个对象。
-
-    Proxy 可以直接监听对象而非属性,以直接监听数组的变化；
-
-    Proxy 的第二个参数可以有 13 种拦截方法，比起 Object.defineProperty() 要更加丰富
-
-    Object.definedProperty 不支持数组，更准确的说是不支持数组的各种API，因为如果仅仅考虑arry[i] = value 这种情况，是可以劫持的，但是这种劫持意义不大。而 Proxy 可以支持数组的各种API。
-
-    尽管 Object.defineProperty 有诸多缺陷，但是其兼容性要好于 Proxy
-
-
-### [Object.defineProperty:](https://www.w3cplus.com/vue/vue-two-way-binding-object-defineproperty.html)
-Object.defineProperty(obj, prop, descriptor)
-
-定义出来的属性，默认是不可枚举，不可更改，不可配置【无法delete】
-
-基本用法
-```js
-let obj = {
-  name: 'Tom'
-};
-let temp = 'base';
-Object.defineProperty(obj, 'name', {
-    get() {
-        console.log("读取成功");
-        return temp
-    },
-    set(value) {
-        console.log("设置成功");
-        temp = value;
-    }
-});
-obj.name = 'change';
-console.log(obj.name);
-```
-
-https://juejin.im/post/5acc17cb51882555745a03f8  
-
-Object.defineProperty双向绑定-简
->
-    const obj = {};
-    Object.defineProperty(obj, 'text', {
-      get: function() {
-        console.log('get')
-      },
-      set: function(newVal) {
-        console.log('set:' + newVal);
-        document.getElementById('input').value = newVal;
-        document.getElementById('span').innerHTML = newVal;
-      }
-    });
-
-    const ipt = document.getElementById('input');
-    ipt.addEventListener('keyup', function(e){
-      obj.text = e.target.value;
-    })
-
-
-### [proxy](http://es6.ruanyifeng.com/#docs/proxy)
-new Proxy(target, handler)
-
-target参数表示所要拦截的目标对象，handler参数也是一个对象，用来定制拦截行为。
-
-Proxy 会劫持整个对象，读取对象中的属性或者是修改属性值，那么就会被劫持。  
-但是有点需要注意，复杂数据类型，监控的是引用地址，而不是值，如果引用地址没有改变，那么不会触发set。
-
-
->
-    let obj = {name: 'Yvette', hobbits: ['travel', 'reading'], info: {
-        age: 20,
-        job: 'engineer'
-    }};
-    let p = new Proxy(obj, {
-        get(target, key) { //第三个参数是 proxy， 一般不使用
-            console.log('读取成功');
-            //Reflect.get方法查找并返回target对象的key属性，如果没有该属性，则返回undefined。
-            return Reflect.get(target, key);
-        },
-        set(target, key, value,receiver) {
-            if(key === 'length') return true; //如果是数组长度的变化，返回。
-            console.log('设置成功');
-            return Reflect.set(target, key, value,receiver);
-        }
-    });
-    p.name = 20; //设置成功
-    p.age = 20; //设置成功; 不需要事先定义此属性
-    p.hobbits.push('photography'); //读取成功;注意不会触发 set
-    p.info.age = 18; //读取成功;不会触发 set
-
-proxy双向绑定-简
->
-    let input = document.querySelector('#input')
-    let span = document.querySelector('#span')
-    const obj = new Proxy({text:''},{
-      get: function(target,key,receiver) {
-        console.log('get ');
-        return Reflect.get(target,key,receiver)
-      },
-      set: function(target,key,val,receiver) {
-        console.log('set :' + val);
-        input.value = val;
-        span.innerHTML = val;
-        return Reflect.set(target,key,val,receiver)
-      }
-    });
-    input.addEventListener('keyup', function(e){
-      obj.text = e.target.value;
-    })
-
-## Vue的响应式原理
->
-    当一个Vue实例创建时，vue会遍历data选项的属性，用 Object.defineProperty 将它们转为 getter/setter并且在内部追踪相关依赖，在属性被访问和修改时通知变化。 每个组件实例都有相应的 watcher 程序实例，它会在组件渲染的过程中把属性记录为依赖，之后当依赖项的 setter 被调用时，会通知 watcher 重新计算，从而致使它关联的组件得以更新。
-
+[响应式原理](/details/Vue/Vue2-Source/响应式原理.md)
 
 # <a  name="v-model原理">v-model原理</a>[![bakTop](./img/backward.png)](#top)
 在 vue 项目中主要使用 v-model 指令在表单 input、textarea、select 等元素上创建双向数据绑定，我们知道 v-model 本质上不过是语法糖，v-model 在内部为不同的输入元素使用不同的属性并抛出不同的事件：
@@ -572,7 +423,7 @@ computed: {
 [官网-computed](https://cn.vuejs.org/v2/api/#computed)
 
 ## 用法、区别：
-* computed watch前两者自动追踪数据，执行相关函数，methods需手动调用；  
+* computed watch 前两者自动追踪数据，执行相关函数；methods需手动调用；  
 
 * computed 是`计算属性`,依赖其它属性值，并且值有缓存(页面重新渲染值不变化,计算属性会立即返回之前的计算结果，而不必再次执行函数);  
   只有在它的相关依赖发生改变时才会重新取值; computed的对象无需声明（声明会报错）
@@ -1015,6 +866,28 @@ export default {
 key 的特殊属性主要用在 Vue 的虚拟 DOM 算法，在新旧 nodes 对比时辨识 VNodes。如果不使用 key，Vue 会使用一种最大限度减少动态元素并且尽可能的尝试修复/再利用相同类型元素的算法。使用 key，它会基于 key 的变化重新排列元素顺序，并且会移除 key 不存在的元素。
 
 有相同父元素的子元素必须有独特的 key。重复的 key 会造成渲染错误
+```
+
+Vue源码中，在sameVnode函数中，由a.key === b.key 对比中可以避免就地复用的情况
+
+src\core\vdom\patch.js
+```js
+function sameVnode (a, b) {
+  return (
+    a.key === b.key && (
+      (
+        a.tag === b.tag &&
+        a.isComment === b.isComment &&
+        isDef(a.data) === isDef(b.data) &&
+        sameInputType(a, b)
+      ) || (
+        isTrue(a.isAsyncPlaceholder) &&
+        a.asyncFactory === b.asyncFactory &&
+        isUndef(b.asyncFactory.error)
+      )
+    )
+  )
+}
 ```
 
 * 总结： 
@@ -1941,6 +1814,10 @@ npm install -D @vue/cli //局部安装
 
 创建项目  
 vue create projectName
+
+[查看webpack配置: vue inspect](https://cli.vuejs.org/zh/guide/webpack.html#%E5%AE%A1%E6%9F%A5%E9%A1%B9%E7%9B%AE%E7%9A%84-webpack-%E9%85%8D%E7%BD%AE)
+>输出到一个文件 vue inspect > output.js
+查看webpack 某些配置 vue inspect --rule vue
 
 * vue.config.js
 ```js

@@ -74,7 +74,7 @@
 * <a href="#use strict">"use strict"? 用处？</a>
 * <a href="#深度优先遍历和广度优先遍历">深度优先遍历和广度优先遍历</a>
 * <a href="#DOMContentLoaded、$(function(){})、window.onload事件、执行顺序">DOMContentLoaded、$(function(){})、window.onload事件、执行顺序</a>
-* <a href="#WebAssembly">WebAssembly</a>
+
 
 </details> 
 
@@ -699,7 +699,7 @@ console.log(foo.n); //3
 
 get,set 与 writable,value 是互斥的,如果有交集设置会报错
 
-### configurable可配置
+### configurable 可配置
 
 * 能否使用delete
 * 能否修改属性特性
@@ -724,7 +724,7 @@ obj.a = 2;
 console.log(obj.a);//正常使用，输出结果为 2
 ```
 
-### enumerable可枚举
+### enumerable 可枚举
 
 对象属性是否可通过for-in循环，flase为不可循环，默认值为true 
 简单的说，当你想用 for-in 遍历这个对象的时候，正常会输出每一个属性，但当你设置false时，这个属性就不会被for-in 遍历读到
@@ -748,7 +748,7 @@ for(var i in obj) {
 }
 ```
 
-### writable可修改
+### writable 可修改
 
 对象属性是否可修改,flase为不可修改，默认值为true 
 
@@ -2317,16 +2317,6 @@ API：
     //DOMContentLoaded
     //$(function{})
     //window.onload
-
-## <a name="WebAssembly">[WebAssembly](https://github.com/AssemblyScript/assemblyscript)</a>
-WebAssembly 是一种新的字节码格式，主流浏览器都已经支持 WebAssembly。 和 JS 需要解释执行不同的是，WebAssembly 字节码和底层机器码很相似可快速装载运行，因此性能相对于 JS 解释执行大大提升。  
-也就是说 WebAssembly 并不是一门编程语言，而是一份字节码标准，需要用高级编程语言编译出字节码放到 WebAssembly 虚拟机中才能运行， 浏览器厂商需要做的就是根据 WebAssembly 规范实现虚拟机。
-
-* 相对于 JS，WebAssembly 有如下优点：
->
-    体积小：由于浏览器运行时只加载编译成的字节码，一样的逻辑比用字符串描述的 JS 文件体积要小很多；
-    加载快：由于文件体积小，再加上无需解释执行，WebAssembly 能更快的加载并实例化，减少运行前的等待时间；
-    兼容性问题少：WebAssembly 是非常底层的字节码规范，制订好后很少变动，就算以后发生变化,也只需在从高级语言编译成字节码过程中做兼容。可能出现兼容性问题的地方在于 JS 和 WebAssembly 桥接的 JS 接口。
 
 
 
