@@ -120,3 +120,19 @@ promise2
 async1 end
 settimeout
 ```
+
+## 优雅的处理 async/await
+无需每次使用 async/await 都包裹一层 try/catch ，更加的优雅
+```js
+async function errorCaptured(fn) {
+  try {
+    let res = await fn()
+    return [null, res]
+  } catch (err) {
+    return [err, null]
+  }
+}
+
+// 使用
+let [err, res] = await errorCaptured(func)
+```

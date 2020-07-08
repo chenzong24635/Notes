@@ -28,3 +28,4 @@ https://github.com/ziyi2/js/blob/master/JS%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.m
 * [观察者模式](观察者模式.md)
 * [发布订阅模式](发布订阅模式.md)
 
+[](https://juejin.im/post/5a14e9edf265da4312808d86#comment)

@@ -52,6 +52,8 @@ https://mp.weixin.qq.com/s?__biz=MzA5NzkwNDk3MQ==&mid=2650591221&idx=1&sn=7c0dea
 * console.table()  用表格显示对象
 
 * console.time()  console.timeEnd() 计算代码执行所耗的时间
+>performance.now()
+
 * console.count()  统计某段代码执行次数
 * console.trace方法显示当前执行的代码在堆栈中的调用路径。
 

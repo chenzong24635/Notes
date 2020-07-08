@@ -486,6 +486,15 @@
       return false
     }
 
+## <a name="判断对象的数据类型">判断对象的数据类型</a>
+* typeof 
+* instanceof
+* Object.prototype.toString.call()
+
+```js
+
+```
+
 ## <a name="requestAnimationFrame">requestAnimationFrame</a>
 
 [requestAnimationFrame](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestAnimationFrame)
@@ -1407,13 +1416,7 @@ Math.random().toFixed(6).slice(-6) / 1
     });
     console.log(`字符最多的是${char}，出现了${num}次`);
 
-## <a name="类数组转化为数组">类数组转化为数组</a>
 
->
-
-    [].slice.call(arguments) | Array.prototype.slice.call(arguments)
-    Array.from(arguments)
-    [...arguments]
 
 ## <a name="判断是否回文、实现回文">判断是否回文、实现回文</a>
 
@@ -1573,77 +1576,11 @@ add(1)(2)(3)
     }
     add(1)(2)(3)
 
-## <a name="数组无序排列">数组无序排列</a>
 
-arr.sort(()=>Math.random() - 0.5)
 
-arr.sort((a-b)=>a-b) 升序  
-arr.sort((a-b)=>b-a) 降序
 
->
 
-    如果调用该方法时没有使用参数，将按字母顺序对数组中的元素进行排序，说得更精确点，是按照字符编码的顺序进行排序。要实现这一点，首先应把数组的元素都转换成字符串（如有必要），以便进行比较。
 
-## <a name="数组扁平化">数组扁平化:n 维数组展开成一维数组 </a>
-
-var arr = [1, [2, 3], ['4', 5, ['6',7,[8]]], [9], 10];
-
-- flatten
-
-  >
-
-      foo.flat(Infinity) // Array.prototype.flat()用于将嵌套的数组“拉平”，变成一维的数组。该方法返回一个新数组，对原数据没有影响。默认只会“拉平”一层，如果想要“拉平”多层的嵌套数组，可以将flat()方法的参数写成一个整数，表示想要拉平的层数，默认为1。
-
-- reduce + flatten
-
-  >
-
-      function flatten(arr){
-        return arr.reduce((prev,now)=>{
-          return prev.concat(Array.isArray(now) ? fun2(now) : now)
-        },[])
-      }
-      // flatten = (ary) => ary.reduce((pre, now) => pre.concat(Array.isArray(now) ? flatten(now) : now), []);
-
-- toString | join + split
-
-  >
-
-      arr.join().split(",")
-      arr.toString().split(",")
-      //返回的内容都是字符串，arr.toString().split(",").map(Number)
-      // ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-
--
-
->
-
-    flatten= (arr)=>Array.isArray(arr) ? [].concat(...arr.map(flatten)) : arr;
-    flatten(foo); // [1, 2, 3, "4", 5, "6", 7, 8, 9, 10]
-
-- for
-  >
-      function flatten(arr) {
-        let res = []
-        for(let i = 0; i < arr.length; i++) {
-          if(Array.isArray(arr[i])){
-            res = res.concat(flatted(arr[i]))
-          } else {
-            res.push(arr[i])
-          }
-        }
-        return res
-      }
-
-## <a name="数组去重">[数组去重](/details/数组去重.md)</a>
-
-## <a name="数组扁平化+去重"> 数组扁平化+去重</a>
-
-`Array.from(new Set(arr.flat(Infinity)))`
-
-## <a name="数组排序"> 数组排序</a>
-
-[排序](/details/sort.md)
 
 ## <a name="自动触发onclick事件">自动触发 onclick 事件</a>
 

@@ -1,6 +1,6 @@
 [异步更新队列](https://cn.vuejs.org/v2/guide/reactivity.html#%E5%BC%82%E6%AD%A5%E6%9B%B4%E6%96%B0%E9%98%9F%E5%88%97)
 
-源码路径：src\core\util\next-tick.js
+
 
 ### 前置
 [EventLoop](/details/EventLoop.md)
@@ -18,6 +18,7 @@ Vue 在更新 DOM 时是异步执行的。只要侦听到数据变化，Vue 将�
 
 
 ### 源码
+源码路径：src\core\util\next-tick.js
 ```js
 if (typeof Promise !== 'undefined' && isNative(Promise)) {
   // 如果支持Promise
@@ -89,7 +90,7 @@ mounted(){
 //created-nextTick <div></div>
 ```
 
-### 实例
+### 访问DOM节点更新后的数据,
 ```html
 <div ref="msgDiv">{{msg}}</div>
 <button @click="changeMsg">点击我</button>
@@ -125,3 +126,15 @@ async changeMsg() {
 
 
 `总之，在数据变化后要执行的某个操作，而这个操作需要使用随数据改变而改变的DOM结构的时候，这个操作都应该放进Vue.nextTick()的回调函数中。`
+
+
+### [为什么要优先使用microtask？](https://www.zhihu.com/question/55364497/answer/144215284)
+
+JS 的 event loop 执行时会区分 task 和 microtask，引擎在每个 task 执行完毕，从队列中取下一个 task 来执行之前，会先执行完所有 microtask 队列中的 microtask。
+
+
+为啥要用 microtask？
+
+根据 HTML Standard，在每个 task 运行完以后，UI 都会重渲染，那么在 microtask 中就完成数据更新，当前 task 结束就可以得到最新的 UI 了。
+反之如果新建一个 task 来做数据更新，那么渲染就会进行两次。
+

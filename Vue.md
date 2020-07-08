@@ -79,7 +79,6 @@ Vue (读音 /vjuː/，类似于 view) 是一套用于构建用户界面的渐进
 
 核心思想是由数据驱动视图。所谓数据驱动，是指视图是由数据驱动生成的，我们对视图的修改，不会直接操作 DOM，而是通过修改数据。
 
-Vue没有完全遵循 MVVM 模型，但是 Vue 的设计也受到了它的启发。因此在文档中经常会使用 vm (ViewModel 的缩写) 这个变量名表示 Vue 实例。
 
 Vue 完全有能力驱动采用单文件组件和Vue生态系统支持的库开发的复杂单页应用。
 
@@ -99,18 +98,25 @@ var newArr1 = arr.map(function (item) {
 });
 ```
 
-# <a name="对比其他框架">对比其他框架</a>[![bakTop](./img/backward.png)](#top)  
+## vue 并不完全是一个MVVM框架？
+[ Vue.js 官网上的这句话](https://cn.vuejs.org/v2/guide/instance.html)
+虽然没有完全遵循 MVVM 模型，但是 Vue 的设计也受到了它的启发。因此在文档中经常会使用 vm (ViewModel 的缩写) 这个变量名表示 Vue 实例。
+
+MVVM只能数据驱动视图，视图更改数据，而不能通过其他方式操作数据,
+
+
+## 对比其他框架
 [对比其他框架-vue官网](https://doc.vue-js.com/v2/guide/comparison.html)
 
-
-# <a name="Vue的运行机制简述">Vue的运行机制简述</a>[![bakTop](./img/backward.png)](#top)  
+# Vue的运行机制简述 
 [参考](https://juejin.im/post/5cd8a7c1f265da037a3d0992#heading-13)
 
+
+
 # <a name="MVC、MVP、MVVM">MVC、MVP、MVVM</a>[![bakTop](./img/backward.png)](#top)  
+[MVC，MVP 和 MVVM 的图示](http://www.ruanyifeng.com/blog/2015/02/mvcmvp_mvvm.html)--阮一峰
+
 [基于Vue实现一个简易MVVM](https://juejin.im/post/5cd8a7c1f265da037a3d0992)
-
-[MVC，MVP 和 MVVM 的图示](http://www.ruanyifeng.com/blog/2015/02/mvcmvp_mvvm.html)
-
 
 ### MVVM(Model-View-ViewModel)
 <img src="img/Vue/mvvm.png" width="50%"/>

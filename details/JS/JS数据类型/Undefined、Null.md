@@ -21,8 +21,8 @@ undefined是全局对象的一个属性。也就是说，它是全局作用域�
 
 undefined的几种情况
 * 变量被声明了，但没有赋值时，就等于undefined。
-* 调用函数时，应该提供的参数没有提供，该参数等于undefined。
 * 对象没有赋值的属性，该属性的值为undefined。
+* 调用函数时，应该提供的参数没有提供，该参数等于undefined。
 * 函数没有返回值时，默认返回undefined。
 
 # undefined与null区别

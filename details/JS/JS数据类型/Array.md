@@ -8,9 +8,6 @@
   ![Array](../../img/Array.png)
 </details>
 
-* <a href="#"></a>
-##  <a name=""></a>
-
 
 数组属性、方法
 
@@ -684,10 +681,10 @@ next().done 用于指示迭代器是否完成：在每次迭代时进行更新�
       console.log('.keys()-->', 'item:', item);
     }
 
-## <a name="()"></a>
+## <a name="">实现 map、filter、some、every、reduce、</a>
 [一个合格的中级前端工程师需要掌握的 28 个 JavaScript 技巧](https://juejin.im/post/5cef46226fb9a07eaf2b7516#heading-0)
 
-实现map
+实现 map
 >
     Array.prototype.myMap = function(fn,context){
       let arr = Array.prototype.slice.call(this)
@@ -699,7 +696,7 @@ next().done 用于指示迭代器是否完成：在每次迭代时进行更新�
       return resultArr
     }
 
-实现filter
+实现 filter
 >
     Array.prototype.myFilter = function(fn,context){
       let arr = Array.prototype.slice.call(this)
@@ -711,7 +708,7 @@ next().done 用于指示迭代器是否完成：在每次迭代时进行更新�
       return resultArr
     }
 
-实现some
+实现 some
 >
     Array.prototype.mySome = function(fn,context){
       let arr = Array.prototype.slice.call(this)
@@ -758,7 +755,17 @@ next().done 用于指示迭代器是否完成：在每次迭代时进行更新�
       return result
     }
 
-# <a name=""></a>
+# <a name="数组一些操作">数组一些操作</a>
+
+## <a name="类数组转化为数组">类数组转化为数组</a>
+```js
+[].slice.call(arguments) 
+Array.prototype.slice.call(arguments)
+Array.from(arguments)
+[...arguments]
+```
+
+## <a name="交集，差集，并集，补集">交集，差集，并集，补集</a>
 
 ```js
 intersect(arr1, arr2) { // 交集, 数组arr1与arr2都有的
@@ -791,3 +798,14 @@ console.log(a3); // [1, 2, 3, 4, 5, 6, 7, 8, 9]
 let a4 = this.complement(arr1, arr2)
 console.log(a4); //  [1, 2, 3, 4, 6, 7, 8, 9]
 ```
+
+## <a name="数组无序排列">数组无序排列</a>
+
+arr.sort(()=>Math.random() - 0.5)
+
+arr.sort((a-b)=>a-b) 升序  
+arr.sort((a-b)=>b-a) 降序
+
+>
+
+    如果调用该方法时没有使用参数，将按字母顺序对数组中的元素进行排序，说得更精确点，是按照字符编码的顺序进行排序。要实现这一点，首先应把数组的元素都转换成字符串（如有必要），以便进行比较。
