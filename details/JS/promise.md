@@ -305,3 +305,20 @@ const preloadImage = function (url) {
 ```
 
 # 手写Promise
+
+# 
+
+## Promise.all()是并发的还是串行的？
+并发的。不过Promise.all().then()结果中数组的顺序和Promise.all()接收到的数组顺序一致。
+
+## 
+Promise.all()的作用是接收一组异步任务，然后并行执行异步任务，并且在所有异步操作执行完后才执行回调。
+
+.race()的作用也是接收一组异步任务，然后并行执行异步任务，只保留取第一个执行完成的异步操作的结果，其他的方法仍在执行，不过执行结果会被抛弃。
+
+Promise.all().then()结果中数组的顺序和Promise.all()接收到的数组顺序一致。
+
+all和race传入的数组中如果有会抛出异常的异步任务，那么只有最先抛出的错误会被捕获，并且是被then的第二个参数或者后面的catch捕获；但并不会影响数组中其它的异步任务的执行。
+
+## Promise为什么能链式调用
+由于它的then方法和catch、finally方法会返回一个新的Promise所以可以允许我们链式调用

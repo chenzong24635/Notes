@@ -447,6 +447,9 @@
 
 ## <a name="手机号验证">手机号验证</a>
 
+
+## <a name="手机号验证">手机号验证</a>
+
 >
 
     function isPhone(tel) {
@@ -2222,6 +2225,32 @@ https://www.jianshu.com/p/6c7d0b18d4ca
 [web 前端大厂 10 道经典面试题汇总](https://zhuanlan.zhihu.com/p/57200821)
 
 [前端进阶系列](https://github.com/yygmind/blog)-木易杨
+
+### 点击一个input依次触发的事件
+```js
+const ipt = document.getElementById('ipt');
+ipt.onclick = function (e) {
+  console.log('click')
+}
+ipt.onfocus = function (e) {
+  console.log('focus')
+}
+ipt.onmousedown = function (e) {
+  console.log('mousedown')
+}
+ipt.onmouseover = function (e) {
+  console.log('mouseover')
+}
+ipt.onmouseenter = function (e) {
+  console.log('mouseenter')
+}
+
+// mouseover
+// mouseenter
+// mousedown
+// focus
+// click
+```
 
 ### 定义一个简单的模板类，使用{}作为转义标记，中间的数字表示替换目标，format 实参用来替换模板内标记
 

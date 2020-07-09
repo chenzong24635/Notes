@@ -84,6 +84,13 @@ css命名的语义化是指：为html标签添加有意义的class，id补充未
 * 有利于开发和维护，语义化更具可读性  
 * 方便其他设备解析，如盲人阅读器根据语义渲染网页
 
+## <a name="div较table优点">div较table优点</a>[![bakTop](./img/backward.png)](#top)
+* 加快了页面的加载速度（在IE中要将整个table加载完了才显示内容）
+* 符合W3C标准，代码结构清晰明了，结构、样式和行为分离，带来足够好的可维护性。
+* 对SEO搜索引擎更加友好，
+
+
+
 ## <a name="HTML5 为什么只需要写">HTML5 为什么只需要写 \<!DOCTYPE HTML\></a>[![bakTop](./img/backward.png)](#top)
 
 HTML5 不基于 SGML，因此不需要对DTD进行引用，但是需要 DOCTYPE 来规范浏览器的行为（让浏览器按照它们应该的方式来运行）

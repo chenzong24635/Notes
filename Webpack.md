@@ -8,7 +8,7 @@
 
 [webpack打包原理 ? 看完这篇你就懂了 !](https://juejin.im/post/5e116fce6fb9a047ea7472a6)
 
-
+[「吐血整理」再来一打Webpack面试题](https://juejin.im/post/5e6f4b4e6fb9a07cd443d4a5)
 
 * <a href=""></a>
 
@@ -1448,7 +1448,9 @@ import(/* webpackChunkName: 'posts' */'./posts/posts')
 
 #### hash
 
-只有一个 hash ，所有文件的 hash 都是相同,修改任何文件都会导致所有文件的 hash 发生改变
+只有一个 hash ，所有文件的 hash 都是相同,修改任何文件都会导致所有文件的 hash 发生改变(粒度整个项目)
+
+
 ```js
 output: {
   filename: '[name].[hash].js',
@@ -1460,7 +1462,8 @@ output: {
 #### chunkhash
 
 当有多个chunk，形成多个bundle时，如果只有一个chunk和一个bundle内容变了，其他的bundle的hash都会发生变化，因为大家都是公用的一个hash，这个时候chunkhash的作用就出来了。  
-它根据不同的入口文件(Entry)进行依赖文件解析、构建对应的 chunk，生成对应的哈希值。
+
+它根据不同的入口文件(Entry)进行依赖文件解析、构建对应的 chunk，生成对应的哈希值(粒度entry的每个入口文件)
 
 所以每次编译之后，每个 chunk 的 hash 都是不同的。对于每个 chunk 来说，如果该 chunk 代码不变，那么 hash 也将保持不变，从而实现该资源在浏览器上长缓存。
 ```js

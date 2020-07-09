@@ -1,0 +1,18 @@
+
+```js
+function selfInstanceof (left, right) {
+  // 获取 left 原型
+  let proto = Object.getPrototypeOf(left);
+  let prototype = right.prototype;
+  while (true) {
+    if (proto === null) {
+      return false;
+    } else if (proto === prototype) {
+      return true;
+    }
+    // 获取left原型的原型，继续循环，直至 null 或找到right存在于left的原型链上
+    proto = Object.getPrototypeOf(proto);
+  }
+};
+
+```

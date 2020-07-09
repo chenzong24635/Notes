@@ -204,15 +204,14 @@ break/continue 语句如果后跟了关键字，会产生带 target 的完成记
   * [BigInt](/details/JS数据类型/BigInt) 
 
 复杂（引用）数据类型:   --地址传递--堆内存
-  * [Object](/details/JS数据类型/Object.md) 
-    * [Array](/details/JS数据类型/Array.md)
-    * [Set、Map](/details/JS数据类型/Set、Map.md)
-    * [Function](/details/JS数据类型/Function.md)
-    * [Date](/details/JS数据类型/Date.md)
-    * [Math](/details/JS数据类型/Math.md)
-    * [RegExp](/details/JS数据类型/RegExp.md)
-    * [Error](/details/JS数据类型/Error.md)
-
+  * [Object](/details/JS/JS数据类型/Object.md) 
+    * [Array](/details/JS/JS数据类型/Array.md)
+    * [Date](/details/JS/JS数据类型/Date.md)
+    * [Math](/details/JS/JS数据类型/Math.md)
+    * [RegExp](/details/JS/JS数据类型/RegExp.md)
+    * [Function](/details/JS/JS数据类型/Function.md)
+    * [Set、Map](/details/JS/JS数据类型/Set、Map.md)
+    * [Error](/details/JS/JS数据类型/Error.md)
 
 两类型的区别：存储位置不同；
 >
@@ -293,8 +292,20 @@ JSON 的网络媒体类型是 application/json。
 
 
 #### JSONP: 
-是 json 的一种"使用模式"，是种跨域数据交互协议，可以让网页从别的域名（网站）那获取资料，即跨域读取数据
 
+`jsonp定义：`
+>
+    是 json 的一种"使用模式"，是种跨域数据交互协议，可以让网页从别的域名（网站）那获取资料，即跨域读取数据。
+
+`jsonp跨域原理：`
+>
+    在html页面中通过相应的标签从不同域名下加载静态资源文件是被浏览器允许的。一般，动态创建script标签，再去请求一个带参网址来实现跨域通信
+
+    因此可利用 script 标签的src属性没有跨域的限制。JSONP请求一定需要对方的服务器做支持才可以。
+
+    通过将前端方法作为参数传递到服务器端，然后由服务器端注入参数之后再返回，实现服务器端向客户端通信(只支持get方法)
+
+[更多](/details\跨域\跨域方法.md#jsonp跨域)
 
 ## <a name="BOM 浏览器对象模型">BOM 浏览器对象模型</a>
 
@@ -348,7 +359,12 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
 
     事件冒泡：从目标元素开始，往顶层元素传播。途中如果有节点绑定了相应的事件处理函数，这些函数都会被一次触发。
 
-所有的事件都会捕获但不是所有事件都会冒泡,例如submit事件就不会被冒泡。 
+所有的事件都会捕获但不是所有事件都会冒泡,例如：
+* onblur
+* onfocus
+* onmouseenter
+* onmouseleave
+* submit
 
 
 #### 事件模型：原始事件模型(DOM0级)、DOM2事件模型、IE事件模型。
@@ -362,7 +378,7 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
 
 2. DOM2级：W3C制定的标准模型，现代浏览器（IE6~8除外）都已经遵循这个规范
 >
-                    //事件类型、需要执行的函数、是否捕获，(默认false)
+                    //事件类型、需要执行的函数、是否捕获，(false（默认值）:冒泡；true：捕获)
     addEventListener(eventType,handler,useCapture)
     removeEventListener(eventType,handler,useCapture)
 
@@ -382,14 +398,63 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
 * event.currentTarge 事件所绑定的元素
 
 #### 自定义事件
-https://www.jianshu.com/p/5f9027722204
->
-    // new Event()定义事件；dispatchEvent()触发事件
-    var look = new Event('look', {"bubbles":true, "cancelable":false});
-    document.addEventListener('look', function(){
-        console.log('lootEvent_document 触发');
-    });
-    document.dispatchEvent(look);
+[自定义事件的触发dispatchEvent](https://www.jianshu.com/p/5f9027722204)
+
+自定义事件方法
+* new Event()
+* new CustomEvent()
+* document.createEvent('CustomEvent');// 注意这里必须为'CustomEvent'
+
+触发事件方法
+* dispatchEvent()
+
+
+```js
+// new Event()定义事件
+let myEvent1 = new Event(
+  'myEvent1', // 事件名称
+  {
+    bubbles: true, //是否冒泡
+    cancelable: false//是否取消默认事件
+  });
+
+// new CustomEvent()定义
+let myEvent2 = new CustomEvent('myEvent2', {
+  detail: {
+    // 将需要传递的参数放到这里
+    // 可以在监听的回调函数中获取到：event.detail
+  },
+  bubbles: true,    //是否冒泡
+  cancelable: false //是否取消默认事件
+})
+
+// document.createEvent('CustomEvent')定义事件
+let myEvent3 = document.createEvent('CustomEvent');// 注意这里必须为'CustomEvent'
+myEvent3.initEvent(
+  'myEvent3', // 事件名称
+  true, // 是否冒泡
+  false // 是否可以取消默认行为
+)
+
+// 添加事件
+document.addEventListener('myEvent1', function(e){
+    console.log('myEvent1 触发',e);
+});
+document.addEventListener('myEvent2', function(e){
+    console.log('myEvent2 触发',e);
+});
+document.addEventListener('myEvent3', function(e){
+    console.log('myEvent3 触发',e);
+});
+
+let div = document.querySelector('#div')
+div.onclick = function(){
+  document.dispatchEvent(myEvent1); // 触发事件
+  document.dispatchEvent(myEvent2); // 触发事件
+  document.dispatchEvent(myEvent3); // 触发事件
+}
+
+```
 
 #### w3c事件与IE事件区别
 事件流
@@ -751,6 +816,8 @@ console.log(spy.sex = "feme"); //调用set函数
 
 ## <a name="typeof instanceof">typeof 、instanceof 、in</a>
 #### typeof 
+[浅谈 instanceof 和 typeof 的实现原理](https://juejin.im/post/5b0b9b9051882515773ae714)
+
 typeof 能够正确的判断基本数据类型，但是除了 null, typeof null输出的是对象  
 在使用 typeof 运算符时采用引用类型存储值会出现一个问题，无论引用的是什么类型的对象，它都返回 “object”。
 
@@ -770,14 +837,14 @@ typeof 能够正确的判断基本数据类型，但是除了 null, typeof null�
 * 000: 对象
 * 010: 浮点数
 * 100：字符串
-* 110： 布尔
+* 110： 布尔值
 * 1： 整数
 
 但是，undefined 和 null 有点特殊的
 null：所有机器码均为0
 undefined：用 −2^30 整数来表示
 
-由于null的二进制表示全为0，自然前三位也是0，所以执行typeof时会返回"object"。
+`由于null的二进制表示全为0`，自然前三位也是0，所以执行typeof时会返回"object"。
 
 #### instanceof
 instanceof 是通过原型链判断的，判断实例对象在其原型链中是否存在一个构造函数的 prototype 属性。  
@@ -1077,8 +1144,19 @@ Object.create:
 
 
 ## <a name="作用域、作用域链、执行上下文">作用域、作用域链、执行上下文(执行环境)</a>
-[作用域-作用域链-执行上下文](details/JS/作用域-作用域链.md)
+[作用域-作用域链-执行上下文](details/JS/作用域-作用域链-执行上下文.md)
 
+
+## <a name="VO/AO">VO/AO</a>
+* VO(变量对象), 也就是`variable object`, 创建执行上下文时与之关联的会有一个变量对象，该上下文中的所有变量和函数全都保存在这个对象中。
+
+* AO(活动对象), 也就是`activation object`,进入到一个执行上下文时，此执行上下文中的变量和函数都可以被访问到，可以理解为被激活了。
+
+VO/AO区别：
+
+变量对象（VO）是规范上或者是JS引擎上实现的，并不能在JS环境中直接访问。
+
+当进入到一个执行上下文后，这个变量对象才会被激活，所以叫活动对象（AO），这时候活动对象上的各种属性才能被访问
 
 ## <a name="this">this理解</a>
 [this](/details/this.md)
@@ -1238,21 +1316,18 @@ defer 属性
 ## <a name="重绘和回流">[重绘和回流](https://github.com/chenjigeng/blog/issues/4)</a>
 `回流必将引起重绘，而重绘不一定会引起回流。`
 
-`回流`：当页面中的部分或者全部因为元素的规模尺寸，布局，隐藏等改变而需要重新构建,这就叫做回流。
+`回流（重排）`：当页面中的部分或者全部因为元素的规模尺寸，布局，隐藏等改变而需要重新构建,这就叫做回流。
 
 `重绘`：当页面的中的可见性发上变化而不影响布局时，比如：背景颜色吗，文字颜色等，这样形成了重绘
 
 会引起重绘和回流的操作如下：
->
-    添加、删除元素(回流+重绘)
-    隐藏元素：display:none(回流+重绘);visibility:hidden(重绘)
-    移动元素，比如改变top,left的值，或者移动元素到另外一个父元素中。(重绘+回流)
-    对style的操作(对不同的属性操作，影响不一样)
-    激活 CSS 伪类，比如 :hover （重绘+回流）
-    元素尺寸改变(边距、填充、边框、宽度和高度）（重绘+回流）
-    用户的操作，比如改变浏览器大小，改变浏览器的字体大小等(重绘+回流)
-
-    transform 操作不会引起重绘和回流，是一种高效率的渲染。因为transform属于合成属性，进行动画时将会创建一个合成层，在一个独立的层中进行渲染。
+* 添加、删除元素(回流+重绘)
+* 隐藏元素：display:none(回流+重绘);visibility:hidden(重绘)
+* 移动元素，比如改变top,left的值，或者移动元素到另外一个父元素中。(重绘+回流)
+* 对style的操作(对不同的属性操作，影响不一样)
+* 激活 CSS 伪类，比如 :hover （重绘+回流）
+* 元素尺寸改变(边距、填充、边框、宽度和高度）（重绘+回流）
+* 用户的操作，比如改变浏览器大小，改变浏览器的字体大小等(重绘+回流)
 
 
 由于每次重排都会造成额外的计算消耗，因此大多数浏览器都会通过队列化修改并批量执行来优化重排过程。浏览器会将修改操作放入到队列里，直到过了一段时间或者操作达到了一个阈值，才清空队列。
@@ -1267,30 +1342,27 @@ defer 属性
 
     scrollWidth、scrollHeight、scrollTop、scrollLeft
 
-    width、height
+    width、height、
 
     getComputedStyle()、getBoundingClientRect()
 
 
-避免方法：
->
-    
-
-    尽量使用 class 进行样式修改，而不是直接操作样式
-    使用 transform 替代 top|left...
-    使用 visibility 替换 display: none 
-    避免设置多层内联样式，CSS 选择符从右往左匹配查找，避免节点��级过多。
-    尽可能在DOM树的最末端改变class。可以限制了回流的范围，使其影响尽可能少的节点
-    动画效果设置position为absolute，fixed
-    避免使用table布局
-    避免使用CSS表达式
-
-    减少DOM操作
-    js避免频繁读取会引发回流/重绘的属性
-    DOM离线处理，处理完后一起更新,如将其至于内存或设置display:none。
-      a) 使用DocumentFragment进行缓存操作,引发一次回流和重绘；
-      b) 使用display:none技术，只引发两次回流和重绘；
-      c) 使用cloneNode(true or false) 和 replaceChild 技术，引发一次回流和重绘
+如何避免/减少重绘，回流：
+* 尽量使用 class 进行样式修改，而不是直接操作样式
+* 使用 transform 替代 top|left...
+* transform 操作不会引起重绘和回流，是一种高效率的渲染（开启GPU渲染）。因为transform属于合成属性，进行动画时将会创建一个合成层，在一个独立的层中进行渲染。
+* 使用 visibility 替换 display: none 
+* 避免设置多层内联样式，CSS 选择符从右往左匹配查找，避免节点层级过多。
+* 尽可能在DOM树的最末端改变class。可以限制了回流的范围，使其影响尽可能少的节点
+* 动画效果设置position为absolute，fixed
+* 避免使用CSS表达式
+* 避免使用table布局
+* 减少DOM操作
+* 缓存值，避免频繁读取会引发回流/重绘的属性
+* DOM离线处理，处理完后一起更新
+  - 使用DocumentFragment进行缓存操作,引发一次回流和重绘；
+  - 使用display:none技术，只引发两次回流和重绘；
+  - 使用cloneNode(true or false) 和 replaceChild 技术，引发一次回流和重绘
 
 
 ## <a name="模块化">模块化</a>
