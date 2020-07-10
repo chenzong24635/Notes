@@ -445,57 +445,21 @@
 
 # <a name="常用">**常用**</a>
 
-## <a name="手机号验证">手机号验证</a>
+## <a name="如何把http的请求换成https">如何把http的请求换成https</a>
 
+在html页面中添加meta
+```html
+<meta http-equiv ="Content-Security-Policy" content="upgrade-insecure-requests">
+```
 
-## <a name="手机号验证">手机号验证</a>
-
->
-
-    function isPhone(tel) {
-      return /^1[0-9]{10}$/.test(tel.toString())
-    }
-
-## <a name="邮箱验证">邮箱验证</a>
-
->
-
-    function isEmail(val) {
-      let reg = /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
-      let  res=reg.test(val);
-      if (res) return true;
-      return false;
-    }
-
-## <a name="身份证验证">身份证验证</a>
-
->
-
-    function isCardNo(number) {
-        var regx = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-        return regx.test(number);
-    }
-
-## <a name="密码验证">密码验证</a>
-
->
-
-    function pswLen(val) {// -- 6位数 、字母+数字
-      let reg = /^(?!\d+$)(?![a-zA-Z]+$)[a-zA-Z\d]+$/;
-      let bool = reg.test(val);
-      let len = val.length;
-      console.log(val);
-      if (len >= 6 && bool) return true
-      return false
-    }
-
-## <a name="判断对象的数据类型">判断对象的数据类型</a>
-* typeof 
-* instanceof
-* Object.prototype.toString.call()
-
-```js
-
+在nginx配置中进行header的添加：
+```conf
+server {
+  location / {
+    #添加响应头
+    add_header Content-Security-Policy upgrade-insecure-requests;
+  }
+}
 ```
 
 ## <a name="requestAnimationFrame">requestAnimationFrame</a>
@@ -2225,6 +2189,17 @@ https://www.jianshu.com/p/6c7d0b18d4ca
 [web 前端大厂 10 道经典面试题汇总](https://zhuanlan.zhihu.com/p/57200821)
 
 [前端进阶系列](https://github.com/yygmind/blog)-木易杨
+
+###  为什么说script标签建议放在body下面？
+JS代码在加载完之后是立即执行的，且JS代码执行时会阻塞页面的渲染。
+
+###  为什么说script标签会阻塞页面的渲染呢？渲染线程和js引擎线程不是分开的吗？
+JS属于单线程，当我们在加载script标签内容的时候，渲染线程会被暂停，因为script标签里可能会操作DOM的，所以如果你加载script标签又同时渲染页面肯定就冲突了，因此说渲染线程(GUI)和js引擎线程互斥。
+
+### requestAnimationFrame
+
+### token会不会被伪造？
+### 前后端如何验证一个用户是否下线了
 
 ### 点击一个input依次触发的事件
 ```js

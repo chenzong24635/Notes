@@ -1,5 +1,7 @@
 [关于大厂面试中问到的二十几个 HTTP 面试题](https://juejin.im/post/5e015a60e51d45583d426a15)
 
+[](https://github.com/LinDaiDai/niubility-coding-js/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/HTTPS%E9%9D%A2%E8%AF%95%E9%97%AE%E7%AD%94.md)
+
 HTTP协议 ：Hyper Text Transfer Protocol（超文本传输协议）,是用于从万维网（WWW:World Wide Web ）服务器传输超文本到本地浏览器的传送协议。是互联网上应用最为广泛的一种网络协议。所有的WWW文件都必须遵守这个标准。
 
 HTTP是一个基于TCP/IP通信协议来传递数据（HTML 文件, 图片文件, 查询结果等）。

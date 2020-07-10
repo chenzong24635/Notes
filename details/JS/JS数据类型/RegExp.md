@@ -25,8 +25,7 @@
 * <a href="#"></a>
 * <a href="#常用">常用</a>
 
-# <a name=""></a>
-# <a name=""></a>
+
 # <a name="创建正则表达式">创建正则表达式</a>
 
 字面量形式：
@@ -450,7 +449,21 @@ ___
 数字字母 m到n个字符
 ```js
 /^[A-Za-z0-9]{m,n}$/
+
+// 非数组   非字母       字母+数字
+/^(?!\d+$)(?![a-zA-Z]+$)[a-zA-Z\d]+$/
 ```
+
+```js
+function pswLen(val) {// -- 6位数 、字母+数字
+  let reg = /^(?!\d+$)(?![a-zA-Z]+$)[a-zA-Z\d]+$/;
+  let bool = reg.test(val);
+  let len = val.length;
+  if (len >= 6 && bool) return true
+  return false
+}
+```
+
 
 #### 校验中文
 ```js

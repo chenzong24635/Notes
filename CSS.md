@@ -678,7 +678,9 @@ BFC形成条件：
 *  float的值不为none
 *  position的值为absolute或fixed（不为static或relative或sticky）
 *  overflow的值不为visible( hidden,scroll,auto,... )的块元素
-*  display的值为 inline-block | flex | inline-flex | grid | inline-grid | table | inline-table | table-cell | table-caption |  flow-root
+*  display的值为 inline-block  | inline-table | table-cell | table-caption | flow-root
+*  弹性元素（display为 flex 或 inline-flex元素的`直接子元素`）
+*  网格元素（display为 grid 或 inline-grid 元素的`直接子元素`）
 *  contain 值为 layout、content或 paint 块元素
 *  多列容器colunm-count或column-width不为auto 的块元素  
 *  column-span 为 all的块元素

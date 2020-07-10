@@ -379,7 +379,7 @@ browserify lib/app.js -o lib/bundle.js // 使用Browserify编译js
 ```ES6模块与CommonJS模块的差异```
 [参考](https://es6.ruanyifeng.com/#docs/module-loader#ES6-%E6%A8%A1%E5%9D%97%E4%B8%8E-CommonJS-%E6%A8%A1%E5%9D%97%E7%9A%84%E5%B7%AE%E5%BC%82)
 
-* CommonJs模块输出的是一个值的拷贝，也就是说，一旦输出一个值，模块内部的变化就影响不到这个值。ES6 模块输出的是值的引用，是动态引用，并且不会缓存值，模块里面的变量绑定其所在的模块。
+* CommonJs模块输出的是一个值的拷贝（浅拷贝），也就是说，一旦输出一个值，模块内部的变化就影响不到这个值。ES6 模块输出的是值的引用，是动态引用，并且不会缓存值，模块里面的变量绑定其所在的模块。
 
 * CommonJs模块是运行时加载，ES6模块是编译时输出接口。
   >

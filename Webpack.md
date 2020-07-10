@@ -1482,6 +1482,9 @@ output: {
 针对这种情况，可以把 CSS 从 JS 中抽离出来并使用 contenthash。
 
 #### contenthash 
+跟每个生成的文件有关，每个文件都有一个唯一的hash值。当要构建的文件内容发生改变时，就会生成新的hash值，且该文件的改变并不会影响和它同一个模块下的其它文件。(粒度每个文件的内容)
+
+
 使用 mini-css-extract-plugin 或 extract-text-webpack-plugin 把 CSS 文件抽离出来：
 
 ```js
@@ -1507,7 +1510,6 @@ module.exports = {
   ]
 }
 ```
-
 
 注意，当使用contenthash时，如果仅修改js文件，css文件的hash不会变化，但是仅修改css的文件，js文件的hash也会变化。
 
