@@ -859,8 +859,17 @@ A instanceof B, 在A的原型链中层层查找，是否有原型等于 B.__prot
 
 >
     function P(){}
-    p = new P()
+    let p = new P()
     console.log(p instanceof P) //true    
+
+#### isPrototypeOf
+判断指定对象是否存在于另一个对象的原型链中
+
+```js
+function P(){}
+let p = new P()
+console.log(P.prototype.isPrototypeOf(p));//true
+```
 
 #### in
 in 操作符会检查属性是否存在对象及其 [[Prototype]] 原型链中。检查的是某个属性名是否存在
@@ -1458,7 +1467,10 @@ Object  =  Property  +  Method
 [继承方法](/details/继承/index.md)
 
 #### 多态
+[【何不三连】JS面向对象最后一弹-多态篇(羽化升仙)](https://juejin.im/post/5e945a15f265da47d31231dd)
+
 多态实际上是不同对象作用与同一操作产生不同的效果。多态的思想实际上是把 “想做什么” 和 “谁去做” 分开。
+
 
 ```js
 //非多态

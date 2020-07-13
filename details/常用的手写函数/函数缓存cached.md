@@ -14,12 +14,11 @@ function cached(fn) {
 测试
 ```js
 function fib(n){
-  function _fib(n, a = 0, b = 1){
-    // console.log(1);
-    if(n == 0) return a
-    else return _fib(n-1, b, a + b)
+  if (n <= 2) {
+    return 1;
+  } else {
+    return fib(n - 1) + fib(n - 2);
   }
-  return _fib(n)
 }
 
 function cached(fn) {

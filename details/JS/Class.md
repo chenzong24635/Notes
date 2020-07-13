@@ -39,7 +39,7 @@ class Person {
   
 
 函数存在声明提示
-类却不存在
+class类却不存在
 
 ```js
 let a = new A()
