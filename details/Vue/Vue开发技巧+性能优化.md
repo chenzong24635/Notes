@@ -10,7 +10,6 @@
 
 [Vue 开发必须知道的 36 个技巧【近1W字】](https://juejin.im/post/5d9d386fe51d45784d3f8637)
 
-[Vue CLI 首屏优化技巧](https://segmentfault.com/a/1190000019499007)
 
 [Vue 项目性能优化 — 实践指南（网上最全 / 详细）](https://juejin.im/post/5d548b83f265da03ab42471d)
 
@@ -943,7 +942,8 @@ import loading from '@/components/loading/directive.js'
 Vue.use(loading)
 ```
 
-
+## <a name="SVG封装">SVG封装</a>[![bakTop](/img/backward.png)](#top) 
+[SVG封装](./SVG封装.md)
 
 ## <a name="路由参数解耦">路由参数解耦 props</a>[![bakTop](/img/backward.png)](#top)  
 [路由组件传参](https://router.vuejs.org/zh/guide/essentials/passing-props.html#%E5%B8%83%E5%B0%94%E6%A8%A1%E5%BC%8F)
@@ -992,8 +992,6 @@ export default {
 }
 ```
 
-## <a name="SVG封装">SVG封装</a>[![bakTop](/img/backward.png)](#top) 
-[SVG封装](./SVG封装.md)
 
 
 ## <a name="debounce使用">debounce使用 beforeDestroy或$once</a>[![bakTop](/img/backward.png)](#top) 
@@ -1138,9 +1136,11 @@ export default {
 
 ## <a name="优化无限列表性能">优化无限列表性能</a>[![bakTop](/img/backward.png)](#top) 
 
-如果你的应用存在非常长或者无限滚动的列表，那么需要采用 窗口化 的技术来优化性能，只需要渲染少部分区域的内容，减少重新渲染组件和创建 dom 节点的时间。 你可以参考以下开源项目 [vue-virtual-scroll-list](https://github.com/tangbc/vue-virtual-scroll-list) 和[vue-virtual-scroller](https://github.com/Akryum/vue-virtual-scroller)  来优化这种无限列表的场景的。
+如果你的应用存在非常长或者无限滚动的列表，那么需要采用 窗口化 的技术来优化性能，只需要渲染少部分区域的内容，减少重新渲染组件和创建 dom 节点的时间。 
 
-
+开源项目 
+* [vue-virtual-scroll-list](https://github.com/tangbc/vue-virtual-scroll-list) 
+* [vue-virtual-scroller](https://github.com/Akryum/vue-virtual-scroller) 
 
 
 ## <a name="图片资源懒加载">图片资源懒加载</a>[![bakTop](/img/backward.png)](#top) 
@@ -1296,7 +1296,6 @@ module.exports = {
   configureWebpack: (config) => {
     if (process.env.NODE_ENV === 'production') {
       config.plugins.push(new BundleAnalyzerPlugin())
-    } else {
     }
   },
   // 或者
