@@ -18,7 +18,7 @@
 * <a href="#JS">**JS**</a>
 
 * <a href="#数据类型、内置对象">数据类型、内置对象</a>
-* <a href="#undefined与null定义、区别">undefined与null定义、区别</a>
+* <a href="#面向过程和面向对象">面向过程和面向对象</a>
 * <a href ="json jsonp">json jsonp</a>
 * <a href="#BOM 浏览器对象模型">BOM 浏览器对象模型</a>
 * <a href="#DOM 文档对象模型">DOM 文档对象模型</a>
@@ -49,7 +49,6 @@
 * <a href="#js延迟加载：defer,async">js延迟加载：defer,async</a>
 * <a href="#重绘和回流">重绘和回流</a>
 * <a href="#模块化">模块化</a>
-* <a href="#面向过程和面向对象的异同">面向过程和面向对象的异同</a>
 * <a href="#跨域">跨域</a>
 * <a href="#常见的web攻击">常见的web攻击</a>
 * <a href="#字符转码、解码">字符转码、解码,encodeURIComponent、decodeURIComponent、encodeURI、decodeURI、escape、unescape</a>
@@ -165,12 +164,13 @@
 
 # <a name="JS">**JS**</a>
 
-JS的特点：无需编译、单线程、弱类型、基于对象、事件驱动
+JS的特点：无需编译、单线程、动态类型、弱类型、基于对象、事件驱动
 JS的组成：核心( ECMAScript) , 文档对象模型(DOM), 浏览器对象模型(BOM)
 
 JavaScript 是弱类型语言，而且JavaScript 声明变量的时候并没有预先确定的类型， 变量的类型就是其值的类型
 
 JavaScript的单线程，与它的用途有关。作为浏览器脚本语言，JavaScript的主要用途是与用户互动，以及操作DOM。这决定了它只能是单线程，否则会带来很复杂的同步问题。比如，假定JavaScript同时有两个线程，一个线程在某个DOM节点上添加内容，另一个线程删除了这个节点，这时浏览器应该以哪个线程为准？
+
 
 
 语句标签
@@ -196,22 +196,22 @@ break/continue 语句如果后跟了关键字，会产生带 target 的完成记
 
 ### 数据类型：
 基本数据类型： ---值传递 --栈内存
-  * [Undefined、Null](/details/JS数据类型/Undefined、Null.md)
-  * [Boolean](/details/JS数据类型/Boolean.md)
-  * [Number](/details/JS数据类型/Number.md)
-  * [String](/details/JS数据类型/String)
-  * [Symbol](/details/JS数据类型/Symbol) 
-  * [BigInt](/details/JS数据类型/BigInt) 
+* [Undefined、Null](/details/JS数据类型/Undefined、Null.md)
+* [Boolean](/details/JS数据类型/Boolean.md)
+* [Number](/details/JS数据类型/Number.md)
+* [String](/details/JS数据类型/String)
+* [Symbol](/details/JS数据类型/Symbol)
+* [BigInt](/details/JS数据类型/BigInt)
 
 复杂（引用）数据类型:   --地址传递--堆内存
-  * [Object](/details/JS/JS数据类型/Object.md) 
-    * [Array](/details/JS/JS数据类型/Array.md)
-    * [Date](/details/JS/JS数据类型/Date.md)
-    * [Math](/details/JS/JS数据类型/Math.md)
-    * [RegExp](/details/JS/JS数据类型/RegExp.md)
-    * [Function](/details/JS/JS数据类型/Function.md)
-    * [Set、Map](/details/JS/JS数据类型/Set、Map.md)
-    * [Error](/details/JS/JS数据类型/Error.md)
+* [Object](/details/JS/JS数据类型/Object.md) 
+  * [Array](/details/JS/JS数据类型/Array.md)
+  * [Date](/details/JS/JS数据类型/Date.md)
+  * [Math](/details/JS/JS数据类型/Math.md)
+  * [RegExp](/details/JS/JS数据类型/RegExp.md)
+  * [Function](/details/JS/JS数据类型/Function.md)
+  * [Set、Map](/details/JS/JS数据类型/Set、Map.md)
+  * [Error](/details/JS/JS数据类型/Error.md)
 
 两类型的区别：存储位置不同；
 >
@@ -227,38 +227,157 @@ break/continue 语句如果后跟了关键字，会产生带 target 的完成记
 
 
 对象的键名的转换:
-* 对象的键名只能是字符串和 Symbol 类型。    
-* 其他类型的键名会被转换成字符串类型。    
-* 对象转字符串默认会调用 toString 方法。   
+* 对象的键名只能是字符串和 Symbol 类型
+* 其他类型的键名会被转换成字符串类型
+* 对象转字符串默认会调用 toString 方法
 
 [demo](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/125)
 
 
 ### 内置对象
 Object 是 JavaScript 中所有对象的父对象  
-数据封装类对象：Object、Array、Boolean、Number、String   
+数据封装类对象：Object、Array、Boolean、Number、String  
 其他对象：Function、Arguments、Math、Date、RegExp、Error  
 
-window对象是顶层对象，指浏览器打开的窗口。    
+window对象是顶层对象，指浏览器打开的窗口。  
 document对象是Documentd对象（HTML 文档对象）的一个只读引用，window对象的一个属性。
 
 ### 区分数组对象方法 
+```js
+Object.prototype.toString.call([]) // "[object Array]"
+Object.prototype.toString.call({}) // "[object Object]"
 
->
-    Object.prototype.toString.call([]) // "[object Array]"
-    Object.prototype.toString.call({}) // "[object Object]"
-    
-    ([] instanceof Array) // true
-    ({} instanceof Array) // false
+([] instanceof Array) // true
+({} instanceof Array) // false
 
-    ([].constructor) // ƒ Array() { [native code] }
-    ({}.constructor) // ƒ Object() { [native code] }
+([].constructor) // ƒ Array() { [native code] }
+({}.constructor) // ƒ Object() { [native code] }
 
-    Array.isArray([]) // true
-    Array.isArray({}) // false
+Array.isArray([]) // true
+Array.isArray({}) // false
+```
 
-## <a name="undefined与null定义、区别">undefined与null定义、区别</a>
-[undefined、null](/details/Undefined、Null.md)
+### <a name="undefined与null定义、区别">undefined与null定义、区别</a>
+[undefined、null](/details/JS/JS数据类型/Undefined、Null.md)
+
+## <a name="面向过程和面向对象">面向过程和面向对象</a>
+https://zhuanlan.zhihu.com/p/55064276
+
+### 面向过程,面向对象
+`面向过程：`
+把复杂业务划分为若干个“Procedure、Function”。
+彻底的理解现实场景，理清其中的逻辑关系和运行顺序，划分为若干个小的处理单元——落实为function
+
+万物皆对象，把一个对象抽象成类,具体上就是把一个对象的静态特征和动态特征抽象成属性和方法,也就是把一类事物的算法和数据结构封装在一个类之中,程序就是多个对象和互相之间的通信组成的.
+
+`面向对象：`
+首先观察现实场景，发现其中有哪些角色和对象，赋予这些对象以属性和行为，让他们彼此发消息，从而构建整个大的应用场景。
+
+面向过程就是关注实现需求的第个步骤，任何的工作都需要自己去做。
+面向对象就是什么事都交给能做这件事的对象去做。
+
+面向对象的语言有一个标志，那就是它们都有类的概念，而通过类可以创建任意多个具有相同属性和方法的对象
+
+```js
+//面向过程装大象
+1.开（冰箱）
+2.（大象）装进（冰箱）
+3.关（冰箱）
+
+//面向对象装大象
+1. 冰箱.开门（）
+2. 冰箱.装进（大象）
+3. 冰箱.关门（）
+```
+
+对象(Object)：现实应用/场景中的某个事物在程序中的体现。对象是无特定顺序的属性的集合。
+
+### 面向对象的基本特征：
+* 封装(capsulation)：把零散的多个变量组成一个整体
+* 继承(inheritance)：子对象自动获得父对象的所有特征
+* 多态(polymorphism)：一个方法根据参数的不同可以运行出不同的结果
+
+JavaScript具备上述四种能力。
+Object  =  Property  +  Method
+属性和方法统一称为对象的特性(attribute)或成员(member)
+
+#### 封装
+就是把事物封装成类，隐藏事物的属性和方法的实现细节，仅对外公开接口。
+* 构造函数
+* 原型
+* class类
+
+[【何不三连】比继承家业还要简单的JS继承题-封装篇(牛刀小试)](https://juejin.im/post/5e707417e51d45272054d5d3)
+
+#### 继承
+继承就是子类可以使用父类的所有功能，并且对这些功能进行扩展。继承的过程，就是从一般到特殊的过程。
+
+
+[继承方法](/details/继承/index.md)
+
+#### 多态
+[【何不三连】JS面向对象最后一弹-多态篇(羽化升仙)](https://juejin.im/post/5e945a15f265da47d31231dd)
+
+多态实际上是不同对象作用与同一操作产生不同的效果。多态的思想实际上是把 “想做什么” 和 “谁去做” 分开。
+
+
+```js
+//非多态
+let hobby = function (animal) {
+  if (animal == "cat") {
+    cat.eat();
+  } else if (animal == "dog") {
+    dog.eat();
+  }
+};
+
+let cat = {
+  eat() {
+    console.log("fish!");
+  },
+};
+
+let dog = {
+  eat() {
+    console.log("meat!");
+  },
+};
+
+hobby("cat"); //fish!
+hobby("dog"); //meat!
+```
+
+```js
+// 多态
+let hobby = function (animal) {
+  if(animal.eat instanceof Function){
+      animal.eat();
+  }
+};
+
+let cat = {
+  eat() {
+    console.log("fish!");
+  },
+};
+
+let dog = {
+  eat() {
+    console.log("meat!");
+  },
+};
+hobby(cat); //fish!
+hobby(cat); //meat!
+```
+
+### 为什么需要面向对象写法？
+* 更方便
+* 可以复用，减少代码冗余度
+* 高内聚低耦合
+
+简单来说，就是增加代码的可复用性，减少咱们的工作，使代码更加流畅。
+
+
 
 ## <a name="json jsonp">json jsonp</a>
 
@@ -279,19 +398,18 @@ JSON 的网络媒体类型是 application/json。
 -- 可以使用数组
 
 * 两种数据结构：1.无序的对象结构；2.有序的数组结构
+```js
+{
+  "name": "a",
+  "friends": ["b", "c"]
+}
 
->
-    {
-      "name": "a",
-      "friends": ["b", "c"]
-    }
+[
+  {a:1},{b:2}
+]
+```
 
-    [
-      {a:1},{b:2}
-    ]
-
-
-#### JSONP: 
+#### JSONP:
 
 `jsonp定义：`
 >
@@ -305,7 +423,7 @@ JSON 的网络媒体类型是 application/json。
 
     通过将前端方法作为参数传递到服务器端，然后由服务器端注入参数之后再返回，实现服务器端向客户端通信(只支持get方法)
 
-[更多](/details\跨域\跨域方法.md#jsonp跨域)
+[更多](/details/跨域/跨域.md#jsonp跨域)
 
 ## <a name="BOM 浏览器对象模型">BOM 浏览器对象模型</a>
 
@@ -1409,125 +1527,6 @@ defer 属性
     }
 
 如何减少JavaScript中的垃圾回收
-
-
-
-## <a name="面向过程和面向对象的异同">面向过程和面向对象的异同？</a>
-https://zhuanlan.zhihu.com/p/55064276
-
-### 面向过程,面向对象
-`面向过程：`
-把复杂业务划分为若干个“Procedure、Function”。
-彻底的理解现实场景，理清其中的逻辑关系和运行顺序，划分为若干个小的处理单元——落实为function
-
-万物皆对象，把一个对象抽象成类,具体上就是把一个对象的静态特征和动态特征抽象成属性和方法,也就是把一类事物的算法和数据结构封装在一个类之中,程序就是多个对象和互相之间的通信组成的.
-
-`面向对象的思维方式：`
-首先观察现实场景，发现其中有哪些角色和对象，赋予这些对象以属性和行为，让他们彼此发消息，从而构建整个大的应用场景。
-
-面向过程就是关注实现需求的第个步骤，任何的工作都需要自己去做。
-面向对象就是什么事都交给能做这件事的对象去做。
-
-```js
-//面向过程装大象
-1.开（冰箱）
-2.（大象）装进（冰箱）
-3.关（冰箱）
-
-//面向对象装大象
-1. 冰箱.开门（）
-2. 冰箱.装进（大象）
-3. 冰箱.关门（）
-```
-
-对象(Object)：现实应用/场景中的某个事物在程序中的体现。对象是无特定顺序的属性的集合。
-
-### 面向对象的程序需要具备的三个/四个基本特征：
-* 封装(capsulation)：把零散的多个变量组成一个整体
-* 继承(inheritance)：子对象自动获得父对象的所有特征
-* 多态(polymorphism)：一个方法根据参数的不同可以运行出不同的结果
-* 聚集(aggregation)：多个对象可以聚合为一个更大的对象
-
-JavaScript具备上述四种能力。
-Object  =  Property  +  Method
-属性和方法统一称为对象的特性(attribute)或成员(member)
-
-#### 封装
-就是把事物封装成类，隐藏事物的属性和方法的实现细节，仅对外公开接口。
-* 构造函数
-* 原型
-* class类
-
-[【何不三连】比继承家业还要简单的JS继承题-封装篇(牛刀小试)](https://juejin.im/post/5e707417e51d45272054d5d3)
-
-#### 继承
-继承就是子类可以使用父类的所有功能，并且对这些功能进行扩展。继承的过程，就是从一般到特殊的过程。
-
-
-[继承方法](/details/继承/index.md)
-
-#### 多态
-[【何不三连】JS面向对象最后一弹-多态篇(羽化升仙)](https://juejin.im/post/5e945a15f265da47d31231dd)
-
-多态实际上是不同对象作用与同一操作产生不同的效果。多态的思想实际上是把 “想做什么” 和 “谁去做” 分开。
-
-
-```js
-//非多态
-let hobby = function (animal) {
-  if (animal == "cat") {
-    cat.eat();
-  } else if (animal == "dog") {
-    dog.eat();
-  }
-};
-
-let cat = {
-  eat() {
-    console.log("fish!");
-  },
-};
-
-let dog = {
-  eat() {
-    console.log("meat!");
-  },
-};
-
-hobby("cat"); //fish!
-hobby("dog"); //meat!
-```
-
-```js
-// 多态
-let hobby = function (animal) {
-  if(animal.eat instanceof Function){
-      animal.eat();
-  }
-};
-
-let cat = {
-  eat() {
-    console.log("fish!");
-  },
-};
-
-let dog = {
-  eat() {
-    console.log("meat!");
-  },
-};
-hobby(cat); //fish!
-hobby(cat); //meat!
-```
-
-
-### 为什么需要面向对象写法？
-* 更方便
-* 可以复用，减少代码冗余度
-* 高内聚低耦合
-
-简单来说，就是增加代码的可复用性，减少咱们的工作，使代码更加流畅。
 
 
 ## <a name="跨域">跨域</a>

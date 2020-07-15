@@ -7,6 +7,15 @@
 
 [ES6 入门教程 --Promise](http://es6.ruanyifeng.com/#docs/promise)--阮一峰
 
+[JavaScript Promise迷你书（中文版）](http://liubin.org/promises-book/)
+[](http://fex.baidu.com/blog/2015/07/we-have-a-problem-with-promises/)
+
+https://zhuanlan.zhihu.com/p/30797777
+https://zhuanlan.zhihu.com/p/25178630
+https://zhuanlan.zhihu.com/p/25198178
+https://zhuanlan.zhihu.com/p/25199781
+
+[PromiseA+官方定义规范](https://promisesaplus.com/)
 # Promise
 
 ## 概述
