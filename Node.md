@@ -1,15 +1,21 @@
 # Node
 [Node官网](https://nodejs.org/zh-cn/docs/)
 
-[一起学 Node.js](https://github.com/nswbmw/N-blog)
+[cnode社区](https://cnodejs.org/getstart)
 
-https://juejin.im/post/5d43017be51d4561f40adcf9#heading-22
+[深入理解Node.js 中的进程与线程](https://juejin.im/post/5d43017be51d4561f40adcf9)
 
 # <a name="了解">了解</a>
 
+特点
+* 单线程
+* 异步非阻塞I/O
+* 事件驱动
+
+
 node 不是一门后台语言而是一个环境，一个能够让 js 运行在服务器的环境
 
-
+Node.js 是以单线程的模式运行的，但它使用的是事件驱动来处理并发，这样有助于我们在多核 cpu 的系统上创建多个子进程，从而提高性能。
 
 Node.js 是单进程单线程应用程序，但是其基于事件驱动、异步非阻塞I/O模式，可以应用于高并发场景，避免了线程创建、线程之间上下文切换所产生的资源开销。
 
@@ -27,6 +33,8 @@ require方法接受以下几种参数的传递：
 * ./mod或../mod，相对路径的文件模块  
 * /mod，绝对路径的文件模块  
 * mod，第三方模块  
+
+
 
 # <a name="全局对象与全局变量">全局对象与全局变量</a>
 在浏览器 JavaScript 中，通常 window 是全局对象，
@@ -61,11 +69,17 @@ Node里 没有window，访问会报错:
 
 ## <a name="path路径">path路径</a>
 处理路径相关
+  
+[path-所有API](https://nodejs.org/api/path.html)
 
-### path.join, path.resolve的详细介绍
-#### path.join([path1][, path2][, ...]) 连接路径
+### 常用方法
+* path.join([...paths]) 连接任意多个路径字符串  
+* path.resolve([...paths]) 将一系列路径或路径段解析为绝对路径  
+* path.isAbsolute(path) 判断是否是绝对路径  
+* path.relative(from, to) 将绝对路径转为相对路径，返回从 from 到 to 的相对路径  
 
-连接任意多个路径字符串。要连接的多个路径可做为参数传入
+#### path.join([path1][, path2][, ...]) 
+
 ```js
 const path = require('path')
 let myPath1 = path.join('/a','b');  // \a\b
@@ -80,16 +94,15 @@ let myPath5 = path.join('/a', 'b', 'c/d', 'e', '..'); // \a\b\c\d
 path.join('a', {}, 'b') 
 ```
 
-#### path.resolve([from ...], to) 路径解析
+#### path.resolve([from ...], to) 
 
-将多个路径解析为 绝对路径
 ```js
 const path = require('path')
 let myPath1 = path.resolve('/a','b');  // D:\a\b
 let myPath2 = path.resolve('/a','/b'); // D:\b
 let myPath3 = path.resolve('/a','./b'); // D:\a\b
 let myPath4 = path.resolve('./a','./b'); // D:\node-learn\a\b
-let myPath5 = path.resolve('/a', 'b', 'c/d', 'e', '..'); // D:\a\b\c\d
+let myPath5 = path.resolve('/a', 'b', 'c/d', 'e', '../'); // D:\a\b\c\d
 ```
 
 #### 对比
@@ -109,7 +122,7 @@ let myPath4 = path.resolve(__dirname,'./a/b');// D:\node-learn\a\b
 
 [http-所有API](https://nodejs.org/api/http.html)
 
-### 方法
+### 常用方法
 * http.createServer((req, res) => {}) 开启一个服务
   * res.writeHead(status,obj) 设置 HTTP 头部
   * res.write(str) 返回给页面的值
@@ -149,7 +162,7 @@ server.listen(8888); // 端口号
 
 [fs-所有API](https://nodejs.org/api/fs.html) 
 
-### 方法
+### 常用方法
 fs 模块中的方法均有异步和同步版本,
 一般使用异步方法，比起同步，异步方法性能更高，速度更快，而且没有阻塞
 
@@ -413,6 +426,10 @@ ws.on('finish', () => {
   ```
 
 ## <a name="events模块">events模块</a>
+
+[events-所有API](https://nodejs.org/api/events.html) 
+
+
 Node 事件循环：
 * Node 是单进程单线程应用程序，但是通过事件和回调支持并发，所以性能非常高。
 * Node 的每一个 API 都是异步的，并作为一个独立线程运行，使用异步函数调用，并处理并发。
@@ -452,6 +469,9 @@ EventEmitter.on('mydata', (res) => {
 ## <a name="url模块">url模块</a>
 
 处理网址相关，主要用来获取地址路径和参数的
+
+[url-所有API](https://nodejs.org/api/url.html) 
+
 
 ### 方法
 * url.parse(urlLink, boolean) 
@@ -542,8 +562,9 @@ http.createServer(function (req, res) {
 ```
 
 ## <a name="util">util提供常用函数的集合</a>
-[util](https://nodejs.org/api/util.html) 是一个Node.js 核心模块，提供常用函数的集合，用于弥补核心 JavaScript 的功能 过于精简的不足。
+util 是一个Node.js 核心模块，提供常用函数的集合，用于弥补核心 JavaScript 的功能 过于精简的不足。
 
+[util-所有API](https://nodejs.org/api/util.html) 
 
 
 * util.callbackify(fn) 将 async 异步函数（或者一个返回值为 Promise 的函数）转换成遵循异常优先的回调风格的函数
@@ -575,6 +596,9 @@ http.createServer(function (req, res) {
 
 ## <a name="querystring查询字符串">querystring查询字符串</a>
 
+[querystring-所有API](https://nodejs.org/api/querystring.html) 
+
+
 要是用来把形如这样的字符串 a=1&b=2&c=3（&和=可以换成别的）解析成 { a: '1', b: '2', c: '3' } 对象，反过来也可以把对象拼接成字符串，
 
 ```js
@@ -594,6 +618,9 @@ console.log(query); // a=1&a=3&b=2&c=3
 ```
 
 ## <a name="zlib压缩">zlib压缩</a>
+
+[zlib-所有API](https://nodejs.org/api/zlib.html) 
+
 
 ```js
 const fs = require('fs');
@@ -615,26 +642,20 @@ ws.on('finish', () => {
 
 ```
 
-## assert 断言
-判断条件是否正确，
-如果条件返回值为 false 则阻止程序运行，并抛出一个错误，
-如果返回值为 true 则继续执行，
-一般用于函数中间和参数判断。
+## <a name="os模块">os模块</a>
+提供了一些基本的系统操作函数
 
-```js
-const assert = require('assert');
+[os-所有API](https://nodejs.org/api/os.html)
 
-// assert(条件，错误消息)，条件这部分会返回一个布尔值
-assert(2 < 1, '断言失败');
-
-// node index.js
-assert.js:385
-    throw err;
-    ^
-
-AssertionError [ERR_ASSERTION]: 断言失败
-```
-
+### 常用方法，属性
+* os.type() 操作系统名
+* os.platform() 编译时的操作系统名
+* os.hostname() 操作系统的主机名
+* os.arch() 操作系统 CPU 架构，可能的值有 "x64"、"arm" 和 "ia32"。
+* os.totalmem() 操作系统内存总量，单位为字节
+* os.freemem() 操作系统空闲内存量，单位是字节
+* os.uptime() 操作系统运行的时间，以秒为单位
+* os.cpus() 返回一个对象数组，包含所安装的每个 CPU/内核的信息：型号、速度（单位 MHz）、时间
 
 # <a name="第三方模块">第三方模块</a>
 
@@ -760,6 +781,7 @@ JavaScript 语言自身只有字符串数据类型，没有二进制数据类型
 
 但在处理像TCP流或文件流时，必须使用到二进制数据。因此在 Node.js中，定义了一个 Buffer 类，该类用来创建一个专门存放二进制数据的缓存区。
 
+[Buffer-所有API](https://nodejs.org/api/buffer.html)
 
 ### Buffer 与 字符编码转换
 Buffer 实例一般用于表示编码字符的序列，比如 UTF-8 、 UCS2 、 Base64 、或十六进制编码的数据。 通过使用显式的字符编码，就可以在 Buffer 实例与普通的 JavaScript 字符串之间进行相互转换。
@@ -855,73 +877,4 @@ NODE_ENV=test node index.js
 `npm i cross-env -g`
 cross-env NODE_ENV=test node index.js
 
-# <a name="npm指令">npm指令</a>
 
-``` js
-npm init 在此目录生成package.json文件，可以添加-y | --yes 参数则默认所有配置为默认yes
-
-npm install <package> -g 全局安装依赖包  (install 可缩写为 i)
-  npm install -g cnpm --registry=https://registry.npm.taobao.org
-
-npm install <package> 默认使用–-save(-S) 参数，如果不想保存到package.json中，可以添加--no-save参数；还可以指定–-save-dev(-D) 或 -g参数
-
-npm install --production 安装dependencies，不包含devDependencies
-
-npm uninstall <package> 卸载依赖包， 默认使用–save参数，即从package.json中移除
-
-npm cache clean --force 清缓存
-
-npm update <package> 升级依赖包版本
-
-npm outdated 查看当前过期依赖，其中current显示当前安装版本，latest显示依赖包的最新版本，wanted显示我们可以升级到可以不破坏当前代码的版本
-
-npm ls [-g] [--depth=0] 查看当前目录或全局的依赖包，可指定层级为0
-
-npm root -g 查看全局安装地址
-
-npm ll[la] [--depth=0] 查看依赖包信息
-
-npm list <package>查看依赖的当前版本
-
-npm search <string> 查找包含该字符串的依赖包
-
-npm view <package> [field] [--json]列出依赖信息，包括历史版本，可以指定field来查看某个具体信息，比如（versions) 可以添加–json参数输出全部结果
-
-npm home <package> 在浏览器端查看项目（项目主页）
-
-npm repo <package> 浏览器端打开项目地址（GitHub）
-
-npm docs <packge> 查看项目文档
-
-npm bugs <packge> 查看项目bug
-
-npm prune 移除当前不在package.json中但是存在node_modules中的依赖
-
-npm link 不使用npm install 而连接某个依赖包，通常用作开发本地依赖包
-```
-
-## 镜像
-淘宝npm镜像  
-* 搜索地址：http://npm.taobao.org/  
-* registry地址：http://registry.npm.taobao.org/  
-
-cnpmjs镜像  
-* 搜索地址：http://cnpmjs.org/  
-* registry地址：http://r.cnpmjs.org/
-
-安装淘宝镜像 npm config set registry https://registry.npm.taobao.org   
-cnpm安装  npm install -g cnpm --registry=https://registry.npm.taobao.org
-
-切换镜像 npm set registry https://registry.npm.taobao.org/
-
-查看当前镜像 npm  get registry  
-查看详细信息 npm info express
-
-
-## dependencies 与 devdependencies 区别
->
-    –-save（简写 -S ）会把依赖包名称添加到package.json文件dependencies下
-    –-save-dev（简写 -D）则添加到package.json文件devDependencies下
-
-    dependencies ----- 生产环境中需要的依赖，即正常运行该包时所需要的依赖项。 
-    devDependencies -- 开发时用的依赖项，它们不会被部署到生产环境。    

@@ -104,11 +104,12 @@ var newArr1 = arr.map(function (item) {
 
 MVVM只能数据驱动视图，视图更改数据，而不能通过其他方式操作数据,
 
+https://www.zhihu.com/question/327050991/answer/701449139
 
 ## 对比其他框架
 [对比其他框架-vue官网](https://doc.vue-js.com/v2/guide/comparison.html)
 
-# Vue的优点及缺点
+## Vue的优点及缺点
 首先Vue最核心的两个特点，响应式和组件化。
 
 响应式：这也就是vue.js最大的优点，通过MVVM思想实现数据的双向绑定，通过虚拟DOM让我们可以用数据来操作DOM，而不必去操作真实的DOM，提升了性能。且让开发者有更多的时间去思考业务逻辑。
@@ -125,9 +126,8 @@ MVVM只能数据驱动视图，视图更改数据，而不能通过其他方式�
 * 初次加载时耗时多。
 
 
-
-# Vue的运行机制简述 
-[参考](https://juejin.im/post/5cd8a7c1f265da037a3d0992#heading-13)
+## Vue的运行机制简述 
+[参考](https://juejin.im/post/5cd8a7c1f265da037a3d0992#heading-14)
 
 
 

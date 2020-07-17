@@ -1,5 +1,8 @@
-
 ```js
+/**
+ * @param   left  [左侧参数为一个实例对象]
+ * @param   right [右侧为要判断的构造器函数]
+ */
 function selfInstanceof (left, right) {
   // 获取 left 原型
   let proto = Object.getPrototypeOf(left);
