@@ -2095,4 +2095,19 @@ data() {
     font-size: 28px; /*px*/
 
 
+# <a name="vue3+ts">vue3+ts</a>[![bakTop](./img/backward.png)](#top)  
+vue2 的typescript项目 基础下 vue add vue-next 升级到 vue3，将 .js 文件改为 .ts
 
+步骤
+```js
+vue create vue-ts (选择typescript)
+
+vue add vue-next (升级到vue3)
+
+npm run serve 
+
+此时会报错，是
+
+删除 HelloWorld.vue 文件 <script>里的内容（这是 v2的ts写法）
+
+```

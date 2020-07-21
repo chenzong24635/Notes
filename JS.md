@@ -830,12 +830,22 @@ console.log(foo.n); //3
 
 
 ## <a name="对象属性">对象属性configurable enumerable writable,value,get,set</a>
+[Object.defineProperty](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
 
-数据属性 4 个特性: configurable(可配置),enumerable(可枚举),writable(可修改),value(属性值)
+数据属性 4 个特性: 
+* configurable(可配置)
+* enumerable(可枚举)
+* writable(可修改)
+* value(属性值)
 
-访问器属性 2 个特性: get(获取),set(设置)
+访问器属性 2 个特性: 
+* get(获取)
+* set(设置)
 
-get,set 与 writable,value 是互斥的,如果有交集设置会报错
+`get,set 与 writable,value 是互斥的,同时设置会报错`
+
+[Object.getOwnPropertyDescriptor(obj, key)](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor)
+获取对象自有属性对应的属性描述符，返回一个对象
 
 ### configurable 可配置
 
@@ -843,19 +853,37 @@ get,set 与 writable,value 是互斥的,如果有交集设置会报错
 * 能否修改属性特性
 * 能否修改访问器属性
 * 值为false为不可重新定义
-* 默认值为true 
+* 默认值为false 
 
-简单的说 ，设置configurable为false之后，就不能删除这个属性或修改这个属性（属性值不影响），这个属性就是这个对象固有的，删除不了
+简单的说 ，设置configurable为false之后，就不能删除或修改这个属性（属性值不影响）
 
 ```js
-var obj = Object.create({},{
+var obj = Object.defineProperty({},"a",{
+  value :1,
+  configurable :false,
+  enumerable: true,
+  writable: true
+});
+// 也可以这样写
+/* var obj = Object.create({},{
     "a":{
       value :1,
       configurable :false,
       enumerable: true,
       writable: true
     },
-});
+}); */
+
+console.log(Object.getOwnPropertyDescriptor(obj, 'a'))
+/* 
+{
+  value: 1,
+  writable: true,
+  enumerable: true,
+  configurable: false,
+  __proto__: Object
+}
+ */
 
 delete obj.a// 删除失败，普通模式没有提示或错误，严格模式会有TypeError
 obj.a = 2;
@@ -864,41 +892,53 @@ console.log(obj.a);//正常使用，输出结果为 2
 
 ### enumerable 可枚举
 
-对象属性是否可通过for-in循环，flase为不可循环，默认值为true 
-简单的说，当你想用 for-in 遍历这个对象的时候，正常会输出每一个属性，但当你设置false时，这个属性就不会被for-in 遍历读到
+对象属性是否可循环，false为不可循环，默认值为 false
+简单的说，当你想遍历这个对象的时候，正常会输出每一个属性，但当你设置false时，这个属性就不会被遍历到
+
+enumerable：false 无法遍历到的方法
+* for in 
+* Object.keys
+* Object.values
+* Object.entries
+
+enumerable：false 依旧可以遍历到的方法
+* Object.getOwnPropertyNames()
+* Reflect.ownKeys()
+
 ```js
 var obj = {
     a: 1,
     b: 2,
     c: 3
 };
-obj = Object.create(obj, {
-    "a": {
-        value: 1,
-        configurable: true,
-        enumerable: false,
-        writable: true
-    }
+Object.defineProperty(obj,"a",{
+  value: 1,
+  configurable: true,
+  enumerable: false,
+  writable: true
 });
 
 for(var i in obj) {
     console.log(i); //输出b，c 不会输出a，a已经设置不被枚举
 }
+
+Object.keys(obj) // ['b','c']
+
+Object.getOwnPropertyNames(obj) // ['a','b','c']
+Reflect.ownKeys(obj) // ['a','b','c']
 ```
 
 ### writable 可修改
 
-对象属性是否可修改,flase为不可修改，默认值为true 
+对象属性是否可修改,flase为不可修改，默认值为 false
 
 设置不可修改后，可以理解为常量，不能对属性值进行修改
 ```js
-var obj = Object.create({},{
-    "a":{
-      value :1,
-      configurable :true,
-      enumerable :true,
-      writable:false
-    },
+var obj = Object.defineProperty({},"a",{
+  value :1,
+  configurable :true,
+  enumerable :true,
+  // writable:false
 });
 obj.a = 2;//普通模式不会抛异常，严格模式会抛出TypeError
 console.log(obj.a);//输出1 ，不可被修改
@@ -914,22 +954,100 @@ console.log(obj.a);//输出1 ，不可被修改
 对设置属性进行额外操作的函数
 
 ```js
-var spy = {
-	sex: 'male',
+let obj = {
+	a: 1,
 };
-Object.defineProperty(spy,"sex",{
+Object.defineProperty(obj,"a",{
 	get: function () {
 		console.log("调用get函数");
-		return this.name;
 	},
 	set: function (val) {
     console.log("调用set函数");
 		return val;
 	}
 })
-console.log(spy.sex) //调用get函数
-console.log(spy.sex = "feme"); //调用set函数
+console.log(obj.a) //调用get函数
+console.log(obj.a = 999999); //调用set函数
 
+```
+
+### [Object.freeze()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)
+Object.freeze() 方法可以冻结一个对象(`浅冻结`)，防止对象被修改。
+
+被冻结后对象的特性：
+* 不能被修改
+* 不能添加新的属性
+* 不能删除已有属性
+* 不能修改该对象已有属性的可枚举性、可配置性、可写性，以及不能修改已有属性的值
+* 被冻结对象的原型也不能被修改
+
+```js
+let obj = Object.defineProperty({},'a', {
+  value: 1,
+  enumerable: true,
+  configurable: true,
+  writable: true,
+})
+Object.freeze(obj)
+console.log(Object.getOwnPropertyDescriptor(obj,'a'));
+// {
+//   value: 1
+//   writable: false
+//   enumerable: true
+//   configurable: false
+// }
+```
+
+作为参数传递的对象与返回的对象都被冻结
+所以不必保存返回的对象（因为两个对象全等）
+```js
+let obj1 = Object.freeze(obj);
+obj1 === obj; // true
+```
+
+Object.isFrozen判断是否冻结
+```js
+Object.freeze(obj);
+Object.isFrozen(obj) //true
+```
+
+Object.freeze()属于浅冻结
+```js
+let obj = {
+  num: 1,
+  a: {
+    num: 1
+  }
+}
+Object.freeze(obj)
+obj.num=9
+obj.a.num=9
+
+console.log(obj)
+// {
+//   num: 1,
+//   a: {
+//     num: 9
+//   }
+// }
+```
+
+使用Object.freeze() 进行性能优化
+
+Vue中可以使用Object.freeze()冻结一个静态数据，使其不进行响应式
+
+Vue源码
+```js
+export function defineReactive() {
+  // .....
+  // 获取对象自有属性对应的属性描述符
+  const property = Object.getOwnPropertyDescriptor(obj, key)
+  // 如果属性不可配置 则return，不进行监测，
+  if (property && property.configurable === false) {
+    return
+  }
+  // .....
+}  
 ```
 
 ## <a name="typeof instanceof">typeof 、instanceof 、in</a>

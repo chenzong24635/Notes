@@ -1,5 +1,4 @@
 ﻿
-
 [TypeScript-中文文档](https://www.tslang.cn/docs/home.html)  
 [TypeScript-英文文档](https://www.typescriptlang.org/docs/home.html)
 
