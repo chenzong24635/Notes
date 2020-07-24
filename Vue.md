@@ -860,12 +860,10 @@ export default {
 <template>
   <div>
     <div>我是slotOne组件</div>
-    <slot name="header"></slot>
     <slot></slot>
+    <slot name="header"></slot>
+    <slot name="main" :user="{name: 'tom'}" num="1"></slot>
     <slot name="footer"></slot>
-
-    <p>----</p>
-    <slot name="slotProps" :user="user" num="1"></slot>
   </div>
 </template>
 ```
@@ -1286,6 +1284,22 @@ seeShare(){
     (params传参，参数通过路径[/001]形式拼接到url上，如果没有在路径配置种使用参数占位符，url不会拼接，直接展示是具体路由页面)：/myid/myname
 
     <router-link :to="{name:'B', params: {name:'name2', title: 'title2'}}">去B页面</router-link>
+
+
+### 打开新页面
+声明式: 添加target="_blank"
+```html
+<router-link  target="_blank" to="/"></router-link>
+```
+
+编程式: $router.resolve 
+```js
+let routeData = this.$router.resolve({
+   name: "xxx",
+   params: {id: xxx},
+});
+window.open(routeData.href, '_blank');
+```
 
 ##  <a name="页面url参数获取">页面url参数获取</a>[![bakTop](./img/backward.png)](#top)  
 >

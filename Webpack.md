@@ -470,8 +470,8 @@ function resolve(dir) {
 }
 
 module.exports = {
+  entry: ["@babel/polyfill",path.resolve(__dirname,'./src/index.js')], // 入口文件
   module:{
-    entry: ["@babel/polyfill",path.resolve(__dirname,'./src/index.js')], // 入口文件
     rules:[
       {
         test:/\.js$/,
@@ -1037,6 +1037,9 @@ configureWebpack: {
 ```
 
 ## <a name="DllPlugin">DllPlugin 抽离第三方模块</a>
+在使用webpack进行打包时候，对于依赖的第三方库，比如vue，vuex等这些不会修改的依赖，我们可以让它和我们自己编写的代码分开打包，这样做的好处是每次更改我本地代码的文件的时候，webpack只需要打包我项目本身的文件代码，而不会再去编译第三方库
+
+
 DllPlugin webpack内置
 
 // webpack.dll.config.js
@@ -1183,7 +1186,7 @@ npm run build --report
 ```
 
 ## <a name="测量打包构建时间">测量打包构建时间：speed-measure-webpack-plugin</a>
-结合 webpack-bundle-analyzer 测量你的 webpack 构建期间各个阶段花费的时间。
+结合 webpack-bundle-analyzer(打包文件的大小) 
 
 [speed-measure-webpack-plugin](https://github.com/stephencookdev/speed-measure-webpack-plugin)
 
@@ -1202,6 +1205,15 @@ module.exports = smp.wrap({
 })
 ```
 
+
+## <a name="Scope Hoisting">Scope Hoisting作用域提升</a>
+Scope Hoisting 可以让 Webpack 打包出来的代码文件更小、运行的更快。
+
+Webpack 内置的功能
+
+```js
+plugins: [new webpack.optimize.ModuleConcatenationPlugin()],
+```
 
 ## <a name="搭建vue开发环境">搭建vue开发环境</a>
 

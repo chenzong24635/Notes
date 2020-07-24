@@ -238,6 +238,62 @@ export default {
 注意带有 .sync 修饰符的 v-bind 不能和表达式一起使用 (例如 v-bind:title.sync="doc.title + 'abcd'" 是无效的)
 
 
+#### .sync 更新 props 
+通过 $emit
+
+child.vue
+```html
+export defalut {
+  props: {
+    title: String  
+  },
+  methods: {
+    changeTitle(){
+        this.$emit('change-title', 'hello')
+    }
+  }
+}
+
+```
+parent.vue:
+```html
+<child :title="title" @change-title="changeTitle"></child>
+export default {
+  data(){
+    return {
+      title: 'title'
+    }  
+  },
+  methods: {
+    changeTitle(title){
+      this.title = title
+    }
+  }
+}
+
+```
+
+优雅写法 .sync
+在绑定属性上添加 .sync，在子组件内部就可以触发 update:属性名 来更新 prop
+
+child.vue:
+```html
+export defalut {
+  props: {
+      title: String  
+  },
+  methods: {
+    changeTitle(){
+        this.$emit('update:title', 'hello')
+    }
+  }
+}
+```
+parent.vue:
+```html
+<child :title.sync="title"></child>
+```
+
 ## <a name="render函数">使用render函数 优化代码</a>[![bakTop](/img/backward.png)](#top)  
 [渲染函数 & JSX-vue官网](https://cn.vuejs.org/v2/guide/render-function.html)
 场景:有些代码在 template 里面写会重复很多,可使用 render 函数
@@ -315,6 +371,9 @@ template和render函数的区别：
       {{ tab }}
     </button>
     <component :is="currentTabComponent" class="tab"></component>
+    <!-- 渲染所有组件 -->
+    <!-- <component v-for="item in currentTabComponent" :key="item" :is="item" ></component> -->
+
   </div>
 </template>
 
@@ -1315,6 +1374,10 @@ module.exports = {
 ```
 npm run build --report
 
+### 最小化JS文件
+config.optimization.minimize(true);
+
+
 ### compression-webpack-plugin 开启gzip压缩
 ```js
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
@@ -1335,6 +1398,26 @@ configureWebpack: (config) => {
 }
 ```
 
+### image-webpack-loader 图片资源压缩
+```js
+config.module
+  .rule('images')
+  .use('image-webpack-loader')
+  .loader('image-webpack-loader')
+  .options({
+    bypassOnDebug: true
+  })
+  .end()
+
+```
+
+### 去除生产环境console
+```js
+config.optimization.minimizer('terser').tap((args) => {
+  args[0].terserOptions.compress.drop_console = true
+  return args
+})
+```
 
 ## 报错
 vue.runtime.esm.js?2b0e:619 [Vue warn]: You are using the runtime-only build of Vue where the template compiler is not available. Either pre-compile the templates into render functions, or use the compiler-included build.
