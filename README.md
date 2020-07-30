@@ -793,228 +793,117 @@ new URL('http://www.aaa.com/bbb.aspx?name=1')
 ### 获取 url 中的参数值
 
 ### new URL
+```js
+new URL('https://www.aaa.com/?name=dadan&id=95827')
 
-new URL('https://www.aaa.com')
-
+// 返回值
+{
+  href: "https://www.aaa.com:8888/?name=dadan&id=95827"
+  origin: "https://www.aaa.com:8888"
+  protocol: "https:"
+  username: ""
+  password: ""
+  host: "www.aaa.com:8888"
+  hostname: "www.aaa.com"
+  port: "8888"
+  pathname: "/"
+  search: "?name=dadan&id=95827"
+  searchParams: URLSearchParams {}
+  hash: ""
+}
 ```
-hash: ""
-host: "www.aaa.com"
-hostname: "www.aaa.com"
-href: "https://www.aaa.com/"
-origin: "https://www.aaa.com"
-password: ""
-pathname: "/"
-port: ""
-protocol: "https:"
-search: ""
-searchParams: URLSearchParams {}
-username: ""
-```
 
-#### js 获取 url 中的参数值
-
->
-
-    地址链接参数
-    var url = window.location.href.split("?")[1];
-    var arr= url.split("&");       //将结果用&符分隔
-    var a = arr[0].split("=")[1]; //参数1
-
-##### 正则
-
-    function getQueryString(name, url) {
-      var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
-      var r = (url || window.location).search.substr(1).match(reg);
-      if (r != null) {
-        return unescape(r[2]);
-      }
-      return null;
-    }
-    console.log(getQueryString("参数名1"));
-    console.log(getQueryString("参数名2"));
-    console.log(getQueryString("参数名3"));
-
-##### split
-
-    function GetRequest() {
-      var url = location.search; //获取url中"?"符后的字串
-      var theRequest = new Object();
-      if (url.indexOf("?") != -1) {
-        var str = url.substr(1);
-        strs = str.split("&");
-        for(var i = 0; i < strs.length; i ++) {
-          theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
-        }
-      }
-      return theRequest;
-    }
-    var Request = new Object();
-    Request = GetRequest();
-    // Request['参数1'];
-
-## <a name="解析url为对象">解析 url 为对象</a>
+### URLSearchParams:解析 url 为对象
 
 [URLSearchParams](https://developer.mozilla.org/zh-CN/docs/Web/API/URLSearchParams) 定义了一些实用的方法来处理 URL 的查询字符串。
 
->
+```js
+let url = "http://www.aaa.com/?id=0&name=dadan&age=13&hobby=nothing"
+let searchParams = new URLSearchParams(url);
 
-    var paramsString = "q=URLUtils.searchParams&topic=api"
-    var searchParams = new URLSearchParams(paramsString);
+for (let item of searchParams) {
+  console.log(item);
+}
+//output
+// ["http://www.aaa.com/?id", "0"]
+// ["name", "dadan"]
+// ["age", "13"]
+// ["hobby", "nothing"]
 
-    for (let p of searchParams) {
-      console.log(p);
-    }
-    //output
-    ["q", "URLUtils.searchParams"]
-    ["topic", "api"]
-
-    searchParams.has("topic") === true; // true
-    searchParams.get("topic") === "api"; // true
-    searchParams.getAll("topic"); // ["api"]
-    searchParams.get("foo") === null; // true
-    searchParams.append("topic", "webdev");
-    searchParams.toString(); // "q=URLUtils.searchParams&topic=api&topic=webdev"
-    searchParams.set("topic", "More webdev");
-    searchParams.toString(); // "q=URLUtils.searchParams&topic=More+webdev"
-    searchParams.delete("topic");
-    searchParams.toString(); // "q=URLUtils.searchParams"
-
->
-
-    //url里有= 字符会报错
-    //?a=5&b=321===ad&c=a
-    searchObj = search => JSON.parse(`{"${decodeURIComponent(search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=?/g, '":"')}"}`);
-
-    searchObj(window.location.search)
-
->
-
-    let url = 'http://www.aaa.com/?a=a1&b=123&c=打算'
-
-    function parseParam(url) {
-      const paramsStr = /.+\?(.+)$/.exec(url)[1]; // 将 ? 后面的字符串取出来
-      const paramsArr = paramsStr.split('&'); // 将字符串以 & 分割后存到数组中
-      let paramsObj = {};
-      // 将 params 存到对象中
-      paramsArr.forEach(param => {
-        if (/=/.test(param)) { // 处理有 value 的参数
-          let [key, val] = param.split('='); // 分割 key 和 value
-          val = decodeURIComponent(val); // 解码
-          val = /^\d+$/.test(val) ? parseFloat(val) : val; // 判断是否转为数字
-
-          if (paramsObj.hasOwnProperty(key)) { // 如果对象有 key，则添加一个值
-            paramsObj[key] = [].concat(paramsObj[key], val);
-          } else { // 如果对象没有这个 key，创建 key 并设置值
-            paramsObj[key] = val;
-          }
-        } else { // 处理没有 value 的参数
-          paramsObj[param] = true;
-        }
-      })
-      return paramsObj;
-    }
-    console.log(parseParam(url)) //{a: "a1", b: 123, c: "打算"}
-
-## <a name="下载图片">下载图片</a>
-
-```html
-
+console.log(searchParams.has("name")) // true
+console.log(searchParams.get("name")) // dadan
+console.log(searchParams.get("name1")) // null
+console.log(searchParams.getAll("name")) // ["dadan"]
+console.log(searchParams.set("name", "我是95827"),searchParams.get("name")) // undefined "我是95827"
+console.log(searchParams.append("appendname", "我叫楚大蛋"),searchParams.get("appendname"))// undefined "我叫楚大蛋"
+console.log(decodeURIComponent(searchParams.toString())) // http://www.aaa.com/?id=0&name=我是95827&age=13&hobby=nothing&appendname=我叫楚大蛋
+console.log(searchParams.delete("name"),searchParams.get("name"))// undefined null
 ```
 
-## <a name="打印">打印</a>
+### 将 url 中的参数转换为对象
 
-[参考](https://www.jianshu.com/p/d19d66ef8d7e)
+```js
+function getQueryString(name, url=window.location) {
+  var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+  var r = new URL(url).search.substr(1).match(reg);
+  if (r != null) {
+    return unescape(r[2]);
+  }
+  return null;
+}
+console.log(getQueryString("参数名1"));
+console.log(getQueryString("参数名2"));
+console.log(getQueryString("参数名3"));
+```
 
->
+* 
 
-    此方法，要打印的内容要包含在id为print中,否则打印时定义的css会失效!!!
-    //可能未引入原先写在head标签的css
-    <div id="print">
-      <table></table>
-    </div>
-
-    若这样，打印时不会加载设定的css
-    <table id="print"></table>
-
-    function startPrint() {
-        // 打开一个新窗口
-        const myWindow = window.open('', '标题');
-
-        // 获取id为app内的html
-        // const bodyHtml =this.$refs.print.innerHTML
-        const bodyHtml = window.document.getElementById('print').innerHTML;
-
-        // 获取head标签内的html
-        let headHtml = document.head.innerHTML;
-        //也可自定义head内容
-        //但是原先写在head标签的css就不会引入了
-        //let headHtml = "<head><meta charset='utf-8'/><title></title></head>";
-
-        // 头中的screen换成打印样式print
-        headHtml = headHtml.replace('screen', 'screen, print');
-        //重新写入文档流
-        let str =
-          '<html>' +
-          headHtml  +
-          '<body>' +
-          bodyHtml +
-          '<script>setTimeout(function() {window.print(); window.close();}, 500)</'+
-          'script>' +
-          '</body></html>'
-        myWindow.document.write(str)
+```js
+function parseParam(url=window.location) {
+  url = new URL(url).search; //获取url中"?"符后的字串
+  let obj = {};
+  if (url.includes("?")) {
+    let str = url.substr(1); //去除 ?
+    let arr = str.split("&"); 
+    for(var i = 0; i < arr.length; i ++) {
+      let tempArr = arr[i].split("=")
+      obj[tempArr[0]] = encodeURIComponent(tempArr[1]);
     }
+  }
+  return obj;
+}
+console.log(parseParam());
+```
 
->
+* 
+```js
+let url = 'http://www.aaa.com/?a=a1&b=123&c=打算'
 
-    function printout() {
-        //打开一个新的窗口
-        let newWindow = window.open();
+function parseParam(url=window.location) {
+  const paramsStr = /.+\?(.+)$/.exec(url)[1]; // 将 ? 后面的字符串取出来
+  const paramsArr = paramsStr.split('&'); // 将字符串以 & 分割后存到数组中
+  let paramsObj = {};
+  // 将 params 存到对象中
+  paramsArr.forEach(param => {
+    if (/=/.test(param)) { // 处理有 value 的参数
+      let [key, val] = param.split('='); // 分割 key 和 value
+      val = encodeURIComponent(val); // 解码
+      val = /^\d+$/.test(val) ? parseFloat(val) : val; // 判断是否转为数字
 
-        // 是新窗口获得焦点
-        newWindow.focus();
-
-        //保存写入内容
-        let newContent = "<html><head><meta charset='utf-8'/><title>打印</title></head><body>"
-        newContent += document.getElementById("print").outerHTML;
-        newContent += "</body></html>"
-
-        // 将HTML代码写入新窗口中
-        newWindow.document.write(newContent);
-        newWindow.print();
-
-        // close layout stream
-        newWindow.document.close();
-        //关闭打开的临时窗口
-        newWindow.close();
-        return false;
-    };
-
-## <a name="base64数据导出文件">base64 数据导出文件，文件下载</a>
-
->
-
-    downloadFile('dsd','./tets.md')
-    function downloadFile(filename, data){
-      let DownloadLink = document.createElement('a');
-      if ( DownloadLink ){
-        document.body.appendChild(DownloadLink);
-        DownloadLink.style = 'display: none';
-        DownloadLink.download = filename;
-        DownloadLink.href = data;
-        if ( document.createEvent ){
-          let DownloadEvt = document.createEvent('MouseEvents');
-          DownloadEvt.initEvent('click', true, false);
-          DownloadLink.dispatchEvent(DownloadEvt);
-        }
-        else if ( document.createEventObject ){
-          DownloadLink.fireEvent('onclick');
-        }
-        else if (typeof DownloadLink.onclick == 'function' ){
-          DownloadLink.onclick();
-        }
-        document.body.removeChild(DownloadLink);
+      if (paramsObj.hasOwnProperty(key)) { // 如果对象有 key，则添加一个值
+        paramsObj[key] = [].concat(paramsObj[key], val);
+      } else { // 如果对象没有这个 key，创建 key 并设置值
+        paramsObj[key] = val;
       }
+    } else { // 处理没有 value 的参数
+      paramsObj[param] = true;
     }
+  })
+  return paramsObj;
+}
+console.log(parseParam(url)) //{a: "a1", b: 123, c: "打算"}
+```
+
 
 ## <a name="实现模糊搜索结果的关键词高亮显示">[实现模糊搜索结果的关键词高亮显示](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/141)</a>
 
@@ -1823,7 +1712,7 @@ https://www.jianshu.com/p/6c7d0b18d4ca
 
     Array.apply(null, Array(n)).map(()=>0) // n个0 [0,0,0,....]
     Array.apply(null, {length: n}).map(()=>0)
-    ES6方法：new Array(n).fill(0)
+    ES6方法：Array(n).fill(0)
 
 ## <a name="页面加载进度条">页面加载进度条</a>
 

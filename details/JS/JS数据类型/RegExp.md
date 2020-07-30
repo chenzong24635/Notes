@@ -1,17 +1,14 @@
 
 [MDN-正则表达式](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions#)
 
-[常用正则表达式](https://any86.github.io/any-rule/)
+[JS正则表达式迷你书](https://github.com/qdlaoyao/js-regex-mini-book)  
 
-[正则表达式30分钟入门教程](https://deerchao.cn/tutorials/regex/regex.htm#mission)
+[regexr](https://regexr.com/)正则调试网站
+[regex101](https://regex101.com/)正则调试网站
+[regexper](https://regexper.com/)正则表达式-图形化工具
 
-[正则表达式迷你书](https://github.com/qdlaoyao/js-regex-mini-book)  
+[正则大全](https://any86.github.io/any-rule/)常用正则表达式
 
-[正则表达式手册](http://tool.oschina.net/uploads/apidocs/jquery/regexp.html)
-
-[正则调试](https://regex101.com/)
-
-[正则表达式-图形化工具](https://regexper.com/)
 
 # 目录
 * <a href="#创建正则表达式">创建正则表达式</a>
@@ -23,7 +20,7 @@
 * <a href="#方法">正则、字符串方法</a>
 * <a href="#分组">分组：括号的作用</a>
 * <a href="#"></a>
-* <a href="#常用">常用</a>
+* <a href="#常用">常用正则</a>
 
 
 # <a name="创建正则表达式">创建正则表达式</a>

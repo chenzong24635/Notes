@@ -11,6 +11,7 @@ Array.prototype.selfFilter = function(fn, content){
   let sourceArr = this
   let arr = []
   for(let i = 0, len = sourceArr.length; i < len; i++) {
+    // 排除非自身属性 
     if(!sourceArr.hasOwnProperty(i))continue
     // fn 返回值为 true时
     fn.call(content, sourceArr[i], i, sourceArr) && arr.push(sourceArr[i])

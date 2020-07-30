@@ -4,7 +4,7 @@
 
 [TypeScript 入门教程](https://github.com/xcatliu/typescript-tutorial)
 
-* <a href="#准备">准备</a>
+* <a href="#了解">了解</a>
 * <a href="#类型">类型</a>
 * <a href="#泛型">泛型</a>
   * <a href="#Boolean">布尔值 boolean </a>
@@ -33,7 +33,7 @@
 * <a href="#tsconfig">tsconfig.json</a>
 
 
-# <a name="准备">准备</a>
+# <a name="了解">了解</a>
 TypeScript 是 JavaScript 的类型的超集，它可以编译成纯 JavaScript。编译出来的 JavaScript 可以运行在任何浏览器上。TypeScript 编译工具可以运行在任何服务器和任何系统上,它由 Microsoft 开发
 
 TypeScript 是静态弱类型语言,因为要兼容 JavaScript， 所以 TypeScript 几乎不限制 JavaScript 中原有的隐式类型转换，它对类型的隐式转换是有容忍度的
@@ -58,13 +58,11 @@ TypeScript 非常包容
 版本查看 
 `tsc -v`    
 
-编译ts -> js： 
->
-    tsc 文件名.ts
+编译ts 为 js文件： 
+` tsc 文件名.ts`
 
 编译后，vscode提示重复声明的问题
-> 
-    在项目根目录添加配置文件 tsconfig.json即可，空文件也可
+`在项目根目录添加配置文件 tsconfig.json即可，空文件也可`
 
 在node运行ts
 >

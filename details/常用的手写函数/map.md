@@ -25,7 +25,6 @@ Array.prototype.selfMap = function(fn, content){
   // let sourceArr = Array.prototype.slice.call(this) // 3.
   let sourceArr = this // 4.
 
-
   // 执行回调函数后返回的新数组
   let arr = []
   for(let i = 0, len = sourceArr.length; i < len; i++) {

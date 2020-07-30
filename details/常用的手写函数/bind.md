@@ -13,7 +13,7 @@ Function.prototype.selfBind = function(content, ...args) {
   let self = this
 
   // 绑定的函数
-  let bound = function(...args2) {
+  function bound(...args2) {
     // this instanceof bound, 判断是否使用 new 来调用 bound
     // 如果是 new 来调用的话，this的指向就是其实例，
     // 如果不是 new 调用的话，就改变 this 指向到指定的对象 o

@@ -4,6 +4,9 @@
  * @param   right [右侧为要判断的构造器函数]
  */
 function selfInstanceof (left, right) {
+  if(typeof right){
+    throw TypeError("Right-hand side of 'instanceof' is not an object")
+  }
   // 获取 left 原型
   let proto = Object.getPrototypeOf(left);
   let prototype = right.prototype;

@@ -960,28 +960,27 @@ Vue.extend实际是创建一个构造器,对应的初始化构造器,并将其�
 
 ```js
 // 创建构造器
-var Profile = Vue.extend({
-  template: '<p>{{firstName}} {{lastName}} aka {{alias}}</p>',
-  data: function () {
+let Profile = Vue.extend({
+  template: `<div><p>名字{{name}}</p><p>id:{{id}}</p></div>`,
+  props: ['id'],
+  data(){
     return {
-      firstName: 'Walter',
-      lastName: 'White',
-      alias: 'Heisenberg'
+      name: 'dadan'
     }
   }
 })
-// 创建 Profile 实例，并挂载到一个元素上。
-new Profile().$mount('#mount-point')
+// 使用
 
-// 全局注册
+// 1. 可以挂载到元素上,可以通过propsData传参.
+// new Profile({propsData:{id:'我是实例传入的id'}}).$mount('#app')
+
+// 2.全局注册使用
 Vue.component('Profile',Profile)
 
-//局部注册
-export default{
-  components: {
-    Profile
-  }
-}
+//3.局部注册
+//  components: {
+//    Profile
+//  }
 ```
 
 ### [Vue.component](https://cn.vuejs.org/v2/api/#Vue-component)
@@ -1036,7 +1035,7 @@ export default{
 ### extends,mixins
 extends,mixins都是为了拓展组件
 
-extends 只能单次扩展一个组件，优先与 mixins 调用
+extends 只能单次扩展一个组件，优先于 mixins 调用
 mixins 可多个， 钩子按照传入顺序依次调用
 
 ```html
@@ -1113,6 +1112,95 @@ mixins 可多个， 钩子按照传入顺序依次调用
 这是vue实例里面getSum的方法
 ```
 执行顺序： extends > mixins > 实例自身
+
+
+# <a name="Vue.directive">Vue.directive</a>[![bakTop](./img/backward.png)](#top)  
+[自定义指令](https://doc.vue-js.com/v2/guide/custom-directive.html)
+
+```js
+// 注册一个全局自定义指令 `v-focus`
+Vue.directive('focus', {
+  // 当被绑定的元素插入到 DOM 中时……
+  inserted: function (el) {
+    // 聚焦元素
+    el.focus()
+    // el.style.backgroundColor='red'
+  }
+})
+
+// 注册局部指令
+export default {
+  directives: {
+    focus: {
+      // 指令的定义
+      inserted: function (el) {
+        el.focus()
+        // el.style.backgroundColor='red'
+      }
+    }
+  }
+}
+```
+
+使用
+```html
+<input type="text" v-focus>
+```
+
+
+更多用法
+```js
+Vue.directive('my-directive', {
+  bind(el, binding, vnode, oldVnode) {
+    //做绑定的准备工作,添加时间监听
+    console.log('指令的bind执行啦');
+  },
+  inserted(el) {
+    //获取绑定的元素
+    console.log('指令的inserted执行啦');
+  },
+  update() {
+    //根据获得的新值执行对应的更新
+    //对于初始值也会调用一次
+    console.log('指令的update执行啦');
+  },
+  componentUpdated() {
+    console.log('指令的componentUpdated执行啦');
+  },
+  unbind() {
+    //做清理操作
+    //比如移除bind时绑定的事件监听器
+    console.log('指令的unbind执行啦');
+  }
+})
+```
+
+
+### 指令的钩子函数(均为可选)：
+生命周期
+* bind 只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置。
+
+* inserted 被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)。
+
+* update 所在组件的 VNode 更新时调用，但是可能发生在其子 VNode 更新之前。
+
+* componentUpdated 指令所在组件的 VNode 及其子 VNode 全部更新后调用。
+
+* unbind 只调用一次，指令与元素解绑时调用
+
+
+
+指令参数
+* el：指令所绑定的元素，可以用来直接操作 DOM 。
+* binding：一个对象，包含以下属性：
+  * name：指令名，不包括 v- 前缀。
+  * value：指令的绑定值，例如：v-my-directive="1 + 1" 中，绑定值为 2。
+  * oldValue：指令绑定的前一个值，仅在 update 和 componentUpdated 钩子中可用。无论值是否改变都可用。
+  * expression：字符串形式的指令表达式。例如 v-my-directive="1 + 1" 中，表达式为 "1 + 1"。
+  * arg：传给指令的参数，可选。例如 v-my-directive:foo 中，参数为 "foo"。
+  * modifiers：一个包含修饰符的对象。例如：v-my-directive.foo.bar 中，修饰符对象为 { foo: true, bar: true }。
+* vnode：Vue 编译生成的虚拟节点。
+* oldVnode：上一个虚拟节点，仅在 update 和 componentUpdated 钩子中可用。
 
 
 # <a name="Vue的数据为什么频繁变化但只会更新一次">Vue的数据为什么频繁变化但只会更新一次</a>[![bakTop](./img/backward.png)](#top)  
@@ -1970,12 +2058,49 @@ module.exports = {
       .end()
   }
 }
-
 ```  
 
 # <a name="vue项目性能优化">Vue开发技巧+性能优化</a>[![bakTop](./img/backward.png)](#top)  
 [Vue开发技巧+性能优化](/details/Vue/Vue开发技巧+性能优化.md)
 
+# <a name="Vue其他">Vue其他</a>[![bakTop](./img/backward.png)](#top)  
+
+* Vue.version 当前vue版本
+* [Vue.config 是一个对象，包含 Vue 的全局配置](https://doc.vue-js.com/v2/api/#%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE)
+  * Vue.config.performance 监听性能(布尔值,默认false)，只适用于开发模式和支持 performance.mark API 的浏览器上
+    ```js
+      console.log(Vue.config.performance) // false
+      Vue.config.performance = true //
+    ```
+
+  * Vue.config.keyCodes 自定义按键修饰符别名
+    ```html
+    
+    <input type="text" @keyup.f1="add"/>
+    <script>
+      export default{
+        created() {
+          // 将键码为 112 定义为 f2
+          Vue.config.keyCodes.f1 = 112;
+          /* 
+            Vue.config.keyCodes = {
+              v: 86,
+              f1: 112,
+              // camelCase 不可用
+              // mediaPlayPause: 179,
+              // 取而代之的是 kebab-case 且用双引号括起来
+              "media-play-pause": 179,
+              up: [38, 87]
+            } 
+          */
+          //获取所有自定义按键修饰符
+          console.log(Vue.config.keyCodes)
+        }
+      }
+    </script>
+    ```
+  * Vue.config.errorHandler
+  * Vue.config.warnHandler
 
 # <a name="UI组件">UI组件常见问题</a>[![bakTop](./img/backward.png)](#top)  
 * 组件事件触发不了  

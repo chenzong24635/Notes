@@ -8,7 +8,7 @@ function compose(...args) {
     let i = start;
     // 从后往前调用
     // 先调用最后一个方法
-    let result = args[start].call(this, args1);
+    let result = args[start].apply(this, args1);
     // 依次调用函数（从后往前调用），并将返回结果，作为参数调用下一个函数
     while (i--) result = args[i].call(this, result);
     return result;

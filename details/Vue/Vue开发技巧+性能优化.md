@@ -277,7 +277,7 @@ export default {
 在绑定属性上添加 .sync，在子组件内部就可以触发 update:属性名 来更新 prop
 
 child.vue:
-```html
+```js
 export defalut {
   props: {
       title: String  
@@ -738,7 +738,7 @@ export default {
 
 ## <a name="批量注册全局组件">require.context 批量注册全局组件</a>[![bakTop](/img/backward.png)](#top)  
 
-* require.context(arg1,arg2,arg3)
+* require.context(arg1,arg2,arg3) --webpack 的方法
   >arg1 - 读取文件的路径  
   >arg2 - 是否遍历文件的子目录  
   >arg3 - 匹配文件的正则  
@@ -750,7 +750,7 @@ export default {
   install(Vue) {
     // 批量注册公用组件
     const components = require.context('@/components/common', false, /\.vue$/)
-    components.keys().map(path => {
+    components.keys().forEach(path => {
       const fileName = path.replace(/(.*\/)*([^.]+).*/ig, "$2"); // 获取组件文件名
       Vue.component(fileName, components(path).default || components(path)) // 动态注册该目录下的所有.vue文件
     })

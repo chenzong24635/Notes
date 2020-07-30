@@ -35,13 +35,11 @@
 * <a href="#事件委托(代理)">事件委托(代理)</a>
 * <a href="#闭包">闭包</a>
 * <a href="#内存泄漏">内存泄漏</a>
-* <a href="#new的实现原理">new的实现原理</a>
 * <a href="#原型、原型链、原型继承">原型、原型链、原型继承</a>
 * <a href="#创建对象的几种方式">创建对象的几种方式</a>
 * <a href="#作用域、作用域链、执行上下文">作用域、作用域链、执行上下文</a>
 * <a href="#this">this理解</a>
 * <a href="apply call bind">apply call bind</a>
-* <a href="实现apply call bind">实现apply call bind</a>
 * <a href="#公有、私有、静态、特权方法与属性">公有、私有、静态、特权方法与属性</a>
 * <a href="#继承方式">继承方式</a>
 * <a href="#设计模式">设计模式</a>
@@ -339,12 +337,12 @@ let cat = {
 
 let dog = {
   eat() {
-    console.log("meat!");
+    console.log("bone!");
   },
 };
 
 hobby("cat"); //fish!
-hobby("dog"); //meat!
+hobby("dog"); //bone!
 ```
 
 ```js
@@ -363,11 +361,11 @@ let cat = {
 
 let dog = {
   eat() {
-    console.log("meat!");
+    console.log("bone!");
   },
 };
 hobby(cat); //fish!
-hobby(cat); //meat!
+hobby(dog); //bone!
 ```
 
 ### 为什么需要面向对象写法？
@@ -773,7 +771,7 @@ mouseover/mouseout是冒泡事件；mouseenter/mouseleave不冒泡。需要为�
     document.querySelector('.ipt').value
     document.querySelector('.ipt').value = 222
 
-## <a name="变量、函数声明提升">变量、函数声明提升</a>
+## <a name="变量、函数声明提升">变量、函数声明提升,</a>
 (1) 变量声明提升：变量申明在进入执行上下文就完成了。
 只要变量在代码中进行了声明，无论它在哪个位置上进行声明， js引擎都会将它的声明放在范围作用域的顶部；
 
@@ -800,7 +798,7 @@ console.log(a); // 1
 `let 命名不存在变量提升`
 
 ### 函数声明，函数形参，变量名 同名时优先级：
-函数形参 > 函数声明 > 变量名
+函数声明 > 函数形参 >  变量名
 
 ```js
 var foo = {n:1};
@@ -812,6 +810,18 @@ var foo = {n:1};
     console.log(foo.n);// 2
 })(foo); //存入全局的foo变量 作为 形参
 console.log(foo.n); //3
+```
+
+```js
+var foo = {n:1};
+(function foo(foo) {
+  var foo;
+  console.log(foo);//foo(){}
+  var foo = {n:2};//重新声明定义foo 
+  function foo(){}
+  console.log(foo.n);// 2
+})(foo); //存入全局的foo变量 作为 形参
+console.log(foo.n); //1
 ```
 
 ## <a name="立即执行函数">立即执行函数IIFE</a>
@@ -1339,29 +1349,6 @@ console.log(new Date, i);
     在你使用完数据后，及时解除引用(闭包中的变量，dom引用，定时器清除)。
     组织好你的逻辑，避免死循环等造成浏览器卡顿，崩溃的问题。
 
-## <a name="new的实现原理">new的实现原理</a>
-[new 实现](/details/一些常用函数的实现/new关键字实现.md)
-
-```js
-function Person(x){
-  this.name = x
-}
-Person.prototype.say=()=>{console.log(this.name)}
-var p = new Person('I am P')
-
-console.log(p) // Person {name: 'I am P'}
-```
-构造函数return一个对象时
-```js
-function Person(x){
-  this.name = x
-  return {name:1}
-}
-Person.prototype.say=()=>{console.log(this.name)}
-var p = new Person()
-
-console.log(p) // {name: 1}
-```
 
 ## <a name="原型、原型链、原型继承">原型、原型链、原型继承</a>
 [原型-原型链-继承](details/JS/原型-原型链-继承.md)
@@ -1406,7 +1393,7 @@ VO/AO区别：
 ## <a name="this">this理解</a>
 [this](/details/this.md)
 
-## <a name="apply call bind">apply call bind及实现</a>
+## <a name="apply call bind">apply call bind用法及实现</a>
 区别
 * 都是用来改变函数的this对象的指向的；
 
