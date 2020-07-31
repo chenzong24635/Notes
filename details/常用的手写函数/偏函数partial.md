@@ -23,6 +23,21 @@ var parMulti = partial(mul,1);
 parMulti(2,3); // 6
 ```
 
+用偏函数实现一个对象类型的函数
+```js
+function isType(type){
+  return function(obj){
+    return Object.prototype.toString.call(obj) === `[object ${type}]`
+  }
+}
+let isArray = isType('Array')
+let isNumber = isType('Number')
+console.log(isArray([])); // true
+console.log(isArray({})); // false
+console.log(isNumber(12)); // true
+```
+
+
 [柯里化](./函数柯里化curry.md)
 
 `柯里化和偏函数区别`

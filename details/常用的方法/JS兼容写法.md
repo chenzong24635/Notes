@@ -1,10 +1,5 @@
 # 目录
 
-* <a href="#window.scrollTo、window.scrollBy、scrollIntoView()">window.scrollTo、window.scrollBy、scrollIntoView()</a>
-* <a href="#offset、scroll、client">offset、scroll、client</a>
-* <a href="#getBoundingClientRect()">getBoundingClientRect()</a>
-* <a href="#getComputedStyle()">getComputedStyle()</a>
-
 <a href="#JS兼容写法">**JS兼容写法**</a>
 
 * <a href="#浏览器高度">浏览器高度</a>
@@ -18,131 +13,15 @@
 * <a href="#滚动事件mouseWheel">滚动事件mouseWheel</a>
 
 
-
-* <a href="#"></a>
-# <a name="window.scrollTo、window.scrollBy、scrollIntoView()">window.scrollTo、window.scrollBy、scrollIntoView()</a>
-绝对滚动：左上角（0，0）
->
-    window.scrollTo(0, 0);
-
-    // or
-    window.scrollTo({
-      left: 0,
-      top: 100,
-      behavior: "smooth" // 平滑滚动
-    });
-
-相对滚动:相对与当前滚动条位置进行滚动
->
-    window.scrollBy(0, 0);
-
-    // or
-    window.scrollBy({
-      left: 0,
-      top: 100,
-      behavior: "smooth" // 平滑滚动
-    });
-
->
-    document.scrollingElement.scrollTop = 100;
-
-指定一个元素显示在视窗
->
-    // start出现在视口顶部、center出现在视口中央、end出现在视口底部，
-    //默认start
-    document.querySelector(".box").scrollIntoView({
-      block: "start" || "center" || "end",
-      behavior: "smooth" // 平滑滚动
-    });
-
-
-# <a name="offset、scroll、client">offset、scroll、client</a>
-![img](./img/offset_scroll_client.png)
-
-### offset  自身
-
-* offsetParent
->
-    返回一个对象的引用，这个对象是距离调用 offsetParent的父级元素中最近的（在包含层次中最靠近的），并且是已进行过CSS定位的容器元素。如果这个容器元素未进行CSS定位, 则 offsetParent属性的取值为根元素的引用。
-
-    如果当前元素的父级元素中没有进行CSS定位（position为 absolute/relative）， offsetParent 为 body
-
-    如果当前元素的父级元素中有CSS定位（ position 为 absolute/relative）， offsetParent 取父级中最近的元素
-
-* offsetWidth(自身宽度)= border+ width+ padding (不包括滚动条)
-
-* offsetHeight(自身高度) = border+ height+ padding (不包括滚动条)
-
-* offsetTop  相对于版面或由 offsetParent 属性指定的父坐标的上侧
-
-* offsetLeft 相对于版面或由 offsetParent 属性指定的父坐标的左侧
-
-
-### scroll 滚动
-
-* scrollWidth 对象的滚动宽度
-
-* scrollHeight 对象的滚动高度
-
-* scrollLeft 位于对象左边界和窗口中目前可见内容的最左端之间的距离
-
-* scrollTop 位于对象最顶端和窗口中可见内容的最顶端之间的距离
-
-
-### client 可视 
-
-* clientWidth(可见的宽度) = padding+width (不包括滚动条)，会随窗口的显示大小改变
-
-* clientHeight(可见的高度) = padding+height (不包括滚动条)，会随窗口的显示大小改变
-
-* clientTop、clientLeft 
->
-    这两个返回的是元素周围边框的厚度，一般它的值就是0。因为滚动条不会出现在顶部或者左侧
-
-
-# <a name="getBoundingClientRect()">getBoundingClientRect()</a>
-## 返回值
->
-
-    width: 自身宽
-    height: 自身高
-
-    top:   元素上边到视窗上边的距离
-    bottom:元素下边到视窗上边的距离
-    left:  元素左边到视窗左边的距离
-    right: 元素右边到视窗左边的距离
-
-    x: 同left (IE不支持
-    y: 同top   (IE不支持
-
-    可知：
-    right - left = width
-    bottom - top = height
-
-## 兼容性
-![getBoundingClientRect](img/getBoundingClientRect.png)
-
-![a](img/element-size.png)    
-
-
-# <a name="getComputedStyle()">getComputedStyle()</a>
-[MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/getComputedStyle)
-
-getComputedStyle是一个可以获取当前元素所有最终使用的CSS属性值。返回的是一个CSS样式声明对象([object CSSStyleDeclaration])，只读。
->window.getComputedStyle("元素", "伪类"); //第二个参数可选（忽略或者传null）
-
-* getComputedStyle与style区别  
-
-1. ele.style 读取的只是元素的内联样式，即写在元素的 style 属性上的样式；而 getComputedStyle 读取的样式是最终样式，包括了内联样式、嵌入样式和外部样式。
-
-2. ele.style 既支持读也支持写。而 getComputedStyle 仅支持读并不支持写入。
-
 # <a name="JS兼容写法">**JS兼容写法**</a>
 
 ## <a name="浏览器高度">浏览器高度</a>
 >
 
-    页面宽/高(包括滚动的部分) ： document.documentElement.scrollWidth / scrollHeight | $(document).width() / height()
+    页面宽/高(包括滚动的部分) ： 
+      document.documentElement.scrollWidth / scrollHeight 
+      document.documentElement.offsetWidth / offsetHeight
+      $(document).width() / height()
 
     窗口相对于屏幕的X和Y坐标： window.screenTop / window.screenLeft
 

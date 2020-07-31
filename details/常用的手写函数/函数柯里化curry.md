@@ -39,18 +39,6 @@ curried(1, 2)(3) // => 6
 curried(1, 2, 3) // => 6
 ```
 
-简化版：
-```js
-const curry = (fn,...args1) => {
-  if(args1.length < fn.length) {
-    return (...args2)=> {
-      return curry(fn,...args1,...args2)
-    }
-  }
-  return fn(...args1)
-}
-```
-
 终极简化版
 ```js
 const curry = (fn,...args1) => args.length < fn.length ? (...args2) => curry(fn,...args1,...args2) : fn(...args1)

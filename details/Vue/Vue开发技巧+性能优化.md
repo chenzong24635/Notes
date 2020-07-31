@@ -739,7 +739,7 @@ export default {
 ## <a name="批量注册全局组件">require.context 批量注册全局组件</a>[![bakTop](/img/backward.png)](#top)  
 
 * require.context(arg1,arg2,arg3) --webpack 的方法
-  >arg1 - 读取文件的路径  
+  >arg1 - 读取文件的目录  
   >arg2 - 是否遍历文件的子目录  
   >arg3 - 匹配文件的正则  
 
@@ -943,7 +943,7 @@ components/loading/directive.js
 import Vue from 'vue'
 import LoadingComponent from './index.vue'
 // 使用 Vue.extend构造组件子类
-const LoadingContructor = Vue.extend(LoadingComponent)
+const LoadingConstructor = Vue.extend(LoadingComponent)
 
 // 定义一个名为loading的指令
 export default{
@@ -955,7 +955,7 @@ export default{
        * @param {*} binding 指令传入的信息，包括 {name:'指令名称', value: '指令绑定的值',arg: '指令参数 v-bind:text 对应 text'}
        */
       bind(el, binding) {
-        const instance = new LoadingContructor({
+        const instance = new LoadingConstructor({
           el: document.createElement('div'),
           data: {
             text: '加载中。。。',

@@ -1791,7 +1791,7 @@ new Router({
     }
 
     if (savedPosition) {
-      //如果返回savedPosition,那么在点击后退按钮时就会表现的像原生浏览器一样，返回的页面会滚动过到之前按钮点击跳转的位置
+      //如果返回savedPosition,那么在点击后退按钮时就会表现的像原生浏览器一样，返回的页面会滚动过到之前按钮点击跳转的位��
       return savedPosition
     } else {
       if (from.meta.keepAlive) { //如果 keepAlive 的话，保存停留的位置
@@ -2066,6 +2066,7 @@ module.exports = {
 # <a name="Vue其他">Vue其他</a>[![bakTop](./img/backward.png)](#top)  
 
 * Vue.version 当前vue版本
+
 * [Vue.config 是一个对象，包含 Vue 的全局配置](https://doc.vue-js.com/v2/api/#%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE)
   * Vue.config.performance 监听性能(布尔值,默认false)，只适用于开发模式和支持 performance.mark API 的浏览器上
     ```js
@@ -2099,8 +2100,22 @@ module.exports = {
       }
     </script>
     ```
-  * Vue.config.errorHandler
-  * Vue.config.warnHandler
+  * ....
+
+
+* 调试 template
+
+在Vue开发过程中, 经常会遇到template模板渲染时JavaScript变量出错的问题, 
+
+此时也许你会通过console.log来进行调试这时可以在开发环境挂载一个 log 函数
+
+```js
+// main.js
+Vue.prototype.$log = window.console.log;
+
+// 组件内部
+<div>{{$log(info)}}</div>
+```
 
 # <a name="UI组件">UI组件常见问题</a>[![bakTop](./img/backward.png)](#top)  
 * 组件事件触发不了  
