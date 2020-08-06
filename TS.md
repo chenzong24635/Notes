@@ -6,6 +6,7 @@
 
 * <a href="#了解">了解</a>
 * <a href="#类型">类型</a>
+* <a href="#非基础类型">非基础类型</a>
 * <a href="#泛型">泛型</a>
   * <a href="#Boolean">布尔值 boolean </a>
   * <a href="#Number">数字 number </a>
@@ -161,6 +162,7 @@ let isDone: boolean = Boolean(1); // ok
 
 // 注意，使用构造函数 Boolean 创造的对象不是布尔值：
 let newBoolean: boolean = new Boolean(1); // error!!!
+
 // 返回的是一个 Boolean 对象：
 let newBoolean: Boolean = new Boolean(1); // ok
 ```
@@ -563,6 +565,38 @@ function toBoolean(something: string | number | boolean): boolean {
 let a = 5; //一旦赋值就会进行类型推论，这里推测其为number类型
 a = 15 // ok
 a= [] // error!!!
+```
+
+# <a name="非基础类型">非基础类型</a>
+### 内置对象
+```ts
+let b: Boolean = new Boolean(1);
+let e: Error = new Error('Error occurred');
+let d: Date = new Date();
+let r: RegExp = /[a-z]/;
+```
+
+### DOM 元素的类型声明
+安装 TypeScript 时，默认会引入 [lib.dom.d.ts](https://github.com/microsoft/TypeScript/blob/master/lib/lib.dom.d.ts) 文件，该文件提供了 DOM 元素的类型，我们直接使用就可以。
+
+```js
+let divs: NodeList = document.querySelectorAll('div');
+
+const div:HTMLDivElement = document.createElement('div');
+
+const img:HTMLImageElement = new Image()
+
+const canvas:HTMLCanvasElement = document.createElement('canvas');
+const ctx:CanvasRenderingContext2D = canvas.getContext('2d');
+
+let timer:number = setInterval(()=>{
+    
+},500);
+
+function fn(){
+  let args: IArguments = arguments;
+}
+
 ```
 
 # <a name="泛型">泛型</a>

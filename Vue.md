@@ -572,7 +572,33 @@ export default {
 }
 </script>
 ```
-`注意，不应该使用箭头函数来定义 watcher 函数 (例如 searchQuery: newValue => this.updateAutocomplete(newValue))。理由是箭头函数绑定了父级作用域的上下文，所以 this 将不会按照期望指向 Vue 实例，`
+`注意，不应该使用箭头函数来定义 watche 函数 (例如 searchQuery: newValue => this.updateAutocomplete(newValue))。理由是箭头函数绑定了父级作用域的上下文，所以 this 将不会按照期望指向 Vue 实例，`
+
+###  卸载watch
+```js
+export default {
+  data() {
+    return {
+        count: 1
+    }
+  },
+  // watch: {
+  //   count(newVal) {
+  //       console.log('count 新值：'+newVal)
+  //   }
+  // },
+  created() {
+    // $watch 会返回一个取消观察函数
+    let unwatchFn = this.$watch('count', function(){
+        console.log('count 新值：'+newVal)
+    }, {
+        immediate: true // 立即执行watch
+    })
+    unwatchFn() // 取消监听
+  }
+}
+```
+
 
 # <a name="解决对象新增属性不能响应的问题">vm.$set() 解决对象新增属性不能响应的问题</a>[![bakTop](./img/backward.png)](#top)  
 [Vue文档-深入响应式原理](https://cn.vuejs.org/v2/guide/reactivity.html)
