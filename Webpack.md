@@ -179,8 +179,8 @@ console.log($);
 ### [devtool 代码映射](https://webpack.js.org/configuration/devtool/)
 源代码与打包后的代码的映射关系，通过sourceMap定位到源代码。
 
-在development模式中，默认开启，
 
+在development模式中，默认开启，
 
 * none
 * eval:速度最快,使用eval包裹模块代码,
@@ -195,6 +195,8 @@ console.log($);
 推荐使用：
 * devtool:"cheap-module-eval-source-map",// development 开发环境配置
 * devtool:"cheap-module-source-map", // production 生产模式配置
+
+
 
 
 ### module 模块
@@ -225,7 +227,7 @@ module:{
 
 ```js
 module:{
-  noParse: /jquery|lodash/, // loaders解析时忽略 正则匹配的文件
+  noParse: /jquery|lodash/, // loaders解析时忽略 此正则匹配的文件
 }  
 ```  
 
@@ -562,13 +564,14 @@ module.exports = {
       {
         test: /\.jsx?$/,
         use: ['cache-loader', ...loaders],
-        include: path.resolve('src'),
+        include: path.resolve(__dirname,'src'),
       },
     ],
   },
 };
 
 ```
+保存和读取这些缓存文件会有一些时间开销，所以请只对性能开销较大的 loader 使用此 loader
 
 ## <a name="plugins">plugins</a>
 [plugins-英文网站](https://webpack.js.org/plugins/)
@@ -734,10 +737,12 @@ plugins: [
 
 ```
 
-## <a name="JS压缩">JS压缩terser-webpack-glugin</a>
+## <a name="JS压缩">JS压缩terser-webpack-plugin</a>
 npm install terser-webpack-plugin --save-dev
 
-Webpack4.0 默认是使用 terser-webpack-plugin 这个压缩插件，在此之前是使用 uglifyjs-webpack-plugin;  
+Webpack4.0 默认是使用 terser-webpack-plugin 这个压缩插件；默认就开启了多进程和缓存，构建时，你的项目中可以看到 terser 的缓存文件 node_modules/.cache/terser-webpack-plugin。
+在此之前是使用 uglifyjs-webpack-plugin;  
+
 因为最新版的uglifyjs-webpack-plugin插件已经不支持es6语法,用插件terser-webpack-plugin代替
 
 ```js
@@ -763,6 +768,22 @@ module.exports = {
 }
 ```
 [optimization配置详情](https://webpack.js.org/configuration/optimization/)
+
+## <a name="hard-source-webpack-plugin">hard-source-webpack-plugin为模块提供了中间缓存</a>
+[HardSourceWebpackPlugin](https://www.npmjs.com/package/hard-source-webpack-plugin) 为模块提供了中间缓存，缓存默认的存放路径是: node_modules/.cache/hard-source。
+
+```js
+npm i hard-source-webpack-plugin -D
+
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+module.exports = {
+  //...
+  plugins: [
+    new HardSourceWebpackPlugin()
+  ]
+}
+
+```
 
 ## <a name="生成gzip压缩的文件">生成gzip压缩的文件</a>
 npm i compression-webpack-plugin -D
@@ -1036,11 +1057,17 @@ configureWebpack: {
 },
 ```
 
-## <a name="DllPlugin">DllPlugin 抽离第三方模块</a>
+## <a name="预编译资源模块">预编译资源模块</a>
+
 在使用webpack进行打包时候，对于依赖的第三方库，比如vue，vuex等这些不会修改的依赖，我们可以让它和我们自己编写的代码分开打包，这样做的好处是每次更改我本地代码的文件的时候，webpack只需要打包我项目本身的文件代码，而不会再去编译第三方库
 
+那么第三方库在第一次打包的时候只打包一次，以后只要我们不升级第三方包的时候，那么webpack就不会对这些库去打包，这样的可以快速的提高打包的速度。其实也就是预编译资源模块。
 
-DllPlugin webpack内置
+webpack中，我们可以结合DllPlugin 和 DllReferencePlugin插件来实现。
+
+## <a name="DllPlugin">DllPlugin 抽离第三方模块</a>
+
+DllPlugin把第三方库代码分离开，并且每次文件更改的时候，它只会打包该项目自身的代码。所以打包速度会更快。 webpack内置
 
 // webpack.dll.config.js
 ```js
@@ -1067,6 +1094,8 @@ module.exports = {
 };
 ```
 
+DllReferencePlugin 把刚刚在webpack.dll.config.js中打包生成的dll文件引用到需要的预编译的依赖上来。
+
 webpack.config.js
 ```js
 module.exports = {
@@ -1092,7 +1121,7 @@ package.json
 "dll": "webpack --config build/webpack.dll.config.js"
 ```
 
-npm run dll后会在根目录生成 static/js/vendor.dll.js
+npm run dll后会在public目录生成 dll/vendor.dll.js
 
 在public/index.html引入
 ```js
@@ -1145,8 +1174,8 @@ rules: [
     include: path.resolve(__dirname, "./src"),
     use: [
       {
-      // 一个loader对应一个id，对应plugins设置的HappyPack的id
-      loader: "happypack/loader?id=styles"
+        // 一个loader对应一个id，对应plugins设置的HappyPack的id
+        loader: "happypack/loader?id=styles"
       }
     ]
   },
@@ -1155,7 +1184,7 @@ rules: [
 plugins:[
   new HappyPack({
     // 唯一的标识符id，来代表当前的HappyPack是HappPack来处理一类特定的文件
-    id: "css",
+    id: "styles",
     // 用法和Loader配置中一样
     loaders: [
       "style-loader",
@@ -1172,6 +1201,31 @@ plugins:[
 ]
 ```
 
+## <a name="thread-loader">thread-loader 开启多进程Loader转换</a>
+把这个 loader 放置在其他 loader 之前， 放置在这个 loader 之后的 loader 就会在一个单独的 worker 池(worker pool)中运行
+
+较happyPack， thread-loader 配置起来为简单
+```js
+npm i thread-loader -D
+
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        include: path.resolve("src"),
+        use: [
+          "thread-loader",
+          // 把高开销的loader放置在此 
+        ]
+      }
+    ]
+  }
+}
+```
+从实际使用的情况来看，thread-loader 和 happypack 对于小型项目来说打包速度几乎没有影响，是因为它本身的额外开销，例如I/O，建议只在大型项目中使用，可以先测试再投入生产环境。
+
+
 ## <a name="分析打包依赖体积">分析打包依赖体积：webpack-bundle-analyzer</a>
 
 ```js
@@ -1179,16 +1233,48 @@ npm i webpack-bundle-analyzer -D
 
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 plugins:[
-  new BundleAnalyzerPlugin(),
+  // new BundleAnalyzerPlugin()
+  new BundleAnalyzerPlugin({
+     //  可以是`server`，`static`或`disabled`。
+    //  在`server`模式下，分析器将启动HTTP服务器来显示软件包报告。
+    //  在“静态”模式下，会生成带有报告的单个HTML文件。
+    //  在`disabled`模式下，你可以使用这个插件来将`generateStatsFile`设置为`true`来生成Webpack Stats JSON文件。
+    analyzerMode: "server",
+    //  将在“服务器”模式下使用的主机启动HTTP服务器。
+    analyzerHost: "127.0.0.1",
+    //  将在“服务器”模式下使用的端口启动HTTP服务器。
+    analyzerPort: 8866,
+    //  路径捆绑，将在`static`模式下生成的报告文件。
+    //  相对于捆绑输出目录。
+    reportFilename: "report.html",
+    //  模块大小默认显示在报告中。
+    //  应该是`stat`，`parsed`或者`gzip`中的一个。
+    //  有关更多信息，请参见“定义”一节。
+    defaultSizes: "parsed",
+    //  在默认浏览器中自动打开报告
+    openAnalyzer: true,
+    //  如果为true，则Webpack Stats JSON文件将在bundle输出目录中生成
+    generateStatsFile: false,
+    //  如果`generateStatsFile`为`true`，将会生成Webpack Stats JSON文件的名字。
+    //  相对于捆绑输出目录。
+    statsFilename: "stats.json",
+    //  stats.toJson（）方法的选项。
+    //  例如，您可以使用`source：false`选项排除统计文件中模块的来源。
+    //  在这里查看更多选项：https：  //github.com/webpack/webpack/blob/webpack-1/lib/Stats.js#L21
+    statsOptions: null,
+    logLevel: "info"
+  }),
 ]
 
 npm run build --report
 ```
 
 ## <a name="测量打包构建时间">测量打包构建时间：speed-measure-webpack-plugin</a>
-结合 webpack-bundle-analyzer(打包文件的大小) 
+结合 webpack-bundle-analyzer(分析打包文件的大小) 
 
-[speed-measure-webpack-plugin](https://github.com/stephencookdev/speed-measure-webpack-plugin)
+[speed-measure-webpack-plugin](https://github.com/stephencookdev/speed-measure-webpack-plugin)作用
+* 计算整个打包总耗时
+* 分析每个插件和 loader 的耗时情况
 
 ```js
 npm i speed-measure-webpack-plugin -D
@@ -1207,6 +1293,8 @@ module.exports = smp.wrap({
 
 
 ## <a name="Scope Hoisting">Scope Hoisting作用域提升</a>
+webpack 会把引入的 js 文件“提升到”它的引入者顶部。
+
 Scope Hoisting 可以让 Webpack 打包出来的代码文件更小、运行的更快。
 
 Webpack 内置的功能

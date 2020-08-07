@@ -15,8 +15,7 @@ Function.prototype.selfBind = function(content, ...args) {
   // 绑定的函数
   function bound(...args2) {
     // this instanceof bound, 判断是否使用 new 来调用 bound
-    // 如果是 new 来调用的话，this的指向就是其实例，
-    // 如果不是 new 调用的话，就改变 this 指向到指定的对象 o
+    // 如果是 new 来调用的话，绑定到this，否则绑定到 content
     return self.apply(
       this instanceof bound ? this : content,
       [...args, ...args2]

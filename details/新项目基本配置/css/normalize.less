@@ -8,7 +8,7 @@
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
 
-html {
+ html {
   line-height: 1.15; /* 1 */
   -webkit-text-size-adjust: 100%; /* 2 */
 }
@@ -37,10 +37,6 @@ main {
  * `article` contexts in Chrome, Firefox, and Safari.
  */
 
-h1 {
-  font-size: 2em;
-  margin: 0.67em 0;
-}
 
 /* Grouping content
    ========================================================================== */
@@ -362,7 +358,7 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 	padding: 0;
 	border: 0;
 	outline: 0;
-	font-size: 100%;
+	/* font-size: 100%; */
 	vertical-align: baseline;
   /* background: transparent; */
   box-sizing: border-box;
@@ -402,65 +398,56 @@ table {
 }
 
 
-/* my css set */
+/* 我的配置 */
+html {
+  font-size: 12px;
+  font-family: -apple-system,system-ui,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Arial,sans-serif;
+  word-break: break-word;
+  text-rendering: optimizeLegibility;
+  color: #333;
+}
+body{
+  word-break: break-word;
+  overflow-y: scroll;
+  line-height: normal;
+}
 
-a {
+span{display: inline-block;}
+ul,li{
+  list-style: none;
+}
+
+a{
   display: block;
   color: inherit;
   text-decoration: none;
-  cursor: pointer
+  cursor: pointer;
+}
+a:hover{
+  color: #007fff;
+}
+img{display: inline-block;}
+.por{position: relative;}
+.cur{cursor: pointer;}
+.dib{display: inline-block;}
+
+::-webkit-input-placeholder { color: #AAAAAB; }
+:-moz-placeholder { color: #AAAAAB; }
+::-moz-placeholder { color: #AAAAAB; }
+:-ms-input-placeholder { color: #AAAAAB; }
+
+.tac{text-align: center;}
+.tal{text-align: left;}
+.tar{text-align: right;}
+.mb20{
+  margin-bottom: 20px;
+}
+.ml20{
+  margin-left: 20px;
+}
+.mr20{
+  margin-right: 20px;
 }
 
-img {
-  display: inline-block
-}
 
-// 去除点击高亮  
-a,button,input,textarea{
-  -webkit-tap-highlight-color: rgba(0,0,0,0);  
-  -webkit-user-modify:read-write-plaintext-only; 
-  tap-highlight-color: rgba(0, 0, 0, 0); 
-}
-  
-
-.ov1{
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis; 
-}
-
-.ov(@clamp:2){
-  position: relative;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-wrap: break-word;
-  word-break: break-all; 
-  -webkit-line-clamp: @clamp; /* 限制在显示的文本的行数 */
-  display: -webkit-box; /* 将对象作为弹性伸缩盒子模型显示 */
-  /* 防止打包后这段代码被删除 */
-  /*! autoprefixer: off */
-    -webkit-box-orient: vertical;/* 伸缩盒子的子元素排列：从上到下 */
-  /* autoprefixer: on */
-}
-
-/* 输入框默认字体颜色设置 */
-::-webkit-input-placeholder { color: #c7c7c7; }/*WebKit, Blink, Edge*/
-:-moz-placeholder { color: #c7c7c7; }/*Mozilla Firefox 4 to 18*/
-::-moz-placeholder { color: #c7c7c7; }/*Mozilla Firefox 19+*/
-:-ms-input-placeholder { color: #c7c7c7; }/*Internet Explorer 10-11 */
-
-// 改变自动填充背景色
-::-webkit-autofill{
-  box-shadow: 0 0 0px 1000px #fff inset !important;
-}
-
-// 取消部分浏览器数字输入控件的操作按钮
-input[type="number"] { /* firefox */
-  -moz-appearance: textfield;
-}
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button { /* chrome */
-  margin: 0;
-  -webkit-appearance: none;
-}
 

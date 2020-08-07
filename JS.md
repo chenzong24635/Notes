@@ -1260,7 +1260,7 @@ hasOwnProperty 只会检查属性是否存在对象中，不会向上检查其�
 
 简单说：当一个内部函数被其外部函数之外的变量引用时，就形成了一个闭包。
 
-详细概念：
+`详细概念：`
 浏览器加载页面会把代码放到栈内存中执行，函数进栈执行会产生一个私有的上下文（EC），此上下文能保存里面的私有变量（也就是AO）不会被外界干扰，并且如果当前上下文中的某些内容，被上下文以外的内容所占用，当前上下文是不会出栈释放的，形成不销毁的执行上下文，这样可以保存和保护里面的变量和变量值，闭包是一种保存和保护内部私有变量的机制.
 
 
@@ -1995,8 +1995,19 @@ API：
 [性能优化](/details/optimization.md)
 
 ## <a name="浏览器渲染">浏览器渲染</a>
-![render](img/render.png)
-![render](img/render1.png)
+浏览器工作原理
+1.用户界面 
+2.网络 
+3.UI后端 
+4.数据存储 
+5.浏览器引擎 
+6.渲染引擎 
+7.js解释器  
+
+浏览器解析过程：解析html以构建dom树->构建render树->布局render树->绘制render树
+
+![render](/img/render.png)
+![render](/img/render1.png)
 
 
 页面渲染可分为下面5个步骤：
@@ -2010,7 +2021,7 @@ API：
 
 
 ## <a name="从浏览器地址栏输入url到显示页面的步骤">从浏览器地址栏输入url到显示页面的步骤</a>
-[从浏览器地址栏输入url到显示页面的步骤](/details/urlAnalysis.md)
+[从浏览器地址栏输入url到显示页面的步骤](\details\面试题\HTTP面试题\从浏览器地址栏输入url到显示页面的步骤.md)
 
 ## <a name="深度优先遍历和广度优先遍历">深度优先遍历和广度优先遍历</a>
 [参考](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/9)

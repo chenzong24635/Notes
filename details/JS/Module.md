@@ -176,7 +176,7 @@ define(['module2', 'jquery'], function(module2) {
 
 [代码](/details/模块化/AMD)
 
-### UMD
+### UMD 通用模块定义
 兼容AMD和commonJS规范的同时，还兼容全局引用的方式
 
 ```js

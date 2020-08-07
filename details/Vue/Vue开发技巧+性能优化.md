@@ -1398,16 +1398,48 @@ configureWebpack: (config) => {
 }
 ```
 
+`在Nginx上开启gzip压缩`
+在nginx/conf/nginx.conf中配置
+```conf
+http {
+    gzip  on;
+    gzip_min_length 1k;
+    gzip_comp_level 5;
+    gzip_types application/javascript image/png image/gif image/jpeg text/css text/plain;
+    gzip_buffers 4 4k;
+    gzip_http_version 1.1;
+    gzip_vary on;
+}
+
+```
+
+`识别gzip压缩是否开启:`
+
+只要看响应头部（Response headers）中 有没有Content-Encoding: gzip这个属性即可，有代表有开启gzip压缩。
+
+![](/img/isgzip.png)
+
 ### image-webpack-loader 图片资源压缩
+
+[mage-webpack-loader](https://www.npmjs.com/package/image-webpack-loader)支持压缩PNG，JPEG，GIF，SVG和WEBP图片
+
 ```js
-config.module
-  .rule('images')
-  .use('image-webpack-loader')
-  .loader('image-webpack-loader')
-  .options({
-    bypassOnDebug: true
-  })
-  .end()
+npm i image-webpack-loader -D
+
+module.exports = {
+  chainWebpack: config =>{
+    config.module
+      .rule('images')
+      .use('image-webpack-loader')
+      .loader('image-webpack-loader')
+      .options({
+        // 默认为false，为true时禁用压缩图片
+        disable: process.env.NODE_ENV === 'development', // 在开发环境中禁用压缩图片，使其编译速度更快
+      })
+      .end()
+  },
+}
+
 
 ```
 

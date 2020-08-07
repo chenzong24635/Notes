@@ -2151,7 +2151,6 @@ Chrome 中文界面下默认会将小于 12px 的文本强制按照 12px 显示�
 ```
 
 ## <a name="移动端1px">移动端1px</a>[![bakTop](./img/backward.png)](#top)
-[参考](https://juejin.im/post/5d70a030f265da03a715f3fd)
 
 [参考](https://juejin.im/entry/584e427361ff4b006cd22c7c)
 
@@ -2160,92 +2159,224 @@ Chrome 中文界面下默认会将小于 12px 的文本强制按照 12px 显示�
 >
     因为css中的1px并不等于移动设备的1px，这些由于不同的手机有不同的像素密度。在window对象中有一个devicePixelRatio属性，他可以反应css中的像素与设备的像素比。
 
-devicePixelRatio：设备物理像素和设备独立像素的比例   devicePixelRatio = 物理像素 / 独立像素。
+devicePixelRatio：设备物理像素和设备独立像素的比例   
+devicePixelRatio = 物理像素 / 独立像素。
+
+### border-image
+```css
+.border-bottom-1px {
+  border:0 solid transparent;
+  border-width: 0 0 1px 0;
+  -webkit-border-image: url('./line1.png') 0 0 2 0 stretch;
+  border-image: url('./line1.png') 0 0 2 0 stretch;
+}
+```
+
+### background-image
+
+```css
+.background-image-1px {
+  background: url('./line1.png') repeat-x left bottom;
+  -webkit-background-size: 100% 1px;
+  background-size: 100% 1px;
+}
+```
 
 ### box-shadow
 ```css
-    .box-shadow-1px {
-        box-shadow: inset 0px -1px 1px -1px #c8c7cc;
-    }
-    边框颜色变浅
+.box-shadow-1px {
+  box-shadow: inset 0 -1px 1px -1px #c8c7cc;
+}
+/* 边框颜色变浅 */
 ```
 
 ### 伪类 + transform
 ```css
 
-    .border-1px,
-    .border-top-1px{
-      position: relative;
-    }
+.border-1px,
+.border-top-1px{
+  position: relative;
+}
 
-    .border-top-1px:after{
-      content: " ";
-      position: absolute;
-      left: 0;
-      top: 0;
-      width:100%;
-      height: 1px;
-      /* border-top: 1px solid #000; */
-      background-color: #000;
-      -webkit-transform-origin: 0 0;
-      transform-origin: 0 0;
-      -webkit-transform: scaleY(0.5);
-      transform: scaleY(0.5);
-    }
+.border-top-1px:after{
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width:100%;
+  height: 1px;
+  /* border-top: 1px solid #000; */
+  background-color: #000;
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+}
 
-    .border-1px:after{
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 200%;
-        height: 200%;
-        border: 1px solid #000;
-        background-color: #000;
-        transform-origin: 0 0;
-        -webkit-transform-origin: 0 0;
-        transform: scale(.5);
-        -webkit-transform: scale(.5);
-    }
+.border-1px:after{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 200%;
+    height: 200%;
+    border: 1px solid #000;
+    background-color: #000;
+    transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+    transform: scale(.5);
+    -webkit-transform: scale(.5);
+}
 ```
 
+### 完整版
 
+```css
+.border-1px,
+.border-bottom-1px,
+.border-top-1px,
+.border-left-1px,
+.border-right-1px {
+  position: relative;
+  margin: 20px;
+}
+
+/*线条颜色 黑色*/
+.border-bottom-1px::after,
+.border-top-1px::after,
+.border-left-1px::after,
+.border-right-1px::after {
+  content: "";
+  position: absolute;
+  background-color: #000;
+  transform-origin: 0 0;
+}
+
+/*底边边框一像素*/
+.border-bottom-1px::after {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+}
+
+/*上边边框一像素*/
+.border-top-1px::after {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 1px;
+}
+
+/*左边边框一像素*/
+.border-left-1px::after {
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 100%;
+}
+
+/*右边边框1像素*/
+.border-right-1px::after {
+  right: 0;
+  top: 0;
+  width: 1px;
+  height: 100%;
+}
+
+/*边框一像素*/
+.border-1px::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border: 1px solid gray;
+}
+
+/*设备像素比*/
+/*显示屏最小dpr为2*/
+@media (-webkit-min-device-pixel-ratio: 2) {
+  .border-bottom-1px::after,
+  .border-top-1px::after {
+    transform: scaleY(0.5);
+  }
+
+  .border-left-1px::after,
+  .border-right-1px::after {
+    transform: scaleX(0.5);
+  }
+
+  .border-1px::after {
+    width: 200%;
+    height: 200%;
+    transform: scale(0.5);
+    transform-origin: 0 0;
+  }
+}
+
+/*显示屏最小dpr为3*/
+@media (-webkit-min-device-pixel-ratio: 3) {
+  .border-bottom-1px::after,
+  .border-top-1px::after {
+    transform: scaleY(0.333);
+  }
+
+  .border-left-1px::after,
+  .border-right-1px::after {
+    transform: scaleX(0.333);
+  }
+
+  .border-1px::after {
+    width: 300%;
+    height: 300%;
+    transform: scale(0.333);
+    transform-origin: 0 0;
+  }
+}
+```
 
 ## <a name="清除手机端a链接点击高亮">清除手机端a链接点击高亮[![bakTop](./img/backward.png)](#top)
 -webkit-tap-highlight-color: rgba(0,0,0,0);  
 tap-highlight-color: rgba(0, 0, 0, 0);  
->
 
-    //图片作为a标签点击按钮
-    a,a:hover,a:active,a:visited,a:link,a:focus{
-      tap-highlight-color: rgba(0, 0, 0, 0);
-      -webkit-tap-highlight-color:rgba(0,0,0,0);
-      outline:none;
-      background: none;
-      text-decoration: none;
-    }
+```css
+/* 图片作为a标签点击按钮 */
+a,a:hover,a:active,a:visited,a:link,a:focus{
+  tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
+  outline:none;
+  background: none;
+  text-decoration: none;
+}
+```
 
 ## <a name="三角形">三角形</a>[![bakTop](./img/backward.png)](#top)
 ```css
-    width:0; 
-    height:0; 
-    border-style: solid;
-    border-width: 30px 10px;
-    border-color:  transparent transparent transparent #f4f4f4;
+.triangle{
+  width:0; 
+  height:0; 
+  border-style: solid;
+  border-width: 30px 10px;
+  border-color:  transparent transparent transparent #f4f4f4;
+}
 ```
 
 ## <a name="图片缩放">图片缩放matrix,transform+transition</a>[![bakTop](./img/backward.png)](#top)
 ```css
-    // 先放大1.1倍 ，再还原。
-    .img{
-      transform: matrix(1.1, 0, 0, 1.1, 0, 0);/* 等同于transfrom:scale(1.1,1.1) */
-      transition: all 0.4s ease 1.2s;
-    }
+/* 先放大1.1倍 ，再还原。 */
+.img{
+  transform: matrix(1.1, 0, 0, 1.1, 0, 0);
+  /* 等同于transfrom:scale(1.1,1.1) */
+  transition: all 0.4s ease 1.2s;
+}
 
-    .img:hover{
-      transform: matrix(1, 0, 0, 1, 0, 0); /* 等同于transfrom:scale(1,1)*/
-      transition: all 7.0s ease 0.4s;  
-    }
+.img:hover{
+  transform: matrix(1, 0, 0, 1, 0, 0);
+  /* 等同于transfrom:scale(1,1)*/
+  transition: all 7.0s ease 0.4s;  
+}
 ```
 
 ## <a name="clip-path">clip-path</a>[![bakTop](./img/backward.png)](#top)
