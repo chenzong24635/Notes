@@ -98,25 +98,37 @@ var newArr1 = arr.map(function (item) {
 });
 ```
 
-## vue 并不完全是一个MVVM框架？
-[ Vue.js 官网上的这句话](https://cn.vuejs.org/v2/guide/instance.html)
-虽然没有完全遵循 MVVM 模型，但是 Vue 的设计也受到了它的启发。因此在文档中经常会使用 vm (ViewModel 的缩写) 这个变量名表示 Vue 实例。
+## [为什么说 vue 并不完全是一个MVVM框架？](https://www.zhihu.com/question/327050991/answer/701449139)
+[先看Vue.js 官网上的这句话](https://cn.vuejs.org/v2/guide/instance.html)
+![](/img/Vue/v2-6b97b00a69205b2f41dd51e695b643a1_720w.jpg)
 
+
+写过 Vue 组件的人应该都知道它的单文件组件开发方式。那么怎么和 MVVM 设计模式对应起来？
+* Model：对应的是组件中的 data、props 属性。
+* View：组件中 template 的部分（也包括 style ？）。
+* ViewModel。继承自 Vue 类的组件实例。
+
+看上去不是完美地遵循了 MVVM 么？
+
+[先别急着下结论，来看看官网上的另一段话：](https://cn.vuejs.org/v2/guide/migration.html#v-el-%E5%92%8C-v-ref-%E6%9B%BF%E6%8D%A2)
+![](/img/Vue/v2-12aba688275910d875287da9568c9d00_720w.jpg)
+
+因此简单来说：
 MVVM只能数据驱动视图，视图更改数据，而不能通过其他方式操作数据,
+而 Vue 可以通过其他方式操作dom（如$refs）
 
-https://www.zhihu.com/question/327050991/answer/701449139
 
 ## 对比其他框架
 [对比其他框架-vue官网](https://doc.vue-js.com/v2/guide/comparison.html)
 
-## Vue的优点及缺点
+## Vue的优缺点
 首先Vue最核心的两个特点，响应式和组件化。
 
-响应式：这也就是vue.js最大的优点，通过MVVM思想实现数据的双向绑定，通过虚拟DOM让我们可以用数据来操作DOM，而不必去操作真实的DOM，提升了性能。且让开发者有更多的时间去思考业务逻辑。
+* 响应式：这也就是vue.js最大的优点，通过MVVM思想实现数据的双向绑定，通过虚拟DOM让我们可以用数据来操作DOM，而不必去操作真实的DOM，提升了性能。且让开发者有更多的时间去思考业务逻辑。
 
-组件化：把一个单页应用中的各个模块拆分到一个个组件当中，或者把一些公共的部分抽离出来做成一个可复用的组件。所以组件化带来的好处就是，提高了开发效率，方便重复使用，使项目的可维护性更强。
+* 组件化：把一个单页应用中的各个模块拆分到一个个组件当中，或者把一些公共的部分抽离出来做成一个可复用的组件。所以组件化带来的好处就是，提高了开发效率，方便重复使用，使项目的可维护性更强。
 
-虚拟DOM，当然，这个不是vue中独有的。
+* 虚拟DOM，当然，这个不是vue中独有的。
 
 
 缺点：
@@ -129,17 +141,16 @@ https://www.zhihu.com/question/327050991/answer/701449139
 ## Vue的运行机制简述 
 [参考](https://juejin.im/post/5cd8a7c1f265da037a3d0992#heading-14)
 
-
-
 # <a name="MVC、MVP、MVVM">MVC、MVP、MVVM</a>[![bakTop](./img/backward.png)](#top)  
 [MVC，MVP 和 MVVM 的图示](http://www.ruanyifeng.com/blog/2015/02/mvcmvp_mvvm.html)--阮一峰
 
 [基于Vue实现一个简易MVVM](https://juejin.im/post/5cd8a7c1f265da037a3d0992)
 
 ### MVVM(Model-View-ViewModel)
-<img src="img/Vue/mvvm.png" width="50%"/>
-
+<!-- <img src="img/Vue/mvvm.png" width="50%"/> -->
+数据驱动视图，视图更新数据
 <img src="img/Vue/mvvm1.png" width="50%"/>
+
 
 * View: 代表视图层，负责将数据模型渲染到页面上 ;也就是用户界面。前端主要由 HTML 和 CSS 来构建 。
 
@@ -170,21 +181,17 @@ MVVM优点:
 ## SPA（Single Page Application）单页面应用
 仅在 Web 页面初始化时加载相应的 HTML、JavaScript 和 CSS。一旦页面加载完成，SPA 不会因为用户的操作而进行页面的重新加载或跳转；取而代之的是利用路由机制实现 HTML 内容的变换，UI 与用户的交互，避免页面的重新加载。
 
-* 优点：
->
-    用户体验好、快，内容的改变不需要重新加载整个页面，避免了不必要的跳转和重复渲染；
+ 优点：
+* 用户体验好、快，内容的改变不需要重新加载整个页面，避免了不必要的跳转和重复渲染；
+* 服务器压力小；
+* 前后端职责分离，架构清晰，前端进行交互逻辑，后端负责数据处理；
 
-    服务器压力小；
+缺点：
+* 初次加载耗时较长：会等待所有编译后的 js、CSS 文件都下载完成后，才开始进行页面的渲染,所以首屏渲染需要一定的时间
 
-    前后端职责分离，架构清晰，前端进行交互逻辑，后端负责数据处理；
+* 前进后退路由管理：由于单页应用在一个页面中显示所有的内容，所以不能使用浏览器的前进后退功能，所有的页面切换需要自己建立堆栈管理；
 
-* 缺点：
->
-    初次加载耗时较长：会等待所有编译后的 js、CSS 文件都下载完成后，才开始进行页面的渲染,所以首屏渲染需要一定的时间
-
-    前进后退路由管理：由于单页应用在一个页面中显示所有的内容，所以不能使用浏览器的前进后退功能，所有的页面切换需要自己建立堆栈管理；
-
-    SEO 难度较大：因为 SPA 页面的内容是通过 Ajax 获取，而搜索引擎爬取工具并不会等待 Ajax 异步完成后再抓取页面内容，所以在 SPA 中是抓取不到页面通过 Ajax 获取到的内容。
+* SEO 难度较大：因为 SPA 页面的内容是通过 Ajax 获取，而搜索引擎爬取工具并不会等待 Ajax 异步完成后再抓取页面内容，所以在 SPA 中是抓取不到页面通过 Ajax 获取到的内容。
 
 
 ## SSR(Server-Side Rendering) 服务器端渲染 
@@ -197,23 +204,21 @@ MVVM优点:
 
 可以将SPA应用打包到服务器上，在服务器上渲染出HTML，发送到浏览器，这样的HTML页面还不具备交互能力，所以还需要与SPA框架配合，在浏览器上“混合”成可交互的应用程序。所以，只要能合理地运用SSR技术，不仅能一定程度上解决首屏慢的问题，还能获得更好的SEO。
 
-* SSR的优点
->
-    更利于首屏渲染，更快的响应时间，直接由服务端渲染好页面直接返回显示，无需等待下载 js 文件及再去渲染。
+SSR的优点
+* 更利于首屏渲染，更快的响应时间，直接由服务端渲染好页面直接返回显示，无需等待下载 js 文件及再去渲染。
 
-    更好的SEO，我们可以将SEO的关键信息直接在后台就渲染成HTML，而保证搜索引擎的爬虫都能爬取到关键数据。
+* 更好的SEO，我们可以将SEO的关键信息直接在后台就渲染成HTML，而保证搜索引擎的爬虫都能爬取到关键数据。
 
-* SSR缺点
->
-    服务器压力大，相对于仅仅需要提供静态文件的服务器，SSR中使用的渲染程序自然会占用更多的CPU和内存资源
+SSR缺点
+* 服务器压力大，相对于仅仅需要提供静态文件的服务器，SSR中使用的渲染程序自然会占用更多的CPU和内存资源
 
-    一些常用的浏览器API可能无法正常使用，比如window、docment和alert等，如果使用的话需要对运行的环境加以判断
+* 一些常用的浏览器API可能无法正常使用，比如window、docment和alert等，如果使用的话需要对运行的环境加以判断
 
-    服务端渲染只支持 beforCreate 和 created 两个钩子函数
+* 服务端渲染只支持 beforCreate 和 created 两个钩子函数
 
-    开发调试会有一些麻烦，因为涉及了浏览器及服务器，对于SPA的一些组件的生命周期的管理会变得复杂
+* 开发调试会有一些麻烦，因为涉及了浏览器及服务器，对于SPA的一些组件的生命周期的管理会变得复杂
 
-    可能会由于某些因素导致服务器端渲染的结果与浏览器端的结果不一致
+* 可能会由于某些因素导致服务器端渲染的结果与浏览器端的结果不一致
 
 * SSR常用框架  
 [Vue.js 的Nuxt](https://nuxtjs.org/guide/installation)  
@@ -228,7 +233,10 @@ SEO是一种通过了解搜索引擎的运作规则（如何抓取网站页面�
 
 客户端渲染会等待JS下载，解析完之后再向服务器请求数据，等待过程中是什么也没有的，所以会出现首屏白页的情况
 
+服务端渲染
 ![服务端渲染](./img/Vue/服务端渲染.png) 
+
+客户端渲染
 ![客户端渲染](./img/Vue/客户端渲染.png)
 
 
@@ -301,8 +309,7 @@ btn.addEventListener("click",function(){
 
 * errorCaptured： 当捕获一个来自子孙组件的错误时被调用
 
-
-## 生命周期的一些使用方法：
+## 生命周期的一些操作：
 
 * beforecreate: 可以在这加个loading事件，在加载实例时触发  
 
@@ -338,8 +345,6 @@ beforeUpdate -> updated ->
 activated -> deactivate ->  
 beforeDestroy -> destroyed
 ```
-
-
 
 ## 父子组件生命周期调用顺序？
 
@@ -379,11 +384,12 @@ Vue的事件分为2种，一种是原生事件绑定，还有一种是组件的�
 [响应式原理](/details/Vue/Vue2-Source/响应式原理.md)
 
 # <a  name="v-model原理">v-model原理</a>[![bakTop](./img/backward.png)](#top)
-在 vue 项目中主要使用 v-model 指令在表单 input、textarea、select 等元素上创建双向数据绑定，我们知道 v-model 本质上不过是语法糖，v-model 在内部为不同的输入元素使用不同的属性并抛出不同的事件：
+在 vue 项目中主要使用 v-model 指令在表单 input、textarea、select 等元素上创建双向数据绑定，
+v-model 本质上不过是语法糖，v-model 在内部为不同的输入元素使用不同的属性并抛出不同的事件：
 
-text 和 textarea 元素使用 value 属性和 input 事件；
-checkbox 和 radio 使用 checked 属性和 change 事件；
-select 字段将 value 作为 prop 并将 change 作为事件。
+* input 和 textarea 元素使用 value 属性和 input 事件；
+* checkbox 和 radio 使用 checked 属性和 change 事件；
+* select 字段将 value 作为 prop 并将 change 作为事件。
 
 以 input  表单元素为例：
 ```html
@@ -393,25 +399,34 @@ select 字段将 value 作为 prop 并将 change 作为事件。
 ```
 
 如果在自定义组件中，v-model 默认会利用名为 value 的 prop 和名为 input 的事件，如下所示
+
 ```html
-父组件：
+点击 ModelChild 后，其值会更新为 '我点了一下'
+
+<!-- 父组件： -->
 <ModelChild v-model="message"></ModelChild>
 
-子组件：
-<div>{{value}}</div>
+<!-- 子组件： -->
+<template>
+  <div @click="click">
+    {{value}}
+  </div>
+</template>
 
-props:{
+<script>
+  export default {
+    props:{
     value: String
 },
-methods: {
-  test1(){
-     this.$emit('input', '小红')
+  methods: {
+    click(){
+      this.$emit('input', '我点了一下')
+    },
   },
-},
+};
+</script>
 ```
 [Vue开发技巧+性能优化#自定义组件双向绑定](/details/Vue/Vue开发技巧+性能优化.md/#自定义组件双向绑定)
-
-
 
 # <a name="单向数据流">单向数据流</a>[![bakTop](./img/backward.png)](#top)  
 父组件可以向子组件传递数据，但是子组件不能直接修改父组件的状态。  
@@ -420,24 +435,24 @@ methods: {
 如所有的 prop 都使得其父子 prop 之间形成了一个单向下行绑定  
 当你想要在子组件去修改 props 时，两种情况
 * prop 用来传递一个初始值, 定义一个 data 属性，并用 prop 的值初始化它。
-```js
-props: ['size'],
-data: function () {
-  return {
-    counter: this.size
+  ```js
+  props: ['size'],
+  data: function () {
+    return {
+      counter: this.size
+    }
   }
-}
-```
+  ```
 
 * prop 以一种原始的值传入且需要进行转换,定义一个计算属性，处理 prop 的值并返回。
-```js
-props: ['size'],
-computed: {
-  normalizedSize: function () {
-    return this.size.trim().toLowerCase()
+  ```js
+  props: ['size'],
+  computed: {
+    normalizedSize: function () {
+      return this.size.trim().toLowerCase()
+    }
   }
-}
-```
+  ```
 
 # <a name="computed watch methods">computed watch methods用法，区别</a>[![bakTop](./img/backward.png)](#top)  
 [computed和watch的细节全面分析](https://segmentfault.com/a/1190000012948175)
@@ -456,7 +471,7 @@ computed: {
 
 * 当需要进行数值计算，并且依赖于其它数据时，应该使用 computed，可以利用 computed 的缓存特性，  
 * 数据变化的同时进行异步操作或者是比较大的开销，那么watch为最佳选择  
-* Computed本质是一个具备缓存的watcher,内部实现了一个惰性的 watcher
+* computed本质是一个具备缓存的watcher,内部实现了一个惰性的 watcher
 
 ## 基本使用：
 ```js
@@ -543,9 +558,9 @@ export default {
       }
   },
   watch: {
-    name: [
+    name: [ // name改变时，执行了三个方法
       'sayName1',
-      function(newVal, oldVal) {
+      function(newVal, oldVal) { //
         console.log(newVal, oldVal);
         this.sayName2()
       },
@@ -572,7 +587,7 @@ export default {
 }
 </script>
 ```
-`注意，不应该使用箭头函数来定义 watche 函数 (例如 searchQuery: newValue => this.updateAutocomplete(newValue))。理由是箭头函数绑定了父级作用域的上下文，所以 this 将不会按照期望指向 Vue 实例，`
+`注意，不应该使用箭头函数来定义 watch 函数。理由是箭头函数绑定了父级作用域的上下文，所以 this 将不会按照期望指向 Vue 实例，`
 
 ###  卸载watch
 ```js
@@ -599,13 +614,12 @@ export default {
 }
 ```
 
-
-# <a name="解决对象新增属性不能响应的问题">vm.$set() 解决对象新增属性不能响应的问题</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="解决对象新增属性不能响应的问题">$set() 解决对象新增属性不能响应的问题</a>[![bakTop](./img/backward.png)](#top)  
 [Vue文档-深入响应式原理](https://cn.vuejs.org/v2/guide/reactivity.html)
 
 在实例初始化的时候，遍历data里所有的属性，并使用 Object.defineProperty 把这些属性全部转为 getter/setter。  
 对于已经创建的实例，Vue 不允许动态添加根级别的响应式属性  
-但是，可以使用 Vue.set (object, propertyName, value)方法向嵌套对象添加响应式属性
+但是，可以使用 Vue.set(object, propertyName, value)方法向嵌套对象添加响应式属性
 
 示例：
 ```vue
@@ -667,6 +681,8 @@ sort()
 reverse()
 ```
 
+[源码解析](/details/Vue/Vue2-Source/数组方法劫持重写.md)
+
 ### Vue 不能检测以下数组的变动
 1. 当你利用索引直接设置一个数组项时，例如：vm.items[indexOfItem] = newValue  
 
@@ -697,8 +713,6 @@ vm.items.splice(indexOfItem, 1, newValue)
 vm.items.splice(newLength)
 ```
 
-[源码解析](/details/Vue/Vue2-Source/数组方法劫持重写.md)
-
 # <a name="组件中data为什么是一个函数">为什么组件中的 data 必须是一个函数，然后 return 一个对象，而 new Vue 实例里，data 可以直接是一个对象？</a>[![bakTop](./img/backward.png)](#top)  
 [组件中的data为什么是函数](https://juejin.im/post/5e8dd5266fb9a03c703fb168#heading-9)
 
@@ -712,6 +726,7 @@ vm.items.splice(newLength)
 为了保证组件的数据独立性要求每个组件必须通过 data 函数返回一个对象作为组件的状态。
 
 而 new Vue 的实例，是不会被复用的，因此不存在引用对象的问题。
+
 
 # <a name="修饰符">修饰符</a>[![bakTop](./img/backward.png)](#top)  
 [事件修饰符](https://cn.vuejs.org/v2/guide/events.html#%E4%BA%8B%E4%BB%B6%E4%BF%AE%E9%A5%B0%E7%AC%A6)
@@ -1229,7 +1244,7 @@ Vue.directive('my-directive', {
 * oldVnode：上一个虚拟节点，仅在 update 和 componentUpdated 钩子中可用。
 
 
-# <a name="Vue的数据为什么频繁变化但只会更新一次">Vue的数据为什么频繁变化但只会更新一次</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="Vue的数据为什么频繁变化但只会更新一次">Vue采用异步渲染:Vue的数据为什么频繁变化但只会更新一次</a>[![bakTop](./img/backward.png)](#top)  
 Vue 异步执行 DOM 更新。Vue在观察到数据变化时并不是直接更新DOM，而是开启一个队列，并缓冲在同一事件循环中发生的所有数据改变。在缓冲时会去除重复数据，从而避免不必要的计算和DOM操作。然后，在下一个事件循环tick中，Vue刷新队列并执行实际工作。
 
 由于VUE的数据驱动视图更新是异步的，即修改数据的当下，视图不会立刻更新，而是等同一事件循环中的所有数据变化完成之后，再统一进行视图更新。在同一事件循环中的数据变化后，DOM完成更新，立即执行nextTick(callback)内的回调。
@@ -2006,12 +2021,14 @@ module.exports = {
     port: 8080, 
     https: false, 
     hotOnly: false,
-    
     proxy: { // 代理
       '/api': {
         target: '要跨域的域名',
-        ws: true,
-        changeOrigin: true
+        ws: true, // socket
+        changeOrigin: true, // 是否改变域名
+         pathRewrite: {
+          "/api": '' // 路径替换
+        }
       },
     },
   }  
@@ -2291,3 +2308,8 @@ npm run serve
 删除 HelloWorld.vue 文件 <script>里的内容（这是 v2的ts写法）
 
 ```
+
+# Vue 自动化部署打包上线
+https://juejin.im/post/6844904185876447245
+
+https://segmentfault.com/a/1190000018729701

@@ -1,4 +1,29 @@
 * <a href="#vue项目性能优化">Vue开发技巧+性能优化</a>
+  * <a href="#v-if和v-show的区别">v-if和v-show的区别</a>
+  * <a href="#v-for遍历避免同时使用v-if">v-for遍历避免同时使用v-if"</a>
+  * <a href="#使用render函数优化代码">使用render函数优化代码</a>
+  * <a href="#自定义组件双向绑定">v-model,model,.sync选项实现自定义组件双向绑定</a>
+  * <a href="#动态组件">动态组件</a>
+  * <a href="#异步组件">异步组件</a>
+  * <a href="#递归组件">递归组件</a>
+  * <a href="#函数式组件">函数式组件</a>
+  * <a href="#批量注册全局组件">批量注册全局组件</a>
+  * <a href="#批量注册全局filter">批量注册全局filter</a>
+* <a href="#自定义全局loading">自定义全局loading</a>
+* <a href="#SVG封装">SVG封装</a>
+* <a href="#图片懒加载">图片懒加载</a>
+* <a href="#路由参数解耦">路由参数解耦</a>
+* <a href="#多个路由共用一个组件操作">  多个路由共用一个组件,组件如何重新渲染</a>
+* <a href="#监听组件的生命周期"> 监听组件的生命周期@hook</a>
+* <a href="#事件的销毁"> 事件的销毁 $once('hook:beforeDestroy')</a>
+* <a href="#debounce使用">debounce使用</a>
+* <a href="#长列表性能优化">长列表性能优化</a>
+* <a href="#优化无限列表性能">优化无限列表性能</a>
+* <a href="#全局引入less变量">全局引入less变量</a>
+* <a href="#CDN引入">CDN引入</a>
+* <a href="#骨架屏">骨架屏</a>
+* <a href="#Webpack优化">Webpack优化</a>
+* <a href="#报错">报错</a>
 
 
 # <a name="vue项目性能优化">Vue开发技巧 + 性能优化</a>[![bakTop](/img/backward.png)](#top)  
@@ -14,7 +39,7 @@
 [Vue 项目性能优化 — 实践指南（网上最全 / 详细）](https://juejin.im/post/5d548b83f265da03ab42471d)
 
 ## <a name="v-if和v-show的区别">v-if和v-show的区别</a>[![bakTop](./img/backward.png)](#top)  
-[vue官网](https://cn.vuejs.org/v2/guide/conditional.html#v-if-vs-v-show)
+[vue官网解释](https://cn.vuejs.org/v2/guide/conditional.html#v-if-vs-v-show)
 
 ```html
 v-if 是“真正”的条件渲染，因为它会确保在切换过程中条件块内的事件监听器和子组件适当地被销毁和重建。
@@ -29,12 +54,26 @@ v-show 只是简单的display控制显隐藏，不管初始条件如何，元素
 v-if 有更高的切换开销，而 v-show 有更高的初始渲染开销。  
 因此，v-if适用于很少改变条件的场景，v-show适用于频繁切换条件的场景。
 
-## <a name="v-for 遍历避免同时使用 v-if">v-for 遍历避免同时使用 v-if</a>[![bakTop](./img/backward.png)](#top)  
-[vue官网](https://cn.vuejs.org/v2/guide/conditional.html#v-if-%E4%B8%8E-v-for-%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8)
+## <a name="v-for遍历避免同时使用v-if">v-for遍历避免同时使用v-if"</a>[![bakTop](./img/backward.png)](#top)  
+[vue官网解释](https://cn.vuejs.org/v2/guide/conditional.html#v-if-%E4%B8%8E-v-for-%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8)
 
 [风格指南-避免 v-if 和 v-for 用在一起](https://cn.vuejs.org/v2/style-guide/#%E9%81%BF%E5%85%8D-v-if-%E5%92%8C-v-for-%E7%94%A8%E5%9C%A8%E4%B8%80%E8%B5%B7%E5%BF%85%E8%A6%81)
 
 v-for 具有比 v-if 更高的优先级; 
+
+如下：即使 user.isActive 为 false，列表依旧渲染，造成性能浪费
+
+不推荐：v-for,v-if 同时使用 
+```html
+<ul>
+  <li
+    v-for="user in users"
+    v-if="user.isActive"
+    :key="user.id">
+    {{ user.name }}
+  </li>
+</ul>
+```
 
 推荐：
 ```html
@@ -74,7 +113,7 @@ export default{
     }
   },
   computed: {
-    activeLists() {
+    activeLists() { // 过滤不渲染的列表
       return this.lists.filter((item) => {
         return item.isActive
       })
@@ -84,17 +123,65 @@ export default{
 </script>
 ```
 
-不推荐：v-for,v-if 同时使用 
+## <a name="使用render函数优化代码">render函数优化代码</a>[![bakTop](/img/backward.png)](#top)  
+[渲染函数 & JSX-vue官网](https://cn.vuejs.org/v2/guide/render-function.html)
+场景:有些代码在 template 里面写会重复很多,可使用 render 函数
 ```html
-<ul>
-  <li
-    v-for="user in users"
-    v-if="user.isActive"
-    :key="user.id">
-    {{ user.name }}
-  </li>
-</ul>
+// 初级
+<template>
+ <div>
+    <h1 v-if="level == 1"><slot></slot></h1>
+    <h2 v-if="level == 2"><slot></slot></h2>
+    <h3 v-if="level == 3"><slot></slot></h3>
+    <h4 v-if="level == 4"><slot></slot></h4>
+    <h5 v-if="level == 5"><slot></slot></h5>
+    <h6 v-if="level == 6"><slot></slot></h6>
+  </div>
+</template>
+
+// 优化版,利用 render 函数减小了代码重复率
+<template>
+  <div>
+    <child :level="1">我是h1</child>
+    <child :level="2">我是h2</child>
+  </div>
+</template>
+<script>
+  export default {
+    components: {
+      child: ()=> import('./child.vue')
+    },
+  }
+</script>
+
+//child.vue
+<script>
+  export default {
+    props: {
+      level: {
+        require: true,
+        type: Number,
+      }
+    },
+    render(createElement) {
+      return createElement(
+        'h' + this.level,  // 标签名称
+        this.$slots.default // 子节点数组
+      );
+    }
+  };
+</script>
 ```
+
+template和render函数的区别：
+* template适合简单的组件封装，render函数适合复杂的组件封装
+* template理解起来相对简单，但灵活性不高，性能低，而render灵活性较高，对使用者要求亦高
+* template最终会解析为render函数
+* render函数渲染没有编译过程，相当于把代码直接给程序，所以容易出现错误，对使用者要求高
+* render函数较template优先级别高
+
+[详情](https://github.com/vuejs/vue/blob/dev/src/platforms/web/entry-runtime-with-compiler.js#L34-L81)
+
 
 ## <a name="自定义组件双向绑定">v-model,model,.sync选项实现自定义组件双向绑定</a>[![bakTop](/img/backward.png)](#top)
 [Vue中从v-model，model，.sync到双向数据传递，再到双向数据绑定](https://blog.csdn.net/Qin_Shuo/article/details/82693919)
@@ -151,7 +238,6 @@ export default {
 ```html
 <model-input v-model="val" />
 <input  v-model="val">
-
 ```
 
 子组件
@@ -243,7 +329,8 @@ export default {
 
 child.vue
 ```html
-export defalut {
+<script>
+export default {
   props: {
     title: String  
   },
@@ -253,11 +340,14 @@ export defalut {
     }
   }
 }
-
+</script>
 ```
 parent.vue:
 ```html
+<template>
 <child :title="title" @change-title="changeTitle"></child>
+</template>
+<script>
 export default {
   data(){
     return {
@@ -270,7 +360,7 @@ export default {
     }
   }
 }
-
+</script>
 ```
 
 优雅写法 .sync
@@ -294,64 +384,6 @@ parent.vue:
 <child :title.sync="title"></child>
 ```
 
-## <a name="render函数">使用render函数 优化代码</a>[![bakTop](/img/backward.png)](#top)  
-[渲染函数 & JSX-vue官网](https://cn.vuejs.org/v2/guide/render-function.html)
-场景:有些代码在 template 里面写会重复很多,可使用 render 函数
-```html
-// 初级
-<template>
- <div>
-    <h1 v-if="level == 1"><slot></slot></h1>
-    <h2 v-if="level == 2"><slot></slot></h2>
-    <h3 v-if="level == 3"><slot></slot></h3>
-    <h4 v-if="level == 4"><slot></slot></h4>
-    <h5 v-if="level == 5"><slot></slot></h5>
-    <h6 v-if="level == 6"><slot></slot></h6>
-  </div>
-</template>
-
-// 优化版,利用 render 函数减小了代码重复率
-<template>
-  <div>
-    <child :level="1">我是h1</child>
-    <child :level="2">我是h2</child>
-  </div>
-</template>
-<script>
-  export default {
-    components: {
-      child: ()=> import('./child.vue')
-    },
-  }
-</script>
-
-//child.vue
-<script>
-  export default {
-    props: {
-      level: {
-        require: true,
-        type: Number,
-      }
-    },
-    render(createElement) {
-      return createElement(
-        'h' + this.level,  // 标签名称
-        this.$slots.default // 子节点数组
-      );
-    }
-  };
-</script>
-```
-
-template和render函数的区别：
-* template适合简单的组件封装，render函数适合复杂的组件封装
-* template理解起来相对简单，但灵活性不高，性能低，而render灵活性较高，对使用者要求亦高
-* template最终会解析为render函数
-* render函数渲染没有编译过程，相当于把代码直接给程序，所以容易出现错误，对使用者要求高
-* render函数较template优先级别高
-
-[详情](https://github.com/vuejs/vue/blob/dev/src/platforms/web/entry-runtime-with-compiler.js#L34-L81)
 
 ## <a name="动态组件">动态组件</a>[![bakTop](/img/backward.png)](#top)
 [动态组件](https://cn.vuejs.org/v2/guide/components.html#%E5%8A%A8%E6%80%81%E7%BB%84%E4%BB%B6)
@@ -447,14 +479,12 @@ template和render函数的区别：
       // 如果是链接，把这些属性都绑定在 component 上
       tagProps () {
         let props = {};
-
         if (this.to) {
           props = {
             target: this.target,
             href: this.to
           }
         }
-
         return props;
       }
     }
@@ -473,13 +503,11 @@ template和render函数的区别：
 </template>
 <script>
   import iButton from '../components/a.vue';
-
   export default {
     components: { iButton }
   }
 </script>
 ```
-
 
 ## <a name="异步组件">异步组件,路由懒加载</a>[![bakTop](/img/backward.png)](#top)  
 [异步组件-vue官网](https://cn.vuejs.org/v2/guide/components-dynamic-async.html#%E5%BC%82%E6%AD%A5%E7%BB%84%E4%BB%B6)
@@ -639,6 +667,7 @@ export default {
 </script>
 ```
 
+递归的组件
 ```html
 <template>
   <li class="">
@@ -654,7 +683,7 @@ export default {
 </template>
 <script>
 export default {
-  name: 'list-item', //必要
+  name: 'list-item', //必要!!!
   props: {
     list: {
       type: Object,
@@ -693,7 +722,12 @@ export default {
 ```html
 <template functional>
   <div class="list">
-      <div class="item" v-for="item in props.list" :key="item.id" @click="props.itemClick(item)">
+      <div
+        class="item"
+        v-for="item in props.list"
+        :key="item.id"
+        @click="props.itemClick(item)"
+      >
           <p>{{item.title}}</p>
           <p>{{item.content}}</p>
       </div>
@@ -744,14 +778,16 @@ export default {
   >arg3 - 匹配文件的正则  
 
 
-globalComponent.js  
+installGlobalComponent.js  
 ```js
 export default {
   install(Vue) {
     // 批量注册公用组件
     const components = require.context('@/components/common', false, /\.vue$/)
     components.keys().forEach(path => {
-      const fileName = path.replace(/(.*\/)*([^.]+).*/ig, "$2"); // 获取组件文件名
+      // console.log(path); // ./xxx.vue
+      // const fileName = path.replace(/(.*\/)*([^.]+).*/ig, "$2"); // 获取组件文件名
+      const fileName = path.replace(/(.*\/)*([^.]+)\.vue/ig, "$2"); // 获取组件文件名
       Vue.component(fileName, components(path).default || components(path)) // 动态注册该目录下的所有.vue文件
     })
   }
@@ -760,8 +796,8 @@ export default {
 
 main.js
 ```js
-import globalComponent from '@/lib/globalComponent.js'
-Vue.use(globalComponent)
+import installGlobalComponent from '@/lib/installGlobalComponent.js'
+Vue.use(installGlobalComponent)
 ```
 
 ## <a name="批量注册全局filter">批量注册全局filter</a>[![bakTop](/img/backward.png)](#top)  
@@ -789,220 +825,41 @@ Vue.use(filters)
 ```
 
 ## <a name="自定义全局loading">自定义 loading 组件|指令</a>[![bakTop](/img/backward.png)](#top) 
-[实战技巧，Vue原来还可以这样写](https://juejin.im/post/5eef7799f265da02cd3b82fe#heading-6)
+[loading组件-指令封装](./loading组件-指令封装.md)
 
-#### 自定义loading组件
-用Vue.extend + 单例模式去实现一个loading
-
-components/loading/index.vue
-```html
-<template>
-  <transition name="custom-loading-fade">
-    <!--loading遮罩-->
-    <div v-show="visible" class="custom-loading-mask">
-      <!--loading内容-->
-      <div class="custom-loading-box">
-        <div class="loading"><svg-icon name="loading" :size="30" color="#fff"></svg-icon></div>
-        <p class="custom-loading-text">{{ text }}</p>
-      </div>
-    </div>
-  </transition>
-</template>
-<script>
-export default {
-  data() {
-    return {
-      text: '',
-      visible: false
-    }
-  }
-}
-
-</script>
-<style lang="less">
-.custom-loading{
-  &-mask{
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    z-index: 9999;
-    background-color: rgba(0, 0, 0, 0.3);
-  }
-  &-box{
-    text-align: center;
-    margin: auto;
-    color: #fff;
-    p{margin-top: 10px;}
-    .loading{
-      animation: loading-rotate 0.6s linear infinite;
-    }
-  }
-}
-@keyframes loading-rotate {
-  0% {
-    transform:  rotate(0);
-  }
-  100% {
-    transform:  rotate(1turn);
-  }
-}
-</style>
-```
-
-components/loading/index.js
-```js
-import Vue from 'vue'
-import LoadingComponent from './index.vue'
-
-// 通过Vue.extend将组件包装成一个子类
-const LoadingConstructor = Vue.extend(LoadingComponent)
-
-let loading = undefined
-
-LoadingConstructor.prototype.close = function() {
-  // 如果loading 有引用，则去掉引用
-  if (loading) {
-    loading = undefined
-  }
-  // 先将组件隐藏
-  this.visible = false
-  // 延迟300毫秒，等待loading关闭动画执行完之后销毁组件
-  setTimeout(() => {
-    // 移除挂载的dom元素
-    if (this.$el && this.$el.parentNode) {
-      this.$el.parentNode.removeChild(this.$el)
-    }
-    // 调用组件的$destroy方法进行组件销毁
-    this.$destroy()
-  }, 300)
-}
-
-const Loading = (options = {}) => {
-  // 如果组件已渲染，则返回即可
-  if (loading) {
-    return loading
-  }
-  // 要挂载的元素
-  const parent = document.body
-  // 组件属性
-  const opts = {
-    text: '加载中。。。',
-    ...options
-  }
-  // 通过构造函数初始化组件 相当于 new Vue()
-  const instance = new LoadingConstructor({
-    el: document.createElement('div'),
-    data: opts
-  })
-  // 将loading元素挂在到parent上面
-  parent.appendChild(instance.$el)
-  // 显示loading
-  Vue.nextTick(() => {
-    instance.visible = true
-  })
-  // 将组件实例赋值给loading
-  loading = instance
-  return instance
-}
-
-// 挂载在Vue.prototype
-Vue.prototype.$loading = Loading
-
-//导出组件
-// export default Loading
-```
-
-main.js
-```js
-import '@/components/loading/index.js'
-```
-
-使用
-```js
-const loading = this.$loading()
-const loading1 = this.$loading()
-setTimeout(() => {
-  loading.close()
-}, 1000 * 3)
-
-// 调用了两次loading,但是只出现了一个，而且我只关闭了loading，但是loading1也被关闭了
-```
-
-#### 自定义loading指令
-
-components/loading/index.vue
-```html
-同上
-```
-
-components/loading/directive.js
-```js
-import Vue from 'vue'
-import LoadingComponent from './index.vue'
-// 使用 Vue.extend构造组件子类
-const LoadingConstructor = Vue.extend(LoadingComponent)
-
-// 定义一个名为loading的指令
-export default{
-  install(){
-    Vue.directive('loading', {
-      /**
-       * 只调用一次，在指令第一次绑定到元素时调用，可以在这里做一些初始化的设置
-       * @param {*} el 指令要绑定的元素
-       * @param {*} binding 指令传入的信息，包括 {name:'指令名称', value: '指令绑定的值',arg: '指令参数 v-bind:text 对应 text'}
-       */
-      bind(el, binding) {
-        const instance = new LoadingConstructor({
-          el: document.createElement('div'),
-          data: {
-            text: '加载中。。。',
-          }
-        })
-        el.appendChild(instance.$el)
-        el.instance = instance
-        Vue.nextTick(() => {
-          el.instance.visible = binding.value
-        })
-      },
-      /**
-       * 所在组件的 VNode 更新时调用
-       * @param {*} el
-       * @param {*} binding
-       */
-      update(el, binding) {
-        // 通过对比值的变化判断loading是否显示
-        if (binding.oldValue !== binding.value) {
-          el.instance.visible = binding.value
-        }
-      },
-      /**
-       * 只调用一次，在 指令与元素解绑时调用
-       * @param {*} el
-       */
-      unbind(el) {
-        const mask = el.instance.$el
-        if (mask.parentNode) {
-          mask.parentNode.removeChild(mask)
-        }
-        el.instance.$destroy()
-        el.instance = undefined
-      }
-    })
-  }
-}
-```
-
-main.js
-```js
-import loading from '@/components/loading/directive.js'
-Vue.use(loading)
-```
 
 ## <a name="SVG封装">SVG封装</a>[![bakTop](/img/backward.png)](#top) 
 [SVG封装](./SVG封装.md)
+
+## <a name="图片懒加载">图片懒加载</a>[![bakTop](/img/backward.png)](#top) 
+```js
+//安装插件
+npm i vue-lazyload -D
+
+//man.js 中引入并使用
+import VueLazyload from 'vue-lazyload'
+
+//直接使用
+Vue.use(VueLazyload)
+
+//或者添加自定义选项
+Vue.use(VueLazyload, {
+  preLoad: 1.3,
+  error: 'dist/error.png',
+  loading: 'dist/loading.gif',
+  attempt: 1
+})
+
+//将 img 标签的 src 属性直接改为 v-lazy 
+<img v-lazy="/static/img/1.png" >
+```
+// 自 Chrome 76 起，将原生支持图片的延迟加载，在代码中编写 \<img loading="lazy">，即支持滚动到视口再加载图片。
+判断当前浏览器是否支持loading="lazy"
+* 'loading' in document.createElement('img');
+* 'loading' in new Image();
+* 'loading' in HTMLImageElement.prototype;
+
+[图片预加载_懒加载](/details/图片预加载_懒加载.md)
 
 ## <a name="路由参数解耦">路由参数解耦 props</a>[![bakTop](/img/backward.png)](#top)  
 [路由组件传参](https://router.vuejs.org/zh/guide/essentials/passing-props.html#%E5%B8%83%E5%B0%94%E6%A8%A1%E5%BC%8F)
@@ -1018,54 +875,60 @@ export default {
 }
 ```
 
-正确的做法是通过 props 解耦
+更好的做法是通过 props 解耦
 ```js
+//布尔模式
 const router = new VueRouter({
-  routes: [{
-    path: '/user/:id',
-    component: User,
-    //布尔模式
-    props: true
-
-    //对象模式
-    /* props: {
-      newsletterPopup: false
-    } */
-
-    //函数模式
-    /* props: (route) => ({
-      id: route.params.id
-    }) */
-  }]
+  routes: [
+    {
+      path: '/user/:id',
+      component: User,
+      props: true
+    },
+    // 对于包含命名视图的路由，你必须分别为每个命名视图添加 `props` 选项：
+    // {
+    //   path: '/user/:id',
+    //   components: { default: User, sidebar: Sidebar },
+    //   props: { default: true, sidebar: false }
+    // }
+  ]
 })
 
-将路由的 props 属性设置为 true 后，组件内可通过 props 接收到 params 参数
+//对象模式
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/promotion/from-newsletter',
+      component: Promotion,
+      props: { newsletterPopup: false }
+    }
+  ]
+})
 
+
+//函数模式
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/user',
+      component: User,
+      props: (route) => ({ query: route.query.id })
+    }
+  ]
+})
+```
+
+// 将路由的 props 属性设置为 true 后，组件内可通过 props 接收到 params 参数
+```js
 export default {
   props: ['id'],
-  methods: {
-    getParamsId() {
-      return this.id
-    }
+  created() {
+    console.log(this.id)
   }
 }
 ```
 
 
-
-## <a name="debounce使用">debounce使用 beforeDestroy或$once</a>[![bakTop](/img/backward.png)](#top) 
-当一个按钮多次点击时会导致多次触发事件，可以结合场景是否立即执行immediate
-
-```js
-import {debounce} from 'lodash'
-
-methods：{
-  remoteMethod: debounce(function (query) {
-    // to do ...
-    // this 的指向没有问题
-  }, 200),
-}
-```
 
 ##  <a name="多个路由共用一个组件操作">多个路由共用一个组件,组件如何重新渲染</a>[![bakTop](/img/backward.png)](#top)  
 * router-view上加上一个唯一的key
@@ -1102,8 +965,7 @@ beforeRouteUpdate (to, from, next) {
 
 父组件监听到子组件挂载 mounted就做一些逻辑处理
 
-常规的写法可能如下：
-
+常规的写法：
 ```js
 // Parent.vue
 <Child @mounted="doSomething"/>
@@ -1114,7 +976,7 @@ mounted() {
 }
 ```
 
-通过 @hook来监听，子组件不需要任何处理，只需要在父组件引用的时候即可：
+更好的方法：通过 @hook来监听，子组件不需要任何处理，只需要在父组件引用的时候即可：
 ```js
 //  Parent.vue
 <Child @hook:mounted="doSomething" ></Child>
@@ -1135,7 +997,7 @@ mounted(){
 
 
 
-## <a name="事件的销毁">事件的销毁 beforeDestroy, $once('hook:beforeDestroy')</a>[![bakTop](/img/backward.png)](#top) 
+## <a name="事件的销毁">事件的销毁 $once('hook:beforeDestroy')</a>[![bakTop](/img/backward.png)](#top) 
 在 js 内使用 定时器, addEventListener 等方式是不会自动销毁的 
 
 * beforeDestroy,destroyed周期清除
@@ -1172,7 +1034,68 @@ mounted() {
 [$once、$on、$off的使用](https://cn.vuejs.org/v2/guide/components-edge-cases.html#%E7%A8%8B%E5%BA%8F%E5%8C%96%E7%9A%84%E4%BA%8B%E4%BB%B6%E4%BE%A6%E5%90%AC%E5%99%A8)
 
 
+## <a name="debounce使用">debounce使用</a>[![bakTop](/img/backward.png)](#top) 
+当一个按钮多次点击时会导致多次触发事件，可以结合场景是否立即执行immediate
 
+```js
+import {debounce} from 'lodash'
+
+methods：{
+  resize: debounce(function (query) {
+    console.log('resize')
+  }, 200),
+}
+```
+
+[某些情况下使用 debounce 的坑](https://github.com/ywwhack/blog/issues/2)
+```html
+<template>
+  <div>
+    <v-chart></v-chart>
+    <v-chart></v-chart>
+  </div>
+</template>
+
+<script>
+import {debounce} from 'lodash'
+const VChart = {
+  template: '<span>chart</span>',
+  methods: {
+    resize: debounce(function () {
+      console.log('resize')
+    }, 1000)
+  },
+  mounted () {
+    window.addEventListener('resize', this.resize)
+    this.$once('hook:beforeDestroy', () => {
+      window.removeEventListener('resize', this.resize)
+    })
+  },
+}
+
+export default{
+  components: {
+    VChart
+  }
+}
+</script>
+```
+页面中有两个 Chart 组件，他们会监听 window.resize 事件，然后在控制台输出 "resize"。 
+但每次改变页面大小，控制台只输出了 1 次 "resize"
+
+为什么？
+resize方法定义在methods里，多个实例调用的都是同一个resize方法；
+因此当两个组件同时执行 resize 方法的时候，前者被 debounce 掉了，所以我们只看到输出了 1 次 "resize"。
+
+`解决：将 resize 方法独立出来；将 resize 设为data属性`
+
+```js
+mounted () {
+  this.resize = debounce(function () {
+    console.log('resize')
+  }, 1000)
+},
+```
 
 ## <a name="长列表性能优化">长列表性能优化 Object.freeze</a>[![bakTop](/img/backward.png)](#top) 
 
@@ -1200,32 +1123,6 @@ export default {
 开源项目 
 * [vue-virtual-scroll-list](https://github.com/tangbc/vue-virtual-scroll-list) 
 * [vue-virtual-scroller](https://github.com/Akryum/vue-virtual-scroller) 
-
-
-## <a name="图片资源懒加载">图片资源懒加载</a>[![bakTop](/img/backward.png)](#top) 
-
-```js
-//安装插件
-npm install vue-lazyload --save-dev
-
-//man.js 中引入并使用
-import VueLazyload from 'vue-lazyload'
-
-//直接使用
-Vue.use(VueLazyload)
-
-//或者添加自定义选项
-Vue.use(VueLazyload, {
-  preLoad: 1.3,
-  error: 'dist/error.png',
-  loading: 'dist/loading.gif',
-  attempt: 1
-})
-
-//将 img 标签的 src 属性直接改为 v-lazy 
-<img v-lazy="/static/img/1.png">
-```
-
 
 
 ## <a name="全局引入less变量">全局引入less变量</a>[![bakTop](/img/backward.png)](#top)  
@@ -1277,7 +1174,7 @@ configureWebpack: {
 },
 ```
 
-优化写法
+`优化写法`
 
 public/index.html添加
 ```html
@@ -1340,8 +1237,8 @@ module.exports = {
 骨架屏就是在页面数据尚未加载前先给用户展示出页面的大致结构，直到请求数据返回后再渲染页面，补充进需要显示的数据内容。常用于文章列表、动态列表页等相对比较规则的列表页面。
 <img src="../../img/skeleton.jpg">
 
+## <a name="Webpack优化">Webpack优化</a>[![bakTop](/img/backward.png)](#top) 
 
-## Webpack 层面的优化
 https://juejin.im/post/5d548b83f265da03ab42471d#heading-12
 
 ### webpack-bundle-analyzer 打包后模块大小分析
@@ -1451,8 +1348,8 @@ config.optimization.minimizer('terser').tap((args) => {
 })
 ```
 
-## 报错
-vue.runtime.esm.js?2b0e:619 [Vue warn]: You are using the runtime-only build of Vue where the template compiler is not available. Either pre-compile the templates into render functions, or use the compiler-included build.
+## <a name="报错">报错</a>[![bakTop](/img/backward.png)](#top) 
+####  You are using the runtime-only build of Vue where the template compiler is not available. Either pre-compile the templates into render functions, or use the compiler-included build.
 
 
 这里引用的是`vue.runtime.esm.js`，造成的不能正常运行，  
@@ -1469,3 +1366,41 @@ module.exports = {
   },
 }
 ```
+
+#### Error: Avoided redundant navigation to current location: xxx
+（Element导航栏重复点菜单报错）
+```js
+// 原因
+// 其原因在于Vue-router在3.1之后把$router.push()方法改为了Promise。所以假如没有回调函数，错误信息就会交给全局的路由错误处理，因此就会报上述的错误。
+
+// 解决：函数劫持，添加catch
+const originalPush = router.prototype.push
+router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+// 或者每次使用时添加catch，this.$router.push('/').catch(err => {err})
+```
+
+### eslint报错相关问题
+#### xxx is defined but never used eslint
+原因: 变量定义了，但没有被使用 
+
+解决方法:
+package.json
+```json
+"rules": {
+  "no-unused-vars": "off"
+}
+```
+
+#### 
+原因: return，throw，break，和continue语句无条件退出的代码块，之后他们的任何语句不被执行。
+
+
+解决方法:
+
+package.json
+```json
+"rules": {
+  "no-unreachable": 0, 
+}

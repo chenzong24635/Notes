@@ -1,6 +1,8 @@
 # <a name="npm指令">npm指令</a>
 
 ``` js
+npm -v // npm版本
+
 npm init //在此目录生成package.json文件，
 >npm init -y // 添加-y | --yes 参数则默认所有配置为默认yes
 

@@ -317,7 +317,7 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 
 | | Chrome | Firefox | IE | Safari | Opera |
 :-:| :-:|:-:|:-:|:-:|:-:|
-| 渲染引擎(内核) | Blink | Gecko | Trident | Webkit | Blink(原Presto) |
+| 渲染引擎(内核) | Blink (原webkit) | Gecko | Trident | Webkit | Blink(原Presto) |
 | JS 引擎 | V8 | SpiderMonkey | Nitro | Chakra | V8 |
 | 私有化前缀 | -webkit- | -moz- | -ms- | -webkit- | -webkit- |
 

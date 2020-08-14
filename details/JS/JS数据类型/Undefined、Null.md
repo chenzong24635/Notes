@@ -37,26 +37,26 @@ null 用于对象 , undefined 用于变量，属性和方法。
 null表示准备用来保存对象，还没有真正保存对象的值。从逻辑角度看，null值表示一个空对象指针，意思是你定义了它,但它没有分配内存空间。
 
 ```js
-typeof null        // "object" ,null的类型是object
+typeof null        // "object"
 typeof undefined   // "undefined"
 
-null  == undefined // true
+null == undefined // true
 null === undefined // false
 
 undefined === undefined // true
 null === null // true
 
 !!undefined //false
-!null //false
+!!null //false
 Boolean(null) //false
 Boolean(undefined) //false
 
-1 + null // 1 //Number(null) -> 0
-1 + undefined  // NaN //Number(undefined) -> NaN
+1 + null // 1 //Number(null) --> 0
+1 + undefined  // NaN //Number(undefined) --> NaN
 ```
 
 如果我们想测试对象是否为空，在对象还没定义时将会抛出一个错误。
-要先使用 typeof 来检测对象是否已定义：if (typeof obj !== "undefined" && obj !== null) 
+要先检测对象是否已定义：if (typeof obj !== "undefined" && obj !== null) 
 
 
 ------

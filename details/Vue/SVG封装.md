@@ -3,13 +3,12 @@
 [svgo-优化 SVG 文件的 Node.js 工具](https://blog.csdn.net/qq_35366269/article/details/102716256)
 
 
-
 src文件夹下新增  
 ```js
-├── components    
+├── components
 |   |── SvgIcon  
 |   |   |── index.vue
-├── icons    
+├── icons
 |   |── svg //存放 .svg 文件  
 |   |── index.js //封装 svg文件夹的 .svg 文件 
 |   |── svgo.yml //svgo插件配置 

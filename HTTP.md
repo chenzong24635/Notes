@@ -176,7 +176,19 @@ HTTP1.1新增了五种请求方法：OPTIONS, PUT, DELETE, TRACE 和 CONNECT 方
 
 
 [GET和POST区别](https://zhuanlan.zhihu.com/p/22536382)
-![GET和POST区别](/img/getpost.png)
+<!-- ![GET和POST区别](/img/getpost.png) -->
+
+| |GET|POST
+|:--|:--|:--
+|浏览器后退/刷新|无害|会再次提交请求
+|收藏为书签|能 |否
+|缓存|能|否
+|编码类型|	application/x-www-form-urlencoded	|application/x-www-form-urlencoded 或 multipart/form-data。为二进制数据使用多重编码。
+|请求参数会被完整保留在浏览器历史记录|是|否
+|数据长度大小|2k|无限制
+|参数的数据类型|只允许ASCII字符|无限制，也允许二进制数据
+|安全性|url明文传输|较GET安全，通过body传输
+|可见性	|数据在 URL 中对所有人都是可见的|	数据不会显示在 URL 中
 
 
 但是： 

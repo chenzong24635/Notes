@@ -1,4 +1,5 @@
-[官网-指南](https://www.webpackjs.com/guides/)
+[官网-中](https://www.webpackjs.com/guides/)
+[官网-英](https://webpack.js.org/guides/)
 
 [2020年了,再不会webpack敲得代码就不香了(近万字实战)](https://juejin.im/post/5de87444518825124c50cd36)
 
@@ -24,13 +25,16 @@ webpack默认支持JS模块和JSON模块
 支持CommonJS， ES moudule， AMD等模块类型
 
 
-# 安装命令
-* npm i -g webpack webpack-cli //全局安装webpack webpack-cli(使用 webpack 4+ 版本，你还需要安装 CLI) --不推荐
+# 指令
+* npm i -g webpack webpack-cli //全局安装webpack webpack-cli(使用 webpack 4+ 版本，你还需要安装 CLI) --`不推荐全局安装`
 * npm i -D webpack webpack-cli //安装到当前项目  
 * npm i -D webpack@\<version> //安装特点版本到当前项目  
 * npm i -D webpack@beta // 安装最新体验版本到当前项目  
 
-* webpack -v  //版本
+* npx webpack -v //查看版本
+* webpack -v  //查看版本
+* npm info webpack   // 查看webpack包版本
+
 
 
 # [建立项目](https://www.webpackjs.com/guides/getting-started/#%E5%9F%BA%E6%9C%AC%E5%AE%89%E8%A3%85)
@@ -43,17 +47,15 @@ npm i webpack webpack-cli -D // 安装webpack到当前项目
 
 npx webpack 运行
 
-# [核心概念](https://www.webpackjs.com/concepts/)
+# 核心概念
 * entry：配置入口文件的地址，可以是单一入口，也可以是多入口。
 * output：配置出口文件的地址，支持多出口配置。
-* Loader：处理那些非 JS 文件（webpack 自身只能解析 JS)
+* loader：处理那些非 JS 文件（webpack 自身只能解析 JS)
 * plugins：配置插件，根据你的需要配置不同功能的插件,用于生产模版和各项功能。
 * mode：模式，none(默认) | production(生产模式) | development(开发模式)
-  >mode: process.env.NODE_ENV
 
-[webpack.config.js 所有配置](https://webpack.js.org/configuration/devtool/)
+[webpack.config.js 所有配置](https://webpack.js.org/configuration/)
 
-在webpack.config.js配置
 ```js
 module.exports = {
   entry: {},// 入口文件的配置项
@@ -72,20 +74,21 @@ module.exports = {
 
 ### [entry 入口文件](https://webpack.js.org/configuration/entry-context/#entry)
 
-//单入口
+entry类型 string | object | array
 ```js
-entry: './src/main.js',
-相当于
-entry: {
-  main: './src/main.js'
-}
-```
-//多入口
-```js
+module.exports = {
+  //单入口
+  entry: "./app/entry",
+  entry: {
+    main: "./app/entry",
+  }
 
-entry: {
-  main: './src/main.js',
-  login: './src/login.js',
+  //多入口
+  entry: ["./app/entry1", "./app/entry2"],
+  entry: {
+    a: "./app/entry-a",
+    b: ["./app/entry-b1", "./app/entry-b2"]
+  },
 }
 ```
 
@@ -94,10 +97,18 @@ entry: {
 output: {
   filename: "bundle.js",//输出文件的名称
   // filename: 'js/[name].[hash:8].js',   //添加了hash值, 实现静态资源的长期缓存
-  path: path.resolve(__dirname, "dist")//输出文件目录，必须是绝对路径
+  // filename: "js/[chunkhash].js", // chunkhash 用于长效缓存
+
+  path: path.resolve(__dirname, "dist"),//输出文件目录，必须是绝对路径
+
+  publicPath: "/assets/", // 输出解析文件的目录，url 相对于 HTML 页面
+  // publicPath: "https://cdn.example.com/",
+
+  library: "MyLibrary", // 导出库(exported library)的名称
+  libraryTarget: "umd", // 导出库(exported library)的类型
 },
 
-//多入口的处理
+//多出口的处理
 output: {
   filename: "js/[name][chunkhash:8].js",//chunkhash，文件名称重复
   path: path.resolve(__dirname, "dist")
@@ -105,6 +116,7 @@ output: {
 ```
 
 ### [mode 当前的构建环境](https://webpack.js.org/configuration/mode/)
+mode:选择模式告诉webpack相应地使用其内置优化
 * production  生产环境 (默认值)--启动内置优化插件，自动优化打包结果，打包速度偏慢
 * development 开发环境--自动优化打包速度，添加一些调试过程中的辅助插件
 * none --运行最原始的打包，不做任何额外处理
@@ -119,8 +131,7 @@ module.exports = {
 npx webpack --mode=production
 ```
 
-### [resolve 配置如何解析模块](https://webpack.js.org/configuration/resolve/)
-resolve.modules 的默认值是［'node_modules'］，含义是先去当前目录的 node_modules 目录下去找我们想找的模块，如果没找到就去上一级目录 ../node_modules 中找，再没有就去 ../../node_modules 中找，以此类推。 这和 Node.js 的模块寻找机制很相似。
+### [resolve 解析模块](https://webpack.js.org/configuration/resolve/)
 
 ```js
 resolve: {
@@ -139,7 +150,7 @@ resolve: {
   extensions:['*','.js','.json','.vue'] // 默认['.js', '.json']
 }
 ```
-
+resolve.modules 的默认值是［'node_modules'］，含义是先去当前目录的 node_modules 目录下去找我们想找的模块，如果没找到就去上一级目录 ../node_modules 中找，再没有就去 ../../node_modules 中找，以此类推。 这和 Node.js 的模块寻找机制很相似。
 
 
 ### [externals 外部扩展](https://www.webpackjs.com/configuration/externals/)
@@ -179,25 +190,24 @@ console.log($);
 ### [devtool 代码映射](https://webpack.js.org/configuration/devtool/)
 源代码与打包后的代码的映射关系，通过sourceMap定位到源代码。
 
+devtool类型:string | false // 在development模式中，默认开启，
 
-在development模式中，默认开启，
-
-* none
-* eval:速度最快,使用eval包裹模块代码,
-* source-map： 生成 .map 文件
-* eval-cheap-source-map
-* cheap-module-source-map
-* ...
 
 ![soruce-map](/img/soruce-map.png)
 
 
-推荐使用：
-* devtool:"cheap-module-eval-source-map",// development 开发环境配置
-* devtool:"cheap-module-source-map", // production 生产模式配置
+Development推荐使用：
+* eval
+* eval-source-map
+* eval-cheap-source-map
+* eval-cheap-module-source-map
 
 
-
+Production推荐使用：
+* none
+* source-map
+* hidden-source-map
+* nosources-source-map
 
 ### module 模块
 模块，在 Webpack 一切皆模块，一个模块对应着一个文件。Webpack 会

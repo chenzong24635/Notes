@@ -357,6 +357,17 @@ npm i git //git安装
 
     保存即可。
 
+# <a name="在github上面的项目生成一个网址可以访问">在github上面的项目生成一个网址可以访问</a>
+Settings ->  Github Pages -> 
+
+![](/img/others/github-web1.png)
+
+保存后，多出了一个网址链接
+![](/img/others/github-web2.png)
+
+
+有时候点进去链接显示404,只需要手动在后面加上一个页面（index.html）就行了
+
 # <a name="其他">其他</a>
 github功能 
 * 文件查找: 按键盘'T'键激活文件查找器  

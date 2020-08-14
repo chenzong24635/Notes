@@ -1,27 +1,6 @@
 ## 从浏览器地址栏输入url到显示页面的步骤
-`浏览器工作原理`
-1. 用户界面 
-2. 网络 
-3. UI后端 
-4. 数据存储 
-5. 浏览器引擎 
-6. 渲染引擎 
-7. js解释器  
+[浏览器页面渲染](/details/面试题/浏览器页面渲染.md)
 
-浏览器解析过程：解析html以构建dom树->构建render树->布局render树->绘制render树
-
-
-`网页生成过程：`
-![render](/img/render.png)
-![render](/img/render1.png)
-
-1. HTML被HTML解析器解析成DOM树
-2. css则被css解析器解析成CSSOM树
-3. 结合DOM树和CSSOM树，生成一棵渲染树(Render Tree)
-4. 生成布局（flow），即将所有渲染树的所有节点进行平面合成
-5. 将布局绘制（paint）在屏幕上
-
-4、5是最耗时的部分，这两步合起来即 渲染。
 
 ###  简
 * 在浏览器地址栏输入URL

@@ -485,7 +485,11 @@ window.requestAnimationFrame(callback);
 
 优势：由系统决定回调函数的执行时机。60Hz 的刷新频率，那么每次刷新的间隔中会执行一次回调函数，不会引起丢帧，不会卡顿。
 
-平滑滚到头部
+
+与setTimeout动画对比的话，有以下几点优势
+
+当页面隐藏或者最小化时，setTimeout仍然在后台执行动画，此时页面不可见或者是不可用状态，动画刷新没有意义，而言浪费CPU。rAF不一样，当页面处理未激活的状态时，该页面的屏幕绘制任务也会被系统暂停，因此跟着系统步伐走的rAF也会停止渲染，当页面被激活时，动画就从上次停留的地方继续执行，有效节省了 CPU 开销。
+
 
 ```js
 const scrollToTop = () => {
@@ -495,10 +499,10 @@ const scrollToTop = () => {
     window.scrollTo(0, top - top / 8);
   }
 };
-```
-
 // 调用
 scrollToTop()
+```
+
 
 ## <a name="检查指定的元素在视口中是否可见">检查指定的元素在视口中是否可见</a>
 
@@ -2088,16 +2092,7 @@ https://www.jianshu.com/p/6c7d0b18d4ca
 
 [前端进阶系列](https://github.com/yygmind/blog)-木易杨
 
-###  为什么说script标签建议放在body下面？
-JS代码在加载完之后是立即执行的，且JS代码执行时会阻塞页面的渲染。
 
-###  为什么说script标签会阻塞页面的渲染呢？渲染线程和js引擎线程不是分开的吗？
-JS属于单线程，当我们在加载script标签内容的时候，渲染线程会被暂停，因为script标签里可能会操作DOM的，所以如果你加载script标签又同时渲染页面肯定就冲突了，因此说渲染线程(GUI)和js引擎线程互斥。
-
-### requestAnimationFrame
-
-### token会不会被伪造？
-### 前后端如何验证一个用户是否下线了
 
 ### 点击一个input依次触发的事件
 ```js

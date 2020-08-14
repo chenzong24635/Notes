@@ -7,16 +7,10 @@
   <summary>
   </summary>
 
-* <a href="#运算符优先级">运算符优先级</a>
-* <a href="#运算符">运算符</a>
-    * <a href="#加运算符">+运算符</a>
-    * <a href="#~运算符">~运算符</a>
-    * <a href="#比较运算符"><,>,<=,>=的比较规则</a>
-* <a href="#===、==、Object.is()判断">===、==、Object.is()判断</a>
-* <a href="#keyCode">keyCode:键盘按键键码</a>
 
 * <a href="#JS">**JS**</a>
 
+* <a href="#了解">了解</a>
 * <a href="#数据类型、内置对象">数据类型、内置对象</a>
 * <a href="#面向过程和面向对象">面向过程和面向对象</a>
 * <a href ="json jsonp">json jsonp</a>
@@ -59,7 +53,7 @@
 * <a href="#webWorker">webWorker</a>
 * <a href="#浏览器缓存">浏览器缓存</a>
 * <a href="#前端性能优化的方法">前端性能优化的方法</a>
-* <a href="#浏览器渲染">浏览器渲染</a>
+* <a href="#浏览器页面渲染">浏览器页面渲染</a>
 * <a href="#从浏览器地址栏输入url到显示页面的步骤">从浏览器地址栏输入url到显示页面的步骤</a>
 
 * <a href="#get与post区别">get与post区别</a>
@@ -71,135 +65,61 @@
 
 </details> 
 
-# <a name="运算符优先级">运算符优先级</a>
-![运算符优先级](img/运算符优先级.png)
-[MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence)
 
 #  <a name="运算符">运算符</a>
-##  <a name="加运算符">+运算符</a>
->
-    如果有操作数是对象，转换为原始值  
-    此时如果有一个操作数是字符串，其他的操作数都转换为字符串并执行连接  
-    否则：所有操作数都转换为数字并执行加
-
-##  <a name="~运算符">~运算符</a>
-~，被称为“按位不运算符”，~n等价于 - n - 1。//返回一个整数
->
-    ~15.5 // -16
-    ~'15.5' // -16
-    ~('daa') // -1
-    ~(NaN)  // -1
-
-~~n：可用于取整;
-~~n 等价于  - (- n - 1) - 1 = n + 1 - 1 = n
->
-
-    ~~15.5 // 15
-    ~~(NaN) // 0
-
-## <a name="比较运算符"><,>,<=,>=的比较规则</a>
-
-所有比较运算符都支持任意类型，但是比较只支持数字和字符串，所以需要执行必要的转换然后进行比较  
-转换规则如下:
->
-    如果操作数是对象，转换为原始值：如果valueOf方法返回原始值，则使用这个值，否则使用toString方法的结果，如果转换失败则报错  
-    经过必要的对象到原始值的转换后，如果两个操作数都是字符串，按照字母顺序进行比较（他们的16位unicode值的大小）  
-    否则，如果有一个操作数不是字符串，将两个操作数转换为数字进行比较
-
-# <a name="===、==、Object.is()判断">===、==、Object.is()判断</a>
-![===、==、Object.is()](/img/===.png)
-
-## ===运算符判断
-* 如果两个值不是相同类型，它们不相等
-* 如果两个值都是null或者都是undefined，它们相等
-* 如果两个值都是布尔类型true或者都是false，它们相等
-* 如果其中有一个是NaN，它们不相等
-* 如果都是数值型并且数值相等，他们相等， -0等于0(+0)
-* 如果他们都是字符串并且在相同位置包含相同的16位值，他它们相等；如果在长度或者* 容上不等，它们不相等；两个字符串显示结果相同但是编码不同==和===都认为他们不* 等
-* 如果他们指向相同对象、数组、函数，它们相等；如果指向不同对象，他们不相等
-    
-## ==运算符判断
-* 如果两个值类型相同，按照===比较方法进行比较
-* 如果类型不同，使用如下规则进行比较
-* 如果其中一个值是null，另一个是undefined，它们相等
-* 如果一个值是数字，另一个是字符串，将字符串转换为数字进行比较
-* 如果有布尔类型，将 true|false 转换为 1|0，然后用 == 规则继续比较
-* 如果其中有一个是NaN，它们不相等(```NaN == NaN ==> false```)
-* 如果一个值是对象，另一个是数字或字符串，将对象转换为原始值然后用 == 规则继续比较
-* 其他所有情况都认为不相等
-
-![==](/img/==.jpg)
-
-##  Object.is()
-为true的情况
-* 都是 undefined
-* 都是 null
-* 都是 true 或者都是 false
-* 都是完全相同的字符串，
-* 都是数字并且
-  * 都是正零，0 | +0 (Object.is(0,+0) ==>true)
-  * 都是负零 -0 (Object.is(0,-0) ==>false)
-  * 都是 NaN 
-  * 都是除零和 NaN 外的其它同一个数字
-* 都指向同一个对象
-  ```js
-  let a = {}
-  let b =a
-  Object.is(a,b) // true
-
-  Object.is({},{}) // false
-
-  ```
-
-
-这种相等性判断逻辑和传统的 == 运算不同，== 运算符会对它两边的操作数做隐式类型转换（如果它们类型不同），然后才进行相等性比较，（所以才会有类似 "" == false 等于 true 的现象），但 Object.is 不会做这种类型转换。
-
-这与 === 运算符的判定方式也不一样。=== 运算符（和== 运算符）将数字值 -0 和 +0 视为相等，并认为 Number.NaN 不等于 NaN。
-
+[运算符](\details\JS\运算符.md)
 
 #  <a name="keyCode">keyCode:键盘按键键码</a>
 ![keyCode](/img/keyCode.png)
 
 # <a name="JS">**JS**</a>
 
-JS的特点：无需编译、单线程、动态类型、弱类型、基于对象、事件驱动
-JS的组成：核心( ECMAScript) , 文档对象模型(DOM), 浏览器对象模型(BOM)
+## <a name="了解">了解</a>
 
-JavaScript 是弱类型语言，而且JavaScript 声明变量的时候并没有预先确定的类型， 变量的类型就是其值的类型
+JS的特点：
+* 无需编译、
+* 单线程、
+* 弱类型、
+* 基于对象、
+* 事件驱动
+
+
+JS的组成：
+* ECMAScript , 
+* DOM (Document Object Model 文档对象模型), 
+* BOM (Browser Object Model 浏览器对象模型)
+
+
+`JavaScript为什么是单线程？`
 
 JavaScript的单线程，与它的用途有关。作为浏览器脚本语言，JavaScript的主要用途是与用户互动，以及操作DOM。这决定了它只能是单线程，否则会带来很复杂的同步问题。比如，假定JavaScript同时有两个线程，一个线程在某个DOM节点上添加内容，另一个线程删除了这个节点，这时浏览器应该以哪个线程为准？
 
+## <a name="语句标签">语句标签</a>
 
+任何 JavaScript 语句是可以加标签的，在语句前加冒号即可：`firstStatement: var i = 1;`
 
-语句标签
+大部分时候，这个东西类似于注释，没有任何用处。
+唯一有作用的时候是：与完成记录类型中的 target 相配合，用于跳出多层循环。
 ```js
-任何 JavaScript 语句是可以加标签的，在语句前加冒号即可：
-
-firstStatement: var i = 1;
-    
-大部分时候，这个东西类似于注释，没有任何用处。唯一有作用的时候是：与完成记录类型中的 target 相配合，用于跳出多层循环。
-
-    outer: while(true) {
-      inner: while(true) {
-          break outer;
-      }
-    }
-    console.log("finished")
-    
-break/continue 语句如果后跟了关键字，会产生带 target 的完成记录。一旦完成记录带了 target，那么只有拥有对应 label 的循环语句会消费它。
+outer: while(true) {
+  inner: while(true) {
+      break outer;
+  }
+}
+console.log("finished")
 ```
+break/continue 语句如果后跟了关键字，会产生带 target 的完成记录。一旦完成记录带了 target，那么只有拥有对应 label 的循环语句会消费它。
 
 ## <a name="数据类型、内置对象">数据类型、内置对象</a>
-[JavaScript思维导图](https://github.com/lidaguang1989/javascript-knowhow)
 
 ### 数据类型：
 基本数据类型： ---值传递 --栈内存
-* [Undefined、Null](/details/JS数据类型/Undefined、Null.md)
-* [Boolean](/details/JS数据类型/Boolean.md)
-* [Number](/details/JS数据类型/Number.md)
-* [String](/details/JS数据类型/String)
-* [Symbol](/details/JS数据类型/Symbol)
-* [BigInt](/details/JS数据类型/BigInt)
+* [Undefined、Null](/details/JS/JS数据类型/Undefined、Null.md)
+* [Boolean](/details/JS/JS数据类型/Boolean.md)
+* [Number](/details/JS/JS数据类型/Number.md)
+* [String](/details/JS/JS数据类型/String)
+* [Symbol](/details/JS/JS数据类型/Symbol)
+* [BigInt](/details/JS/JS数据类型/BigInt)
 
 复杂（引用）数据类型:   --地址传递--堆内存
 * [Object](/details/JS/JS数据类型/Object.md) 
@@ -1990,34 +1910,11 @@ API：
 ## <a name="浏览器缓存">浏览器缓存</a>
 [浏览器缓存](/details/InternetCache.md)
 
-
 ## <a name="前端性能优化的方法">前端性能优化的方法</a>
 [性能优化](/details/optimization.md)
 
-## <a name="浏览器渲染">浏览器渲染</a>
-浏览器工作原理
-1.用户界面 
-2.网络 
-3.UI后端 
-4.数据存储 
-5.浏览器引擎 
-6.渲染引擎 
-7.js解释器  
-
-浏览器解析过程：解析html以构建dom树->构建render树->布局render树->绘制render树
-
-![render](/img/render.png)
-![render](/img/render1.png)
-
-
-页面渲染可分为下面5个步骤：
-1. HTML被HTML解析器解析成DOM树
-2. css则被css解析器解析成CSSOM树
-3. 结合DOM树和CSSOM树，生成一棵渲染树(Render Tree)
-4. 生成布局（flow），即将所有渲染树的所有节点进行平面合成
-5. 将布局绘制（paint）在屏幕上
-
-4、5是最耗时的部分，这两步合起来即 渲染。
+## <a name="浏览器页面渲染">浏览器页面渲染</a>
+[浏览器页面渲染](/details/面试题/浏览器页面渲染.md)
 
 
 ## <a name="从浏览器地址栏输入url到显示页面的步骤">从浏览器地址栏输入url到显示页面的步骤</a>
@@ -2027,19 +1924,6 @@ API：
 [参考](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/9)
 
 
-
-## <a name="get与post区别">get与post区别</a>
-![getpost](/img/getpost.png)
-
-## <a name="css和js动画的差异">css和js动画的差异</a>
->
-    css性能好
-    css代码逻辑相对简单
-    
-    js动画控制好
-    js兼容性好
-    js可实现的动画多
-    js可以添加事件
 
 
 ## <a name="use strict">"use strict"? 用处？</a>
@@ -2058,23 +1942,6 @@ API：
 9. 在 delete使用无效时抛出错误。delete操作符（用于从对象中删除属性）不能用在对象不可配置的属性上。当试图删除一个不可配置的属性时，非严格代码将默默地失败，而严格模式将在这样的情况下抛出异常。
 
 
-
-
-## <a name="DOMContentLoaded、$(function(){})、window.onload事件、执行顺序">DOMContentLoaded、$(function(){})、window.onload事件、执行顺序</a>
->
-    window.onload = function (){console.log('window.onload');}
-
-    $(function(){
-      console.log('$(function{})')
-    })
-
-    document.addEventListener( "DOMContentLoaded", function(){
-      console.log('DOMContentLoaded')
-    }, false );
-
-    //DOMContentLoaded
-    //$(function{})
-    //window.onload
 
 
 

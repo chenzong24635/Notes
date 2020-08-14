@@ -1,10 +1,7 @@
 [异步更新队列](https://cn.vuejs.org/v2/guide/reactivity.html#%E5%BC%82%E6%AD%A5%E6%9B%B4%E6%96%B0%E9%98%9F%E5%88%97)
 
-
-
 ### 前置
-[EventLoop](/details/EventLoop.md)
-
+[事件执行机制EventLoop](/details/面试题/事件执行机制EventLoop.md)
 
 ### 参数：
 * {Function} [callback]
@@ -20,6 +17,7 @@ Vue 在更新 DOM 时是异步执行的。只要侦听到数据变化，Vue 将�
 ### 源码
 源码路径：src\core\util\next-tick.js
 ```js
+
 if (typeof Promise !== 'undefined' && isNative(Promise)) {
   // 如果支持Promise
   const p = Promise.resolve()
@@ -58,10 +56,10 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
 }
 ```
 
-nextTick主要使用了宏任务和微任务。根据执行环境分别尝试采用
-* Promise
-* MutationObserver
-* setImmediate
+由上可知nextTick主要使用了宏任务和微任务。根据执行环境分别尝试采用
+* Promise的then
+* [MutationObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver)
+* [setImmediate](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/setImmediate) (只有最新版本的 Internet Explorer 和Node.js 0.10+实现了该方法)
 * 以上都不支持，最后再使用 setTimeout 
 
 
@@ -130,11 +128,55 @@ async changeMsg() {
 
 ### [为什么要优先使用microtask？](https://www.zhihu.com/question/55364497/answer/144215284)
 
-JS 的 event loop 执行时会区分 task 和 microtask，引擎在每个 task 执行完毕，从队列中取下一个 task 来执行之前，会先执行完所有 microtask 队列中的 microtask。
+任务队列总体可分为 宏任务 (macro)task，微任务 microtask  
+
+当调用栈空闲后每次事件循环只会从 (macro)task 中读取一个任务并执行， 
+
+而在同一次事件循环内会将 microtask 队列中所有的任务全部执行完毕，且要先于下一个 (macro)task。  
+
+另外 (macro)task 中两个不同的任务之间可能穿插着UI的重渲染，  
+
+(macro)task -> microtask -> UI重新渲染 -> 下一个(macro)task  
+
+那么我们只需要在 microtask 中把所有在 UI重新渲染 之前需要更新的数据全部更新，这样只需要一次重渲染就能得到最新的DOM了 ，
+
+所以要优先选用 microtask 去更新数据状态而不是 (macro)task  
 
 
-为啥要用 microtask？
+### 简化实现一个异步合并任务队列
+```js
 
-根据 HTML Standard，在每个 task 运行完以后，UI 都会重渲染，那么在 microtask 中就完成数据更新，当前 task 结束就可以得到最新的 UI 了。
-反之如果新建一个 task 来做数据更新，那么渲染就会进行两次。
+let callbacks = []
+let pending = false
+function flushCallbacks() {
+  pending = false
+  callbacks.forEach(fn => fn())
+  callbacks.length = 0
+}
+function nextTick(fn){
+  callbacks.push(fn) //添加事件
+  if(!pending) { // 回调队列是否空闲
+    // 执行时会调用flushCallbacks， 将pending设为false
+    pending = true
+    Promise.resolve().then(flushCallbacks)
+  }
+}
 
+// 第一次调用 then方法已经被调用了 但是 flushCallbacks 还没执行
+nextTick(() => console.log(1))
+// callbacks里push这个函数
+nextTick(() => console.log(2))
+// callbacks里push这个函数
+nextTick(() => console.log(3))
+
+// 同步函数优先执行
+console.log(4)
+
+// 此时调用栈清空了，浏览器开始检查微任务队列，发现了 flushCallbacks 方法，执行。
+// 此时 callbacks 里的 3 个函数被依次执行。
+
+// 4
+// 1
+// 2
+// 3
+```
