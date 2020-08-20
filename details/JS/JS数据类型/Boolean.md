@@ -10,14 +10,14 @@ Boolean(val) 是一个布尔值的对象包装器
 * false
 * NaN
 * undefined
-* ""（空字符串）
+* "",''（空字符串）
 
 其他都为 true： 
-`这意味着字符串 "false" 、字符串"0" 、字符串 " "、空对象 {} 和空数组 [] 都是 true`
+`这意味着字符串"false" 、字符串"0" 、字符串" "、空对象 {} 和空数组 [] 都是 true`
 
 _____
 
-注意不要将基本类型中的布尔值 true 和 false 与值为 true（new Boolean(true)） 和 false（new Boolean(false)） 的 Boolean 对象弄混了。  
+注意不要将基本类型中的布尔值 true(Boolean(true)) 和 false(Boolean(false)) 与值为 true（new Boolean(true)） 和 false（new Boolean(false)） 的 Boolean 对象弄混了。  
 
 ```js
 let bool0 = false // false -- 基本类型
@@ -29,8 +29,8 @@ bool0 === bool1 // true
 
 let bool2 = new Boolean(0) // Boolean{ false } -- 对象类型
 typeof bool2 // "object"
-bool0 === bool2 // false
 bool0 == bool2 // true
+bool0 === bool2 // false
 ```
 
 任何不是 undefined 和 null 的对象，包括值为 false 的 Boolean 对象，直接用于条件语句时都会被当做 true 来对待。例如，下面 if 语句中的条件为真:

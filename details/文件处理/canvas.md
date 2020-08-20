@@ -1,5 +1,27 @@
+# [canvas](https://developer.mozilla.org/zh-CN/docs/Web/API/Canvas_API)
+```js
+let canvas =  document.createElement('canvas');  
+let ctx = canvas.getContext("2d");  
 
-## drawImage
+```
+### createImageData 创建一个ImageData对象
+```js
+let myImageData = ctx.createImageData(width, height)
+```
+
+### getImageData 获得一个包含画布场景像素数据的ImageData对象
+```js
+let myImageData = ctx.getImageData(left, top, width, height);
+
+```
+
+### putImageData 在场景中写入像素数据
+```js
+ctx.putImageData(myImageData, dx, dy);
+
+```
+
+### drawImage
 [drawImage--MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/drawImage)
 
 context.drawImage(img, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
@@ -10,7 +32,7 @@ context.drawImage(img, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
 >swidth, sheight:选择一个区域范围，裁剪出来的图片作为最终在 Canvas 上显示的图片内容（未定义，默认从坐标的 sx 和 sy 开始，到图片的右下角结束）。
 
 
-## toDataURL
+### toDataURL 将canvas转为 data URI格式
 [toDataURL--MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLCanvasElement/toDataURL)
 返回base64
 
@@ -23,7 +45,14 @@ canvas.toDataURL(type, encoderOptions)
 * 如果传入的类型非“image/png”，但是返回的值以“data:image/png”开头，那么该传入的类型是不支持的。  
 * Chrome支持“image/webp”类型。  
 
-## toBlob
+```js
+var canvas = document.createElement('canvas');
+var dataURL = canvas.toDataURL();
+console.log(dataURL);
+// data:image/png;base64,iVBORw0KGgoAAA....
+```
+
+### toBlob
 [toBlob--MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLCanvasElement/toBlob)
 
 canvas.toBlob(callback, type, encoderOptions)

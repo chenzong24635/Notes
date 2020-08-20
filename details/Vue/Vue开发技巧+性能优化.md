@@ -38,7 +38,7 @@
 
 [Vue 项目性能优化 — 实践指南（网上最全 / 详细）](https://juejin.im/post/5d548b83f265da03ab42471d)
 
-## <a name="v-if和v-show的区别">v-if和v-show的区别</a>[![bakTop](./img/backward.png)](#top)  
+## <a name="v-if和v-show的区别">v-if和v-show的区别</a>[![bakTop](/img/backward.png)](#top)  
 [vue官网解释](https://cn.vuejs.org/v2/guide/conditional.html#v-if-vs-v-show)
 
 ```html
@@ -54,7 +54,7 @@ v-show 只是简单的display控制显隐藏，不管初始条件如何，元素
 v-if 有更高的切换开销，而 v-show 有更高的初始渲染开销。  
 因此，v-if适用于很少改变条件的场景，v-show适用于频繁切换条件的场景。
 
-## <a name="v-for遍历避免同时使用v-if">v-for遍历避免同时使用v-if"</a>[![bakTop](./img/backward.png)](#top)  
+## <a name="v-for遍历避免同时使用v-if">v-for遍历避免同时使用v-if"</a>[![bakTop](/img/backward.png)](#top)  
 [vue官网解释](https://cn.vuejs.org/v2/guide/conditional.html#v-if-%E4%B8%8E-v-for-%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8)
 
 [风格指南-避免 v-if 和 v-for 用在一起](https://cn.vuejs.org/v2/style-guide/#%E9%81%BF%E5%85%8D-v-if-%E5%92%8C-v-for-%E7%94%A8%E5%9C%A8%E4%B8%80%E8%B5%B7%E5%BF%85%E8%A6%81)

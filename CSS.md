@@ -57,7 +57,6 @@
   * <a href="#CSSOM视图模式">CSSOM视图模式</a>
   * <a href="#css自定义变量属性">css自定义变量属性</a>
   * <a href="#shape-outside">shape-outside</a>
-  * <a href="#文字超出省略">文字超出省略</a>
   * <a href="#text-align-last">text-align-last文本中最后一行在被强制换行之前的对齐规则</a>
   * <a href="#writing-mode">writing-mode调整文本排版方向</a>
   * <a href="#改变input placeholder颜色">改变input placeholder颜色</a>
@@ -88,7 +87,7 @@
 
 # <a name="CSS">**CSS**</a>
 
-## <a name="概述">概述</a>[![bakTop](./img/backward.png)](#top)
+## <a name="概述">概述</a>[![bakTop](/img/backward.png)](#top)
 
 CSS 是层叠样式表 ( Cascading Style Sheets ) 的简称。  
 CSS 是一种标记语言，属于浏览器解释型语言，可以直接由浏览器执行，不需要编译。  
@@ -101,7 +100,7 @@ CSS的优势：
     内容与表现分离，有了CSS，网页的内容(XHMTL)与表现就可以分开了。
     使用CSS可以减少网页的代码量，增加网页的浏览速度。
 
-## <a name="常见浏览器及其内核、私有化前缀">常见浏览器及其内核、私有化前缀</a>[![bakTop](./img/backward.png)](#top)
+## <a name="常见浏览器及其内核、私有化前缀">常见浏览器及其内核、私有化前缀</a>[![bakTop](/img/backward.png)](#top)
 
 
 | | Chrome | Firefox | IE | Safari | Opera |
@@ -110,7 +109,7 @@ CSS的优势：
 | JS 引擎 | V8 | SpiderMonkey | Nitro | Chakra | V8 |
 | 私有化前缀 | -webkit- | -moz- | -ms- | -webkit- | -webkit- |
 
-## <a name="权重、优先级">权重、优先级</a>[![bakTop](./img/backward.png)](#top)
+## <a name="权重、优先级">权重、优先级</a>[![bakTop](/img/backward.png)](#top)
 >
 
     内联样式 > 内部样式表 > 外部样式表  
@@ -125,7 +124,7 @@ CSS的优势：
 
 ![css-specificity](/img/css-specificity.jpg)
 
-## <a name="CSS引入的方式">CSS引入的方式? link和@import的区别是? 如何避免FOUC？</a>[![bakTop](./img/backward.png)](#top)
+## <a name="CSS引入的方式">CSS引入的方式? link和@import的区别是? 如何避免FOUC？</a>[![bakTop](/img/backward.png)](#top)
 
 ### CSS引入的方式
 >
@@ -154,7 +153,7 @@ Flash Of Unstyled Content：文档样式短暂失效; 用户定义样式表加�
 >
     使用link标签将样式表放在head中
 
-## <a name="盒模型">盒模型</a>[![bakTop](./img/backward.png)](#top)
+## <a name="盒模型">盒模型</a>[![bakTop](/img/backward.png)](#top)
 
 * 定义：
 HTML中每个元素都被描绘成一个矩形盒子，这些盒子通过一个模型来描述其占有空间，该模型称为盒模型。盒模型通过四个边界描述:内边距（padding）、外边距(margin)、边框(border)、内容(content)
@@ -181,7 +180,7 @@ HTML中每个元素都被描绘成一个矩形盒子，这些盒子通过一个�
           父元素font-size设置为0, 子元素再重新设置回来;
           直接在HTML文档里改变文本排列，使行间元素尾标签和下一个头便签间不留任何空格，如<span>第一个元素</span><span>第二个元素</span>
 
-## <a name="css选择器">css选择器</a>[![bakTop](./img/backward.png)](#top)
+## <a name="css选择器">css选择器</a>[![bakTop](/img/backward.png)](#top)
 
 #### 
 * 通配符选择器(*)
@@ -255,7 +254,7 @@ E[attr|=val]   //E中带有attr属性 且值具有 val 或以 val- 开始的值�
 
     input:foucs{...} 当元素获得输入焦点    
 
-    css书写顺序 link visited hover active 不然有些效果不会呈现
+    css书写顺序 link visited hover active 不然有些效果不会呈现(速记：love hate)
 
 * 语言伪类
 >
@@ -290,7 +289,7 @@ css2伪类和伪元素都是用单冒号，所有的浏览器都兼容，
 但是css3伪类为单冒号如:hover ，伪元素为双冒号::before；但是双冒号IE8以下不兼容
 
 
-## <a name="content属性">::before和::after伪元素的content属性</a>[![bakTop](./img/backward.png)](#top)
+## <a name="content属性">::before和::after伪元素的content属性</a>[![bakTop](/img/backward.png)](#top)
 
 | 值 |	说明
 |:-|:-|
@@ -370,7 +369,7 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
 ![counter](/img/counter.jpg)
 
 
-## <a name="CSS书写顺序、规范">CSS书写顺序、命名规范</a>[![bakTop](./img/backward.png)](#top)
+## <a name="CSS书写顺序、规范">CSS书写顺序、命名规范</a>[![bakTop](/img/backward.png)](#top)
 
 #### 书写顺序
 *  位置属性(position, top, right, z-index,display, float等)  
@@ -409,7 +408,7 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
     </div>
 
 
-## <a name="哪些属性可继承">哪些属性可继承</a>[![bakTop](./img/backward.png)](#top)
+## <a name="哪些属性可继承">哪些属性可继承</a>[![bakTop](/img/backward.png)](#top)
 
 * 不可继承的样式：
 >
@@ -451,7 +450,7 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
     font-size:16px;  文字大小
     
 
-## <a name="文字、盒子阴影">text-shadow 、box-shadow</a>[![bakTop](./img/backward.png)](#top)
+## <a name="文字、盒子阴影">text-shadow 、box-shadow</a>[![bakTop](/img/backward.png)](#top)
 
 文字阴影：text-shadow 
 >
@@ -474,7 +473,7 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
     color	可选。阴影的颜色。在CSS颜色值寻找颜色值的完整列表
     inset	可选。从外层的阴影（开始时）改变阴影内侧阴影
 
-## <a name="max-,min-">max-width,max-height,min-width,min-height</a>[![bakTop](./img/backward.png)](#top)
+## <a name="max-,min-">max-width,max-height,min-width,min-height</a>[![bakTop](/img/backward.png)](#top)
 
 min-width/max-width 出现的场景一定是自适应布局或者流体布局中
 
@@ -489,14 +488,14 @@ mix-width,min-height 权重大于 max-width,max-height
 
 [max-height与任意高度元素滑动展开收起效果实例页面](https://demo.cssworld.cn/3/3-2.php)
 
-## <a name="百分数相对于width">为什么padding/margin-top/bottom的百分数相对于width？</a>[![bakTop](./img/backward.png)](#top)
+## <a name="百分数相对于width">为什么padding/margin-top/bottom的百分数相对于width？</a>[![bakTop](/img/backward.png)](#top)
 
 CSS权威指南中的解释：
 >
     正常流中的大多数元素都会足够高以包含其后代元素（包括外边距），如果一个元素的上下外边距时父元素的height的百分数，就可能导致一个无限循环，父元素的height会增加，以适应后代元素上下外边距的增加，而相应的，上下外边距因为父元素height的增加也会增加，如果循环。
 
 
-## <a name="zIndex">层叠上下文(stacking context )</a>[![bakTop](./img/backward.png)](#top)
+## <a name="zIndex">层叠上下文(stacking context )</a>[![bakTop](/img/backward.png)](#top)
 
 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Understanding_z_index/The_stacking_context)
 
@@ -604,7 +603,7 @@ z-index只适用于已经定位的元素
     2、问题标签无position属性,不包括static (添加position属性)
     3、问题标签含有浮动(float)属性。(去除浮动)
 
-## <a name="float特性">float特性</a>[![bakTop](./img/backward.png)](#top)
+## <a name="float特性">float特性</a>[![bakTop](/img/backward.png)](#top)
 
 由于float意味着使用块布局，所以它会修改元素的display值为block|table
 
@@ -661,7 +660,7 @@ clear 属性只有块级元素才有效的，而::after 等伪元素默认都是
     和 CSS： 
 
 
-## <a name="格式化上下文">格式化上下文BFC、IFC、FFC、GFC</a>[![bakTop](./img/backward.png)](#top)
+## <a name="格式化上下文">格式化上下文BFC、IFC、FFC、GFC</a>[![bakTop](/img/backward.png)](#top)
 
 https://juejin.im/post/5ea45801e51d4546d4399055
 
@@ -673,12 +672,12 @@ https://juejin.im/post/5ea45801e51d4546d4399055
 
 概述：BFC(Block Formatting Context)是Web页面中盒模型布局的CSS渲染模式。它的定位体系属于常规文档流。
 
-BFC形成条件：
+`BFC形成条件：`
 *  根元素 html
-*  float的值不为none
-*  position的值为absolute或fixed（不为static或relative或sticky）
-*  overflow的值不为visible( hidden,scroll,auto,... )的块元素
-*  display的值为 inline-block  | inline-table | table-cell | table-caption | flow-root
+*  浮动元素（float的值不为none）
+*  绝对定位元素（position的值为absolute或fixed）
+*  overflow的值不为visible( hidden,scroll,auto,... )的块元素 
+*  display的值为 inline-block  | inline-table | table-cell | table-caption | flow-root 的元素
 *  弹性元素（display为 flex 或 inline-flex元素的`直接子元素`）
 *  网格元素（display为 grid 或 inline-grid 元素的`直接子元素`）
 *  contain 值为 layout、content或 paint 块元素
@@ -686,15 +685,15 @@ BFC形成条件：
 *  column-span 为 all的块元素
 .....
 
-BFC的布局规则
+`BFC的布局规则`
 * 内部的元素会在垂直排列，可以理解为是BFC中的一个常规流
-* 元素垂直方向的距离由margin决定，同一个BFC的相邻元素的margin可能会重叠
+* 元素垂直方向的距离由margin决定，同一个BFC的相邻元素的margin会重叠
 * BFC的区域不会与float元素区域重叠
 * 计算BFC的高度时，浮动子元素也参与计算
 * 每个元素的左外边距与包含块的左边界相接触(从左往右，否则相反)，即使存在浮动*如此(说明BFC中的子元素不会超出它的包含块)
 * BFC就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素，反之亦然
 
-BFC的作用
+`BFC的作用`
 1. 清除浮动--BFC元素不和浮动元素重叠：
 >
     如果一个浮动元素后面跟着一个非浮动的元素，那么就会产生一个覆盖的现象。清除元素内部浮动，只要把父元素设为BFC就可以清理子元素的浮动了，最常见的用法就是在父元素上设置overflow: hidden样式 
@@ -780,7 +779,7 @@ BFC的作用
 ```
 
 
-## <a name="display、visibility、overflow、opacity">display、visibility、overflow、opacity的隐藏问题</a>[![bakTop](./img/backward.png)](#top)
+## <a name="display、visibility、overflow、opacity">display、visibility、overflow、opacity的隐藏问题</a>[![bakTop](/img/backward.png)](#top)
 
 * display：block | none | inline | table | flex | grid ....   
 * overflow : visible | auto | hidden | scroll
@@ -813,7 +812,7 @@ BFC的作用
 3. opacity:0,动画属性生效,能够进行正常的动画效果.
 
 
-## <a name="border-style">border-style属性值</a>[![bakTop](./img/backward.png)](#top)
+## <a name="border-style">border-style属性值</a>[![bakTop](/img/backward.png)](#top)
 none 无、  
 hidden 与 "none" 相同。不过应用于表时除外，对于表，hidden 用于解决边框冲突、  
 solid（实线）、  
@@ -827,7 +826,7 @@ ridge（山脊）
 
 ![border-style](/img/border-style.jpg)
 
-## <a name="line-hieght">line-hieght,vertical-align</a>[![bakTop](./img/backward.png)](#top)
+## <a name="line-hieght">line-hieght,vertical-align</a>[![bakTop](/img/backward.png)](#top)
 ### line-height
 ![line-height](./img/lineheight.png)
 
@@ -912,7 +911,7 @@ box {
 </div>
 ```
 
-## <a name="文本换行">文本换行 white-space word-wrap word-break</a>[![bakTop](./img/backward.png)](#top)
+## <a name="文本换行">文本换行 white-space word-wrap word-break</a>[![bakTop](/img/backward.png)](#top)
 
 white-space
 ```CSS
@@ -958,9 +957,8 @@ break-all：该行为与亚洲语言的normal相同。也允许非亚洲语言�
     word-break: break-all; 
     //white-space:normal;
 
-<a href="#文字超出省略">文字超出省略</a>
 
-## <a name="定位">position定位</a>[![bakTop](./img/backward.png)](#top)
+## <a name="定位">position定位</a>[![bakTop](/img/backward.png)](#top)
 * inherit： 继承值。但是任何的版本的 Internet Explorer （包括 IE8）都不支持属性值 “inherit”。
 
 * static：默认值。位置设置为static的元素，它始终会处于文档流给予的位置。
@@ -1029,13 +1027,13 @@ break-all：该行为与亚洲语言的normal相同。也允许非亚洲语言�
       right:0;
       margin:auto;
 
-## <a name="Flex">Flex</a>[![bakTop](./img/backward.png)](#top)
-[Flex](/details/Flex.md)
+## <a name="Flex">Flex</a>[![bakTop](/img/backward.png)](#top)
+[Flex](/details/CSS/Flex.md)
 
-## <a name="Grid">Grid</a>[![bakTop](./img/backward.png)](#top)
-[Grid](/details/Grid.md)
+## <a name="Grid">Grid</a>[![bakTop](/img/backward.png)](#top)
+[Grid](/details/CSS/Grid.md)
 
-## <a name="background">background属性值</a>[![bakTop](./img/backward.png)](#top)
+## <a name="background">background属性值</a>[![bakTop](/img/backward.png)](#top)
 
 ### [background](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background)
 
@@ -1136,7 +1134,7 @@ break-all：该行为与亚洲语言的normal相同。也允许非亚洲语言�
     </div>
 
 
-## <a name="渐变">渐变linear-gradient,radial-gradient,conic-gradient</a>[![bakTop](./img/backward.png)](#top)
+## <a name="渐变">渐变linear-gradient,radial-gradient,conic-gradient</a>[![bakTop](/img/backward.png)](#top)
 
 ### linear-gradient()线性渐变
 [你真的理解CSS的linear-gradient？](https://www.w3cplus.com/css3/do-you-really-understand-css-linear-gradients.html)--大漠 
@@ -1219,7 +1217,7 @@ radial-gradient(shape size at position, color1 range,...colorn range)
     background: radial-gradient(at center, hotpink , darkblue); /* 标准的语法 */
 
 
-## <a name="transform">[transform变形](http://css.cuishifeng.cn/transform.html)</a>[![bakTop](./img/backward.png)](#top)
+## <a name="transform">[transform变形](http://css.cuishifeng.cn/transform.html)</a>[![bakTop](/img/backward.png)](#top)
 
 matrix()：以一个含六值的(a,b,c,d,e,f)变换矩阵的形式指定一个2D变换，相当于直接应用一个[a,b,c,d,e,f]变换矩阵  
 matrix3d(): 以一个4x4矩阵的形式指定一个3D变换  
@@ -1290,7 +1288,7 @@ matrix(0, 0, 0, 0, tx, ty) 等同于translate(tx, ty)
 
 <a href="#图片缩放">图片缩放matrix,transform+transition</a>
 
-## <a name="transition">[transition过渡](http://css.cuishifeng.cn/transform.html)</a>[![bakTop](./img/backward.png)](#top)
+## <a name="transition">[transition过渡](http://css.cuishifeng.cn/transform.html)</a>[![bakTop](/img/backward.png)](#top)
 用于设置元素的样式过度，和animation有着类似的效果
 
 就是元素从这个属性(color)的某个值(red)过渡到这个属性(color)的另外一个值(green)，这是一个状态的转变，需要一种条件来触发这种转变，比如我们平时用到的:hoever、:focus、:checked、媒体查询或者JavaScript。
@@ -1315,7 +1313,7 @@ transition: property duration  timing-function delay
   /* 当这样使用时，确保 all 在第一个，因为如果 all 在后边的话，它的规则会覆盖掉前边的属性 */
 }
 ```
-## <a name="animation">animation动画</a>[![bakTop](./img/backward.png)](#top)
+## <a name="animation">animation动画</a>[![bakTop](/img/backward.png)](#top)
 animation: name duration timing-function delay iteration-count direction play-state fill-mode;  
 
 >name: 用来调用@keyframes定义好的动画，与@keyframes定义的动画名称一致  
@@ -1387,13 +1385,13 @@ animation: name duration timing-function delay iteration-count direction play-st
 
 [animate.css](https://daneden.github.io/animate.css/)
 
-## <a name="移动端开发相关知识">移动端开发相关知识</a>[![bakTop](./img/backward.png)](#top)
+## <a name="移动端开发相关知识">移动端开发相关知识</a>[![bakTop](/img/backward.png)](#top)
 
 [关于移动端适配，你必须要知道的](https://juejin.im/post/5cddf289f265da038f77696c)
 
 [移动端开发的屏幕、图像、字体与布局的兼容适配](https://juejin.im/post/5d70747cf265da03e16897c8)
 
-### <a name="响应式、自适应">响应式、自适应</a>[![bakTop](./img/backward.png)](#top)
+### <a name="响应式、自适应">响应式、自适应</a>[![bakTop](/img/backward.png)](#top)
 响应式设计是 Responsive Web Design（RWD）:响应式的概念覆盖了自适应，但包括的更多。响应式布局可以根据屏幕的大小自动的调整页面的展现方式，以及布局。  
 * 采用 CSS 的 media query 技术
 * 流体布局（ fluid grids ）
@@ -1409,7 +1407,7 @@ RWD 和 AWD 两者都是为了适配各种不同的移动设备，致力于提�
 
 ![rwdawd.jpg](/img/rwdawd.jpg)
 
-### <a name="尺寸单位">像素定义 尺寸单位</a>[![bakTop](./img/backward.png)](#top)
+### <a name="尺寸单位">像素定义 尺寸单位</a>[![bakTop](/img/backward.png)](#top)
 
 #### 尺寸单位
 |单位|描述|
@@ -1502,10 +1500,10 @@ https://www.cnblogs.com/ranyonsue/p/6795943.html
 
 
 
-### <a name="移动端适配">移动端适配</a>[![bakTop](./img/backward.png)](#top)
+### <a name="移动端适配">移动端适配</a>[![bakTop](/img/backward.png)](#top)
 
 
-## <a name="用CSS开启硬件加速来提高网站性能">用CSS开启硬件加速来提高网站性能</a>[![bakTop](./img/backward.png)](#top)
+## <a name="用CSS开启硬件加速来提高网站性能">用CSS开启硬件加速来提高网站性能</a>[![bakTop](/img/backward.png)](#top)
 
 #### 何为硬件加速
 
@@ -1613,7 +1611,7 @@ CSS animations, transforms 以及 transitions 不会自动开启GPU加速，而�
 
 
 
-## <a name="获取CSS样式">获取CSS样式</a>[![bakTop](./img/backward.png)](#top)
+## <a name="获取CSS样式">获取CSS样式</a>[![bakTop](/img/backward.png)](#top)
 
 https://my.oschina.net/i33/blog/126960
 
@@ -1627,7 +1625,7 @@ https://my.oschina.net/i33/blog/126960
 //getComputedStyle("元素", "伪类" || null) 同currentStyle作用相同，但是适用于FF、opera、safari、chrome。
 
 
-## <a name="@规则">@规则</a>[![bakTop](./img/backward.png)](#top)
+## <a name="@规则">@规则</a>[![bakTop](/img/backward.png)](#top)
 
 * @charset 
 >
@@ -1730,7 +1728,7 @@ format()作用
         margin: 10% 20%;
     }
 
-## <a name="CSS hack">CSS hack</a>[![bakTop](./img/backward.png)](#top)
+## <a name="CSS hack">CSS hack</a>[![bakTop](/img/backward.png)](#top)
 
 [CSS hack](https://blog.csdn.net/freshlover/article/details/12132801)
 
@@ -1751,9 +1749,9 @@ format()作用
 
 
 
-# <a name="一些css属性及其他">**一些css属性及其他**</a>[![bakTop](./img/backward.png)](#top)
+# <a name="一些css属性及其他">**一些css属性及其他**</a>[![bakTop](/img/backward.png)](#top)
 
-## <a name="注意事项">注意事项</a>[![bakTop](./img/backward.png)](#top)
+## <a name="注意事项">注意事项</a>[![bakTop](/img/backward.png)](#top)
 
 * margin的top、bottom及padding的top、bottom使用百分比作为单位时，是相对父元素的宽度width的而不是高度height；
 
@@ -1775,10 +1773,10 @@ img设置 vertical-align: top 或者 middle/，使其不再以默认基线为对
 <del>div设置font-size: 0或line-height: 0，进而行高为0；</del>  
 
 
-## <a name="CSSOM视图模式">CSSOM视图模式</a>[![bakTop](./img/backward.png)](#top)
+## <a name="CSSOM视图模式">CSSOM视图模式</a>[![bakTop](/img/backward.png)](#top)
 [CSSOM视图模式(CSSOM View Module)相关整理](https://www.zhangxinxu.com/wordpress/2011/09/cssom%E8%A7%86%E5%9B%BE%E6%A8%A1%E5%BC%8Fcssom-view-module%E7%9B%B8%E5%85%B3%E6%95%B4%E7%90%86%E4%B8%8E%E4%BB%8B%E7%BB%8D/)-张鑫旭
 
-## <a name="css自定义变量属性">css自定义变量属性</a>[![bakTop](./img/backward.png)](#top)
+## <a name="css自定义变量属性">css自定义变量属性</a>[![bakTop](/img/backward.png)](#top)
 
 <b>IE不支持</b>
 
@@ -1822,7 +1820,7 @@ img设置 vertical-align: top 或者 middle/，使其不再以默认基线为对
         div.style.setProperty('--color', 'green') //设置属性值
     </script>
 
-## <a name="shape-outside">shape-outside</a>[![bakTop](./img/backward.png)](#top)
+## <a name="shape-outside">shape-outside</a>[![bakTop](/img/backward.png)](#top)
 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/shape-outside)
 
   
@@ -1848,63 +1846,9 @@ img设置 vertical-align: top 或者 middle/，使其不再以默认基线为对
 ![shape-outside](./img/shape-outside.png)
 
 
-## <a name="文字超出省略">文字超出省略</a>[![bakTop](./img/backward.png)](#top)
-[](https://juejin.im/post/5dc15b35f265da4d432a3d10)
-#### 单行省略
-    .ov1{
-      white-space: nowrap; //强制文本在一行内输出
-      overflow: hidden; //隐藏溢出部分
-      text-overflow: ellipsis; //对溢出部分加上...
-    }
-
-#### 多行省略
-    <!-- 只适用于webkit内核 -->
-    .ov( @clamp:2 ){
-      position: relative;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      word-wrap: break-word;
-      word-break: break-all; 
-      -webkit-line-clamp: @clamp; /* 限制在显示的文本的行数 */
-      display: -webkit-box; /* 将对象作为弹性伸缩盒子模型显示 */
-      /* 防止打包后这段代码被删除 */
-      /*! autoprefixer: off */
-        -webkit-box-orient: vertical;/* 伸缩盒子的子元素排列：从上到下 */
-      /* autoprefixer: on */
-    }
-
-    /* 其他浏览器 */
-    .ov(@maxHeight:40px){
-      max-height: @maxHeight;
-      &::after{
-        content: "...";
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        padding-left: 40px;
-        /* //以上三个属性，可以后续调整，看要把...放在哪个位置 */
-        background: -webkit-linear-gradient(left, transparent, #fff 55%);
-        background: -o-linear-gradient(right, transparent, #fff 55%);
-        background: -moz-linear-gradient(right, transparent, #fff 55%);
-        background: linear-gradient(to right, transparent, #fff 55%);
-        /* 背景色可写成渐变也可写成一样的颜色 */
-      }
-    }
-
-    <!-- 火狐 -->
-    @-moz-document url-prefix() {
-      .ov
-    }
-    
-    <!-- IE10、11 -->
-    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-      .ov
-    }
 
 
-
-
-## <a name="text-align-last">text-align-last文本中最后一行在被强制换行之前的对齐规则</a>[![bakTop](./img/backward.png)](#top)
+## <a name="text-align-last">text-align-last文本中最后一行在被强制换行之前的对齐规则</a>[![bakTop](/img/backward.png)](#top)
 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/text-align-last)
 
 [兼容性](https://caniuse.com/#feat=css-grid&search=text-align-last)
@@ -1940,7 +1884,7 @@ text-align-last: unset;
 
 
 
-## <a name="writing-mode">writing-mode、direction、unicode-bidi</a>[![bakTop](./img/backward.png)](#top)
+## <a name="writing-mode">writing-mode、direction、unicode-bidi</a>[![bakTop](/img/backward.png)](#top)
 
 ### [writing-mode](https://developer.mozilla.org/zh-CN/docs/Web/CSS/writing-mode)
 
@@ -2010,88 +1954,9 @@ direction: rtl | ltr
 
 [unicode-bidi:embed和unicode-bidi:normal对比实例](https://demo.cssworld.cn/12/1-4.php)--张鑫旭
 
-## <a name="改变input placeholder颜色">改变input placeholder颜色</a>[![bakTop](./img/backward.png)](#top)
->
-    ::-webkit-input-placeholder { color: ; }/*WebKit, Blink, Edge*/
-    :-moz-placeholder { color: ; }/*Mozilla Firefox 4 to 18*/
-    ::-moz-placeholder { color: ; }/*Mozilla Firefox 19+*/
-    :-ms-input-placeholder { color: ; }/*Internet Explorer 10-11 */
-
-## <a name="input自动填充上背景色">input自动填充上背景色</a>[![bakTop](./img/backward.png)](#top)
-* 
->
-    :-webkit-autofill{
-      box-shadow: 0 0 0px 1000px #fff inset !important;
-    }
-
-* autocomplete="off"，直接关闭自动填充
-
-## <a name="取消部分浏览器数字输入控件的操作按钮">取消部分浏览器数字输入控件的操作按钮</a>[![bakTop](./img/backward.png)](#top)
-```css
-input[type="number"] { /* firefox */
-  -moz-appearance: textfield;
-}
-
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button { /* chrome */
-  margin: 0;
-  -webkit-appearance: none;
-}
-```
-
-## <a name="selection">selection 改变选中内容的字体、背景颜色</a>[![bakTop](./img/backward.png)](#top)
-```css
-::-moz-selection { 
-  background-color: red; 
-  color: #333; 
-} 
-::-webkit-selection { 
-  background-color: red; 
-  color: #333; 
-}
-::selection { 
-  background-color: red; 
-  color: #333; 
-}
-```
-
-意外发现 
-
-background-color为 #fff 或者 transparent 时，文本不可选中
 
 
-## <a name="user-select">user-select 文本是否可选中</a>[![bakTop](./img/backward.png)](#top)
-```css
--webkit-user-select: none;
--khtml-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
-```
-
-
-语法
->
-    user-select:none | text | all | element
-    默认值：text
-    适用范围：除替换元素外的所有元素
-
-取值说明
->
-    none:文本不能被选择
-    text:可以选择文本
-    all：当所有内容作为一个整体时可以被选择。如果双击或者在 上下文上点击子元素，
-        那么被选择的部分将是以该子元素 向上回溯的最高祖先元素。
-
-## <a name="禁止保存或拷贝图像">禁止保存或拷贝图像</a>[![bakTop](./img/backward.png)](#top)
-```css
-img {
-  -webkit-touch-callout: none;
-}
-
-```
-
-## <a name="-webkit-text-size-adjust">-webkit-text-size-adjust: none</a>[![bakTop](./img/backward.png)](#top)
+## <a name="-webkit-text-size-adjust">-webkit-text-size-adjust: none</a>[![bakTop](/img/backward.png)](#top)
 
 Chrome 中文界面下默认会将小于 12px 的文本强制按照 12px 显示；
 
@@ -2100,7 +1965,7 @@ Chrome 中文界面下默认会将小于 12px 的文本强制按照 12px 显示�
 放在body中会导致页面缩放失效,不要把-webkit-text-size-adjust设置为全局或者可继承的
 
 
-## <a name="为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"[![bakTop](./img/backward.png)](#top)
+## <a name="为破碎图象定义样式">为破碎图象定义样式content: "(url:'attr(src)')"[![bakTop](/img/backward.png)](#top)
 
 ```css
     img {
@@ -2127,17 +1992,9 @@ Chrome 中文界面下默认会将小于 12px 的文本强制按照 12px 显示�
     }
 ```
 
-## <a name="pointer-events">pointer-events 使用指针事件來控制鼠标事件</a>[![bakTop](./img/backward.png)](#top)
 
-例如：要禁用按钮上的默认指针事件
-```css
-.button.disabled {
-  opacity: .5;
-  pointer-events: none;
-}
-```
 
-## <a name="透明方格的绘制">透明方格的绘制</a>[![bakTop](./img/backward.png)](#top)
+## <a name="透明方格的绘制">透明方格的绘制</a>[![bakTop](/img/backward.png)](#top)
 ![transparentSquare](./img/transparentSquare.png)
 ```css
     .square {
@@ -2150,7 +2007,59 @@ Chrome 中文界面下默认会将小于 12px 的文本强制按照 12px 显示�
     }
 ```
 
-## <a name="移动端1px">移动端1px</a>[![bakTop](./img/backward.png)](#top)
+## <a name="边框效果">边框效果</a>[![bakTop](/img/backward.png)](#top)
+```css
+button {
+  position: relative;
+  font-weight: bold;
+  border: 0;
+  outline: none;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  color: #4361ee;
+  background: none;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+button::before, button::after {
+  content: '';
+  position: absolute;
+  border: 2px solid transparent;
+  width: 0;
+  height: 0;
+  box-sizing: inherit;
+}
+
+button::after {
+  bottom: 0;
+  right: 0;
+}
+
+button::before {
+  top: 0;
+  left: 0;
+}
+
+button:hover::before, button:hover::after {
+  width: 100%;
+  height: 100%;
+}
+
+button:hover::before {
+  border-top-color: red;
+  border-right-color: gold;
+  transition: width 0.3s ease-out, height 0.3s ease-out 0.3s;
+}
+
+button:hover::after {
+  border-bottom-color: green;
+  border-left-color: blue;
+  transition: border-color 0s ease-out 0.6s, width 0.3s ease-out 0.6s, height 0.3s ease-out 0.9s;
+}
+```
+
+## <a name="移动端1px">移动端1px</a>[![bakTop](/img/backward.png)](#top)
 
 [参考](https://juejin.im/entry/584e427361ff4b006cd22c7c)
 
@@ -2337,22 +2246,9 @@ devicePixelRatio = 物理像素 / 独立像素。
 }
 ```
 
-## <a name="清除手机端a链接点击高亮">清除手机端a链接点击高亮[![bakTop](./img/backward.png)](#top)
--webkit-tap-highlight-color: rgba(0,0,0,0);  
-tap-highlight-color: rgba(0, 0, 0, 0);  
 
-```css
-/* 图片作为a标签点击按钮 */
-a,a:hover,a:active,a:visited,a:link,a:focus{
-  tap-highlight-color: rgba(0, 0, 0, 0);
-  -webkit-tap-highlight-color:rgba(0,0,0,0);
-  outline:none;
-  background: none;
-  text-decoration: none;
-}
-```
 
-## <a name="三角形">三角形</a>[![bakTop](./img/backward.png)](#top)
+## <a name="三角形">三角形</a>[![bakTop](/img/backward.png)](#top)
 ```css
 .triangle{
   width:0; 
@@ -2363,7 +2259,7 @@ a,a:hover,a:active,a:visited,a:link,a:focus{
 }
 ```
 
-## <a name="图片缩放">图片缩放matrix,transform+transition</a>[![bakTop](./img/backward.png)](#top)
+## <a name="图片缩放">图片缩放matrix,transform+transition</a>[![bakTop](/img/backward.png)](#top)
 ```css
 /* 先放大1.1倍 ，再还原。 */
 .img{
@@ -2379,7 +2275,7 @@ a,a:hover,a:active,a:visited,a:link,a:focus{
 }
 ```
 
-## <a name="clip-path">clip-path</a>[![bakTop](./img/backward.png)](#top)
+## <a name="clip-path">clip-path</a>[![bakTop](/img/backward.png)](#top)
 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/clip-path)
 创建一个只有元素的部分区域可以显示的剪切区域。区域内的部分显示，区域外的隐藏。剪切区域是被引用内嵌的URL定义的路径或者外部svg的路径，或者作为一个形状例如circle().。clip-path属性代替了现在已经弃用的剪切 clip属性。
 
@@ -2404,14 +2300,14 @@ a,a:hover,a:active,a:visited,a:link,a:focus{
 >url(image.png)  
 >path()  
 
-## <a name="filter滤镜">filter滤镜（不是IE的filter:alpha(opacity=50)）</a>[![bakTop](./img/backward.png)](#top)
+## <a name="filter滤镜">filter滤镜（不是IE的filter:alpha(opacity=50)）</a>[![bakTop](/img/backward.png)](#top)
 [在线演示](https://codepen.io/JowayYoung/pen/NWKbVNQ)
 
 [CSSgram插件](https://github.com/una/CSSgram/blob/master/README-CN.md)
 
 ![filter](./img/filter.png)
 
-## <a name="多方法描绘一个边框">多方法描绘一个边框</a>[![bakTop](./img/backward.png)](#top)
+## <a name="多方法描绘一个边框">多方法描绘一个边框</a>[![bakTop](/img/backward.png)](#top)
 [参考](https://www.w3cplus.com/css/css-tips-0904-1.html)
 
 ### 其他方法 绘制一个实心边框(border-style:solid)
@@ -2478,9 +2374,9 @@ box-shadow: 0 0 0 1em #000; //不占用盒模型空间
     }
 ```
 
-## <a name="滚动">滚动</a>[![bakTop](./img/backward.png)](#top)
+## <a name="滚动">滚动</a>[![bakTop](/img/backward.png)](#top)
 
-## <a name="页面滑动不顺畅的问题">页面滑动不顺畅的问题</a>[![bakTop](./img/backward.png)](#top)
+## <a name="页面滑动不顺畅的问题">页面滑动不顺畅的问题</a>[![bakTop](/img/backward.png)](#top)
 解决IOS局部滚动不顺畅(粘手)
 除了浏览器原生滚动，自定义的滚动条都会出现这种情况，加以下属性就可以解决：
 >
@@ -2490,7 +2386,7 @@ box-shadow: 0 0 0 1em #000; //不占用盒模型空间
       overflow-y: visible;
     }
 
-## <a name="滚动传播">滚动传播</a>[![bakTop](./img/backward.png)](#top)
+## <a name="滚动传播">滚动传播</a>[![bakTop](/img/backward.png)](#top)
 
 指有多个滚动区域，当一个滚动区域滚动完之后，继续滚动会传播到到父区域继续滚动的行为：
 >
@@ -2498,7 +2394,7 @@ box-shadow: 0 0 0 1em #000; //不占用盒模型空间
       overscroll-behavior: contain; // 阻止滚动传播
     }
 
-## <a name="-webkit-scrollbar">-webkit-scrollbar 自定义滚动条样式</a>[![bakTop](./img/backward.png)](#top)
+## <a name="-webkit-scrollbar">-webkit-scrollbar 自定义滚动条样式</a>[![bakTop](/img/backward.png)](#top)
 chrome
 >
     ::-webkit-scrollbar 滚动条整体部分
@@ -2529,7 +2425,7 @@ IE
 firefox    
 [插件](https://github.com/malihu/malihu-custom-scrollbar-plugin)
 
-## <a name="纯css横向、垂直滑动">纯css横向、竖直滑动</a>[![bakTop](./img/backward.png)](#top)
+## <a name="纯css横向、垂直滑动">纯css横向、竖直滑动</a>[![bakTop](/img/backward.png)](#top)
 横向
 >
     * {
@@ -2591,7 +2487,7 @@ firefox
     }    
 
 
-## <a name="纯css页面滚动进度条">纯css页面滚动进度条</a>[![bakTop](./img/backward.png)](#top)
+## <a name="纯css页面滚动进度条">纯css页面滚动进度条</a>[![bakTop](/img/backward.png)](#top)
 >
     *{
       margin: 0;

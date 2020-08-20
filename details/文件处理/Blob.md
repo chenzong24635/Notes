@@ -65,12 +65,64 @@ blob.text().then(res=>{
 ### ArrayBuffer
 
 对象用于表示通用的，固定长度的原始二进制数据缓冲区。你不能直接操纵 ArrayBuffer 的内容，而是需要创建一个类型化数组对象或 DataView 对象，该对象以特定格式表示缓冲区，并使用该对象读取和写入缓冲区的内容。
+```js
+const buffer = new ArrayBuffer(8);
+// ArrayBuffer 对象有实例属性 byteLength ，表示当前实例占用的内存字节长度（单位字节）
+console.log(buffer.byteLength);
+
+```
+
+### [DataView](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+new DataView(buffer [, byteOffset [, byteLength]])
+* getInt8()
+从DataView起始位置以byte为计数的指定偏移量(byteOffset)处`获取`一个8-bit数(`一个字节`).
+
+* getUint8()
+从DataView起始位置以byte为计数的指定偏移量(byteOffset)处`获取`一个8-bit数(`无符号字节`).
+
+* setInt8()
+从DataView起始位置以byte为计数的指定偏移量(byteOffset)处`储存`一个8-bit数(一个字节).
+
+* setUint8()
+从DataView起始位置以byte为计数的指定偏移量(byteOffset)处储存一个8-bit数(无符号字节).
+
+* 还有其他方法 16、32、64
+
+
+```js
+let buffer = new ArrayBuffer(2);
+console.log(buffer.byteLength); // 2
+let dataView = new DataView(buffer);
+dataView.setInt8(0, 1);
+dataView.setInt8(1, 2);
+console.log(dataView.getInt8(0)); // 1
+console.log(dataView.getInt8(1)); // 2
+console.log(dataView.getInt16(0)); // 258
+
+```
+
+
+### [TypedArray](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)
+TypedArray对象描述了一个底层的二进制数据缓存区（binary data buffer）的一个类数组视图（view）。
+
+与DataView视图的一个区别是，它不是一个构造函数，而是一组构造函数，代表不同的数据格式。
+
+```js
+const buffer = new ArrayBuffer(8);
+console.log(buffer.byteLength); // 8
+const int8Array = new Int8Array(buffer);
+console.log(int8Array.length); // 8
+const int16Array = new Int16Array(buffer);
+console.log(int16Array.length); // 4
+
+```
+
 
 ### Blob，ArrayBuffer区别
 * 除非你需要使用 ArrayBuffer 提供的写入/编辑的能力，否则 Blob 格式可能是最好的。
 * Blob 对象是不可变的，而 ArrayBuffer 是可以通过 TypedArrays 或 DataView 来操作。
 * ArrayBuffer 是存在内存中的，可以直接操作。而 Blob 可以位于磁盘、高速缓存内存和其他不可用的位置。
-* 虽然 Blob 可以直接作为参数传递给其他函数，比如 window.URL.createObjectURL()。但是，你可能仍需要 FileReader 之类的 File API 才能与 Blob 一起使用。
+* 虽然 Blob 可以直接作为参数传递给其他函数，比如 window.URL.createObjectURL() （生成一个url地址）。但是，你可能仍需要 FileReader 之类的 File API 才能与 Blob 一起使用。
 
 ###  Blob => ArrayBuffer
 ```js

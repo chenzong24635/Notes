@@ -28,7 +28,7 @@ undefined的几种情况
 # undefined与null区别
 null和undefined只有文字形式，没有构造形式
 
-undefined:语义：不存在该数据；声明了变量，但未赋值或对象属性不存在
+undefined:语义：不存在该数据；声明了变量但未赋值或对象属性不存在或函数没有返回值
 null:语义：存在该数据，但未赋值； 表无值、无对象
 
 只有被定义才有可能为 null，未定义时为 undefined。  

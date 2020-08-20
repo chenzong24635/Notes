@@ -45,3 +45,18 @@ fr.onabort
 fr.onprogress
 >处理progress事件。该事件在读取Blob时触发。
 
+```html
+<input type="file" id='upload' />
+<script>
+document.getElementById('upload').addEventListener('change', function (e) {
+    var file = this.files[0];
+    const reader = new FileReader();
+    reader.onload = function () {
+        const result = reader.result;
+        console.log(result);
+    }
+    reader.readAsText(file);
+}, false);
+</script>
+
+```

@@ -29,9 +29,9 @@
 
 --------
 
-# <a name="微信小程序">微信小程序</a>[![bakTop](./img/backward.png)](#top)
+# <a name="微信小程序">微信小程序</a>[![bakTop](/img/backward.png)](#top)
 
-# <a name="生命周期">生命周期</a>[![bakTop](./img/backward.png)](#top)
+# <a name="生命周期">生命周期</a>[![bakTop](/img/backward.png)](#top)
 
 [App 注册小程序](https://developers.weixin.qq.com/miniprogram/dev/reference/api/App.html)
 >
@@ -58,9 +58,9 @@
 
 <img src="./img/wx-lifecycle.png" width="50%" />
 
-# <a name="常用方法、API">`常用方法、API`</a>[![bakTop](./img/backward.png)](#top)
+# <a name="常用方法、API">`常用方法、API`</a>[![bakTop](/img/backward.png)](#top)
 
-## <a name="路由跳转">路由跳转</a>[![bakTop](./img/backward.png)](#top)
+## <a name="路由跳转">路由跳转</a>[![bakTop](/img/backward.png)](#top)
 
 [文档](https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/route.html)
 [文档](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.switchTab.html)
@@ -83,7 +83,7 @@
 
     <navigator target="miniProgram" open-type="navigate" app-id="" path="" extra-data="" version="release">打开绑定的小程序</navigator>
 
-##  <a name="授权、获取用户信息">授权、获取用户信息</a>[![bakTop](./img/backward.png)](#top)
+##  <a name="授权、获取用户信息">授权、获取用户信息</a>[![bakTop](/img/backward.png)](#top)
 
 #### 授权
 >
@@ -141,7 +141,7 @@
       }
     }
 
-## <a name="小程序图片高度自适应">小程序图片高度自适应及swiper轮播图中</a>[![bakTop](./img/backward.png)](#top)
+## <a name="小程序图片高度自适应">小程序图片高度自适应及swiper轮播图中</a>[![bakTop](/img/backward.png)](#top)
 
 图片设置mode="widthFix"
 >
@@ -172,7 +172,7 @@ swiper轮播图中的图片自适应高度的方法
       this.height = swiperH // 设置高度
     },
 
-## <a name="图片懒加载">图片懒加载</a>[![bakTop](./img/backward.png)](#top)
+## <a name="图片懒加载">图片懒加载</a>[![bakTop](/img/backward.png)](#top)
 >
     <block :key="item.id" v-for="(item,index) in lists">
       <view>
@@ -197,7 +197,7 @@ swiper轮播图中的图片自适应高度的方法
       this.listIndex = listIndex
     },
 
-## <a name="上拉加载，下拉刷新">上拉加载，下拉刷新</a>[![bakTop](./img/backward.png)](#top)
+## <a name="上拉加载，下拉刷新">上拉加载，下拉刷新</a>[![bakTop](/img/backward.png)](#top)
 ### 上拉加载 onReachBottom()
 监听用户上拉触底事件,在触发距离内滑动期间，本事件只会被触发一次
 
@@ -238,7 +238,7 @@ swiper轮播图中的图片自适应高度的方法
 当处理完数据刷新后，wx.stopPullDownRefresh可以停止当前页面的下拉刷新。
 
 
-##  <a name="分享">分享onShareAppMessage(Object object)</a>[![bakTop](./img/backward.png)](#top)
+##  <a name="分享">分享onShareAppMessage(Object object)</a>[![bakTop](/img/backward.png)](#top)
 
 监听用户点击页面内转发按钮（button 组件 open-type="share"）或右上角菜单“转发”按钮的行为，并自定义转发内容。
 
@@ -253,7 +253,7 @@ swiper轮播图中的图片自适应高度的方法
       }
     }
 
-##  <a name="tabBar右上角添加文本">tabBar右上角添加文本:setTabBarBadge()</a>[![bakTop](./img/backward.png)](#top)
+##  <a name="tabBar右上角添加文本">tabBar右上角添加文本:setTabBarBadge()</a>[![bakTop](/img/backward.png)](#top)
 >
     wepy.setTabBarBadge({
       index: 1, //tabBar 的哪一项，从左边算起
@@ -263,7 +263,7 @@ swiper轮播图中的图片自适应高度的方法
       complete:function(res){} //调用结束的回调函数（无论成功、失败）
     })
  
-##  <a name="地图调用">地图调用</a>[![bakTop](./img/backward.png)](#top)
+##  <a name="地图调用">地图调用</a>[![bakTop](/img/backward.png)](#top)
 [位置api](https://developers.weixin.qq.com/miniprogram/dev/api/location/wx.openLocation.html)
 
 >
@@ -298,7 +298,7 @@ swiper轮播图中的图片自适应高度的方法
       }
     })
 
-##  <a name="支付">小程序调起微信支付</a>[![bakTop](./img/backward.png)](#top)
+##  <a name="支付">小程序调起微信支付</a>[![bakTop](/img/backward.png)](#top)
 [文档](https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=7_7&index=5)
 
 >
@@ -315,7 +315,7 @@ swiper轮播图中的图片自适应高度的方法
     })
 
 
-##  <a name="分包加载">[分包加载](https://developers.weixin.qq.com/miniprogram/dev/framework/subpackages/basic.html)</a>[![bakTop](./img/backward.png)](#top)
+##  <a name="分包加载">[分包加载](https://developers.weixin.qq.com/miniprogram/dev/framework/subpackages/basic.html)</a>[![bakTop](/img/backward.png)](#top)
 在小程序启动时，默认会下载主包并启动主包内页面，如果用户需要打开分包内某个页面，客户端会把对应分包下载下来，下载完成后再进行展示。  
 进入主包页面时，需要下载的代码量小了很多，白屏时间更短，体验更佳。
 
@@ -360,4 +360,4 @@ swiper轮播图中的图片自适应高度的方法
 
 # <a name=""></a>
 
-# <a name="微信公众号">微信公众号</a>[![bakTop](./img/backward.png)](#top)
+# <a name="微信公众号">微信公众号</a>[![bakTop](/img/backward.png)](#top)

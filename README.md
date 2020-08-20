@@ -83,7 +83,7 @@
       top: 0;
       bottom:0;
       right: 0;
-      background:url('./img/backward.png') no-repeat 100% 100% / cover;
+      background:url('/img/backward.png') no-repeat 100% 100% / cover;
       width:30px;
       height:30px;
     }
@@ -116,8 +116,8 @@
       <a id="5">跳转到这</a>
 
       里面也能放图片
-      [![img](./img/backward.png)](#backward)
-      [<img src="./img/backward.png" width="20px" />](#backward)
+      [![img](/img/backward.png)](#backward)
+      [<img src="/img/backward.png" width="20px" />](#backward)
 
   >
 

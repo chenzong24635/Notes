@@ -7,7 +7,7 @@
 * <a href="#概述">概述</a>
 * <a href="#属性、方法">属性、方法</a>
 
-# <a name="概述">概述</a>[![bakTop](../img/backward.png)](#top)
+# <a name="概述">概述</a>[![bakTop](./img/backward.png)](#top)
 
 是一种数据类型; 不能 new,因为 Symbol 是一个原始类型的值，不是对象。
 
@@ -38,7 +38,7 @@ Symbol值作为对象属性名时，只能用方括号运算符([])读取，不�
 
 Symbol值作为对象属性名时，不会被常规方法遍历得到，可利用此特性为对象定义非私有但又只用于内部的方法
 
-# <a name="属性、方法">属性、方法</a>[![bakTop](../img/backward.png)](#top)
+# <a name="属性、方法">属性、方法</a>[![bakTop](./img/backward.png)](#top)
 
 * Symbol.length 长度属性，值为0
 

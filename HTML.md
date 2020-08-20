@@ -55,9 +55,9 @@
 
 * <a href="#HTML 5.2">HTML 5.2新增标签、属性</a>
 
-# <a name="HTML">**HTML**</a>[![bakTop](./img/backward.png)](#top)
+# <a name="HTML">**HTML**</a>[![bakTop](/img/backward.png)](#top)
 
-## <a name="XHTML、HTML区别">XHTML、HTML区别</a>[![bakTop](./img/backward.png)](#top)
+## <a name="XHTML、HTML区别">XHTML、HTML区别</a>[![bakTop](/img/backward.png)](#top)
 
 HTML: 超文本标记语言（HyperText Markup Language），是一种基于标准通用标记语言（SGML）的应用，是一种非常灵活的置标语言，   
 XHTML: 可扩展的超文本标记语言（Extensible HyperText Markup Language），基于XML(XML是SGML的一个子集)。  
@@ -70,7 +70,7 @@ XHTML特性：
 * XHTML是作为一种xml应用被重新定义的HTML  
 * XHTML文档必须拥有根元素、元素必须被关闭、元素必须被正确地嵌套、标签应该使用小写
 
-## <a name="语义化">语义化及好处</a>[![bakTop](./img/backward.png)](#top)
+## <a name="语义化">语义化及好处</a>[![bakTop](/img/backward.png)](#top)
 
 语义化是指通过HTML标记表示页面包含的信息，包含了HTML标签的语义化和css命名的语义化。
 
@@ -84,20 +84,20 @@ css命名的语义化是指：为html标签添加有意义的class，id补充未
 * 有利于开发和维护，语义化更具可读性  
 * 方便其他设备解析，如盲人阅读器根据语义渲染网页
 
-## <a name="div较table优点">div较table优点</a>[![bakTop](./img/backward.png)](#top)
+## <a name="div较table优点">div较table优点</a>[![bakTop](/img/backward.png)](#top)
 * 加快了页面的加载速度（在IE中要将整个table加载完了才显示内容）
 * 符合W3C标准，代码结构清晰明了，结构、样式和行为分离，带来足够好的可维护性。
 * 对SEO搜索引擎更加友好，
 
 
 
-## <a name="HTML5 为什么只需要写">HTML5 为什么只需要写 \<!DOCTYPE HTML\></a>[![bakTop](./img/backward.png)](#top)
+## <a name="HTML5 为什么只需要写">HTML5 为什么只需要写 \<!DOCTYPE HTML\></a>[![bakTop](/img/backward.png)](#top)
 
 HTML5 不基于 SGML，因此不需要对DTD进行引用，但是需要 DOCTYPE 来规范浏览器的行为（让浏览器按照它们应该的方式来运行）
 
 HTML4.01基于SGML,所以需要对DTD进行引用，才能告知浏览器文档所使用的文档类型。
 
-## <a name="HTML5新标签">[HTML5新标签](https://www.w3school.com.cn/html/html5_new_elements.asp)</a>[![bakTop](./img/backward.png)](#top)
+## <a name="HTML5新标签">[HTML5新标签](https://www.w3school.com.cn/html/html5_new_elements.asp)</a>[![bakTop](/img/backward.png)](#top)
 >
     <header>	定义了文档的头部区域
     <article>	定义页面独立的内容区域。
@@ -176,7 +176,7 @@ HTML4.01基于SGML,所以需要对DTD进行引用，才能告知浏览器文档�
     step
 
 
-## <a name="Doctype作用 标准模式、混杂模式区别">Doctype作用？标准模式、混杂模式区别</a>[![bakTop](./img/backward.png)](#top)
+## <a name="Doctype作用 标准模式、混杂模式区别">Doctype作用？标准模式、混杂模式区别</a>[![bakTop](/img/backward.png)](#top)
 
 documnet type(文档类型的简写),位于HTML文档的第一行，告知浏览器用什么规范解析
 DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
@@ -203,7 +203,7 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 
     
 
-## <a name="渐进增强与优雅降级">渐进增强与优雅降级-----开发方式，设计理念</a>[![bakTop](./img/backward.png)](#top)
+## <a name="渐进增强与优雅降级">渐进增强与优雅降级-----开发方式，设计理念</a>[![bakTop](/img/backward.png)](#top)
 
 渐进增强：针对低版本浏览器构建页面，保证核心功能。再针对高级浏览器进行改进和追加功能以达到更好的用户体验
 
@@ -214,7 +214,7 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 * 渐进增强则从基础的的版本开始，并不断扩充，以适应未来环境的需要。  
 * 优雅降级意味着往回看；而渐进增强则意味着朝前看，同时保证其根基处于安全地带
 
-## <a name="块级元素、内联元素">块级元素、内联元素（行内元素、行内块级元素）</a>[![bakTop](./img/backward.png)](#top)
+## <a name="块级元素、内联元素">块级元素、内联元素（行内元素、行内块级元素）</a>[![bakTop](/img/backward.png)](#top)
 
 * 块级元素：display:block
 >
@@ -263,7 +263,7 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 
 ![替换元素](/img/替换元素display值.jpg)
 
-## <a name="HTML全局属性有哪些">HTML全局属性有哪些</a>[![bakTop](./img/backward.png)](#top)
+## <a name="HTML全局属性有哪些">HTML全局属性有哪些</a>[![bakTop](/img/backward.png)](#top)
 
 * id: 元素id，文档内唯一  
 * class: 为元素设置类标识  
@@ -283,7 +283,7 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
       firefox ctrl + alt + n即可聚焦到该input
       IE alt + n | ctrl + alt + n
 
-## <a name="src和href的区别">src和href的区别</a>[![bakTop](./img/backward.png)](#top)
+## <a name="src和href的区别">src和href的区别</a>[![bakTop](/img/backward.png)](#top)
 
 * href（Hypertext Reference） 
 
@@ -293,11 +293,11 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 
 是指向外部资源的位置，指向的内容将会嵌入到文档中当前标签所在位置；在请求src资源时会将其指向的资源下载并应用到文档内，例如js脚本，img图片和frame等元素。 
 
-当浏览器解析到该元素时，会暂停其他资源的下载和处理，直到将该资源加载、编译、执行完毕，图片和框架等元素也如此，类似于将所指向资源嵌入当前标签内。这也是为什么将js脚本放在底部而不是头部。
+当浏览器解析到src时，会暂停其他资源的下载和处理，直到将该资源加载、编译、执行完毕，图片和框架等元素也如此，类似于将所指向资源嵌入当前标签内。这也是为什么将js脚本放在底部而不是头部。
 
 `总而言之，src用于替换当前元素；href用于在当前文档和引用资源之间建立联系。`
 
-## <a name="浏览器内核、私有化前缀">浏览器内核、私有化前缀</a>[![bakTop](./img/backward.png)](#top)
+## <a name="浏览器内核、私有化前缀">浏览器内核、私有化前缀</a>[![bakTop](/img/backward.png)](#top)
 
 #### 主要分为：
 * 渲染引擎(layout engineer或Rendering Engine)
@@ -322,7 +322,7 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 | 私有化前缀 | -webkit- | -moz- | -ms- | -webkit- | -webkit- |
 
 
-## <a name="web存储">cookies、sessionStorage 、和 localStorage 的区别</a>[![bakTop](./img/backward.png)](#top)
+## <a name="web存储">cookies、sessionStorage 、和 localStorage 的区别</a>[![bakTop](/img/backward.png)](#top)
 
 https://zhuanlan.zhihu.com/p/61704951
 
@@ -406,7 +406,7 @@ token是用户身份的验证方式，我们通常叫它：令牌。最简单的
     对比二：如果没有这个 token 值, 则说明没有登录成功.
     对比三：如果 token 值不同: 说明原来的登录信息已经失效,让用户重新登录.
 
-## <a name="HTML中的字符实体">HTML中的字符实体</a>[![bakTop](./img/backward.png)](#top)
+## <a name="HTML中的字符实体">HTML中的字符实体</a>[![bakTop](/img/backward.png)](#top)
 HTML中某些字符是预留的,预留字符必须被替换为字符实体。
 
 在 HTML 中不能使用小于号（<）和大于号（>），这是因为浏览器会误认为它们是标签。
@@ -427,14 +427,14 @@ HTML中某些字符是预留的,预留字符必须被替换为字符实体。
 
 [更多](https://www.w3cschool.cn/htmltags/ref-entities.html)
 
-## <a name="HTML5的离线储存">HTML5的离线储存</a>[![bakTop](./img/backward.png)](#top)
+## <a name="HTML5的离线储存">HTML5的离线储存</a>[![bakTop](/img/backward.png)](#top)
 
 [MDN - 介绍](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Using_the_application_cache)
 >
     离线存储可以将站点的一些文件存储在本地，在没有网络的时候还是可以访问到以缓存的对应的站点页面，其中这些文件可以包括html，js，css，img等等文件，但其实即使在有网络的时候，浏览器也会优先使用已离线存储的文件，返回一个200（from cache）头。这跟HTTP的缓存使用策略是不同的。
 
 
-## <a name="table优缺点">table优缺点</a>[![bakTop](./img/backward.png)](#top)
+## <a name="table优缺点">table优缺点</a>[![bakTop](/img/backward.png)](#top)
 优点：
 * 写表格方便快捷，样式统一，居中对齐
 * 兼容性好
@@ -451,7 +451,7 @@ HTML中某些字符是预留的,预留字符必须被替换为字符实体。
 
 
 
-## <a name="iframe缺点">iframe优缺点</a>[![bakTop](./img/backward.png)](#top)
+## <a name="iframe缺点">iframe优缺点</a>[![bakTop](/img/backward.png)](#top)
 优点：
 * 实现无刷新文件上传；
 * 跨域通信；
@@ -464,7 +464,7 @@ HTML中某些字符是预留的,预留字符必须被替换为字符实体。
 
 通过javascript动态给iframe添加src属性值，这样可以解决1,2两个问题。
 
-## <a name="Video">Video</a>[![bakTop](./img/backward.png)](#top)
+## <a name="Video">Video</a>[![bakTop](/img/backward.png)](#top)
 [](https://juejin.im/post/5e54c3b4f265da575477918f)
 
 ```html
@@ -491,15 +491,15 @@ HTML中某些字符是预留的,预留字符必须被替换为字符实体。
 </video>
 ```
 
-## <a name="link标签属性">link标签属性</a>[![bakTop](./img/backward.png)](#top)
-### <a name="网页标题引入图标">网页标题引入图标</a>[![bakTop](./img/backward.png)](#top)
+## <a name="link标签属性">link标签属性</a>[![bakTop](/img/backward.png)](#top)
+### <a name="网页标题引入图标">网页标题引入图标</a>[![bakTop](/img/backward.png)](#top)
 >
 
     <link rel="shortcut icon" href="favicon.ico" type="images/x-icon" />
 
     <link rel="icon" href="favicon.gif" type="image/gif" />
 
-### <a name="预加载页面资源prefetch、prefetch">预加载页面资源prefetch、prefetch</a>[![bakTop](./img/backward.png)](#top)
+### <a name="预加载页面资源prefetch、prefetch">预加载页面资源prefetch、prefetch</a>[![bakTop](/img/backward.png)](#top)
 
 #### dns-prefetch
 ```html
@@ -565,7 +565,7 @@ main.js会加载两次
 ```
 
 
-## <a name="base标签">base标签</a>[![bakTop](./img/backward.png)](#top)
+## <a name="base标签">base标签</a>[![bakTop](/img/backward.png)](#top)
 >
     <base href="www.aaa.com" target="_blank"/>
 
@@ -573,7 +573,7 @@ main.js会加载两次
     <base>设置的target属性 ，a链接也会继承
 
 
-## <a name="meta标签属性">meta标签属性</a>[![bakTop](./img/backward.png)](#top)
+## <a name="meta标签属性">meta标签属性</a>[![bakTop](/img/backward.png)](#top)
 [HTML meta标签总结与属性使用介绍](https://segmentfault.com/a/1190000004279791)
 
 * 必要属性: content 
@@ -720,7 +720,7 @@ meta对于移动端的一些特殊属性
     <!-- QQ应用模式 -->
     <meta name="x5-page-mode" content="app">
 ```
-## <a name="通过meta代码强制浏览器使用WebKit内核极速模式">通过meta代码强制浏览器使用WebKit内核极速模式</a>[![bakTop](./img/backward.png)](#top)
+## <a name="通过meta代码强制浏览器使用WebKit内核极速模式">通过meta代码强制浏览器使用WebKit内核极速模式</a>[![bakTop](/img/backward.png)](#top)
 
 ```html
 <!-- 强制Chromium内核，作用于360浏览器、QQ浏览器等国产双核浏览器 -->
@@ -737,7 +737,7 @@ meta对于移动端的一些特殊属性
 ```
 
 
-## <a name="IE hack">IE hack</a>[![bakTop](./img/backward.png)](#top)
+## <a name="IE hack">IE hack</a>[![bakTop](/img/backward.png)](#top)
 >
     <!--[if !IE]>除IE外都可识别<![endif]-->
     <!--[if IE]> 所有的IE可识别 <![endif]-->
@@ -750,7 +750,7 @@ meta对于移动端的一些特殊属性
     <!--[if IE 8]> 仅IE8可识别 <![endif]-->
     <!--[if IE 9]> 仅IE9可识别 <![endif]-->
 
-## <a name="aria与role">aria与role</a>[![bakTop](./img/backward.png)](#top)
+## <a name="aria与role">aria与role</a>[![bakTop](/img/backward.png)](#top)
 >
     这些都是HTML5针对html tag增加的属性，一般是为不方便的人士提供的功能，比如屏幕阅读器。
 
@@ -765,12 +765,12 @@ meta对于移动端的一些特殊属性
     辅助工具就会知道，这个div实际上是个checkbox的角色，为选中状态。
 
 
-## <a name="CSS和JS的位置会影响页面效率，为什么">CSS和JS的位置会影响页面效率，为什么？</a>[![bakTop](./img/backward.png)](#top)
+## <a name="CSS和JS的位置会影响页面效率，为什么">CSS和JS的位置会影响页面效率，为什么？</a>[![bakTop](/img/backward.png)](#top)
 css在加载过程中不会影响到DOM树的生成，但是会影响到Render树的生成，进而影响到layout，所以一般来说，style的link标签需要尽量放在head里面，因为在解析DOM树的时候是自上而下的，而css样式又是通过异步加载的，这样的话，解析DOM树下的body节点和加载css样式能尽可能的并行，加快Render树的生成的速度。
 
 js脚本应该放在底部，原因在于js线程与GUI渲染线程是互斥的关系，如果js放在首部，当下载执行js的时候，会影响渲染行程绘制页面，js的作用主要是处理交互，而交互必须得先让页面呈现才能进行，所以为了保证用户体验，尽量让页面先绘制出来。
 
-## <a name="未使用自适应写的PC页面在手机上显示不全的问题">未使用自适应写的PC页面在手机上显示不全的问题</a>[![bakTop](./img/backward.png)](#top)
+## <a name="未使用自适应写的PC页面在手机上显示不全的问题">未使用自适应写的PC页面在手机上显示不全的问题</a>[![bakTop](/img/backward.png)](#top)
 
 原因：
 >
@@ -784,7 +784,7 @@ js脚本应该放在底部，原因在于js线程与GUI渲染线程是互斥的�
 
 
 
-# <a name="HTML 5.2">HTML 5.2新增标签、属性</a>[![bakTop](./img/backward.png)](#top)
+# <a name="HTML 5.2">HTML 5.2新增标签、属性</a>[![bakTop](/img/backward.png)](#top)
 
 [What’s New in HTML 5.2?](https://bitsofco.de/whats-new-in-html-5-2/)
 

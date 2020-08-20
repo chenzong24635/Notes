@@ -72,7 +72,7 @@
 </details>
 
 
-# <a name="了解">了解</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="了解">了解</a>[![bakTop](/img/backward.png)](#top)  
 Vue (读音 /vjuː/，类似于 view) 是一套用于构建用户界面的渐进式框架。
 
 与其它大型框架不同的是，Vue 被设计为可以自底向上逐层应用。Vue 的核心库只关注视图层，不仅易于上手，还便于与第三方库或既有项目整合
@@ -141,7 +141,7 @@ MVVM只能数据驱动视图，视图更改数据，而不能通过其他方式�
 ## Vue的运行机制简述 
 [参考](https://juejin.im/post/5cd8a7c1f265da037a3d0992#heading-14)
 
-# <a name="MVC、MVP、MVVM">MVC、MVP、MVVM</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="MVC、MVP、MVVM">MVC、MVP、MVVM</a>[![bakTop](/img/backward.png)](#top)  
 [MVC，MVP 和 MVVM 的图示](http://www.ruanyifeng.com/blog/2015/02/mvcmvp_mvvm.html)--阮一峰
 
 [基于Vue实现一个简易MVVM](https://juejin.im/post/5cd8a7c1f265da037a3d0992)
@@ -175,7 +175,7 @@ MVVM优点:
 可测试。界面素来是比较难于测试的，而现在测试可以针对ViewModel来写。
 ```
 
-# <a name="SPA">SPA SSR SEO</a>[![bakTop](./img/backward.png)](#top)    
+# <a name="SPA">SPA SSR SEO</a>[![bakTop](/img/backward.png)](#top)    
 [浅谈SPA、SEO、SSR](https://www.jianshu.com/p/fcb98533bc18)
 
 ## SPA（Single Page Application）单页面应用
@@ -240,7 +240,7 @@ SEO是一种通过了解搜索引擎的运作规则（如何抓取网站页面�
 ![客户端渲染](./img/Vue/客户端渲染.png)
 
 
-# <a name="生命周期">生命周期</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="生命周期">生命周期</a>[![bakTop](/img/backward.png)](#top)  
 [官网-生命周期钩子](https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%92%A9%E5%AD%90)
 
 [Vue2.0生命周期](https://segmentfault.com/a/1190000008010666)  
@@ -373,17 +373,17 @@ beforeDestroy -> destroyed
     子 beforeDestroy -> 子 destroyed -> 
     父 destroyed
 
-# <a name="Vue事件绑定原理">Vue事件绑定原理</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="Vue事件绑定原理">Vue事件绑定原理</a>[![bakTop](/img/backward.png)](#top)  
 
 Vue的事件分为2种，一种是原生事件绑定，还有一种是组件的事件绑定。
 * 原生dom事件的绑定，采用的是addEventListener实现；
 * 组件事件绑定是通过Vue自定义的$on实现的
 
 
-# <a name="响应式数据原理、实现">响应式数据原理、实现:Object.defineProperty、proxy</a>[![bakTop](./img/backward.png)](#top)    
+# <a name="响应式数据原理、实现">响应式数据原理、实现:Object.defineProperty、proxy</a>[![bakTop](/img/backward.png)](#top)    
 [响应式原理](/details/Vue/Vue2-Source/响应式原理.md)
 
-# <a  name="v-model原理">v-model原理</a>[![bakTop](./img/backward.png)](#top)
+# <a  name="v-model原理">v-model原理</a>[![bakTop](/img/backward.png)](#top)
 在 vue 项目中主要使用 v-model 指令在表单 input、textarea、select 等元素上创建双向数据绑定，
 v-model 本质上不过是语法糖，v-model 在内部为不同的输入元素使用不同的属性并抛出不同的事件：
 
@@ -428,7 +428,7 @@ v-model 本质上不过是语法糖，v-model 在内部为不同的输入元素�
 ```
 [Vue开发技巧+性能优化#自定义组件双向绑定](/details/Vue/Vue开发技巧+性能优化.md/#自定义组件双向绑定)
 
-# <a name="单向数据流">单向数据流</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="单向数据流">单向数据流</a>[![bakTop](/img/backward.png)](#top)  
 父组件可以向子组件传递数据，但是子组件不能直接修改父组件的状态。  
 防止从子组件意外改变父级组件的状态，从而导致你的应用的数据流向难以理解。
 
@@ -454,7 +454,7 @@ v-model 本质上不过是语法糖，v-model 在内部为不同的输入元素�
   }
   ```
 
-# <a name="computed watch methods">computed watch methods用法，区别</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="computed watch methods">computed watch methods用法，区别</a>[![bakTop](/img/backward.png)](#top)  
 [computed和watch的细节全面分析](https://segmentfault.com/a/1190000012948175)
 
 [官网-watch](https://cn.vuejs.org/v2/api/#watch)
@@ -614,7 +614,7 @@ export default {
 }
 ```
 
-# <a name="解决对象新增属性不能响应的问题">$set() 解决对象新增属性不能响应的问题</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="解决对象新增属性不能响应的问题">$set() 解决对象新增属性不能响应的问题</a>[![bakTop](/img/backward.png)](#top)  
 [Vue文档-深入响应式原理](https://cn.vuejs.org/v2/guide/reactivity.html)
 
 在实例初始化的时候，遍历data里所有的属性，并使用 Object.defineProperty 把这些属性全部转为 getter/setter。  
@@ -664,7 +664,7 @@ addObjB () {
 $set()方法相当于手动的去把obj.b处理成一个响应式的属性，此时视图也会跟着改变了：
 
 
-# <a name="Vue检测数组的变动">Vue检测数组的变动</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="Vue检测数组的变动">Vue检测数组的变动</a>[![bakTop](/img/backward.png)](#top)  
 [Vue文档-深入响应式原理](https://cn.vuejs.org/v2/guide/reactivity.html)  
 
 vue使用了函数劫持的方式，重写了数组部分方法，Vue将data中的数组进行了原型链重写，指向了自己定义的数组原型方法，当调用数组api时，可以通知依赖更新。
@@ -713,7 +713,7 @@ vm.items.splice(indexOfItem, 1, newValue)
 vm.items.splice(newLength)
 ```
 
-# <a name="组件中data为什么是一个函数">为什么组件中的 data 必须是一个函数，然后 return 一个对象，而 new Vue 实例里，data 可以直接是一个对象？</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="组件中data为什么是一个函数">为什么组件中的 data 必须是一个函数，然后 return 一个对象，而 new Vue 实例里，data 可以直接是一个对象？</a>[![bakTop](/img/backward.png)](#top)  
 [组件中的data为什么是函数](https://juejin.im/post/5e8dd5266fb9a03c703fb168#heading-9)
 
 [风格指南](https://cn.vuejs.org/v2/style-guide/#%E7%BB%84%E4%BB%B6%E6%95%B0%E6%8D%AE%E5%BF%85%E8%A6%81)
@@ -728,7 +728,7 @@ vm.items.splice(newLength)
 而 new Vue 的实例，是不会被复用的，因此不存在引用对象的问题。
 
 
-# <a name="修饰符">修饰符</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="修饰符">修饰符</a>[![bakTop](/img/backward.png)](#top)  
 [事件修饰符](https://cn.vuejs.org/v2/guide/events.html#%E4%BA%8B%E4%BB%B6%E4%BF%AE%E9%A5%B0%E7%AC%A6)
 * .native 将原生事件绑定到组件
 * .stop 阻止冒泡
@@ -761,7 +761,7 @@ vm.items.splice(newLength)
 * .right
 
 
-# <a name="指令">指令</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="指令">指令</a>[![bakTop](/img/backward.png)](#top)  
 [指令](https://cn.vuejs.org/v2/api/#%E6%8C%87%E4%BB%A4)
 * v-text 渲染文本
 * v-html 渲染html
@@ -779,7 +779,7 @@ vm.items.splice(newLength)
 * v-once 仅渲染一次
 
 
-# <a name="slot">slot插槽</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="slot">slot插槽</a>[![bakTop](/img/backward.png)](#top)  
 [官网-插槽](https://cn.vuejs.org/v2/guide/components-slots.html)
 
 父组件来控制 插槽显示状态、内容  
@@ -909,7 +909,7 @@ export default {
 </template>
 ```
 
-# <a name="组件中key作用">组件中key作用</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="组件中key作用">组件中key作用</a>[![bakTop](/img/backward.png)](#top)  
 
 [写 React / Vue 项目时为什么要在列表组件中写 key，其作用是什么？](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/1)
 
@@ -974,14 +974,14 @@ key是给每一个vnode的唯一id,可以依靠key,更准确, 更快的拿到old
 为了标识独有dom，key值一般我们取类似id这种唯一且 不变的变量，如果仅为了区分dom，元素不会频繁更新, 则可使用index索引
 
 
-# <a name="虚拟DOM">虚拟 DOM</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="虚拟DOM">虚拟 DOM</a>[![bakTop](/img/backward.png)](#top)  
 [源码解析](\details\Vue\Vue2-Source\虚拟DOM.md)
 
-# <a name="Vue模板编译过程">Vue模板编译过程</a>[![bakTop](./img/backward.png)](#top) 
+# <a name="Vue模板编译过程">Vue模板编译过程</a>[![bakTop](/img/backward.png)](#top) 
 [源码解析](\details\Vue\Vue2-Source\模板编译.md)
 
 
-# <a name="Vue.use,Vue.extend,Vue.component,mixins,extends">Vue.use,Vue.extend,Vue.component,mixins,extends等</a>[![bakTop](./img/backward.png)](#top) 
+# <a name="Vue.use,Vue.extend,Vue.component,mixins,extends">Vue.use,Vue.extend,Vue.component,mixins,extends等</a>[![bakTop](/img/backward.png)](#top) 
 ### [Vue.use](https://cn.vuejs.org/v2/api/#Vue-use)
 * 参数：{Object | Function} plugin  
 * 用法：  
@@ -1155,7 +1155,7 @@ mixins 可多个， 钩子按照传入顺序依次调用
 执行顺序： extends > mixins > 实例自身
 
 
-# <a name="Vue.directive">Vue.directive</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="Vue.directive">Vue.directive</a>[![bakTop](/img/backward.png)](#top)  
 [自定义指令](https://doc.vue-js.com/v2/guide/custom-directive.html)
 
 ```js
@@ -1244,16 +1244,16 @@ Vue.directive('my-directive', {
 * oldVnode：上一个虚拟节点，仅在 update 和 componentUpdated 钩子中可用。
 
 
-# <a name="Vue的数据为什么频繁变化但只会更新一次">Vue采用异步渲染:Vue的数据为什么频繁变化但只会更新一次</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="Vue的数据为什么频繁变化但只会更新一次">Vue采用异步渲染:Vue的数据为什么频繁变化但只会更新一次</a>[![bakTop](/img/backward.png)](#top)  
 Vue 异步执行 DOM 更新。Vue在观察到数据变化时并不是直接更新DOM，而是开启一个队列，并缓冲在同一事件循环中发生的所有数据改变。在缓冲时会去除重复数据，从而避免不必要的计算和DOM操作。然后，在下一个事件循环tick中，Vue刷新队列并执行实际工作。
 
 由于VUE的数据驱动视图更新是异步的，即修改数据的当下，视图不会立刻更新，而是等同一事件循环中的所有数据变化完成之后，再统一进行视图更新。在同一事件循环中的数据变化后，DOM完成更新，立即执行nextTick(callback)内的回调。
 
-# <a name="nextTick">nextTick</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="nextTick">nextTick</a>[![bakTop](/img/backward.png)](#top)  
 
 [nextTick](/details/Vue/Vue2-Source/nextTick.md)
 
-# <a name="keep-alive">keep-alive</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="keep-alive">keep-alive</a>[![bakTop](/img/backward.png)](#top)  
 [keep-alive](https://cn.vuejs.org/v2/api/#keep-alive)
 
 [参考](https://juejin.im/post/5b2ce07ce51d45588a7dbf76)
@@ -1309,10 +1309,10 @@ export default[
 ```
 
 
-# <a name="路由vue-router">路由vue-router</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="路由vue-router">路由vue-router</a>[![bakTop](/img/backward.png)](#top)  
 https://router.vuejs.org/zh
 
-##  <a name="base">base</a>[![bakTop](./img/backward.png)](#top)  
+##  <a name="base">base</a>[![bakTop](/img/backward.png)](#top)  
 
     {
       path: '/a/:id?',  //访问路径, id表示路由参数 ，？表示路由参数可选（可传可不传)
@@ -1332,12 +1332,12 @@ https://router.vuejs.org/zh
           alias:'/home'
         }
     }
-##  <a name="this.$route 和 this.$router区别">this.$route 和 this.$router区别</a>[![bakTop](./img/backward.png)](#top)  
+##  <a name="this.$route 和 this.$router区别">this.$route 和 this.$router区别</a>[![bakTop](/img/backward.png)](#top)  
 
     this.$route  信息参数（query、prams）传参获取 --只读
     this.$router 功能函数，go()，push()等方法调用 --只写
 
-##  <a name="push(),replace(),go()">push(),replace(),go()</a>[![bakTop](./img/backward.png)](#top)  
+##  <a name="push(),replace(),go()">push(),replace(),go()</a>[![bakTop](/img/backward.png)](#top)  
 1. push()
 >
     this.$router.push(location, onComplete?, onAbort?) 
@@ -1380,7 +1380,7 @@ seeShare(){
 }
 ```
 
-##  <a name="页面跳转方法">页面跳转方法</a>[![bakTop](./img/backward.png)](#top)  
+##  <a name="页面跳转方法">页面跳转方法</a>[![bakTop](/img/backward.png)](#top)  
 `如果提供了 path，params会被忽略，所以用params方式传参要用name来引入`
 >
 
@@ -1430,12 +1430,12 @@ let routeData = this.$router.resolve({
 window.open(routeData.href, '_blank');
 ```
 
-##  <a name="页面url参数获取">页面url参数获取</a>[![bakTop](./img/backward.png)](#top)  
+##  <a name="页面url参数获取">页面url参数获取</a>[![bakTop](/img/backward.png)](#top)  
 >
     var param = this.$route.query; //query传参 获取方法
     var param = this.$route.params; //params传参 获取方法
 
-## <a name="导航守卫">导航守卫</a>[![bakTop](./img/backward.png)](#top)  
+## <a name="导航守卫">导航守卫</a>[![bakTop](/img/backward.png)](#top)  
 
 ### 全局前置守卫:beforeEach
 >
@@ -1560,7 +1560,7 @@ beforeRouteLeave (to, from, next) {
 }
 ```
 
-##  <a name="多个路由共用一个组件操作">多个路由共用一个组件,组件如何重新渲染</a>[![bakTop](./img/backward.png)](#top)  
+##  <a name="多个路由共用一个组件操作">多个路由共用一个组件,组件如何重新渲染</a>[![bakTop](/img/backward.png)](#top)  
 * router-view上加上一个唯一的key
 ```html
 <div id="app">
@@ -1591,7 +1591,7 @@ beforeRouteUpdate (to, from, next) {
 }
 ```
 
-##  <a name="单页面多路由区域操作">单页面多路由区域操作</a>[![bakTop](./img/backward.png)](#top)  
+##  <a name="单页面多路由区域操作">单页面多路由区域操作</a>[![bakTop](/img/backward.png)](#top)  
 router.js
 ```js
 export default new Router({
@@ -1627,7 +1627,7 @@ App.vue
 <router-view name="right" style="float:right;width:50%;background-color:#c0c;height:300px;"></router-view>
 ```
 
-##  <a name="刷新当前路由方法">刷新当前路由方法</a>[![bakTop](./img/backward.png)](#top)  
+##  <a name="刷新当前路由方法">刷新当前路由方法</a>[![bakTop](/img/backward.png)](#top)  
 
 * 相当于f5刷新，页面会有卡顿的情况
 ```js
@@ -1720,7 +1720,7 @@ computed: {
 ```
 
 
-##  <a name="mode">路由模式 hash | history区别</a>[![bakTop](./img/backward.png)](#top)  
+##  <a name="mode">路由模式 hash | history区别</a>[![bakTop](/img/backward.png)](#top)  
 [参考](https://juejin.im/post/5cd8d609e51d456e7b372155#heading-9)
 
 ### 什么是前端路由：  
@@ -1811,7 +1811,7 @@ popstate
 
  支持所有 JavaScript 运行环境，如 Node.js 服务器端。如果发现没有浏览器的 API，路由会自动强制进入这个模式.
 
-##  <a name="切换页面时自动滚动到顶部">切换页面时自动滚动到顶部</a>[![bakTop](./img/backward.png)](#top)  
+##  <a name="切换页面时自动滚动到顶部">切换页面时自动滚动到顶部</a>[![bakTop](/img/backward.png)](#top)  
 ```js
 //路由跳转后页面回到顶部
 new Router({
@@ -1869,7 +1869,7 @@ scrollToTop()
 * document.documentElement.scrollTop = 0
 
 
-##  <a name="切换页面时设置title">切换页面时设置title</a>[![bakTop](./img/backward.png)](#top)  
+##  <a name="切换页面时设置title">切换页面时设置title</a>[![bakTop](/img/backward.png)](#top)  
 ```js
 const router = new Router({
   routes:[...]
@@ -1889,15 +1889,15 @@ router.beforeEach((to, from, next) => {
 export default router
 ```
 
-# <a name="路由权限">路由权限</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="路由权限">路由权限</a>[![bakTop](/img/backward.png)](#top)  
 https://juejin.im/post/5b5bfd5b6fb9a04fdd7d687a
 
 
-# <a name="vuex">vuex</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="vuex">vuex</a>[![bakTop](/img/backward.png)](#top)  
 [详情](/details/Vue/Vuex.md)
 
 
-# <a name="vuex数据持久化">vuex数据持久化</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="vuex数据持久化">vuex数据持久化</a>[![bakTop](/img/backward.png)](#top)  
 ## 
 [vuex页面刷新数据丢失的解决办法](https://blog.csdn.net/guzhao593/article/details/81435342)
 
@@ -1967,10 +1967,10 @@ const store = new Vuex.Store({
 });
 ```
 
-# <a name="组件通信方法">组件通信方法</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="组件通信方法">组件通信方法</a>[![bakTop](/img/backward.png)](#top)  
 [组件通信方法](/details/Vue/组件通信.md)
 
-# <a name="vue-cli3配置">vue-cli3配置</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="vue-cli3配置">vue-cli3配置</a>[![bakTop](/img/backward.png)](#top)  
 [参考](https://blog.csdn.net/qq_36407748/article/details/80739787)
 
 [官网](https://cli.vuejs.org/zh/config/#%E5%85%A8%E5%B1%80-cli-%E9%85%8D%E7%BD%AE)
@@ -2103,10 +2103,10 @@ module.exports = {
 }
 ```  
 
-# <a name="vue项目性能优化">Vue开发技巧+性能优化</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="vue项目性能优化">Vue开发技巧+性能优化</a>[![bakTop](/img/backward.png)](#top)  
 [Vue开发技巧+性能优化](/details/Vue/Vue开发技巧+性能优化.md)
 
-# <a name="Vue其他">Vue其他</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="Vue其他">Vue其他</a>[![bakTop](/img/backward.png)](#top)  
 
 * Vue.version 当前vue版本
 
@@ -2160,7 +2160,7 @@ Vue.prototype.$log = window.console.log;
 <div>{{$log(info)}}</div>
 ```
 
-# <a name="UI组件">UI组件常见问题</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="UI组件">UI组件常见问题</a>[![bakTop](/img/backward.png)](#top)  
 * 组件事件触发不了  
 
 加.native`@key.native`
@@ -2189,7 +2189,7 @@ Vue.prototype.$log = window.console.log;
 
 
 
-# <a name="静态资源处理">静态资源处理</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="静态资源处理">静态资源处理</a>[![bakTop](/img/backward.png)](#top)  
 
 [参考](http://vuejs-templates.github.io/webpack/static.html)
 
@@ -2244,7 +2244,7 @@ data() {
       }
     }
 
-# <a name="打包时常见问题及解决">打包时常见问题及解决</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="打包时常见问题及解决">打包时常见问题及解决</a>[![bakTop](/img/backward.png)](#top)  
 
 ## vue中打包后出现css中文本超出部分隐藏显示省略号失效
 原因：webpack打包后-webkit-box-orient被移除，所以导致失效。
@@ -2263,7 +2263,7 @@ data() {
 }
 ```
 
-# <a name="rem">rem</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="rem">rem</a>[![bakTop](/img/backward.png)](#top)  
 >    
     npm install lib-flexible --save //安装flexible
     import 'lib-flexible' //在main.js中引入flexible
@@ -2292,7 +2292,7 @@ data() {
     font-size: 28px; /*px*/
 
 
-# <a name="vue3+ts">vue3+ts</a>[![bakTop](./img/backward.png)](#top)  
+# <a name="vue3+ts">vue3+ts</a>[![bakTop](/img/backward.png)](#top)  
 vue2 的typescript项目 基础下 vue add vue-next 升级到 vue3，将 .js 文件改为 .ts
 
 步骤
