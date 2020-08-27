@@ -122,14 +122,26 @@ str.lastIndexOf(searchValue[, fromIndex])：最后一次出现的指定值的索
 'undefined'.indexOf() // 0
 ```
 
+## <a name="search()">search()检索字符串</a>
+str.search(reg) 
+>检索字符串是否匹配RegExp 返回 匹配到字符串首次出现的索引 或 -1  ;会把字符串转换为正则   
+>不执行全局匹配，它将忽略标志 g。它同时忽略 regexp 的 lastIndex 属性，并且总是从字符串的开始进行检索，这意味着它总是返回 stringObject 的第一个匹配的位置。
+
+```js
+'abcdabc'.search('bc') // 1
+'abcdabc'.search(/bc/) // 1
+'Babcdabc'.search(/b/ig) // 0
+```
+
 ## <a name="charAt()">str.charAt(index)查找索引对应的字符</a>
-从一个字符串中返回指定的字符。
+从一个字符串中返回指定索引的字符。
 
 str.charAt(index)
 >index：整数，默认0
 
 ```js
-'abc'.charAt(1) // 'b'
+'abc'.charAt() // 'a'
+'abc'.charAt(0) // 'a'
 
 // 如果指定的 index 值超出了该范围，则返回一个空字符串。
 'abc'.charAt(111) // ''
@@ -148,7 +160,7 @@ str.charAt(index)
 ## <a name="slice()、substring()">slice()、substring()字符串截取</a>
 截取并返回字符串的一部分，且不会改动原字符串。
 
-str.slice(startIndex[, endIndex])  
+str.slice(startIndex[, endIndex])、  
 str.substring(startIndex[, endIndex])   
 >startIndex：从该索引（以 0 为基数）处开始提取原字符串中的字符。默认0。  
 
@@ -202,7 +214,7 @@ str.split(/(-)/)  //  ["ab","-", "cd"]
 
 ## <a name="concat()">concat()字符串拼接</a>
 str.concat(string2, string3[, ..., stringN])  
-将一个或多个字符串与原字符串连接合并，形成一个新的字符串并返回。
+>将一个或多个字符串与原字符串连接合并，形成一个新的字符串并返回。
 
 ```js
 a = 'a'
@@ -213,7 +225,7 @@ b = a.concat('b','c') //"abc"
 判断一个字符串是否包含在另一个字符串中，根据情况返回 true 或 false。
 
 str.includes(searchString[, index])
->searchString:要搜索的子字符串。
+>searchString:要搜索的子字符串。  
 
 >index:可选。搜索开始位置。默认 0 
 
@@ -221,8 +233,8 @@ str.includes(searchString[, index])
 var str = 'To be, or not to be, that is the question.';
 
 str.includes('To be')   // true
-str.includes('TO BE')     // false
 str.includes('To be', 1)  // false
+str.includes('TO BE')     // false
 ```
 
 ## <a name="startWith()、endWith()">startWith()、endWith()判断是否以某字符开头、结尾</a>
@@ -230,7 +242,7 @@ str.includes('To be', 1)  // false
 
 str.startsWith(searchString[, index])、
 str.endsWith(searchString[, index])
->searchString:要搜索的子字符串。
+>searchString:要搜索的子字符串。  
 
 >index:可选。搜索开始位置。默认 0 、str.length。
 
@@ -257,7 +269,7 @@ str.padEnd(targetLength [, padString])
 填充字符串。如果字符串太长，使填充后的字符串长度超过了目标长度，则只保留最左侧的部分，其他部分会被截断。默认" "
 
 ```js
-'abc'.padStart(10);          // "       abc"
+'abc'.padStart(10);        // "       abc"
 'abc'.padEnd(10);          // "abc       "
 'abc'.padEnd(10, "foo");   // "abcfoofoof"
 'abc'.padEnd(6, "123456"); // "abc123"
@@ -269,20 +281,11 @@ str.repeat(n)
 >n:[0, +∞) 的整数。重复字符串次数。
 
 ```js
-"abc".repeat(0) // ""
-"abc".repeat(1) // "abc"
-"abc".repeat(2) // "abcabc"
+"abc".repeat(0)     // ""
+"abc".repeat(1)     // "abc"
+"abc".repeat(2)     // "abcabc"
 "abc".repeat('2.6') // "abcabc"
-"abc".repeat('2.6a') // ""
-```
-
-## <a name="search()">search()检索字符串</a>
-检索字符串是否匹配RegExp 返回 匹配到字符串首次出现的索引 或 -1  
-
-str.search(reg) 会把字符串转换为正则  
-```js
-'ab'.search('a') // 0
-'ab'.search(/b/) // 1
+"abc".repeat('2.6a')// ""
 ```
 
 ## <a name="match()、matchAll()">match()、matchAll()检索字符串</a>
@@ -290,32 +293,55 @@ str.search(reg) 会把字符串转换为正则
 * str.match(reg|str)   
 捕获匹配的字符串；若全局搜索（g）则捕获所有匹配的字符 ，否则返回首个匹配值（与exce方法一致）会返回捕获组；返回数组或null 
 
+match为全局搜索（使用g）
+  返回值：  
+  >
+    返回与完整正则表达式匹配的所有结果，但不会返回捕获组
+
+match为非全局搜索（未使用g）
+  返回值：  
+  >
+    匹配的内容 | 捕获分组（括号里匹配）的内容，有几个分组就有几项  
+    index：匹配内容的起始索引  
+    input：原字符串  
+    groups：用于列举 “有名有姓”的捕获
+      语法为：(?<捕获分组的名字>捕获分组对应的规则)，/(?\<myname>\d))/
+
+```js
+var str = 'test1test2';
+str.match(/t(e)(st(\d?))/g); 
+// Array ['test1', 'test2']
+
+
+str.match(/t(e)(st(\d?))/); 
+// [
+//   0: "test1",
+//   1: "e",
+//   2: "st1",
+//   3: "1",
+//   index: 0,
+//   input: "test1test2",
+//   groups: undefined
+// ]
+```
+
+
 * str.matchAll(reg|str) 方法返回一个包含所有匹配正则表达式及分组捕获结果的迭代器。配合 for...of, 扩展运算符(...), or Array.from()
 
+```js
+var str = 'test1test2';
 
-* match(非全局搜索) --  str.match(reg|str)   
-返回值：  
-匹配的内容 | 捕获分组（括号里匹配）的内容，有几个分组就有几项  
-index：匹配内容的起始索引  
-input：原字符串  
-groups：用于列举 “有名有姓”的捕获
-  >语法为：(?<捕获分组的名字>捕获分组对应的规则)，/(?\<myname>\d))/
-
->
-
-    var regexp = /t(e)(st(\d?))/g;
-    var str = 'test1test2';
-    str.match(regexp); // Array ['test1', 'test2']
-
-    //使用 matchAll 可以通过如下方式获取分组捕获:
-    let array = [...str.matchAll(regexp)];
-    array[0];
-    // ['test1', 'e', 'st1', '1', index: 0, input: 'test1test2', length: 4]
-    array[1];
-    // ['test2', 'e', 'st2', '2', index: 5, input: 'test1test2', length: 4]
+//使用 matchAll 可以通过如下方式获取分组捕获:
+let res = [...str.matchAll(/t(e)(st(\d?))/g)];
+// [
+//   ['test1', 'e', 'st1', '1', index: 0, input: 'test1test2', length: 4],
+//   ['test2', 'e', 'st2', '2', index: 5, input: 'test1test2', length: 4]
+// ]
+```
 
 ## <a name="replace()">replace()替代字符串</a>
 str.replace(值类型 | regexp, 字符串 | 回调函数)  
+
 * 当第二个参数是字符串时，如下的字符有特殊的含义：
 
 |属性 | 描述 |
@@ -326,74 +352,92 @@ str.replace(值类型 | regexp, 字符串 | 回调函数)
 | $' | 插入匹配到的子串的右边文本
 | $$ | 插入一个 "$"
 
->
-    str.replace(reg, '$1,$2....')
-    str.replace(reg, '$&')
+```js
+str.replace(reg, '$1,$2....')
+str.replace(reg, '$&')
 
-    var result="2+3=5".replace(/=/,"$&/$`/$&/$'/$&");
-    console.log(result);// => "2+3=/2+3/=/5/=5"
+var result="2+3=5".replace(/=/,"$& / $` / $' / $&");
+console.log(result);  // => "2+3= / 2+3 / 5 / =5"
+```
+
 
 * 当第二个参数是函数时
+```js
+str.replace(reg, function ($0,$1,$2,...) {
+  // 第一个形参$0 表示匹配的字符
+  // 若有分组，则从第二个参数开始就是分组的内容
+  // 倒数第二个形参 表示匹配字符的起始索引
+  // 倒数第一个形参 表示原字符串
+});
 
->
-
-    str.replace(reg, function ($0,$1,$2,...) {
-      // 第一个形参$0 表示匹配的字符
-      // 若有分组，则从第二个参数开始就是分组的内容
-      // 倒数第二个形参 表示匹配字符的起始索引
-      // 倒数第一个形参 表示原字符串
-    });
-
-    "1234 2345 3456".replace(/(\d)\d{2}(\d)/g,function(match,$1,$2,index,input){
-      //有两个括号（两个捕获分组） $1,$2
-      console.log([match,$1,$2,index,input]);
-    });
-    // => ["1234", "1", "4", 0, "1234 2345 3456"]
-    // => ["2345", "2", "5", 5, "1234 2345 3456"]
-    // => ["3456", "3", "6", 10, "1234 2345 3456"]
+"1234 2345 3456".replace(/(\d)\d{2}(\d)/g,function(match,$1,$2,index,input){
+  //有两个括号（两个捕获分组） $1,$2
+  console.log([match,$1,$2,index,input]);
+});
+// => ["1234", "1", "4", 0, "1234 2345 3456"]
+// => ["2345", "2", "5", 5, "1234 2345 3456"]
+// => ["3456", "3", "6", 10, "1234 2345 3456"]
+```
 
 ## <a name="toLowerCase()、toUpperCase()、toLocaleLowerCase()、toLocaleUpperCase()">toLowerCase()、toUpperCase()、toLocaleLowerCase()、toLocaleUpperCase()字符串转大小写</a>
-str.toLowerCase()  将字符串转为小写  
-str.toUpperCase()  将字符串转为大写  
+* str.toLowerCase()  将字符串转为小写  
+* str.toUpperCase()  将字符串转为大写  
+* str.toLocaleLowerCase()  使用本地化规则将字符串转为小写  
+* str.toLocaleUpperCase()  使用本地化规则将字符串转为大写
+  >语法
+  str.toLocaleUpperCase()
+  str.toLocaleUpperCase(locale) 
+  str.toLocaleUpperCase([locale, locale, ...])
 
-str.toLocaleLowerCase()  使用本地化规则将字符串转为小写  
-str.toLocaleUpperCase()  使用本地化规则将字符串转为大写
+```js
+'\u0130'.toLocaleLowerCase('tr') // "i"
+
+let locales = ['tr', 'TR', 'tr-TR', 'tr-u-co-search', 'tr-x-turkish'];
+'\u0130'.toLocaleLowerCase(locales) // "i"
+```
 
 ## <a name="trim()、trimLeft()、trimRight()">trim()、trimLeft()、trimRight()</a>
-trime()  
-trimLeft() | trimStart()  
-trimRight() | trimEnd()  
-返回的是一个新的字符串。
+* trime()  去除两端空白字符
+* trimLeft() | trimStart()  去除左侧空白字符
+* trimRight() | trimEnd()  去除右侧空白字符
 
-删除字符串的两端、左侧、右侧空白字符。在这个上下文中的空白字符是所有的空白字符 (space, tab, no-break space 等) 以及所有行终止符字符（如 LF，CR）。
+返回的是一个新的字符串。
+在这个上下文中的空白字符是所有的空白字符 (space, tab, no-break space 等) 以及所有行终止符字符（如 LF，CR）。
 
 ## <a name="localeCompare()">localeCompare()</a>
 返回一个数字(-1:前，0:相同，1:后)来指示一个参考字符串是否在排序顺序前面或之后或与给定字符串相同。
+
 
 referenceStr.localeCompare(compareString[, locales[, options]])  
 >compareString: 用来比较的字符串  
 >locales: 可选。  
 >options: 可选。  
 
->
-    'a'.localeCompare('a') // 0
-    'a'.localeCompare('c') // -1
-    'c'.localeCompare('a') // 1
+```js
+'a'.localeCompare('a') // 0
+'a'.localeCompare('c') // -1
+'c'.localeCompare('a') // 1
+
+// 按顺序比较
+'ca'.localeCompare('ab') // 1
+'aa'.localeCompare('ab') // -1
+```
 
 ## <a name="normalize()">String.normalize()</a>
 按照指定的一种 Unicode 正规形式将当前字符串正规化。（如果该值不是字符串，则首先将其转换为一个字符串）。
 
 str.normalize([form])
 >form
->
     四种 Unicode 正规形式 "NFC", "NFD", "NFKC", 以及 "NFKD" 其中的一个, 默认值为 "NFC".
 
->
-    let str = "\u1E9B\u0323";
-    str.normalize("NFC") // "ẛ̣"
-    str.normalize("NFD") // "ẛ̣"
-    str.normalize("NFKC") // "ṩ"
-    str.normalize("NFKD") // "ṩ"
+```js
+let str = "\u1E9B\u0323";
+str.normalize("NFC") // "ẛ̣"
+str.normalize("NFD") // "ẛ̣"
+str.normalize("NFKC") // "ṩ"
+str.normalize("NFKD") // "ṩ"
+
+```
 
 ## <a name="row()">String.row()</a>
 把字符串所有变量替换且对斜杠进行转义的结果
@@ -405,12 +449,11 @@ String.raw\`templateString`
 
 >templateString: 模板字符串，可包含占位符（${...}）。
 
->
-    String.raw`Hi\n${2+3}!`
-    // 'Hi\n5!'，Hi 后面的字符不是换行符，\ 和 n 是两个不同的字符
+```js
+String.raw`Hi\n${2+3}!`
+// 'Hi\n5!'，Hi 后面的字符不是换行符，\ 和 n 是两个不同的字符
 
-    String.raw({
-      raw: ['foo', 'bar', 'baz'] 
-    }, 2 + 3, 'Java' + 'Script'); // 'foo5barJavaScriptbaz'
-
-## <a name="()">()</a>
+String.raw({
+  raw: ['foo', 'bar', 'baz'] 
+}, 2 + 3, 'Java' + 'Script'); // 'foo5barJavaScriptbaz'
+```

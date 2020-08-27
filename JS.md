@@ -28,6 +28,7 @@
 * <a href="#异步编程有哪几种方法">异步编程有哪几种方法</a>
 * <a href="#事件委托(代理)">事件委托(代理)</a>
 * <a href="#闭包">闭包</a>
+* <a href="#垃圾回收机制">垃圾回收机制</a>
 * <a href="#内存泄漏">内存泄漏</a>
 * <a href="#原型、原型链、原型继承">原型、原型链、原型继承</a>
 * <a href="#创建对象的几种方式">创建对象的几种方式</a>
@@ -45,8 +46,6 @@
 * <a href="#常见的web攻击">常见的web攻击</a>
 * <a href="#字符转码、解码">字符转码、解码,encodeURIComponent、decodeURIComponent、encodeURI、decodeURI、escape、unescape</a>
 * <a href="#URI、URL、URN">URI、URL、URN</a>
-* <a href="#函数式编程">函数式编程</a>
-* <a href="#函数重载">函数重载</a>
 * <a href="#防抖、节流">防抖、节流</a>
 * <a href="#尾调用">尾调用</a>
 * <a href="#n的阶层（尾调用优化）">n的阶层（尾调用优化）</a>
@@ -163,21 +162,14 @@ break/continue 语句如果后跟了关键字，会产生带 target 的完成记
 ![堆栈](/img/堆栈.jpg)
 
 
-对象的键名的转换:
-* 对象的键名只能是字符串和 Symbol 类型
-* 其他类型的键名会被转换成字符串类型
-* 对象转字符串默认会调用 toString 方法
 
-[demo](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/125)
-
-
-### 内置对象
+`内置对象`
 Object 是 JavaScript 中所有对象的父对象  
 数据封装类对象：Object、Array、Boolean、Number、String  
 其他对象：Function、Arguments、Math、Date、RegExp、Error  
 
 window对象是顶层对象，指浏览器打开的窗口。  
-document对象是Documentd对象（HTML 文档对象）的一个只读引用，window对象的一个属性。
+document对象是Document对象（HTML 文档对象）的一个只读引用，window对象的一个属性。
 
 ### 区分数组对象方法 
 ```js
@@ -193,9 +185,6 @@ Object.prototype.toString.call({}) // "[object Object]"
 Array.isArray([]) // true
 Array.isArray({}) // false
 ```
-
-### <a name="undefined与null定义、区别">undefined与null定义、区别</a>
-[undefined、null](/details/JS/JS数据类型/Undefined、Null.md)
 
 ## <a name="面向过程和面向对象">面向过程和面向对象</a>
 https://zhuanlan.zhihu.com/p/55064276
@@ -233,10 +222,7 @@ https://zhuanlan.zhihu.com/p/55064276
 * 封装(capsulation)：把零散的多个变量组成一个整体
 * 继承(inheritance)：子对象自动获得父对象的所有特征
 * 多态(polymorphism)：一个方法根据参数的不同可以运行出不同的结果
-
-JavaScript具备上述四种能力。
-Object  =  Property  +  Method
-属性和方法统一称为对象的特性(attribute)或成员(member)
+* 抽象(abstract)：通过特定的实例抽取出共同的特征行成概念的过程
 
 #### 封装
 就是把事物封装成类，隐藏事物的属性和方法的实现细节，仅对外公开接口。
@@ -364,7 +350,7 @@ JSON 的网络媒体类型是 application/json。
 
 ## <a name="BOM 浏览器对象模型">BOM 浏览器对象模型</a>
 
-BOM 是 Browser Object Model 的缩写，即浏览器对象模型。
+BOM(Browser Object Model)浏览器对象模型。
 
 当一个浏览器页面初始化时，会在内存创建一个全局的对象，用以描述当前窗口的属性和状态，这个全局对象全局对象被称为浏览器对象模型，即BOM。
 
@@ -378,10 +364,13 @@ BOM的核心对象就是window，window 对象也是BOM的顶级对象，其中�
 * screen - 提供了浏览器显示屏幕的相关属性，比如显示屏幕的宽度和高度，可用宽度和高度。
 
 常用的对话框也属于挂载在window对象上的方法：alert(); confirm(); prompt();
+9   1   8
+208 230 247
+  22   17
 
 ## <a name="DOM 文档对象模型">DOM-文档对象模型</a>
 
-DOM 是 Document Object Model 的缩写，即 文档对象模型，是所有浏览器公共遵守的标准，DOM 将HTML和XML文档映射成一个由不同节点组成的树型结构，俗称DOM树。
+DOM(Document Object Model)文档对象模型，是所有浏览器公共遵守的标准，DOM 将HTML和XML文档映射成一个由不同节点组成的树型结构，俗称DOM树。
 
 其核心对象是document，用于描述DOM树的状态和属性，并提供对应的DOM操作API。
 
@@ -424,27 +413,30 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
 
 #### 事件模型：原始事件模型(DOM0级)、DOM2事件模型、IE事件模型。
 1. DOM0级：没有事件流，事件一旦发生马上进行处理
->
-    在html中直接指定属性值：\<button id="demo" type="button" onclick="doSomeTing()" />　　
-    在js中: document.getElementsById("demo").onclick = doSomeTing()
+```html
+在html中直接指定属性值：<button id="demo" type="button" onclick="doSomeTing()" />　　
+在js中: document.getElementsById("demo").onclick = doSomeTing()
+```
 
     优点：所有浏览器都兼容
     缺点：逻辑与显示没有分离；相同事件的监听函数只能绑定一个，后绑定的会覆盖掉前面;  无法通过事件的冒泡、委托等机制
 
 2. DOM2级：W3C制定的标准模型，现代浏览器（IE6~8除外）都已经遵循这个规范
->
-                    //事件类型、需要执行的函数、是否捕获，(false（默认值）:冒泡；true：捕获)
-    addEventListener(eventType,handler,useCapture)
-    removeEventListener(eventType,handler,useCapture)
+```js
+              //事件类型、需要执行的函数、是否捕获，(false（默认值）:冒泡；true：捕获)
+addEventListener(eventType,handler,useCapture)
+removeEventListener(eventType,handler,useCapture)
 
-    addEventListener（'click', func)//事件不加on
+例：addEventListener('click', func)//事件不加on
+```
 
-3. IE事件模型：不支持事件捕获 . (IE11以下)
->
-    attachEvent(eventType,handler) 
-    detachEvent(eventType,handler)
-    
-    attachEvent("onclick",func)//事件加on
+3. IE事件模型：不支持事件捕获 (IE11以下)
+```js
+attachEvent(eventType,handler) 
+detachEvent(eventType,handler)
+
+例：attachEvent("onclick",func)//事件加on
+```
 
 #### event属性，方法
 * event.preventDefault() 阻止默认行为
@@ -513,33 +505,39 @@ div.onclick = function(){
 
 #### w3c事件与IE事件区别
 事件流
->
-    w3c事件流:  
-    标准的浏览器事件流是 事件捕获流；
-    从根文档(html)开始遍历所有子节点，如果目标事件的父节点设置为捕获时触发，则执行该事件，直到目标被执行，然后再事件冒泡(设置为捕获时触发的事件不再被执行)。
+* w3c事件流:（事件捕获流）
+  从根文档(html)开始遍历所有子节点，如果目标事件的父节点设置为捕获时触发，则执行该事件，直到目标被执行，然后再事件冒泡(设置为捕获时触发的事件不再被执行)。
 
-    IE事件流:  
-    IE的事件流是 事件冒泡流，
-    从目标事件被执行，然后再冒泡父节点的事件，直到根文档。
+* IE事件流:（事件冒泡流）
+  从目标事件被执行，然后再冒泡父节点的事件，直到根文档。
 
 阻止默认行为：
->
-    event = e || window.event //w3c | IE
-    event.preventDefault() || event.returnValue = false //w3c | IE
+```js
+event = e || window.event //w3c | IE
+event.preventDefault() || event.returnValue = false //w3c | IE
+```
 
 阻止冒泡：
->
-    event = e || window.event //w3c | IE
-    event.stopPropagation || event.cancelBubble = true // w3c  | IE
+```js
+event = e || window.event //w3c | IE
+event.stopPropagation() || event.cancelBubble = true // w3c  | IE
+```
+
 获取事件目标源：
->
-    event = e || window.event
-    event.target || event.srcElement // w3c  | IE
+```js
+event = e || window.event
+event.target || event.srcElement // w3c  | IE
+```
+
+[更多兼容性写法](\details\常用的JS兼容写法\index.md)
 
 ## <a name="mouseover、mouseout、mouseenter、mouseleave区别与联系">mouseover、mouseout、mouseenter、mouseleave区别与联系</a>
-mouseover/mouseout是标准事件，所有浏览器都支持；mouseenter/mouseleave是IE5.5引入的特有事件后来被DOM3标准采纳，现代标准浏览器也支持
+mouseover/mouseout是标准事件，所有浏览器都支持；
+mouseenter/mouseleave是IE5.5引入的特有事件后来被DOM3标准采纳，现代标准浏览器也支持
 
-mouseover/mouseout是冒泡事件；mouseenter/mouseleave不冒泡。需要为多个元素监听鼠标移入/出事件时，推荐mouseover/mouseout托管，提高性能
+mouseover/mouseout是冒泡事件；
+mouseenter/mouseleave不冒泡。
+需要为多个元素监听鼠标移入/出事件时，推荐mouseover/mouseout托管，提高性能
 
 不论鼠标指针穿过被选元素或其子元素，都会触发 mouseover 事件，对应 mouseout。
 
@@ -557,7 +555,8 @@ mouseover/mouseout是冒泡事件；mouseenter/mouseleave不冒泡。需要为�
 
 * innerHTML // 元素的所有文本，包括html代码
 * innerText // 元素的自身及子代所有文本值，只是文本内容，不包括html代码
-
+* 
+* nodeName // 节点节点名称，返回值为大写 （如：DIV，P）
 * nodeType // 节点的类型,
   >1 元素节点
   >2 属性节点
@@ -578,14 +577,21 @@ mouseover/mouseout是冒泡事件；mouseenter/mouseleave不冒泡。需要为�
   </script>  
   ```
 
-* nodeName // 节点节点名称，返回值为大写 （如：DIV，P）
 
-## <a name="DOM操作">DOM操作—怎样添加、移除、移动、复制、创建和查找节点?</a>
+## <a name="DOM操作">DOM操作—添加、移除、移动、复制、创建和查找节点</a>
 #### 创建新节点
 * document.createDocumentFragment()    //创建一个DOM片段
 * document.createElement()   //创建一个元素节点
 * document.createTextNode()   //创建一个文本节点
 * document.createAttribute() // 创建一个属性节点,如class
+
+```js
+var node = document.getElementById("div1");
+var a = document.createAttribute("my_attrib");
+a.value = "newVal";
+node.setAttributeNode(a);
+console.log(node.getAttribute("my_attrib")); // "newVal"
+```
 
 #### 添加、移除、替换、插入、克隆
 * appendChild(childNode)  添加节点
@@ -613,111 +619,116 @@ mouseover/mouseout是冒泡事件；mouseenter/mouseleave不冒泡。需要为�
 * setAttributeNode(attrName) // 设置属性节点
 
 ## <a name="获取元素属性">获取元素属性innerHTML、outerHTML、innerText 、outerText、value</a>
->
-    <div class="box">
-      000
-      <p class="1">11</p>
-      <!-- 注释 -->
-      <p class="2">22</p>
-    </div>
-
+```html
+<div class="box">
+  000
+  <p class="1">11</p>
+  <!-- 注释 -->
+  <p class="2">22</p>
+</div>
+```
 
 #### innerHTML()
 
 在读模式下，innerHTML 返回其所有子节点（包括元素、注释和文本节点）对应的 HTML 标签。
->
-    let box = document.querySelector('.box')
-    box.innerHTML
-    返回
-      000
-      <p class="1">11</p>
-      <!-- 注释 -->
-      <p class="2">22</p>
+```js
+let box = document.querySelector('.box')
+box.innerHTML
+// 返回值
+//   000
+//   <p class="1">11</p>
+//   <!-- 注释 -->
+//   <p class="2">22</p>
+```
 
 在写模式下，innerHTML 会根据指定的值创建新的 DOM 树，然后用这个 DOM 树完全替换调用元素原先的所有子节点。
->   
-    let cnt = '<p class="2">2222</p>'
-    box.innerHTML = cnt
-    //会替换 div.box 里的所有内容为 cnt
-
+```js
+let cnt = '<p class="2">2222</p>'
+box.innerHTML = cnt
+//会替换 div.box 里的所有内容为 cnt
+```
 ![innerHTML](/img/innerHTML.png) 
 
 #### outerHTML
 
 在读模式下，outerHTML 返回自身及其所有子节点（包括元素、注释和文本节点）对应的 HTML 标签。(同innerHTML)
->
-    let box = document.querySelector('.box')
-    box.outerHTML
-    返回
-      <div class="box">
-        000
-        <p class="1">11</p>
-        <!-- 注释 -->
-        <p class="2">22</p>
-      </div>
+```js
+let box = document.querySelector('.box')
+box.outerHTML
+// 返回值
+//   <div class="box">
+//     000
+//     <p class="1">11</p>
+//     <!-- 注释 -->
+//     <p class="2">22</p>
+//   </div>
+```
 
 在写模式下，outerHTML 会根据指定的 HTML 字符串创建新的 DOM 子树完全替换调用元素。
->
-    let cnt = '<p>outerHTML</p>'
-    box.outerHTML = cnt 
-    //会替换掉 div.box 为 cnt
-
+```js
+let cnt = '<p>outerHTML</p>'
+box.outerHTML = cnt 
+//会替换掉 div.box 为 cnt
+```
 ![outerHTML](/img/outerHTML.png) 
-
 
 #### innerText
 
 在读模式下，它会按照由浅入深的顺序，将子文档树中的所有文本拼接起来
->
-    box.innerText
-    返回
-      000
+```js
+box.innerText
+// 返回值
+//   000
 
-      11
+//   11
 
-      22
+//   22
+```
 
 在写模式下，会删除元素的所有子节点，插入包含相应文本值的文本节点(不会解析标签。。)
->
-    box.innerText = '<p>innerText</p>' 
-    //<p>不会解析为标签，会当作字符串
+```js
+box.innerText = '<p>innerText</p>' 
+//<p>不会解析为标签，会当作字符串
+```
 
 ![innerText](/img/innerText.png) 
 
 #### outerText
 
 在读模式下，(同innerText)
->
-    box.outerText
-    返回
-      000
+```js
+box.outerText
+// 返回值
+//   000
 
-      11
+//   11
 
-      22
+//   22
+```
 
 在写模式下，会删除元素的所有子节点，插入包含相应文本值的文本节点(不会解析标签。。)
->
-    box.outerText = '<p>outerText</p>' 
-    //<p>不会解析为标签，会当作字符串，同时会替换掉 box
+```js
+box.outerText = '<p>outerText</p>' 
+//<p>不会解析为标签，会当作字符串，同时会替换掉 box
+```
 
 ![outerText](/img/outerText.png) 
 
 #### value  
 设置或返回文本框的值
->
-    <input type="text" class="ipt" value="111">
-    document.querySelector('.ipt').value
-    document.querySelector('.ipt').value = 222
+```html
+<input type="text" class="ipt" value="111">
+document.querySelector('.ipt').value
+document.querySelector('.ipt').value = 222
+```
 
-## <a name="变量、函数声明提升">变量、函数声明提升,</a>
-(1) 变量声明提升：变量申明在进入执行上下文就完成了。
-只要变量在代码中进行了声明，无论它在哪个位置上进行声明， js引擎都会将它的声明放在范围作用域的顶部；
+## <a name="变量、函数声明提升">变量、函数声明提升</a>
+* 变量声明提升：变量申明在进入执行上下文就完成了。
+* 函数声明提升：执行代码之前会先读取函数声明，意味着可以把函数申明放在调用它的语句后面。
 
-(2) 函数声明提升：执行代码之前会先读取函数声明，意味着可以把函数申明放在调用它的语句后面。
-只要函数在代码中进行了声明，无论它在哪个位置上进行声明， js引擎都会将它的声明放在范围作用域的顶部；
+只要变量、函数在代码中进行了声明，无论它在哪个位置上进行声明， js引擎都会将它的声明放在范围作用域的顶部；
 
-(3) 变量or函数声明：函数声明会覆盖变量声明，但不会覆盖变量赋值。
+`函数声明会覆盖变量声明，但不会覆盖变量赋值。`
 
 ```js
 var a = 1;
@@ -744,9 +755,9 @@ var foo = {n:1};
 (function foo(foo) {
     var foo;
     console.log(foo.n);//1 --形参
-    foo.n=3; // --改变形参的n赋值
+    foo.n=3; // --改变形参(全局变量foo)的n赋值
     var foo = {n:2};//重新声明定义foo 
-    console.log(foo.n);// 2
+    console.log(foo.n);// 2 //此时foo为局部变量
 })(foo); //存入全局的foo变量 作为 形参
 console.log(foo.n); //3
 ```
@@ -755,7 +766,7 @@ console.log(foo.n); //3
 var foo = {n:1};
 (function foo(foo) {
   var foo;
-  console.log(foo);//foo(){}
+  console.log(foo);//foo(){} //函数声明提升
   var foo = {n:2};//重新声明定义foo 
   function foo(){}
   console.log(foo.n);// 2
@@ -768,10 +779,10 @@ console.log(foo.n); //1
 >
     1、声明一个匿名函数
     2、马上调用这个匿名函数。
-    (function(){})()
-    (function(){}())
-    +function(){}()
-    ....
+      (function(){})()
+      (function(){}())
+      +function(){}()
+      ....
 
 作用：创建一个独立的作用域。避免与全局作用域内的其他变量命名冲突或污染全局命名空间
 
@@ -806,6 +817,8 @@ console.log(foo.n); //1
 
 简单的说 ，设置configurable为false之后，就不能删除或修改这个属性（属性值不影响）
 
+Object.defineProperty定义时未设定configurable,enumerable,writable时默认false  
+直接定义（obj={a:1}）时configurable,enumerable,writable时为true
 ```js
 var obj = Object.defineProperty({},"a",{
   value :1,
@@ -917,7 +930,6 @@ Object.defineProperty(obj,"a",{
 })
 console.log(obj.a) //调用get函数
 console.log(obj.a = 999999); //调用set函数
-
 ```
 
 ### [Object.freeze()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)
@@ -1106,7 +1118,6 @@ hasOwnProperty 只会检查属性是否存在对象中，不会向上检查其�
     采用事件驱动模式。任务的执行不取决于代码的顺序，而取决于某个事件是否发生。
     $("#clickity").on("click", function (e) { console.log("xxxxx");}
 
-    
 优点：  
 比较容易理解，可以绑定多个事件，每个事件可以指定多个回调函数，而且可以"去耦合"（Decoupling），有利于实现模块化。
 
@@ -1172,59 +1183,65 @@ hasOwnProperty 只会检查属性是否存在对象中，不会向上检查其�
     把所有事件都用代理就可能会出现事件误判。比如，在document中代理了所有button的click事件，另外的人在引用改js时，可能不知道，造成单击button触发了两个click事件。
 
 
-对js动态添加的子元素可自动绑定事件
->
-    原生  未兼容IE(IE事件attachEvent)
-    function agent(){
-      let ul=document.getElementsByTagName("ul")[0];
-      ul.addEventListener('click',function(e){
-        let event = e || window.event;
-        let target= event.target || event.srcElement;
-        if(target.tagName.toLowerCase() =='li'){
-          alert(event.target.innerHTML);
-        }
-      });
-    };
-
-> 
-    jquery  
-    $("ul").delegate("li", "click", function(){
-      console.log($(this),$(this).html());
-    });
+[实现一个事件委托](\details\常用的方法\实现一个事件委托.md)
 
 ## <a name="闭包">闭包</a>
 
-* 闭包：
-是指有权访问其他函数作用域中变量的函数，创建闭包的最常见的方式就是在一个函数内创建另一个函数，通过另一个函数访问这个函数的局部变量,利用闭包可以突破作用链域，将函数内部的变量和方法传递到外部。
-
-简单说：当一个内部函数被其外部函数之外的变量引用时，就形成了一个闭包。
+#### 概念
+函数和对其周围状态（lexical environment，词法环境）的引用捆绑在一起构成闭包（closure）。也就是说，闭包可以让你从内部函数访问外部函数作用域。在 JavaScript 中，每当函数被创建，就会在函数生成时生成闭包。--[MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures)
 
 `详细概念：`
-浏览器加载页面会把代码放到栈内存中执行，函数进栈执行会产生一个私有的上下文（EC），此上下文能保存里面的私有变量（也就是AO）不会被外界干扰，并且如果当前上下文中的某些内容，被上下文以外的内容所占用，当前上下文是不会出栈释放的，形成不销毁的执行上下文，这样可以保存和保护里面的变量和变量值，闭包是一种保存和保护内部私有变量的机制.
+浏览器加载页面会把代码放到栈内存中执行，
+函数进栈执行会产生一个私有的上下文（EC），此上下文能保存里面的私有变量（也就是AO）不会被外界干扰，
+并且如果当前上下文中的某些内容，被上下文以外的内容所占用，当前上下文是不会出栈释放的，形成不销毁的执行上下文，
+这样可以保存和保护里面的变量和变量值，闭包是一种保存和保护内部私有变量的机制.
 
 
-* 闭包的特性：
+#### 闭包的特性：
 1. 函数嵌套
-2. 函数内部可以引用外部的参数和变量
+2. 函数内部引用外部的参数和变量
 3. 参数和变量不会被垃圾回收机制回收
 
-* 闭包作用域链通常包括三个部分：
+#### 闭包作用域链通常包括三个部分：
 1. 函数本身作用域。
 2. 闭包定义时的作用域。
 3. 全局作用域。
 
-* 闭包优点：
-1. 希望一个变量长期驻扎在内存中
+#### 闭包优点：
+1. 变量长期驻扎在内存中
 2. 避免全局变量的污染
 3. 私有成员的存在
 
+
+
+
 闭包实例
->
-    function a(i){
-      return function(){
-        return i+1
-      }
+```js
+function init() {
+    var name = "Mozilla"; // name 是一个被 init 创建的局部变量
+    function displayName() { // displayName() 是内部函数，一个闭包
+        debugger
+        console.log(name); // 使用了父函数中声明的变量
     }
+    displayName();
+}
+init()
+```
+![](/img/closure1.png)
+
+
+```js
+function init() {
+    var name = "Mozilla";
+    function displayName() {
+        debugger
+        console.log(name);
+    }
+    return displayName
+}
+init()()
+```
+
 
 
 ```js
@@ -1249,7 +1266,7 @@ for (let i = 0; i < 5; i++) {
 console.log(new Date, i);
 
 // 或者利用立即执行函数
-for (let i = 0; i < 5; i++) {
+for (var i = 0; i < 5; i++) {
   setTimeout((function() {
       console.log(new Date, i);
   })(), 1000);
@@ -1257,84 +1274,130 @@ for (let i = 0; i < 5; i++) {
 console.log(new Date, i);
 ```
 
+## <a name="垃圾回收机制">垃圾回收机制</a>
+  Javascript具有自动垃圾回收机制(GC:Garbage Collecation)。
+
+  原理：垃圾收集器会定期（周期性）找出那些不在继续使用的变量，然后释放其内存。
+
+### 标记清除
+在函数声明一个变量的时候，就将这个变量标记为“进入环境”。从逻辑上讲，永远都不能释放进入环境的变量作占用的内存，因为只要执行流进入相应的环境，就可能会用到它们。
+而当变量离开环境时，则将其标记为“离开环境”。
+
+垃圾回收器在运行时候会给存储在内存中中的所有变量都加上标记。然后它会去掉环境中的变量以及被环境中的变量引用的变量的标记（闭包）。
+在此之后再被标记的变量将被视为准备删除的变量，原因是环境中的变量已经无法访问到这些变量了。最后，垃圾回收器完成内存清楚工作，销毁那些带标记的值并回收他们所占用的内存空间。
+```js
+function test(){ 
+  //a,b被标记 ，进入环境 
+  var a = 10 ; 
+  var b = 20 ; 
+} 
+test(); //执行完毕 之后 a、b又被标离开环境，被回收。
+```
+
+### 引用计数法
+引用计数的含义是跟踪记录每个值被引用的次数。
+当声明了一个变量并将一个引用类型值赋给该变量时，则这个值的引用次数就是1。如果同一个值又被赋给另一个变量，则该值的引用次数加1。相反，如果包含对这个值引用的变量又取得了另外一个值，则这个值的引用次数减1。
+当这个值的引用次数变成0时，则说明没有办法再访问这个值了，因而就可以将其占用的内存空间回收回来。
+这样，当垃圾回收器下次再运行时，它就会释放那些引用次数为0的值所占用的内存。
+
+但是很重要的一点是当遇到循环引用的时候，函数的引用次数就不会为0，所以不会被垃圾回收器回收内存，会造成内存泄露
+
+```js
+function test(){ 
+  var a = {} ; //a的引用次数为0 
+  var b = a ; //a的引用次数加1，为1 
+  var c =a; //a的引用次数再加1，为2 
+  var b ={}; //a的引用次数减1，为1 
+}
+```
+如何减少JavaScript中的垃圾回收
+
 ## <a name="内存泄漏">内存泄漏</a>
-内存泄漏:是指一块被分配的内存在使用完毕后未释放，直到浏览器进程结束。
-指任何对象在您不再拥有或需要它之后仍然存在。浏览器中采用自动垃圾回收方法管理内存，但由于浏览器垃圾回收方法有bug，因此会产生内存泄漏。
+内存泄漏:是指一块被分配的内存在使用完毕后未释放，直到浏览器进程结束。指任何对象在您不再拥有或需要它之后仍然存在。浏览器中采用自动垃圾回收方法管理内存，但由于浏览器垃圾回收方法有bug，因此会产生内存泄漏。
 
-1. 意外的全局变量引起的内存泄漏（变量未声明，通过this创建,）
-    >
-        function foo(arg) {
-          bar = "this is a hidden global variable";
-        }
-2. 闭包引起的内存泄漏
-    >
-        var a = 1 
-        var b = function(){ 
-          return function (){return 1+a}
-        }
-3. 没有清理的DOM元素引用
-4. 被遗忘的定时器或者回调
-    >
-        setInterval(function() {
-            var node = document.getElementById('Node');
-            if(node) {
-                // 处理 node 和 someResource
-                node.innerHTML = JSON.stringify(someResource));
-            }
-        }, 1000);
-5. 子元素存在引用引起的内存泄露
-6. console.log   在传递给 console.log的对象是不能被垃圾回收 ，因为在代码运行之后需要在开发工具能查看对象信息。所以最好不要在生产环境中 console.log任何对象。
+* 意外的全局变量引起的内存泄漏（变量未声明，通过this创建,）
+  ```js
+  function foo(arg) {
+    bar = "this is a hidden global variable";
+  }
+  ```
+
+* 闭包引起的内存泄漏
+  ```js
+    function(){ 
+      var a = 1 
+      return function (){
+        return 1+a
+      }
+    }
+  ```
+
+* 被遗忘的定时器或者回调
+  ```js
+  let inter = setInterval(function() {
+    do something
+  }, 1000);
+  // 清除定时器
+  // clearInterval(inter)
+  // inter = null 
+  ```
+
+* 没有清理的DOM元素引用
+  ```js
+  var div = document.querySelector('.div')
+  // div= null // 解除引用
+  ```
 
 
-如何避免内存泄漏
->
-    减少不必要的全局变量，使用严格模式避免意外创建全局变量。
-    在你使用完数据后，及时解除引用(闭包中的变量，dom引用，定时器清除)。
-    组织好你的逻辑，避免死循环等造成浏览器卡顿，崩溃的问题。
+* 子元素存在引用引起的内存泄露
+```js
+var parent = document.querySelector('#P');
+
+var child = document.querySelector('#C');   //在DOM树中child是parent的一个子节点
+
+parent = null;//parent还不能被回收，
+child = null;//现在parent可以被释放了
+```
+
+* console.log   在传递给 console.log的对象是不能被垃圾回收 ，因为在代码运行之后需要在开发工具能查看对象信息。所以最好不要在生产环境中 console.log任何对象。
+
+---
+
+`如何避免内存泄漏`
+* 减少不必要的全局变量，使用严格模式避免意外创建全局变量。
+* 在你使用完数据后，及时解除引用(闭包中的变量，dom引用，定时器清除)。
+* 组织好你的逻辑，避免死循环等造成浏览器卡顿，崩溃的问题。
 
 
 ## <a name="原型、原型链、原型继承">原型、原型链、原型继承</a>
-[原型-原型链-继承](details/JS/原型-原型链-继承.md)
+[原型-原型链-继承](\details\面试题\JS面试题/原型-原型链-继承.md)
 
 ## <a name="创建对象的几种方式">创建对象的几种方式</a>
 
 对象字面量：
->p = {name:'jack'}
+`p = {name:'jack'}`
 
 new Object():  
->p = new Object({name:'jack'})
+`p = new Object({name:'jack'})`
 
 Object.create:
->
-    Object.create 允许你创建一个对象，只要该对象上的属性查找失败，它就可以查询另一个对象以查看该另一个对象是否具有该属性。
-    p = Object.create({name:'jack'}) //属性在原型上 
-    p = Object.create({},{name:{value:'jack'}}) //属性在自身上
-
+```js
+// Object.create 允许你创建一个对象，只要该对象上的属性查找失败，它就可以查询另一个对象以查看该另一个对象是否具有该属性。
+p = Object.create({name:'jack'}) //属性在原型上 
+p = Object.create({},{name:{value:'jack'}}) //属性在自身上
+```
 
 构造函数：
->
-
-    function P(name){this.name = name}
-    p = new P('jack')
-
+```js
+function P(name){this.name = name}
+p = new P('jack')
+```
 
 ## <a name="作用域、作用域链、执行上下文">作用域、作用域链、执行上下文(执行环境)</a>
-[作用域-作用域链-执行上下文](details/JS/作用域-作用域链-执行上下文.md)
-
-
-## <a name="VO/AO">VO/AO</a>
-* VO(变量对象), 也就是`variable object`, 创建执行上下文时与之关联的会有一个变量对象，该上下文中的所有变量和函数全都保存在这个对象中。
-
-* AO(活动对象), 也就是`activation object`,进入到一个执行上下文时，此执行上下文中的变量和函数都可以被访问到，可以理解为被激活了。
-
-VO/AO区别：
-
-变量对象（VO）是规范上或者是JS引擎上实现的，并不能在JS环境中直接访问。
-
-当进入到一个执行上下文后，这个变量对象才会被激活，所以叫活动对象（AO），这时候活动对象上的各种属性才能被访问
+[作用域-作用域链-执行上下文](\details\面试题\JS面试题/作用域-作用域链-执行上下文.md)
 
 ## <a name="this">this理解</a>
-[this](/details/this.md)
+[this](/details/JS/this.md)
 
 ## <a name="apply call bind">apply call bind用法及实现</a>
 区别
@@ -1352,89 +1415,93 @@ VO/AO区别：
 
 使用apply(..)来“展开”一个数组，并当作参数传入一个函数  
 bind(..)可以对参数进行柯里化（预先设置一些参数）
->
-    function foo(a, b) {
-        console.log( "a:" + a + "，b:" + b );
-    }
 
-    // 把数组”展开“成参数
-    foo.apply( null, [2, 3] ); // a:2，b:3
+```js
+function foo(a, b) {
+    console.log( "a:" + a + "，b:" + b );
+}
 
-    // 使用bind(..)进行柯里化
-    var bar = foo.bind( null, 2 );
-    bar( 3 ); // a:2，b:3 
+foo.call( null, 2, 3 );
 
+// 把数组”展开“成参数
+foo.apply( null, [2, 3] ); // a:2，b:3
 
-[apply 实现](/details/一些常用函数的实现/apply.md)
-[call 实现](/details/一些常用函数的实现/call.md)
-[bind 实现](/details/一些常用函数的实现/bind.md)
+// 使用bind进行柯里化
+var bar = foo.bind( null, 2 );
+bar( 3 ); // a:2，b:3
+```
+
+[手写apply ](/details/常用的手写函数/apply.md)
+[手写call](/details/常用的手写函数/call.md)
+[手写bind](/details/常用的手写函数/bind.md)
 
 
 ## <a name="公有、私有、静态、特权方法与属性">公有、私有、静态、特权方法与属性</a>
 
->
-    function P(age){
-      var name = '私有变量';
-      var fun = function(){console.log('私有方法')}
+```js
+function P(age){
+  var name = '私有变量';
+  var fun = function(){console.log('私有方法')}
 
-      this.age = age //实例变量
-      this.func = function(){console.log('实例方法')}
-    }
-    P.fun = function(){console.log('静态方法')}
-    P.age = '静态变量'
-    
-    console.log(P.age,P.fun())
+  this.age = age //公有(实例)变量
+  this.func = function(){console.log('公有(实例)方法')}
+}
+P.fun = function(){console.log('静态方法')}
+P.age = '静态变量'
 
+console.log(P.age,P.fun())
+```
 
 私有变量和函数：
->
-    在函数内部定义的变量和函数，如果不对外提供接口，外部是无法访问到的，也就是该函数的私有的变量和函数。
+>在函数内部定义的变量和函数，如果不对外提供接口，外部是无法访问到的，也就是该函数的私有的变量和函数。
 
 
-    
 静态变量和静态函数：
->
-    当定义一个函数后通过点号 “.”为其添加的属性和函数，通过对象本身仍然可以访问得到，但是其实例却访问不到
+>当定义一个函数后通过点号 “.”为其添加的属性和函数，通过对象本身仍然可以访问得到，但是其实例却访问不到
 
 
 实例变量和实例函数：
 
 1. 公有(原型)方法、属性：//必需先实例化对象
->
-    function User(){
-      this.age = 26;//  公有属性
-      this.getAge = function(){}//公有方法
-    }
-    User.prototype.getName=function(){}//公有方法
-    var user = new User();
- 
-2. 私有方法、属性：//只能在函数内部直接调用
->
-    function User(age){
-      var age = age;//私有属性
-      function getAge(){}//私有方法
-    }
+```js
+function User(){
+  this.age = 26;//  公有属性
+  this.getAge = function(){}//公有方法
+}
+User.prototype.getName=function(){}//公有方法
+var user = new User();
+```
 
+2. 私有方法、属性：//只能在函数内部直接调用
+```js
+function User(age){
+  var age = age;//私有属性
+  function getAge(){}//私有方法
+}
+```
 
 3. 静态方法、属性：无需实例化就可以调用的方法、属性
 >
     //静态方法无法调用公有属性、公有方法、私有方法、私有属性、特权方法和原型属性
     //对象的实例不能调用对象的静态方法，只能调用实例自身的静态属性和方法
-    function User(){}
-    User.age = 26;//静态属性
-    User.getAge =function(){} //静态方法
-    
-4. 特权方法：
->
-    //用来访问私有变量和私有方法的 公有方法
-    function User(age){
-      var age = age;//私有属性
-      this.getAge = function(){ //特权方法
-        return age; //特权方法调用私有属性
-      }
-    }
-    var user = new User(26);
 
+```js
+function User(){}
+User.age = 26;//静态属性
+User.getAge =function(){} //静态方法
+```
+
+4. 特权方法：
+>用来访问私有变量和私有方法的 公有方法
+```js
+function User(age){
+  var age = age;//私有属性
+  this.getAge = function(){ //特权方法
+    return age; //特权方法调用私有属性
+  }
+}
+var user = new User(26);
+```
 
 ## <a name="继承方式">继承方式</a>
 [继承.md](details/继承/index.md)
@@ -1443,7 +1510,7 @@ bind(..)可以对参数进行柯里化（预先设置一些参数）
 [设计模式](/details/设计模式/index.md)
 
 ## <a name="事件执行机制">事件执行机制</a>
-[事件执行机制](/details/JS/EventLoop.md)
+[事件执行机制](\details\面试题\JS面试题\事件执行机制EventLoop.md)
 
 事件循环中分为宏任务队列和微任务队列。
 
@@ -1455,131 +1522,47 @@ async函数表示函数里面可能会有异步方法，await后面跟一个表�
 
 
 ## <a name="js延迟加载：defer,async">js延迟加载：defer,async</a>
-async 属性 
->
-    <script src="file.js" async></script>
-    让js并行加载, 
-    加载完成后立即执行，
-    脚本执行顺序和加载顺序无关。它们将在onload 事件之前完成。对于支持async属性的浏览器，动态插入的外链脚本, 相当于默认具有async=true；
+async 属性   
+` <script src="file.js" async></script>`
+* 让js并行加载, 
+* 加载完成后立即执行，
+* 脚本执行顺序和加载顺序无关。它们将在onload 事件之前完成。对于支持async属性的浏览器，动态插入* 外链脚本, 相当于默认具有async=true；
 
-defer 属性 
->
-    <script src="file.js" defer></script>
-    让js并行加载, 
-    在页面渲染完后才会执行，
-    脚本按加载的顺序执行
+defer 属性   
+`<script src="file.js" defer></script>`
+* 让js并行加载, 
+* 在页面渲染完后才会执行，
+* 脚本按加载的顺序执行
 
 
 同时使用 async 和 defer,执行效果和async一致
 
 * 动态创建script
->
-    function downloadJSAtOnload() {
-      var element = document.createElement("script");
-      element.src = "defer.js";
-      document.body.appendChild(element);
-    }
-    if (window.addEventListener) {
-      window.addEventListener("load",downloadJSAtOnload, false);
-    } else if (window.attachEvent){
-      window.attachEvent("onload",downloadJSAtOnload);
-    } else{
-      window.onload =downloadJSAtOnload;
-    }
 
-
+```JS
+function downloadJSAtOnload() {
+  var element = document.createElement("script");
+  element.src = "defer.js";
+  document.body.appendChild(element);
+}
+if (window.addEventListener) {
+  window.addEventListener("load",downloadJSAtOnload, false);
+} else if (window.attachEvent){
+  window.attachEvent("onload",downloadJSAtOnload);
+} else{
+  window.onload =downloadJSAtOnload;
+}
+```
 ## <a name="重绘和回流">[重绘和回流](https://github.com/chenjigeng/blog/issues/4)</a>
-`回流必将引起重绘，而重绘不一定会引起回流。`
-
-`回流（重排）`：当页面中的部分或者全部因为元素的规模尺寸，布局，隐藏等改变而需要重新构建,这就叫做回流。
-
-`重绘`：当页面的中的可见性发上变化而不影响布局时，比如：背景颜色吗，文字颜色等，这样形成了重绘
-
-#### 会引起重绘和回流的操作：
-* 添加、删除元素(回流+重绘)
-* 隐藏元素：display:none(回流+重绘);visibility:hidden(重绘)
-* 移动元素，比如改变top,left的值，或者移动元素到另外一个父元素中。(重绘+回流)
-* 对style的操作(对不同的属性操作，影响不一样)
-* 激活 CSS 伪类，比如 :hover （重绘+回流）
-* 元素尺寸改变(边距、填充、边框、宽度和高度）（重绘+回流）
-* 用户的操作，比如改变浏览器大小，改变浏览器的字体大小等(重绘+回流)
-
-
-
-#### 性能影响
-由于每次重排都会造成额外的计算消耗，因此大多数浏览器都会通过队列化修改并批量执行来优化重排过程。浏览器会将修改操作放入到队列里，直到过了一段时间或者操作达到了一个阈值，才清空队列，进行一次批处理,这样可以把多次回流和重绘变成一次。
-
-当你访问以下属性或方法时,浏览器会立刻清空队列:
->
-
-    clientWidth、clientHeight、clientTop、clientLeft
-
-    offsetWidth、offsetHeight、offsetTop、offsetLeft
-
-    scrollWidth、scrollHeight、scrollTop、scrollLeft
-
-    width、height、
-
-    getComputedStyle()、getBoundingClientRect()
-
-
-#### 如何避免/减少重绘，回流：
-* 尽量使用 class 进行样式修改，而不是直接操作样式
-* 使用 transform 替代 top|left...
-* transform 操作不会引起重绘和回流，是一种高效率的渲染（开启GPU渲染）。因为transform属于合成属性，进行动画时将会创建一个合成层，在一个独立的层中进行渲染。
-* 使用 visibility 替换 display: none 
-* 避免设置多层内联样式，CSS 选择符从右往左匹配查找，避免节点层级过多。
-* 尽可能在DOM树的最末端改变class。可以限制了回流的范围，使其影响尽可能少的节点
-* 动画效果设置position为absolute，fixed
-* 避免使用CSS表达式
-* 避免使用table布局
-* 减少DOM操作
-* 缓存值，避免频繁读取会引发回流/重绘的属性
-* DOM离线处理，处理完后一起更新
-  - 使用DocumentFragment进行缓存操作,引发一次回流和重绘；
-  - 使用display:none技术，只引发两次回流和重绘；
-  - 使用cloneNode(true or false) 和 replaceChild 技术，引发一次回流和重绘
+[重绘和回流](\details\面试题\JS面试题\重绘-回流.md)
 
 
 ## <a name="模块化">模块化</a>
 [模块化](/details/JS/Module.md)
 
 
-## <a name="垃圾回收机制">垃圾回收机制</a>
-  Javascript具有自动垃圾回收机制(GC:Garbage Collecation)。
-
-  原理：垃圾收集器会定期（周期性）找出那些不在继续使用的变量，然后释放其内存。
-
-1. 标记清除
->
-    在函数声明一个变量的时候，就将这个变量标记为“进入环境”。从逻辑上讲，永远都不能释放进入环境的变量作占用的内存，因为只要执行流进入相应的环境，就可能会用到它们。而当变量离开环境时，则将其标记为“离开环境”。
-    垃圾回收器在运行时候会给存储在内存中中的所有变量都加上标记。然后它会去掉环境中的变量以及被环境中的变量引用的变量的标记（闭包）。在此之后再被标记的变量将被视为准备删除的变量，原因是环境中的变量已经无法访问到这些变量了。最后，垃圾回收器完成内存清楚工作，销毁那些带标记的值并回收他们所占用的内存空间。
-
-    function test(){ 
-      //a,b被标记 ，进入环境 
-      var a = 10 ; 
-      var b = 20 ; 
-    } 
-    test(); //执行完毕 之后 a、b又被标离开环境，被回收。
-
-2. 引用计数法
->
-        引用计数的含义是跟踪记录每个值被引用的次数。当声明了一个变量并将一个引用类型值赋给该变量时，则这个值的引用次数就是1。如果同一个值又被赋给另一个变量，则该值的引用次数加1。相反，如果包含对这个值引用的变量又取得了另外一个值，则这个值的引用次数减1。当这个值的引用次数变成0时，则说明没有办法再访问这个值了，因而就可以将其占用的内存空间回收回来。这样，当垃圾回收器下次再运行时，它就会释放那些引用次数为0的值所占用的内存。
-
-        但是很重要的一点是当遇到循环引用的时候，函数的引用次数就不会为0，所以不会被垃圾回收器回收内存，会造成内存泄露
-
-    function test(){ 
-      var a = {} ; //a的引用次数为0 
-      var b = a ; //a的引用次数加1，为1 
-      var c =a; //a的引用次数再加1，为2 
-      var b ={}; //a的引用次数减1，为1 
-    }
-
-如何减少JavaScript中的垃圾回收
-
-
 ## <a name="跨域">跨域</a>
-[详情](/details/crossOrigin.md)
+[详情](/details/跨域/README.md)
 
 ## <a name="常见的web攻击">常见的web攻击</a>
 https://github.com/LuckyWinty/fe-weekly-questions/issues/1
@@ -1610,11 +1593,12 @@ https://segmentfault.com/a/1190000016551188
     避免直接对HTML Entity解码
     使用DOM Parse转换，校正不配对的DOM标签
 
+```js
 npm install xss --save
 
-    let xss = reauire('xss')  
-    console.log(xss('<a onclick="alert(xss)"></a>'))
-
+let xss = reauire('xss')  
+console.log(xss('<a onclick="alert(xss)"></a>'))
+```
 
 #### CSRF（Cross-Site Request Forgeries，跨站点请求伪造）
 * 概念
@@ -1636,7 +1620,7 @@ npm install xss --save
 #### SQL注入攻击
 * 概念
 >
-    SQL 注入就是通过给 web 应用接口传入一些特殊字符，达�������欺骗服务器执行恶意的 SQL 命令。
+    SQL 注入就是通过给 web 应用接口传入一些特殊字符，欺骗服务器执行恶意的 SQL 命令。
 
 
 
@@ -1646,30 +1630,30 @@ npm install xss --save
 ![HREF](/img/href.png)
 
 * URI
-> 
-    URI，是uniform resource identifier，统一资源标识符，用来唯一的标识一个资源。
-    Web上可用的每种资源如HTML文档、图像、视频片段、程序等都是一个来URI来定位的
-    URI一般由三部组成：
-    ①访问资源的命名机制
-    ②存放资源的主机名
-    ③资源自身的名称，由路径表示，着重强调于资源。
+  > 
+      URI，是uniform resource identifier，统一资源标识符，用来唯一的标识一个资源。
+      Web上可用的每种资源如HTML文档、图像、视频片段、程序等都是一个来URI来定位的
+      URI一般由三部组成：
+      ①访问资源的命名机制
+      ②存放资源的主机名
+      ③资源自身的名称，由路径表示，着重强调于资源。
 
 * URL
-> 
-    URL是uniform resource locator，统一资源定位器，它是一种具体的URI，即URL可以用来标识一个资源，而且还指明了如何locate这个资源。
-    URL是Internet上用来描述信息资源的字符串，主要用在各种WWW客户程序和服务器程序上，特别是著名的Mosaic。
-    采用URL可以用一种统一的格式来描述各种信息资源，包括文件、服务器的地址和目录等。URL一般由三部组成：
-    ①协议(或称为服务方式)
-    ②存有该资源的主机IP地址(有时也包括端口号)
-    ③主机资源的具体地址。如目录和文件名等
+  > 
+      URL是uniform resource locator，统一资源定位器，它是一种具体的URI，即URL可以用来标识一个资源，而且还指明了如何locate这个资源。
+      URL是Internet上用来描述信息资源的字符串，主要用在各种WWW客户程序和服务器程序上，特别是著名的Mosaic。
+      采用URL可以用一种统一的格式来描述各种信息资源，包括文件、服务器的地址和目录等。URL一般由三部组成：
+      ①协议(或称为服务方式)
+      ②存有该资源的主机IP地址(有时也包括端口号)
+      ③主机资源的具体地址。如目录和文件名等
 
-    如 scheme://user:pwd@host:port/path;params?query#frag
+      如 scheme://user:pwd@host:port/path;params?query#frag
 
 * URN
-> 
-    URN，uniform resource name，统一资源命名，是通过名字来标识资源，
+  > 
+      URN，uniform resource name，统一资源命名，是通过名字来标识资源，
 
-    如 mailto:java-net@java.sun.com。
+      如 mailto:java-net@java.sun.com。
 
 URI是以一种抽象的，高层次概念定义统一资源标识，而URL和URN则是具体的资源标识的方式。
 URI包含URL和URN
@@ -1721,102 +1705,52 @@ new URL('a','https://www.aaa.com')
 将中文、韩文等特殊字符转换成utf-8格式的url编码   
 传递参数时需要使用encodeURIComponent，这样组合的url才不会被#等特殊字符截断。
 
->
-    var url = "http://localhost:8080/#/pp?a=1&b=" ;
-    encodeURIComponent(encodeURIComponent(url))
-    "http%3A%2F%2Flocalhost%3A8080%2F%23%2Fpp%3Fa%3D1%26b%3D"
+```js
+var url = "http://localhost:8080/#/pp?a=1&b=" ;
+encodeURIComponent(encodeURIComponent(url))
+"http%3A%2F%2Flocalhost%3A8080%2F%23%2Fpp%3Fa%3D1%26b%3D"
+```
 
 * 编码encodeURI()、解码decodeURI()  
 用于整个url跳转
->
-
-    url = "http://localhost:8080/#/pro?a=1&b=张三&c=aaa"
-    encodeURI(url)
-    "http://localhost:8080/#/pro?a=1&b=%E5%BC%A0%E4%B8%89&c=aaa"
-    本例中只是将中文转成%...，传过去再解码就可以拿到中文
+```js
+url = "http://localhost:8080/#/pro?a=1&b=张三&c=aaa"
+encodeURI(url)
+// "http://localhost:8080/#/pro?a=1&b=%E5%BC%A0%E4%B8%89&c=aaa"
+```
 
 * 编码escape() 、解码unescape()  
 js对字符串进行编码。不常用
->
-    escape('啊') // "%u554A"
-    unescape("%u554A") // '啊'
+```js
+escape('啊') // "%u554A"
+unescape("%u554A") // '啊'
+```
+
 
 * window.atob()、window.btoa()
 
 window.btoa()：编码，Base64 to ASCII ,该方法不能直接作用于Unicode字符串.
->
-    btoa('a') // "YQ=="
-    btoa('啊') // 报错
+```js
+btoa('a') // "YQ=="
+btoa('啊') // 报错
+```
 
 window.atob() 解码，ASCII to Base64
->
-    atob("YQ==") // "a"
+```js
+atob("YQ==") // "a"
+```
 
-如何让btoa支持Unicode字符编码  
+`如何让btoa支持Unicode字符编码  `
 >编码时，先用encodeURIComponent对字符串进行编码，再进行btoa进行Base64编码  
 >解码时，先用atob对Base64编码的串进行解码，再用decodeURIComponent对字符串进行解码
->
-    var str = "a啊";
-    var encoded_str = btoa(encodeURIComponent(str));
-    var decoded_str = decodeURIComponent(atob(encoded_str));
-    console.log(encoded_str); // "YSVFNSU5NSU4QQ=="
-    console.log(decoded_str); // "a啊"
 
-## <a name="函数式编程">函数式编程</a>
-[函数式编程](/details/Function.md)
-
-
-## <a name="函数重载">函数重载</a>
-
-函数名称一样，但是输入输出不一样。或者说，允许某个函数有各种不同输入，根据不同的输入，调用不同的函数，然后返回不同的结果。
-
-重载其实是把多个功能相近的函数合并为一个函数，重复利用了函数名
-
->
-    //第一个为要绑定方法的对象，第二个为绑定的方法名称，第三个为需要绑定的方法（匿名函数）
-    function addMethod(object, name, fn) {
-    　　var old = object[name]; //把前一次添加的方法存在一个临时变量old里面
-    　　object[name] = function() { // 重写了object[name]的方法
-    　　　　// 如果调用object[name]方法时，传入的参数个数跟预期的一致，则直接调用
-    　　　　if(fn.length === arguments.length) {
-    　　　　　　return fn.apply(this, arguments);
-    　　　　// 否则，判断old是否是函数，如果是，就调用old
-    　　　　} else if(typeof old === "function") {
-    　　　　　　return old.apply(this, arguments);
-    　　　　}
-    　　}
-    }
-
-    var people = {
-    　　values: ["Dean Edwards", "Alex Russell", "Dean Tom"]
-    };
-
-    /* 下面开始通过addMethod来实现对people.find方法的重载 */
-
-    // 不传参数时，返回people.values里面的所有元素
-    addMethod(people, "find", function() {
-    　　return this.values;
-    });
-
-    // 传一个参数时，按first-name的匹配进行返回
-    addMethod(people, "find", function(firstName) {
-      return this.values.filter((item)=>{
-        return item.indexOf(firstName) === 0
-      })
-    });
-
-    // 传两个参数时，返回first-name和last-name都匹配的元素
-    addMethod(people, "find", function(firstName, lastName) {
-      return this.values.filter((item)=>{
-        return item === (firstName + lastName)
-      })
-    });
-
-    // 测试：
-    console.log(people)
-    console.log(people.find()); //["Dean Edwards", "Alex Russell", "Dean Tom"]
-    console.log(people.find("Dean")); //["Dean Edwards", "Dean Tom"]
-    console.log(people.find("Dean Edwards")); //["Dean Edwards"]
+```js
+var str = "a啊";
+var encoded_str = btoa(encodeURIComponent(str));
+var decoded_str = decodeURIComponent(atob(encoded_str));
+console.log(encoded_str); // "YSVFNSU5NSU4QQ=="
+console.log(decoded_str); // "a啊"
+```
 
 
 ## <a name="递归、迭代">递归、迭代</a>
@@ -1872,7 +1806,9 @@ function factorial(n) {
 * 递归容易产生"栈溢出"错误（stack overflow）
 * 效率方面，递归可能存在冗余计算
 
-### 尾递归,尾调用
+## <a name="尾调用、尾递归">尾调用、尾递归</a>
+[尾调用和尾递归](https://juejin.im/post/6844903590033621006)
+### 尾调用
 
 尾调用指的是函数作为另一个函数的最后一条语句被调用。
 
@@ -1881,17 +1817,49 @@ function factorial(n) {
 * 尾调用是最后一条语句
 * 尾调用的结果作为函数返回
 
+
+
+非尾调用
+```js
+function foo () { console.log(111); }
+function bar () { foo(); }
+function baz () { bar(); }
+
+baz();
+```
+函数在调用的时候会在调用栈（call stack）中存有记录，每一条记录叫做一个调用帧（call frame），每调用一个函数，就向栈中push一条记录，函数执行结束后依次向外弹出，直到清空调用栈，参考下图：
+![](/img/tailcall-1.png)
+
+造成这种结果是因为每个函数在调用另一个函数的时候，并没有 return 该调用，所以JS引擎会认为你还没有执行完，会保留你的调用帧。
+
+baz() 里面调用了 bar() 函数，并没有 return 该调用，所以在调用栈中保持自己的调用帧，同时 bar() 函数的调用帧在调用栈中生成，同理，bar() 函数又调用了 foo() 函数，最后执行到 foo() 函数的时候，没有再调用其他函数，这里没有显示声明 return，所以这里默认 return undefined。
+
+foo() 执行完了，销毁调用栈中自己的记录，依次销毁 bar() 和 baz() 的调用帧，最后完成整个流程。
+
+
+尾调用优化
 ```js
 'use strict'
-function doSomethingElse () {
-  console.log('do something else')
-}
-function doSomething () {
-  return doSomethingElse()
-}
+function foo () { console.log(111); }
+function bar () { return foo(); }
+function baz () { return bar(); }
 
+baz();
 ```
 
+这里要注意： `尾调用优化只在严格模式下有效。`
+在非严格模式下，大多数引擎会包含下面两个属性，以便开发者检查调用栈：
+* func.arguments: 表示对 func最近一次调用所包含的参数
+* func.caller: 引用对 func最近一次调用的那个函数
+
+在尾调用优化中，这些属性不再有用，因为相关的信息可能以及被移除了。因此，严格模式(strict mode)禁止这些属性，并且尾调用优化只在严格模式下有效
+
+![](/img/tailcall-2.png)
+
+尾调用由于是函数的最后一步操作，所以不需要保留外层函数的调用记录，只要直接用内层函数的调用记录取代外层函数的调用记录就可以了，调用栈中始终只保持了一条调用帧。那么在调用栈中的调用帧始终只有一条，这样会节省很大一部分的内存，这也是尾调用优化的意义。
+
+
+非尾调用例子
 ```js
 function doSomethingElse () {
   console.log('do something else')
@@ -1915,89 +1883,63 @@ function doSomething () {
   // 无法优化，该函数是一个闭包
   return func()
 }
+```
+
+### 尾递归
+当一个函数尾调用自身，就叫做尾递归
+```js
+function foo () {
+  return foo();
+}
+```
+
+那么尾递归相比递归而言，有哪些不同呢？ 我们通过下面这个求阶乘的例子来看一下：
+```js
+function factorial (num) {
+    if (num === 1) return 1;
+    return num * factorial(num - 1);
+}
+
+factorial(5);            // 120
+factorial(10);           // 3628800
+factorial(500000);       // Uncaught RangeError: Maximum call stack size exceeded
+```
+上面是使用递归来计算阶乘的例子，操作系统为JS引擎调用栈分配的内存是有大小限制的，如果计算的数字足够大，超出了内存最大范围，就会出现栈溢出错误。
+
+尾递归
+```js
+'use strict';
+
+function factorial (num, total) {
+    if (num === 1) return total;
+    return factorial(num - 1, num * total);
+}
+
+factorial(5, 1);                // 120
+factorial(10, 1);               // 3628800
+factorial(500000, 1);           // 分情况
+
+// 注意，虽然说这里启用了严格模式，但是经测试，在Chrome和Firefox下，还是会报栈溢出错误，并没有进行尾调用优化
+// Safari浏览器进行了尾调用优化，factorial(500000, 1)结果为Infinity，因为结果超出了JS可表示的数字范围
+// 如果在node v6版本下执行，需要加--harmony_tailcalls参数，node --harmony_tailcalls test.js
+// node最新版本已经移除了--harmony_tailcalls功能
 
 ```
 
-## <a name="webWorker">webWorker</a>
-
-[详情](http://www.ruanyifeng.com/blog/2018/07/web-worker.html)
-
->
-    web worker就是在js单线程执行的基础上开启一个子线程，进行程序处理，而不影响主线程的执行，当子线程执行完之后再回到主线程上，在这个过程中不影响主线程的执行。
-
-    Worker 线程一旦新建成功，就会始终运行，不会被主线程上的活动（比如用户点击按钮、提交表单）打断。这样有利于随时响应主线程的通信。但是，这也造成了 Worker 比较耗费资源，不应该过度使用，而且一旦使用完毕，就应该关闭。
-
-    子线程与主线程之间提供了数据交互的接口postMessage和onmessage，来进行数据发送和接收;  
-    通过error捕捉错误信息；
-    使用terminate()可结束线程;
-
-
-    Web Worker无法访问DOM节点；子线程完全受主线程控制并且不能操作dom，只有主线程可以操作dom
-    Web Worker无法访问全局变量或是全局函数；
-    Web Worker无法调用alert()或者confirm之类的函数,但可以使用 XMLHttpRequest 对象发出 AJAX 请求
-    Web Worker无法访问window、document之类的浏览器全局变量
-    但是可以访问navigator、location 
-
-API：
-
-主线程
-
->
-    new Worker('js地址', { name : '指定 Worker 的名称' });
-    Worker.onerror：指定 error 事件的监听函数。
-    Worker.onmessage：指定 message 事件的监听函数，发送过来的数据在Event.data属性中。
-    Worker.onmessageerror：指定 messageerror 事件的监听函数。发送的数据无法序列化成字符串时，会触发这个事件。
-    Worker.postMessage()：向 Worker 线程发送消息。
-    Worker.terminate()：立即终止 Worker 线程。
-
-
-子线程：(self.可省略)
-
-    self.name： Worker 的名字。该属性只读，由构造函数指定。
-    self.onmessage：指定message事件的监听函数。
-    self.onmessageerror：指定 messageerror 事件的监听函数。发送的数据无法序列化成字符串时，会触发这个事件。
-    self.close()：关闭 Worker 线程。
-    self.postMessage()：向产生这个 Worker 线程发送消息。
-    self.importScripts()：加载 JS 脚本。
-
-
-分类：专用线程 Dedicated Worker，一个是共享线程 Shared Worker
-
->
-    var worker = new Worker('/work.js'); //创建一个子线程
-    worker.postMessage('Hello');
-    worker.onmessage = function (e) {
-        console.log(e.data); //接收信息：Hi
-        worker.terminate(); //结束线程
-    };
-    worker.onerror = function (err) {
-      console.log(err)
-    }
-
-    //worker.js
-    onmessage = function (e) {
-      console.log(e.data); //接收的信息：Hello
-      postMessage("Hi"); //向主进程发送消息
-    }
+## <a name="WebWorker">WebWorker</a>
+[WebWorker](/details\JS\WebWorker.md)
 
 ## <a name="浏览器缓存">浏览器缓存</a>
-[浏览器缓存](/details/InternetCache.md)
+[浏览器缓存](/details\面试题\JS面试题\浏览器的缓存机制.md)
 
 ## <a name="前端性能优化的方法">前端性能优化的方法</a>
-[性能优化](/details/optimization.md)
+[WEB性能优化](/details/WEB性能优化/README.md)
 
 ## <a name="浏览器页面渲染">浏览器页面渲染</a>
-[浏览器页面渲染](/details/面试题/浏览器页面渲染.md)
-
+[浏览器页面渲染](/details/面试题/JS面试题/浏览器页面渲染.md)
 
 ## <a name="从浏览器地址栏输入url到显示页面的步骤">从浏览器地址栏输入url到显示页面的步骤</a>
 [从浏览器地址栏输入url到显示页面的步骤](\details\面试题\HTTP面试题\从浏览器地址栏输入url到显示页面的步骤.md)
-
-## <a name="深度优先遍历和广度优先遍历">深度优先遍历和广度优先遍历</a>
-[参考](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/9)
-
-
-
 
 ## <a name="use strict">"use strict"? 用处？</a>
 
@@ -2013,8 +1955,4 @@ API：
 7. 不允许重复的属性名称或参数值。当检测到对象（例如，var object = {foo: "bar", foo: "baz"};）中重复命名的属性，或检测到函数中（例如，function foo(val1, val2, val1){}）重复命名的参数时，严格模式会抛出错误。  
 8. 使eval() 更安全。在严格模式和非严格模式下，eval() 的行为方式有所不同。最显而易见的是，在严格模式下，变量和声明在 eval() 语句内部的函数不会在包含范围内创建（它们会在非严格模式下的包含范围中被创建，这也是一个常见的问题源）。
 9. 在 delete使用无效时抛出错误。delete操作符（用于从对象中删除属性）不能用在对象不可配置的属性上。当试图删除一个不可配置的属性时，非严格代码将默默地失败，而严格模式将在这样的情况下抛出异常。
-
-
-
-
 

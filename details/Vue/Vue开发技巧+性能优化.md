@@ -1374,8 +1374,8 @@ module.exports = {
 // 其原因在于Vue-router在3.1之后把$router.push()方法改为了Promise。所以假如没有回调函数，错误信息就会交给全局的路由错误处理，因此就会报上述的错误。
 
 // 解决：函数劫持，添加catch
-const originalPush = router.prototype.push
-router.prototype.push = function push(location) {
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 }
 // 或者每次使用时添加catch，this.$router.push('/').catch(err => {err})

@@ -90,12 +90,12 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
 
 <img src="/img/event.png" width="100%" />
 
-而准确的划分方式是：
+更为准确的划分方式是：
 * macro-task(宏任务)：
   * script(整体代码)
   * setTimeout
   * setInterval
-  * setImmediate(Node.js 环境)
+  * setImmediate(IE10，Node.js 环境)
   * I/O、UI交互事件
   * postMessage
   * MessageChannel
@@ -103,7 +103,7 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
 
 * micro-task(微任务)
   * Promise.then、catch、finally
-  * MutaionObserver (html5新特性, 浏览器环境)
+  * MutationObserver (html5新特性, 浏览器环境)
   * process.nextTick(Node.js 环境)
 
 

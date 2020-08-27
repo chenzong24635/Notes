@@ -23,7 +23,7 @@ Function.prototype.selfBind = function(content, ...args) {
   };
 
   // 箭头函数没有 prototype，箭头函数this永远指向它所在的作用域
-  bound.prototype = Object.create(self.prototype)
+  self.prototype && (bound.prototype = Object.create(self.prototype))
 
   return bound; // 返回拷贝的函数
 }

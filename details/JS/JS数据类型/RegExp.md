@@ -15,6 +15,7 @@
 * <a href="#字符">字符</a>
 * <a href="#操作符优先级">操作符优先级</a>
 * <a href="#修饰符">修饰符</a>
+* <a href="#属性">属性</a>
 * <a href="#贪婪、懒惰">贪婪、懒惰</a>
 * <a href="#零宽断言">零宽断言</a>
 * <a href="#方法">正则、字符串方法</a>
@@ -26,13 +27,16 @@
 # <a name="创建正则表达式">创建正则表达式</a>
 
 字面量形式：
+```js
 let re = /abc/gi;
+```
 
 构造函数形式：
-let re = new RegExp("abc",'gi');    
+```js
+let re = new RegExp("abc",'gi');
 let re = new RegExp(/abc/,'gi');  
 let re = new RegExp(/abc/gi);  
-
+```
 
 # <a name="字符">字符</a>
 | 字符| 描述| |
@@ -60,27 +64,15 @@ let re = new RegExp(/abc/gi);
 | \t | 匹配一个制表符。等价于\x09和\cI。 |
 | \v | 匹配一个垂直制表符。等价于\x0b和\cK|
 
->
-    单行模式s：更改.的含义，使它与每一个字符匹配（包括换行符\n）
-
-    匹配a标签包括其内容
-    '<a href="daad" class="b"> ddad \n </a>'.match(/<a[^>]+>.*(<\/a>)$/gs)
-    等同于
-    '<a href="daad" class="b"> ddad \n </a>'.match(/<a[^>]+>([\d\D]*)(<\/a>)$/g)
-
-    多个a标签
-    '<a  class="b"> ddad \n </a> <a href="daad" class="aa"> ddad \n </a>'.match(/<a[^>]*?>([^<]*)<\/a>/g)
-
-
 
 # <a name="操作符优先级">操作符优先级</a>
 |操作符| 优先级(由高到低)|
 |:--|:--|
-| 转义符 \\| 1
+| 转义符 \\ | 1
 | 括号、方括号 (...)、(?:...)、(?=...)、(?!...)、[...] | 2
 | 量词限定符 {m}、{m,n}、{m,}、?、*、+ | 3 |
 |位置和序列 ^、$、\元字符、一般字符 | 4
-|管道符 \|| 5
+|管道符 \| | 5
 
 # <a name="修饰符">修饰符</a>
 
@@ -88,50 +80,87 @@ let re = new RegExp(/abc/gi);
 |:---|:---|:--|
 | g (global)| 全局搜索  |
 | i (ignoreCase)| 忽略大小写 |
-| s (dotAll)| 单行模式 :	更改.的含义，允许 . 匹配换行符(\n)。
+| s (dotAll)| 单行模式 :	更改 `.` 字符的含义，使它与每一个字符匹配（包括换行符\n）
 | m (multiline)| 多行模式 : 更改^和$的含义，使它们分别在任意一行的行首和行尾匹配，而不仅仅在整个字符串的开头和结尾匹配。(在此模式下,$的精确含意是:匹配\n之前的位置以及字符串结束前的位置.)|
 | u (unicode)| 使用unicode码的模式进行匹配,用来正确处理大于\uFFFF的 Unicode 字符。会正确处理四个字节的 UTF-16 编码。|
 | y (sticky)| 执行“粘性”搜索,匹配从目标字符串的当前位置开始，可以使用y标志。 |
 
-**u修饰符**
->
-    /𠮷{2}/.test('𠮷𠮷') // false
-    /𠮷{2}/u.test('𠮷𠮷') // true
-
-**y修饰符**  
-y修饰符的作用与g修饰符类似，也是全局匹配，后一次匹配都从上一次匹配成功的下一个位置开始。不同之处在于，g修饰符只要剩余位置中存在匹配就可，而y修饰符确保匹配必须从剩余的第一个位置开始，这也就是“粘连”的涵义。
->
-    var s = 'aaa_aa_a';
-    var r1 = /a+/g;
-    var r2 = /a+/y;
-
-    r1.exec(s) // ["aaa"]
-    r2.exec(s) // ["aaa"]
-
-    r1.exec(s) // ["aa"]
-    r2.exec(s) // null
-
-
 `多行模式和单行模式没有任何关系.能同时使用`
 
+**s修饰符**
+
+单行模式s：更改.的含义，使它与每一个字符匹配（包括换行符\n）
+```js
+
+// 匹配a标签包括其内容
+'<a href="daad" class="b"> ddad \n </a>'
+.match(/<a[^>]+>.*(<\/a>)/gs)
+// 等同于
+'<a href="daad" class="b"> ddad \n </a>'
+.match(/<a[^>]+>([\d\D]*)(<\/a>)/g)
+
+// 多个a标签
+'<a  class="b"> ddad \n </a> <a href="daad" class="aa"> ddad \n </a>'
+.match(/<a[^>]+>([^<]*)<\/a>/g)
+```
+
+**u修饰符**
+处理大于\uFFFF的 Unicode 字符
+```js
+/𠮷{2}/.test('𠮷𠮷') // false
+/𠮷{2}/u.test('𠮷𠮷') // true
+```
+
+**y修饰符**  
+y修饰符的作用与g修饰符类似，也是全局匹配，后一次匹配都从上一次匹配成功的下一个位置开始。
+不同之处在于，g修饰符只要剩余位置中存在匹配就可，而y修饰符确保匹配必须从剩余的第一个位置开始，这也就是“粘连”的涵义。
+```js
+var s = 'aaa_aa_a';
+var r1 = /a+/g;
+var r2 = /a+/y;
+
+r1.exec(s) // ["aaa"]
+r2.exec(s) // ["aaa"]
+
+r1.exec(s) // ["aa"]
+r2.exec(s) // null
+```
+
+# <a name="属性">属性</a>
+
 * source 返回正则表达式的正文
-> /abc/ig.source  // "abc"
+  > /abc/ig.source  // "abc"
 
 * lastIndex:整数,表示开始搜索下一个匹配项的字符位置,从0算起
-> /abc/ig.lastIndex  // 0
+  > /abc/ig.lastIndex  // 0
 
 * flags 返回正则表达式的修饰符
-> /abc/ig.flags // 'gi'
+  > /abc/ig.flags // 'gi'
 
-* global 是否设置了g修饰符
->/abc/g.global // true
->/abc/.global // false
+* global 是否设置了 g 修饰符
+  >/abc/g.global // true  
+  >/abc/.global // false
 
-* sticky 是否设置了y修饰符
-> /abc/y.sticky // true
-> /abc/.sticky // false
+* ignoreCase  是否设置了 i 修饰符
+  >/abc/i.ignoreCase // true  
+  >/abc/.ignoreCase // false
 
-....
+* dotAll 是否设置 s 修饰符
+  >/abc/s.dotAll // true  
+  >/abc/.dotAll // false
+
+* multiline 是否设置 m 修饰符
+  >/abc/m.multiline  // true  
+  >/abc/.multiline  // false
+
+* unicode 是否设置 u 修饰符
+  >/abc/u.unicode   // true  
+  >/abc/.unicode   // false
+
+* sticky 是否设置了 y 修饰符
+  > /abc/y.sticky // true  
+  > /abc/.sticky // false
+
 
 # <a name="贪婪、懒惰">贪婪、懒惰</a>
 
@@ -191,44 +220,124 @@ y修饰符的作用与g修饰符类似，也是全局匹配，后一次匹配都
 | split | 分割字符串（不改变原字符串）   | 数组 |  str.split(reg|str,maxLen); maxLen: 返回数组最大长度;  date = '2017-11-21 23:40:56';date.split(/-|\s|:/); -->  ["2017", "11", "21", "23", "40", "56"]
 
 ### search和match，会把字符串转换为正则的
->
-    var string="2017.06.27";
-    string.search(".")// 0
-    //修改
-    string.search("\\.") // 4
-    string.search(/\./) // 4
+```js
+var string="2017.06.27";
+string.search(".")// 0
+
+//修改
+string.search("\\.") // 4
+string.search(/\./) // 4
+```
+
 
 ### exec, match
 * exec --  reg.exec(str)  
 * match(非全局搜索) --  str.match(reg|str)   
-* matchAll() 方法返回一个包含所有匹配正则表达式及分组捕获结果的迭代器。  
+* matchAll() 方法返回一个包含所有匹配正则表达式及分组捕获结果的迭代器。 
+
 返回值：  
-匹配的内容 | 捕获分组（括号里匹配）的内容，有几个分组就有几项  
-index：匹配内容的起始索引  
-input：原字符串  
-groups：用于列举 “有名有姓”的捕获
-  >语法为：(?<捕获分组的名字>捕获分组对应的规则)，/(?\<myname>\d))/
-
 >
-    let str = '123'
-    let reg = /(?<first>\d)(?<second>\d)/
-    其中的?<first>、?<second>代表捕获的“名字”为first、second 
-    //reg.exec(str)
-    str.match(reg)
-    //返回：
-    [
-      "12","1","2",
-      index: 0,
-      input: "123",
-      groups:{
-        first: "1"
-        second: "2"
-      }
-    ]
+    匹配的内容 | 捕获分组（括号里匹配）的内容，有几个分组就有几项  
+    index：匹配内容的起始索引  
+    input：原字符串  
+    groups：用于列举 “有名有姓”的捕获  
+      语法为：(?<捕获分组的名字>捕获分组对应的规则)，/(?\<myname>\d))/
 
-    若match全局匹配,而exex不影响
-    let reg = /(?<first>\d)(?<second>\d)/g
-    str.match(reg) //["12"]
+match,exec区别
+```js
+let str = '123'
+let reg = /(?<first>\d)(?<second>\d)/
+// 其中的?<first>、?<second>代表捕获的“名字”为first、second 
+//reg.exec(str)
+str.match(reg)
+//返回：
+// [
+//   0: "12",
+//   1: "1",
+//   2: "2",
+//   index: 0,
+//   input: "123",
+//   groups:{
+//     first: "1"
+//     second: "2"
+//   }
+// ]
+
+// 若match全局匹配g,值返回匹配值
+let reg = /(?<first>\d)(?<second>\d)/g
+str.match(reg) //["12"]
+
+// 而exex不影响
+reg.exec(str)
+// [
+//   0: "12",
+//   1: "1",
+//   2: "2",
+//   index: 0,
+//   input: "123",
+//   groups:{
+//     first: "1"
+//     second: "2"
+//   }
+// ]
+
+```
+
+没有匹配值都返回null
+```js
+let reg = /a/
+let str = 'bc'
+str.match(reg) // null
+reg.exec(str) // null
+```
+
+matchAll用法
+```js
+let reg = /\d{2}[A-Za-z]/g
+let str = '12a45b6666c'
+let iter =str.matchAll(reg)
+console.log(iter); 
+// RegExpStringIterator {}
+
+console.log(iter.next());
+// {
+//   value: Array(1),
+//   0: "12a",
+//   index: 0,
+//   input: "12a45b6666c",
+//   groups: undefined,
+//   length: 1,
+//   done: false
+// }
+
+console.log(iter.next());
+// {
+//   value: Array(1),
+//   0: "45b",
+//   index: 3,
+//   input: "12a45b6666c",
+//   groups: undefined,
+//   length: 1,
+//   done: false
+// }
+
+console.log(iter.next());
+// {
+//   value: Array(1),
+//   0: "66c",
+//   index: 8,
+//   input: "12a45b6666c",
+//   groups: undefined,
+//   length: 1,
+//   done: false
+// }
+
+console.log(iter.next());
+// {
+//   value: undefined
+//   done: true
+// }
+```
 
 
 * 捕获分组 非捕获分组  
@@ -236,20 +345,22 @@ groups：用于列举 “有名有姓”的捕获
 (?:)非捕获分组（匹配不捕获）    
   >如果只想要括号最原始的功能，但不会引用它，即，既不在 API 里引用，也不在正则里反向引用。
   >不需要捕获分布的内容时，在不需要捕获分组的里面加上?: 
->
-    let str = "2018ceshi2019";
-    
-    let reg = /\d\w/;
-    reg.exec(str);//["20", index: 0, input: "2018ceshi2019",groups:undefined]
-    
-    let reg = /(\d)(\w)/; //捕获分组
-    reg.exec(str);//["20", "2", "0", index: 0, input: "2018ceshi2019",groups:undefined]
-    
-    let reg = /(\d)(?:\w)/; //捕获分组+非捕获分组
-    reg.exec(str);//["20","2", index: 0, input: "2018ceshi2019",groups:undefined]
 
-    let reg = /(?:\d)(?:\w)/; //非捕获分组
-    reg.exec(str);//["20", index: 0, input: "2018ceshi2019",groups:undefined]
+```js
+let str = "2018ceshi2019";
+
+let reg = /\d\w/;
+reg.exec(str);//["20", index: 0, input: "2018ceshi2019",groups:undefined]
+
+let reg = /(\d)(\w)/; //捕获分组
+reg.exec(str);//["20", "2", "0", index: 0, input: "2018ceshi2019",groups:undefined]
+
+let reg = /(\d)(?:\w)/; //捕获分组+非捕获分组
+reg.exec(str);//["20","2", index: 0, input: "2018ceshi2019",groups:undefined]
+
+let reg = /(?:\d)(?:\w)/; //非捕获分组
+reg.exec(str);//["20", index: 0, input: "2018ceshi2019",groups:undefined]
+```
 
 ### replace, str.replace(值类型 | regexp, 字符串 | 回调函数)
 * 当第二个参数是字符串时，如下的字符有特殊的含义：

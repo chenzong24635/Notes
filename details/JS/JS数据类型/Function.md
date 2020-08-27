@@ -6,13 +6,95 @@
 
 * <a href="#"></a>
 
+# 常见的函数概念
+## 高阶函数
+
+一个函数接收另一个或多个函数作为参数或者返回值为一个函数，这种函数就称之为高阶函数。
+
+## 纯函数
+纯函数是具备幂等性（对于相同的参数，任何时间执行纯函数都将得到同样的结果），它不会引起副作用。
+
+纯函数与外部的关联应该都来源于函数参数。如果一个函数直接依赖了外部变量，那它就不是纯函数，因为外部变量是可变的，那么纯函数的执行结果就不可控了。
+
+```js
+// 纯函数
+function pure(a, b) {
+  return a + b;
+}
+// 非纯函数
+function impure(c) {
+  return c + d
+}
+```
+
+## <a name="函数重载">函数重载</a>
+函数名称一样，但是输入输出不一样。或者说，允许某个函数有各种不同输入，根据不同的输入，调用不同的函数，然后返回不同的结果。
+
+重载其实是把多个功能相近的函数合并为一个函数，重复利用了函数名
+
+```js
+//第一个为要绑定方法的对象，第二个为绑定的方法名称，第三个为需要绑定的方法（匿名函数）
+function addMethod(object, name, fn) {
+　　var old = object[name]; //把前一次添加的方法存在一个临时变量old里面
+　　object[name] = function() { // 重写了object[name]的方法
+　　　　// 如果调用object[name]方法时，传入的参数个数跟预期的一致，则直接调用
+　　　　if(fn.length === arguments.length) {
+　　　　　　return fn.apply(this, arguments);
+　　　　// 否则，判断old是否是函数，如果是，就调用old
+　　　　} else if(typeof old === "function") {
+　　　　　　return old.apply(this, arguments);
+　　　　}
+　　}
+}
+
+var people = {
+　　values: ["Dean Edwards", "Alex Russell", "Dean Tom"]
+};
+
+/* 下面开始通过addMethod来实现对people.find方法的重载 */
+
+// 不传参数时，返回people.values里面的所有元素
+addMethod(people, "find", function() {
+　　return this.values;
+});
+
+// 传一个参数时，按first-name的匹配进行返回
+addMethod(people, "find", function(firstName) {
+  return this.values.filter((item)=>{
+    return item.indexOf(firstName) === 0
+  })
+});
+
+// 传两个参数时，返回first-name和last-name都匹配的元素
+addMethod(people, "find", function(firstName, lastName) {
+  return this.values.filter((item)=>{
+    return item === (firstName + lastName)
+  })
+});
+
+// 测试：
+console.log(people)
+console.log(people.find()); //["Dean Edwards", "Alex Russell", "Dean Tom"]
+console.log(people.find("Dean")); //["Dean Edwards", "Dean Tom"]
+console.log(people.find("Dean Edwards")); //["Dean Edwards"]
+```
+
+## 函数柯里化
+[函数柯里化curry](/details/常用的手写函数/函数柯里化curry.md)
+
+## 偏函数partial
+[偏函数partial](/details/常用的手写函数/偏函数partial.md)
+
+## 函数组合compose
+[函数组合compose](/details/常用的手写函数/函数组合compose.md)
+
 # 函数式编程
 [简明 JavaScript 函数式编程——入门篇](https://segmentfault.com/a/1190000020302184)
 
 
 #  
 
-* 高阶函数： 一个函数就可以接收另一个函数作为参数或者返回值为一个函数，这种函数就称之为高阶函数。
+* 
 
 
 * 所有函数的参数都是按值传递的
@@ -83,8 +165,9 @@ Function.prototype.toString()
 之前执行这个方法时，得到的字符串是去空白符号的。而现在，得到的字符串呈现出原本源码的样子：
 
 
+
 # 一道题 理解函数的prototype,静态方法，变量提升。。。
-[](https://juejin.im/post/5e039d4c6fb9a016023e9283#heading-11)
+[运算符优先级](（https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence）)
 
 ```js
 function Foo() {
@@ -135,7 +218,7 @@ getName();// 1
 new Foo.getName();//2  
   //等价于 new (Foo.getName)()
   //考察的是js的运算符优先级问题 ，new 无参数列表，对应的优先级是18；成员访问操作符(.) , 对应的优先级是19。.优先级大于new，相当于new (Foo.getName)();
-  （https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence）
+  
 
 new Foo().getName();  //3 
   //等价于 (new Foo()).getName()
