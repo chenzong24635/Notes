@@ -1,7 +1,8 @@
 ﻿<a id="top"></a>
 
 # [常用链接](/details/website/CSS.md)
-
+[CSS居中](/CSS居中.html)
+[CSS布局](/CSS布局.html)
 
 # 目录
 
@@ -581,7 +582,7 @@ css2层叠顺序规则
         没有指定z-index值的定位元素，他们的堆叠顺序取决于在HTML文档中的顺序，越靠后出现的元素，位置越高，和定位属性无关。  
 
 
-![不使用z-index](img/zIndex1.png)
+![不使用z-index](/img/zIndex1.png)
 分析：
 >
     #5没有定位，处于正常流，所以根据以上规则，先于#1,#2,#3,#4这些已定位元素渲染，在最下方。
@@ -595,7 +596,7 @@ z-index只适用于已经定位的元素
     定位元素与浮动元素（先看zindex，越大越高；若相同，再看其在html顺序，越后越高）
 
 
-![zindex](img/zIndex2.png)
+![zindex](/img/zIndex2.png)
 
 ### z-index不起作用情况：
 >

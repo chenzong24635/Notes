@@ -1,31 +1,31 @@
 # AJAX
 
-
-
 ## 基本步骤：
->
-    // 创建对象 
-    var xhr = new XMLHttpRequest() || new ActiveXObject('Microsoft.XMLHTTP')
+```js
+// 创建对象                           IE
+var xhr = new XMLHttpRequest() || new ActiveXObject('Microsoft.XMLHTTP')
 
-    // 与服务端建立连接 初始化请求 
-    // get方法的请求数据  增加在url上：url?key=value&key1=value1...
-    xhr.open(method, url, async)
+// 与服务端建立连接 初始化请求 
+// get方法的请求数据  增加在url上：url?key=value&key1=value1...
+xhr.open(method, url, async)
 
-    //post方法需 设置http头信息 
-     xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded")
+//post方法需 设置http头信息 
+  xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded")
 
-    //指定回调函数 
-    xhr.onreadystatechange = function(){    
-      // 服务器端响应的数据发送完毕     请求成功
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        // 接收服务器端发送的数据
-        var data = xhr.responseText
-      } 
-    }
+//指定回调函数 
+xhr.onreadystatechange = function(){    
+  // 服务器端响应的数据发送完毕     请求成功
+  if (xhr.readyState === 4 && xhr.status === 200) {
+    // 接收服务器端发送的数据
+    var data = xhr.responseText
+  } 
+}
 
-    //发送请求  (get请求不能使用send()发送数据,但不可省略)
-    xhr.send(null); //get请求
-    xhr.send(data); //post请求 data数据格式:key=value
+//发送请求  (get请求不能使用send()发送数据,但不可省略)
+xhr.send(null); //get请求
+xhr.send(data); //post请求 data数据格式:key=value
+```
+
 
 ## 简介
 同步交互与异步交互
@@ -55,15 +55,18 @@ XMLHttpRequest对象用来在浏览器与服务器之间传送数据。
 创建对象实例：  const xhr = new XMLHttpRequest()
 
 ## 方法
->
-    open(method,url,async)：与服务器端建立连接
+* open(method,url,async)：与服务器端建立连接
         --  method - 设置请求类型(GET或POST)
         --url - 设置请求地址//get方法的请求数据 增加在url上：url?key=value&key1=value1...
         --async-请求是否异步(true | false) 默认true
-    setRequestHeader()：设置请求头部信息；open()之后、send()之前调用。
-    send()：发送AJAX请求；向服务器端发送请求参数//post请求数据通过send(data)发送
-    getResponseHeader(): 获得响应头部信息；
-    getAllResponseHeader()：获得一个包含所有头部信息的长字符串；每个头信息之间使用CRLF分隔，没有回应，返回null。
+* setRequestHeader()：设置请求头部信息；open()之后、send()之前调用。
+
+* send()：发送AJAX请求；向服务器端发送请求参数//post请求数据通过send(data)发送
+
+* getResponseHeader(): 获得响应头部信息；
+
+* getAllResponseHeader()：获得一个包含所有头部信息的长字符串；每个头信息之间使用CRLF分隔，没有回应，返回null。
+
     abort()：（取消异步请求）终止已经发出的HTTP请求
 
 

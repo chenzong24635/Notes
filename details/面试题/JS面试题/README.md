@@ -1,0 +1,180 @@
+
+## <a name="var、let 及 const 区别">var、let 及 const 区别</a>
+对于这个问题，我们应该先来了解提升（hoisting）这个概念。
+```js
+console.log(a) // undefined
+var a = 1
+```
+
+从上述代码中我们可以发现，虽然变量还没有被声明，但是我们却可以使用这个未被声明的变量，这种情况就叫做提升，并且提升的是声明。
+
+上述代码相当于
+```js
+var a
+console.log(a) // undefined
+a = 1
+```
+可知，使用 var 声明的变量会被提升到作用域的顶部，
+
+接下来我们再来看 let 和 const 。
+```js
+var a = 1
+let b = 1
+const c = 1
+console.log(window.a) // 1
+console.log(window.b) // undefined
+console.log(window.c) // undefined
+
+{
+  console.log(d) // undefined
+  var d
+  
+  console.log(e) // Uncaught ReferenceError: Cannot access 'e' before initialization
+  let e
+}
+
+{
+  var f
+  var f
+
+  let g
+  let g
+}
+// Uncaught SyntaxError: Identifier 'g' has already been declared
+
+```
+首先在全局作用域下使用 let 和 const 声明变量，变量并不会被挂载到 window 上，这一点就和 var 声明有了区别。
+>  
+    报错的原因是因为存在暂时性死区
+    只要块级作用域内存在let命令，它所声明的变量就“绑定”（binding）这个区域，不再受外部的影响。  
+    在代码块内，使用let命令声明变量之前，该变量都是不可用的。这在语法上，称为“暂时性死区”
+
+再者当我们在let/const声明 变量 之前如果使用了该变量，就会出现报错的情况,var 不会
+同时let/const重复声明同一变量也会报错,var 不会
+
+
+## <a name="Array.apply(null,Array(3))与Array(3)区别">Array.apply(null,Array(3))与 Array(3)区别</a>
+
+https://www.jianshu.com/p/6c7d0b18d4ca
+
+>
+
+    Array.apply(null, Array(3)) | Array.apply(null, { length: 3 })
+    实际上等同于Array.apply(null,[undefined,undefined,undefined]),也就等同于Array(undefined,undefined,undefined)
+    // 结果 [undefined, undefined, undefined]
+
+    Array(3) //是一个只有length,没有元素和索引的空数组
+    //结果 [empty × 3] // [,,]
+
+> 如何设为[0,0,0...]
+
+    Array.apply(null, Array(n)).map(()=>0) // n个0 [0,0,0,....]
+    Array.apply(null, {length: n}).map(()=>0)
+    ES6方法：Array(n).fill(0)
+
+## <a name="map(parseInt) 原理解析">['1','2','3'].map(parseInt) 原理解析</a>
+
+[高频网红面试题['1','2','3'].map(parseInt) 原理解析](https://juejin.im/post/5dbff8735188252ddb2fd25e)
+[关于数组的 ['1','2','3'].map(parseInt) 的问题?](https://www.zhihu.com/question/267702014)
+
+- ['1','2','3'].map(parseInt)
+
+```js
+var arr1 = arr.map(function callback(currentValue[, index[, array]]) {
+}[, thisArg])
+```
+
+解析：
+
+>
+
+    这个 callback 一共可以接收三个参数，其中第一个参数代表当前被处理的元素，而第二个参数代表该元素的索引。
+
+    而 parseInt 则是用来解析字符串的，使字符串成为指定基数的整数。
+
+    parseInt(string, radix)接收两个参数，第一个表示被处理的值（字符串），第二个表示为解析时的基数。
+
+    parseInt('1', 0)  //radix 为 0 时，且 string 参数不以“0x”和“0”开头时，按照 10 为基数处理。这个时候返回 1；
+
+    parseInt('2', 1)  // 基数为 1（1 进制）表示的数中，最大值小于 2，所以无法解析，返回 NaN；
+
+    parseInt('3', 2)  // 基数为 2（2 进制）表示的数中，最大值小于 3，所以无法解析，返回 NaN。
+
+    map 函数返回的是一个数组，所以最后结果为 [1, NaN, NaN]。
+
+- ['1', '2', '3'].map(parseFloat) // [1, 2, 3]
+  parseFloat 不用考虑第二个参数，只需要看第一个参数是否能正常转换为数字就行。
+
+* '1 2 3'.replace(/\d/g, parseInt) // "1 NaN 3"  
+  replace 第二个参数可以是 callback 函数，这个 callback 函数里，第一个参数为匹配项的值，第二个参数为匹配项的索引 index，第三个参数为整个字符串 即'1 2 3'
+
+* '123'.replace(/\d/g, parseInt) // "1NaNNaN"
+
+## <a name=""></a>
+
+## <a name="css和js动画的差异">css和js动画的差异</a>
+CSS动画：  
+* 优点
+  * 性能好
+  * 代码逻辑相对简单
+* 缺点：
+  * 动画上控制不够灵活；
+  * 兼容性不好；
+  * 部分动画功能无法实现（如滚动动画，视差滚动等）
+
+
+JS动画：
+* 优点
+  * 控制能力强，动画效果丰富， 可以单帧的控制、变换
+  * 兼容性好
+  * 可以添加事件
+* 缺点：
+  * 干扰主线程导致阻塞，造成丢帧情况；
+  * 代码复杂度高。
+
+```css
+.box {
+  animation: moving 1500ms ease-in-out;
+}
+
+@keyframes moving {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  100% {
+    transform: translate(100px, 100px);
+  }
+}
+```
+
+```js
+var box = document.querySelector('.box');
+var player = box.animate([
+  {transform: 'translate(0)'},
+  {transform: 'translate(100px, 100px)'}
+], 1500);
+// player.addEventListener('finish', function() {
+//   box.style.transform = 'translate(100px, 100px)';
+// });
+```
+
+## <a name="DOMContentLoaded、window.onload事件、执行顺序">DOMContentLoaded、window.onload事件、执行顺序</a>
+
+DOMContentLoaded事件触发时：仅当DOM解析完成后，不包括样式表，图片等资源。
+
+onload 事件触发时,页面上所有的 DOM,样式表,脚本,图片等资源已经加载完毕。
+
+```js
+window.onload = function (){console.log('window.onload');}
+
+
+
+document.addEventListener( "DOMContentLoaded", function(){
+  console.log('DOMContentLoaded')
+}, false );
+
+//DOMContentLoaded
+
+//window.onload
+```

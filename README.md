@@ -1549,43 +1549,7 @@ document.designMode // 查看
 
 https://zhuanlan.zhihu.com/p/25407758
 
-## <a name="map(parseInt) 原理解析">['1','2','3'].map(parseInt) 原理解析</a>
 
-[高频网红面试题['1','2','3'].map(parseInt) 原理解析](https://juejin.im/post/5dbff8735188252ddb2fd25e)
-[关于数组的 ['1','2','3'].map(parseInt) 的问题?](https://www.zhihu.com/question/267702014)
-
-- ['1','2','3'].map(parseInt)
-
-```js
-var arr1 = arr.map(function callback(currentValue[, index[, array]]) {
-}[, thisArg])
-```
-
-解析：
-
->
-
-    这个 callback 一共可以接收三个参数，其中第一个参数代表当前被处理的元素，而第二个参数代表该元素的索引。
-
-    而 parseInt 则是用来解析字符串的，使字符串成为指定基数的整数。
-
-    parseInt(string, radix)接收两个参数，第一个表示被处理的值（字符串），第二个表示为解析时的基数。
-
-    parseInt('1', 0)  //radix 为 0 时，且 string 参数不以“0x”和“0”开头时，按照 10 为基数处理。这个时候返回 1；
-
-    parseInt('2', 1)  // 基数为 1（1 进制）表示的数中，最大值小于 2，所以无法解析，返回 NaN；
-
-    parseInt('3', 2)  // 基数为 2（2 进制）表示的数中，最大值小于 3，所以无法解析，返回 NaN。
-
-    map 函数返回的是一个数组，所以最后结果为 [1, NaN, NaN]。
-
-- ['1', '2', '3'].map(parseFloat) // [1, 2, 3]
-  parseFloat 不用考虑第二个参数，只需要看第一个参数是否能正常转换为数字就行。
-
-* '1 2 3'.replace(/\d/g, parseInt) // "1 NaN 3"  
-  replace 第二个参数可以是 callback 函数，这个 callback 函数里，第一个参数为匹配项的值，第二个参数为匹配项的索引 index，第三个参数为整个字符串 即'1 2 3'
-
-* '123'.replace(/\d/g, parseInt) // "1NaNNaN"
 
 ## <a name="比较两个对象是否相等">比较两个对象是否相等</a>
 
@@ -1699,24 +1663,7 @@ var arr1 = arr.map(function callback(currentValue[, index[, array]]) {
       return true;
     }
 
-## <a name="Array.apply(null,Array(3))与Array(3)区别">Array.apply(null,Array(3))与 Array(3)区别</a>
 
-https://www.jianshu.com/p/6c7d0b18d4ca
-
->
-
-    Array.apply(null, Array(3)) | Array.apply(null, { length: 3 })
-    实际上等同于Array.apply(null,[undefined,undefined,undefined]),也就等同于Array(undefined,undefined,undefined)
-    // 结果 [undefined, undefined, undefined]
-
-    Array(3) //是一个只有length,没有元素和索引的空数组
-    //结果 [empty × 3] // [,,]
-
-> 如何设为[0,0,0...]
-
-    Array.apply(null, Array(n)).map(()=>0) // n个0 [0,0,0,....]
-    Array.apply(null, {length: n}).map(()=>0)
-    ES6方法：Array(n).fill(0)
 
 ## <a name="页面加载进度条">页面加载进度条</a>
 
@@ -1739,7 +1686,7 @@ https://www.jianshu.com/p/6c7d0b18d4ca
 
 ### 通过 css3 来制作进度条小动画
 
-![loading](img/loading.png)
+![loading](/img/loading.png)
 
     .loading {
       width: 100%;

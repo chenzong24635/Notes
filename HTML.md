@@ -3,17 +3,16 @@
 # [常用链接](/details/website/HTML.md)
 
 # 目录
-
-<details open>
-  <summary></summary>
+<details >
 
 * <a href="#HTML">**HTML**</a>
 
 * <a href="#XHTML、HTML区别">XHTML、HTML区别</a>
 * <a href="#语义化">语义化</a>
-* <a href="#Doctype作用 标准模式、兼任模式区别">Doctype作用？标准模式、兼任模式区别</a>
 * <a href="#HTML5 为什么只需要写">HTML5 为什么只需要写 \<!DOCTYPE HTML\></a>
+* <a href="#Doctype作用？标准模式、混杂模式区别">Doctype作用？标准模式、混杂模式区别</a>
 * <a href="#渐进增强与优雅降级">渐进增强与优雅降级-----开发方式，设计理念</a>
+* <a href="#HTML5新标签">HTML5新标签</a>
 * <a href="#块级元素、内联元素">块级元素、内联元素（行内元素、行内块级元素）</a>
 * <a href="#HTML全局属性有哪些">HTML全局属性有哪些</a>
 * <a href="#src和href的区别">src和href的区别</a>
@@ -22,6 +21,7 @@
 * <a href="#HTML中的字符实体">HTML中的字符实体</a>
 * <a href="#HTML5的离线储存">HTML5的离线储存</a>
 * <a href="#table优缺点">table优缺点</a>
+* <a href="#div较table优点">div较table优点</a>
 * <a href="#iframe缺点">iframe优缺点</a>
 * <a href="#Video">Video</a>
 * <details open>
@@ -51,19 +51,21 @@
 * <a href="#aria与role">aria与role</a>
 * <a href="#CSS和JS的位置会影响页面效率，为什么">CSS和JS的位置会影响页面效率，为什么？</a>
 * <a href="#未使用自适应写的PC页面在手机上显示不全的问题">未使用自适应写的PC页面在手机上显示不全的问题</a>
-</details>
-
 * <a href="#HTML 5.2">HTML 5.2新增标签、属性</a>
+</details>
 
 # <a name="HTML">**HTML**</a>[![bakTop](/img/backward.png)](#top)
 
 ## <a name="XHTML、HTML区别">XHTML、HTML区别</a>[![bakTop](/img/backward.png)](#top)
 
-HTML: 超文本标记语言（HyperText Markup Language），是一种基于标准通用标记语言（SGML）的应用，是一种非常灵活的置标语言，   
-XHTML: 可扩展的超文本标记语言（Extensible HyperText Markup Language），基于XML(XML是SGML的一个子集)。  
-XML: 可扩展的标记语言（Extensible Markup Language），主要用于存储数据和结构；  
+* HTML: 超文本标记语言（HyperText Markup Language），是一种基于标准通用标记语言（SGML）的应用，是一种非常灵活的置标语言，
+
+* XHTML: 可扩展的超文本标记语言（Extensible HyperText Markup Language），基于XML(XML是SGML的一个子集)。  
+
+* XML: 可扩展的标记语言（Extensible Markup Language），主要用于存储数据和结构；  
 
 ---
+
 XHTML特性：
 * XHTML 与 HTML4 几乎是相同的  
 * XHTML是更为严格纯净的HTML版  
@@ -74,21 +76,15 @@ XHTML特性：
 
 语义化是指通过HTML标记表示页面包含的信息，包含了HTML标签的语义化和css命名的语义化。
 
-HTML标签的语义化是指：通过使用包含语义的标签（如h1-h6）恰当地表示文档结构 ；
+* HTML标签的语义化是指：通过使用包含语义的标签（如h1-h6）恰当地表示文档结构；
 
-css命名的语义化是指：为html标签添加有意义的class，id补充未表达的语义，如Microformat通过添加符合规则的class描述信息
+* css命名的语义化是指：为html标签添加有意义的class，id补充未表达的语义，如Microformat通过添加符合规则的class描述信息
 
-好处:
+`语义化好处:`
 * 易于用户阅读，去掉样式后页面呈现清晰的结构  
-* 搜索引擎更好地理解页面，有利于SEO   
+* 搜索引擎更好地理解页面，有利于SEO  
 * 有利于开发和维护，语义化更具可读性  
 * 方便其他设备解析，如盲人阅读器根据语义渲染网页
-
-## <a name="div较table优点">div较table优点</a>[![bakTop](/img/backward.png)](#top)
-* 加快了页面的加载速度（在IE中要将整个table加载完了才显示内容）
-* 符合W3C标准，代码结构清晰明了，结构、样式和行为分离，带来足够好的可维护性。
-* 对SEO搜索引擎更加友好，
-
 
 
 ## <a name="HTML5 为什么只需要写">HTML5 为什么只需要写 \<!DOCTYPE HTML\></a>[![bakTop](/img/backward.png)](#top)
@@ -97,96 +93,19 @@ HTML5 不基于 SGML，因此不需要对DTD进行引用，但是需要 DOCTYPE 
 
 HTML4.01基于SGML,所以需要对DTD进行引用，才能告知浏览器文档所使用的文档类型。
 
-## <a name="HTML5新标签">[HTML5新标签](https://www.w3school.com.cn/html/html5_new_elements.asp)</a>[![bakTop](/img/backward.png)](#top)
->
-    <header>	定义了文档的头部区域
-    <article>	定义页面独立的内容区域。
-    <aside>	定义页面的侧边栏内容。
-    <main>	定义文档的主内容。
-    <nav>	定义导航链接的部分。
-    <section>	定义文档中的节（section、区段）。
-    <footer>	定义 section 或 document 的页脚。
-
-    <canvas>   
-    <audio>	  
-    <video>	 
-    <source> 定义多媒体资源 <video> 和 <audio>
-    <embed>	 定义嵌入的内容，比如插件。
-    <track>  为<video> 和 <audio> 元素之类的媒介规定外部文本轨道。
-    
-    <datalist>	定义选项列表。与input配合使用来定义input可能的值。
-        <input list="browsers" name="browser">
-        <datalist id="browsers">
-          <option value="Internet Explorer">
-          <option value="Firefox">
-          <option value="Chrome">
-        </datalist>
-
-    <keygen>	规定用于表单的密钥对生成器字段。
-    <output>	定义不同类型的输出，比如脚本的输出。
-    <bdi>	允许您设置一段文本，使其脱离其父元素的文本方向设置。
-    <command>	定义命令按钮，比如单选按钮、复选框或按钮
-    <details>	用于描述文档或文档某个部分的细节
-    <dialog>	定义对话框，比如提示框
-    <summary>	标签包含 details 元素的标题
-    <figure>	规定独立的流内容（图像、图表、照片、代码等等）。
-    <figcaption>	定义 <figure> 元素的标题
-    <mark>	定义带有记号的文本。
-    <meter>	定义度量衡。仅用于已知最大和最小值的度量。
-    <progress>	定义任何类型的任务的进度。
-    <ruby>	定义 ruby 注释（中文注音或字符）。
-    <rt>	定义字符（中文注音或字符）的解释或发音。
-    <rp>	在 ruby 注释中使用，定义不支持 ruby 元素的浏览器所显示的内容。
-    <time>	定义日期或时间。
-    <wbr>	规定在文本中的何处适合添加换行符。
-
-[HTML5 新增加的input输入类型](https://www.w3school.com.cn/html/html_form_input_types.asp)
->
-    color
-    date
-    datetime
-    datetime-local
-    email
-    month
-    number
-    range
-    search
-    tel
-    time
-    url
-    week
-
-[HTML5 新增加的input属性](https://www.w3school.com.cn/html/html_form_attributes.asp)
->
-    autocomplete
-    autofocus
-    form
-    formaction
-    formenctype
-    formmethod
-    formnovalidate
-    formtarget
-    height 和 width
-    list
-    min 和 max
-    multiple
-    pattern (regexp)
-    placeholder
-    required
-    step
 
 
-## <a name="Doctype作用 标准模式、混杂模式区别">Doctype作用？标准模式、混杂模式区别</a>[![bakTop](/img/backward.png)](#top)
+## <a name="Doctype作用？标准模式、混杂模式区别">Doctype作用？标准模式、混杂模式区别</a>[![bakTop](/img/backward.png)](#top)
 
 documnet type(文档类型的简写),位于HTML文档的第一行，告知浏览器用什么规范解析
-DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
+DOCTYPE不存在或格式不正确会导致文档以怪异模式呈现。
 
 在标准模式中，浏览器根据规范呈现页面；  
-在混杂模式中，页面以一种比较宽松的向后兼容的方式显示。
+在怪异模式中，页面以一种比较宽松的向后兼容的方式显示。
 
 判断方法：document.compatMode 
 * 标准模式：CSS1Compat
-* 混杂模式：BackCompat	
+* 怪异(混杂)模式：BackCompat	
 
 常见dotype：
 >
@@ -210,56 +129,68 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 优雅降级：一开始就构建完整功能，在针对底版本浏览器兼容
 
 区别：  
-* 优雅降级是从复杂的现状开始，并试图减少用户体验的供给，  
+* 优雅降级是从复杂的现状开始，并试图减少用户体验的供给  
 * 渐进增强则从基础的的版本开始，并不断扩充，以适应未来环境的需要。  
 * 优雅降级意味着往回看；而渐进增强则意味着朝前看，同时保证其根基处于安全地带
+
+## <a name="HTML5新标签">[HTML5新标签](https://www.w3school.com.cn/html/html5_new_elements.asp)</a>[![bakTop](/img/backward.png)](#top)
+
+[HTML5新标签](/details\HTML\HTML5新标签.md)
+
+HTML5新特性：
+* 本地存储特性
+* 设备兼容特性 HTML5提供了前所未有的数据与应用接入开放接口
+* 连接特性 WebSockets
+* 网页多媒体特性 支持Audio Video SVG Canvas WebGL CSS3
+
+增加拖放API、地理定位、SVG绘图、canvas绘图、Web Worker、WebSocket
+
 
 ## <a name="块级元素、内联元素">块级元素、内联元素（行内元素、行内块级元素）</a>[![bakTop](/img/backward.png)](#top)
 
 * 块级元素：display:block
->
-    会独占一行,默认情况下,其宽度自动填满其父元素宽度.设置了宽度,仍然是独占一行.
-    块级元素可以设置width,height,margin和padding属性.
+  >
+      会独占一行,默认情况下,其宽度自动填满其父元素宽度.设置了宽度,仍然是独占一行.
+      块级元素可以设置width,height,margin和padding属性.
 
-    div,p,ol,ul,li,h1-h6,dl,dt,dd,
-    main,header,footer,section,aside,nav,...
+      div,p,ol,ul,li,h1-h6,dl,dt,dd...
+      main,header,footer,section,aside,articel,nav,...
 
 * 行内元素：display:inline.
->
-    不会独占一行,相邻的行内元素会排列在同一行里,直到一行排不下,才会换行,其宽度随元素的内容而变化.  
+  >
+      不会独占一行,相邻的行内元素会排列在同一行里,直到一行排不下,才会换行,其宽度随元素的内容而变化.  
 
-    行内元素设置width,height属性无效，它的长度高度主要根据内容决定.  
-    行内元素的margin和padding属性,水平方向(padding-left,padding-right,margin-left,margin- right)产生边距效果,但定义竖直方向(padding-top,padding-bottom,margin-top,margin-bottom)无效
+      行内元素设置width,height属性无效，它的长度高度主要根据内容决定.  
+      行内元素的margin和padding属性,水平方向(padding/margin-left/right)产生边距效果,但定义竖直方向(padding/margin-top/bottom)无效
 
-    a,span,img,select,input
+      a,span,img,select,input
 
 * 行内块级元素：display:inline-block
->
-    让行内元素拥有块级元素（除了独占一行）的特性
+  >
+      让行内元素拥有块级元素（除了独占一行）的特性
 
 * 空元素：
->
-    没有内容的 HTML 元素被称为空元素。
-    空元素是在开始标签中关闭的
+  >
+      没有内容的 HTML 元素被称为空元素。
+      空元素是在开始标签中关闭的
 
-    <br> <hr> <img> <input> <link> <meta>
+      <br> <hr> <img> <input> <link> <meta>
 
 * 替换元素  
+  >
+      内容可以被替换,
+      内容的外观不受页面上的 CSS 的影响
+      有自己的尺寸
+      在很多 CSS 属性上有自己的一套表现规则
+      
+      <img> 
+      <iframe>
+      <video>
+      <select>
+      <input>
+      <textarea>
+      <button>
 
-特性：
->
-    内容可以被替换,
-    内容的外观不受页面上的 CSS 的影响
-    有自己的尺寸
-    在很多 CSS 属性上有自己的一套表现规则
->
-    <img> 
-    <input>
-    <iframe>
-    <video>
-    <select>
-    <button>
-    <textarea>
 
 ![替换元素](/img/替换元素display值.jpg)
 
@@ -291,7 +222,7 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 
 * src（source）
 
-是指向外部资源的位置，指向的内容将会嵌入到文档中当前标签所在位置；在请求src资源时会将其指向的资源下载并应用到文档内，例如js脚本，img图片和frame等元素。 
+是指向外部资源的位置，指向的内容将会嵌入到文档中当前标签所在位置；在请求src资源时会将其指向的资源下载并应用到文档内，例如js脚本，img图片和iframe等元素。 
 
 当浏览器解析到src时，会暂停其他资源的下载和处理，直到将该资源加载、编译、执行完毕，图片和框架等元素也如此，类似于将所指向资源嵌入当前标签内。这也是为什么将js脚本放在底部而不是头部。
 
@@ -304,107 +235,42 @@ DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 * JS引擎
     
 #### 渲染引擎：
->
-    负责取得网页的内容（HTML、XML、图像等等）、整理讯息（例如加入CSS等），以及计算网页的显示方式，然后会输出至显示器或打印机。浏览器的内核的不同对于网页的语法解释会有不同，所以渲染的效果也不相同。所有网页浏览器、电子邮件客户端以及其它需要编辑、显示网络内容的应用程序都需要内核。
 
-#### JS引擎则：
->
-    解析和执行javascript来实现网页的动态效果。
+负责取得网页的内容（HTML、XML、图像等等）、整理讯息（例如加入CSS等），以及计算网页的显示方式，然后会输出至显示器或打印机。浏览器的内核的不同对于网页的语法解释会有不同，所以渲染的效果也不相同。所有网页浏览器、电子邮件客户端以及其它需要编辑、显示网络内容的应用程序都需要内核。
+
+#### JS引擎：
+解析和执行javascript来实现网页的动态效果。
     
 最开始渲染引擎和JS引擎并没有区分的很明确，后来JS引擎越来越独立，内核就倾向于只指渲染引擎。
 
 #### 常见浏览器及其内核、私有化前缀
 
 | | Chrome | Firefox | IE | Safari | Opera |
-:-:| :-:|:-:|:-:|:-:|:-:|
+|:-:| :-:|:-:|:-:|:-:|:-:|
 | 渲染引擎(内核) | Blink (原webkit) | Gecko | Trident | Webkit | Blink(原Presto) |
 | JS 引擎 | V8 | SpiderMonkey | Nitro | Chakra | V8 |
 | 私有化前缀 | -webkit- | -moz- | -ms- | -webkit- | -webkit- |
 
 
+## <a name="H5是什么">常说的H5是什么</a>[![bakTop](/img/backward.png)](#top)
+H5指移动端页面,符合 HTML5 标准实现的页面
+
+通过WebView加载页面
+
+WebView是一种控件，它基于webkit引擎，可以解析DOM 元素，展示html页面的控件，因此具备渲染Web页面的功能。
+
+基于Webview的混合开发，就是在 Anddroid (安卓)/(苹果)原生APP里，通过WebView控件嵌入Web页面。
+很多APP都是外边套原生APP的壳，内容是H5页面(基于html+css+js的Web页面)。现在的移动端混合开发软件，如果对于交互渲染要求不是特别高的项目，基本都是这么玩的。
+
+WebView作用
+* 显示和渲染Web页面
+* 直接使用html文件（网络上或本地assets中）作布局
+* 可和JavaScript交互调用
+
+
+
 ## <a name="web存储">cookies、sessionStorage 、和 localStorage 的区别</a>[![bakTop](/img/backward.png)](#top)
-
-https://zhuanlan.zhihu.com/p/61704951
-
-[cookie](/details/cookie.md)
-
-### 区别
-cookie是网站为了标示用户身份而储存在用户本地终端（Client Side）上的数据（通常经过加密）。cookie数据始终在同源的http请求中携带（即使不需要），记会在浏览器和服务器间来回传递。
-
-sessionStorage和localStorage不会自动把数据发给服务器，仅在本地保存。
-
-* 存储大小：
->
-  	cookie数据大小不能超过4k。
-  	sessionStorage，localStorage  达到5M甚至更多
-
-* 有期时间：
->
-    localStorage   浏览器关闭后数据不丢失除非主动删除数据；多窗口数据共享
-    sessionStorage 数据在当前浏览器窗口关闭后自动删除。同窗口数据共享
-    cookie         设置的cookie过期时间之前一直有效，即使窗口或浏览器关闭
-
-* 作用域:
->
-    sessionStorage不在不同的浏览器窗口中共享，即使是同一个页面；
-    localStorage 在所有同源窗口中都是共享的；cookie也是在所有同源窗口中都是共享的。
-
-* Storage方法
->
-    setItem(key, value) 保存数据
-    getItem(key) 读取数据
-    removeItem(key) 删除键值为key的存储内容
-    clear() 清空所有数据
-    key(n) 以索引值来获取键值key的数据
-    length 存储空间积累项的数目
-
-    保存数据：sessionStorage.setItem('keyname','value') / sessionStroge.keyname='value';
-    读取数据：sessionStorage.getItem('keyname') / sessionStroge.keyname /  sessionStroge.key(n)
-
-* cookie方法
->
-
-    let cookie = {
-      set: function (key, val, time) { // 设置cookie方法
-        let date = new Date() // 获取当前时间
-        let expiresDays = time // 将date设置为n天以后的时间
-        date.setTime(date.getTime() + expiresDays * 24 * 3600 * 1000) // 格式化为cookie识别的时间
-        document.cookie = key + '=' + val + ';expires=' + date.toGMTString() + '; path=/' // 设置cookie
-      },
-      get: function (key) { // 获取cookie方法
-        /* 获取cookie参数 */
-        let getCookie = document.cookie.replace(/[ ]/g, '') // 获取cookie，并且将获得的cookie格式化，去掉空格字符
-        let arrCookie = getCookie.split(';') // 将获得的cookie以'分号'为标识 将cookie保存到arrCookie的数组中
-        let tips // 声明变量tips
-        for (let i = 0; i < arrCookie.length; i++) { // 使用for循环查找cookie中的tips变量
-          let arr = arrCookie[i].split('=') // 将单条cookie用'等号'为标识，将单条cookie保存为arr数组
-          if (key === arr[0]) { // 匹配变量名称，其中arr[0]是指的cookie名称，如果该条变量为tips则执行判断语句中的赋值操作
-            tips = arr[1] // 将cookie的值赋给变量tips
-            break // 终止for循环遍历
-          }
-        }
-        return tips
-      },
-      delete: function (key) { // 删除cookie方法
-        let date = new Date() // 获取当前时间
-        date.setTime(date.getTime() - 10000) // 将date设置为过去的时间
-        document.cookie = key + '=v; expires =' + date.toGMTString() // 设置cookie
-      }
-    }
-
-### token
-token是用户身份的验证方式，我们通常叫它：令牌。最简单的token组成:uid(用户唯一的身份标识)、time(当前时间的时间戳)、sign(签名，由token的前几位+盐以哈希算法压缩成一定长的十六进制字符串，可以防止恶意第三方拼接token请求服务器)。还可以把不变的参数也放进token，避免多次查库。
-
-应用场景：
->
-    A：当用户首次登录成功（注册也是一种可以适用的场景）之后, 服务器端就会生成一个 token 值，这个值，会在服务器保存token值(保存在数据库中)，再将这个token值返回给客户端.
-    B：客户端拿到 token 值之后,进行本地保存。（SP存储是大家能够比较支持和易于理解操作的存储）
-    C：当客户端再次发送网络请求(一般不是登录请求)的时候,就会将这个 token 值附带到参数中发送给服务器.
-    D：服务器接收到客户端的请求之后,会取出token值与保存在本地(数据库)中的token值做对比
-
-    对比一：如果两个 token 值相同， 说明用户登录成功过!当前用户处于登录状态!
-    对比二：如果没有这个 token 值, 则说明没有登录成功.
-    对比三：如果 token 值不同: 说明原来的登录信息已经失效,让用户重新登录.
+[cookies、sessionStorage 、和 localStorage 的区别](/details\HTML\Web存储.md)
 
 ## <a name="HTML中的字符实体">HTML中的字符实体</a>[![bakTop](/img/backward.png)](#top)
 HTML中某些字符是预留的,预留字符必须被替换为字符实体。
@@ -430,8 +296,9 @@ HTML中某些字符是预留的,预留字符必须被替换为字符实体。
 ## <a name="HTML5的离线储存">HTML5的离线储存</a>[![bakTop](/img/backward.png)](#top)
 
 [MDN - 介绍](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Using_the_application_cache)
->
-    离线存储可以将站点的一些文件存储在本地，在没有网络的时候还是可以访问到以缓存的对应的站点页面，其中这些文件可以包括html，js，css，img等等文件，但其实即使在有网络的时候，浏览器也会优先使用已离线存储的文件，返回一个200（from cache）头。这跟HTTP的缓存使用策略是不同的。
+
+离线存储可以将站点的一些文件存储在本地，在没有网络的时候还是可以访问到以缓存的对应的站点页面，其中这些文件可以包括html，js，css，img等等文件，但其实即使在有网络的时候，浏览器也会优先使用已离线存储的文件，返回一个200（from cache）头。这跟HTTP的缓存使用策略是不同的。
+
 
 
 ## <a name="table优缺点">table优缺点</a>[![bakTop](/img/backward.png)](#top)
@@ -449,7 +316,10 @@ HTML中某些字符是预留的,预留字符必须被替换为字符实体。
 * 深层的嵌套，导致搜索引擎读取困难，同时还很大程度上增加了代码冗余；
 * table对对于页面布局来说，从语义上看是不正确的。(它描述的是表现，而不是内容。)
 
-
+## <a name="div较table优点">div较table优点</a>[![bakTop](/img/backward.png)](#top)
+* 加快了页面的加载速度（在IE中要将整个table加载完了才显示内容）
+* 符合W3C标准，代码结构清晰明了，结构、样式和行为分离，带来足够好的可维护性。
+* 对SEO搜索引擎更加友好，
 
 ## <a name="iframe缺点">iframe优缺点</a>[![bakTop](/img/backward.png)](#top)
 优点：
@@ -574,152 +444,8 @@ main.js会加载两次
 
 
 ## <a name="meta标签属性">meta标签属性</a>[![bakTop](/img/backward.png)](#top)
-[HTML meta标签总结与属性使用介绍](https://segmentfault.com/a/1190000004279791)
+[meta标签属性](\details\HTML\meta标签属性.md)
 
-* 必要属性: content 
-
-
-* 可选属性 
->
-    http-equiv: content-type | expire | refresh | set-cookie  ;把content属性关联到HTTP头部  
-
-    name: author(作者) | copyright(版权) | description(描述) | keywords(关键词) | robots | format-detection | renderer(双核浏览器渲染方式) ;把content属性关联到一个名称
-
-* 声明文档使用的字符编码
->
-    <meta charset='utf-8'>    
-
-* 关键词：name="keywords"
->
-    描述网页上所提供信息的描述性和代表性关键字及短语,逗号隔开。标记不应超过 874 个字符。
-    <meta name="keywords" content="关键词1, 关键词2">
-
-
-* 页面描述：name="description"
->
-    每个网页都应有一个不超过 150 个字符且能准确反映网页内容的描述标签。
-    <meta name="description" content="页面描述的内容">
-
-* 搜索引擎索引方式：name="robots"
->
-    <meta name="robots" content="none,noindex,nofollow,all,index,follow">
-    robots是一组使用逗号(,)分割的值，通常有如下几种取值：
-        all, 文件将被检索，且页面上的链接可以被查询
-        none, 文件将不被检索，且页面上的链接不可以被查询
-        index, 文件将被检索
-        noindex, 文件将不被检索
-        follow, 页面上的链接可以被查询
-        nofollow, 页面上的链接不可以被查询
-
-* 页面重定向和刷新 http-equiv="refresh"
->
-    <meta http-equiv="refresh" content="0; url="">
-
-    content内的数字代表时间（秒），既多少时间后刷新。如果加url,则会重定向到指定网页（搜索引擎能够自动检测，也很容易被引擎视作误导而受到惩罚）。
-* renderer 用于指定双核浏览器默认以何种方式渲染页面。
->
-    <meta name="renderer" content="webkit"> //默认webkit内核
-    <meta name="renderer" content="ie-comp"> //默认IE兼容模式
-    <meta name="renderer" content="ie-stand"> //默认IE标准模式
-
-* viewport
->
-    什么是 Viewport?
-    viewport 是用户网页的可视区域。
-    viewport 翻译为中文可以叫做"视区"。
-    手机浏览器是把页面放在一个虚拟的"窗口"（viewport）中，通常这个虚拟的"窗口"（viewport）比屏幕宽，这样就不用把每个网页挤到很小的窗口中（这样会破坏没有针对手机浏览器优化的网页的布局），用户可以通过平移和缩放来看网页的不同部分
-
->
-    <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
-
-    width：宽度（数值 / device-width）（范围从200 到10,000，默认为980 像素）
-
-    height：高度（数值 / device-height）（范围从223 到10,000）
-
-    initial-scale：初始的缩放比例 （范围从>0 到10）也即是当页面第一次 load 的时候缩放比例。
-
-    minimum-scale：允许用户缩放到的最小比例
-
-    maximum-scale：允许用户缩放到的最大比例
-
-    user-scalable：用户是否可以手动缩 (no,yes)
-
-
-* 其他
-
-[参考](https://segmentfault.com/a/1190000002407912)
-
-meta对于移动端的一些特殊属性
-```html
-    <meta name="screen-orientation" content="portrait"> //Android 禁止屏幕旋转
-    <meta name="full-screen" content="yes">             //全屏显示
-    <meta name="browsermode" content="application">     //UC应用模式，使用了application这种应用模式后，页面讲默认全屏，禁止长按菜单，禁止收拾，标准排版，以及强制图片显示。
-    <meta name="x5-orientation" content="portrait">     //QQ强制竖屏
-    <meta name="x5-fullscreen" content="true">          //QQ强制全屏
-    <meta name="x5-page-mode" content="app">            //QQ应用模式
-```
-
-```html
-    <!-- 忽略页面中的数字识别为电话，忽略email识别 -->
-    <meta name="format-detection" content="telephone=no, email=no" />
-
-    <!-- 浏览器内核控制 -->
-    <meta name="renderer" content="webkit|ie-comp|ie-stand">
-
-    <!-- 避免IE使用兼容模式 ,以最高版本IE来渲染页面 -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  
-
-    <!-- IE中，无论是否用DTD声明文档标准，以IE7引擎来渲染页面 -->
-    <meta http-equiv="X-UA-Compatible" content="IE=7">    
-
-    <!-- windows phone 点击无高光 -->
-    <meta name="msapplication-tap-highlight" content="no">
-
-    <!-- 设置页面不缓存 -->
-    <meta http-equiv=”pragma” content=”no-cache”>
-    <meta http-equiv=”cache-control” content=”no-cache”>
-    <meta http-equiv=”expires” content=”0″>      
-
-    <!-- 禁止浏览器从本地计算机的缓存中访问页面内容：如此访问者将无法脱机浏览 -->
-    <meta http-equiv="Pragma" content="no-cache">
-
-    <!-- 用百度打开网页可能会对其进行转码（比如贴广告），避免转码 -->
-    <meta http-equiv="Cache-Control" content="no-siteapp">
-
-    <!-- 是否启用 WebApp 全屏模式 / 删除苹果默认的工具栏和菜单栏 -->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-
-    <!-- 设置苹果工具栏颜色 -->
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-
-    <!-- 启用360浏览器的极速模式(webkit) -->
-    <meta name="renderer" content="webkit">
-
-
-    <!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
-    <meta name="HandheldFriendly" content="true">
-
-    <!-- 微软的老式浏览器 -->
-    <meta name="MobileOptimized" content="320">
-
-    <!-- uc强制竖屏 -->
-    <meta name="screen-orientation" content="portrait">
-
-    <!-- QQ强制竖屏 -->
-    <meta name="x5-orientation" content="portrait">
-
-    <!-- UC强制全屏 -->
-    <meta name="full-screen" content="yes">
-
-    <!-- QQ强制全屏 -->
-    <meta name="x5-fullscreen" content="true">
-
-    <!-- UC应用模式 -->
-    <meta name="browsermode" content="application">
-
-    <!-- QQ应用模式 -->
-    <meta name="x5-page-mode" content="app">
-```
 ## <a name="通过meta代码强制浏览器使用WebKit内核极速模式">通过meta代码强制浏览器使用WebKit内核极速模式</a>[![bakTop](/img/backward.png)](#top)
 
 ```html
@@ -788,7 +514,7 @@ js脚本应该放在底部，原因在于js线程与GUI渲染线程是互斥的�
 
 [What’s New in HTML 5.2?](https://bitsofco.de/whats-new-in-html-5-2/)
 
-### \<dialog\>标签 -- 创建对话框
+## \<dialog\>标签 -- 创建对话框
 默认是隐藏的
 
 #### 属性
@@ -823,7 +549,7 @@ document.getElementById("close").addEventListener("click", () => {
 
 ```
 
-### allowpaymentrequest 属性 -- 允许 iframe 内部网页使用  Payment Request API
+## allowpaymentrequest 属性 -- 允许 iframe 内部网页使用  Payment Request API
 Payment Request API是结账的形式本地替代。它旨在通过将检索付款信息的处理移到浏览器上，而不是将每个网站上的单独结帐表格移到浏览器，从而为用户提供一种标准化且一致的网上支付方法。
 
 在HTML 5.2之前，无法通过嵌入文档中的iframe发出这些付款请求。这使得第三方嵌入式支付解决方案（例如，Stripe，Paystack）基本上无法利用此API，因为它们的支付接口通常在iframe中处理。
@@ -835,7 +561,7 @@ Payment Request API是结账的形式本地替代。它旨在通过将检索付�
 <link rel="icon" sizes="16x16" href="path/to/icon16.png">  /* 其他设备 */
 ```
 
-### 允许多个\<main\>
+## 允许多个\<main\>
 HTML 5.2之前，\<main\>在DOM中必须唯一，以使页面有效。
 
 HTML 5.2允许一个页面中同时存在多个 \<main\> 标签，不过只能有一个显示的，其他都要用 hidden 属性隐藏。
@@ -846,7 +572,7 @@ HTML 5.2允许一个页面中同时存在多个 \<main\> 标签，不过只能�
 <main hidden>...</main>
 ```
 
-### \<legend\> 中可使用标题元素
+## \<legend\> 中可使用标题元素
 HTML 5.2 之前，\<legend\> 中只能使用纯文本，HTML 5.2 开始，可以使用标题元素了。
 
 ```html
@@ -855,7 +581,7 @@ HTML 5.2 之前，\<legend\> 中只能使用纯文本，HTML 5.2 开始，可以
 </fieldset>
 ```
 
-### 新的无效实践
+## 新的无效实践
 \<p\> 中的无效内容  
 以下三类元素不能作为 \<p\> 段落的内容。  
 * 行内块、表格元素（inline blocks、inline tables）

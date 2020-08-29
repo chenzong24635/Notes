@@ -10,15 +10,11 @@
 * 块的内部数据与实现是私有的, 只是向外部暴露一些接口(方法)与外部其它模块通信
 
 模块化的好处
+* 避免命名冲突(减少命名空间污染)
 * 可复用性
 * 可维护性
-* 避免命名冲突(减少命名空间污染)
 * 更好的分离, 按需加载
 
-
-| CommonJs | AMD | CMD | ES6 |
-|:--|:--|:--|:--|
-|1 |2|3|45|
 
 ### 全局function模式: 函数封装
 ```js
@@ -176,32 +172,6 @@ define(['module2', 'jquery'], function(module2) {
 
 [代码](/details/模块化/AMD)
 
-### UMD 通用模块定义
-兼容AMD和commonJS规范的同时，还兼容全局引用的方式
-
-```js
-(function (root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module.
-    define(['b'], factory);
-  } else if (typeof module === 'object' && module.exports) {
-    // Node. Does not work with strict CommonJS, but
-    // only CommonJS-like environments that support module.exports,
-    // like Node.
-    module.exports = factory(require('b'));
-  } else {
-    // Browser globals (root is window)
-    root.returnExports = factory(root.b);
-  }
-}(this, function (b) {
-  //use b in some fashion.
-
-  // Just return a value to define the module export.
-  // This example returns an object, but the module
-  // can return a function as the exported value.
-  return {}
-}));
-```
 
 ### CMD (Common Module Definition)通用模块定义
 [CMD规范](https://github.com/cmdjs/specification/blob/master/draft/module.md)
@@ -251,27 +221,36 @@ define(function(require, exports, module){
 
 UMD主要用来解决CommonJS模式和AMD模式代码不能通用的问题，并同时还支持老式的全局变量规范。
 ```js
-// bundle.js
-(function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-    typeof define === 'function' && define.amd ? define(factory) :
-    (global = global || self, global.myBundle = factory());
-}(this, (function () { 'use strict';
+(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define(['b'], factory);
+  } else if (typeof module === 'object' && module.exports) {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+    module.exports = factory(require('b'));
+  } else {
+    // Browser globals (root is window)
+    root.returnExports = factory(root.b);
+  }
+}(this, function (b) {
+  //use b in some fashion.
 
-    var main = () => {
-        return 'hello world';
-    };
-
-    return main;
-
-})));
+  // Just return a value to define the module export.
+  // This example returns an object, but the module
+  // can return a function as the exported value.
+  return {}
+}));
 ```
+
 * 判断define为函数，并且是否存在define.amd，来判断是否为AMD规范,
 * 判断module是否为一个对象，并且是否存在module.exports来判断是否为CommonJS规范
 * 如果以上两种都没有，设定为原始的代码规范。
 
 ### ES modules
 ES Modules 是 ECMAScript 2015（ES6）中定义的模块系统
+[相关代码](/details/模块化/ES6)
 
 #### exprot：导出模块  
 export 可以导出的是一个对象中包含的多个属性，方法。(在一个文件或模块中`可存在多个`)  
@@ -393,6 +372,8 @@ browserify lib/app.js -o lib/bundle.js // 使用Browserify编译js
 <script src="js/lib/bundle.js"></script> //在index.html文件中引入
 ```
 
+
+
 ### 总结
 
 * CommonJS规范主要用于服务端编程，加载模块是同步的，这并不适合在浏览器环境，因为同步意味着阻塞加载，浏览器资源是异步加载的，因此有了AMD CMD解决方案。
@@ -410,10 +391,10 @@ browserify lib/app.js -o lib/bundle.js // 使用Browserify编译js
 
 * CommonJs模块是运行时加载，ES6模块是编译时输出接口。
   >
-      是因为 CommonJS 加载的是一个对象（即module.exports属性），该对象只有在脚本运行完才会生成。  
-      而 ES6 模块不是对象，它的对外接口只是一种静态定义，在代码静态解析阶段就会生成。
+      是因为 CommonJS 加载的是一个对象（即module.exports属性），在输入时是先加载整个模块，生成一个对象，然后再从这个对象上面读取方法，这种加载称为“运行时加载”。
 
-[代码](/details/模块化/ES6)
+      ES6 模块不是对象，而是通过 export 命令显式指定输出的代码，import时采用静态命令的形式。即在import时可以指定加载某个输出值，而不是加载整个模块，这种加载称为“编译时加载”。
+
 
 # async defer
 `<script src="index.js" defer async></script>`  
