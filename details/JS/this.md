@@ -298,3 +298,245 @@ person1.show4.call(person2)()// person2
 箭头函数不用function（function有自己的函数作用域）将其包裹起来，那么默认绑定的父级作用域就是window。（如show2）
 
 用function包裹的目的就是将箭头函数绑定到当前的对象上。 匿名函数的作用域是当前这个对象，所以之后箭头函数会自动绑定到此函数所在作用域的this，。（如show4）
+
+
+## 更多实例
+### 题1  
+```js
+var num = 1;
+var obj = {
+  num: 2,
+  fn: function() {
+    console.log(this);
+    this.num = 3;
+    (function() {
+      console.log(this);
+      this.num = 4;
+      console.log(this.num);
+    })();
+    console.log(this.num);
+  },
+}
+
+/* obj.fn();
+console.log(obj,num); */
+
+/* var fn = obj.fn;
+fn()
+console.log(obj,num); */
+```
+
+`解析:obj.fn()的情况`
+```js
+var num = 1;
+var obj = {
+  num: 2,
+  fn: function() { 
+    console.log(this); // 指向 obj
+    this.num = 3;
+    (function() {
+      console.log(this); // 立即执行函数，因为没有手动去指定它的this指向，所以指向window
+      this.num = 4;
+      console.log(this.num);
+    })();
+    console.log(this.num);
+  },
+}
+obj.fn();
+console.log(obj,num);
+
+// 输出结果：
+// {num: 2, fn: ƒ}
+// Window
+// 4
+// 3
+// {num:3,fn: ƒ} 4
+```
+
+`解析：var fn = obj.fn; fn()的情况`
+```js
+var num = 1;
+var obj = {
+  num: 2,
+  fn: function() {
+    console.log(this); // 指向window
+    this.num = 3;
+    (function() {
+      console.log(this); // 指向window
+      this.num = 4;
+      console.log(this.num);
+    })();
+    console.log(this.num);
+  },
+}
+
+var fn = obj.fn; // this关键字会重新指向全局对象(`隐式丢失`)
+fn()
+console.log(obj,num);
+
+// 输出结果：
+// Window
+// Window
+// 4
+// 4
+// {num: 2, fn: ƒ} 4
+```
+
+
+### 题2 
+```js
+var num = 1
+var obj = {num: 2}
+obj.fn = (function (num) {
+  console.log(this);
+  this.num = num * 10
+  num++
+  return function (n) {
+    console.log(this)
+    this.num += n
+    num++
+    console.log(num)
+  }
+})(obj.num)
+
+/* obj.fn(10)
+console.log(obj,num) */
+
+/* var fn = obj.fn
+fn(10)
+console.log(obj,num) */
+```
+
+`解析:obj.fn(10)的情况`
+```js
+var num = 1
+var obj = {num: 2}
+obj.fn = (function (num) { // 参数num = 2
+  console.log(this); // 立即执行函数，因为没有手动去指定它的this指向，所以指向window
+  this.num = num * 10 // window.num= 20
+  num++ // 参数num = 3
+  return function (n) {  // 参数n = 10
+    console.log(this) // this指向obj
+    this.num += n // obj.num = 12
+    num++ // 参数num = 4
+    console.log(num) // 4
+  }
+})(obj.num) // 值引用
+
+obj.fn(10)
+console.log(obj,num)
+
+// 输出结果
+// Window
+// {num: 2, fn: f}
+// 4
+// {num: 12, fn: f} 20
+```
+
+`解析:var fn = obj.fn;fn(10)的情况`
+```js
+var num = 1
+var obj = {num: 2}
+obj.fn = (function (num) { // 参数num = 2
+  console.log(this); // 立即执行函数，因为没有手动去指定它的this指向，所以指向window
+  this.num = num * 10 // window.num= 20
+  num++ // 参数num = 3
+  return function (n) {  // 参数n = 10
+    console.log(this) // 隐式丢失，this指向window
+    this.num += n // window.num = 30
+    num++ // 参数num = 4
+    console.log(num) // 4
+  }
+})(obj.num) // 值引用
+
+var fn = obj.fn
+fn(10)
+console.log(obj,num)
+
+// 输出结果
+// Window
+// Window
+// 4
+// {num: 2, fn: f} 30
+```
+
+
+### 题3
+改动题2的立即执行函数的 num 引入为 地址引入
+```js
+var num = 1
+var obj = {num: 2}
+obj.fn = (function (obj1) { // 参数 obj1 引用自 obj
+  console.log(this); // 立即执行函数，因为没有手动去指定它的this指向，所以指向window
+  this.num = obj1.num * 10 // window.num= 20
+  obj1.num++ // obj.num = 3
+  return function (n) {  // 参数n = 10
+    console.log(this) // this指向obj
+    this.num += n // obj.num = 13
+    obj1.num++ // obj.num = 14
+    console.log(obj1==obj) // true
+  }
+})(obj) // 地址引入
+
+/* obj.fn(10)
+console.log(obj) // {num: 14, fn: ƒ} */
+
+// 输出结果
+// Window
+// {num: 3, fn: ƒ}
+// true
+// {num: 14, fn: ƒ}
+
+var fn = obj.fn
+fn(10)
+console.log(obj,num) 
+```
+
+### 题4
+改动题2的立即执行函数的 this指向
+```js
+var num = 1
+var obj = {num: 2}
+obj.fn = (function (num) {
+  console.log(this);
+  this.num = num * 10
+  num++
+  return function (n) {
+    console.log(this)
+    this.num += n
+    num++
+    console.log(num)
+  }
+// })(obj.num)
+}).call(obj,obj.num)  // 改变this指向为obj
+
+obj.fn(10)
+console.log(obj,num)
+```
+
+解析
+```js
+var num = 1
+var obj = {num: 2}
+obj.fn = (function (num) { //参数num=2
+  console.log(this); // call绑定this指向obj
+  this.num = num * 10 // obj.num = 20
+  num++ //参数num=3
+  return function (n) { //参数n=10
+    console.log(this) // this指向 obj
+    this.num += n // obj.num = 30
+    num++ // 参数num = 4
+    console.log(num) // 4
+  }
+// })(obj.num)
+}).call(obj,obj.num)  // 改变this指向为obj
+
+obj.fn(10)
+console.log(obj,num)
+
+// 输出结果
+// {num: 2, fn: ƒ}
+// {num: 20, fn: ƒ}
+// 4
+// {num: 30, fn: ƒ}
+```

@@ -154,11 +154,18 @@ Loader像一个"翻译官"把读到的源文件内容转义成新的文件内容
 
 * 利用DllPlugin和DllReferencePlugin预编译资源模块 通过DllPlugin来对那些我们引用但是绝对不会修改的npm包来进行预编译，再通过DllReferencePlugin将预编译的模块加载进来。
 
-* 使用Happypack等 实现多线程加速编译
+* 多线程/多实例构建：HappyPack(不维护了)、thread-loader
 
 * 使文件压缩
 
 * 使用Tree-shaking和Scope Hoisting来剔除多余代码
 
+* 缩小打包作用域：
+ * exclude/include (确定 loader 规则范围)
+ * resolve.modules 指明第三方模块的绝对路径 (减少不必要的查找)
+ * resolve.extensions 尽可能减少后缀尝试的可能性
+ * noParse 对完全不需要解析的库进行忽略 (不去解析但仍会打包到 bundle 中，注意被忽略掉的文件里不应该包含 import、require、define 等模块化语句)
+ * IgnorePlugin (完全排除模块)
+ * 合理使用alias
 
 ## [Webpack优化](/details/WEB性能优化/Webpack优化.md)

@@ -439,7 +439,6 @@
 - <a href="#网页是否可编辑">网页是否可编辑</a>
 - <a href="#逗号操作符">逗号操作符</a>
 
-- <a href="#一道setTimeout面试题">一道 setTimeout 面试题</a>
 - <a href="#map(parseInt) 原理解析">['1','2','3'].map(parseInt) 原理解析</a>
 - <a href="#Array.apply(null,Array(3))与Array(3)区别">Array.apply(null,Array(3))与 Array(3)区别</a>
 
@@ -1544,10 +1543,6 @@ document.designMode // 查看
 
     var f = (function f(){ return '1'; }, function g(){ return 2; })();
     console.log(f) //2
-
-## <a name="一道setTimeout面试题">一道 setTimeout 面试题</a>
-
-https://zhuanlan.zhihu.com/p/25407758
 
 
 

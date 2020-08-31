@@ -110,7 +110,65 @@ var arr1 = arr.map(function callback(currentValue[, index[, array]]) {
 
 * '123'.replace(/\d/g, parseInt) // "1NaNNaN"
 
-## <a name=""></a>
+## <a name="一道setTimeout面试题">一道setTimeout面试题</a>
+[](https://zhuanlan.zhihu.com/p/25407758)
+
+先看一道常见的题
+```js
+for (var i = 0; i < 5; i++) {
+  setTimeout(function() {
+    console.log(i);
+  }, 1000 * i);
+}
+// 每隔1s输出一个5
+// 5 5 5 5 5
+```
+
+如何输出 0 1 2 3 4？
+
+使用闭包
+```js
+for (var i = 0; i < 5; i++) {
+  (function(i) {
+    setTimeout(function() {
+      console.log(i);
+    }, i * 1000);
+  })(i);
+}
+```
+
+或者let作用域
+```js
+for (let i = 0; i < 5; i++) {
+  setTimeout(function() {
+    console.log(i);
+  }, i * 1000);
+}
+```
+
+
+改一下，你看看会输出什么？
+```js
+for (var i = 0; i < 5; i++) {
+  setTimeout((function(i) {
+    console.log(i);
+  })(i), i * 1000);
+}
+```
+这里给 setTimeout 传递了一个立即执行函数。额，setTimeout 可以接受函数或者字符串作为参数，那么这里立即执行函数是个啥呢，w没有写返回值，返回 undefined ，也就是说等价于：
+`setTimeout(undefined, ...);`
+
+其实相当于
+```js
+for (var i = 0; i < 5; i++) {
+  (function(i) {
+    console.log(i);
+  })(i)
+}
+```
+
+而立即执行函数会立即执行，因此立马输出 0 到 4
+
 
 ## <a name="css和js动画的差异">css和js动画的差异</a>
 CSS动画：  
