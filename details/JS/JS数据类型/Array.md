@@ -73,21 +73,63 @@
 # <a name="属性">属性</a>
 ## <a name="length">length</a>
 每个数组都有一个length属性。针对稠密数组，length属性值代表数组中元素的个数。当数组是稀疏数组时，length属性值大于元素的个数。
->
-    let arr = [ 'a', 'b', 'c' ];  
-    console.log(arr.length);  // 输出 3
 
-    //删除数组
-        arr.length = 2;
-        console.log(arr);  // 输出 [ "a", "b" ]
+```js
+let arr = [ 'a', 'b', 'c' ];  
+console.log(arr.length);  // 输出 3
 
-        delete arr[2] //返回true | false
-        console.log(arr);  // 输出 [ "a", "b",undefined ]
+//删除数组
+    arr.length = 2;
+    console.log(arr);  // 输出 [ "a", "b" ]
 
-    //增加数组
-    arr.length = 4;
-    console.log(arr);  // 输出 [ "a", "b"，"c", undefined ]
+    delete arr[2] //返回true | false
+    console.log(arr);  // 输出 [ "a", "b",undefined ]
 
+//增加数组
+arr.length = 4;
+console.log(arr);  // 输出 [ "a", "b"，"c", undefined ]
+```
+
+### 清空数组的几种方法
+```js
+let arr = [1,23]
+let arr1 = arr
+```
+
+* arr.length 
+* arr.splice(0)
+* 循环pop(),unshift()
+  ```js
+  arr.length=0
+  // 或 arr.splice(0)
+  console.log(arr); // []
+  console.log(arr1); // []
+  ```
+  或
+  ```js
+
+  while(arr.length > 0) {
+    arr.pop()
+  }
+  // 或者
+  while(arr.length > 0) {
+    arr.unshift()
+  }
+  console.log(arr); // []
+  console.log(arr1); // []
+  ```
+
+这几种方式不会改变原始数组引用。
+这意味着，如果您将一个数组引用分配给具有赋值运算符（=）的其他数组，则在一个数组上应用此方法也将清除另一个数组。
+
+
+* arr = []
+  ```js
+  arr=[]
+  console.log(arr); // []
+  console.log(arr1); // [1,23]
+  ```
+此方法会改变原始数组引用。它将对空数组的引用分配给原始变量
 
 ## <a name="Array.protype">Array.protype</a>
 Array 构造函数的原型，并允许您向所有Array对象添加新的属性和方法。

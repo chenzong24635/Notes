@@ -9,7 +9,7 @@
 [【翻译】Promises/A+规范](https://www.ituring.com.cn/article/66566)
 
 
-[手写Promise](\details\常用的手写函数\Promise.md)
+[手写Promise](/details\常用的手写函数\Promise.md)
 
 ## 概述
 Promise是一个构造函数（或者类），接受一个函数作为参数，该函数接受resolve，reject两个参数。
@@ -27,6 +27,22 @@ Promise 对象的状态改变，只有两种可能：
 * 从Pending变为Rejected  
 
 只要这两种情况发生，状态就凝固了，不会再变了，就称为 （已定型）。
+```js
+let promise = new Promise((resolve, reject) => {
+  resolve('success1')
+  reject('error')
+  resolve('success2')
+})
+
+promise
+  .then((res) => {
+    console.log(res)
+  })
+  .catch((err) => {
+    console.log(err)
+  }
+// 结果：success1
+```
 
 `调用resolve或reject并不会终结 Promise 的参数函数的执行，其后面的代码也会执行，且先率先执行。`  
 一般来说，调用resolve或reject以后，Promise 的使命就完成了，因此可return resolve()
@@ -188,6 +204,47 @@ Promise.resolve(1)
 .then(console.log)
 // 3
 ```
+
+promise 的 .then 或者 .catch 可以被调用多次，但这里 Promise 构造函数只执行一次。或者说 promise 内部状态一经改变，并且有了一个值，那么后续每次调用 .then 或者 .catch 都会直接拿到该值。
+```js
+const promise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    console.log('once')
+    resolve('success')
+  }, 1000)
+})
+
+const start = Date.now()
+promise.then((res) => {
+  console.log(res, Date.now() - start)
+})
+promise.then((res) => {
+  console.log(res, Date.now() - start)
+})
+
+// 输出：
+// once
+// success 1001
+// success 1001
+```
+
+.then 或 .catch 返回的值不能是 promise 本身，否则会造成死循环
+```js
+let promise = Promise.resolve()
+  .then(() => {
+    return promise
+  })
+
+// 或
+
+let promise = new Promise((resolve, reject) => {
+  resolve(1)
+})
+  .then(() => {
+    return promise
+  })
+```
+报错： Uncaught (in promise) TypeError: Chaining cycle detected for promise #\<Promise>
 
 ## Promise.prototype.catch()  
 
@@ -425,6 +482,33 @@ const preloadImage = function (url) {
 ```
 
 # Promise面试题
+## Promise 解决的痛点是什么？
+解决回调地狱 
+```js
+ajax(function(res){
+    ajax(function(res){
+        ajax(function(res){
+            ajax(function(res){
+                ajax(function(res){
+                    ajax(function(res){
+                        ...
+                    })
+                })
+            })
+        })
+    })
+})
+```
+
+promise实现
+```js
+promise
+.then((res)=>{})
+.then((res)=>{})
+.then((res)=>{})
+.then((res)=>{})
+```
+
 
 ## Promise.all()是并发的还是串行的？
 并发的。不过Promise.all().then()结果中数组的顺序和Promise.all()接收到的数组顺序一致。
@@ -482,6 +566,9 @@ doSomething().then(function () {
   return doSomethingElse()
 })
 .then(finalHandler)
+
+
+// 输出结果
 // doSomethingElse undefined
 // result: b
 
@@ -499,6 +586,8 @@ doSomething().then(function () {
   doSomethingElse()
 })
 .then(finalHandler)
+
+// 输出结果
 // doSomethingElse undefined
 // result: undefined
 
@@ -513,8 +602,12 @@ doSomething().then(function () {
 
 
 // 情况3
-doSomething().then(doSomethingElse()) // 相当于 doSomething().then().then(finalHandler); doSomethingElse()
+doSomething().then(doSomethingElse()) 
 .then(finalHandler)
+// 相当于 doSomething().then().then(finalHandler); doSomethingElse()
+// 由于then 需要接受一个函数，否则值会穿透
+
+// 输出结果
 // doSomethingElse undefined
 // result: a
 
@@ -529,6 +622,8 @@ doSomething().then(doSomethingElse()) // 相当于 doSomething().then().then(fin
 // 情况4 
 doSomething().then(doSomethingElse) // 相当于doSomething().then((res) => doSomethingElse(res))
 .then(finalHandler)
+
+// 输出结果
 // doSomethingElse a
 // result: b
 

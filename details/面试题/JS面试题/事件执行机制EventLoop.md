@@ -10,7 +10,7 @@
 
 [Tasks, microtasks, queues and schedules](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/)
 
-## 进程,线程
+## 进程（process）,线程（thead）
 
 * 什么是进程：进程是cpu资源分配的最小单位；（是能拥有资源和独立运行的最小单位）
 * 什么是线程：线程是cpu调度的最小单位；（线程是建立在进程的基础上的一次程序运行单位）

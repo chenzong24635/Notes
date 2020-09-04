@@ -1158,6 +1158,27 @@ background:linear-gradient(blue, red),   background:linear-gradient(90deg, blue,
 
 <img src="./img/linear.gif" width="40%">
 
+```css
+.circle-bg {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  box-shadow: 0 0 3px 3px #eee;
+  /* background: radial-gradient(
+    circle closest-corner at top,
+    rgba(249, 189, 118,1),
+    rgba(245, 150, 39,1),
+    rgba(244, 142, 22, 1)
+  ); */
+  background: linear-gradient(
+    to right bottom,
+    rgba(249, 189, 118,1),
+    rgba(245, 150, 39,1),
+    rgba(244, 142, 22, 1)
+  );
+}
+```
+
 ### radial-gradient()径向渐变
 radial-gradient(shape size at position, color1 range,...colorn range)   
 * shape(形状,可略)：ellipse(默认): 椭圆形，circle：圆形  
