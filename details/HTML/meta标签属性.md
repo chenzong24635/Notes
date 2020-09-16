@@ -89,17 +89,24 @@ meta常用于定义页面的说明，关键字，最后修改日期，和其它�
 
 meta对于移动端的一些特殊属性
 ```html
-<meta name="screen-orientation" content="portrait"> <!-- Android 禁止屏幕旋转 -->
-<meta name="full-screen" content="yes">             <!-- 全屏显示 -->
+<meta name="screen-orientation" content="portrait"> <!-- uc强制竖屏 -->
+<meta name="full-screen" content="yes">             <!-- uc全屏显示 -->
 <meta name="browsermode" content="application">     <!-- UC应用模式，使用了application这种应用模式后，页面讲默认全屏，禁止长按菜单，禁止收拾，标准排版，以及强制图片显示。 -->
 <meta name="x5-orientation" content="portrait">     <!-- QQ强制竖屏 -->
 <meta name="x5-fullscreen" content="true">          <!-- QQ强制全屏 -->
 <meta name="x5-page-mode" content="app">            <!-- QQ应用模式 -->
-```
 
-```html
+
 <!-- 忽略页面中的数字识别为电话，忽略email识别 -->
 <meta name="format-detection" content="telephone=no, email=no" />
+```
+更多
+```html
+<!-- 设置页面不缓存 -->
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+
 
 <!-- 浏览器内核控制 -->
 <meta name="renderer" content="webkit|ie-comp|ie-stand">
@@ -113,10 +120,7 @@ meta对于移动端的一些特殊属性
 <!-- windows phone 点击无高光 -->
 <meta name="msapplication-tap-highlight" content="no">
 
-<!-- 设置页面不缓存 -->
-<meta http-equiv=”pragma” content=”no-cache”>
-<meta http-equiv=”cache-control” content=”no-cache”>
-<meta http-equiv=”expires” content=”0″>      
+
 
 <!-- 禁止浏览器从本地计算机的缓存中访问页面内容：如此访问者将无法脱机浏览 -->
 <meta http-equiv="Pragma" content="no-cache">
@@ -140,21 +144,5 @@ meta对于移动端的一些特殊属性
 <!-- 微软的老式浏览器 -->
 <meta name="MobileOptimized" content="320">
 
-<!-- uc强制竖屏 -->
-<meta name="screen-orientation" content="portrait">
 
-<!-- QQ强制竖屏 -->
-<meta name="x5-orientation" content="portrait">
-
-<!-- UC强制全屏 -->
-<meta name="full-screen" content="yes">
-
-<!-- QQ强制全屏 -->
-<meta name="x5-fullscreen" content="true">
-
-<!-- UC应用模式 -->
-<meta name="browsermode" content="application">
-
-<!-- QQ应用模式 -->
-<meta name="x5-page-mode" content="app">
 ```

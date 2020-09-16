@@ -1243,6 +1243,9 @@ Vue.directive('my-directive', {
 * vnode：Vue 编译生成的虚拟节点。
 * oldVnode：上一个虚拟节点，仅在 update 和 componentUpdated 钩子中可用。
 
+### 
+[loading组件-指令封装](./loading组件-指令封装.md)
+
 
 # <a name="Vue的数据为什么频繁变化但只会更新一次">Vue采用异步渲染:Vue的数据为什么频繁变化但只会更新一次</a>[![bakTop](/img/backward.png)](#top)  
 Vue 异步执行 DOM 更新。Vue在观察到数据变化时并不是直接更新DOM，而是开启一个队列，并缓冲在同一事件循环中发生的所有数据改变。在缓冲时会去除重复数据，从而避免不必要的计算和DOM操作。然后，在下一个事件循环tick中，Vue刷新队列并执行实际工作。

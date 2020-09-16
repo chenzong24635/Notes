@@ -1,6 +1,6 @@
 [手写async await的最简实现（20行）](https://juejin.im/post/6844904102053281806)
 
-[babel编译async await](https://www.babeljs.cn/repl#?browsers=&build=&builtIns=false&spec=false&loose=false&code_lz=MYewdgzgLgBAZgUysAFgNQIYBsCuCYC8MGEAnmMPDhVAJbgwAUAlDAN4BQM3MAbhgCcYAhBELEA7hlqwACgJABbWhAQA6ERBBZeCRgEZmAbi49QkbeqwgA5o364EAZmYcAvkaA&debug=false&forceAllTransforms=false&shippedProposals=false&circleciRepo=&evaluate=false&fileSize=false&timeTravel=false&sourceType=module&lineWrap=true&presets=es2017%2Cstage-2&prettier=false&targets=&version=7.11.5&externalPlugins=)
+[babel编译async await](https://www.babeljs.cn/repl)
 ```js
 let p = async function () {
   var value1 = await Promise.resolve(1);

@@ -138,7 +138,7 @@ async changeMsg() {
 
 (macro)task -> microtask -> UI重新渲染 -> 下一个(macro)task  
 
-那么我们只需要在 microtask 中把所有在 UI重新渲染 之前需要更新的数据全部更新，这样只需要一次重渲染就能得到最新的DOM了 ，
+那么我们`只需要在 microtask 中把所有在 UI重新渲染 之前需要更新的数据全部更新，这样只需要一次重渲染就能得到最新的DOM了 `
 
 所以要优先选用 microtask 去更新数据状态而不是 (macro)task  
 

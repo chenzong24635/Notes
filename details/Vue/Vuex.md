@@ -273,6 +273,100 @@ store.dispatch 可以处理被触发的 action 的处理函数返回的 Promise�
 
 将 store 分割成模块（module）。每个模块拥有自己的 state、mutation、action、getter、甚至是嵌套子模块——从上至下进行同样方式的分割：
 
+moduleA.js
+```js
+const state = {
+  info: {
+    name: 'moduleA---',
+    age: 11
+  },
+}
+const getters = {
+  getName: state => {
+    return '我是A模块的name，我叫'+state.info.name
+  }
+}
+const mutations = {
+  setName(state, payload){
+    state.info.name = payload
+  }
+}
+const actions = {
+  setNameAsync({commit}, payload){
+    commit.setName(payload)
+  }
+}
+
+export default {
+  namespaced: true, // 解决不同模块命名冲突的问题
+  state,
+  getters,
+  mutations,
+  actions
+}
+```
+
+index.js引入 moduleA 模块
+```js
+import Vue from 'vue'
+import Vuex from 'vuex'
+
+import moduleA from './modules/moduleA'
+
+Vue.use(Vuex)
+
+export default new Vuex.Store({
+  modules: {
+    moduleA
+  }
+})
+```
+
+使用
+1. this.$store调用
+```js
+this.$store.state.moduleA.info.name
+this.$store.getters["moduleA/getName"]
+this.$store.commit('moduleA/setName','newName')
+```
+
+2. mapState、mapMutations等调用
+```js
+...mapState({
+  name: state=>state.moduleA.info.name
+})
+
+...mapMutations(['moduleA/setName'])
+this['moduleA/setName']('newName')
+
+// 或者
+...mapMutations({
+  setName:'moduleA/setName'
+})
+this.setName('newName')
+
+// 或者
+...mapMutations('moduleA',[
+  'setName'
+])
+this.setName('newName')
+```
+
+3. 通过使用 createNamespacedHelpers 创建基于某个命名空间辅助函数。
+```js
+import {createNamespacedHelpers} from 'vuex'
+const {mapState} = createNamespacedHelpers('moduleA')
+...mapState({
+  name: state=>state.info.name
+})
+
+...mapMutations([
+  'setName'
+])
+this.setName('newName')
+```
+
+
 # 
 ## 为什么 Vuex 的 mutation 中不能做异步操作？
 

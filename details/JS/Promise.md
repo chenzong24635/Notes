@@ -5,9 +5,6 @@
 
 
 # Promise
-[PromiseA+官方定义规范](https://promisesaplus.com/)
-[【翻译】Promises/A+规范](https://www.ituring.com.cn/article/66566)
-
 
 [手写Promise](/details\常用的手写函数\Promise.md)
 
@@ -173,8 +170,8 @@ Promise.reject('err').then(
 ```
 
 ## Promise.prototype.then()  
-then 方法返回新的Promise实例  
-then 方法的第一个参数是 resolved 状态的回调函数，第二个参数（可选）是 rejected 状态的回调函数。
+
+* then 方法的第一个参数是 resolved 状态的回调函数，第二个参数（可选）是 rejected 状态的回调函数。
 ```js
 new Promise((resolve, reject) => {
   if(Math.random()>=0.5){
@@ -188,8 +185,23 @@ new Promise((resolve, reject) => {
   console.log(error) //失败
 })
 ```
+* then 方法返回新的Promise实例 ，因此可以链式调用，通过 return 传递值
+```js
+Promise.resolve(1)
+  .then(data => {
+    console.log(data) //1
+    return data + 1
+  })
+  .then(data => {
+    console.log(data) //2
+    return data * 9
+  })
+  .then(data => {
+    console.log(data) //18
+  })
+```
 
-then 方法接受的参数是函数，而如果传递的并非是一个函数,就会导致前一个 Promise 的结果穿透到下面
+* then 方法接受的参数是函数，而如果传递的并非是一个函数,就会导致前一个 Promise 的结果穿透到下面
 ```js
 Promise.resolve(1)
 .then(2)
@@ -205,7 +217,7 @@ Promise.resolve(1)
 // 3
 ```
 
-promise 的 .then 或者 .catch 可以被调用多次，但这里 Promise 构造函数只执行一次。或者说 promise 内部状态一经改变，并且有了一个值，那么后续每次调用 .then 或者 .catch 都会直接拿到该值。
+* promise 的 .then 或者 .catch 可以被调用多次，但这里 Promise 构造函数只执行一次。或者说 promise 内部状态一经改变，并且有了一个值，那么后续每次调用 .then 或者 .catch 都会直接拿到该值。
 ```js
 const promise = new Promise((resolve, reject) => {
   setTimeout(() => {
@@ -228,7 +240,7 @@ promise.then((res) => {
 // success 1001
 ```
 
-.then 或 .catch 返回的值不能是 promise 本身，否则会造成死循环
+* .then 或 .catch 返回的值不能是 promise 本身，否则会造成死循环
 ```js
 let promise = Promise.resolve()
   .then(() => {
@@ -245,6 +257,26 @@ let promise = new Promise((resolve, reject) => {
   })
 ```
 报错： Uncaught (in promise) TypeError: Chaining cycle detected for promise #\<Promise>
+
+
+* 链式调用中，只有前一个 then 的回调执行完毕后，跟着的 then 中的回调才会被加入至微任务队列
+```js
+Promise.resolve()
+  .then(() => {
+    console.log("then1");
+    Promise.resolve().then(() => {
+      console.log("then1-1");
+    });
+  })
+  .then(() => {
+    console.log("then2");
+  });
+// 输出：
+// then1
+// then1-1
+// then
+```
+
 
 ## Promise.prototype.catch()  
 
