@@ -46,24 +46,24 @@ ES6 内部使用严格相等运算符（===），判断一个位置是否有值�
 ## Object
 * Object.assign
 
-## [Generators 生成器](./details/JS/Generator.md)
+## [Generators 生成器](/details/JS/Generator.md)
 
-## [箭头函数](./details/JS/this.md)
+## [箭头函数](/details/JS/this.md)
 
 
 
-## [Symbol](./details/JS数据类型/Symbol.md)
+## [Symbol](/details/JS数据类型/Symbol.md)
 
-## [Set Map](./details/JS/Set、Map.md)
+## [Set Map](/details/JS/Set、Map.md)
 
-## [Proxy](./details/JS/proxy.md)
+## [Proxy](/details/JS/proxy.md)
 
-## [Promise](./details/JS/promise.md)
+## [Promise](/details/JS/promise.md)
 
-## [async await.md](./details/JS/async_await.md)
+## [async await.md](/details/JS/async_await.md)
 
-## [Class](./details/JS/Class.md)
+## [Class](/details/JS/Class.md)
 
-## [Module](./details/JS/Module.md)
+## [Module](/details/JS/Module.md)
 
 

@@ -559,9 +559,52 @@ all和race传入的数组中如果有会抛出异常的异步任务，那么只�
 
 
 # 例子
-[We have a problem with promises](http://fex.baidu.com/blog/2015/07/we-have-a-problem-with-promises/)
 
 ## 例
+```js
+new Promise((resolve,reject) => {
+  console.log('外部promise')
+  resolve()
+})
+.then(() => {
+  console.log('外部第一个then')
+  new Promise((resolve,reject) => {
+    console.log('内部promise')
+    resolve()
+  })
+  .then(() => {
+    console.log('内部第一个then')
+    // return Promise.resolve()
+    return ''
+  })
+  .then(() => {
+    console.log('内部第二个then')
+  })
+})
+.then(() => {
+  console.log('外部第二个then')
+})
+.then(() => {
+  console.log('外部第三个then')
+})
+.then(() => {
+  console.log('外部第四个then')
+})
+```
+输出
+```js
+// 外部promise
+// 外部第一个then
+// 内部promise
+// 内部第一个then
+// 外部第二个then
+// 内部第二个then
+// 外部第三个then
+// 外部第四个then
+```
+
+## 例
+[We have a problem with promises](http://fex.baidu.com/blog/2015/07/we-have-a-problem-with-promises/)
 下面的四种 promises 的区别是什么
 ```js
 doSomething().then(function () {

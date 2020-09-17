@@ -192,6 +192,37 @@ async1 end
 settimeout
 ```
 
+## async 地狱
+async 地狱主要是指开发者贪图语法上的简洁而让原本可以并行执行的内容变成了顺序执行，从而影响了性能，但用地狱形容有点夸张了点……
+```js
+(async () => {
+  const getList = await getList();
+  const getAnotherList = await getAnotherList();
+})();
+```
+getList() 和 getAnotherList() 其实并没有依赖关系，但是现在的这种写法，虽然简洁，却导致了 getAnotherList() 只能在 getList() 返回后才会执行，从而导致了多一倍的请求时间。
+
+为了解决这个问题，我们可以改成这样：
+```js
+(async () => {
+  const listPromise = getList();
+  const anotherListPromise = getAnotherList();
+  await listPromise;
+  await anotherListPromise;
+})();
+```
+
+也可以使用 Promise.all()：
+```js
+(async () => {
+  Promise.all([
+    getList(),
+    getAnotherList()
+  ])
+    .then(...);
+})();
+```
+
 ## 优雅的处理 async/await
 无需每次使用 async/await 都包裹一层 try/catch ，更加的优雅
 ```js

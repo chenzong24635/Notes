@@ -702,7 +702,7 @@ export default {
 显示结果  
 ![](/img/Vue/递归组件-result.jpg)
 
-[树形控件Tree](./details/树形控件Tree.md)
+[树形控件Tree](/details/树形控件Tree.md)
 
 ## <a name="函数式组件">函数式组件 functional</a>[![bakTop](/img/backward.png)](#top)  
 [函数式组件](https://cn.vuejs.org/v2/guide/render-function.html#%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6)
@@ -1024,7 +1024,7 @@ mounted() {
   timer = setTimeout(() => {
     // 某些操作
   }, 1000)
-  // 通过$once来监听定时器，在beforeDestroy钩子可以被清除。
+  // 通过$once监听beforeDestroy钩子，清除定时器
   this.$once('hook:beforeDestroy', () => {
     clearTimeout(timer);
   })

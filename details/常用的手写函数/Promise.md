@@ -11,7 +11,7 @@
 ```js
 // Promise存在三个状态：pending（等待态）、fulfilled（成功态）、rejected（失败态）
 const PENDING = 'pending'
-const RESOLVED = 'resolved'
+const RESOLVED = 'fulfilled'
 const REJECTED = 'rejected'
 
 

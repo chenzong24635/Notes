@@ -10,17 +10,17 @@ let p = async function () {
 ```
 babel会编译成
 ```js
-function asyncGeneratorStep(gen,resolve,reject,_next,_throw,key,arg) {
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
   try {
-    var info = gen[key](arg);
+    var info = gen[key](arg); // 具有 value 和 done 属性的对象
     var value = info.value;
-  } catch (error) {
+  } catch (error) { // 抛出错误,reject
     reject(error);
     return;
   }
-  if (info.done) {
-    resolve(value);
-  } else {
+  if (info.done) { // 如果done为tue，则resolve结束
+    resolve(value); 
+  } else { // 否则封装一个新的promise，继续执行
     Promise.resolve(value).then(_next, _throw);
   }
 }
@@ -30,9 +30,9 @@ function _asyncToGenerator(fn) {
     var self = this,
       args = arguments;
     return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
+      var gen = fn.apply(self, args); // 返回一个Generator 对象
       function _next(value) {
-        asyncGeneratorStep(gen,resolve,reject,_next,_throw,"next",value);
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
       }
       function _throw(err) {
         asyncGeneratorStep(gen, resolve, reject, _next, _throw, 'throw', err);
@@ -56,31 +56,6 @@ const p = /*#__PURE__*/ (function () {
 ```
 
 
-```js
-function asyncToGenerator(generatorFunc) {
-  return function(...args) {
-    const gen = generatorFunc.apply(this, args)
-    console.log(args);
-    return new Promise((resolve, reject) => {
-      function step(key, arg) {
-        let generatorResult
-        try {
-          generatorResult = gen[key](arg)
-        } catch (error) {
-          return reject(error)
-        }
-        const { value, done } = generatorResult
-        if (done) {
-          return resolve(value)
-        } else {
-          return Promise.resolve(value).then(val => step('next', val), err => step('throw', err))
-        }
-      }
-      step("next")
-    })
-  }
-}
-```
 
 测试
 ```js
@@ -100,8 +75,8 @@ function* testG() {
   return 'success'
 }
 
-var gen = asyncToGenerator(testG)
-gen(1,2).then(data => {
+var gen = _asyncToGenerator(testG)
+gen().then(data => {
   console.log(data);
 })
 
