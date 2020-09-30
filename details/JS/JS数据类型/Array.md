@@ -408,7 +408,7 @@ end： 结束位置（不包含）,默认this.length
 ## <a name="splice()">splice() -- 改变原数组</a>
 splice(start, deleteCount, item1,tem2, ...)   添加、替换、删除元素。以数组形式返回被删除的元素(没有删除元素，返回空数组)。`改变原数组`    
 start：表示替换的位置  
-deleteCount ：表示删除元素的数量(>=0)   
+deleteCount ：表示删除元素的数量(>=0)   (Array(10000))
 item1... ： 表示添加的元素  
 >
 
@@ -707,21 +707,22 @@ values(): 值迭代器
 
 next()，返回一个对象{ value: 数组的key, done: false }  
 next().done 用于指示迭代器是否完成：在每次迭代时进行更新而且都是false
+```js
+let iterator = arr.entries();
+iterator.next() // {done: false, value: [0, "a"]}
+iterator.next() // {done: false, value: [1, "b"]}
+iterator.next() // {done: true, value: undefined}
 
-    let iterator = arr.entries();
-    iterator.next() // {done: false, value: [0, "a"]}
-    iterator.next() // {done: false, value: [1, "b"]}
-    iterator.next() // {done: true, value: undefined}
-
-    for (let [index, item] of arr.entries()) {
-      console.log('entries()-->','index:', index, ';item:', item);
-    }
-    for (let index of arr.values()) {
-      console.log('.values()-->', 'index:', index);
-    }
-    for (let item of arr.keys()) {
-      console.log('.keys()-->', 'item:', item);
-    }
+for (let [index, item] of arr.entries()) {
+  console.log('entries()-->','index:', index, ';item:', item);
+}
+for (let index of arr.values()) {
+  console.log('.values()-->', 'index:', index);
+}
+for (let item of arr.keys()) {
+  console.log('.keys()-->', 'item:', item);
+}
+```
 
 ## <a name="">实现 map、filter、some、every、reduce、</a>
 [一个合格的中级前端工程师需要掌握的 28 个 JavaScript 技巧](https://juejin.im/post/5cef46226fb9a07eaf2b7516#heading-0)

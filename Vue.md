@@ -1272,13 +1272,17 @@ keep-alive 是 Vue 内置的一个组件，可以使被包含的组件保留状�
 
 ```html
 使用：
-  缓存： <keep-alive include="组件1,组件2"></keep-alive>
-  不缓存：<keep-alive exclude="组件1,组件2"></keep-alive>
-  最大缓存数：<keep-alive :max="10"></keep-alive>
+    缓存： <keep-alive include="组件1,组件2"></keep-alive>
+    不缓存：<keep-alive exclude="组件1,组件2"></keep-alive>
+    最大缓存数：<keep-alive :max="10"></keep-alive>
 
 如果使用了keep-alive对组件进行了缓存，组件不会销毁，destroyed不执行  
 当组件在keep-alive内被切换时组件的activated、deactivated这两个生命周期钩子函数会被执行
+
+include,exclude内容也可使用正则（include="/a|b/"）或数组形式（include="['a', 'b']"）
 ```
+
+
 
 * 利用meta属性 设置组件是否缓存
 ```js

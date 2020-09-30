@@ -513,11 +513,11 @@ mouseenter/mouseleave不冒泡。
 * parentNode  // 当前元素的父节点对象
 * children // 当前元素所有子元素节点对象，只返回HTML节点
 * childNodes  // 当前元素所有子节点，包括文本，HTML，属性节点。（回车也会当做一个节点）
-* firstChild  // 当前元素的第一个子节点对象
-* lastChild  // 前元素的最后一个子节点对象
+* firstChild || firstElementChild // 当前元素的第一个子节点对象
+* lastChild || lastElementChild // 前元素的最后一个子节点对象
 
-* nextSibling  // 当前元素的下一个同级元素 没有就返回null
-* previousSibling // 当前元素上一个同级元素 没有就返回 null
+* nextSibling || nextElementSibling  // 当前元素的下一个同级元素 没有就返回null
+* previousSibling || previousElementSibling // 当前元素上一个同级元素 没有就返回 null
 
 * innerHTML // 元素的所有文本，包括html代码
 * innerText // 元素的自身及子代所有文本值，只是文本内容，不包括html代码
@@ -546,10 +546,11 @@ mouseenter/mouseleave不冒泡。
 
 ## <a name="DOM操作">DOM操作—添加、移除、移动、复制、创建和查找节点</a>
 #### 创建新节点
-* document.createDocumentFragment()    //创建一个DOM片段
-* document.createElement()   //创建一个元素节点
-* document.createTextNode()   //创建一个文本节点
-* document.createAttribute() // 创建一个属性节点,如class
+* document.createDocumentFragment()  //创建一个DOM片段节点
+* document.createElement('元素名')   //创建一个元素节点
+* document.createTextNode('文本内容') //创建一个文本节点
+* document.createAttribute('属性名') // 创建一个属性节点,如class
+* document.createComment('注释节点'); // 创建一个注释节点
 
 ```js
 var node = document.getElementById("div1");
@@ -569,20 +570,63 @@ console.log(node.getAttribute("my_attrib")); // "newVal"
 
 
 #### 查找节点
-* document.querySelector() // 查找第一个 （id,className, tgaName)
-* document.querySelectorAll() //查找所有 （id,className, tgaName)
+* document.querySelector() // 查找第一个 （id、className、tgaName)
+* document.querySelectorAll() //查找所有 （id、className、tgaName)
+
 * document.getElementById() //通过元素Id查找，唯一性
 * document.getElementsByClassName() //通过元素classname查找(返回数组)
 * document.getElementsByTagName() //通过标签名称查找(返回数组)
 * document.getElementsByName()  //通过元素的Name属性的值查找(返回数组)
 
+* document.documentElement //获取页面中的HTML标签
+* document.body //获取页面中的BODY标签
+* document.all //获取页面中的所有元素节点的对象集合型，返回HTMLCollection
+  >document.all[0] //相当于document.documentElement
+
+* document.forms 获取当前页面所有form，返回一个 HTMLCollection 
+
 #### 操作属性的方法
+* createAttribute(attrName) // 创建一个属性节点
 * getAttribute(attrName)  //获取属性值
 * setAttribute(attrName,attrValue)  //设置属性
 * removeAttribute(attrName)  //移除属性
 * hasAttribute(attrName) //判断是否存在该属性
 * getAttributeNode(attrName) // 获取属性节点
 * setAttributeNode(attrName) // 设置属性节点
+
+```js
+let attr = document.createAttribute("class");
+attr.nodeValue="democlass";
+document.querySelector('#demo').setAttributeNode(attr); 
+```
+
+#### 样式相关API
+* setProperty(propertyname, value, priority) // 设置 CSS 样式属性
+  >priority: 可选，规定属性的优先级("important" | undefined | "")
+
+* removeProperty(propertyname) // 移除指定的 CSS 样式属性
+
+```js
+ele.style.color = 'red';  
+ele.style.setProperty('font-size', '16px', 'important');  
+ele.style.removeProperty('color');  
+```
+
+* window.getComputedStyle(element, [pseudoElt]) 获取元素上的所有样式
+  >pseudoElt 指定一个要匹配的伪元素的字符串。必须对普通元素省略（或null）。
+
+* classList
+  * add // 添加class
+  * remove // 移除class
+  * toggle // 切换class（没有添加，有则移除
+  * replace // 替换class
+
+```js
+ele.classList.add("a");
+ele.classList.remove("a");
+ele.classList.toggle("a");
+ele.classList.replace("a", "b");
+``` 
 
 ## <a name="获取元素属性">获取元素属性innerHTML、outerHTML、innerText 、outerText、value</a>
 ```html
@@ -1010,7 +1054,7 @@ typeof 能够正确的判断基本数据类型，但是除了 null, typeof null�
 #### instanceof
 instanceof 是通过原型链判断的，判断实例对象在其原型链中是否存在一个构造函数的 prototype 属性。  
 
-A instanceof B, 在A的原型链中层层查找，是否有原型等于 B.__proto__，如果一直找到A的原型链的顶端(null;即 Object.prototype.__proto__),仍然不等于B.prototype，那么返回false，否则返回true.
+A instanceof B, 在A的原型链中层层查找，是否有原型等于 B.prototype，如果一直找到A的原型链的顶端(null;即 Object.prototype.__proto__),仍然不等于B.prototype，那么返回false，否则返回true.
 
 >
     语法：object instanceof constructor

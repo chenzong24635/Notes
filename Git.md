@@ -147,6 +147,7 @@ npm i git //git安装
 `git branch 分支`
 * git branch //查看当前所有分支  
 * git branch -v //查看当前所有分支及其最后一次提交  
+* git branch --list //查看有多少分支(简：git branch -l)  
 * git branch --all //查看所有分支(本地+远程) (简：git branch -a)  
 * git branch \<branchName>  //创建分支  
 * git branch -d \<branchName>  //删除分支  

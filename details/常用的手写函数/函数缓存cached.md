@@ -4,10 +4,9 @@
 ```js
 function cached(fn) {
   const cache = Object.create(null) 
-  return (function cachedFn (str) {
-    const hit = cache[str]
-    return hit || (cache[str] = fn(str))
-  })
+  return function cachedFn (str) {
+    return cache[str] || (cache[str] = fn(str))
+  }
 }
 ```
 

@@ -17,11 +17,11 @@ new 操作返回的实例对象具有两个特征：
 
 ### 实现 new
 ```js
-const isObjFn = obj => (typeof obj === 'object' || typeof obj === 'function') && obj !== null
+const isObjFn = obj => (typeof obj === 'object' && obj !== null) || typeof obj === 'function'
 
 const selfNew = function (fn, ...args) {
   let instance = Object.create(fn.prototype) // 创建一个新对象，继承fn函数原型
-  let res = fn.call(instance, ...args) // 将构造函数中的this指向这个对象，并传递参数
+  let res = fn.apply(instance, args) // 将构造函数中的this指向这个对象，并传递参数
   return isObjFn(res) ? res : instance // 判断 fn函数返回结果：是对象或函数则返回此该结果res，否则返回创建的新对象instance
 }
 ```

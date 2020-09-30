@@ -1146,6 +1146,48 @@ pluginOptions: {
 * stylus使用 >>>
 
 
+[解决 Vue CSS 样式重复载入，为 Vue 添加全局 less 或 sass 基础样式库](https://juejin.im/post/6844903925682814983)
+
+通过 `style-resources-loader`引入全局less时，会出现 CSS 样式重复载入的情况
+![](/img/Vue/Snipaste_2020-09-18_10-42-46.png)
+
+旧
+```js
+// main.js
+import 'element-ui/lib/theme-chalk/index.css'
+
+// vue.config.js
+pluginOptions: {
+    'style-resources-loader': {
+      preProcessor: 'less',
+      patterns: [
+        path.resolve(__dirname, 'src/assets/css/theme.less'),
+        path.resolve(__dirname, 'src/assets/css/index.less'),
+      ]
+    }
+  },
+```
+
+新
+```js
+// index.less
+@import '~element-ui/lib/theme-chalk/index.css';
+
+// main.js
+import './assets/css/index.less'
+
+// vue.config.js
+pluginOptions: {
+    'style-resources-loader': {
+      preProcessor: 'less',
+      patterns: [
+        path.resolve(__dirname, 'src/assets/css/theme.less'),
+      ]
+    }
+  },
+```
+
+
 ## <a name="CDN引入">CDN引入</a>[![bakTop](/img/backward.png)](#top) 
 
 国内的CDN服务推荐使用[BootCDN](https://www.bootcdn.cn/)

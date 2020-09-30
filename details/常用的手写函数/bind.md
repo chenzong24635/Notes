@@ -15,7 +15,7 @@ Function.prototype.selfBind = function(content, ...args) {
   // 绑定的函数
   function bound(...args2) {
     // this instanceof bound, 判断是否使用 new 来调用 bound
-    // 如果是 new 来调用的话，绑定到this，否则绑定到 content
+    // 如果是 new 来调用的话，绑定到this；否则是普通函数形式调用，绑定到 content
     return self.apply(
       this instanceof bound ? this : content,
       [...args, ...args2]
