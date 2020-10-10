@@ -185,6 +185,8 @@ module.exports = {
         parallel: true, // 启用/禁用多进程并行运行
         parallel: 4, // 启用多进程并行运行并设置并发运行次数,默认是 os.cpus().length - 1
         sourceMap: false, //启用/禁用映射
+        terserOptions: { compress: {  pure_funcs: ["console.log"] } }, //去除console.log
+        // terserOptions: { compress: { drop_console: true } }, //去除console.log，请弃用
       })
     ],
   }

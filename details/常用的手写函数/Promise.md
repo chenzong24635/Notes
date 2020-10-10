@@ -168,7 +168,7 @@ class MyPromise {
     })
   }
   static all(promises){
-    let arr = [];
+    let arr = []; // 存储结果
     let index = 0; // 记录processData执行次数
     function processData(i,data,resolve,reject){
       arr[i] = data;
@@ -178,6 +178,7 @@ class MyPromise {
       };
     };
     return new this((resolve,reject)=>{
+      // 遍历promises数组，调用每个promise，
       for(let i=0;i<promises.length;i++){
         promises[i].then(data=>{
           processData(i,data,resolve,reject);

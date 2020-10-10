@@ -68,16 +68,16 @@ function promise(num) {
 }
 
 function* testG() {
-  const data1 = yield promise(10)
-  console.log('data1: ', data1);
-  const data2 = yield promise(20)
-  console.log('data2: ', data2);
+  const res1 = yield promise(10)
+  console.log('res1: ', res1);
+  const res2 = yield promise(20)
+  console.log('res2: ', res2);
   return 'success'
 }
 
 var gen = _asyncToGenerator(testG)
-gen().then(data => {
-  console.log(data);
+gen().then(res => {
+  console.log(res);
 })
 
 
