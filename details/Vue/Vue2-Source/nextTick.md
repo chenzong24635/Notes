@@ -13,13 +13,32 @@ Vue 在更新 DOM 时是异步执行的。只要侦听到数据变化，Vue 将�
 
 `nextTick作用`是在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。
 
+nextTick主要使用了宏任务和微任务。根据执行环境分别尝试采用
+* Promise.then
+* [MutationObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver)
+* [setImmediate](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/setImmediate) (只有最新版本的 Internet Explorer 和Node.js 0.10+实现了该方法)
+* 以上都不支持，最后再使用 setTimeout 
+
 
 ### 源码
 源码路径：src\core\util\next-tick.js
 ```js
+const callbacks = []
+let pending = false
 
+function flushCallbacks () {
+  pending = false
+  const copies = callbacks.slice(0)
+  callbacks.length = 0
+  for (let i = 0; i < copies.length; i++) {
+    copies[i]()
+  }
+}
+
+
+let timerFunc
 if (typeof Promise !== 'undefined' && isNative(Promise)) {
-  // 如果支持Promise
+  // 如果支持Promise(最优的选择)
   const p = Promise.resolve()
   timerFunc = () => {
     p.then(flushCallbacks)
@@ -46,6 +65,8 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
   timerFunc = () => {
     // setImmediate 从技术上讲，它利用了（宏）任务队列，
     // 但它仍然是比setTimeout更好的选择。
+    // 因为setTimeout 在将回调注册为 (macro)task 之前要不停的做超时检测，而 setImmediate 则不需要
+    // 仅IE支持
     setImmediate(flushCallbacks)
   }
 } else {
@@ -55,13 +76,6 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
   }
 }
 ```
-
-由上可知nextTick主要使用了宏任务和微任务。根据执行环境分别尝试采用
-* Promise的then
-* [MutationObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver)
-* [setImmediate](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/setImmediate) (只有最新版本的 Internet Explorer 和Node.js 0.10+实现了该方法)
-* 以上都不支持，最后再使用 setTimeout 
-
 
 ### 使用场景：
 * 在修改数据之后立即使用这个方法，可获取更新后的 DOM数据
@@ -153,6 +167,8 @@ function flushCallbacks() {
   callbacks.forEach(fn => fn())
   callbacks.length = 0
 }
+
+
 function nextTick(fn){
   callbacks.push(fn) //添加事件
   if(!pending) { // 回调队列是否空闲

@@ -1,4 +1,5 @@
 # [proxy](http://es6.ruanyifeng.com/#docs/proxy)
+[Proxy 和 Reflect](https://juejin.im/post/6844904090116292616)
 
 Proxy用于修改某些操作的默认行为，也可以理解为在目标对象之前架设一层拦截，外部所有的访问都必须先通过这层拦截，因此提供了一种机制，可以对外部的访问进行过滤和修改。这个词的原理为代理，在这里可以表示由它来“代理”某些操作，译为“代理器”。
 
@@ -125,6 +126,6 @@ console.log(delete proxy.a);
 
 # Reflect 是一个内置对象，可简化的创建 Proxy。
 
-对于每个可被 Proxy 捕获的内部方法，Reflect 都有一个对应的方法 Reflect，其名称和参数与 Proxy 钩子相同。
+对于每个可被 Proxy 捕获的内部方法，Reflect 都有一个对应的方法，其名称和参数与 Proxy 钩子相同。
 
 以前的内部方法，比如[[Get]]，[[Set]] 等等都只是规范，不能直接调用。使用 Reflect 对象可调用这些内部方法

@@ -23,7 +23,7 @@ export function set(target: Array < any > | Object, key: any, val: any): any {
   // 以上都不成立, 即开始给target创建一个全新的属性
   // 获取Observer实例
   const ob = (target: any).__ob__
-  // target 本身就不是响应式数据, 直接赋值
+  
   if (target._isVue || (ob && ob.vmCount)) {
     process.env.NODE_ENV !== 'production' && warn(
       'Avoid adding reactive properties to a Vue instance or its root $data ' +
@@ -31,11 +31,12 @@ export function set(target: Array < any > | Object, key: any, val: any): any {
     )
     return val
   }
+  // target 本身就不是响应式数据, 直接赋值
   if (!ob) {
     target[key] = val
     return val
   }
-  // 进行响应式处理
+  // 进行响应式处理,并触发更新 重新渲染页面
   defineReactive(ob.value, key, val)
   ob.dep.notify()
   return val
