@@ -11,7 +11,7 @@
 
 Vue 在更新 DOM 时是异步执行的。只要侦听到数据变化，Vue 将开启一个队列，并缓冲在同一事件循环中发生的所有数据变更。如果同一个 watcher 被多次触发，只会被推入到队列中一次。然后，在下一个事件循环tick中，Vue刷新队列并执行实际(已去重的) 工作。
 
-`nextTick作用`是在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。
+`nextTick作用`是在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，可获取更新后的 DOM。
 
 nextTick主要使用了宏任务和微任务。根据执行环境分别尝试采用
 * Promise.then
@@ -28,8 +28,8 @@ let pending = false
 
 function flushCallbacks () {
   pending = false
-  const copies = callbacks.slice(0)
-  callbacks.length = 0
+  const copies = callbacks.slice(0) //一层深拷贝
+  callbacks.length = 0 // 清空数组
   for (let i = 0; i < copies.length; i++) {
     copies[i]()
   }
