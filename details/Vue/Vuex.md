@@ -368,6 +368,22 @@ this.setName('newName')
 
 
 # 
+## action和mutation区别
+Store实例上有一个开关变量 _committing
+* 只有在 mutation 执行之前才会把开关打开，允许修改 state 上的属性。
+* 并且在 mutation 同步执行完成后立刻关闭。
+* 异步更新的话由于已经出了 mutation 的调用栈，此时的开关已经是关上的，检测到对 state 的修改并报错。具体可以查看源码中的 withCommit 函数。这是一种很经典对于 js单线程机制 的利用。
+
+```js
+_withCommit (fn) {
+  const committing = this._committing
+  this._committing = true
+  fn()
+  this._committing = committing
+}
+```
+
+
 ## 为什么 Vuex 的 mutation 中不能做异步操作？
 
 Vuex中所有的状态更新的唯一途径都是mutation，异步操作通过 Action 来提交 mutation实现，这样使得我们可以方便地跟踪每一个状态的变化，从而让我们能够实现一些工具帮助我们更好地了解我们的应用。

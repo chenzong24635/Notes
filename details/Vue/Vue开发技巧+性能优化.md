@@ -54,6 +54,8 @@ v-show 只是简单的display控制显隐藏，不管初始条件如何，元素
 v-if 有更高的切换开销，而 v-show 有更高的初始渲染开销。  
 因此，v-if适用于很少改变条件的场景，v-show适用于频繁切换条件的场景。
 
+[v-if,v-shoh源码](/details\Vue\Vue2-Source\v-if,v-show.md)
+
 ## <a name="v-for遍历避免同时使用v-if">v-for遍历避免同时使用v-if"</a>[![bakTop](/img/backward.png)](#top)  
 [vue官网解释](https://cn.vuejs.org/v2/guide/conditional.html#v-if-%E4%B8%8E-v-for-%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8)
 
@@ -122,6 +124,8 @@ export default{
 }
 </script>
 ```
+
+[源码解析](/details\Vue\Vue2-Source\v-for,v-if.md)
 
 ## <a name="使用render函数优化代码">render函数优化代码</a>[![bakTop](/img/backward.png)](#top)  
 [渲染函数 & JSX-vue官网](https://cn.vuejs.org/v2/guide/render-function.html)

@@ -468,7 +468,7 @@ v-model 本质上不过是语法糖，v-model 在内部为不同的输入元素�
 
 * 当需要进行数值计算，并且依赖于其它数据时，应该使用 computed，可以利用 computed 的缓存特性，  
 * 数据变化的同时进行异步操作或者是比较大的开销，那么watch为最佳选择  
-* computed本质是一个具备缓存的watcher,内部实现了一个惰性的 watcher(lazy: true)
+* computed本质是一个具备缓存(dirty: true)的watcher,内部实现了一个惰性的 watcher(lazy: true)
 
 ## 基本使用：
 ```js
@@ -523,9 +523,9 @@ computed: {
 ```
 
 ## watch：深度监听
-最初绑定的时候是不会执行的，要等到 `监听值改变`才执行监听计算;  
-但当设置`immediate: true`时初始化的时候就会自动触发
+最初绑定的时候是不会执行的，要等到 `监听值改变`才执行监听计算; 
 
+`immediate: true`初始化的时候就会自动触发  
 `deep: true` 监听复杂数据类型需用深度监听
 ```js
 watch: {
@@ -610,6 +610,8 @@ export default {
   }
 }
 ```
+
+### [watch/computed源码解析](/details\Vue\Vue2-Source\computed-watch.md)
 
 # <a name="解决对象新增属性不能响应的问题">$set() 解决对象新增属性不能响应的问题</a>[![bakTop](/img/backward.png)](#top)  
 [Vue文档-深入响应式原理](https://cn.vuejs.org/v2/guide/reactivity.html)

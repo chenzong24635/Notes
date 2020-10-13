@@ -389,7 +389,11 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
 
 2. DOM2级：W3C制定的标准模型，现代浏览器（IE6~8除外）都已经遵循这个规范
 ```js
-              //事件类型、需要执行的函数、是否捕获，(false（默认值）:冒泡；true：捕获)
+/**
+ * @params {String} eventType 事件类型
+ * @params {Function} handler 执行的回调函数
+ * @params {Boolean} useCapture 否捕获(false（默认值）:冒泡；true：捕获);即默认冒泡
+ */
 addEventListener(eventType,handler,useCapture)
 removeEventListener(eventType,handler,useCapture)
 
