@@ -93,7 +93,7 @@ isShow为false时，不会渲染列表，
 ```
 
 当只需要渲染很小一部分的时候，可以通过 computed 过滤掉无需渲染的列表。
-而不是在 li 标签里使用  v-if="item.isActive"   
+而不是在 li 标签里使用  v-if="item.isActive"
 
 推荐：
 ```html
@@ -998,7 +998,6 @@ mounted(){
 // 父组件监听到 mounted 钩子 ...     
 ```
 其它的生命周期事件，例如：beforeCreate, created， updated等都可监听
-
 
 
 ## <a name="事件的销毁">事件的销毁 $once('hook:beforeDestroy')</a>[![bakTop](/img/backward.png)](#top) 

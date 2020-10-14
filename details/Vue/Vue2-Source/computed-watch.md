@@ -272,6 +272,8 @@ watcher 的概念，它的核心概念是 get 求值，和 update 更新。
 
 
 ### 用户自定义 watcher
+相当于vm.$watch
+
 ```js
 // src\core\instance\state.js
 export function initState (vm: Component) {
@@ -317,7 +319,7 @@ function createWatcher (
   return vm.$watch(expOrFn, handler, options)
 }
 ```
-可以看出， 用户定义的watch会调用 vm.$watch其在 stateMixin中定义绑定到Vue.prototype
+可以看出， 用户定义的watch会调用 vm.$watch，其在 stateMixin中定义绑定到Vue.prototype
 
 ```js
 // src\core\instance\state.js
@@ -345,6 +347,25 @@ export function stateMixin (Vue: Class<Component>) {
     return function unwatchFn () {
       watcher.teardown()
     }
+  }
+}
+```
+### immediate: true实现
+```js
+// src\core\instance\state.js
+export function stateMixin (Vue: Class<Component>) {
+    ... 
+  Vue.prototype.$watch = function (){
+    ... 
+    const watcher = new Watcher(vm, expOrFn, cb, options)
+    if (options.immediate) { // 立即执行该watch
+      try {
+        cb.call(vm, watcher.value)
+      } catch (error) {
+        handleError(error, vm, `callback for immediate watcher "${watcher.expression}"`)
+      }
+    }
+    ...
   }
 }
 ```

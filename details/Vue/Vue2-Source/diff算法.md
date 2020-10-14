@@ -22,17 +22,122 @@ Vue2的核心Diff算法采用了双端比较的算法，同时从新旧children�
 patch比较新旧节点：
 * 如果新节点不存在，旧节点存在，则删除
 * 如果新节点存在，旧节点存在，则创建
-* 如果新节点存在，旧节点存在，则 进行 diff 操作
+* 如果新节点存在，旧节点存在，则 进行 diff 操作（patchVnode）
 
 
-diff算法有以下过程：
+```js
+// 比较新旧节点
+  function patchVnode (
+    oldVnode,
+    vnode,
+    insertedVnodeQueue,
+    ownerArray,
+    index,
+    removeOnly
+  ) {
+    // 新旧节点相同，则不操作，直接返回
+    if (oldVnode === vnode) {
+      return
+    }
 
-* 同级比较，再比较子节点
-* 先判断一方有子节点一方没有子节点的情况(如果新的children没有子节点，将旧的子节点移除)
-* 比较都有子节点的情况(核心diff)
+    if (isDef(vnode.elm) && isDef(ownerArray)) {
+      // clone reused vnode
+      vnode = ownerArray[index] = cloneVNode(vnode)
+    }
+
+    const elm = vnode.elm = oldVnode.elm
+
+    if (isTrue(oldVnode.isAsyncPlaceholder)) {
+      if (isDef(vnode.asyncFactory.resolved)) {
+        hydrate(oldVnode.elm, vnode, insertedVnodeQueue)
+      } else {
+        vnode.isAsyncPlaceholder = true
+      }
+      return
+    }
+
+    // reuse element for static trees.
+    // note we only do this if the vnode is cloned -
+    // if the new node is not cloned it means the render functions have been
+    // reset by the hot-reload-api and we need to do a proper re-render.
+    /**
+     * 如果新旧vnode都是静态
+     * 且key相同（代表同一节点）
+     * 且新vnode是克隆的 或 标记了 once（标记v-once属性，表示只渲染一次）
+     * 那么只需替换 componentInstance 即可
+     */
+    if (isTrue(vnode.isStatic) &&
+      isTrue(oldVnode.isStatic) &&
+      vnode.key === oldVnode.key &&
+      (isTrue(vnode.isCloned) || isTrue(vnode.isOnce))
+    ) {
+      vnode.componentInstance = oldVnode.componentInstance
+      return
+    }
+
+    // 如果存在 data.hook.prepatch 则先执行
+    let i
+    const data = vnode.data
+    if (isDef(data) && isDef(i = data.hook) && isDef(i = i.prepatch)) {
+      i(oldVnode, vnode)
+    }
+
+    const oldCh = oldVnode.children // 旧节点children
+    const ch = vnode.children // 新节点children
+    //执行属性，事件，样式等更新操作
+    if (isDef(data) && isPatchable(vnode)) {
+      for (i = 0; i < cbs.update.length; ++i) cbs.update[i](oldVnode, vnode)
+      if (isDef(i = data.hook) && isDef(i = i.update)) i(oldVnode, vnode)
+    }
+
+    // 开始判断vnode的子节点的各种情况
+
+    // 如果vnode不是text文本
+    if (isUndef(vnode.text)) {
+      if (isDef(oldCh) && isDef(ch)) {
+        // 新旧 vnode 的 children 均存在
+        // 且不相同,则对 children 进行 diff 操作
+        if (oldCh !== ch) updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly)
+      } else if (isDef(ch)) {
+        // 新vnode存在，旧vnode不存在children
+        if (process.env.NODE_ENV !== 'production') {
+          checkDuplicateKeys(ch)
+        }
+        // 清空文本内容，（如果旧oldVnode存在文本，先清空）
+        if (isDef(oldVnode.text)) nodeOps.setTextContent(elm, '')
+        // 加入 子节点
+        addVnodes(elm, null, ch, 0, ch.length - 1, insertedVnodeQueue)
+      } else if (isDef(oldCh)) {
+        // 新vnode不存在，旧vnode存在children
+        // 则移除 所有子节点
+        removeVnodes(oldCh, 0, oldCh.length - 1)
+      } else if (isDef(oldVnode.text)) {
+        // 新旧vnode都无 children 时，只是文本替换，
+        // 而此时已知新 vnode 并无 text 文本，旧vnode存在 text 文本
+        // 则清空文本内容
+        nodeOps.setTextContent(elm, '')
+      }
+    } else if (oldVnode.text !== vnode.text) {
+      // 如果新vnode是text文本，但与旧vnode不同，则直接替换文本
+      nodeOps.setTextContent(elm, vnode.text)
+    }
+    //调用postpatch钩子
+    if (isDef(data)) {
+      if (isDef(i = data.hook) && isDef(i = i.postpatch)) i(oldVnode, vnode)
+    }
+  }
+```
+
+diff算法（patchVnode）有以下过程：（同级比较，再比较子节点）
+* 新旧节点相同，则不操作，直接返回（新vnode，旧oldVnode）
+* 如果 vnode 是text文本，但与 oldVnode 文本内容不同（或 oldVnode 不是文本），则直接替换文本
+* 如果 vnode 不是text文本，则对子节点 children 进行对比 （oldCh = oldVnode.children，ch = vnode.children）
+* 如果仅 ch 存在，则 addVnodes 添加 ch （如果 oldVnode 存在文本，先清空）
+* 如果仅 oldCh 存在，则 removeVnodes 删除 oldCh
+* 如果 ch oldCH 都存在，则进行比较（updateChildren） (核心diff)
 * 递归比较子节点
 
-主要是子节点比较 updateChildren 
+子节点比较方法 updateChildren 
 ```js
 // 对新旧两个VNode的children得出最小操作补丁
 function updateChildren (parentElm, oldCh, newCh, insertedVnodeQueue, removeOnly) {
@@ -125,15 +230,46 @@ function updateChildren (parentElm, oldCh, newCh, insertedVnodeQueue, removeOnly
     removeVnodes(oldCh, oldStartIdx, oldEndIdx)
   }
 }
-```
-updateChildren：
-* 新旧children 的开头相同
-* 新旧children 的结尾相同
-* 旧children 的开头与新children的结尾相同 （元素从开头移到末尾，表示：先shift()，再将其push(),）
-* 旧children 的结尾与新children的开头，相同 （元素从末尾移到开头，表示：先pop()，再将其unshift()）
-* 都不是，则
 
-首先定义了新旧节点的开始/结束的索引/节点，
+function sameVnode (a, b) {
+  return (
+    a.key === b.key && (
+      (
+        a.tag === b.tag &&
+        a.isComment === b.isComment &&
+        isDef(a.data) === isDef(b.data) &&
+        sameInputType(a, b)
+      ) || (
+        isTrue(a.isAsyncPlaceholder) &&
+        a.asyncFactory === b.asyncFactory &&
+        isUndef(b.asyncFactory.error)
+      )
+    )
+  )
+}
+```
+updateChildren首先定义了新旧节点的开始/结束的索引/节点，
 ![](/img/Vue/diff/1.png)
 
 开始一个while 循环，在这过程中，oldStartIdx 、newStartIdx、oldEndIdx 以及 newEndIdx 会逐渐向中间靠拢。
+
+
+updateChildren diff：
+* 新旧节点的开头相同
+  >(sameVnode(oldStartVnode, newStartVnode))
+
+* 新旧节点的结尾相同
+  >(sameVnode(oldEndVnode, newEndVnode))
+
+* 旧节点的开头与新节点的结尾相同 （元素从开头移到末尾，表示：先shift()，再将其push(),）
+  >sameVnode(oldStartVnode, newEndVnode)
+
+* 旧节点的结尾与新节点的开头，相同 （元素从末尾移到开头，表示：先pop()，再将其unshift()）
+  >sameVnode(oldEndVnode, newStartVnode)
+
+* 都不是，再把所有旧子节点的 key 做一个映射到旧节点下标的 key -> index 表，然后用新 vnode 的 key 去找出在旧节点中可以复用的位置
+
+* 以上对比结束后，继续判断是否还有剩余，
+* 剩余情况：oldStartIdx > oldEndIdx；说明旧节点都被 patch 完了，但是有可能还有新的节点没有被处理到。接着会去判断是否要新增子节点
+* 否则是，新节点先patch完了，可能还有旧的节点没有被处理到。那么就会去删除多余的旧子节点。
+

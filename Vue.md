@@ -425,7 +425,8 @@ v-model 本质上不过是语法糖，v-model 在内部为不同的输入元素�
 父组件可以向子组件传递数据，但是子组件不能直接修改父组件的状态。  
 防止从子组件意外改变父级组件的状态，从而导致你的应用的数据流向难以理解。
 
-如所有的 prop 都使得其父子 prop 之间形成了一个单向下行绑定  
+如所有的 prop 都使得其父子 prop 之间形成了一个单向下行绑定；每次父级组件发生更新时，子组件中 prop 也会更新。这意味着你不应该在一个子组件内部改变 prop
+
 当你想要在子组件去修改 props 时，两种情况
 * prop 用来传递一个初始值, 定义一个 data 属性，并用 prop 的值初始化它。
   >vue初始化属性顺序
@@ -835,7 +836,7 @@ var Counter = {
     </slot-one>
   </div>
 </template>
-<>
+<script>
 import slotOne from '@/pages/slotOne.vue'
 
 export default {
@@ -843,7 +844,7 @@ export default {
     slotOne
   }
 }
-</>
+</script>
 
 //子组件：slotOne.vue
 <template>
@@ -866,7 +867,7 @@ export default {
     <slot-one>我不当备胎</slot-one>
   </div>
 </template>
-<>
+<script>
 import slotOne from '@/pages/slotOne.vue'
 
 export default {
@@ -874,7 +875,7 @@ export default {
     slotOne
   }
 }
-</>
+</script>
 
 //子组件：slotOne.vue
 <template>
@@ -893,9 +894,9 @@ export default {
 * slot="header" `自 2.6.0 起被废弃`
 
 作用域插槽：让插槽内容能够访问子组件中才有的数据
-* v-slot:header="slotProps" //所有插槽属性
+* #header="slotProps" //所有插槽属性
 * slot="header" slot-scope="slotProps" //所有插槽属性 `自 2.6.0 起被废弃`
-* v-slot:header="{user}" //解构插槽属性：user 
+* #header="{user}" //解构插槽属性：user 
 
 ```html
 //父组件
@@ -925,14 +926,14 @@ export default {
     </slot-one>
   </div>
 </template>
-<>
+<script>
 import slotOne from '@/pages/slotOne.vue'
 export default {
   components:{
     slotOne
   }
 }
-</>
+</script>
 
 //子组件：slotOne.vue
 <template>
@@ -958,8 +959,10 @@ export default {
 
 为了给 Vue 一个提示，以便它能跟踪每个节点的身份，从而重用和重新排序现有元素，你需要为每项提供一个唯一 key 属性：
 ```
+建议尽可能在使用 v-for 时提供 key attribute，除非遍历输出的 DOM 内容非常简单，或者是刻意依赖默认行为以获取性能上的提升。
 
-请用字符串或数值类型的值作为 v-for 的 key。
+`不要使用对象或数组之类的非基本类型值作为 v-for 的 key。请用字符串或数值类型的值。`
+
 
 [VueAPI-key](https://cn.vuejs.org/v2/api/#key)
 ```html
@@ -988,6 +991,7 @@ function sameVnode (a, b) {
     )
   )
 }
+// isSameNode为false的话，直接销毁旧的 vnode，渲染新的 vnode
 ```
 
 * 总结： 
@@ -1001,14 +1005,62 @@ key是给每一个vnode的唯一id,可以依靠key,更准确, 更快的拿到old
 利用key的唯一性生成map对象来获取对应节点，比遍历方式更快。 
 
 
-* 为什么某些情况(增删改)不能用 index 作为 key  
-操作数据更新时有bug，如删除某项时，删除了另一项
-
+### 为什么某些情况(增删改)不能用 index 作为 key  
 [Vue2.0 v-for 中 :key 到底有什么用？](https://www.zhihu.com/question/61064119/answer/766607894)
 
 [为什么 Vue 中不要用 index 作为 key？（diff 算法详解）](https://juejin.im/post/5e8694b75188257372503722)
 
+在删除子节点的场景下还会造成严重的错误
+```html
+<body>
+  <div id="app">
+    <ul>
+      <li v-for="(value, index) in arr" :key="index">
+        <test />
+      </li>
+    </ul>
+    <button @click="handleDelete">delete</button>
+  </div>
+  </div>
+</body>
+<script>
+  new Vue({
+    name: "App",
+    el: '#app',
+    data() {
+      return {
+        arr: [1, 2, 3]
+      };
+    },
+    methods: {
+      handleDelete() {
+        this.arr.splice(0, 1);
+      }
+    },
+    components: {
+      test: {
+        template: "<li>{{Math.random()}}</li>"
+      }
+    }
+  })
+</script>
+
+```
+第一个 vnode 被删除了，但是对于 Vue 来说，它是感知不到子组件里面到底是什么样的实现（它不会深入子组件去对比文本内容），那么这时候 Vue 会怎么 patch 呢？
+由于对应的 key使用了 index导致的错乱，它会把
+
+1. 原来的第一个节点text: 1直接复用。
+2. 原来的第二个节点text: 2直接复用。
+3. 然后发现新节点里少了一个，直接把多出来的第三个节点text: 3 丢掉。
+
+至此为止，我们本应该把 text: 1节点删掉，然后text: 2、text: 3 节点复用，就变成了错误的把 text: 3 节点给删掉了。
+
+
+
+
 为了标识独有dom，key值一般我们取类似id这种唯一且 不变的变量，如果仅为了区分dom，元素不会频繁更新, 则可使用index索引
+
+
 
 
 # <a name="虚拟DOM">虚拟 DOM</a>[![bakTop](/img/backward.png)](#top)  

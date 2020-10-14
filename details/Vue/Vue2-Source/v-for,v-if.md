@@ -22,3 +22,4 @@ export function genElement (el: ASTElement, state: CodegenState): string {
 ```
 
 源码可知，vue会先执行 v-for，再根据v-for的返回值去处理 v-if，因此无论如何 for循环的列表都会渲染，会造成性能浪费
+

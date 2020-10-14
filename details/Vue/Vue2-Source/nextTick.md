@@ -23,13 +23,15 @@ nextTick主要使用了宏任务和微任务。根据执行环境分别尝试采
 ### 源码
 源码路径：src\core\util\next-tick.js
 ```js
-const callbacks = []
-let pending = false
+const callbacks = [] //存放需要异步执行的函数队列
+let pending = false // 标记是否已经命令callbacks在下个tick全部执行，防止多次调用。
 
 function flushCallbacks () {
   pending = false
   const copies = callbacks.slice(0) //一层深拷贝
   callbacks.length = 0 // 清空数组
+  // 以上代码是为了在nextTick的方法里再次调用nextTick，能够新开一个异步队列
+
   for (let i = 0; i < copies.length; i++) {
     copies[i]()
   }
@@ -164,8 +166,9 @@ let callbacks = []
 let pending = false
 function flushCallbacks() {
   pending = false
-  callbacks.forEach(fn => fn())
+  let copies = callbacks.slice(0)
   callbacks.length = 0
+  copies.forEach(fn => fn())
 }
 
 
@@ -181,7 +184,11 @@ function nextTick(fn){
 // 第一次调用 then方法已经被调用了 但是 flushCallbacks 还没执行
 nextTick(() => console.log(1))
 // callbacks里push这个函数
-nextTick(() => console.log(2))
+nextTick(() => {
+  console.log(2)
+  nextTick(() => console.log(0))
+
+})
 // callbacks里push这个函数
 nextTick(() => console.log(3))
 
