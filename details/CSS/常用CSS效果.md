@@ -162,3 +162,61 @@ img {
 }
 ```
 
+
+## 条纹背景
+```css
+{
+  height: 200px;
+  background: linear-gradient(45deg, #fb3 25%, #58a 0, #58a 50%, #fb3 0, #fb3 75%, #58a 0);
+  background-size: 30px 30px;
+}
+
+或
+{
+  height: 200px;
+  background: repeating-linear-gradient(60deg, #fb3 0, #fb3 15px, #58a 0, #58a 30px);
+}
+```
+
+## 方格背景
+```css
+.square-bg {
+  width: 300px;
+  height: 300px;
+  background-image: linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%),
+                    linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%);
+  background-position: 0 0, 20px 20px;
+  background-size: 40px 40px;
+}
+```
+![](/img/CSS/square-bg6.png)
+
+## 网格
+
+```css
+.grid-bg{
+  width: 300px;
+  height: 300px;
+  background: #58a;
+  background-image: linear-gradient(white 1px, transparent 0),
+                    linear-gradient(to right, white 1px, transparent 0);
+  background-size: 30px 30px;
+}
+```
+![](/img/CSS/grid-bg.png)
+
+## 切角
+```css
+.cut-corner{
+  height: 300px;
+  background:
+    radial-gradient(circle at top left, transparent 15px, red 0) top left,
+    radial-gradient(circle at top right, transparent 15px,red 0) top right,
+    radial-gradient(circle at bottom right, transparent 15px,red 0) bottom right,
+    radial-gradient(circle at bottom left, transparent 15px,red 0) bottom left;
+  background-size: 50% 50%;
+  background-repeat: no-repeat;
+}
+```
+![](/img/CSS/cut-corner.png)
+

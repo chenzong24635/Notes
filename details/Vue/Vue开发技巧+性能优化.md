@@ -1017,6 +1017,7 @@ mounted() {
 },
 beforeDestroy() {
   clearTimeout(this.timer);
+  this.timer = null
 }
 ```
 
@@ -1030,6 +1031,7 @@ mounted() {
   // 通过$once监听beforeDestroy钩子，清除定时器
   this.$once('hook:beforeDestroy', () => {
     clearTimeout(timer);
+    timer = null
   })
 },
 ```

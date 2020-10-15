@@ -1205,24 +1205,12 @@ radial-gradient(shape size at position, color1 range,...colorn range)
 [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/conic-gradient)
 
 ### repeating-linear-gradient()，repeating-radial-gradient()重复渐变
-
-
-### 应用
-* 描绘彩带：
-  >
-      repeating-linear-gradient(90deg, red,red 40px, blue 40px,blue 80px)
-
-* 描绘方格背景: 
-  >
-      <div class="square-bg"></div>
-      .square-bg {
-        width: 500px;
-        height: 300px;
-        background-image: linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%),
-          linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%);
-        background-position: 0 0, 20px 20px;
-        background-size: 40px 40px;
-      }
+```css
+{
+  height: 200px;
+  background: repeating-linear-gradient(90deg, #fb3,#fb3 40px,  #58a 40px, #58a 80px);
+}
+```
 
 ### 兼容
 带有私有前缀的不加to,at，方向就是起始点

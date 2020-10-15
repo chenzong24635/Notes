@@ -67,6 +67,7 @@ export default class Watcher {
     if (typeof expOrFn === 'function') {
       this.getter = expOrFn
     } else {
+      // 自定义的 watch的expOrFn应该是个key 或者 'a.b.c'这样的访问路径
       this.getter = parsePath(expOrFn)
       if (!this.getter) {
         this.getter = noop
@@ -270,8 +271,13 @@ watcher 的概念，它的核心概念是 get 求值，和 update 更新。
 * 然后 get 求值的过程中，会读取到响应式属性，由于Dep.target存在那么响应式属性的 dep 就会收集到这个 watcher 作为依赖（dep.depend()）。
 * 下次响应式属性更新了，就会从 dep 中找出它收集到的 watcher，触发 watcher.update() 去更新。
 
+watcher有三种类型
+* 渲染watcher
+* 用户定义的 watch（$watch）
+* computed watcher
 
-### 用户自定义 watcher
+
+## 用户自定义 watch
 相当于vm.$watch
 
 ```js
@@ -289,9 +295,23 @@ export function initState (vm: Component) {
 ```js
 // src\core\instance\state.js
 function initWatch (vm: Component, watch: Object) {
+  // 遍历用户定义的watch
   for (const key in watch) {
     const handler = watch[key]
+    // 如果watch是数组(watch监听属性变化时，可以执行多个方法)
     if (Array.isArray(handler)) {
+      /* 例
+        watch: {
+          name: [ // name改变时，执行了三个方法
+            'sayName1',
+            function(newVal, oldVal) {},
+            {
+              handler: 'sayName3',
+              immediate: true
+            }
+          ]
+        },
+      */
       for (let i = 0; i < handler.length; i++) {
         createWatcher(vm, key, handler[i])
       }
@@ -360,6 +380,7 @@ export function stateMixin (Vue: Class<Component>) {
     const watcher = new Watcher(vm, expOrFn, cb, options)
     if (options.immediate) { // 立即执行该watch
       try {
+        // handler函数
         cb.call(vm, watcher.value)
       } catch (error) {
         handleError(error, vm, `callback for immediate watcher "${watcher.expression}"`)
@@ -419,8 +440,8 @@ function _traverse (val: any, seen: SimpleSet) {
 ```
 
 
-## computed
-computed 内部实现了一个惰性(lazy: true)的 watcher,其内部通过 dirty 属性标记计算属性是否需要重新求值（为true时，表示这个数据是脏数据，需要重新求值）。
+## computed的watcher
+computed 内部实现了一个惰性(lazy: true)的 watcher,其内部通过 dirty（用于缓存） 属性标记计算属性是否需要重新求值（为true时，表示这个数据是脏数据，需要重新求值）。
 
 
 * 响应式的值 更新
@@ -428,8 +449,8 @@ computed 内部实现了一个惰性(lazy: true)的 watcher,其内部通过 dirt
 * `computed watcher` 把 dirty 设置为 true
 * 视图渲染读取到 `computed` 的值，由于 dirty 为true 所以 `computed watcher` 重新求值。
 
-### 用户自定义computed
-Vue 会对 options 中的每个 computed 属性也用 watcher 去包装起来，它的 get 函数显然就是要执行用户定义的求值函数
+
+Vue 会对 options 中的每个 computed 属性也用 watcher 去包装起来，它的 get 函数显然就是要执行用户定义的求值函数,可以称作 `计算 watcher`
 ```js
 // src\core\instance\state.js
 export function initState (vm: Component) {
@@ -442,6 +463,10 @@ export function initState (vm: Component) {
 ```js
 // src\core\instance\state.js
 const computedWatcherOptions = { lazy: true }
+/* 
+  vm: vue实例
+  computed： 用户定义的computed
+ */
 function initComputed (vm: Component, computed: Object) {
   // 定义了一个空的对象，用来存放所有计算属性相关的 watcher
   const watchers = vm._computedWatchers = Object.create(null)
@@ -470,7 +495,9 @@ function initComputed (vm: Component, computed: Object) {
   }
 }
 ```
-首先定义了一个空的对象watchers，用来存放所有计算属性相关的 watcher，后文我们会把它叫做 计算watcher。
+首先定义了一个空的对象watchers，用来存放所有计算属性相关的 watcher，后文我们会把它叫做 `计算watcher`。
+
+
 
 然后循环为每个 computed 属性生成了一个 计算watcher。
 
@@ -484,9 +511,18 @@ function initComputed (vm: Component, computed: Object) {
   value: undefined
 }
 ```
+
+Watcher构造函数里有这么一段，
+```js
+// 惰性求值
+this.value = this.lazy
+  ? undefined
+  : this.get()
+```
+
 可以看到它的 value 刚开始是 undefined，lazy 是 true，说明它的值是惰性计算的，只有到真正在模板里去读取它的值后才会计算
 
-dirty 属性是缓存的关键
+`而dirty 属性是缓存的关键`
 
 新建一个新的computed时会触发defineComputed方法
 ```js
@@ -541,7 +577,7 @@ function createComputedGetter (key) {
       // 数据是否需要更新
       if (watcher.dirty) {
         // 更新数据
-        watcher.evaluate()
+        watcher.evaluate() // 专为计算watcher设计的求值函数
       }
       // 执行依赖收集
       if (Dep.target) {

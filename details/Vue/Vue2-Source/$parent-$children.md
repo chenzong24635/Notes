@@ -1,8 +1,8 @@
 
 ```js
-// vdom/create-component.js
+// src\core\vdom\create-component.js
 
-// 渲染是先渲染父组件，再渲染子组件
+// 渲染是先渲染父组件，再渲染子组件(挂载是先挂载子组件，再挂载父组件)
 // 因此子组件渲染时，可以拿到父组件实例
 export function createComponentInstanceForVnode (
   vnode: any,
@@ -18,11 +18,11 @@ export function createComponentInstanceForVnode (
 }
 
 
-//core/instance/lifecycle.js
+// src\core\instance\lifecycle.js
+// 在 beforeCreate 钩子前调用
 export function initLifecycle (vm: Component) {
   const options = vm.$options
 
-  // locate first non-abstract parent
   let parent = options.parent
   // 查找第一个非抽象的父组件(抽象组件如:keep-alive)
   if (parent && !options.abstract) {

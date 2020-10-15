@@ -271,7 +271,20 @@ Loaders是Webpack最重要的功能之一，通过使用不同的Loader，Webpac
 Loaders的配置:
 * test：用于匹配处理文件的扩展名的表达式，这个选项是必须进行配置的；
 * use：loader名称，就是你要使用模块的名称，这个选项也必须进行配置，否则报错；
-* include/exclude:手动添加必须处理的文件（文件夹）或屏蔽不需要处理的文件（文件夹）（可选）；
+  ```js
+  use:[
+    // 没参数
+    'thread-loader',
+    // 有参数
+    {
+      loader:'babel-loader',
+      options:{
+        presets:['@babel/preset-env']
+      }
+    }
+  ]
+  ```
+* include/exclude:只匹配哪些文件或排除哪些的文件（可选）；
 * query：为loaders提供额外的设置选项（可选）。
 
 `exclude一般用于排除 /node_modules/ ，缩小文件匹配范围,提高编译效率`

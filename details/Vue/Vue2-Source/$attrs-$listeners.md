@@ -1,6 +1,6 @@
 
 ```js
-// core/instance/render.js
+// src\core\instance\render.js
 
 // 把实例渲染成一个虚拟节点
 export function initRender (vm: Component) {

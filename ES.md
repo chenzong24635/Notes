@@ -4,7 +4,7 @@
 
 [ES6 入门教程](https://es6.ruanyifeng.com/)--阮一峰
 
-
+#
 ## let const
 let声明变量  
 const声明一个只读的常量, 一旦声明变量，就必须立即初始化，不能留到以后赋值。
@@ -67,3 +67,35 @@ ES6 内部使用严格相等运算符（===），判断一个位置是否有值�
 ## [Module](/details/JS/Module.md)
 
 
+# ES+
+[ES2018（ES9）的新特性](https://juejin.im/post/6844903622870827022)
+[ES6/ES7/ES8/ES9资料整理(个人整理)](https://juejin.im/post/6844903728944775181)
+[ES2019 / ES10有什么新功能?](https://juejin.im/post/6844903872469680141)
+[ES11](https://juejin.im/post/6883306672064987149)
+
+## ES11新增新特性
+* String 的 matchAll 方法
+* 动态导入语句 import()
+* import.meta
+* export * as ns from 'module'
+* Promise.allSettled 返回一个在所有给定的 promise 都已经 fulfilled 或 rejected 后的 promise 
+* 一种新的数据类型：BigInt
+* GlobalThis
+* Nullish coalescing Operator 新增了一个运算符 ??
+* Optional Chaining 新增可选链操作符 ?.
+
+## GlobalThis
+
+JS 中存在一个顶层对象，但是，顶层对象在各种实现里是不统一的。
+从不同的 JavaScript 环境中获取全局对象需要不同的语句。在 Web 中，可以通过 window、self 取到全局对象，但是在 Web Workers 中，只有 self 可以。在 Node.js 中，它们都无法获取，必须使用 global。
+
+在 globalThis 之前，我们这样去获取全局对象：
+```js
+var getGlobal = function () {
+    if (typeof self !== 'undefined') { return self; }
+    if (typeof window !== 'undefined') { return window; }
+    if (typeof global !== 'undefined') { return global; }
+    throw new Error('unable to locate global object');
+};
+
+```

@@ -5,6 +5,7 @@
 [TypeScript 入门教程](https://github.com/xcatliu/typescript-tutorial)
 
 * <a href="#了解">了解</a>
+* <a href="#操作符">操作符</a>
 * <a href="#类型">类型</a>
 * <a href="#非基础类型">非基础类型</a>
 * <a href="#泛型">泛型</a>
@@ -145,6 +146,38 @@ function genErrMsg (message: string, code: number | string, type?: ('demo1' | 'd
   return (message || `网络繁忙，请稍候再试`) + (code ? `(${code})` : ``)
 }
 genErrMsg() //编译出错时，会提示上面注释的信息
+```
+
+# <a name="操作符">操作符</a>
+* 属性或参数中使用 `?` ：表示该属性或参数为可选项
+```js
+let obj = {
+  num: 1
+}
+
+obj?.num
+```
+
+* 属性或参数中使用 `!`：表示强制解析（告诉typescript编译器，这里一定有值）
+```js
+let obj = {
+  num: 1
+}
+
+obj!.num
+```
+
+* 变量后使用 `!`：表示类型推断排除null、undefined
+```js
+const getNumber = (flag: boolean) => {
+  if (flag) {
+    return 1;
+  }
+};
+
+// 定义了一个变量a的类型为number，但是getNumber(true)经过typescript的类型推断，它可能返回1 | undefined
+// const a: number = getNumber(true);
+const a: number = getNumber(true)!;
 ```
 
 # <a name="类型">类型</a>
