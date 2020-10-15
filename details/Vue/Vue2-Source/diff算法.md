@@ -8,10 +8,9 @@ https://juejin.im/post/5eb3b77c6fb9a0436b221e2f
 diff 算法是一种通过同层的树节点进行比较的高效算法，避免了对树进行逐层搜索遍历，所以时间复杂度只有 O(n)。
 
 diff 算法有两个比较显著的特点：
-* 比较只会在同层级进行, 不会跨层级比较。
-* 在 diff 比较的过程中，循环从两边向中间收拢。
+* 比较只会在同层级进行, 不会跨层级比较（同级比较）。
+* 在 diff 比较的过程中，循环从两边向中间收拢（双指针）。
 
-只有当新旧children都为多个子节点时才需要用核心的Diff算法进行同层级比较。
 
 Vue2的核心Diff算法采用了双端比较的算法，同时从新旧children的两端开始进行比较，借助key值找到可复用的节点，再进行相关操作。相比React的Diff算法，同样情况下可以减少移动节点次数，减少不必要的性能损耗，更加的优雅。
 
@@ -45,6 +44,7 @@ patch比较新旧节点：
       vnode = ownerArray[index] = cloneVNode(vnode)
     }
 
+    // 复用老元素
     const elm = vnode.elm = oldVnode.elm
 
     if (isTrue(oldVnode.isAsyncPlaceholder)) {
@@ -82,8 +82,8 @@ patch比较新旧节点：
       i(oldVnode, vnode)
     }
 
-    const oldCh = oldVnode.children // 旧节点children
-    const ch = vnode.children // 新节点children
+    const oldCh = oldVnode.children // 旧节点的children
+    const ch = vnode.children // 新节点的children
     //执行属性，事件，样式等更新操作
     if (isDef(data) && isPatchable(vnode)) {
       for (i = 0; i < cbs.update.length; ++i) cbs.update[i](oldVnode, vnode)
@@ -174,6 +174,7 @@ function updateChildren (parentElm, oldCh, newCh, insertedVnodeQueue, removeOnly
     // 分别比较oldCh以及newCh的两头节点4种情况，为同一个VNode，则直接patchVnode
     else if (sameVnode(oldStartVnode, newStartVnode)) {
       //新旧children 的开头，相同
+      // 继续patch（更新属性和递归比较子节点等）
       patchVnode(oldStartVnode, newStartVnode, insertedVnodeQueue, newCh, newStartIdx)
       oldStartVnode = oldCh[++oldStartIdx]
       newStartVnode = newCh[++newStartIdx]
@@ -195,7 +196,11 @@ function updateChildren (parentElm, oldCh, newCh, insertedVnodeQueue, removeOnly
       oldEndVnode = oldCh[--oldEndIdx]
       newStartVnode = newCh[++newStartIdx]
     } else {
-      // 生成一个哈希表，key是旧VNode的key，值是该VNode在旧VNode中索引
+      // 生成一个映射表，key是 oldVNode 的key,index是索引
+      /* 
+        oldVNode [A,B,C,D] ==> {A: 0,B:1,C:2,D:3} 
+        vnode  [B,E,A,Q] 找到B，A可以复用
+       */
       if (isUndef(oldKeyToIdx)) oldKeyToIdx = createKeyToOldIdx(oldCh, oldStartIdx, oldEndIdx)
       // 如果newStartVnode存在key且这个key在oldVnode中能找到则返回这个节点的索引
       idxInOld = isDef(newStartVnode.key)

@@ -25,6 +25,7 @@ export function set(target: Array < any > | Object, key: any, val: any): any {
   // 获取Observer实例
   const ob = (target: any).__ob__
   
+  // 如果是Vue实例或根数据data，报错
   if (target._isVue || (ob && ob.vmCount)) {
     process.env.NODE_ENV !== 'production' && warn(
       'Avoid adding reactive properties to a Vue instance or its root $data ' +
