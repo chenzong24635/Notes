@@ -40,23 +40,18 @@
 * <a href="#slot">slot插槽</a>
 * <a href="#虚拟DOM">虚拟DOM</a>
 * <a href="#Vue模板编译过程">Vue模板编译过程</a>
-* <a href="#Vue.use,Vue.extend,Vue.component,mixins,extends">Vue.use,Vue.extend,Vue.component,mixins,extends</a>
+* <a href="#Vue.use,Vue.extend,Vue.component,mixins,extends">Vue.use,Vue.mixin,Vue.extend,Vue.component,mixins,extends等</a>
 
 * <a href="#keep-alive">keep-alive</a>
 * <a href="#路由vue-router">路由vue-router</a>
-  * <a href="#base">base</a>
-  * <a href="#this.$route 和 this.$router区别">this.$route 和 this.$router区别</a>
-  * <a href="#push(),replace(),go()">push(),replace(),go()</a>
-  * <a href="#页面跳转方法">页面跳转方法</a>
-  * <a href="#页面url参数获取">页面url参数获取</a>
-  * <a href="#导航守卫">导航守卫</a>
   * <a href="#多个路由共用一个组件操作">多个路由共用一个组件,组件如何重新渲染</a>
   * <a href="#单页面多路由区域操作">单页面多路由区域操作</a>
   * <a href="#刷新当前路由方法">刷新当前路由方法</a>
   * <a href="#mode">mode: hash | history区别</a>
   * <a href="#切换页面时自动滚动到顶部">切换页面时自动滚动到顶部</a>
   * <a href="#切换页面时设置title">切换页面时设置title</a>
-* <a href="#路由权限">路由权限</a>
+  * <a href="#路由权限">路由权限</a>
+
 * <a href="#vuex">vuex</a>
 * <a href="#vuex数据持久化">vuex数据持久化</a>
 
@@ -672,6 +667,7 @@ vue使用了函数劫持的方式，重写了数组部分方法，Vue将data中�
 如果数组中包含着引用类型，会对数组中的引用类型再次递归遍历进行监控。这样就实现了监测数组变化。
 
 [源码解析](/details/Vue/Vue2-Source/数组方法劫持重写.md)
+
 ### Vue 重写了以下数组的方法，能检测其变动
 * push()
 * pop()
@@ -680,7 +676,6 @@ vue使用了函数劫持的方式，重写了数组部分方法，Vue将data中�
 * splice()
 * sort()
 * reverse()
-
 
 ### Vue 不能检测以下数组的变动
 1. 当你利用索引直接设置一个数组项时，例如：vm.items[indexOfItem] = newValue  
@@ -706,6 +701,7 @@ vm.$set(vm.items, indexOfItem, newValue)
 
 vm.items.splice(indexOfItem, 1, newValue)
 ```
+$set对数组处理的核心方法就是通过splice
 
 解决第二类问题：
 ```js
@@ -1070,16 +1066,33 @@ key是给每一个vnode的唯一id,可以依靠key,更准确, 更快的拿到old
 [源码解析](\details\Vue\Vue2-Source\模板编译.md)
 
 
-# <a name="Vue.use,Vue.extend,Vue.component,mixins,extends">Vue.use,Vue.extend,Vue.component,mixins,extends等</a>[![bakTop](/img/backward.png)](#top) 
+# <a name="Vue.use,Vue.extend,Vue.component,mixins,extends">Vue.use,Vue.mixin,Vue.extend,Vue.component,mixins,extends等</a>[![bakTop](/img/backward.png)](#top) 
 ### [Vue.use](https://cn.vuejs.org/v2/api/#Vue-use)
 * 参数：{Object | Function} plugin  
-* 用法：  
-    安装 Vue.js 插件。如果插件是一个对象，必须提供 install 方法。如果插件是一个函数，它会被作为 install 方法。install 方法调用时，会将 Vue 作为参数传入。
+* 用法：
+  >
+      安装 Vue.js 插件。如果插件是一个对象，必须提供 install 方法。如果插件是一个函数，它会被作为 install 方法。install 方法调用时，会将 Vue 作为参数传入。
 
-    该方法需要在调用 new Vue() 之前被调用。
+      该方法需要在调用 new Vue() 之前被调用。
 
-    当 install 方法被同一个插件多次调用，插件将只会被安装一次。
+      当 install 方法被同一个插件多次调用，插件将只会被安装一次。
 
+### [Vue.mixin](https://cn.vuejs.org/v2/api/#Vue-mixin)
+* 参数：{Object} mixin
+* 用法：
+  >
+    全局注册一个混入，影响注册之后所有创建的每个 Vue 实例。插件作者可以使用混入，向组件注入自定义的行为。不推荐在应用代码中使用
+
+```js
+Vue.mixin({
+  created: function () {
+    var myOption = this.$options.myOption
+    if (myOption) {
+      console.log(myOption)
+    }
+  }
+})
+```
 
 ### [Vue.extend](https://cn.vuejs.org/v2/api/#Vue-extend)
 
@@ -1112,6 +1125,7 @@ Vue.component('Profile',Profile)
 //    Profile
 //  }
 ```
+[源码解析](/details\Vue\Vue2-Source\Vue.extend.md)
 
 ### [Vue.component](https://cn.vuejs.org/v2/api/#Vue-component)
 * 参数：  
@@ -1182,7 +1196,7 @@ mixin缺点：
 * 依赖问题
 * 数据来源不清晰
 
-### extends,mixins
+### extends,mixins区别
 extends,mixins都是为了拓展组件
 
 extends 只能单次扩展一个组件，优先于 mixins 调用
@@ -1297,10 +1311,20 @@ export default {
 <input type="text" v-focus>
 ```
 
+### 指令的钩子函数(均为可选)：
+生命周期
+* bind 只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置。
 
-更多用法
+* inserted 被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)。
+
+* update 所在组件的 VNode 更新时调用，但是可能发生在其子 VNode 更新之前。
+
+* componentUpdated 指令所在组件的 VNode 及其子 VNode 全部更新后调用。
+
+* unbind 只调用一次，指令与元素解绑时调用
+
 ```js
-Vue.directive('my-directive', {
+Vue.directive('directiveName', {
   bind(el, binding, vnode, oldVnode) {
     //做绑定的准备工作,添加时间监听
     console.log('指令的bind执行啦');
@@ -1326,20 +1350,6 @@ Vue.directive('my-directive', {
 ```
 
 
-### 指令的钩子函数(均为可选)：
-生命周期
-* bind 只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置。
-
-* inserted 被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)。
-
-* update 所在组件的 VNode 更新时调用，但是可能发生在其子 VNode 更新之前。
-
-* componentUpdated 指令所在组件的 VNode 及其子 VNode 全部更新后调用。
-
-* unbind 只调用一次，指令与元素解绑时调用
-
-
-
 指令参数
 * el：指令所绑定的元素，可以用来直接操作 DOM 。
 * binding：一个对象，包含以下属性：
@@ -1352,8 +1362,7 @@ Vue.directive('my-directive', {
 * vnode：Vue 编译生成的虚拟节点。
 * oldVnode：上一个虚拟节点，仅在 update 和 componentUpdated 钩子中可用。
 
-### 
-[loading组件-指令封装](./loading组件-指令封装.md)
+### [loading组件-指令封装](/details\Vue\loading组件-指令封装.md)
 
 
 # <a name="Vue的数据为什么频繁变化但只会更新一次">Vue采用异步渲染:Vue的数据为什么频繁变化但只会更新一次</a>[![bakTop](/img/backward.png)](#top)  
@@ -1368,7 +1377,6 @@ Vue 异步执行 DOM 更新。Vue在观察到数据变化时并不是直接更�
 # <a name="keep-alive">keep-alive</a>[![bakTop](/img/backward.png)](#top)  
 [keep-alive](https://cn.vuejs.org/v2/api/#keep-alive)
 
-[参考](https://juejin.im/post/5b2ce07ce51d45588a7dbf76)
 
 包裹动态组件时，会缓存不活动的组件实例，主要用于保留组件状态或避免重新渲染；被包裹在keep-alive中的组件的状态将会被保留
 
@@ -1388,7 +1396,7 @@ keep-alive 是 Vue 内置的一个组件，可以使被包含的组件保留状�
 如果使用了keep-alive对组件进行了缓存，组件不会销毁，destroyed不执行  
 当组件在keep-alive内被切换时组件的activated、deactivated这两个生命周期钩子函数会被执行
 
-include,exclude内容也可使用正则（include="/a|b/"）或数组形式（include="['a', 'b']"）
+include,exclude内容除了字符串形式(以逗号分隔)也可使用正则（include="/a|b/"）或数组形式（include="['a', 'b']"）
 ```
 
 
@@ -1424,255 +1432,68 @@ export default[
 </div>
 ```
 
+### 使用场景
+设计有A、B、C三个页面，
+B->C，缓存B，
+B->A，不缓存B
+
+[VUE缓存：动态keep-alive](https://juejin.im/post/6844903745042857997)
+
+### [keep-alive源码解析](/details\Vue\Vue2-Source\keep-alive.md)
 
 # <a name="路由vue-router">路由vue-router</a>[![bakTop](/img/backward.png)](#top)  
-https://router.vuejs.org/zh
+[Vue Router](/details\Vue\Vue-router.md)
 
-##  <a name="base">base</a>[![bakTop](/img/backward.png)](#top)  
+# 
 
-    {
-      path: '/a/:id?',  //访问路径, id表示路由参数 ，？表示路由参数可选（可传可不传)
-      name: 'a', //名称，vue页面可通过name调用,
-      component: A, //具体vue页面
-      meta: {title: '标题'},  //页面标题
-      children: [ //嵌套路由
-      ],
-      redirect: '/b', // { name: 'foo' } 重定向：当用户访问 /a时，URL 将会被替换成 /b，实际访问 /b 
-      //{ path: '/b', query: { param1: '1',params2: '2' }}传参
+## <a name="数据获取">[数据获取](https://router.vuejs.org/zh/guide/advanced/data-fetching.html)</a>[![bakTop](/img/backward.png)](#top)  
 
-      alias:'/b',  // 别名：/a 的别名是 /b，意味着，当用户访问 /b 时，URL 会保持为 /b，但是路由匹配则为 /a 
-        用在 path: '/',中，不起作用，如：
-        {
-          path: '/',
-          component: Hello,
-          alias:'/home'
-        }
+* 导航完成后获取数据
+```js
+created () {
+  // 组件创建完后获取数据，
+  // 此时 data 已经被 observed 了
+  this.fetchData()
+},
+watch: {
+  // 如果路由有变化，会再次执行该方法
+  '$route': 'fetchData'
+},
+```
+
+* 在导航完成前获取数据
+```js
+export default {
+  data () {
+    return {
+      post: null,
+      error: null
     }
-##  <a name="this.$route 和 this.$router区别">this.$route 和 this.$router区别</a>[![bakTop](/img/backward.png)](#top)  
-
-    this.$route  信息参数（query、prams）传参获取 --只读
-    this.$router 功能函数，go()，push()等方法调用 --只写
-
-##  <a name="push(),replace(),go()">push(),replace(),go()</a>[![bakTop](/img/backward.png)](#top)  
-1. push()
->
-    this.$router.push(location, onComplete?, onAbort?) 
-    this.$router.push({ name: 'user', params: { userId: '123' }})
-
-    等同于\<router-link :to="...">	
-    页面跳转，且会向 history 栈添加一个新的记录，当用户点击浏览器后退按钮时，则回到之前的 URL。  
-
-2. replace()
->
-    this.$router.replace(location, onComplete?, onAbort?) 
-    this.$router.replace({ name: 'user', params: { userId: '123' }})
-
-    等同于\<router-link :to="..." replace>  
-    页面跳转，不会向 history 添加新记录，而是替换掉当前的 history 记录。
-
-3. go()
->
-    this.$router.go(n) //参数n是一个整数，意思是在 history 记录中向前或者后退多少步，
-
-    this.$router.go(1)  等同于 history.forward()
-    this.$router.go(-1) 等同于 history.back()
-
-* resolve()
-\<router-link\>标签实现新窗口打开 添加属性 target="_blank" 
-```html
-<router-link target="_blank" to="/home">home</router-link>
-```
-
-编程式导航
-```js
-this.$routerr.resolve(location, current?, append?)
-
-seeShare(){
-  let routeUrl = this.$router.resolve({
-      path: "/home",
-      query: {id: 'a'}
-  });
-  window.open(routeUrl .href, '_blank');
-}
-```
-
-##  <a name="页面跳转方法">页面跳转方法</a>[![bakTop](/img/backward.png)](#top)  
-`如果提供了 path，params会被忽略，所以用params方式传参要用name来引入`
->
-
-    声明式 <router-link :to="...">
-           <router-link :to="{name:'',params:{}}">
-           <router-link :to="{path:'',query:{}}">
-
-    编程式 router.push(...)
-          router.push({name:'',params:{}})
-          router.push({path:'',query:{}})
-
-### 无参数：
-1. (:to动态绑定name 或则 path) 页面自动解析成path地址 
->
-    <router-link :to="{name:'RouterB'}">去B页面</router-link> 
-
-2. (to="path")，只能指定path值 
->
-    <router-link to="/RouterB">去B页面</router-link>  
-      
-### 传参:
-1. query
->
-    (query传参，参数通过url get方式拼接) --在浏览器地址栏中显示参数：?id=myid&name=myname
-
-    <router-link :to="{path:'/A', query: {name:'name1', title: 'title1'} }">去A页面</router-link>
-
-2. params传参
->
-    (params传参，参数通过路径[/001]形式拼接到url上，如果没有在路径配置种使用参数占位符，url不会拼接，直接展示是具体路由页面)：/myid/myname
-
-    <router-link :to="{name:'B', params: {name:'name2', title: 'title2'}}">去B页面</router-link>
-
-
-### 打开新页面
-声明式: 添加target="_blank"
-```html
-<router-link  target="_blank" to="/"></router-link>
-```
-
-编程式: $router.resolve 
-```js
-let routeData = this.$router.resolve({
-   name: "xxx",
-   params: {id: xxx},
-});
-window.open(routeData.href, '_blank');
-```
-
-##  <a name="页面url参数获取">页面url参数获取</a>[![bakTop](/img/backward.png)](#top)  
->
-    var param = this.$route.query; //query传参 获取方法
-    var param = this.$route.params; //params传参 获取方法
-
-## <a name="导航守卫">导航守卫</a>[![bakTop](/img/backward.png)](#top)  
-
-### 全局前置守卫:beforeEach
->
-    router = new Router({})
-    router.beforeEach((to, from, next)={
-      //to: 即将进入的路由
-      //from: 当前离开的路由
-          //to from 包含属性：
-          {
-            fullPath: ""
-            hash: ""
-            matched: []
-            meta: {}
-            name: null
-            params: {}
-            path: ""
-            query: {}
-          }
-      //next:
-          next(): 进行管道中的下一个钩子。如果全部钩子执行完了，则导航的状态就是 confirmed (确认的)。
-
-          next(false): 中断当前的导航。如果浏览器的 URL 改变了 (可能是用户手动或者浏览器后退按钮)，那么 URL 地址会重置到 from 路由对应的地址。
-
-          next('/') 或者 next({ path: '/' }): 跳转到一个不同的地址。当前的导航被中断，然后进行一个新的导航。你可以向 next 传递任意位置对象，且允许设置诸如 replace: true、name: 'home' 之类的选项以及任何用在 router-link 的 to prop 或 router.push 中的选项。
-
-          next(error): (2.4.0+) 如果传入 next 的参数是一个 Error 实例，则导航会被终止且该错误会被传递给 router.onError() 注册过的回调。
-
-`确保要调用 next 方法，否则钩子就不会被 resolved。`
-
-------
-
-* 判断页面是否需要登录、修改页面title
-1. beforeEach
->
-    router.beforeEach((to, from, next) => {
-      // 判断即将进入的页面是否需要登录
-      if (to.meta.requiresAuth) {
-        //获取token
-        let token = localStorage.getItem('accessToken')
-        //不存在跳到登录页，否则不变
-        if (!token) {
-          next('/login')
-        } else {
-          next()
-        }
+  },
+  // 路由进入前
+  beforeRouteEnter (to, from, next) {
+    // 调用接口
+    getPost(to.params.id, (err, post) => {
+      next(vm => vm.setData(err, post))
+    })
+  },
+  // 路由改变前，组件就已经渲染完了,逻辑稍稍不同
+  beforeRouteUpdate (to, from, next) {
+    this.post = null
+    getPost(to.params.id, (err, post) => {
+      this.setData(err, post)
+      next()
+    })
+  },
+  methods: {
+    setData (err, post) {
+      if (err) {
+        this.error = err.toString()
       } else {
-        next()
+        this.post = post
       }
-      if (to.meta.title) {
-        /* 路由发生变化修改页面title */
-        document.title = to.meta.title
-      }
-    })
-
-2. vue-wechat-title
-假如title需要读取文章的标题，每次都不一样
-
-安装
->
-
-    npm i -D vue-wechat-title
-    // 全局引入
-    import Vue from 'vue'
-    import Title from 'vue-wechat-title'
-
-    Vue.use(Title)
-    <template>
-      <!-- 使用 -->
-      <div id="app" v-wechat-title="$route.meta.title" img-set=" ">
-        <router-view/>
-      </div>
-    </template>
-
-
-    npm i -D vue-wechat-title
-    // 全局引入
-    import Vue from 'vue'
-    import Title from 'vue-wechat-title'
-
-    Vue.use(Title)
-    <template>
-      <!-- 使用 -->
-      <div id="app" v-wechat-title="$route.meta.title" img-set=" ">
-        <router-view/>
-      </div>
-    </template>
-
-
-### 全局解析守卫:beforeResolve
-与beforeEach 类似，区别是在导航被确认之前，同时在所有组件内守卫和异步路由组件被解析之后，解析守卫就被调用
-
-### 全局后置钩子 afterEach
-
-不会接受 next 函数也不会改变导航本身：
->
-    router.afterEach((to, from) => {
-      // ...
-    })
-
-### 组件内的守卫：beforeRouteEnter 、beforeRouteUpdate、beforeRouteLeave
-
-```js
-beforeRouteEnter (to, from, next) {
-  // 在渲染该组件的对应路由被 confirm 前调用
-  // 不！能！获取组件实例 `this`
-  // 因为当守卫执行前，组件实例还没被创建
-
-  //不过，你可以通过传一个回调给 next来访问组件实例。在导航被确认的时候执行回调，并且把组件实例作为回调方法的参数。
-  next(vm => {
-    // 通过 `vm` 访问组件实例
-    // `next 函数中 vm 回调不是同步执行，而是等到 mounted 执行完之后，才执行` 。
-  })
-},
-beforeRouteUpdate (to, from, next) {
-  // 在当前路由改变，但是该组件被复用时调用
-  // 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，
-  // 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
-  // 可以访问组件实例 `this`
-},
-beforeRouteLeave (to, from, next) {
-  // 导航离开该组件的对应路由时调用
+    }
+  }
 }
 ```
 
@@ -1688,9 +1509,10 @@ beforeRouteLeave (to, from, next) {
 ```js
 当路由变化时，watch里的路由监听函数都会被触发，可以在这个函数中对页面的数据进行重新加载的操作。
 watch:{
+  // "$route": getLists
   "$route":function(to,from){
     if (to.name === from.name && to.params.id !== from.params.id) {
-      //do something 
+      this.getLists()
     }
   }
 }
@@ -1701,19 +1523,20 @@ watch:{
 //设置id参数 判断是否相同
 beforeRouteUpdate (to, from, next) {
   if (to.name === from.name && to.params.id !== from.params.id) {
-    //do something 
+    this.getLists()
     next() 
   }
 }
 ```
 
-##  <a name="单页面多路由区域操作">单页面多路由区域操作</a>[![bakTop](/img/backward.png)](#top)  
+##  <a name="单页面多路由区域操作">命名视图：单页面多路由区域操作</a>[![bakTop](/img/backward.png)](#top)  
 router.js
 ```js
 export default new Router({
   routes: [
     {
       path: '/',
+      // 注意加 s
       components: {
         default:Hello,
         left:Hi1,
@@ -1721,6 +1544,7 @@ export default new Router({
       }
     },{
       path: '/Hi',
+      // 注意加 s
       components: {
         default:Hello,
         left:Hi2,
@@ -1751,10 +1575,31 @@ this.$router.go(0)
 location.reload() 
 ```
 
+* router-view上加上一个唯一的key
+
+简单的在 router-view上加上一个唯一的key，来保证路由切换时都会重新渲染触发钩子了,
+
+默认让key等于当时的时间戳，当切换当前路由的时候改变时间戳为现在的时间戳，同样也可以达到刷新路由的目的
+
+```html
+<router-view :key="key"></router-view>
+<script>
+export default{
+  computed: {
+    key() {
+      // 只要保证 key 唯一性就可以了，保证不同页面的 key 不相同
+      return this.$route.fullPath
+      // return this.$route.name !== undefined? this.$route.name + +new Date(): this.$route + +new Date()
+    }
+  }
+}
+</script>
+```
+
 * beforeRouteEnter 先进入空白页再在空白页跳转回到上一个页面，
 ```js
-// 要刷新的页面
-refresh () {
+// pageA需要 刷新时，调用该 refreshPage 方法跳转到refresh
+refreshPage () {
   this.$router.replace({
     path: '/refresh',
     query: {
@@ -1763,16 +1608,15 @@ refresh () {
   })
 }
 
-// 空白页 
-<>
+// refresh 空白页
 export default {
   beforeRouteEnter(to, from, next) {
-    next(vm => {//
+    // replace 路由重定向
+    next(vm => {
       vm.$router.replace(from.path)
     })
   }
 }
-</>
 ```
 
 * 用provide /inject组合实现
@@ -1820,114 +1664,10 @@ export default {
 </>
 ```
 
-* router-view上加上一个唯一的key
-简单的在 router-view上加上一个唯一的key，来保证路由切换时都会重新渲染触发钩子了,
-默认让key等于当时的时间戳，当切换当前路由的时候改变时间戳为现在的时间戳，同样也可以达到刷新路由的目的
-```js
-<router-view :key="key"></router-view>
 
-computed: {
-  key() {
-    // 只要保证 key 唯一性就可以了，保证不同页面的 key 不相同
-    return this.$route.fullPath
-    // return this.$route.name !== undefined? this.$route.name + +new Date(): this.$route + +new Date()
-  }
-}
-```
+##  <a name="切换页面时自动滚动到顶部">切换页面时自动滚动到顶部</a>[![bakTop](/img/backward.png)](#top) 
 
-
-##  <a name="mode">路由模式 hash | history区别</a>[![bakTop](/img/backward.png)](#top)  
-[参考](https://juejin.im/post/5cd8d609e51d456e7b372155#heading-9)
-
-### 什么是前端路由：  
-路由的概念来源于服务端，在服务端中路由描述的是 URL 与处理函数之间的映射关系。
-在 Web 前端单页应用 SPA(Single Page Application)中，路由描述的是 URL 与 UI 之间的映射关系，这种映射是单向的，即 URL 变化引起 UI 更新（无需刷新页面）。
-
-### vue-router 有 3 种路由模式：hash、history、abstract
-对应的源码如下所示：
-```js
-switch (mode) {
-  case 'history':
-    this.history = new HTML5History(this, options.base);
-    break;
-  case 'hash':
-    this.history = new HashHistory(this, options.base, this.fallback);
-    break;
-  case 'abstract':
-    this.history = new AbstractHistory(this, options.base);
-    break;
-  default:
-    if (process.env.NODE_ENV !== 'production') {
-      assert(false, `invalid mode: ${mode}`);
-    }
-}
-```
-
-### hash
-URL 中 hash (#) 及后面的那部分，常用作锚点在页面内进行导航，改变 URL 中的 hash 部分不会引起页面刷新
-
-比如这个 URL：http://www.abc.com/#/hello，hash 的值为#/hello。它的特点在于：hash 虽然出现在 URL 中，但不会被包括在 HTTP 请求中，对后端完全没有影响，因此改变 hash 不会重新加载页面。
-
-通过 `hashchange` 事件监听 URL 的变化，改变 URL 的方式只有这几种：通过浏览器前进后退改变 URL、通过\<a>标签改变 URL、通过window.location改变URL
-
-### history
-
-利用了H5 history的 `pushState()` 和 `replaceState()` 方法
-
-这两个方法应用于浏览器的历史记录栈，在当前已有的 back、forward、go 的基础之上，它们提供了对历史记录进行修改的功能。只是当它们执行修改时，虽然改变了当前的 URL，但浏览器不会立即向后端发送请求。
-
-history.pushState({ page: 1 }, "", "a.html");
-history.replaceState({ page: 1 }, "", "a.html");
-
-pushState() 需要三个参数: 一个状态对象, 一个标题 (目前被忽略), 和 (可选的) 一个URL. 让我们来解释下这三个参数详细内容：
-
-* 状态对象 — 是一个JavaScript对象，通过pushState () 创建新的历史记录条目。无论什么时候用户导航到新的状态，popstate事件就会被触发，且该事件的state属性包含该历史记录条目状态对象的副本。可以是能被序列化的任何东西。
-
-* 标题 — 在此处传一个空字符串应该可以安全的防范未来这个方法的更改。或者，你可以为跳转的state传递一个短标题。
-
-* URL — 该参数定义了新的历史URL记录。注意，调用 pushState() 后浏览器并不会立即加载这个URL，但可能会在稍后某些情况下加载这个URL，比如在用户重新打开浏览器时。新URL不必须为绝对路径。如果新URL是相对路径，那么它将被作为相对于当前URL处理。新URL必须与当前URL同源，否则 pushState() 会抛出一个异常。该参数是可选的，缺省为当前URL。
-
-popstate
->
-    当历史记录条目更改时，将触发popstate事件。如果被激活的历史记录条目是通过对history.pushState（）的调用创建的，或者受到对history.replaceState（）的调用的影响，popstate事件的state属性包含历史条目的状态对象的副本。
-
-    需要注意的是调用history.pushState()或history.replaceState()不会触发popstate事件。只有在做出浏览器动作时，才会触发该事件，如用户点击浏览器的回退按钮（或者在Javascript代码中调用history.back()）
-
-    触发浏览器回退按钮
-    window.addEventListener('popstate', ()=>{
-      console.log(location.href)
-    })
-
-###  abstract
-支持所有 JavaScript 运行环境，如 Node.js 服务器端。如果发现没有浏览器的 API，路由会自动强制进入这个模式.
-
-### mode:history缺点
-
-* 打包存放路径问题
->
-    mode: 'history',
-    base: '/dist/' 
-
-* 刷新问题
->
-
-    不怕前进，不怕后退，就怕刷新（f5），（如果后端没有准备的话）,因为刷新是实实在在地去请求服务器的。
-    在hash模式下，前端路由修改的是##中的信息，而浏览器请求时是不带它玩的，所以没有问题.
-    但是在history下，你可以自由的修改path，当刷新时，如果服务器中没有相应的响应或者资源，页面会404。
-
-
-### 404的配置  
->
-    {
-      path:'*',
-      component:Error
-    }
-
-* abstract 
-
- 支持所有 JavaScript 运行环境，如 Node.js 服务器端。如果发现没有浏览器的 API，路由会自动强制进入这个模式.
-
-##  <a name="切换页面时自动滚动到顶部">切换页面时自动滚动到顶部</a>[![bakTop](/img/backward.png)](#top)  
+* scrollBehavior //只在支持 history.pushState 的浏览器中可用
 ```js
 //路由跳转后页面回到顶部
 new Router({
@@ -1939,16 +1679,16 @@ new Router({
 new Router({
   routes: [...],
   scrollBehavior (to, from, savedPosition) {
-    // savedPosition当且仅当在浏览器前进后退按钮触发时才可用
 
-    if (to.hash) { //模拟“滚动到锚点”的行为：
+    //模拟“滚动到锚点”的行为：
+    if (to.hash) {
       return {
         selector: to.hash
       }
     }
-
+    
+    // 当且仅当 popstate 导航 (通过浏览器的 前进/后退 按钮触发) 时才可用。  { x: number, y: number }
     if (savedPosition) {
-      //如果返回savedPosition,那么在点击后退按钮时就会表现的像原生浏览器一样，返回的页面会滚动过到之前按钮点击跳转的位��
       return savedPosition
     } else {
       if (from.meta.keepAlive) { //如果 keepAlive 的话，保存停留的位置
@@ -1958,7 +1698,18 @@ new Router({
     }
   }
 })
+
+
+  // 异步滚动 2.8.0 新增
+  scrollBehavior (to, from, savedPosition) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve({ x: 0, y: 0 })
+      }, 500)
+    })
+  }
 ```
+
 其他滚动： 
 * window.scrollTo(0, 0)  
 ```js
@@ -1978,8 +1729,6 @@ const scrollToTop = () => {
   }
 }
 ```
-// 调用
-scrollToTop()
 
 
 * document.documentElement.scrollTop = 0
@@ -1994,7 +1743,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   window.scrollTo(0, 0)//切换页面时滚动条自动滚动到顶部
 
-  if (to.meta.title) {//判断是���有标题
+  if (to.meta.title) {//判断是否设置标题
     //设置页面title
     document.title = to.meta.title
   }
@@ -2006,7 +1755,7 @@ export default router
 ```
 
 # <a name="路由权限">路由权限</a>[![bakTop](/img/backward.png)](#top)  
-https://juejin.im/post/5b5bfd5b6fb9a04fdd7d687a
+[路由权限](/details\Vue\Vue路由权限.md)
 
 
 # <a name="vuex">vuex</a>[![bakTop](/img/backward.png)](#top)  

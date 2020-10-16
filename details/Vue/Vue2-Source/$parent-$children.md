@@ -2,8 +2,7 @@
 ```js
 // src\core\vdom\create-component.js
 
-// 渲染是先渲染父组件，再渲染子组件(挂载是先挂载子组件，再挂载父组件)
-// 因此子组件渲染时，可以拿到父组件实例
+// 父子组件渲染顺序：父beforeCreate->父created->父beforeMount->子beforeCreate->子created->子beforeMount->子mounted->父mounted
 export function createComponentInstanceForVnode (
   vnode: any,
   parent: any,
