@@ -1,4 +1,5 @@
 * <a href="#vue项目性能优化">Vue开发技巧+性能优化</a>
+  * <a href="#组件中name选项作用">组件中name选项作用</a>
   * <a href="#v-if和v-show的区别">v-if和v-show的区别</a>
   * <a href="#v-for遍历避免同时使用v-if">v-for遍历避免同时使用v-if"</a>
   * <a href="#使用render函数优化代码">使用render函数优化代码</a>
@@ -37,6 +38,14 @@
 
 
 [Vue 项目性能优化 — 实践指南（网上最全 / 详细）](https://juejin.im/post/5d548b83f265da03ab42471d)
+
+## <a name="组件中name选项作用">组件中name选项作用，</a>[![bakTop](/img/backward.png)](#top)  
+name选项有什么作用，为什么要写？
+* 解析时可以通过name标识该组件，使用时通过name查找对应组件
+* 跨组件通信
+* 递归组件
+* keep-alive缓存组件
+
 
 ## <a name="v-if和v-show的区别">v-if和v-show的区别</a>[![bakTop](/img/backward.png)](#top)  
 [vue官网解释](https://cn.vuejs.org/v2/guide/conditional.html#v-if-vs-v-show)

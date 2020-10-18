@@ -712,31 +712,42 @@ vm.items.splice(newLength)
 
 [风格指南](https://cn.vuejs.org/v2/style-guide/#%E7%BB%84%E4%BB%B6%E6%95%B0%E6%8D%AE%E5%BF%85%E8%A6%81)
 
+组件使用时会进行实例化操作，同一个组件被复用多次，会创建多个实例。
+这些实例用的是同一个构造函数，如果 data 是一个对象的话。那么所有组件都共享了同一个对象。
 
-同一个组件被复用多次，会创建多个实例。这些实例用的是同一个构造函数，如果 data 是一个对象的话。那么所有组件都共享了同一个对象。
-
-此时如果在某个组件中对 data 进行修改，会导致其他组件里的 data 也被污染。 而如果使用函数的话，每个组件里的 data 会有单独的引用，这个问题就可以避免了。
+此时如果在某个组件中对 data 进行修改，会导致其他组件里的 data 也被污染。
+而如果使用函数的话，每个组件里的 data 会有单独的引用，避免多个组件间数据影响。
 
 为了保证组件的数据独立性要求每个组件必须通过 data 函数返回一个对象作为组件的状态。
 
-[例](https://juejin.im/post/6844904118704668685#heading-8)
-```html
-<template>
-  <div>
-    <Counter id="a" />
-    <Counter id="b" />
-  </div>
-
-</template>
-<script>
-var Counter = {
-  template: `<span @click="count++"></span>`
-  data: {
-    count: 0
-  }
+```js
+function Vue(options) {
+  this.data1 = typeof options.data1 === 'function' ? options.data1() : options.data1
+  this.data2 = typeof options.data2 === 'function' ? options.data2() : options.data2
 }
-</script>
+let data1 = {
+  num: 1
+}
+let data2 = () => ({
+  num: 1
+})
+let vm1 = new Vue({
+  data1,
+  data2
+})
+let vm2 = new Vue({
+  data1,
+  data2
+})
+
+// 仅改变 vm1 的data num值
+vm1.data1.num++
+vm1.data2.num++
+console.log(vm1.data1.num, vm2.data1.num) // 2 2
+console.log(vm1.data2.num, vm2.data2.num) // 2 1
 ```
+发现data为对象时，vm1,vm2实例中的数据是同步的，因为其引用同一地址；
+data为函数形式时，实例数据互补干扰
 
 从原理出发，先看看它被[编译成什么样](https://template-explorer.vuejs.org/#%3Cdiv%3E%0A%20%3CCounter%20%2F%3E%0A%20%3CCounter%20%2F%3E%0A%3C%2Fdiv%3E)的 render 函数：
 ```js
@@ -778,7 +789,7 @@ var Counter = {
 [表单修饰符](https://cn.vuejs.org/v2/guide/forms.html#%E4%BF%AE%E9%A5%B0%E7%AC%A6)
 * .lazy v-model在input的 change 事件后同步
 * .number 输入值转为数值类型
-* .trim 过滤输入框的首尾空白符
+* .trim 过滤输入框的首尾空白符  
 
 [.sync 修饰符](https://cn.vuejs.org/v2/guide/components-custom-events.html#sync-%E4%BF%AE%E9%A5%B0%E7%AC%A6)
 
@@ -1077,6 +1088,8 @@ key是给每一个vnode的唯一id,可以依靠key,更准确, 更快的拿到old
 
       当 install 方法被同一个插件多次调用，插件将只会被安装一次。
 
+
+
 ### [Vue.mixin](https://cn.vuejs.org/v2/api/#Vue-mixin)
 * 参数：{Object} mixin
 * 用法：
@@ -1278,6 +1291,13 @@ mixins 可多个， 钩子按照传入顺序依次调用
 执行顺序： extends > mixins > 实例自身
 
 
+### 源码解析
+[Vue.mixin](/details\Vue\Vue2-Source\Vue.mixin.md)
+[Vue.use](/details\Vue\Vue2-Source\Vue.use.md)
+[Vue.extend](/details\Vue\Vue2-Source\Vue.extend.md)
+[Vue.component](/details\Vue\Vue2-Source\Vue.component.md)
+
+
 # <a name="Vue.directive">Vue.directive</a>[![bakTop](/img/backward.png)](#top)  
 [自定义指令](https://doc.vue-js.com/v2/guide/custom-directive.html)
 
@@ -1377,7 +1397,7 @@ Vue 异步执行 DOM 更新。Vue在观察到数据变化时并不是直接更�
 # <a name="keep-alive">keep-alive</a>[![bakTop](/img/backward.png)](#top)  
 [keep-alive](https://cn.vuejs.org/v2/api/#keep-alive)
 
-
+### 用法 
 包裹动态组件时，会缓存不活动的组件实例，主要用于保留组件状态或避免重新渲染；被包裹在keep-alive中的组件的状态将会被保留
 
 keep-alive 是 Vue 内置的一个组件，可以使被包含的组件保留状态，避免重新渲染 ，其有以下特性：
@@ -1439,7 +1459,10 @@ B->A，不缓存B
 
 [VUE缓存：动态keep-alive](https://juejin.im/post/6844903745042857997)
 
-### [keep-alive源码解析](/details\Vue\Vue2-Source\keep-alive.md)
+### keep-alive源码解析
+主要是缓存，采用LRU算法（最近最久使用法）
+
+[keep-alive源码解析](/details\Vue\Vue2-Source\keep-alive.md)
 
 # <a name="路由vue-router">路由vue-router</a>[![bakTop](/img/backward.png)](#top)  
 [Vue Router](/details\Vue\Vue-router.md)

@@ -1,7 +1,7 @@
 
 # loaders
 
-## <a name="加载CSS">加载CSS: style-loader css-loader less-loader...</a>
+## <a name="加载CSS">加载CSS: style-loader css-loader less-loader sass-loader...</a>
 
 npm install -D style-loader // 通过注入\<style\>标签将css添加到DOM
 npm install -D css-loader // 解析 @import 和 url()的css文件

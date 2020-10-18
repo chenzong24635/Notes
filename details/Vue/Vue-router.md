@@ -223,11 +223,25 @@ onComplete 和 onAbort 回调作为第二个和第三个参数。
 
 
 ## <a name="导航守卫">导航守卫</a>[![bakTop](/img/backward.png)](#top)  
-完整的导航解析流程
+路由钩子函数种类：
+* 全局守卫
+  * beforeEach
+  * beforeResolve(2.5.0 新增)
+  * afterEach
+
+* 路由守卫
+  * beforeEnter
+
+* 组件守卫
+  * beforeRouteEnter
+  * beforeRouteUpdate
+  * beforeRouteLeave
+
+### 完整的导航解析流程
 * 导航被触发。
 * 在失活的组件里调用 beforeRouteLeave 守卫。
 * 调用全局的 beforeEach 守卫。
-* 在重用的组件里调用 beforeRouteUpdate 守卫 (2.2+)。
+* 在重用的组件(即只改变路由参数，路径不变)里调用 beforeRouteUpdate 守卫 (2.2+)。
 * 在路由配置里调用 beforeEnter。
 * 解析异步路由组件。
 * 在被激活的组件里调用 beforeRouteEnter。
@@ -301,13 +315,24 @@ router.beforeEach((to, from, next) => {
 2.5.0 新增  
 与beforeEach 类似，区别是在导航被确认之前，同时在所有组件内守卫和异步路由组件被解析之后，解析守卫就被调用
 
-### 全局后置钩子 afterEach
+### 全局后置守卫 afterEach
 
 不会接受 next 函数也不会改变导航本身：
->
-    router.afterEach((to, from) => {
-      // ...
-    })
+```js
+router.afterEach((to, from) => {
+  // ...
+})
+
+```
+
+### 路由守卫：
+```js
+{
+  name: 'home',
+  path: '/home',
+  beforeEnter: (to, from, next) => {},
+}
+```
 
 ### 组件内的守卫：beforeRouteEnter 、beforeRouteUpdate (2.2 新增)、beforeRouteLeave
 

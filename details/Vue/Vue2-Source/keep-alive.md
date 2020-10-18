@@ -46,7 +46,7 @@ export default {
   render () {
     // 获取插槽默认内容
     const slot = this.$slots.default
-    // 据插槽获取第一个子节点
+    // 只获取插槽第一个子组件
     const vnode: VNode = getFirstComponentChild(slot)
     /* 例
       <keep-alive>
@@ -104,6 +104,7 @@ export default {
           pruneCacheEntry(cache, keys[0], keys, this._vnode)
         }
       }
+      // 标记走了缓存
       // 渲染和执行被包裹组件的钩子函数需要用到
       vnode.data.keepAlive = true
     }

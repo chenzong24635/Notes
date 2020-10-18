@@ -299,10 +299,10 @@ npm i git //git安装
 >
 
     git config --global user.name "chenzong24635"
-    git config --global user.email ""chenzong24635@163.com"
+    git config --global user.email "chenzong24635@163.com"
     删除.ssh文件夹下的known_hosts 
     git Bash下生成ssh，如不设密码，直接回车到底 
-    $ ssh-keygen -t rsa -C "chenzong24635@163.com"
+    ssh-keygen -t rsa -C "chenzong24635@163.com"
     拷贝公钥id_rsa.pub到托管服务（github, gitee）的SSH 公钥设置中 
     git Bash执行（管理员身份） 
     ssh -T git@github.com 或 ssh -T git@gitee.com 

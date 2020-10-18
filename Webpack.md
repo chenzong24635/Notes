@@ -194,7 +194,13 @@ devtool类型:string | false // 在development模式中，默认开启，
 
 
 ![soruce-map](/img/soruce-map.png)
-
+|关键字|含义|
+|:--|:--
+|eval|使用eval包裹的模块代码
+|source-map|产生.map文件
+|inline|将.mpa文件作为DataURI嵌入，不产生单独.map文件
+|cheap|不包含列信息，也不包含loader的sourceMap
+|module|包含loader的sourceMap（如：jsx to js，babel的sourcemap），否则无法定义源文件
 
 Development推荐使用：
 * eval
