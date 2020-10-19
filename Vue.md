@@ -3,13 +3,12 @@
 # 
 [Vue官网](http://doc.vue-js.com/v2/guide/)
 
-[Vue.js 技术揭秘](https://ustbhuangyi.github.io/vue-analysis/prepare/flow.html)
 
 [Vue 插件-组件](/details/Vue/插件-组件.md)
 
 
 [Vue开发技巧+性能优化](/details/Vue/Vue开发技巧+性能优化.md)
-<!-- [Vue源码阅读 - 依赖收集原理](https://segmentfault.com/a/1190000015562213) -->
+
 
 # 
 
@@ -34,6 +33,7 @@
 * <a href="#解决对象新增属性不能响应的问题"> vm.$set() 解决对象新增属性不能响应的问题</a>
 * <a href="#Vue检测数组的变动">Vue检测数组的变动</a>
 * <a href="#Vue的数据为什么频繁变化但只会更新一次">Vue的数据为什么频繁变化但只会更新一次</a>
+* <a href="#forceUpdate">forceUpdate</a> 
 * <a href="#nextTick">nextTick</a> 
 * <a href="#组件中key作用">组件中key作用</a>
 * <a href="#组件中 data 为什么是一个函数">组件中 data 为什么是一个函数</a>
@@ -194,7 +194,7 @@ MVVM优点:
 ## SSR(Server-Side Rendering) 服务器端渲染 
 [Vue SSR 指南](https://ssr.vuejs.org/zh/)
 [Vue SSR 踩坑之旅](https://juejin.im/post/5cb6c36e6fb9a068af37aa35)
- 
+
 在客户端将标签渲染成的整个 html 片段的工作在服务端完成，服务端形成的html 片段直接返回给客户端这个过程就叫做服务端渲染。
 
 在普通的SPA中，一般是将框架及网站页面代码发送到浏览器，然后在浏览器中生成和操作DOM（这里也是第一次访问SPA网站在同等带宽及网络延迟下比传统的在后端生成HTML发送到浏览器要更慢的主要原因），    
@@ -218,7 +218,7 @@ SSR缺点
 * 可能会由于某些因素导致服务器端渲染的结果与浏览器端的结果不一致
 
 * SSR常用框架  
-[Vue.js 的Nuxt](https://nuxtjs.org/guide/installation)  
+[Vue.js 的 Nuxt](https://nuxtjs.org/guide/installation)  
 [React 的 Next](https://nextjs.org/)
 
 ## SEO（Search Engine Optimization）搜索引擎优化
@@ -707,6 +707,29 @@ $set对数组处理的核心方法就是通过splice
 ```js
 vm.items.splice(newLength)
 ```
+
+# <a name="forceUpdate">forceUpdate</a>[![bakTop](/img/backward.png)](#top)
+[forceUpdate-官网](https://cn.vuejs.org/v2/guide/components-edge-cases.html#%E5%BC%BA%E5%88%B6%E6%9B%B4%E6%96%B0)
+
+迫使Vue实例重新（rander）渲染虚拟DOM，注意并不是重新加载组件。结合vue的生命周期，调用$forceUpdate后只会触发beforeUpdate和updated这两个钩子函数，不会触发其他的钩子函数。它仅仅影响实例本身和插入插槽内容的子组件，而不是所有子组件。
+
+
+但是这种做法并不推荐，官方说如果你现在的场景需要用forceUpdate方法 ,那么99%是你的操作有问题，如上data里不显示声明对象的属性，之后添加属性时正确的做法时用 `vm.$set()` 方法，所以forceUpdate请慎用
+
+### 
+
+### [forceUpdate源码解析](/details\Vue\Vue2-Source\$forceUpdate.md)
+
+
+# <a name="Vue的数据为什么频繁变化但只会更新一次">Vue采用异步渲染:Vue的数据为什么频繁变化但只会更新一次</a>[![bakTop](/img/backward.png)](#top)  
+Vue 异步执行 DOM 更新。Vue在观察到数据变化时并不是直接更新DOM，而是开启一个队列，并缓冲在同一事件循环中发生的所有数据改变。在缓冲时会去除重复数据，从而避免不必要的计算和DOM操作。然后，在下一个事件循环tick中，Vue刷新队列并执行实际工作。
+
+由于VUE的数据驱动视图更新是异步的，即修改数据的当下，视图不会立刻更新，而是等同一事件循环中的所有数据变化完成之后，再统一进行视图更新。在同一事件循环中的数据变化后，DOM完成更新，立即执行nextTick(callback)内的回调。
+
+# <a name="nextTick">nextTick</a>[![bakTop](/img/backward.png)](#top)  
+
+[nextTick](/details/Vue/Vue2-Source/nextTick.md)
+
 
 # <a name="组件中data为什么是一个函数">为什么组件中的 data 必须是一个函数，然后 return 一个对象，而 new Vue 实例里，data 可以直接是一个对象？</a>[![bakTop](/img/backward.png)](#top)  
 
@@ -1349,7 +1372,7 @@ Vue.directive('directiveName', {
     //做绑定的准备工作,添加时间监听
     console.log('指令的bind执行啦');
   },
-  inserted(el) {
+  inserted() {
     //获取绑定的元素
     console.log('指令的inserted执行啦');
   },
@@ -1384,15 +1407,6 @@ Vue.directive('directiveName', {
 
 ### [loading组件-指令封装](/details\Vue\loading组件-指令封装.md)
 
-
-# <a name="Vue的数据为什么频繁变化但只会更新一次">Vue采用异步渲染:Vue的数据为什么频繁变化但只会更新一次</a>[![bakTop](/img/backward.png)](#top)  
-Vue 异步执行 DOM 更新。Vue在观察到数据变化时并不是直接更新DOM，而是开启一个队列，并缓冲在同一事件循环中发生的所有数据改变。在缓冲时会去除重复数据，从而避免不必要的计算和DOM操作。然后，在下一个事件循环tick中，Vue刷新队列并执行实际工作。
-
-由于VUE的数据驱动视图更新是异步的，即修改数据的当下，视图不会立刻更新，而是等同一事件循环中的所有数据变化完成之后，再统一进行视图更新。在同一事件循环中的数据变化后，DOM完成更新，立即执行nextTick(callback)内的回调。
-
-# <a name="nextTick">nextTick</a>[![bakTop](/img/backward.png)](#top)  
-
-[nextTick](/details/Vue/Vue2-Source/nextTick.md)
 
 # <a name="keep-alive">keep-alive</a>[![bakTop](/img/backward.png)](#top)  
 [keep-alive](https://cn.vuejs.org/v2/api/#keep-alive)
@@ -1460,14 +1474,13 @@ B->A，不缓存B
 [VUE缓存：动态keep-alive](https://juejin.im/post/6844903745042857997)
 
 ### keep-alive源码解析
-主要是缓存，采用LRU算法（最近最久使用法）
+主要是缓存，采用LRU(Least Recently Used)算法（最近最久使用法）
 
 [keep-alive源码解析](/details\Vue\Vue2-Source\keep-alive.md)
 
 # <a name="路由vue-router">路由vue-router</a>[![bakTop](/img/backward.png)](#top)  
 [Vue Router](/details\Vue\Vue-router.md)
 
-# 
 
 ## <a name="数据获取">[数据获取](https://router.vuejs.org/zh/guide/advanced/data-fetching.html)</a>[![bakTop](/img/backward.png)](#top)  
 

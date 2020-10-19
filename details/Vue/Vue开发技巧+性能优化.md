@@ -1,18 +1,19 @@
 * <a href="#vue项目性能优化">Vue开发技巧+性能优化</a>
-  * <a href="#组件中name选项作用">组件中name选项作用</a>
-  * <a href="#v-if和v-show的区别">v-if和v-show的区别</a>
-  * <a href="#v-for遍历避免同时使用v-if">v-for遍历避免同时使用v-if"</a>
-  * <a href="#使用render函数优化代码">使用render函数优化代码</a>
-  * <a href="#自定义组件双向绑定">v-model,model,.sync选项实现自定义组件双向绑定</a>
-  * <a href="#动态组件">动态组件</a>
-  * <a href="#异步组件">异步组件</a>
-  * <a href="#递归组件">递归组件</a>
-  * <a href="#函数式组件">函数式组件</a>
-  * <a href="#批量注册全局组件">批量注册全局组件</a>
-  * <a href="#批量注册全局filter">批量注册全局filter</a>
+* <a href="#组件中name选项作用">组件中name选项作用</a>
+* <a href="#v-if和v-show的区别">v-if和v-show的区别</a>
+* <a href="#v-for遍历避免同时使用v-if">v-for遍历避免同时使用v-if"</a>
+* <a href="#使用render函数优化代码">使用render函数优化代码</a>
+* <a href="#自定义组件双向绑定">v-model,model,.sync选项实现自定义组件双向绑定</a>
+* <a href="#动态组件">动态组件</a>
+* <a href="#异步组件">异步组件</a>
+* <a href="#递归组件">递归组件</a>
+* <a href="#函数式组件">函数式组件</a>
+* <a href="#批量注册全局组件">批量注册全局组件</a>
+* <a href="#批量注册全局filter">批量注册全局filter</a>
 * <a href="#自定义全局loading">自定义全局loading</a>
 * <a href="#SVG封装">SVG封装</a>
 * <a href="#图片懒加载">图片懒加载</a>
+* <a href="#v-html弊端">v-html弊端</a>
 * <a href="#路由参数解耦">路由参数解耦</a>
 * <a href="#多个路由共用一个组件操作">  多个路由共用一个组件,组件如何重新渲染</a>
 * <a href="#监听组件的生命周期"> 监听组件的生命周期@hook</a>
@@ -55,8 +56,8 @@ v-if 是“真正”的条件渲染，因为它会确保在切换过程中条件
 
 v-if 也是惰性的：如果在初始渲染时条件为假，则什么也不做——直到条件第一次变为真时，才会开始渲染条件块。
 
-v-show 只是简单的display控制显隐藏，不管初始条件如何，元素总会被渲染；
-注意：v-show 是添加/移除 display: none; 属性 因此 v-show 由 false 切换 true 后 ，元素的 display 依旧为原先值，而不是 display: block
+v-show 只是简单的display：none控制，不管初始条件如何，元素总会被渲染；
+注意：v-show 是控制display:none的添加移除（会先存储原display值；v-show为false时，display：none；v-show为true时，再设置回去，而不是设置为 display: block）;
 
 ```
 
@@ -579,7 +580,7 @@ const AsyncComponent = () => ({
 const Foo = () => import(/* webpackChunkName: "group-foo" */ './Foo.vue')
 ```
 
-打包后发现一些页面文件很小，只有几K  
+打包后发现一些页面文件很小，只有1~2K （由于浏览器并发连接数是有限的， 一般是4到6个，在10个以内;多个小文件会影响页面渲染速度）；
 通过配置webpack的特殊注释，将一些按需加载的路由打包到同一个js文件
 ```js
 const Foo = () => import(/* webpackChunkName: "group-foo" */ './Foo.vue')
@@ -680,7 +681,7 @@ export default {
 </script>
 ```
 
-递归的组件
+list-item.vue 递归的组件
 ```html
 <template>
   <li class="">
@@ -704,10 +705,10 @@ export default {
     }
   },
   computed:{
-      hasChild(){ //递归终止条件，避免抛错
-        return this.list.children && this.list.children.length
-      }
-    },
+    hasChild(){ //递归终止条件，避免抛错
+      return this.list.children && this.list.children.length
+    }
+  },
 }
 </script>
 ```
@@ -731,7 +732,7 @@ export default {
 
 
 
-子组件使用 函数式组件
+子组件使用 函数式组件(通过 props 获取父组件传递数据)
 ```html
 <template functional>
   <div class="list">
@@ -752,13 +753,13 @@ export default {
 ```js
 <template>
   <div>
-    <List :list="list" :itemClick="func" />
+    <com-list :list="list" :itemClick="func" />
   </div>
 </template>
-import List from '@/components/List.vue'
+import comList from '@/components/List.vue'
 export default {
   components: {
-      List
+      comList
   },
   data() {
     return {
@@ -833,16 +834,17 @@ export default {
 
 main.js
 ```js
+//Vue.use安装插件
 import filters from '@/filters'
 Vue.use(filters)
 ```
 
 ## <a name="自定义全局loading">自定义 loading 组件|指令</a>[![bakTop](/img/backward.png)](#top) 
-[loading组件-指令封装](./loading组件-指令封装.md)
+[loading组件-指令封装](/details\Vue/loading组件-指令封装.md)
 
 
 ## <a name="SVG封装">SVG封装</a>[![bakTop](/img/backward.png)](#top) 
-[SVG封装](./SVG封装.md)
+[SVG封装](/details\Vue\SVG封装.md)
 
 ## <a name="图片懒加载">图片懒加载</a>[![bakTop](/img/backward.png)](#top) 
 ```js
@@ -873,6 +875,113 @@ Vue.use(VueLazyload, {
 * 'loading' in HTMLImageElement.prototype;
 
 [图片预加载_懒加载](/details/图片预加载_懒加载.md)
+
+## <a name="v-html弊端">v-html弊端</a>[![bakTop](/img/backward.png)](#top)  
+[v-html](https://cn.vuejs.org/v2/api/#v-html)
+
+更新元素的 innerHTML。注意：内容按普通 HTML 插入 - 不会作为 Vue 模板进行编译。如果试图使用 v-html 组合模板，可以重新考虑是否通过使用组件来替代。
+
+1. 在单文件组件里，scoped 的样式不会应用在 v-html 内部，因为那部分 HTML 没有被 Vue 的模板编译器处理
+>使用深度选择器 /deep/
+
+2. 容易导致 XSS 攻击
+
+例子
+```html
+<div id="app">
+  <div v-html="msg">
+  </div>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+<script>
+  let vm = new Vue({
+    el:'#app',
+    components: {
+    },
+    data(){
+      return {
+        msg: '<img src="xxx.jpg" onerror="alert(1)" />'
+      }
+    },
+  })
+</script>
+```
+加载图片时 src地址对应的资源找不到，会触发error事件，最终alert 1。这便是一个最简单的xss攻击。
+
+需要注意的是 `HTML 5 中指定不执行由 innerHTML 插入的 <script> 标签。`如
+```html
+<div id="app">
+  <div v-html="msg">
+  </div>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+<script>
+  let vm = new Vue({
+    el:'#app',
+    components: {
+    },
+    data(){
+      return {
+        msg: 'a<script>alert(1)<\/script>b'
+      }
+    },
+  })
+</script>
+```
+此时script虽然会加载为标签而不是字符串，但不会执行内容；如图
+![](/img/Vue/vhtml.png)
+
+主要是因为`HTML 5 中指定不执行由 innerHTML 插入的 <script> 标签。`[--MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/innerHTML#%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98)
+
+但不通过 script 执行的方法有很多，如上 用 img 标签；如何在使用 v-html 解决这些情况下 xss攻击 
+
+
+### 解决XSS攻击
+[解决v-html指令潜在的xss攻击](https://juejin.im/post/6844903918518927367#heading-2)
+
+1. 每次给 v-html的数据包上一层xss函数（xss('a\<img src="xxx.jpg" onerror="alert(1)" \/>b'),）
+
+2. 
+引入xss包并在 main.js 挂载到vue原型上
+```js
+import xss from 'xss';
+Vue.prototype.xss = xss
+```
+
+在vue.config.js中覆写html指令
+```js
+chainWebpack: config => {
+  config.module.rule("vue").use("vue-loader").loader("vue-loader").tap(options => {
+    options.compilerOptions.directives = {
+      html(node, directiveMeta) {
+        (node.props || (node.props = [])).push({
+          name: "innerHTML",
+          value: `xss(_s(${directiveMeta.value}))`
+        });
+      }
+    };
+    return options;
+  });
+}
+```
+
+
+3. 指令
+```js
+import xss from 'xss';
+Vue.directive('xsshtml',{
+  // 第一次绑定到元素时,设置元素内容
+  bind(el,binding, vnode, oldVnode){
+    el.innerHTML = xss(binding.value)
+  },
+  // 更新时，重新赋值
+  update(el,binding, vnode, oldVnode){
+    if(binding.value===binding.oldValue)return
+    el.innerHTML = xss(binding.value)
+  },
+})
+```
+使用 `<div v-xsshtml="msg"></div>`
 
 ## <a name="路由参数解耦">路由参数解耦 props</a>[![bakTop](/img/backward.png)](#top)  
 [路由组件传参](https://router.vuejs.org/zh/guide/essentials/passing-props.html#%E5%B8%83%E5%B0%94%E6%A8%A1%E5%BC%8F)
@@ -940,8 +1049,6 @@ export default {
   }
 }
 ```
-
-
 
 ##  <a name="多个路由共用一个组件操作">多个路由共用一个组件,组件如何重新渲染</a>[![bakTop](/img/backward.png)](#top)  
 * router-view上加上一个唯一的key
@@ -1070,7 +1177,7 @@ methods：{
   </div>
 </template>
 
-<script>
+<>
 import {debounce} from 'lodash'
 const VChart = {
   template: '<span>chart</span>',
@@ -1092,7 +1199,7 @@ export default{
     VChart
   }
 }
-</script>
+</>
 ```
 页面中有两个 Chart 组件，他们会监听 window.resize 事件，然后在控制台输出 "resize"。 
 但每次改变页面大小，控制台只输出了 1 次 "resize"
@@ -1120,12 +1227,12 @@ Vue 会通过 Object.defineProperty 对数据进行劫持，来实现视图响�
 export default {
   data(){
     return {
-      users: {}
+      lists: []
     }
   },
   async created() {
-    const users = await axios.get("xxx");
-    this.users = Object.freeze(users);
+    const {Status, Result} = await axios.get("xxx");
+    this.lists = Object.freeze(Result.lists);
   }
 };
 ```
@@ -1209,11 +1316,11 @@ pluginOptions: {
 index.html
 ```html
 <!-- CDN引入外部资源 -->
-<script src="//cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
-<script src="//cdn.bootcss.com/vuex/3.0.1/vuex.min.js"></script>
-<script src="//cdn.bootcss.com/vue-router/3.0.1/vue-router.min.js"></script>
-<script src="//cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
-<script src="//unpkg.com/iview@1.0.1/dist/iview.min.js"></script>
+< src="//cdn.bootcss.com/vue/2.6.11/vue.min.js"></>
+< src="//cdn.bootcss.com/vuex/3.0.1/vuex.min.js"></>
+< src="//cdn.bootcss.com/vue-router/3.0.1/vue-router.min.js"></>
+< src="//cdn.bootcss.com/axios/0.18.0/axios.min.js"></>
+< src="//unpkg.com/iview@1.0.1/dist/iview.min.js"></>
 ```
 
 [vue.config.js配置externals](https://webpack.js.org/configuration/externals/)
@@ -1399,7 +1506,10 @@ module.exports = {
 ### 去除生产环境console
 ```js
 config.optimization.minimizer('terser').tap((args) => {
-  args[0].terserOptions.compress.drop_console = true
+  // args[0].terserOptions.compress.drop_console = true
+  let pure_funcs = args[0].terserOptions.compress.pure_funcs || []
+  pure_funcs.push('console.log')
+  args[0].terserOptions.compress.pure_funcs=pure_funcs
   return args
 })
 ```

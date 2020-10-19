@@ -1,4 +1,7 @@
 # 
+[中级前端面试指南](https://github.com/sl1673495/blogs/issues/52)
+[前端高级进阶指南](https://github.com/sl1673495/blogs/issues/37)
+
 ## 题
 实现函数，将entry转换为output的数据格
 

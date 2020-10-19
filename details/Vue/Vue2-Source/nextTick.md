@@ -1,7 +1,7 @@
 [异步更新队列](https://cn.vuejs.org/v2/guide/reactivity.html#%E5%BC%82%E6%AD%A5%E6%9B%B4%E6%96%B0%E9%98%9F%E5%88%97)
 
 ### 前置
-[事件执行机制EventLoop](/details/面试题/事件执行机制EventLoop.md)
+[事件执行机制EventLoop](/details\面试题\JS面试题\事件执行机制EventLoop.md)
 
 ### 参数：
 * {Function} [callback]

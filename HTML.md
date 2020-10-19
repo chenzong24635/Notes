@@ -73,6 +73,7 @@ XHTML特性：
 * XHTML文档必须拥有根元素、元素必须被关闭、元素必须被正确地嵌套、标签应该使用小写
 
 ## <a name="语义化">语义化及好处</a>[![bakTop](/img/backward.png)](#top)
+[页面结构语义化](https://rainylog.com/post/ife-note-1/)
 
 语义化是指通过HTML标记表示页面包含的信息，包含了HTML标签的语义化和css命名的语义化。
 

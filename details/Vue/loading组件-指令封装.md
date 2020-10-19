@@ -73,9 +73,9 @@ import LoadingComponent from './index.vue'
 
 export default {
   install(Vue) {
-    // 通过Vue.extend将组件包装成一个子类
+    // 通过Vue.extend将组件包装成一个构造函数
     const LoadingConstructor = Vue.extend(LoadingComponent)
-    let loading = null
+    let loading = null 
     
     // 绑定loading关闭方法
     LoadingConstructor.prototype.close = function () {
@@ -143,7 +143,7 @@ setTimeout(() => {
   loading.close()
 }, 1000 * 3)
 
-// 调用了两次loading,但是只出现了一个，而且我只关闭了loading，但是loading1也被关闭了
+// 问题：调用了两次loading,但是只出现了一个，而且我只关闭了loading，但是loading1也被关闭了
 ```
 
 ### 自定义loading指令
