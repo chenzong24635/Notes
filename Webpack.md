@@ -70,7 +70,15 @@ module.exports = {
 }
 ```
 
-
+占位符含义
+|占位符|含义
+|ext|文件后缀名
+|name|文件名
+|path|文件相对路径
+|folder|文件所在的文件夹
+|hash|每次构建webpack生成的唯一hash值
+|chunkhash|根据chunk生成的hash，来源与同一chunk，则hash值相同
+|contenthash|根据内容生成的hash，内容相同则hash相同
 
 ### [entry 入口文件](https://webpack.js.org/configuration/entry-context/#entry)
 
@@ -159,33 +167,8 @@ externals配置选项提供了「从输出的 bundle 中排除依赖」的方法
 
 防止将某些 import 的包(package)打包到 bundle 中，而是在运行时(runtime)再去从外部获取这些扩展依赖
 
-* CDN 引入
+* CDN资源引入
 
-public/index.html
-```html
-<script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.15/lodash.core.min.js" ></script>
-<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-```
-
-webpack.config.js
-```js
-externals: {
-  jquery: 'jQuery',
-  // lodash: '_'
-  lodash: {
-    commonjs: "lodash",//如果我们的库运行在Node.js环境中，import _ from 'lodash'等价于const _ = require('lodash')
-    commonjs2: "lodash",//同上
-    amd: "lodash",//如果我们的库使用require.js等加载,等价于 define(["lodash"], factory);
-    root: "_"//如果我们的库在浏览器中使用，需要提供一个全局的变量‘_’，等价于 var _ = (window._) or (_);
-  }
-}
-```
-
-这样就剥离了那些不需要改动的依赖模块，换句话，下面展示的代码还可以正常运行：
-```js
-import $ from 'jquery';
-console.log($);
-```
 
 ### [devtool 代码映射](https://webpack.js.org/configuration/devtool/)
 源代码与打包后的代码的映射关系，通过sourceMap定位到源代码。
@@ -304,7 +287,7 @@ Loaders的配置:
 
 [常用的 plugins](/details/Webpack/plugins.md)
 
-## <a name="webpack-dev-server">HMR 热模块替换 webpack-dev-server</a>
+# <a name="webpack-dev-server">HMR 热模块替换 webpack-dev-server</a>
 [devServer](https://webpack.js.org/configuration/dev-server/)
 
 npm i -D webpack-dev-server 
@@ -367,13 +350,15 @@ package.json添加
 
 终端输入 npm run server
 
-## <a name="CDN资源引入">CDN资源引入</a>
+# <a name="CDN资源引入">CDN资源引入</a>
 
 国内的CDN服务推荐使用[BootCDN](https://www.bootcdn.cn/)
 
 index.html
 ```html
 <!-- CDN引入外部资源 -->
+<script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.15/lodash.core.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
 <script src="//cdn.bootcss.com/vuex/3.0.1/vuex.min.js"></script>
 <script src="//cdn.bootcss.com/vue-router/3.0.1/vue-router.min.js"></script>
@@ -381,21 +366,33 @@ index.html
 <script src="//unpkg.com/iview@1.0.1/dist/iview.min.js"></script>
 ```
 
-[vue.config.js配置externals](https://webpack.js.org/configuration/externals/)
+webpack.config.js
 ```js
-configureWebpack: {
-  externals: {
-    'vue': 'Vue',
-    'vuex': 'Vuex',
-    'vue-router': 'VueRouter',
-    'axios': 'axios',
-    'iView': 'iview',
-    // 'element-ui': 'ELEMENT',
-  },
-},
+externals: {
+  'vue': 'Vue',
+  'vuex': 'Vuex',
+  'vue-router': 'VueRouter',
+  'axios': 'axios',
+  'iView': 'iview',
+  // 'element-ui': 'ELEMENT',
+  jquery: 'jQuery',
+  // lodash: '_'
+  lodash: {
+    commonjs: "lodash",//如果我们的库运行在Node.js环境中，import _ from 'lodash'等价于const _ = require('lodash')
+    commonjs2: "lodash",//同上
+    amd: "lodash",//如果我们的库使用require.js等加载,等价于 define(["lodash"], factory);
+    root: "_"//如果我们的库在浏览器中使用，需要提供一个全局的变量‘_’，等价于 var _ = (window._) or (_);
+  }
+}
 ```
 
-## <a name="Scope Hoisting">Scope Hoisting作用域提升</a>
+这样就剥离了那些不需要改动的依赖模块，换句话，下面展示的代码还可以正常运行：
+```js
+import $ from 'jquery';
+console.log($);
+```
+
+# <a name="Scope Hoisting">Scope Hoisting作用域提升</a>
 webpack 会把引入的 js 文件“提升到”它的引入者顶部。
 
 Scope Hoisting 可以让 Webpack 打包出来的代码文件更小、运行的更快。
@@ -406,7 +403,7 @@ Webpack 内置的功能
 plugins: [new webpack.optimize.ModuleConcatenationPlugin()],
 ```
 
-## <a name="搭建vue开发环境">搭建vue开发环境</a>
+# <a name="搭建vue开发环境">搭建vue开发环境</a>
 
 ### 解析.vue文件  
 
@@ -587,7 +584,7 @@ package.json添加
 
 npm run dev即可
 
-## <a name="环境变量配置">.env.development和.env.production环境变量配置 cross-env， dotenv-webpack</a>
+# <a name="环境变量配置">.env.development和.env.production环境变量配置 cross-env， dotenv-webpack</a>
 
 npm i cross-env dotenv-webpack -D
 > cross-env 解决跨平台设置NODE_ENV的问题
@@ -625,16 +622,15 @@ package.json配置
 ```
 
 
-## <a name="区分开发环境与生产环境">区分开发环境与生产环境 webpack-merge</a>
+# <a name="区分开发环境与生产环境">区分开发环境与生产环境 webpack-merge</a>
 npm i -D  webpack-merge // 合并配置
 
 新增 webpack.dev.js -开发环境配置 文件
 新增 webpack.prod.js -生产环境配置文件
 
 
-# [Webpack优化](/details/WEB性能优化/Webpack优化.md)
 # [Webpack面试题](/details/面试题/Webpack面试题/README.md)
-
+# [Webpack优化](/details/WEB性能优化/Webpack优化.md)
 
 # 魔法注释
 ```js

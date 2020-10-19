@@ -253,27 +253,35 @@ optimization: {
   // 提取公共部分
   splitChunks: {
     chunks: 'all', // 选择哪些块进行优化: "initial"（初始化） | "all"(默认就是all) | "async"（动态加载）
-    minSize: 0, // 生成块的最小大小（以字节为单位）默认0
+    minSize: 0, // 生成块的最小大小（以字节为单位）默认30kb
     minRemainingSize: 0,
     maxSize: 0,
     minChunks: 1, // 拆分前必须共享模块的最小块数，默认1
-    maxAsyncRequests: 1, //  最大异步请求数， 默认1
-    maxInitialRequests: 1, // // 最大初始化请求书，默认1
+    maxAsyncRequests: 1, //  异步模块内部的并行最大请求数， 默认1
+    maxInitialRequests: 1, // 最大入口拆分数，默认1
     automaticNameDelimiter: '~', // 为创建的块设置名称前缀
+    // 设置缓存组满足不同规则的chunk
     cacheGroups: {
+      vendors: {
+        name: 'vendors', //命名,不写默认键名
+        chunks: 'all',
+        test: /node_modules/, //条件
+        priority: -10, // 缓存组优先级,一个chunk可能符合多个缓存组，会辈抽取到优先级高的缓存组里
+      },
       commons: { // 将第三方模块提取出来
-        name: 'commons', // 要缓存的 分隔出来的 chunk 名称
-        priority: 1, //  缓存组优先级
+        chunks: 'commons', // 要缓存的 分隔出来的 chunk 名称
+        priority: -20,
         chunks: 'initial', //initial表示提取入口文件的公共部分
         minChunks: 2, // 重复2次使用的时候需要抽离出来
-        minSize: 0 //表示提取公共部分最小的大小
+        minSize: 0, //表示提取公共部分最小的大小
+        reuseExistingChunk: true, // 如果该chunk中引用了已经被抽取的chunk，直接引用该chunk，不会重复打包
       },
     }
   }
 }
 ```
 
-## <a name="tree shaking">tree shaking, CSS:purifycss-webpack</a>
+## <a name="tree shaking">清除无用JS,CSS:tree shaking, CSS:purifycss-webpack</a>
 #### CSS tree shaking  
 [purifycss-webpack](https://www.npmjs.com/package/purifycss-webpack)
 
@@ -298,7 +306,7 @@ plugins: [
 #### JS tree shaking  
 只支持ES Modules 模块 （import方式引入），不支持commonjs的方式引入
 
-只要mode是production就会默认生效，develpoment下 tree shaking 是不生效的
+只要mode是production就会默认生效，development 下 tree shaking 是不生效的
 
 ```js
 //util.js

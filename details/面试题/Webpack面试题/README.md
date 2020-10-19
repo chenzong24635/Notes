@@ -37,6 +37,16 @@ webpack是基于入口的。webpack会自动地递归解析入口所需要加载
 
 * Plugin在plugins中单独配置。 类型为数组，每一项是一个plugin的实例，参数都通过构造函数传入。
 
+## module、chunk、bundle区别
+* module：js模块，webpack支持commonJS、ES6等模块,指import引入的模块
+* chunck: 代码块，webpack根据功能拆分出来的
+  分三种清空：
+  * 项目入口（entery）
+  * 通过import动态引入的代码
+  * 通过splitChunks拆分的公共代码
+* bundle: 打包后的资源文件，bundle是对chunk进行编译压缩打包等处理后产出的(一般一个chunk对应一个bundle)
+
+
 ## Webpack 中 hash、chunkhash 和 contenthash 的区别 
 
 [参考](https://juejin.im/post/5d70aee4f265da03f12e7ab2)
@@ -48,7 +58,7 @@ webpack是基于入口的。webpack会自动地递归解析入口所需要加载
 
 #### hash
 
-只有一个 hash ，所有文件的 hash 都是相同,修改任何文件都会导致所有文件的 hash 发生改变(粒度整个项目)
+每次构建webpack生成的唯一hash值 ，所有文件的 hash 都是相同,修改任何文件都会导致所有文件的 hash 发生改变(粒度整个项目)
 
 
 ```js
