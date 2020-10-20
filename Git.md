@@ -36,23 +36,24 @@
 
     Gist ID:372add5a8785e01a4c7850cadd69314f
 
-# <a name="创建项目提交到仓库">创建项目提交到仓库</a>
->
-    git init 
-    touch README.md
-    git add README.md
-    git commit -m "first commit"
-    git remote add origin https://github.com/chenzong24635/仓库名.git   //关联远程仓库
-    //git remote -v 查看已关联的远程仓库
-    //,若报错: remote origin already exists. 先运行  git remote rm origin  	  
-    git push  origin master  //提交到你的仓库
 
-    或者git push --force --set-upstream origin master // 强制替换所有内容
+# <a name="常用">常用</a>
+## <a name="创建项目提交到仓库">创建项目提交到仓库</a>
+
+* git init //初始化
+* touch README.md //创建文件
+* git add README.md //添加文件到暂缓区
+* git commit -m "first commit" //提交暂存区文件
+* git remote add origin https://github.com/chenzong24635/仓库名.git   //关联远程仓库
+  >git remote -v 查看已关联的远程仓库
+  >若报错: remote origin already exists. 先运行  git remote rm origin
+* git push  origin master  //提交到你的仓库
+  >或者git push --force --set-upstream origin master // 强制替换所有内容
 
 
-# <a name="将本地代码文件夹作为新分支添加到远程仓库">将本地代码文件夹作为新分支添加到远程仓库</a>
-* git init 
-* git add .  // 将文件添加到暂存区
+## <a name="将本地代码文件夹作为新分支添加到远程仓库">将本地代码文件夹作为新分支添加到远程仓库</a>
+* git init // 初始化
+* git add .  // 将所有文件添加到暂存区
 * git commit -m 'newbranch first push' // 将暂存区文件提交到仓库
 * git checkout -b <新分支名> // 新建分支并切换到该分支
 * git remote add origin <仓库地址>  // 关联远程仓库
@@ -60,7 +61,16 @@
 * git push origin <新分支名> // 推送当前分支并将远程设置为上游
   >git push --set-upstream origin <新分支名> // 推送当前分支并将远程设置为上游
 
-
+## <a name="分支合并">分支合并：一般都是合并到master</a>
+* git commit -m 'master merge commit' // 提交master
+* git branch --all //查看所有分支(本地+远程) 可略
+* git checkout -b <新分支名> // 创建新分支并切换到该分支
+  >git checkout <分支名> // 切换到现有分支
+* git commit -m 'merge dev commit' // 先提交分支
+* git checkout master // 切换回 master
+* git merge <要合并的分支名> // 将分支合并到 master
+  >报错fatal: refusing to merge unrelated histories -- 这是因为两个分支没有取得关系
+  >使用：git merge <要合并的分支名> --allow-unrelated-histories
 
 # <a name="git基本命令">git基本命令</a>
 npm i git //git安装
@@ -149,7 +159,7 @@ npm i git //git安装
 * git branch -v //查看当前所有分支及其最后一次提交  
 * git branch --list //查看有多少分支(简：git branch -l)  
 * git branch --all //查看所有分支(本地+远程) (简：git branch -a)  
-* git branch \<branchName>  
+* git branch \<branchName>  //创建新分支
 * git branch -d \<branchName>  //删除分支  
 * git push --delete origin \<branchName>  //删除远程分支  
 * git checkout \<branchName> | git switch \<branchName> //切换分支  

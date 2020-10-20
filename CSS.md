@@ -114,8 +114,8 @@ CSS的优势：
 >
 
     内联样式 > 内部样式表 > 外部样式表  
-    !important > 内联样式 > ID选择器 > 类选择器/属性选择器/伪类选择器 > 元素选择器/关系选择器/伪元素选择器 > 通配符(*)  
-    权值: 10000   1000      0100      0010                         0001                                000000
+    !important > 内联样式 > ID选择器 > class选择器/属性选择器/伪类选择器 > 元素选择器/关系选择器/伪元素选择器 > 通配符(*)  
+    权值: 10000   1000      0100        0010                               0001                                000000
 
     max-width、mix-width、max-height、min-height 权重大于 !important
     mix-width,min-height 权重大于 max-width,max-height
@@ -145,10 +145,9 @@ CSS的优势：
 Flash Of Unstyled Content：文档样式短暂失效; 用户定义样式表加载之前浏览器使用默认样式显示文档，用户样式加载渲染之后再从新显示文档，造成页面闪烁。
 
 原因：
->
-    使用import方法导入样式表(需等页面完全载入后再加载)
-    将样式表放在页面底部
-    有几个样式表，放在html结构的不同位置。其实原理很清楚：当样式表晚于结构性html加载，当加载到此样式表时，页面将停止之前的渲染。此样式表被下载和解析后，将重新渲染页面，也就出现了短暂的花屏现象
+* 使用import方法导入样式表(需等页面完全载入后再加载)
+* 将样式表放在页面底部
+* 有几个样式表，放在html结构的不同位置。其实原理很清楚：当样式表晚于结构性html加载，当加载到此样式表时，页面将停止之前的渲染。此样式表被下载和解析后，将重新渲染页面，也就出现了短暂的花屏现象
 
 解决方法：
 >
@@ -159,31 +158,31 @@ Flash Of Unstyled Content：文档样式短暂失效; 用户定义样式表加�
 * 定义：
 HTML中每个元素都被描绘成一个矩形盒子，这些盒子通过一个模型来描述其占有空间，该模型称为盒模型。盒模型通过四个边界描述:内边距（padding）、外边距(margin)、边框(border)、内容(content)
 
-* 区  别：box-sizing:content-box | border-box 
+* 区  别：box-sizing:content-box(默认值) | border-box 
 1. 标准盒子模型(W3C):  
-    宽高 不包含border和padding  
-    box-sizing: content-box; 默认值  
+    width/height = content；不包含border和padding  
+    box-sizing: content-box;
 
 2. 怪异盒模型（IE）: 
-    宽高 包含border和padding  
-    box-sizing: border-box;   
+    width/height = content + border + padding  
+    box-sizing: border-box;
     
 ![盒模型](/img/box.png)
 
 盒模型相关的周边问题
->
-    内联元素，例如<a>、<span>等，定义上下边界不会影响到行高（line-height），内联元素距离上一行元素的距离由行高决定，而不是填充或边界
-    margin的边界合并
-    inline-block元素之间的小空白
-        原因为：HTML 中的换行符、空格符、制表符等合并为空白符, 字体大小不为 0 的情况下, 空白符自然占据一定的宽度, 因此产生了元素间的空隙.
-        解决方案：
-          可以为inline-block元素设置为负的margin-left;
-          父元素font-size设置为0, 子元素再重新设置回来;
-          直接在HTML文档里改变文本排列，使行间元素尾标签和下一个头便签间不留任何空格，如<span>第一个元素</span><span>第二个元素</span>
+* 内联元素，例如\<a>、\<span>等，定义上下边界不会影响到行高（line-height），内联元素距离上一行元素的距离由行高决定，而不是填充或边界
+* margin的边界合并
+* inline-block元素之间的小空白
+  >
+      原因为：HTML 中的换行符、空格符、制表符等合并为空白符, 字体大小不为 0 的情况下, 空白符自然占据一定的宽度, 因此产生了元素间的空隙.
+      解决方案：
+        可以为inline-block元素设置为负的margin-left;
+        父元素font-size设置为0, 子元素再重新设置回来;
+        直接在HTML文档里改变文本排列，使行间元素尾标签和下一个头便签间不留任何空格，如<span>第一个元素</span><span>第二个元素</span>
 
 ## <a name="css选择器">css选择器</a>[![bakTop](/img/backward.png)](#top)
 
-#### 
+### 选择器
 * 通配符选择器(*)
 * id选择器（ #myid）
 * class选择器（.myclass）
@@ -196,102 +195,95 @@ HTML中每个元素都被描绘成一个矩形盒子，这些盒子通过一个�
 * 伪类选择器（a:hover, li:nth-child）
 * .....
 
-#### 属性选择器
+### 属性选择器
+* E[attr]        //E中带有attr属性  
+* E[attr=val]    //E中带有attr属性 且值为 val  
+* E[attr*=val]   //E中带有attr属性 且值包含 val  
+* E[attr^=val]   //E中带有attr属性 且值以 val 开始  
+* E[attr$=val]   //E中带有attr属性 且值以 val 结尾   
+* E[attr~=val]   //E中带有attr属性 且值具有多个空格分隔的值，其中一个值为val  
+* E[attr|=val]   //E中带有attr属性 且值具有 val 或以 val- 开始的值，常用于lang（lang='en-us'）  
 
-E[attr]        //E中带有attr属性  
-E[attr=val]    //E中带有attr属性 且值为 val  
-E[attr*=val]   //E中带有attr属性 且值包含 val  
-E[attr^=val]   //E中带有attr属性 且值以 val 开始  
-E[attr$=val]   //E中带有attr属性 且值以 val 结尾   
-E[attr~=val]   //E中带有attr属性 且值具有多个空格分隔的值，其中一个值为val  
-E[attr|=val]   //E中带有attr属性 且值具有 val 或以 val- 开始的值，常用于lang（lang='en-us'）  
+### 伪类  
+伪类是基于元素的特征而不是他们的id、class、属性或者内容。一般来说，元素的特征是不可以从DOM树上推断得到的，而且其是动态的，当用户和DOM进行交互的时候，元素可以获得或者失去一个伪类。
 
-#### 伪类  
->
-    是基于元素的特征而不是他们的id、class、属性或者内容。一般来说，元素的特征是不可以从DOM树上推断得到的，而且其是动态的，当用户和DOM进行交互的时候，元素可以获得或者失去一个伪类。
-    伪类其实就是基于普通DOM元素而产生的不同状态，他是DOM元素的某一特征
+伪类其实就是基于普通DOM元素而产生的不同状态，他是DOM元素的某一特征
 
-* 结构伪类：
->
-    E:first-child        //第一个子元素F  
-    E:last-child         //最后一个子元素  
-    E:nth-child(n)       //第n个 n=1,2,3...n ;  
-    E:nth-last-child(n)  //倒数第n个子元素 n=1,2..
-    E:nth-child(odd)     //奇数  
-    E:nth-child(2n+1)    //奇数 在表达式中n取值范围：n=0,1,2..  
-    E:nth-child(even)    //偶数 n=1,2.. 
-    E:nth-child(2n)      //偶数 n=1,2.. 
-    E:nth-child(-n+5)    //前5个子元素   n=0,1..
-    E:nth-last-child(-n+5)//后5个子元素  n=0,1..
-    E:nth-child(7n)      //选择7的倍数的E  n=0,1..
-    E:only-child          //只包含一个子元素    
+#### 结构伪类：
+* E:first-child        //第一个子元素E
+* E:last-child         //最后一个子元素  
+* E:nth-child(n)       //第n个 n=1,2,3...n ;  
+* E:nth-last-child(n)  //倒数第n个子元素 n=1,2..
+* E:nth-child(odd)     //奇数  
+* E:nth-child(2n+1)    //奇数 在表达式中n取值范围：n=0,1,2..  
+* E:nth-child(even)    //偶数 n=1,2.. 
+* E:nth-child(2n)      //偶数 n=1,2.. 
+* E:nth-child(-n+5)    //前5个子元素   n=0,1..
+* E:nth-last-child(-n+5)//后5个子元素  n=0,1..
+* E:nth-child(7n)      //选择7的倍数的E  n=0,1..
+* E:only-child          //只包含一个子元素
 
-    E:first-of-type      //选择指定类型的第1个F  
-    E:last-of-type       //选择指定类型的倒数第1个F  
-    E:nth-of-type(n)     //选择指定类型的第n个F  
-    E:nth-last-of-type(n)//选择指定类型倒数的第n个F  
-    E:only-of-type       //选择只包含一个同类型的F子元素  
+* E:first-of-type      //选择指定类型的第1个E  
+* E:last-of-type       //选择指定类型的倒数第1个E  
+* E:nth-of-type(n)     //选择指定类型的第n个E  
+* E:nth-last-of-type(n)//选择指定类型倒数的第n个E  
+* E:only-of-type       //选择只包含一个同类型的E子元素  
 
-* 空伪类
->
-    E:empty 选择 空元素 。空元素是指没有任何内容的元素，甚至空格都不行。//无内容 无子元素  
+#### 空伪类
+*  E:empty 选择 空元素 。空元素是指没有任何内容的元素，甚至空格都不行。//无内容 无子元素 
+*  E:blank 选择 没有子节点、仅有空的文本节点、仅有空白符的文本节点--浏览器不支持
 
-    E:blank 选择 没有子节点、仅有空的文本节点、仅有空白符的文本节点--浏览器不支持
-
-* 目标伪类：
->
-    E:target   //表示元素被激活的状态  配合锚点使用
+#### 目标伪类：
+* E:target   //表示元素被激活的状态  配合锚点使用
     
-* 排除伪类：
->
-    E:not(selector) //除selector（任意选择器）外的元素会被选中；
+#### 排除伪类：
+* E:not(selector) //除selector（任意选择器）外的元素会被选中；
 
-* 动态伪类：
->
-    a:link{...} 选择所有未访问过的超链接  
-    a:visited{...} 选择所有访问过的超链接  
-    a:hover{...} 当鼠标悬停于元素上方时  
-    a:active{...} 当元素被激活时  
+#### 动态伪类：
+* a:link{...} 选择所有未访问过的超链接  
+* a:visited{...} 选择所有访问过的超链接  
+* a:hover{...} 当鼠标悬停于元素上方时  
+* a:active{...} 当元素被激活时  
+* input:foucs{...} 当元素获得输入焦点    
 
-    input:foucs{...} 当元素获得输入焦点    
+css书写顺序 link visited hover active 不然有些效果不会呈现(速记：love hate)
 
-    css书写顺序 link visited hover active 不然有些效果不会呈现(速记：love hate)
+#### 语言伪类
+* E:lang 匹配E的所有指定lang值为language的元素
 
-* 语言伪类
->
-    E:lang 匹配E的所有指定lang值为language的元素
-    状态伪类： 
-    E:checked 匹配选中的单选和复选按钮表单元素  
-    E:enabled  匹配所有启动的表单元素  
-    E:disabled  匹配所有禁用的表单元素  
+#### 状态伪类： 
+* E:checked 匹配选中的单选和复选按钮表单元素  
+* E:enabled  匹配所有启动的表单元素  
+* E:disabled  匹配所有禁用的表单元素  
 
-#### 伪元素
->
-    是创造文档树之外的对象。例如文档不能提供访问元素内容第一字或者第一行的机制。伪元素还提供一些在源文档中不存在的内容分配样式，例如:before和:after能够访问产生的内容。伪元素的内容实际上和普通DOM元素是相同的，但是它本身只是基于元素的抽象，并不存在于文档中，所以叫伪元素。
->
-    E::before{content:"";......}
-    E::after{content:"";......}
-    E::first-letter     //选中第一个单词、字(常见的标点符号、各类括号和引号在::first-letter中全部都是“辅助类”字符，)
-    E::first-line     //选中第一行的伪元素
-    E::selection       //选中的区域 
-    E::placeholder  //设置placeholder样式
-    //兼容写法
-      ::-webkit-input-placeholder {//chrome
-          color: red;
-      }
-      :-ms-input-placeholder { //ie
-          color: red;
-      }
-      ::-moz-placeholder { //ff
-          color: red;
-      }
+### 伪元素
+伪元素是创造文档树之外的对象。
+例如文档不能提供访问元素内容第一字或者第一行的机制。伪元素还提供一些在源文档中不存在的内容分配样式，例如:before和:after能够访问产生的内容。
+
+伪元素的内容实际上和普通DOM元素是相同的，但是它本身只是基于元素的抽象，并不存在于文档中，所以叫伪元素。
+
+* E::before{content:"";......}
+* E::after{content:"";......}
+* E::first-letter     //选中第一个单词、字(常见的标点符号、各类括号和引号在::first-letter中全部都是“辅助类”字符，)
+* E::first-line     //选中第一行的伪元素
+* E::selection       //选中的区域 
+* E::placeholder  //设置placeholder样式
+    > //兼容写法
+        ::-webkit-input-placeholder {//chrome
+            color: red;
+        }
+        :-ms-input-placeholder { //ie
+            color: red;
+        }
+        ::-moz-placeholder { //ff
+            color: red;
+        }
 
 css2伪类和伪元素都是用单冒号，所有的浏览器都兼容，
 但是css3伪类为单冒号如:hover ，伪元素为双冒号::before；但是双冒号IE8以下不兼容
 
 
 ## <a name="content属性">::before和::after伪元素的content属性</a>[![bakTop](/img/backward.png)](#top)
-
 | 值 |	说明
 |:-|:-|
 | none	|默认值
@@ -370,6 +362,39 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
 ![counter](/img/counter.jpg)
 
 
+## <a name="display">display</a>[![bakTop](/img/backward.png)](#top)
+[dispaly值](https://developer.mozilla.org/zh-CN/docs/Web/CSS/display)
+* inherit 继承
+* none 隐藏
+* inline 行内元素
+* block 块级元素
+* inline-block 行内块元素 
+* table
+  * inline-table
+  * table-cell
+  * ....
+* flex
+* inline-flex
+* grid
+* inline-grid 
+
+### inline,block,inline-block特性
+inline: 
+  * 多个标签存在一行，设置宽高不生效，完全靠内容撑开宽高
+  * 设置padding/margin-left/right有效果，但是padding/margin-top/bottom无效
+
+
+block: 
+  * 独占一行（即使设置宽度），
+  * 在不设置自己的宽度的情况下，块级元素会默认填满父级元素的宽度
+  * 能够改变元素的height，width的值
+  * 设置padding/margin都有效果
+
+inline-block：
+  * 结合的行内和块级的优点，既可以设置宽高，可以让padding和margin生效，又可以和其他行内元素并排。
+  * 即不独占一行的块级元素
+  * 但是元素间会出现留白间距 （原因：HTML 中的换行符、空格符、制表符等合并为空白符, 字体大小不为 0 的情况下, 空白符自然占据一定的宽度, 因此产生了元素间的空隙）
+
 ## <a name="CSS书写顺序、规范">CSS书写顺序、命名规范</a>[![bakTop](/img/backward.png)](#top)
 
 #### 书写顺序
@@ -411,26 +436,35 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
 
 ## <a name="哪些属性可继承">哪些属性可继承</a>[![bakTop](/img/backward.png)](#top)
 
-* 不可继承的样式：
->
-    border 、padding、 margin、 width 、height、position、
-    ）
-    h1-h6 标题标签不能继承父元素中的font-size,font-weight
+`不可继承的样式：`
+*  border
+*  padding
+*  margin
+*  width
+*  height
+*  position
+*  h1-h6 标题标签不会继承父元素中的font-size,font-weight
+*  opacity
 
-* 可继承的样式：
->
-    font- (font-family、font-size、 ...)
-    line- (line-height ...)
-    text- (text-align,text-indent,text-transform,text-shadow ...)
-    letter-spacing
-    word-break
-    word-spacing
-    white-space
-    color // a标签不能继承父元素中的color（被浏览器默认样式给覆盖）（解决：a{color:inherit} 
-    visibility
-    cursor
+`可继承的样式：`
+* font- (font-family、font-size、 ...)
+* line- (line-height ...)
+* text- (text-align,text-indent,text-decoration,text-transform,text-shadow ...)
+* letter-spacing
+* word-break
+* word-spacing
+* white-space
+* color // a标签不能继承父元素中的color（被浏览器默认样式给覆盖）（解决：a{color:inherit} 
+* visibility
+* cursor
 
-* font属性:
+检验是否可继承
+```js
+console.log(getComputedStyle(document.querySelector('.div')).visibility);
+console.log(getComputedStyle(document.querySelector('.div>p')).visibility);
+```
+
+ font属性:
 
 [font-family中文字体对应的英文名称一览表](https://www.zhangxinxu.com/study/201703/font-family-chinese-english.html)
 >
@@ -612,40 +646,51 @@ z-index只适用于已经定位的元素
   >由两个特性（即“父级高度塌陷”和“行框盒子区域限制”）共同作用的结果
 
 * 特性：
->
-    包裹性(由“包裹”和“自适应性”两部分组成)
-    块状化并格式化上下文；
-    破坏文档流；
-    没有任何 margin 合并；
+  * 包裹性(由“包裹”和“自适应性”两部分组成)
+  * 块状化并格式化上下文；
+  * 破坏文档流；
+  * 浮动元素的垂直外边距将不会折叠；(创建了新的BFC)
 
 * 规则：
->
-    不会超越前面的块元素，仅在本行浮动 
-    脱离文档流后，下分的块元素会填充  
-    两个浮动元素的垂直外边距将不会折叠 
-    浮动后的元素不会影响其他块元素的布局，仅会影响被它覆盖的行内元素  
-    浮动盒子的顶部不会超出在html文档中早出现的的块级元素(block)或者是浮动元素的顶部
+ * 脱离文档流后，下分的块元素会填充  
+ * 浮动元素的垂直外边距将不会折叠 (创建了新的BFC)
+ * 浮动元素不会影响其他块元素的布局，仅会影响被它覆盖的行内元素  
+ * 不会超越前面的块元素，仅在本行浮动 
+ * 浮动盒子的顶部不会超出在html文档中早出现的的块级元素(block)或者是浮动元素的顶部
 
-包裹:假设浮动元素父元素宽度 200px，浮动元素子元素是一个 128px 宽度的图片，
-则此时浮动元素宽度表现为“包裹”，就是里面图片的宽度 128px，代
->
-    <div class="father">
-      <div class="float">
-      <img src="/img/border-style.jpg">
-      </div>
-    </div>
 
-自适应性:元素尺寸由内部元素决定，但永远小于“包含块”容器的
+`包裹性`:假设浮动元素父元素宽度 200px，浮动元素子元素是一个 128px 宽度的图片，
+则此时浮动元素宽度表现为“包裹”，就是里面图片的宽度 128px，
+
+```html
+.father{
+  width: 200px;
+}
+.father img{
+  width: 128px;
+}
+<div class="father">
+  <div class="float">
+    <img src="/img/border-style.jpg">
+  </div>
+</div>
+```
+
+`自适应性`:元素尺寸由内部元素决定，但永远小于“包含块”容器的
 尺寸（除非容器尺寸小于元素的“首选最小宽度”）
 
 如果浮动元素的子元素不只是一张 128px 宽度的图片，还有一大波普通
-的文字，则此时浮动元素宽度就自适应父元素的 200px 宽度，最终的宽度表现也是 200px。
->
-    <div class="father">
-    <div class="float">
-      <img src="/img/border-style.jpg">我是帅哥，好巧啊，我也是帅哥，原来看这本书的人都是帅哥~
-    </div>
+的文字，内容超出父元素宽度，则此时浮动元素宽度就自适应父元素的 200px 宽度，文本会换行，最终的宽度表现也是 200px。
+```js
+<div class="father">
+  <div class="float">
+    <img src="/img/border-style.jpg">我是帅哥，好巧啊，我也是帅哥，原来看这本书的人都是帅哥~
+  </div>
+</div>
+```
 
+
+`clear清除浮动`
 clear:left | right | both
 
 clear 属性是让自身不能和前面的浮动元素相邻
@@ -654,11 +699,8 @@ clear 属性只有块级元素才有效的，而::after 等伪元素默认都是
 
 由于 clear:both 的作用本质是让自己不和 float 元素在一行显示，并不是真正意义上
 的清除浮动，因此 float 元素一些不好的特性依然存在，于是，会有类似下面的现象。
->
-    （1）如果 clear:both 元素前面的元素就是 float 元素，则 margin-top 负值即使设
-    成-9999px，也不见任何效果。
-    （2）clear:both 后面的元素依旧可能会发生文字环绕的现象。举个例子，如下 HTML
-    和 CSS： 
+* 如果 clear:both 元素前面的元素就是 float 元素，则 margin-top 负值即使设成-9999px，也不见任何效果。
+* clear:both 后面的元素依旧可能会发生文字环绕的现象。
 
 
 ## <a name="格式化上下文">格式化上下文BFC、IFC、FFC、GFC</a>[![bakTop](/img/backward.png)](#top)
@@ -670,7 +712,6 @@ https://juejin.im/post/5ea45801e51d4546d4399055
 
 ### [BFC](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context)
 
-
 概述：BFC(Block Formatting Context)是Web页面中盒模型布局的CSS渲染模式。它的定位体系属于常规文档流。
 
 `BFC形成条件：`
@@ -678,7 +719,7 @@ https://juejin.im/post/5ea45801e51d4546d4399055
 *  浮动元素（float的值不为none）
 *  绝对定位元素（position的值为absolute或fixed）
 *  overflow的值不为visible( hidden,scroll,auto,... )的块元素 
-*  display的值为 inline-block  | inline-table | table-cell | table-caption | flow-root 的元素
+*  display的值为 inline-block  | table | inline-table | table-cell | table-caption | flow-root 的元素
 *  弹性元素（display为 flex 或 inline-flex元素的`直接子元素`）
 *  网格元素（display为 grid 或 inline-grid 元素的`直接子元素`）
 *  contain 值为 layout、content或 paint 块元素
@@ -734,7 +775,6 @@ https://juejin.im/post/5ea45801e51d4546d4399055
 * IFC中的“line box”高度由 CSS 行高计算规则来确定，同个IFC下的多个line box高度可能会不同。
 * 当 inline-level boxes的总宽度少于包含它们的line box时，其水平渲染规则由 text-align 属性值来决定。
 * 当一个“inline box”超过父元素的宽度时，它会被分割成多个boxes，这些 oxes 分布在多个“line box”中。如果子元素未设置强制换行的情况下，“inline box”将不可被分割，将会溢出父元素。
-
 
 
 当一个span里面的内容大于line box的宽度，它的内容自动拆分成两个部分，分布在两行（两个line box）中
@@ -804,7 +844,7 @@ https://juejin.im/post/5ea45801e51d4546d4399055
 
 * 事件绑定的差异
 1. display:none：不会触发绑定的所有事件.
-2. visibility:hidden：不会触发其点击事件
+2. visibility:hidden：不会触发绑定的所有事件
 3. opacity:0：可以触发点击事件。设置元素透明度为0后，元素只是相对于人眼不存在而已，对浏览器来说，它还是存在的，所以可以触发绑定事件
 
 * 动画属性的差异
@@ -1424,7 +1464,7 @@ RWD 和 AWD 两者都是为了适配各种不同的移动设备，致力于提�
 |:--|:--|
 |% |占父元素的百分比|
 |px |像素，指屏幕上的一个点  .绝对尺寸单位，其值是固定的|
-|em |相对单位， 标准字体大小的倍率 ,继承父级元素的字体大小，如果元素的 font-size 为 14px ，那么 1em = 14px；|果 font-size 为 18px，那么 1em = 18px|
+|em |相对单位， 标准字体大小的倍率 ,继承父级元素的字��大小，如果元素的 font-size 为 14px ，那么 1em = 14px；|果 font-size 为 18px，那么 1em = 18px|
 |rem |相对单位，相对于根元素 html 的 font-size|
 |rpx |微信小程序相对单位。1rpx = 屏幕宽度/750 px。在 750px 的设计稿上,1rpx = 1px|
 |vw、vh、vmin、vmax| 视窗单位, 1vw/1vh 等于1/100的视口宽度/高度 |
@@ -1758,6 +1798,9 @@ format()作用
     </style>
 
 
+
+# <a name="CSS优化">**CSS优化**</a>[![bakTop](/img/backward.png)](#top)
+[CSS优化](/details\WEB性能优化\CSS优化.md)
 
 # <a name="一些css属性及其他">**一些css属性及其他**</a>[![bakTop](/img/backward.png)](#top)
 
