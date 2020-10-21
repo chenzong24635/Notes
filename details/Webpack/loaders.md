@@ -210,7 +210,7 @@ module.exports = {
   module:{
     rules:[
       {
-        test:/\.js$/,
+        test:/\.jsx?$/,
         use:{
           loader:'babel-loader',// babel-loader只会将 ES6/7/8语法转换为ES5语法,需配合babel-polyfill
           // loader:'babel-loader?cacheDirectory=true', 
