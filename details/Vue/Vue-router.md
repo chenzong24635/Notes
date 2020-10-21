@@ -440,7 +440,12 @@ URL 中 hash (#) 及后面的那部分，常用作锚点在页面内进行导航
 
 比如这个 URL：http://www.abc.com/#/hello，hash 的值为#/hello。它的特点在于：hash 虽然出现在 URL 中，但不会被包括在 HTTP 请求中，对后端完全没有影响，因此改变 hash 不会重新加载页面。
 
-通过 `hashchange` 事件监听 URL 的变化，改变 URL 的方式只有这几种：通过浏览器前进后退改变 URL、通过\<a>标签改变 URL、通过window.location改变URL
+通过 `hashchange` 事件(监听location.hash的改变)监听 URL 的变化，
+
+改变 URL 的方式只有这几种：
+* 通过浏览器前进后退改变 URL、
+* 通过\<a>标签改变 URL、
+* 通过window.location改变URL
 
 ### history
 
@@ -452,7 +457,6 @@ history.pushState({ page: 1 }, "", "a.html");
 history.replaceState({ page: 1 }, "", "a.html");
 
 pushState() 需要三个参数: 一个状态对象, 一个标题 (目前被忽略), 和 (可选的) 一个URL. 让我们来解释下这三个参数详细内容：
-
 * 状态对象 — 是一个JavaScript对象，通过pushState () 创建新的历史记录条目。无论什么时候用户导航到新的状态，popstate事件就会被触发，且该事件的state属性包含该历史记录条目状态对象的副本。可以是能被序列化的任何东西。
 
 * 标题 — 在此处传一个空字符串应该可以安全的防范未来这个方法的更改。或者，你可以为跳转的state传递一个短标题。

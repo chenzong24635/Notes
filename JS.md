@@ -55,13 +55,7 @@
 * <a href="#前端性能优化的方法">前端性能优化的方法</a>
 * <a href="#浏览器页面渲染">浏览器页面渲染</a>
 * <a href="#从浏览器地址栏输入url到显示页面的步骤">从浏览器地址栏输入url到显示页面的步骤</a>
-
-* <a href="#get与post区别">get与post区别</a>
-* <a href="#css和js动画的差异">css和js动画的差异</a>
 * <a href="#use strict">"use strict"? 用处？</a>
-* <a href="#深度优先遍历和广度优先遍历">深度优先遍历和广度优先遍历</a>
-* <a href="#DOMContentLoaded、$(function(){})、window.onload事件、执行顺序">DOMContentLoaded、$(function(){})、window.onload事件、执行顺序</a>
-
 
 </details> 
 

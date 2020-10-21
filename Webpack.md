@@ -251,7 +251,7 @@ Loaders是Webpack最重要的功能之一，通过使用不同的Loader，Webpac
 
 简单的举几个Loaders使用例子：
 
-* 可以把SASS文件的写法转换成CSS，而不在使用其他转换工具。
+* 可以把Scss，Less等文件的写法转换成CSS，而不在使用其他转换工具。
 * 可以把ES6或者ES7的代码，转换成大多浏览器兼容的JS代码。
 * 可以把React中的JSX转换成JavaScript代码。
 

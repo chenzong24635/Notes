@@ -217,20 +217,73 @@ var player = box.animate([
 // });
 ```
 
+## 页面生命周期事件
+* DOMContentLoaded 仅当DOM解析完成后触发，不包括样式表，图片等资源 -- 刷新页面时调用
+* load 页面上所有的 DOM,样式表,脚本,图片等资源已经加载完后触发 -- 刷新页面时调用
+* beforeunload 即将离开当前页面（刷新或关闭）时触发。
+* unload 页面卸载后触发 -- 刷新页面，关闭页面时调用
+* pageshow  页面显示时触发 -- 刷新页面时调用
+* pagehide 页面隐藏时触发 -- 刷新页面，关闭页面时调用
+* visibilitychange  页面可见性改变时触发 -- 刷新页面，页面切换时调用
+  >通过document.visibilityState获取当前页面可见性(两种状态：visible | hidden)
+
+执行情况
+
+```js
+let event = ["DOMContentLoaded","load","unload", "pageshow","pagehide","visibilitychange"]
+let count=0 // 便于页面卸载观测触发顺序
+event.forEach(event=>{
+  window.addEventListener(event, function(){
+    count++
+    if(event === "visibilitychange") {
+      console.log(document.visibilityState+)
+      // 用于查看 unload，pagehide 等事件触发
+      // window.open(document.visibilityState+count)
+      // alert(document.visibilityState+count)
+    }else{
+      console.log(event)
+      // window.open(event+count)
+      // alert(event+count)
+    }
+  });
+})
+
+首次页面进入时：
+// DOMContentLoaded
+// load
+// pageshow
+
+切换到其他页面，再切换回来时
+// hidden
+// visible
+
+
+关闭页面时
+// beforeunload
+// hidden
+// pagehide
+// unload
+
+刷新时
+
+```
+
 ## <a name="DOMContentLoaded、window.onload事件、执行顺序">DOMContentLoaded、window.onload事件、执行顺序</a>
 
-DOMContentLoaded事件触发时：仅当DOM解析完成后，不包括样式表，图片等资源。
+DOMContentLoaded 事件触发时：仅当DOM解析完成后，不包括样式表，图片等资源。
 
 onload 事件触发时,页面上所有的 DOM,样式表,脚本,图片等资源已经加载完毕。
 
 ```js
-window.onload = function (){console.log('window.onload');}
 
+window.addEventListener("load", function(){
+  console.log('onload')
+});
 
-
-document.addEventListener( "DOMContentLoaded", function(){
+window.addEventListener("DOMContentLoaded", function(){
+//document.
   console.log('DOMContentLoaded')
-}, false );
+});
 
 //DOMContentLoaded
 

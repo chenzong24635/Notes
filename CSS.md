@@ -50,8 +50,11 @@
 * <a href="#用CSS开启硬件加速来提高网站性能">用CSS开启硬件加速来提高网站性能</a>
 * <a href="#@规则">@规则</a>
 * <a href="#CSS hack">CSS hack</a>
+* <a href="#CSS预处理器">CSS预处理器Less Sass</a>
 
 
+* <a href="#CSS优化">**CSS优化**</a>
+* 
 * <a href="#一些css属性及其他">**一些css属性及其他**</a>
 
   * <a href="#注意事项">注意事项</a>
@@ -1796,6 +1799,49 @@ format()作用
 
       }
     </style>
+
+
+
+## <a name="CSS预处理器">CSS预处理器Less Sass</a>[![bakTop](/img/backward.png)](#top)
+[Less](http://lesscss.cn/)
+[Sass](https://www.sass.hk/docs/)
+
+### Less
+Less 是一门 CSS 预处理语言，它扩展了 CSS 语言，增加了变量、Mixin、函数等特性，使 CSS 更易维护和扩展。
+
+`以.less作为拓展名`;而.sass 文件是早期的用法
+
+
+```less
+@color: #71777c;
+
+.border(@px: 1px, @bcolor:hsla(0,0%,59.2%,.2), @style: solid){
+  border: @arguments;
+}
+```
+
+### Sass
+Sass(Syntactically Awesome StyleSheets) 是一款强化 CSS 的辅助工具，它在 CSS 语法的基础上增加了变量 (variables)、嵌套 (nested rules)、混合 (mixins)、导入 (inline imports) 等高级功能，这些拓展令 CSS 更加强大与优雅。使用 Sass 以及 Sass 的样式库（如 Compass）有助于更好地组织管理样式文件，以及更高效地开发项目
+
+`以.scss作为拓展名`
+
+```scss
+$color: #71777c;
+
+@mixin border($dir: '' ,$width: 1rpx, $color:$uni-text-color-grey, $style: solid){
+  @if $dir == '' { border: $width  $style $color;}
+  @else {border-#{$dir}: $width  $style $color;}
+}
+```
+
+### Less ,Sass区别
+* Less是基于JavaScript，是在客户端处理的；Sass是基于Ruby的，是在服务器端处理的。
+
+* 变量名定义：Less用@，Sass用$
+
+* Less没有输出设置；Sass提供4中输出选项：nested, compact, compressed 和 expanded。
+
+* Sass支持条件语句，可以使用if{}else{},for{}循环等等，而Less不支持。
 
 
 

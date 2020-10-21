@@ -130,10 +130,10 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
   * setTimeout
   * setInterval
   * setImmediate(IE10，Node.js 环境)
+  * requestAnimationFrame
   * I/O、UI交互事件
   * postMessage
   * MessageChannel
-  * requestAnimationFrame(浏览器环境)
 
 * micro-task(微任务)
   * Promise.then、catch、finally

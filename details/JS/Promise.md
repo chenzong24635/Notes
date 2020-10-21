@@ -67,6 +67,7 @@ console.log(5);
 * 无法取消Promise，一旦新建它就会立即执行，无法中途取消。
 * 如果不设置回调函数，Promise内部抛出的错误，不会反应到外部。
 * 当处于pending状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。
+  >你不执行resolve或reject时，promise永远处于 pending 状态
 
 ## 基本用法：  
 ```js
@@ -171,7 +172,7 @@ Promise.reject('err').then(
 
 ## Promise.prototype.then()  
 
-* then 方法的第一个参数是 resolved 状态的回调函数，第二个参数（可选）是 rejected 状态的回调函数。
+* then 方法的第一个参数是处理 resolved 状态的回调函数，第二个参数（可选）是处理 rejected 状态的回调函数（一般用catch捕获错误）。
 ```js
 new Promise((resolve, reject) => {
   if(Math.random()>=0.5){
@@ -186,10 +187,12 @@ new Promise((resolve, reject) => {
 })
 ```
 * then 方法返回新的Promise实例 ，因此可以链式调用，通过 return 传递值
+  >return 返回任意一个非 promise 的值都会被包裹成 promise 对象
 ```js
 Promise.resolve(1)
   .then(data => {
     console.log(data) //1
+    // 会包装成 return Promise.resolve(data + 1)
     return data + 1
   })
   .then(data => {
@@ -411,20 +414,25 @@ let p2 = new Promise((resolve, reject) => {
   setTimeout(resolve, 600, 'P2');
 });
 
-let p = Promise.all([p1, p2]).
-  then((results) => {
-    console.log(results); // 输出：['P1', 'P2']
-  }).
-  catch((error) => {
+let p = Promise.all([p1, p2])
+  .then((results) => {
+    console.log(results); // 如果p1执行成功，输出：['P1', 'P2']
+  })
+  .catch((error) => {
       console.log(error); // 如果p1执行失败，则输出：error
-  });
+  });;
 ```
+
+两种情况：
+* 输出：['P1', 'P2']
+* 输出：'error'
+
 
 ## Promise.race()
 
 Promise.race()类似于all方法同样是将多个Promise实例，包装成一个新的 Promise 实例。
 
-不同的是 只要 p1、p2 之中有一个实例率先改变状态，p 的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给 p 的回调函数。
+不同的是 只要 p1、p2 之中有一个实例率先改变状态，p 的状态就跟着改变（无论成功或失败）。那个率先改变的 Promise 实例的返回值，就传递给 p 的回调函数。
 
 ```let p = Promise.race([p1, p2]);```
 
@@ -454,24 +462,25 @@ let p = Promise.race([p1, p2])
 因为 p1 实例先执行 ，所以结果不是 'P1' 就是 'error'
 
 
+all和race传入的数组中如果有会抛出异常的异步任务，那么只有最先抛出的错误会被捕获，
+并且是被then的第二个参数或者后面的catch捕获；但并不会影响数组中其它的异步任务的执行。
 
 
 ## Promise.allSettled() ES2020
 
-接受一组 Promise 实例作为参数，包装成一个新的 Promise 实例。只有等到所有这些参数实例都返回结果(返回数组)，不管是fulfilled还是rejected，包装实例才会结束。
+接受一组 Promise 实例作为参数，包装成一个新的 Promise 实例。只有等到所有这些参数实例都返回结果(返回数组)，不管是fulfilled还是rejected，实例才会结束。
 
-类似Promise.all()，不同于即使实例存在rejected状态，依旧有返回值，
+类似Promise.all()，不同于即使数组内某个实例rejected，依旧有返回值，
 
 
 ```js
 const p1 = Promise.resolve(42);
 const p2 = Promise.reject(-1);
 
-const alls = Promise.allSettled([p1, p2]);
-
-alls.then((results) => {
-  console.log(results);
-});
+Promise.allSettled([p1, p2])
+  .then((data) => {
+    console.log(data);
+  });
 // [
 //    { status: 'fulfilled', value: 42 },
 //    { status: 'rejected', reason: -1 }
@@ -535,20 +544,20 @@ ajax(function(res){
 promise实现
 ```js
 promise
-.then((res)=>{})
-.then((res)=>{})
-.then((res)=>{})
-.then((res)=>{})
+  .then((res)=>{})
+  .then((res)=>{})
+  .then((res)=>{})
+  .then((res)=>{})
 ```
 
 
 ## Promise.all()是并发的还是串行的？
 并发的。不过Promise.all().then()结果中数组的顺序和Promise.all()接收到的数组顺序一致。
 
-## 
+## Promise.all(),Promise.race()区别
 Promise.all()的作用是接收一组异步任务，然后并行执行异步任务，并且在所有异步操作执行完后才执行回调。
 
-.race()的作用也是接收一组异步任务，然后并行执行异步任务，只保留取第一个执行完成的异步操作的结果，其他的方法仍在执行，不过执行结果会被抛弃。
+Promise.race()的作用也是接收一组异步任务，然后并行执行异步任务，只保留取第一个执行完成的异步操作的结果，其他的方法仍在执行，不过执行结果会被抛弃。
 
 Promise.all().then()结果中数组的顺序和Promise.all()接收到的数组顺序一致。
 
