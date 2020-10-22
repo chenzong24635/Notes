@@ -317,10 +317,13 @@ HTML中某些字符是预留的,预留字符必须被替换为字符实体。
 * 深层的嵌套，导致搜索引擎读取困难，同时还很大程度上增加了代码冗余；
 * table对对于页面布局来说，从语义上看是不正确的。(它描述的是表现，而不是内容。)
 
-## <a name="div较table优点">div较table优点</a>[![bakTop](/img/backward.png)](#top)
+## <a name="div较table优点">div+css较table优点</a>[![bakTop](/img/backward.png)](#top)
 * 加快了页面的加载速度（在IE中要将整个table加载完了才显示内容）
+* 允许更多炫酷的页面效果，丰富了页面
 * 符合W3C标准，代码结构清晰明了，结构、样式和行为分离，带来足够好的可维护性。
 * 对SEO搜索引擎更加友好，
+
+缺点: 不同浏览器对web标准默认值不同，所以更容易出现对浏览器的兼容性问题。
 
 ## <a name="iframe缺点">iframe优缺点</a>[![bakTop](/img/backward.png)](#top)
 优点：
