@@ -167,7 +167,7 @@ Function.prototype.toString()
 
 
 # 一道题 理解函数的prototype,静态方法，变量提升。。。
-[运算符优先级](（https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence）)
+[运算符优先级](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence)
 
 ```js
 function Foo() {

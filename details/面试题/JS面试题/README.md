@@ -1,3 +1,39 @@
+# <a name="面试题">**面试题**</a>
+
+[Daily-Interview-Question](https://github.com/Advanced-Frontend/Daily-Interview-Question/blob/master/datum/summary.md?tdsourcetag=s_pctim_aiomsg)
+
+[前端基础面试题(JS 部分)](https://zhuanlan.zhihu.com/p/28428367)
+
+[web 前端大厂 10 道经典面试题汇总](https://zhuanlan.zhihu.com/p/57200821)
+
+[前端进阶系列](https://github.com/yygmind/blog)-木易杨
+
+
+## 点击一个input依次触发的事件
+```js
+const ipt = document.getElementById('ipt');
+ipt.onclick = function (e) {
+  console.log('click')
+}
+ipt.onfocus = function (e) {
+  console.log('focus')
+}
+ipt.onmousedown = function (e) {
+  console.log('mousedown')
+}
+ipt.onmouseover = function (e) {
+  console.log('mouseover')
+}
+ipt.onmouseenter = function (e) {
+  console.log('mouseenter')
+}
+
+// mouseover
+// mouseenter
+// mousedown
+// focus
+// click
+```
 
 ## <a name="var、let 及 const 区别">var、let 及 const 区别</a>
 对于这个问题，我们应该先来了解提升（hoisting）这个概念。
@@ -15,9 +51,12 @@ console.log(a) // undefined
 a = 1
 ```
 可知，使用 var 声明的变量会被提升到作用域的顶部，
+同时var声明的全局变量会被挂载到 window 上（`打印 window.a 输出 1`）
+
 
 接下来我们再来看 let 和 const 。
 ```js
+// 全局变量绑定到 window ?
 var a = 1
 let b = 1
 const c = 1
@@ -25,6 +64,7 @@ console.log(window.a) // 1
 console.log(window.b) // undefined
 console.log(window.c) // undefined
 
+// 
 {
   console.log(d) // undefined
   var d
@@ -42,15 +82,18 @@ console.log(window.c) // undefined
 }
 // Uncaught SyntaxError: Identifier 'g' has already been declared
 
-```
-首先在全局作用域下使用 let 和 const 声明变量，变量并不会被挂载到 window 上，这一点就和 var 声明有了区别。
->  
-    报错的原因是因为存在暂时性死区
-    只要块级作用域内存在let命令，它所声明的变量就“绑定”（binding）这个区域，不再受外部的影响。  
-    在代码块内，使用let命令声明变量之前，该变量都是不可用的。这在语法上，称为“暂时性死区”
 
-再者当我们在let/const声明 变量 之前如果使用了该变量，就会出现报错的情况,var 不会
-同时let/const重复声明同一变量也会报错,var 不会
+```
+报错的原因是因为存在暂时性死区; 在代码块内，使用let命令声明变量之前，该变量都是不可用的。这在语法上，称为“暂时性死区”
+
+块级作用域内存在let命令，它所声明的变量就“绑定”（binding）这个区域，不再受外部的影响。 
+
+`let,const和var区别`
+* 首先在全局作用域下使用 let 和 const 声明变量，变量并不会被挂载到 window 上，这一点就和 var 声明有了区别。
+
+
+* 再者当我们在let/const声明 变量 之前如果使用了该变量，就会出现报错的情况,var 不会
+* 同时let/const重复声明同一变量也会报错,var 不会
 
 
 ## <a name="Array.apply(null,Array(3))与Array(3)区别">Array.apply(null,Array(3))与 Array(3)区别</a>
@@ -268,24 +311,29 @@ event.forEach(event=>{
 
 ```
 
-## <a name="DOMContentLoaded、window.onload事件、执行顺序">DOMContentLoaded、window.onload事件、执行顺序</a>
 
-DOMContentLoaded 事件触发时：仅当DOM解析完成后，不包括样式表，图片等资源。
+### 定义一个简单的模板类，使用{}作为转义标记，中间的数字表示替换目标，format 实参用来替换模板内标记
 
-onload 事件触发时,页面上所有的 DOM,样式表,脚本,图片等资源已经加载完毕。
+>
 
-```js
+    (function (window) {
+        function fn(str) {
+            this.str = str;
+        }
 
-window.addEventListener("load", function(){
-  console.log('onload')
-});
+        fn.prototype.format = function () {
+            var arg = Array.prototype.slice.call(arguments, 0);
+            return this.str.replace(/\{\s*(\d+)\s*\}/g, function (a, b) {
+                return arg[b] || '';
+            });
+        };
 
-window.addEventListener("DOMContentLoaded", function(){
-//document.
-  console.log('DOMContentLoaded')
-});
+        window.fn = fn;
+    })(window);
 
-//DOMContentLoaded
+    // use
+    (function () {
+        var t = new fn('<p><a href="{0}">{1}</a><span>{2}</span></p>');
+        console.log(t.format('http://www.alibaba.com', 'Alibaba', 'Welcome'));
+    })();
 
-//window.onload
-```

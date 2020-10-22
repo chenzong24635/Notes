@@ -4,13 +4,17 @@
 
 [5种this绑定全面解析](https://github.com/yygmind/blog/issues/20)
 
-https://mp.weixin.qq.com/s/1iw1MBfitockO5U0ZJIeXQ
+[](https://juejin.im/post/6844904132201938957)
 
 ## 了解
-this的值是在执行的时候才能确认，定义的时候不能确认—— 因为this是执行上下文环境的一部分，而执行上下文需要在代码执行之前确定，而不是定义的时候
+
+this是在[执行上下文](/details\面试题\JS面试题\作用域-作用域链-执行上下文.md)创建时确定的一个在执行过程中不可更改的变量(而执行上下文需要在代码执行时确定)。
 
 this永远指向的是最后调用它的对象
 
+
+当函数独立调用的时候，在严格模式下它的this指向undefined，
+在非严格模式下，当this指向undefined的时候，自动指向全局对象(浏览器中就是window)
 
 在ES2019中添加了globalThis对象，从现在开始应该在任何平台上访问全局作用域：
 ```js
@@ -72,7 +76,7 @@ var name = 'window.name'
 var obj = {
   name: 'obj.name',
   func: function(){
-    console.log(this); // {name: "obj.name", func: ƒ}
+    console.log(this === obj); // true
     console.log(this === window); //false
     console.log(this.name); // "obj.name"
   }
@@ -87,7 +91,7 @@ var name = 'window.name'
 var obj = {
   name: 'obj.name',
   func: function(){
-    console.log(this); // Window
+    console.log(this === obj); // false
     console.log(this === window); //true
     console.log(this.name); //'window.name'
   }
@@ -102,7 +106,7 @@ var name = 'window.name'
 var obj = {
   name: 'obj.name',
   func: function(){
-    console.log(this); // Window
+    console.log(this === obj); // false
     console.log(this === window); //true
     console.log(this.name); //'window.name'
   }
@@ -126,7 +130,7 @@ var name = 'window.name'
 var obj = {
   name: 'obj.name',
   func: function(){
-    console.log(this); // {name: "obj.name", func: ƒ}
+    console.log(this === obj); //true
     console.log(this === window); //false
     console.log(this.name); // "obj.name"
   }
@@ -167,7 +171,7 @@ var name = 'window.name'
 var obj = {
   name: 'obj.name',
   func: ()=>{
-    console.log(this); // Window
+    console.log(this === obj); //false
     console.log(this === window); //true
     console.log(this.name); //'window.name'
   }
