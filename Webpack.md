@@ -230,6 +230,8 @@ module:{
 }  
 ```  
 
+
+
 ### plugin 插件
 
 plugin 可以在webpack运行到某个阶段的时候，帮你做某些事情，类似于生
@@ -257,24 +259,73 @@ Loaders是Webpack最重要的功能之一，通过使用不同的Loader，Webpac
 
 注意：所有的Loaders都需要在npm中单独进行安装，并在webpack.config.js里进行配置。
 
+
 Loaders的配置:
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test:/\.vue$/,
+        // 单个loader
+        loader:'vue-loader',
+        enforce:'pre'
+      },
+      {
+        test: /\\.css$/,
+        // 多个laoder
+        use: [
+          // 无参数配置
+          'style-loader',
+          // 有参数配置
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true
+            }
+          },
+          { loader: 'sass-loader' }
+        ]
+      }
+    ]
+  }
+};
+```
+
 * test：用于匹配处理文件的扩展名的表达式，这个选项是必须进行配置的；
 * use：loader名称，就是你要使用模块的名称，这个选项也必须进行配置，否则报错；
-  ```js
-  use:[
-    // 没参数
-    'thread-loader',
-    // 有参数
-    {
-      loader:'babel-loader',
-      options:{
-        presets:['@babel/preset-env']
-      }
-    }
-  ]
   ```
 * include/exclude:只匹配哪些文件或排除哪些的文件（可选）；
 * query：为loaders提供额外的设置选项（可选）。
+* enforce：
+  * pre(前置)
+  * normal(正常) 不写时的默认值
+  * inline(内联)
+  * post(后置)
+  
+  其执行顺序 pre -> normal -> inline ->post
+
+`注意：loader解析顺序从右到左（从下至上）;可用enforce改变执行顺序`
+如：以下执行顺序是 less-loader > css-loader > style-loader
+```js
+module: {
+  rules: [
+    {
+        test: /\.less$/,
+        loader:'style-loader',
+    },
+    {
+        test: /\.less$/,
+        loader:'css-loader',
+    },
+    {
+        test:/\.less$/,
+        loader:'less-loader'
+    },
+  ]
+}
+```
+
 
 `exclude一般用于排除 /node_modules/ ，缩小文件匹配范围,提高编译效率`
 >exclude: /node_modules/

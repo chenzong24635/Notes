@@ -1155,9 +1155,10 @@ mounted() {
 [$once、$on、$off的使用](https://cn.vuejs.org/v2/guide/components-edge-cases.html#%E7%A8%8B%E5%BA%8F%E5%8C%96%E7%9A%84%E4%BA%8B%E4%BB%B6%E4%BE%A6%E5%90%AC%E5%99%A8)
 
 
-## <a name="debounce使用">debounce使用</a>[![bakTop](/img/backward.png)](#top) 
+## <a name="debounce使用">debounce,throttle使用</a>[![bakTop](/img/backward.png)](#top) 
 当一个按钮多次点击时会导致多次触发事件，可以结合场景是否立即执行immediate
 
+1. 
 ```js
 import {debounce} from 'lodash'
 
@@ -1217,6 +1218,24 @@ mounted () {
   }, 1000)
 },
 ```
+
+2. 使用自定义指令
+
+```html
+<div v-debounce="[func, 500]">
+```
+
+```js
+import {debounce} from 'lodash'
+
+Vue.directive('debounce',{
+  bind(el,binding){
+    let [func, delay=500] = binding.value
+    el.addEventListener('click',debounce(func,delay))
+  }
+})
+```
+
 
 ## <a name="长列表性能优化">长列表性能优化 Object.freeze</a>[![bakTop](/img/backward.png)](#top) 
 

@@ -146,13 +146,32 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
 每一个macrotask会从头到尾将这个任务执行完毕，不会执行其它；
 浏览器为了能够使得JS内部macrotask与DOM任务能够有序的执行，会在一个macrotask执行结束后，在下一个 macrotask 执行开始前，对页面进行重新渲染
 
-`microtask（微任务）`，可以理解是在当前 macrotask 执行结束后立即执行的任务  
-也就是说，在当前macrotask任务后，下一个macrotask之前，在渲染之前。
+`microtask（微任务）`，每次执行栈执行完所有的同步任务后，会在任务队列中取出异步任务，先将所有 microtask 执行完成后（再渲染），才会执行 macrotask。所以， 微任务会在宏任务之前执行。
 所以它的响应速度相比setTimeout会更快，因为无需等渲染
-也就是说，在某一个macrotask执行完后，就会将在它执行期间产生的所有microtask都执行完毕（在渲染前）
 
+
+微任务会在宏任务之前执行。
+```js
+let body = document.body;
+body.addEventListener("click", () => {
+  Promise.resolve().then(() => {
+    console.log(1);
+  });
+  console.log(2);
+});
+body.addEventListener("click", () => {
+  Promise.resolve().then(() => {
+    console.log(3);
+  });
+  console.log(4);
+});
+```
+```js
+// 2 1 4 3
+```
 
 ## JS的执行机制是：
+* 执行当前微任务队列中的所有微任务（依次执行）
 * 执行一个宏任务  
 * 过程中如果遇到微任务，就将其放到微任务的“事件队列”里    
 * 当前宏任务执行完成后，立即执行当前微任务队列中的所有微任务（依次执行）  
