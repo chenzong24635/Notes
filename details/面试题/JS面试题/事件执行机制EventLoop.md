@@ -1,4 +1,5 @@
 # 事件执行机制
+[Tasks, microtasks, queues and schedules](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/)
 
 [从一道题浅说 JavaScript 的事件循环](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/7)
 
@@ -7,8 +8,8 @@
 
 [这一次，彻底弄懂 JavaScript 执行机制](https://juejin.im/post/59e85eebf265da430d571f89)
 
+[深入解析你不知道的 EventLoop 和浏览器渲染、帧动画、空闲回调](https://github.com/sl1673495/blogs/issues/47)
 
-[Tasks, microtasks, queues and schedules](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/)
 
 ## [堆-栈-队列](/details\面试题\JS面试题\堆-栈-队列.md)
 

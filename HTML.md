@@ -374,6 +374,7 @@ HTML中某些字符是预留的,预留字符必须被替换为字符实体。
     <link rel="icon" href="favicon.gif" type="image/gif" />
 
 ### <a name="预加载页面资源prefetch、prefetch">预加载页面资源prefetch、prefetch</a>[![bakTop](/img/backward.png)](#top)
+[](https://juejin.im/post/6844903646996480007)
 
 #### dns-prefetch
 ```html
@@ -383,27 +384,27 @@ HTML中某些字符是预留的,预留字符必须被替换为字符实体。
 如果网站的所有的资源基本都在本域名下，那么这个基本没有什么作用。因为Chrome在访问你的网站就帮你缓存了
 ```
 
-#### preload 
+#### preload --提前加载（提前加载重要资源）
 preload 提供了一种声明式的命令，让浏览器提前加载指定资源(加载后并不执行)，同时不阻塞文档 onload 事件，在需要执行的时候再执行(script标签加载时执行)。
 
 使用 preload 后，不管资源是否使用都将提前加载,提升资源加载的优先级
 
 优点
-* 将加载和执行分离开，可不阻塞渲染和 document 的 onload 事件
+* 将加载和执行分离开，可不阻塞渲染和  onload 事件
 * 提前加载指定资源，不再出现依赖的font字体隔了一段时间才刷出
 
 href: 预加载的资源  
 as: 标明资源类型
 ```html
 <!-- 获取字体时必须加上crossorigin属性，就如使用CORS的匿名模式获取一样。是的，即使你的字体与页面同域 -->
-<link rel="preload" href="/xxx.woff" as="font" crossorigin>
-<link rel="preload" href="/xxx.css" as="style">
-<link rel="preload" href="/xxx.js" as="script">
+<link rel="preload" href="xxx.woff" as="font" crossorigin />
+<link rel="preload" href="xxx.css"  as="style" />
+<link rel="preload" href="xxx.js"   as="script" />
 ```
 
 让 preload的 CSS 样式表立即生效吗
 ```html
-<link rel="preload" href="xxx.css" onload="this.rel=stylesheet" as="style">
+<link rel="preload" href="xxx.css" onload="this.rel=stylesheet" as="style" />
 ```
 
 
@@ -416,13 +417,13 @@ The resource xxxx was preloaded using link preload but not used within a few sec
 
 Preload是为了让当前页面的关键资源尽早被发现和加载，从而提升首屏渲染性能。
 
-#### Prefetch 
+#### Prefetch -- 空闲加载（用于后续加载可能会用到的资源）
 浏览器会在空闲的时候，下载资源，当有页面使用的时候，直接从缓存中读取。其实是把决定是否和什么时间加载这个资源的决定权交给浏览器。
 
 如果在prefetch还没下载完的时候，浏览器发现script标签也引用了同样的资源，浏览器会再次发起请求，这样会造成加载了两次，所以不要在当前页面马上就要用的资源上用prefetch，要用preload。
 
 ```html
-<link href="xxx.js" rel="prefetch">
+<link rel="prefetch" href="xxx.js" />
 ```
 
 作用

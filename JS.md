@@ -119,8 +119,6 @@ JavaScript的单线程，与它的用途有关。作为浏览器脚本语言，J
 ### [堆栈](/details\面试题\JS面试题\堆-栈-队列.md)
 
 
-
-
 ### 内置对象
 Object 是 JavaScript 中所有对象的父对象  
 数据封装类对象：Object、Array、Boolean、Number、String  
@@ -361,11 +359,11 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
     事件冒泡：从目标元素开始，往顶层元素传播。途中如果有节点绑定了相应的事件处理函数，这些函数都会被一次触发。
 
 所有的事件都会捕获但不是所有事件都会冒泡,例如：
+* submit
 * onblur
 * onfocus
 * onmouseenter
 * onmouseleave
-* submit
 
 
 #### 事件模型：原始事件模型(DOM0级)、DOM2事件模型、IE事件模型。
@@ -393,7 +391,7 @@ removeEventListener(eventType,handler,useCapture)
 
 3. IE事件模型：不支持事件捕获 (IE11以下)
 ```js
-attachEvent(eventType,handler) 
+attachEvent(eventType,handler)
 detachEvent(eventType,handler)
 
 例：attachEvent("onclick",func)//事件加on
@@ -1621,25 +1619,28 @@ async函数表示函数里面可能会有异步方法，await后面跟一个表�
 ## <a name="深浅拷贝">深浅拷贝</a>
 [深浅拷贝](/details/常用的手写函数/深拷贝-浅拷贝.md)
 
-## <a name="js延迟加载：defer,async">js延迟加载：defer,async</a>
-async 属性   
+## <a name="js延迟加载：defer,async">js异步延迟加载：async，defer</a>
+async 属性  -- 异步加载
 ` <script src="file.js" async></script>`
 * 让js并行加载, 
 * 加载完成后立即执行，
-* 脚本执行顺序和加载顺序无关。它们将在onload 事件之前完成。对于支持async属性的浏览器，动态插入* 外链脚本, 相当于默认具有async=true；
+* 脚本执行顺序和加载顺序无关。在 load 事件之前完成。
+* 对于支持async属性的浏览器，动态插入外链脚本, 相当于默认具有async=true；
 
-defer 属性   
+defer 属性   -- 延迟加载
 `<script src="file.js" defer></script>`
 * 让js并行加载, 
 * 在页面渲染完后才会执行，
-* 脚本按加载的顺序执行
+* 脚本按加载的顺序执行。在 DOMContentLoaded 事件之前完成
 
+使用defer、async的脚本禁止使用document.write()方法
 
 同时使用 async 和 defer,执行效果和async一致
 
-* 动态创建script
+
 
 ```JS
+// 动态创建script
 function downloadJSAtOnload() {
   var element = document.createElement("script");
   element.src = "defer.js";
@@ -1653,6 +1654,13 @@ if (window.addEventListener) {
   window.onload =downloadJSAtOnload;
 }
 ```
+
+另：preload（提前加载），prefecth（空闲加载）能提前加载文件
+```html
+<link href="xxx.js" rel="preload"  as="script">
+<link href="xxx.js" rel="prefetch">
+```
+
 ## <a name="重绘和回流">[重绘和回流](https://github.com/chenjigeng/blog/issues/4)</a>
 [重绘和回流](\details\面试题\JS面试题\重绘-回流.md)
 
