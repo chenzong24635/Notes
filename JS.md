@@ -1222,7 +1222,9 @@ console.log('1', a) // -> '1' 1
 #### 概念
 多人对于闭包的解释可能是可以访问函数外部的变量，这个解释是不完整的
 
-先看下[MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures)对闭包的定义：
+红宝书对于闭包的定义：闭包是指有权访问另外一个函数作用域中的变量的函数，
+
+看下[MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures)对闭包的定义：
 >
     函数和对其周围状态（lexical environment，词法环境）的引用捆绑在一起构成闭包（closure）。
     也就是说，闭包可以让你从内部函数访问外部函数作用域。在 JavaScript 中，每当函数被创建，就会在函数生成时生成闭包。

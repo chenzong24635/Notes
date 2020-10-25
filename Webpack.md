@@ -1,11 +1,12 @@
 [官网-中](https://www.webpackjs.com/guides/)
 [官网-英](https://webpack.js.org/guides/)
 
+[](https://juejin.im/post/6844904079219490830)
 [2020年了,再不会webpack敲得代码就不香了(近万字实战)](https://juejin.im/post/5de87444518825124c50cd36)
 
 [带你深度解锁Webpack系列(优化篇)](https://juejin.im/post/5e6cfdc85188254913107c1f)
 
-[一步步从零开始用 webpack 搭建一个大型项目](https://juejin.im/post/5de06aa851882572d672c1ad#comment)
+[一步步从零开始用 webpack 搭建一个大型项目](https://juejin.im/post/5de06aa851882572d672c1ad)
 
 [webpack打包原理 ? 看完这篇你就懂了 !](https://juejin.im/post/5e116fce6fb9a047ea7472a6)
 
@@ -34,7 +35,6 @@ webpack默认支持JS模块和JSON模块
 * npx webpack -v //查看版本
 * webpack -v  //查看版本
 * npm info webpack   // 查看webpack包版本
-
 
 
 # [建立项目](https://www.webpackjs.com/guides/getting-started/#%E5%9F%BA%E6%9C%AC%E5%AE%89%E8%A3%85)
@@ -72,6 +72,7 @@ module.exports = {
 
 占位符含义
 |占位符|含义
+|:--|:--|
 |ext|文件后缀名
 |name|文件名
 |path|文件相对路径
@@ -167,7 +168,24 @@ externals配置选项提供了「从输出的 bundle 中排除依赖」的方法
 
 防止将某些 import 的包(package)打包到 bundle 中，而是在运行时(runtime)再去从外部获取这些扩展依赖
 
-* CDN资源引入
+```js
+externals: {
+  'vue': 'Vue',
+  'vuex': 'Vuex',
+  'vue-router': 'VueRouter',
+  'axios': 'axios',
+  'iView': 'iview',
+  // 'element-ui': 'ELEMENT',
+  jquery: 'jQuery',
+  // lodash: '_'
+  lodash: {
+    commonjs: "lodash",//如果我们的库运行在Node.js环境中，import _ from 'lodash'等价于const _ = require('lodash')
+    commonjs2: "lodash",//同上
+    amd: "lodash",//如果我们的库使用require.js等加载,等价于 define(["lodash"], factory);
+    root: "_"//如果我们的库在浏览器中使用，需要提供一个全局的变量‘_’，等价于 var _ = (window._) or (_);
+  }
+}
+```
 
 
 ### [devtool 代码映射](https://webpack.js.org/configuration/devtool/)
@@ -191,7 +209,6 @@ Development推荐使用：
 * eval-cheap-source-map
 * eval-cheap-module-source-map
 
-
 Production推荐使用：
 * none
 * source-map
@@ -208,6 +225,21 @@ Production推荐使用：
 webpack默认支持JS模块和JSON模块  
 支持CommonJS， ES moudule， AMD等模块类型
 
+use使用类型：String | Array | Object
+```js
+use: 'xxx-laoder'
+use: {
+  loader； 'xxx-laoder'
+}
+use: [
+  'xxx-loader',
+  {
+    loader: 'xxx-loader'
+  }
+]
+```
+
+
 ```js
 module:{
   rules:[
@@ -220,6 +252,8 @@ module:{
   ]
 }
 ```
+
+
 * noParse 
 
 如果一些第三方模块没有AMD/CommonJS规范版本，可以使用 noParse 来标识这个模块，这样 Webpack 会引入这些模块，但是不进行转化和解析，从而提升 Webpack 的构建性能 ，例如：jquery 、lodash。
@@ -684,7 +718,32 @@ npm i -D  webpack-merge // 合并配置
 # [Webpack优化](/details/WEB性能优化/Webpack优化.md)
 
 # 魔法注释
+[魔法注释](https://webpack.js.org/api/module-methods/#magic-comments)
+
+添加webpackChunkName，分离路由模块
 ```js
-import(/* webpackChunkName: 'posts' */'./posts/posts')
+import(
+  /* webpackChunkName: 'posts' */
+  './posts/posts'
+)
 ```
 
+
+同时，也要在 webpack.config.js 中做一些改动：
+```js
+// webpack.config.js
+{
+  output: {
+    filename: "bundle.js",
+    chunkFilename: "[name].lazy-chunk.js"
+  }
+}
+```
+
+还有添加 webpackPrefetch 魔术注释，Webpack 令我们可以使用与 \<link rel="prefetch"> 相同的特性
+```js
+import(
+  /* webpackPrefetch: true */
+  './posts/posts'
+)
+```

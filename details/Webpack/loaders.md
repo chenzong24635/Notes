@@ -1,5 +1,6 @@
 
 # loaders
+[](https://github.com/LinDaiDai/niubility-coding-js/blob/master/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/webpack/%E9%9C%96%E5%91%86%E5%91%86%E7%9A%84webpack%E4%B9%8B%E8%B7%AF-loader%E7%AF%87.md#raw-loader)
 
 ## <a name="加载CSS">加载CSS: style-loader css-loader less-loader sass-loader...</a>
 
@@ -54,7 +55,7 @@ module.exports = {
 ```js
 rules: [
   {
-    test: /\.css$/,
+    test: /\.(css|less)$/,
     use: [
       'style-loader',
       'css-loader',
@@ -124,6 +125,7 @@ url-loader 功能类似于 file-loader，但是在文件大小（单位 byte）�
 url-loader 把资源文件转换为 URL，file-loader 也是一样的功能。不同之处在于 url-loader 更加灵活，它可以把小文件转换为 base64 格式的 URL，从而减少网络请求次数。
 
 
+
 ```js
 module: {
   rules: [
@@ -148,6 +150,11 @@ module: {
   ]
 }
 ```
+注意:
+如果你是使用import引用的话得到的是图片的相对路径
+
+如果是使用require引用的话得到的是一个模块对象, 这时候需要需要配置loader的一个参数options.esModule为false 才会得到相对路径.
+
 
 ## <a name="加载数据">加载数据,如 CSV、TSV 和 XML：csv-loader xml-loader</a>
 npm install --save-dev csv-loader xml-loader
@@ -206,18 +213,22 @@ function resolve(dir) {
 }
 
 module.exports = {
-  entry: ["@babel/polyfill",path.resolve(__dirname,'./src/index.js')], // 入口文件
+  entry: [ // 入口文件
+    "@babel/polyfill",
+    path.resolve(__dirname,'./src/index.js')
+  ],
   module:{
     rules:[
       {
         test:/\.jsx?$/,
         use:{
           loader:'babel-loader',// babel-loader只会将 ES6/7/8语法转换为ES5语法,需配合babel-polyfill
-          // loader:'babel-loader?cacheDirectory=true', 
+          /* loader:'babel-loader?cacheDirectory=true', 
           //缓存中读取，以避免在每次运行时运行潜在昂贵的 Babel 重新编译
-          // cacheDirectory=true将使用默认的缓存目录(node_modules/.cache/babel-loader)，如果在任何根目录下都没有找到 node_modules 目录，将会降级回退到操作系统默认的临时文件目录。
+          // cacheDirectory=true将使用默认的缓存目录(node_modules/.cache/babel-loader)，如果在任何根目录下都没有找到 node_modules 目录，将会降级回退到操作系统默认的临时文件目录。 */
 
           options:{
+            // Babel配置使用的是@babel/preset-env这个preset.
             presets:['@babel/preset-env']
           }
         },
@@ -246,6 +257,9 @@ module.exports = {
   ],
 };
 ```
+
+
+
 useBuiltIns 选项是 babel 7 的新功能,这个选项告诉 babel 如何配
 置 @babel/polyfill
 * entry: 需要在 webpack 的入口文件 import "@babel/polyfill" 一次。 babel
@@ -270,6 +284,40 @@ useBuiltIns 选项是 babel 7 的新功能,这个选项告诉 babel 如何配
 [不容错过的 Babel7 知识](https://juejin.im/post/5ddff3abe51d4502d56bd143)
 
 
+### 使用优化
+在使用babel-loader是会有以下几个问题, 我们可以针对问题点做不同的优化
+* babel-loader 使得编译缓慢
+
+解决办法: 
+  * 确保转译尽可能少的文件，用exclude选项来去除无需编译文件
+  * 设置cacheDirectory选项为true, 开启缓存, 转译的结果将会缓存到文件系统中
+
+* babel-loader 使得打包文件体积过大
+Babel 对一些公共方法使用了非常小的辅助代码, 比如 _extend.默认情况下会被添加到每一个需要它的文件中,所以会导致打包文件体积过大.
+
+解决办法: 
+ * 引入babel runtime作为一个单独的模块, 来避免重复.
+
+```js
+// npm install @babel/plugin-transform-runtime -D 
+// npm install babel-runtime -S 
+rules: [
+  // 'transform-runtime' 插件告诉 babel 要引用 runtime 来代替注入。
+  {
+    test: /\.js$/,
+    exclude: /node_modules/,
+    use: {
+      loader: 'babel-loader',
+      options: {
+        presets: ['@babel/preset-env'],
+        plugins: ['@babel/plugin-transform-runtime']
+      }
+    }
+  }
+]
+```
+
+
 ## <a name="JS语法检查">JS语法检查eslint-loader</a>
 npm install eslint-loader eslint --save-dev
 
@@ -279,7 +327,7 @@ module: {
     {
       test: /\.js$/,
       exclude: /node_modules/,
-      loader: 'eslint-loader',
+      // loader: 'eslint-loader',
       use: ['babel-loader', 'eslint-loader'],
     },
   ],
@@ -288,7 +336,7 @@ module: {
 
 
 ## <a name="cache-loader">loader缓存 cache-loader</a>
-在一些性能开销较大的 loader 之前添加 cache-loader，将结果缓存中磁盘中。默认保存在 node_modueles/.cache/cache-loader 目录下。
+在一些性能开销较大的 loader 之前添加 cache-loader，将结果缓存中磁盘中。默认保存在 node_modules/.cache/cache-loader 目录下。
 
 npm i cache-loader -D
 ```js

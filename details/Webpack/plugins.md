@@ -5,7 +5,7 @@ npm i -D mini-css-extract-plugin
 
 从一个或多个包中提取文本到单独的文件中。
 
-`由于webpack v4 extract-text-webpack-plugin不能用于CSS`。
+`webpack4 extract-text-webpack-plugin不能用于CSS`。
 
 最好将mini-css-extract-plugin用于生产模式，因为该插件使用目前会导致HMR功能缺失。因此在平常的开发模式中，我们还是使用style-loader。
 
@@ -17,10 +17,8 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          // MiniCssExtractPlugin.loader, // 生产模式使用
-          // 'style-loader', //开发使用
-          // process.env.NODE_ENV === 'production' ? MiniCssExtractPlugin.loader : 'style-loader',
-          MiniCssExtractPlugin.loader,
+          // MiniCssExtractPlugin 仅用于生产模式
+          process.env.NODE_ENV === 'production' ? MiniCssExtractPlugin.loader : 'style-loader',
           "css-loader",
           'less-loader',
           'postcss-loader'

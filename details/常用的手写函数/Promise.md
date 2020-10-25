@@ -4,9 +4,39 @@
 
 [Promise的源码实现（完美符合Promise/A+规范）](https://github.com/YvetteLau/Blog/issues/2)
 
-<!-- https://juejin.im/post/6844903625769091079 -->
 
-# 简易Promise
+# [最简实现Promise，支持异步链式调用（20行）](https://juejin.im/post/6844904094079926286)
+```js
+function Promise(fn) {
+  this.cbs = [];
+
+  const resolve = (value) => {
+    setTimeout(() => {
+      this.data = value;
+      this.cbs.forEach((cb) => cb(value));
+    });
+  }
+
+  fn(resolve);
+}
+
+Promise.prototype.then = function (onResolved) {
+  return new Promise((resolve) => {
+    this.cbs.push(() => {
+      const res = onResolved(this.data);
+      if (res instanceof Promise) {
+        res.then(resolve);
+      } else {
+        resolve(res);
+      }
+    });
+  });
+};
+
+```
+
+
+# 手写Promise
 
 ```js
 // Promise存在三个状态：pending（等待态）、fulfilled（成功态）、rejected（失败态）
@@ -71,7 +101,7 @@ class MyPromise {
         this.value = value
         this.resolvedFns.forEach(fn=>fn()) // 执行回调函数
         this.resolvedFns.length = 0
-      }
+      } 
     }
     const rejected = (reason) => {
       if(this.status === PENDING) {
@@ -89,6 +119,7 @@ class MyPromise {
     }
 
     // new Promise时，需要传递一个 executor 执行器，并立刻执行
+    // 执行出错时抛出
     try {
       executor(resolved, rejected)
     } catch (error) {

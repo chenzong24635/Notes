@@ -4,6 +4,7 @@ https://github.com/LuckyWinty/fe-weekly-questions/issues/1
 
 [web 应用常见安全漏洞一览](https://segmentfault.com/a/1190000018004657)
 
+
 ## XSS（Cross-Site Scripting，跨站脚本攻击）
 [前端安全系列 | XSS](https://juejin.im/post/6844903928551702541)
 [前端安全系列（一）：如何防止XSS攻击？](https://juejin.im/post/6844903685122703367)

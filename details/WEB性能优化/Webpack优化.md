@@ -11,6 +11,7 @@
 
 打包速度优化
 * CDN
+* dll
 * 缓存性能开销较大的 loader: cache-loader
 * 开启多进程Loader转换: HappyPack
 * 分析打包依赖体积：webpack-bundle-analyzer
