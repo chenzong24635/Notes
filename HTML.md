@@ -134,7 +134,7 @@ DOCTYPE不存在或格式不正确会导致文档以怪异模式呈现。
 * 渐进增强则从基础的的版本开始，并不断扩充，以适应未来环境的需要。  
 * 优雅降级意味着往回看；而渐进增强则意味着朝前看，同时保证其根基处于安全地带
 
-## <a name="HTML5新标签">[HTML5新标签](https://www.w3school.com.cn/html/html5_new_elements.asp)</a>[![bakTop](/img/backward.png)](#top)
+## <a name="HTML5新标签">[HTML5新标签](https://developer.mozilla.org/zh-CN/docs/Web/Guide/HTML/HTML5/HTML5_element_list)</a>[![bakTop](/img/backward.png)](#top)
 
 [HTML5新标签](/details\HTML\HTML5新标签.md)
 

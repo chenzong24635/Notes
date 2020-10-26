@@ -29,3 +29,16 @@ Function.prototype.selfBind = function(content, ...args) {
 }
 
 ```
+
+```js
+function A(...names){
+  this.names = names
+  // console.log(names);
+  return names
+}
+let fn =  A.selfBind(null,'a')
+let a1 = fn(1)
+let a2 = new fn(2)
+console.log(a1);
+console.log(a2);
+```

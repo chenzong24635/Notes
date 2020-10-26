@@ -1,9 +1,10 @@
 [官网-中](https://www.webpackjs.com/guides/)
 [官网-英](https://webpack.js.org/guides/)
 
-[](https://juejin.im/post/6844904079219490830)
+[深入浅出 Webpack](http://www.xbhub.com/wiki/webpack/)
 [2020年了,再不会webpack敲得代码就不香了(近万字实战)](https://juejin.im/post/5de87444518825124c50cd36)
 
+[带你深度解锁Webpack系列(基础篇)](https://juejin.im/post/6844904079219490830)
 [带你深度解锁Webpack系列(优化篇)](https://juejin.im/post/5e6cfdc85188254913107c1f)
 
 [一步步从零开始用 webpack 搭建一个大型项目](https://juejin.im/post/5de06aa851882572d672c1ad)
@@ -198,10 +199,11 @@ devtool类型:string | false // 在development模式中，默认开启，
 |关键字|含义|
 |:--|:--
 |eval|使用eval包裹的模块代码
-|source-map|产生.map文件
+|source-map|生成独立的 .map文件
+|hidden|不在 JavaScript 文件中指出 Source Map 文件所在，这样浏览器就不会自动加载 Source Map；
 |inline|将.mpa文件作为DataURI嵌入，不产生单独.map文件
-|cheap|不包含列信息，也不包含loader的sourceMap
-|module|包含loader的sourceMap（如：jsx to js，babel的sourcemap），否则无法定义源文件
+|cheap|生成的sourceMap 中不会包含列信息，这样计算量更小，输出的 sourceMap 文件更小；同时 Loader 输出的 sourceMap 不会被采用；
+|module|包含loader的 sourceMap（如：jsx to js，babel的sourceMap），否则无法定义源文件
 
 Development推荐使用：
 * eval
@@ -211,19 +213,20 @@ Development推荐使用：
 
 Production推荐使用：
 * none
-* source-map
-* hidden-source-map
-* nosources-source-map
+* source-map  产生.map文件
+* hidden-source-map  借助第三方错误监控平台 Sentry 使用
+* nosources-source-map 只会显示具体行数以及查看源代码的错误栈。安全性比 sourcemap 高
+
+注意：避免在生产中使用 inline- 和 eval-，因为它们会增加 bundle 体积大小，并降低整体性能。
 
 ### module 模块
-模块，在 Webpack 一切皆模块，一个模块对应着一个文件。Webpack 会
-从配置的 Entry 开始递归找出所有依赖的模块。
+模块，在 Webpack 一切皆模块，一个模块对应着一个文件。Webpack 会从配置的 Entry 开始递归找出所有依赖的模块。
 
-当webpack处理到不认识的模块时，需要在webpack中的module处进行配
-置，当检测到是什么格式的模块，使用什么loader来处理
+当webpack处理到不认识的模块时，需要在webpack中的module处进行配置，当检测到是什么格式的模块，使用什么loader来处理
 
-webpack默认支持JS模块和JSON模块  
-支持CommonJS， ES moudule， AMD等模块类型
+webpack默认支持JS模块和JSON模块  ,支持CommonJS， ES moudule， AMD等模块类型
+
+Loader 本质就是一个函数，在该函数中对接收到的内容进行转换，返回转换后的结果。
 
 use使用类型：String | Array | Object
 ```js
@@ -268,11 +271,9 @@ module:{
 
 ### plugin 插件
 
-plugin 可以在webpack运行到某个阶段的时候，帮你做某些事情，类似于生
-命周期的概念
+plugin 可以在webpack运行到某个阶段的时候，帮你做某些事情，类似于生命周期的概念
 
-扩展插件，在 Webpack 构建流程中的特定时机注入扩展逻辑来改变构建结
-果或做你想要的事情。
+Plugin 就是插件，基于事件流框架 Tapable，插件可以扩展 Webpack 的功能，在 Webpack 运行的生命周期中会广播出许多事件，Plugin 可以监听这些事件，在合适的时机通过 Webpack 提供的 API 改变输出结果。
 
 作用于整个构建过程
 
@@ -372,68 +373,7 @@ module: {
 
 [常用的 plugins](/details/Webpack/plugins.md)
 
-# <a name="webpack-dev-server">HMR 热模块替换 webpack-dev-server</a>
-[devServer](https://webpack.js.org/configuration/dev-server/)
 
-npm i -D webpack-dev-server 
-
-模块热替换（HMR - hot module replacement）功能会在应用程序运行过程中，替换、添加或删除 模块，而无需重新加载整个页面。主要是通过以下几种方式，来显著加快开发速度：
-
-* 保留在完全重新加载页面期间丢失的应用程序状态。
-* 只更新变更内容，以节省宝贵的开发时间。
-* 在源代码中对 CSS / JS 进行修改，会立刻在浏览器中进行更新，这几乎相当于在浏览器 devtools 直接更改样式。
-
-启动服务后，会发现dist目录没有了，这是因为 devServer 把打包后的模块不
-会放在dist目录下，而是放到内存中，从而提升速度
-
-注意启动HMR后，css抽离会不生效，还有不支持contenthash，chunkhash
-
-```js
-const Webpack = require('webpack')
-
-module.exports = {
-  devServer:{
-    contentBase: path.join(__dirname, "dist"), // 基本目录结构
-    open: true, // 在服务器启动后打开浏览器
-    host:'localhost', // 服务器的IP地址，可以使用IP也可以使用localhost
-    compress:true, // 服务端压缩是否开启
-    port: 8080, // 服务端口号
-    hot: true,// 开启 HMR 特性，如果资源不支持 HMR 会 fallback 到 live reloading
-    hotOnly: true, // true时即便HMR不生效，浏览器也不自动刷新
-    proxy: { // 跨域代理
-      "/api": {
-        target: "http://xxx.com", //请求地址
-        // 因为默认代理服务器会以我们实际在浏览器中请求的主机名，也就是 localhost:8080 作为代理请求中的主机名。而一般服务器需要根据请求的主机名判断是哪个网站的请求
-        changeOrigin: true // 以实际代理请求地址中的主机名去请求，也就是我们正常请求这个地址的主机名是什么，实际请求时就会设置成什么。
-        pathRewrite: {
-          '^/api' : 'newApi' // 替换掉代理地址中的 /api
-        }
-      }
-    }
-    // 代理后请求接口地址：
-    // http://localhost:8080/api/xxxx --> http://xxx.com/newApi/xxxx  
-  }
-  plugins:[
-    new Webpack.HotModuleReplacementPlugin()
-  ]
-}
-```
-在入口文件中新增:
-```js
-// 修改代码，不会造成整个页面的刷新
-if(module && module.hot) { 
-    module.hot.accept()
-}
-```
-
-package.json添加
-```js
-"scripts": {
-    "server":"webpack-dev-server"
- },
-```
-
-终端输入 npm run server
 
 # <a name="CDN资源引入">CDN资源引入</a>
 
@@ -477,30 +417,23 @@ import $ from 'jquery';
 console.log($);
 ```
 
-# <a name="Scope Hoisting">Scope Hoisting作用域提升</a>
-webpack 会把引入的 js 文件“提升到”它的引入者顶部。
 
-Scope Hoisting 可以让 Webpack 打包出来的代码文件更小、运行的更快。
-
-Webpack 内置的功能
-
-```js
-plugins: [new webpack.optimize.ModuleConcatenationPlugin()],
-```
 
 # <a name="搭建vue开发环境">搭建vue开发环境</a>
 
 ### 解析.vue文件  
 
 npm i -D vue-loader vue-template-compiler vue-style-loader  //解析.vue文件,编译模板  
-npm i -S vue  
+npm i -S vue
+npm i -D css-loader
+npm i -D less-loader less
 ```js
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 module.exports = {
     module:{
       rules:[
         { // .vue文件支持 <style lang="less">
-          test: /\.less$/,
+          test: /\.(css|less)$/,
           use: [
             'vue-style-loader',
             'css-loader',
@@ -524,7 +457,6 @@ module.exports = {
       new VueLoaderPlugin()
    ]
 }
-
 ```
 
 ### 完整配置
@@ -553,7 +485,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(css | less)$/,
+        test: /\.(css|less)$/,
         use: [
           'vue-style-loader',
           'css-loader',
@@ -707,12 +639,23 @@ package.json配置
 ```
 
 
-# <a name="区分开发环境与生产环境">区分开发环境与生产环境 webpack-merge</a>
+# <a name="配置合并">合并配置 webpack-merge</a>
 npm i -D  webpack-merge // 合并配置
 
 新增 webpack.dev.js -开发环境配置 文件
 新增 webpack.prod.js -生产环境配置文件
 
+```js
+// webpack.dev.js
+const baseConfig = require('./webpack.base.config.js') // 获取基本配置
+const webpackMerge = require('webpack-merge')
+
+// 合并
+module.exports = webpackMerge(baseConfig,{
+  mode: "development",
+  ...
+})
+```
 
 # [Webpack面试题](/details/面试题/Webpack面试题/README.md)
 # [Webpack优化](/details/WEB性能优化/Webpack优化.md)

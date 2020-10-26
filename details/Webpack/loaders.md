@@ -2,11 +2,12 @@
 # loaders
 [](https://github.com/LinDaiDai/niubility-coding-js/blob/master/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/webpack/%E9%9C%96%E5%91%86%E5%91%86%E7%9A%84webpack%E4%B9%8B%E8%B7%AF-loader%E7%AF%87.md#raw-loader)
 
-## <a name="加载CSS">加载CSS: style-loader css-loader less-loader sass-loader...</a>
+## <a name="加载CSS">加载CSS: style-loader css-loader less-loader</a>
 
 npm install -D style-loader // 通过注入\<style\>标签将css添加到DOM
 npm install -D css-loader // 解析 @import 和 url()的css文件
 npm install -D less-loader less  // less
+npm install -D  sass-loader node-sass  // sass
 
 ```js
 // 注意顺序不能乱，解析顺序从右到左（从下至上）
@@ -156,6 +157,80 @@ module: {
 如果是使用require引用的话得到的是一个模块对象, 这时候需要需要配置loader的一个参数options.esModule为false 才会得到相对路径.
 
 
+## <a name="图片压缩">图片压缩:image-webpack-loader</a>
+[image-webpack-loader](https://www.npmjs.com/package/image-webpack-loader)
+
+npm install image-webpack-loader --save-dev
+```js
+rules: [{
+  test: /\.(gif|png|jpe?g|svg)$/i,
+  use: [
+    'file-loader',
+    {
+      loader: 'image-webpack-loader',
+      options: {
+        disable: true, // webpack@2.x and newer
+        mozjpeg: {
+          progressive: true,
+        },
+        optipng: {
+          enabled: false,
+        },
+        pngquant: {
+          quality: [0.65, 0.90],
+          speed: 4
+        },
+        gifsicle: {
+          interlaced: false,
+        },
+        webp: {
+          quality: 75
+        }
+      },
+    },
+  ],
+}]
+```
+
+## <a name="svg">将压缩后的 SVG 内容注入代码中:svg-inline-loader</a>
+
+## <a name="加载Vue组件">加载Vue组件:vue-loader</a>
+npm i -D vue-loader vue-template-compiler vue-style-loader  //解析.vue文件,编译模板  
+npm i -S vue 
+npm i -D css-loader
+npm i -D less-loader less
+```js
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+module.exports = {
+    module:{
+      rules:[
+        { // .vue文件支持 <style lang="less">
+          test: /\.(css|less)$/,
+          use: [
+            'vue-style-loader',
+            'css-loader',
+            'less-loader'
+          ]
+        },
+        {
+          test:/\.vue$/,
+          use:['vue-loader']
+        },
+      ]
+     },
+    resolve:{
+      alias:{
+        'vue$':'vue/dist/vue.runtime.esm.js',
+        ' @': resolve('./src')
+      },
+      extensions:['*','.js','.json','.vue']
+   },
+   plugins:[
+      new VueLoaderPlugin()
+   ]
+}
+```
+
 ## <a name="加载数据">加载数据,如 CSV、TSV 和 XML：csv-loader xml-loader</a>
 npm install --save-dev csv-loader xml-loader
 
@@ -179,6 +254,28 @@ module: {
   ]
 }
 ```
+
+## <a name="raw-loader">加载文件原始内容（utf-8）: raw-loader</a>
+
+npm i -D raw-loader
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.txt$/,
+        use: 'raw-loader'
+      }
+    ]
+  }
+}
+```
+项目中引入txt文件
+```js
+import txt from './file.txt';
+```
+
+
 
 ## <a name="html的图片">html的图片: html-withimg-loader</a>
 解决webpack不识别html中img标签src引入的图片
@@ -318,8 +415,9 @@ rules: [
 ```
 
 
-## <a name="JS语法检查">JS语法检查eslint-loader</a>
-npm install eslint-loader eslint --save-dev
+## <a name="JS语法检查">JS,TS语法检查eslint-loader,tslint-loader</a>
+npm install eslint-loader eslint --save-dev  // eslint 检查 JavaScript 代码
+npm install tslint-loader tslint --save-dev // tslint 检查 TypeScript 代码
 
 ```js
 module: {
@@ -330,6 +428,16 @@ module: {
       // loader: 'eslint-loader',
       use: ['babel-loader', 'eslint-loader'],
     },
+    {
+      test: /\.ts$/,
+      enforce: 'pre',
+      use: [
+        {
+          loader: 'tslint-loader',
+          options: { /* Loader options go here */ }
+        }
+      ]
+    }
   ],
 },
 ```

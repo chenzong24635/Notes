@@ -1,5 +1,69 @@
 # plugins
 
+## <a name="webpack-dev-server">HMR 热模块替换 webpack-dev-server</a>
+[devServer](https://webpack.js.org/configuration/dev-server/)
+
+npm i -D webpack-dev-server 
+
+模块热替换（HMR - hot module replacement）功能会在应用程序运行过程中，替换、添加或删除 模块，而无需重新加载整个页面。主要是通过以下几种方式，来显著加快开发速度：
+
+* 保留在完全重新加载页面期间丢失的应用程序状态。
+* 只更新变更内容，以节省宝贵的开发时间。
+* 在源代码中对 CSS / JS 进行修改，会立刻在浏览器中进行更新，这几乎相当于在浏览器 devtools 直接更改样式。
+
+启动服务后，会发现dist目录没有了，这是因为 devServer 把打包后的模块不
+会放在dist目录下，而是放到内存中，从而提升速度
+
+注意启动HMR后，css抽离会不生效，还有不支持contenthash，chunkhash
+
+```js
+const Webpack = require('webpack')
+
+module.exports = {
+  devServer:{
+    contentBase: path.join(__dirname, "dist"), // 基本目录结构
+    open: true, // 在服务器启动后打开浏览器
+    host:'localhost', // 服务器的IP地址，可以使用IP也可以使用localhost
+    compress:true, // 服务端压缩是否开启
+    port: 8080, // 服务端口号
+    hot: true,// 开启 HMR 特性，如果资源不支持 HMR 会 fallback 到 live reloading
+    hotOnly: true, // true时即便HMR不生效，浏览器也不自动刷新
+    proxy: { // 跨域代理
+      "/api": {
+        target: "http://xxx.com", //请求地址
+        // 因为默认代理服务器会以我们实际在浏览器中请求的主机名，也就是 localhost:8080 作为代理请求中的主机名。而一般服务器需要根据请求的主机名判断是哪个网站的请求
+        changeOrigin: true // 以实际代理请求地址中的主机名去请求，也就是我们正常请求这个地址的主机名是什么，实际请求时就会设置成什么。
+        pathRewrite: {
+          '^/api' : 'newApi' // 替换掉代理地址中的 /api
+        }
+      }
+    }
+    // 代理后请求接口地址：
+    // http://localhost:8080/api/xxxx --> http://xxx.com/newApi/xxxx  
+  }
+  plugins:[
+    new Webpack.HotModuleReplacementPlugin()
+  ]
+}
+```
+在入口文件中新增:
+```js
+// 修改代码，不会造成整个页面的刷新
+if(module && module.hot) { 
+    module.hot.accept()
+}
+```
+
+package.json添加
+```js
+"scripts": {
+    "server":"webpack-dev-server"
+ },
+```
+
+终端输入 npm run server
+
+
 ## <a name="文件分离">文件分离：mini-css-extract-plugin</a>
 npm i -D mini-css-extract-plugin
 
@@ -377,6 +441,19 @@ sideEffects: boolean | string[]
 
 
 
+## <a name="作用域提升">Scope Hoisting 作用域提升</a>
+webpack 会把引入的 js 文件“提升到”它的引入者顶部。
+
+Scope Hoisting 可以让 Webpack 打包出来的代码文件更小、运行的更快。
+
+Webpack 内置的功能
+
+```js
+plugins: [new webpack.optimize.ModuleConcatenationPlugin()],
+```
+
+
+
 ## <a name="拷贝静态资源">拷贝静态资源  copy-webpack-plugin</a>
 有些不需要参与构建的静态文件，如 favicon 等。
 
@@ -472,6 +549,17 @@ npm run dll后会在public目录生成 dll/vendor.dll.js
 这样如果我们没有更新第三方依赖包，打包的时候会发现我们的打包速度明显有所提升。因为我们已经通过 DllPlugin 将第三方依赖包抽离出来了。
 
 更新依赖包后，需要再次 npm run dll
+
+## <a name="definePlugin">definePlugin 定义环境变量 (Webpack4 之后指定 mode 会自动配置)</a>
+```js
+new webpack.DefinePlugin({
+  PRODUCTION: JSON.stringify(true),
+  VERSION: JSON.stringify("5fa3b9"),
+  BROWSER_SUPPORTS_HTML5: true,
+  TWO: "1+1",
+  "typeof window": JSON.stringify("object")
+})
+```
 
 ## <a name="IgnorePlugin">IgnorePlugin 忽略第三方包指定目录</a>
 webpack 的内置插件，作用是忽略第三方包指定目录。

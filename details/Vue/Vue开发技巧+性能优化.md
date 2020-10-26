@@ -10,6 +10,7 @@
 * <a href="#函数式组件">函数式组件</a>
 * <a href="#批量注册全局组件">批量注册全局组件</a>
 * <a href="#批量注册全局filter">批量注册全局filter</a>
+* <a href="#axios切换页面取消接口请求">axios切换页面取消接口请求</a>
 * <a href="#自定义全局loading">自定义全局loading</a>
 * <a href="#SVG封装">SVG封装</a>
 * <a href="#图片懒加载">图片懒加载</a>
@@ -837,6 +838,34 @@ main.js
 //Vue.use安装插件
 import filters from '@/filters'
 Vue.use(filters)
+```
+
+## <a name="axios切换页面取消接口请求"></a>[![bakTop](/img/backward.png)](#top) 
+有的业务场景是在切换页面之后就取消axios的请求，防止在新的页面还出现上个（上上上个）请求的消息提示
+```js
+import axios from 'axios';
+
+const CancelToken = axios.CancelToken;
+
+export default {
+  data() {
+    return {
+      axiosCancelToken: null, // cancelToken实例
+      axiosCancel: null // cancel方法
+    };
+  },
+  created() {
+    // 初始化生成axiosCancelToken实例，注册axiosCancel方法
+    this.axiosCancelToken = new CancelToken(c => {
+      this.axiosCancel = c;
+    });
+  },
+  beforeDestroy() {
+    // 组件销毁阶段调用axiosCancel方法取消请求
+    this.axiosCancel('取消请求');
+  }
+};
+
 ```
 
 ## <a name="自定义全局loading">自定义 loading 组件|指令</a>[![bakTop](/img/backward.png)](#top) 

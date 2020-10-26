@@ -12,10 +12,11 @@ const create = function (obj) {
 create(null) // 创建的空对象 ，还是有 __proto__ 属性
 ```
 
-
+优化
 ```js
-// 创建空对象
+// 创建新的空对象
 // 指定对象的原型
+// 返回新对象
 const create = function (obj) {
   let B = {};
   Object.setPrototypeOf(B,obj);

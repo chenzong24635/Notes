@@ -12,6 +12,8 @@
 * 在实现功能后调用 webpack 提供的 callback。
 
 
+[Plugin API](https://www.webpackjs.com/api/plugins/#tapable)
+
 
 ```js
 class MyPlugin{
@@ -20,26 +22,22 @@ class MyPlugin{
     this.options = options || {}
   }
   // Webpack 会调用 Plugin 实例的 apply 方法给插件实例传入 compiler 对象
+  // compiler 代表了整个 Webpack 从启动到关闭的生命周期，
+  // compilation 代表每一次新的编译。
   apply(compiler){
-    compiler.plugin('compilation',function(compilation) {
-    })
     compiler.hooks.compile.tap('MyPlugin', compilation => {
-        console.log(compilation)
+      console.log('以同步方式触及 compile 钩子。')
     })
-    // 生成资源到 output 目录之前（异步）
-    compiler.hooks.emit.tapAsync('MyPlugin', (compilation, fn) => {
-        console.log(compilation)
-        compilation.assets['index.md'] = {
-            // 文件内容
-            source: function () {
-                return 'this is a demo for plugin'
-            },
-            // 文件尺寸
-            size: function () {
-                return 25
-            }
-        }
-        fn()
+    
+    compiler.hooks.run.tapAsync('MyPlugin', (compilation, callback) => {
+      console.log('以异步方式触及 run 钩子。')
+      callback()
+    })
+
+    compiler.hooks.run.tapPromise('MyPlugin', compilation => {
+      return new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
+        console.log('以具有延迟的异步方式触及 run 钩子')
+      })
     })
 
   }
@@ -47,9 +45,7 @@ class MyPlugin{
 
 // 导出 Plugin
 module.exports = MyPlugin
-```
 
-```js
 // 使用
 const MyPlugin = require('./MyPlugin.js');
 module.export = {
