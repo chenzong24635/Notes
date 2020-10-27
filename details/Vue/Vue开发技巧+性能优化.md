@@ -19,7 +19,7 @@
 * <a href="#多个路由共用一个组件操作">  多个路由共用一个组件,组件如何重新渲染</a>
 * <a href="#监听组件的生命周期"> 监听组件的生命周期@hook</a>
 * <a href="#事件的销毁"> 事件的销毁 $once('hook:beforeDestroy')</a>
-* <a href="#debounce使用">debounce使用</a>
+* <a href="#防抖节流使用">在methods中直接应用防抖节流</a>
 * <a href="#长列表性能优化">长列表性能优化</a>
 * <a href="#优化无限列表性能">优化无限列表性能</a>
 * <a href="#全局引入less变量">全局引入less变量</a>
@@ -157,19 +157,20 @@ export default{
 // 优化版,利用 render 函数减小了代码重复率
 <template>
   <div>
-    <child :level="1">我是h1</child>
-    <child :level="2">我是h2</child>
+    <v-child :level="1">我是h1</v-child>
+    <v-child :level="2">我是h2</v-child>
   </div>
 </template>
 <script>
   export default {
     components: {
-      child: ()=> import('./child.vue')
+      vChild: ()=> import('./child.vue')
     },
   }
 </script>
 
 //child.vue
+需要注意的是不要定义 \<template>,否则会显示template内容
 <script>
   export default {
     props: {
@@ -185,6 +186,30 @@ export default{
       );
     }
   };
+</script>
+```
+
+v3.x用法有点略微区别
+
+
+```html
+<script>
+import { h } from 'vue'
+export default {
+  render() {
+    return h(
+      'h' + this.level, // tag name
+      {}, // props/attributes
+      this.$slots.default() // array of children
+    )
+  },
+  props: {
+    level: {
+      type: Number,
+      required: true
+    }
+  }
+}
 </script>
 ```
 
@@ -1184,10 +1209,9 @@ mounted() {
 [$once、$on、$off的使用](https://cn.vuejs.org/v2/guide/components-edge-cases.html#%E7%A8%8B%E5%BA%8F%E5%8C%96%E7%9A%84%E4%BA%8B%E4%BB%B6%E4%BE%A6%E5%90%AC%E5%99%A8)
 
 
-## <a name="debounce使用">debounce,throttle使用</a>[![bakTop](/img/backward.png)](#top) 
-当一个按钮多次点击时会导致多次触发事件，可以结合场景是否立即执行immediate
+## <a name="防抖节流使用">在methods中直接应用防抖节流</a>[![bakTop](/img/backward.png)](#top) 
+如果某个组件仅使用一次，可以在 methods 中直接应用防抖：
 
-1. 
 ```js
 import {debounce} from 'lodash'
 
@@ -1199,6 +1223,7 @@ methods：{
 ```
 
 [某些情况下使用 debounce 的坑](https://github.com/ywwhack/blog/issues/2)
+但是，这种方法对于可复用组件有潜在的问题，因为它们都共享相同的防抖函数。
 ```html
 <template>
   <div>
@@ -1207,7 +1232,7 @@ methods：{
   </div>
 </template>
 
-<>
+<script>
 import {debounce} from 'lodash'
 const VChart = {
   template: '<span>chart</span>',
@@ -1229,7 +1254,7 @@ export default{
     VChart
   }
 }
-</>
+</script>
 ```
 页面中有两个 Chart 组件，他们会监听 window.resize 事件，然后在控制台输出 "resize"。 
 但每次改变页面大小，控制台只输出了 1 次 "resize"
