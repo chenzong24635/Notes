@@ -485,6 +485,7 @@ webpack中，我们可以结合DllPlugin 和 DllReferencePlugin插件来实现�
 
 ## <a name="DllPlugin">DllPlugin 抽离第三方模块</a>
 
+### DllPlugin 和 DllReferencePlugin
 DllPlugin把第三方库代码分离开，并且每次文件更改的时候，它只会打包该项目自身的代码。所以打包速度会更快。 webpack内置
 
 // webpack.dll.config.js
@@ -549,6 +550,26 @@ npm run dll后会在public目录生成 dll/vendor.dll.js
 这样如果我们没有更新第三方依赖包，打包的时候会发现我们的打包速度明显有所提升。因为我们已经通过 DllPlugin 将第三方依赖包抽离出来了。
 
 更新依赖包后，需要再次 npm run dll
+
+### [AutoDllPlugin](https://github.com/asfktz/autodll-webpack-plugin)
+它会自动完成以上两个插件的功能
+npm install --save-dev autodll-webpack-plugin
+```js
+plugins: [
+  new HtmlWebpackPlugin({
+    inject: true,
+    template: './src/index.html',
+  }),
+  new AutoDllPlugin({
+    inject: true, // will inject the DLL bundles to index.html
+    filename: '[name].js',
+    entry: {
+      vendor: ['vue','element-ui'] 
+    }
+  })
+]
+
+```
 
 ## <a name="definePlugin">definePlugin 定义环境变量 (Webpack4 之后指定 mode 会自动配置)</a>
 ```js
