@@ -7,13 +7,13 @@
  * @param {Any} currentValue - fn参数，正在处理的当前元素
  * @param {Number} index - fn参数，正在处理的当前元素的索引
  * @param {Array} array - fn参数，原数组
- * @param {Any} content - 上下文
+ * @param {Any} context - 上下文
 */
 ```
 
 // for 循环实现
 ```js
-Array.prototype.selfMap = function(fn, content){
+Array.prototype.selfMap = function(fn, context){
   // 不是函数时，报错
   if(!fn || typeof fn !== 'function') {
     throw  TypeError(`${fn} is not a function`)
@@ -33,7 +33,7 @@ Array.prototype.selfMap = function(fn, content){
     // 返回 empty 的关键
     if(!sourceArr.hasOwnProperty(i))continue 
 
-    arr[i] = fn.call(content, sourceArr[i], i, sourceArr)
+    arr[i] = fn.call(context, sourceArr[i], i, sourceArr)
   }
   return arr
 }
@@ -48,7 +48,7 @@ Array.prototype.selfMap = function(fn, content){
 
 // reduce 实现
 ```js
-Array.prototype.selfMap = function(fn, content){
+Array.prototype.selfMap = function(fn, context){
   if(!fn || typeof fn !== 'function') {
     throw  TypeError(`${fn} is not a function`)
   }
@@ -56,8 +56,8 @@ Array.prototype.selfMap = function(fn, content){
   let sourceArr = this // 原数组
   let arr = [] // 执行回调函数后返回的新数组
   arr = sourceArr.reduce((prev,next,index) => {
-    prev[index] = fn.call(content, next, index, sourceArr)
-    // prev = [...prev, fn.call(content, next, index, sourceArr)] // 如此会忽略空数组
+    prev[index] = fn.call(context, next, index, sourceArr)
+    // prev = [...prev, fn.call(context, next, index, sourceArr)] // 如此会忽略空数组
     return prev
   },[])
   return arr

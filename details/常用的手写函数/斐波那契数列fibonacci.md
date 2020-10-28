@@ -14,7 +14,7 @@ function fib(n) {
 ```js
 function fib(n){
   function _fib(n, a = 0, b = 1){
-    if(n <= 0) return a
+    if(n <= 1) return b
     return _fib(n-1, b, a + b)
   }
   return _fib(n)
