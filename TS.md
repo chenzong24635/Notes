@@ -149,7 +149,7 @@ genErrMsg() //编译出错时，会提示上面注释的信息
 ```
 
 # <a name="操作符">操作符</a>
-* 属性或参数中使用 `?` ：表示该属性或参数为可选项
+* 属性或参数中使用 `?`  表示该属性或参数为可选项
 ```js
 let obj = {
   num: 1
@@ -158,7 +158,7 @@ let obj = {
 obj?.num
 ```
 
-* 属性或参数中使用 `!`：表示强制解析（告诉typescript编译器，这里一定有值）
+* 属性或参数中使用 `!` 表示强制解析（告诉typescript编译器，这里一定有值）
 ```js
 let obj = {
   num: 1
@@ -220,29 +220,47 @@ let str1: string = `${str} b`;
 ```
 
 ## <a name="Array">数组 : T[] | Array\<T> | ReadonlyArray\</a>
-## <T>
-1. 在元素类型后面接上 []，表示由此类型元素组成的一个数组 T[]
-```ts
-: number[] //数组内容都为number类型
-: string[]
-: {str: string, num: number}[]
-....
+### \<T>
+在元素类型后面接上 []，表示由此类型元素组成的一个数组 T[]
 
-let a:number[] = [3232,13]
-let a:string[] = ['a','b']
-let a:{str: string, num: number}[] = [{str:'aa',num:3}]
-```  
+* number[] //数组内容都为number类型
+  >let a:number[] = [3232,13]
+* any[] //数组内容可为任意类型
+  >let a:any[] = [1,NaN,'b']
+* [string,number] //（元组）数组仅有两个值，第一个为字符串，第二个为数字
+  >let a:[string,number] = ['a',123]
+* {str: string, num: number}[] // 数组内容为对象且对象内有且仅有str，num属性
+  >let a:{str: string, num: number}[] = [{str:'aa',num:3}]
+* ....
 
-    
-2.  使用数组泛型，Array<T>、ReadonlyArray<T>
+
+
+###  使用数组泛型，Array<T>、ReadonlyArray<T>
+* Array<number> //数组内容都为number类型
+* Array<any> //数组内容为任意类型
+* Array<number | string> //数组内容为多种类型类型
+* Array<{str: String, num1: Number}>
+* ...
+
+
+### ReadonlyArray<T> 
+只读，数组创建后再也不能修改(但可以直接改变整个数组)
 ```ts
-: Array<number> //数组内容都为number类型
-: Array<any> //数组内容为任意类型
-: Array<number | string> //数组内容为多种类型类型
-...
+let arr: ReadonlyArray<number>; //只读的数组
+arr[1] = 4 //error
+arr.push(1)//error
+arr.shift(1)//error
+arr.length = 4 //error
+arr = [] //ok -- 重写数组
+
+let arr1: number[] = arr //error -- 不可分配给可变类型number[]
+
+let arr1 = arr // ok
+let arr1: any = arr // ok
+let arr1 = arr as number[] //ok -- 用类型断言重写arr类型
 ```
 
-* 用接口表示数组
+### 用接口表示数组
 ```ts
 interface NumberArray {
   [index: number]: number;
@@ -266,39 +284,49 @@ function aa(...arg): object{
 console.log(aa(21,'b2',[])) // { '0': 21, '1': 'b2', '2': [] }
 ```
 
-* ReadonlyArray<元素类型> //只读，数组创建后再也不能修改(但可以直接改变整个数组)
-```ts
-let arr: ReadonlyArray<number>; //只读的数组
-arr[1] = 4 //error
-arr.push(1)//error
-arr.shift(1)//error
-arr.length = 4 //error
-arr = [] //ok -- 重写数组
-
-let arr1: number[] = arr //error -- 不可分配给可变类型number[]
-
-let arr1 = arr // ok
-let arr1: any = arr // ok
-let arr1 = arr as number[] //ok -- 用类型断言重写arr类型
-```
 ## <a name="元组">元组 Tuple</a>
-允许表示一个已知元素数量和类型的数组，各元素的类型不必相同。 (数组内定义不同类型的元素)
-```ts
+允许表示一个已知元素`数量`和`类型`的数组，各元素的类型不必相同。 (数组内定义不同类型的元素)
+
+
 比如，你可以定义一对值分别为 string和number类型的元组。
+```ts
 let arr: [string, number];
 arr = ['str', 2];
+```
 
-当添加越界的元素时，它的类型会被限制为元组中每个类型的联合类型：
+而且定义时只能定义指定个数，
+```ts
+let arr: [string, number];
+arr = ['str', 2， 8];// err!!! 源具有 3 个元素，但目标仅允许 2 个。
+```
+
+但可以通过push等方法新增
+它的类型会被限制为元组中每个类型的联合类型：
+```ts
+let arr: [string, number];
 arr.push('a') // ok
+arr.splice(0,0,99) // ok
+arr.unshift(1) // ok
 arr.push(true) // error!!!,只能添加string、number类型的元素
 ```
 
+不能通过索引方式新增
+```ts
+let arr: [string, number];
+arr.length=99 // 不能将类型“99”分配给类型“2”
+arr[99] = 99
+//不能将类型“99”分配给类型“undefined”。
+//长度为 "2" 的元组类型 "[String, Number]" 在索引 "99" 处没有元素。
+```
+
 ## <a name="Enum">枚举 enum</a>
-枚举 enum 为一组数值赋予友好的名字。默认，从0开始为元素编号。   
+枚举 enum 为一组数值赋予名字。默认，从0开始为元素编号。   
 你也可以手动的指定成员的数值（相应的在其后面的元素编号也会随其变化）
 
 枚举就是枚举值到枚举名进行反向映射
-枚举（Enum）类型用于取值被限定在一定范围内的场景，比如一周只能有七天	
+
+### 用途
+用于取值被限定在一定范围内的场景，比如一周只能有七天	
 ```ts
 enum Days {Sun, Mon, Tue, Wed, Thu, Fri, Sat};
 console.log(Days["Sun"]); // 0
@@ -308,11 +336,11 @@ enum Days {Sun = 7, Mon = 1, Tue, Wed, Thu, Fri, Sat};
 console.log(Days["Sun"]); // 7
 ```
 
-枚举项有两种类型：
+### 枚举项有两种类型：
 * 常数项（constant member）
 * 计算所得项（computed member）
 
-* 常数项
+#### 常数项
 ```ts
 //enum Color {Red, Green, Blue}
 //enum Color {Red=1, Green, Blue} //改变默认排序 从1开始（Green=2，Blue=3
@@ -322,22 +350,26 @@ enum Color {Red = 1, Green = 2, Blue = 4}
 Color.Green;// 2
 Color[1];// Red
 Color[3];// undefined
+```
 
 手动赋值的枚举项也可以为小数或负数，此时后续未手动赋值的项的递增步长仍为 1
+```ts
 enum Color {Red = 1, Green = 2.1, Blue}
 Color.Blue // 3.1
 ```
 
-* 计算所得项
+#### 计算所得项
 ```ts
 enum Color {Red, Green, Blue = "blue".length};
 Color.Blue // 4
+```
 
 如果紧接在计算所得项后面的是未手动赋值的项，那么它就会因为无法获得初始值而报错：
+```ts
 enum Color {Red, Green = "red".length, Blue}; // error!!!; Blue必须赋值
 ```
 
-* 常量枚举(const定义) ,与普通枚举的区别是，它会在编译阶段被删除，并且不能包含计算成员。
+### 常量枚举(const定义) ,与普通枚举的区别是，它会在编译阶段被删除，并且不能包含计算成员。
 ```ts
 const enum cc {
   a = 1,
@@ -348,27 +380,30 @@ const enum cc {
 ```
 
 ```ts
+// 普通枚举
 enum Enum {
   A = 0
 }
 
+// 外部枚举
 declare enum Enum1 {
   A = 1
 }
 
+// 常量枚举
 const enum Enum2 {
   A = 2
 }
 ```
 编译后的js, 可以看见只编译了普通枚举
-```ts
+```js
 var Enum;
 (function (Enum) {
     Enum[Enum["A"] = 0] = "A";
 })(Enum || (Enum = {}));
 ```
 
-* 运行时的枚举：枚举是在运行时真正存在的对象
+### 运行时的枚举：枚举是在运行时真正存在的对象
 ```ts
 enum E{
   x,
@@ -381,26 +416,30 @@ function f(obj:{x: number, y: string}){
 console.log(f(E)) //'0a'
 ```
 
-* 反向映射: 从其值中访问成员的值以及成员名称。
+### 反向映射: 从其值中访问成员的值以及成员名称。
 ```ts
 enum Color {Red, Green, Blue}
 let a: number = Color.Red // 1
 let b: string = Color[0] // 'Red'
 ```
 
-* 外部枚举：描述已经存在的枚举类型的形状，会在编译阶段被删除
+### 外部枚举：描述已经存在的枚举类型的形状，会在编译阶段被删除
 ```ts
 declare enum Enum {
   A = 1,
   B,
   C = 2
 }
+
+consolelog(Enum.A) // ReferenceError: Enum is not defined
 ```
 外部枚举和非外部枚举之间有一个重要的区别，在正常的枚举里，没有初始化方法的成员被当成常数成员。 对于非常数的外部枚举而言，没有初始化方法时被当做需要经过计算的。
 
 ## <a name="Any">任意类型 :any </a>
 允许被赋值为任意类型;  
+
 在任意值上访问任何属性、方法都是允许的;  
+
 变量如果在声明的时候，未指定其类型且没有赋值，则默认为any类型;
 
 ```ts
@@ -410,7 +449,7 @@ notSure = false; // ok
 notSure.a // ok 
 notSure.b() // ok 
 
-let a; // 未指定类型且未赋值，则为any
+let a; // 定义 时未指定类型且未赋值，则为any
 a = 5 // ok
 a= [] // ok
 
@@ -427,7 +466,7 @@ list[1] = 100;
 ```
 
 ## <a name="unkown">未知的类型：unkown</a>
-TypeScript 3.0引入了一个顶级的unknown类型。 对照于any，unknown是类型安全的。 
+TypeScript 3.0引入了一个顶级的unknown类型。 对照于any，unknown是类型安全的。
 任何值都可以赋给unknown，但是当没有类型断言或基于控制流的类型细化时unknown不可以赋值给其它类型，除了它自己和any外。 同样地，在unknown没有被断言或细化到一个确切类型之前，是不允许在其上进行任何操作的。
 
 ```ts
@@ -452,12 +491,12 @@ type T16 = unknown | any;  // any
 
 ```ts
 let maybe: number | string;
-maybe = 1;
-maybe = 'str'
+maybe = 1; // ok
+maybe = 'str'  // ok
 ```
 
-## <a name="Void">void</a>
-没有任何类型。 当一个函数没有返回值时，返回值类型定义 void
+## <a name="Void">没有任何类型void</a>
+没有任何类型。 如一个函数没有返回值时，返回值类型定义 void
 ```ts
 function warnUser(): void {
   console.log("This is my warning message");
@@ -468,6 +507,7 @@ function warnUser1(): number {
   return 1
 }
 ```
+
 声明一个void类型的变量没有什么大用，只能为它赋予undefined和null
 ```ts
 let a1: void = undefined;
@@ -494,12 +534,14 @@ a4 // null
 ```
 
 和 void相似   
-默认情况下null和undefined是所有类型的子类型。 就是说你可以把 null和undefined赋值给number类型的变量。  
+默认情况下null和undefined是所有类型的子类型。 就是说你可以把 null和undefined赋值给number类型的变量。 
+
 ```ts
 // tsconfig.json
 {
   compilerOptions:{
-    "strictNullChecks": flase
+    // 关闭严格null校验
+    "strictNullChecks": false
   }
 }
 // 运行编译都不会报错
@@ -517,12 +559,13 @@ num1 // err
 
 表示的是那些永不存在的值的类型。 
 
-例如， never类型是那些总是会抛出异常或根本就不会有返回值的函数表达式或箭头函数表达式的返回值类型； 变量也可能是 never类型，当它们被永不为真的类型保护所约束时。
+例如， never类型是那些总是会抛出异常或根本就不会有返回值的函数表达式或箭头函数表达式的返回值类型；  
+ 变量也可能是 never类型，当它们被永不为真的类型保护所约束时。
 
 never类型是任何类型的子类型，也可以赋值给任何类型；然而，没有类型是never的子类型或可以赋值给never类型（除了never本身之外）。 即使 any也不可以赋值给never。
 
 ```ts
-let b: never =  23 // err
+let b: never =  23 // err 
 let b: never =  null // err
 let b: any =  function(): never{ throw ''} // ok
 
@@ -551,7 +594,7 @@ n = 2; //error!!! 不能将类型“2”分配给类型“never”
 
 object表示非原始类型，也就是除number，string，boolean，symbol，null或undefined之外的类型。
 ```ts
-declare function create(o: object | null): void;
+function create(o: object | null): void;
 
 create({ prop: 0 }); // OK
 create(null); // OK
@@ -565,7 +608,7 @@ create(undefined); // Error
 
 ## <a name="类型断言">类型断言</a>
 
-1. <类型>值
+1. \<要断言的类型类型>变量名
 ```ts
 let someValue: any = "this is a string";
 let strLength: number = (<string>someValue).length; // 断言变量someValue为string类型
@@ -574,16 +617,19 @@ let strLength: number = (<string>someValue).length; // 断言变量someValue为s
 2. 值 as 类型
 ```ts
 let someValue: any = "this is a string";
+// 当你想获取变量长度时,
 let strLength: number = (someValue as string).length;
 ```
 
 类型断言不是类型转换，断言成一个联合类型中不存在的类型是不允许的：
 
 ```ts
+// something参数为 string或number 类型
 function toBoolean(something: string | number): boolean {
   return <boolean>something; // error ;变量something没有boolean类型
 }
 
+// 给something参数添加 boolean类型
 function toBoolean(something: string | number | boolean): boolean {
   return <boolean>something; // ok
 }
@@ -622,6 +668,7 @@ const img:HTMLImageElement = new Image()
 const canvas:HTMLCanvasElement = document.createElement('canvas');
 const ctx:CanvasRenderingContext2D = canvas.getContext('2d');
 
+// setInterval返回值是number类型
 let timer:number = setInterval(()=>{
     
 },500);
