@@ -236,9 +236,9 @@ let str1: string = `${str} b`;
 
 
 ###  使用数组泛型，Array<T>、ReadonlyArray<T>
-* Array<number> //数组内容都为number类型
-* Array<any> //数组内容为任意类型
-* Array<number | string> //数组内容为多种类型类型
+* Array\<number> //数组内容都为number类型
+* Array\<any> //数组内容为任意类型
+* Array\<number | string> //数组内容为多种类型类型
 * Array<{str: String, num1: Number}>
 * ...
 
@@ -773,8 +773,8 @@ function a(x: List): List {
 
 // 类实现接口, 类似于 java 语言, 在接口描述一个方法，在类里实现它
 class Crazy implements List {
-  constructor() { }
   data: string;
+  constructor() { }
 }
 ```
 声明一个对象另一种写法
@@ -788,6 +788,25 @@ let obj: List = { data: 'msg' }
 // 无需定义属性
 let obj1 = <List>{}
 ```
+
+注意`<List>{}`这种写法在初始未定义时，只能定义接口允许的属性
+```ts
+let obj1 = <List>{}
+obj1.data = 'msg'
+obj1.num = 12 // error 类型“List”上不存在属性“num”
+```
+
+但在设置初始值时，可以定义除List接口外的属性，前提是必须同时定义List接口声明的所有属性
+```ts 
+let obj1 = <List>{
+  // 只要你定义了data属性，当你定义List以外属性 如 num 时也不报错
+  data: 'msg',
+  num: 1 // 可以定义，不报错
+}
+// 但这样就会报错
+obj1.num1 = 2
+```
+
 
 ### 可选属性,只读属性
 * 可选属性( ? )：可以对可能存在的属性进行预定义，可以捕获引用了不存在的属性时的错误
@@ -915,7 +934,9 @@ func({
 } as LearnList)
 ```
 
-###   
+
+
+### 交叉类型 (&):将多个类型合并为一个类型（interface，type）
 ```ts    
 interface A{
   name?: string;
@@ -926,7 +947,6 @@ interface B {
 }
 ```
 
-### 交叉类型 (&):将多个类型合并为一个类型（interface，type）
 ```ts
 let c: A & B = {
   sex: 'man',
@@ -976,15 +996,17 @@ interface Square extends Shape, PenStroke {
 }
 
 let square = <Square>{};
+square.color = "blue";
+square.sideLength = 10;
+square.penWidth = 5.0;
+
 // let square :Square = {
 //   color: 'blue',
 //   penWidth: 10,
 //   sideLength: 5.0
 // };
 
-square.color = "blue";
-square.sideLength = 10;
-square.penWidth = 5.0;
+
 console.log(square) // { color: 'blue', sideLength: 10,penWidth: 5 }
 ```
 
@@ -1082,7 +1104,7 @@ type Pet = Dog | Name
 type PetList = [Dog, Pet]
 ```
 
-* interface 能够声明合并,type不行
+* 能定义相同命名的 interface，且声明能够合并,type不行
 ```ts
 interface User {
   name: string
@@ -1109,20 +1131,19 @@ User 接口会合并为 {
 
 ### implements明确的强制一个类去符合某种契约(interface,type)
 ```ts
-interface ClockInterface {
-  currentTime: Date;
-  setTime(d: Date);
+interface A {
+  name: string;
+  age: number;
 }
 
 class Clock implements ClockInterface {
-  currentTime: Date;
-  setTime(d: Date) {
-      this.currentTime = d;
-  }
-  constructor(h: number, m: number) { }
+  // 约束私有属性
+  name: string;
+  age: number
+  constructor() { }
 }
 ```
-
+或者
 ```ts
 type A  = {
   name: string;
@@ -1130,6 +1151,7 @@ type A  = {
 };
 
 class Animal implements A {
+  // 公有属性
   constructor(public name: string,public age: number){
     this.name = name;
     this.age = age;
@@ -1138,6 +1160,8 @@ class Animal implements A {
 let cow = new Animal('cow',34);
 console.log(cow);
 ```
+
+<!-- 或者 -->
 
 ### keyof 查询健名,类似于JS中的Object.keys()方法
 获取一个对象接口的所有 key 值
@@ -1278,15 +1302,16 @@ let add1: Func = function (x: number, y: number): number {
 
 下方的代码； 第一个 => 是函数的类型定义，第二个 => 为ES6的箭头函数
 ```ts
-let add2: (x: number, y: number) => number =  (x: number, y: number): number => {
+let add2: (x: number, y: number) => number =  
+  (x: number, y: number): number => {
     return x + y;
-};
+  };
 
-可省略为
+可略为
 let add3: (x: number, y: number) => number = (x, y) => x + y;
 
 可略为
-let add4= (x: number, y: number) => number => x + y;
+let add4= (x: number, y: number): number => x + y;
 
 ```
 
@@ -1333,10 +1358,6 @@ function add(x?: number, y: number, z?: string): number { // error!!! 可选参�
   return x + y;
 }
 
-//此时x为可选参数，后面跟着必须参数，但x设置了默认值，因此不会报错
-function add(x: number = 0, y: number, z?: string): number { // ok 
-  return x + y;
-}
 ```
 默认参数
 ```ts
@@ -1350,7 +1371,7 @@ function isValidPasswordLength(
 
 ```
 
-### 剩余参数
+### 剩余参数(...)
 有时，你想同时操作多个参数，或者你并不知道会有多少参数传递进来
 
 可使用剩余参数，剩余参数会被当做个数不限的可选参数。 可以一个都没有，同样也可以有任意个
@@ -1364,7 +1385,7 @@ let employeeName = buildName("Joseph", "Samuel", "Lucas", "MacKinzie");
 ```
 
 
-### 使用泛型 让函数在运行时才确定参数的类型
+### 使用泛型T 让函数在运行时才确定参数的类型
 ```ts
 //同时返回 string类型 和number类型
 function getData1(value:string):string{
@@ -1394,6 +1415,7 @@ getVal(232)
 https://www.tslang.cn/docs/handbook/functions.html
 
 ### 函数重载:
+函数重载:在同一范围中声明几个功能类似的同名函数，但是这些同名函数的形式参数（指参数的个数、类型或者顺序）必须不同，也就是说用同一个函数完成不同的功能
 
 在定义重载的时候，一定要把最精确的定义放在最前面。  
 TS会选择第一个匹配到的重载当解析函数调用的时候。 当前面的重载比后面的“普通”，那么后面的被隐藏了不会被调用。
@@ -1509,7 +1531,7 @@ let p1: N = {
 ### 访问修饰符
 ts可以使用三种访问修饰符:public、private 和 protected
 
-* public 修饰的属性或方法是公有的，可以在任何地方被访问到，`默认所有的属性和方法都是 public 的`;  
+* public 修饰的属性或方法是公有的，可以在任何地方被访问到(自身,子类,实例)，`默认所有的属性和方法都是 public 的`;  
 * private 修饰的属性或方法是私有的，不能在声明它的类的外部访问;  
 * protected 修饰的属性或方法是受保护的，它和 private 类似，区别是它在子类中也是允许被访问的
 
@@ -1540,24 +1562,30 @@ class M {
   constructor(age){
     this.age = age
   }
-  public a() {
+  // 公有方法,(自身,子类,实例都可访问)
+  public publicFn() {
     console.log('public')
-    this.b() // 'private'
-    this.c() // 'protected'
+    this.privateFn() // 'private'
+    this.protectedFn() // 'protected'
 
-    M.d() // 'static' 不能直接使用 this 关键字来访问静态方法。而是要用类名来调用
-    this.d() // error!!!，类的静态函数，只能通过 M.d() 访问
+    // this.staticFn() // error!!!，不能直接使用 this 关键字来访问静态方法。而是要用类名来调用
+    M.staticFn() // 'static' 
   }
-  private b() {
+  // 私有方法，仅在类M内部调用
+  private privateFn() {
     console.log('private')
   }
-  protected c() {
+  // 受保护方法，可在类M内部及子类调用
+  // 
+  protected protectedFn() {
     console.log('protected')
   }
-  static d() {
-    console.log('static')
+  // 静态方法，通过 M.d调用
+  static staticFn(a?) {
+    console.log('static'+a)
   }
 }
+
 class N extends M {
   name: string
   constructor(age,name){
@@ -1565,28 +1593,28 @@ class N extends M {
     this.name = name
   }
   getC() {
-    this.c()
+    this.protectedFn()
   }
 }
 let m = new M(23)
 let n = new N(23,'n')
 
 m.age // 23
-m.a() // 'public' 'private' 'protected' 'static'
-m.b() // error!!!，private不能在声明它的类的外部访问
-m.c() // error!!!，protected不能在声明它的类的外部访问
-m.d() // error!!!，static不能被实例调用
+// m.publicFn() // 'public' 'private' 'protected' 'static'
+// m.privateFn() // error!!!，private不能在声明它的类的外部访问
+// m.protectedFn() // error!!!，protected不能在声明它的类的外部访问
+// m.staticFn() // error!!!，static不能被实例调用
 
 n.getC() // 'protected' //protected允许被子类访问
-M.d() // 'static'
-N.d() // 'static'
+M.staticFn('m') // 'staticn'
+N.staticFn('n') // 'staticn'
 ```
 
 * abstract 用于定义抽象类和其中的抽象方法 (抽象方法只能出现在抽象类中)。
 
 抽象类是不允许被实例化的：
 ```ts
-abstract class Animal {
+abstract class Animal { 
     public name;
     public constructor(name) {
         this.name = name;
@@ -1639,10 +1667,10 @@ class TypeA {
   }
 }
 
-// 变量b为构造器类型，和类TypeA的构造器兼容
+// 变量A为构造器类型，和类TypeA的构造器兼容
 let A: new (name: string) => TypeA;
 A = TypeA;
-// b现在是一个类
+// A现在是一个类
 let a = new A('type');
 console.log(a.say()); // type
 ```

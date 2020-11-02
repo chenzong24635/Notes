@@ -472,7 +472,7 @@ div.onclick = function(){
 
 阻止默认行为：
 ```js
-event = e || window.event //w3c | IE
+event = e || window.event //w3c |  IE
 event.preventDefault() || event.returnValue = false //w3c | IE
 ```
 
