@@ -114,17 +114,24 @@ CSS的优势：
 | 私有化前缀 | -webkit- | -moz- | -ms- | -webkit- | -webkit- |
 
 ## <a name="权重、优先级">权重、优先级</a>[![bakTop](/img/backward.png)](#top)
->
+* 内联样式 > 内部样式表 > 外部样式表  
 
-    内联样式 > 内部样式表 > 外部样式表  
-    !important > 内联样式 > ID选择器 > class选择器/属性选择器/伪类选择器 > 元素选择器/关系选择器/伪元素选择器 > 通配符(*)  
-    权值: 10000   1000      0100        0010                               0001                                000000
+---
+* mix-width,min-height
+* max-width,max-height
+* !important （10000）
+* 内联样式 （1000）
+* ID选择器 （0100）
+* class选择器/属性选择器/伪类选择器 （0010 ）
+* 元素选择器/关系选择器/伪元素选择器 （0001）
+* 通配符(*)  （00000）
 
-    max-width、mix-width、max-height、min-height 权重大于 !important
-    mix-width,min-height 权重大于 max-width,max-height
 
-    同权重下样式定义最近者为准
-    载入样式以最后载入的定位为准;
+`max-width、mix-width、max-height、min-height 权重大于 !important`
+`mix-width,min-height 权重大于 `
+
+同权重下样式定义最近者为准
+载入样式以最后载入的定位为准;
 
 ![css-specificity](/img/css-specificity.jpg)
 
@@ -195,7 +202,8 @@ HTML中每个元素都被描绘成一个矩形盒子，这些盒子通过一个�
 * 相邻选择器（div + p）紧挨div后面的第一个p（必须紧挨着div，若中间隔着其他标签不生效,包括script、style标签）
 * 通用兄弟选择器(div ~ p) //div后面所有的兄弟p
 * 属性选择器（a[rel = "external"]）
-* 伪类选择器（a:hover, li:nth-child）
+* 伪类选择器（:hover, :nth-child）
+* 伪元素选择器（:after,:before）
 * .....
 
 ### 属性选择器
@@ -714,8 +722,7 @@ https://juejin.im/post/5ea45801e51d4546d4399055
 
 
 ### [BFC](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context)
-
-概述：BFC(Block Formatting Context)是Web页面中盒模型布局的CSS渲染模式。它的定位体系属于常规文档流。
+概述：BFC(Block Formatting Context)是Web页面的可视CSS渲染的一部分，是块盒子的布局过程发生的区域，也是浮动元素与其他元素交互的区域。它的定位体系属于常规文档流。
 
 `BFC形成条件：`
 *  根元素 html

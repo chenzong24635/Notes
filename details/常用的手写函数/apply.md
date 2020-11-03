@@ -13,6 +13,7 @@ Function.prototype.selfApply = function (context, args) {
   let isUndef = typeof args === 'undefined'
   // 当未传参或为 undefined 时做处理，否则下面参数结构会报错
   isUndef ? (args = []) : args
+  
   // 参数必须为数组
   if(!Array.isArray(args)) {
     throw new TypeError(`${JSON.stringify(args)} is not a Array`)

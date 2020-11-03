@@ -3,7 +3,7 @@
 
 [JavaScript Promise迷你书（中文版）](http://liubin.org/promises-book/)
 
-
+[【建议星星】要就来45道Promise面试题一次爽到底(1.1w字用心整理)](https://juejin.im/post/6844904077537574919)
 # Promise
 
 [手写Promise](/details\常用的手写函数\Promise.md)
