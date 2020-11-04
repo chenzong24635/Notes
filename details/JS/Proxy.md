@@ -22,7 +22,21 @@ proxy.name = 'A';
 console.log(proxy.name, target.name);
 target.age = 12;
 console.log(proxy.age, target.age);
-```   
+```
+
+```js
+obj=new Proxy({},{
+  get(target,key,receiver){
+    return Reflect.get(target,key,receiver)
+  },
+  set(target,key,val,receiver){
+    return Reflect.set(target,key,val,receiver)
+  }
+})
+console.log(obj);
+obj.name=1
+console.log(obj);
+```
 
 # Proxy 支持的拦截操作一览，一共 13 种：
 

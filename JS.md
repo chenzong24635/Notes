@@ -373,8 +373,8 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
 在js中: document.getElementsById("demo").onclick = doSomeTing()
 ```
 
-    优点：所有浏览器都兼容
-    缺点：逻辑与显示没有分离；相同事件的监听函数只能绑定一个，后绑定的会覆盖掉前面;  无法通过事件的冒泡、委托等机制
+优点：所有浏览器都兼容
+缺点：逻辑与显示没有分离；相同事件的监听函数只能绑定一个，后绑定的会覆盖掉前面;  无法通过事件的冒泡、委托等机制
 
 2. DOM2级：W3C制定的标准模型，现代浏览器（IE6~8除外）都已经遵循这个规范
 ```js
@@ -401,7 +401,7 @@ detachEvent(eventType,handler)
 * event.preventDefault() 阻止默认行为
 * event.stopPropagation() 阻止事件传播（冒泡，捕获）
 * event.target 触发事件的元素
-* event.currentTarge 事件所绑定的元素
+* event.currentTarget 事件所绑定的元素
 
 #### 自定义事件
 [自定义事件的触发dispatchEvent](https://www.jianshu.com/p/5f9027722204)
@@ -436,6 +436,7 @@ let myEvent2 = new CustomEvent('myEvent2', {
 
 // document.createEvent('CustomEvent')定义事件
 let myEvent3 = document.createEvent('CustomEvent');// 注意这里必须为'CustomEvent'
+// 事件初始化
 myEvent3.initEvent(
   'myEvent3', // 事件名称
   true, // 是否冒泡
@@ -489,6 +490,26 @@ event.target || event.srcElement // w3c  | IE
 ```
 
 [更多兼容性写法](\details\常用的JS兼容写法\index.md)
+
+## <a name="事件委托">事件委托(代理)delegate</a>
+
+事件注册在父级元素上，依靠事件冒泡机制与事件捕获机制，子级元素的事件将委托给父级元素。
+
+优点：
+* 事件动态绑定，当新增子对象时，无需再对其进行事件绑定
+* 可以减少事件注册数量，节约内存开销，提高性能。
+
+缺点：
+* 事件委托基于冒泡，对于不冒泡的事件不支持。
+
+    层级过多，冒泡过程中，可能会被某层阻止掉。
+
+    理论上委托会导致浏览器频繁调用处理函数，虽然很可能不需要处理。所以建议就近委托，比如在table上代理td，而不是在document上代理td。
+
+    把所有事件都用代理就可能会出现事件误判。比如，在document中代理了所有button的click事件，另外的人在引用改js时，可能不知道，造成单击button触发了两个click事件。
+
+
+[实现一个事件委托](\details\常用的方法\实现一个事件委托.md)
 
 ## <a name="mouseover、mouseout、mouseenter、mouseleave区别与联系">mouseover、mouseout、mouseenter、mouseleave区别与联系</a>
 mouseover/mouseout是标准事件，所有浏览器都支持；
@@ -1015,7 +1036,7 @@ export function defineReactive() {
 ```
 
 ## <a name="typeof instanceof">typeof 、instanceof 、in</a>
-#### typeof 
+#### [typeof](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/typeof)
 [浅谈 instanceof 和 typeof 的实现原理](https://juejin.im/post/5b0b9b9051882515773ae714)
 
 typeof 能够正确的判断基本数据类型，但是除了 null, typeof null输出的是对象  
@@ -1033,6 +1054,7 @@ typeof 能够正确的判断基本数据类型，但是除了 null, typeof null�
 | BigInt     | "bigint"
 | Function   | "function"
 
+
 `typeof原理`： 在 JS 的最初版本中使用的是 32 位系统，为了性能考虑使用低位存储变量的类型信息，不同的对象在底层都表示为二进制，在Javascript中二进制前（低）三位存储其类型信息。
 * 对象：000
 * 布尔值：110
@@ -1043,6 +1065,11 @@ typeof 能够正确的判断基本数据类型，但是除了 null, typeof null�
 * undefined：用 −2^30 整数来表示
 
 `由于null的二进制表示全为0`，自然前三位也是0，所以执行typeof时会返回"object"。
+
+
+MDN解释：
+>
+    在 JavaScript 最初的实现中，JavaScript 中的值是由一个表示类型的标签和实际数据值表示的。对象的类型标签是 0。由于 null 代表的是空指针（大多数平台下值为 0x00），因此，null 的类型标签是 0，typeof null 也因此返回 "object"。
 
 #### instanceof
 instanceof 是通过原型链判断的，判断实例对象在其原型链中是否存在一个构造函数的 prototype 属性。  
@@ -1196,26 +1223,7 @@ console.log('1', a) // -> '1' 1
 因为 await 是异步操作，后来的表达式不返回 Promise 的话，就会包装成 Promise.reslove(返回值)，然后会去执行函数外的同步代码；
 
 
-## <a name="事件委托">事件委托(代理)delegate</a>
 
-事件注册在父级元素上，依靠事件冒泡机制与事件捕获机制，子级元素的事件将委托给父级元素。
-
-优点：
->
-    事件动态绑定，可以减少事件注册数量，节约内存开销，提高性能。
-
-缺点：
->
-    事件委托基于冒泡，对于不冒泡的事件不支持。
-
-    层级过多，冒泡过程中，可能会被某层阻止掉。
-
-    理论上委托会导致浏览器频繁调用处理函数，虽然很可能不需要处理。所以建议就近委托，比如在table上代理td，而不是在document上代理td。
-
-    把所有事件都用代理就可能会出现事件误判。比如，在document中代理了所有button的click事件，另外的人在引用改js时，可能不知道，造成单击button触发了两个click事件。
-
-
-[实现一个事件委托](\details\常用的方法\实现一个事件委托.md)
 
 ## <a name="闭包">闭包</a>
 
@@ -1622,6 +1630,8 @@ async函数表示函数里面可能会有异步方法，await后面跟一个表�
 [深浅拷贝](/details/常用的手写函数/深拷贝-浅拷贝.md)
 
 ## <a name="js延迟加载：defer,async">js异步延迟加载：async，defer</a>
+[](https://www.cnblogs.com/jiasm/p/7683930.html)
+
 async 属性  -- 异步加载
 ` <script src="file.js" async></script>`
 * 让js并行加载, 
@@ -1632,12 +1642,12 @@ async 属性  -- 异步加载
 defer 属性   -- 延迟加载
 `<script src="file.js" defer></script>`
 * 让js并行加载, 
-* 在页面渲染完后才会执行，
-* 脚本按加载的顺序执行。在 DOMContentLoaded 事件之前完成
+* 在页面解析渲染完后才会执行，在 DOMContentLoaded 事件之前完成
+* 脚本按加载的顺序执行。
 
 使用defer、async的脚本禁止使用document.write()方法
 
-同时使用 async 和 defer,执行效果和async一致
+同时使用 async 和 defer,defer优先级高
 
 
 
@@ -1843,7 +1853,7 @@ console.log(decoded_str); // "a啊"
 ```js
 function factorial(n) {
   if(n === 1) return n
-  return n*fac(n-1)
+  return n*factorial(n-1)
 }
 ```
 
@@ -1872,7 +1882,6 @@ function factorial(n) {
 * 尾调用不访问当前栈帧的变量(函数不是一个闭包。)
 * 尾调用是最后一条语句
 * 尾调用的结果作为函数返回
-
 
 
 非尾调用
@@ -1942,7 +1951,7 @@ function doSomething () {
 ```
 
 ### 尾递归
-当一个函数尾调用自身，就叫做尾递归
+当一个函数尾调用自身，就叫做尾递归;解决递归栈溢出问题
 ```js
 function foo () {
   return foo();

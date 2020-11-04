@@ -79,6 +79,76 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
     setTimeout(flushCallbacks, 0)
   }
 }
+
+// -------------------------
+
+// cb回调函数
+// ctx回调函数的执行上下文
+export function nextTick (cb?: Function, ctx?: Object) {
+  let _resolve
+  callbacks.push(() => {
+    if (cb) {
+      // 执行回调函数
+      try {
+        cb.call(ctx)
+      } catch (e) {
+        handleError(e, ctx, 'nextTick')
+      }
+    } else if (_resolve) {
+      //触发promise的then回调
+      _resolve(ctx)
+    }
+  })
+  if (!pending) { // 回调队列是否空闲
+    pending = true
+    timerFunc()  // 执行时会调用flushCallbacks， 将pending设为false
+  }
+  // $flow-disable-line
+  //如果没有传递回调函数,并且当前浏览器支持promise,使用promise实现
+  if (!cb && typeof Promise !== 'undefined') {
+    return new Promise(resolve => {
+      _resolve = resolve
+    })
+  }
+}
+```
+
+###
+src\core\observer\scheduler.js
+```js
+export function queueWatcher (watcher: Watcher) {
+  const id = watcher.id // 观察者对象的唯一标识
+  if (has[id] == null) { // 防止重复推送
+    has[id] = true
+     // 在push到 queue 之前有一个对变量 flushing 的判断
+     // 更新开始时会将 flushing 变量的值设置为 true，代表着此时正在执行更新
+    if (!flushing) {
+      // 如果队列还未执行更新，直接push到队列中即可
+      queue.push(watcher)
+    } else {
+      // if already flushing, splice the watcher based on its id
+      // if already past its id, it will be run next immediately.
+      //如果队列正在执行更新，则根据其ID拼接观察者到队列,保证观察者的执行顺序
+      let i = queue.length - 1
+      while (i > index && queue[i].id > watcher.id) {
+        i--
+      }
+      queue.splice(i + 1, 0, watcher)
+    }
+    // queue the flush
+    // 无论调用多少次 queueWatcher 函数，该 if 语句块的代码只会执行一次
+    if (!waiting) {
+      waiting = true
+
+      if (process.env.NODE_ENV !== 'production' && !config.async) {
+        flushSchedulerQueue()
+        return
+      }
+      nextTick(flushSchedulerQueue)
+    }
+  }
+}
+
 ```
 
 ### 使用场景：

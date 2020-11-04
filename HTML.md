@@ -385,7 +385,7 @@ HTML中某些字符是预留的,预留字符必须被替换为字符实体。
 ```
 
 #### preload --提前加载（提前加载重要资源）
-preload 提供了一种声明式的命令，让浏览器提前加载指定资源(加载后并不执行)，同时不阻塞文档 onload 事件，在需要执行的时候再执行(script标签加载时执行)。
+preload 提供了一种声明式的命令，让浏览器提前加载指定资源(加载后并不执行)，同时不阻塞文档 onload 事件，`在需要执行的时候再执行(script标签加载时执行)。`
 
 使用 preload 后，不管资源是否使用都将提前加载,提升资源加载的优先级
 
@@ -430,15 +430,7 @@ Preload是为了让当前页面的关键资源尽早被发现和加载，从而�
 
 Prefetch是为了提前加载下一个导航所需的资源，提升下一次导航的首屏渲染性能。但也可以用来在当前页面提前加载运行过程中所需的资源，加速响应。
 
-
-同时使用preload prefetch加载同一资源，会重复加载
-```html
-<link href="main.js" rel="preload">
-<link href="main.js" rel="prefetch">
-
-main.js会加载两次
-```
-
+`preload和prefetch仅提前加载资源，而不会执行，需调用link，script引入对应文件资源时才会执行`
 
 ## <a name="base标签">base标签</a>[![bakTop](/img/backward.png)](#top)
 >

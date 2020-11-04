@@ -140,7 +140,7 @@ MVVM只能数据驱动视图，视图更改数据，而不能通过其他方式�
 # <a name="MVC、MVP、MVVM">MVC、MVP、MVVM</a>[![bakTop](/img/backward.png)](#top)  
 [MVC，MVP 和 MVVM 的图示](http://www.ruanyifeng.com/blog/2015/02/mvcmvp_mvvm.html)--阮一峰
 
-[基于Vue实现一个简易MVVM](https://juejin.im/post/5cd8a7c1f265da037a3d0992)
+[基于Vue实现一个简易MVVM](https://juejin.im/post/6844904099704471559)
 
 ### MVVM(Model-View-ViewModel)
 <!-- <img src="img/Vue/mvvm.png" width="50%"/> -->

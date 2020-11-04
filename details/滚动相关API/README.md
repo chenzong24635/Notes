@@ -113,7 +113,7 @@ document.querySelector(".box").scrollIntoView({
 * [offsetParent](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetParent)
   >只读属性,返回一个元素，这个元素是距离调用 offsetParent的父级元素中最近的（在包含层次中最靠近的），
 
-   * 如果当前元素的父级元素中没有进行CSS定位， offsetParent 为 body
+  * 如果当前元素的父级元素中没有进行CSS定位， offsetParent 为 body
 
   * 如果当前元素的父级元素中有CSS定位(relative/absoluted/sticky)， offsetParent 取父级中最近的元素
 
