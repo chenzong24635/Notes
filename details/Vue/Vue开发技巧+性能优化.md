@@ -138,7 +138,7 @@ export default{
 
 [源码解析](/details\Vue\Vue2-Source\v-for,v-if.md)
 
-## <a name="使用render函数优化代码">render函数优化代码</a>[![bakTop](/img/backward.png)](#top)  
+## <a name="使用render函数优化代码">使用render函数优化代码</a>[![bakTop](/img/backward.png)](#top)  
 [渲染函数 & JSX-vue官网](https://cn.vuejs.org/v2/guide/render-function.html)
 场景:有些代码在 template 里面写会重复很多,可使用 render 函数
 ```html
@@ -930,6 +930,10 @@ Vue.use(VueLazyload, {
 
 [图片预加载_懒加载](/details/图片预加载_懒加载.md)
 
+## <a name="高阶组件">高阶组件</a>[![bakTop](/img/backward.png)](#top) 
+[Vue 进阶必学之高阶组件 HOC](https://juejin.im/post/6844904116603486221)
+
+
 ## <a name="v-html弊端">v-html弊端</a>[![bakTop](/img/backward.png)](#top)  
 [v-html](https://cn.vuejs.org/v2/api/#v-html)
 
@@ -946,8 +950,8 @@ Vue.use(VueLazyload, {
   <div v-html="msg">
   </div>
 </div>
-<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
-<script>
+< src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></>
+<>
   let vm = new Vue({
     el:'#app',
     components: {
@@ -958,7 +962,7 @@ Vue.use(VueLazyload, {
       }
     },
   })
-</script>
+</>
 ```
 加载图片时 src地址对应的资源找不到，会触发error事件，最终alert 1。这便是一个最简单的xss攻击。
 
@@ -968,7 +972,7 @@ Vue.use(VueLazyload, {
   <div v-html="msg">
   </div>
 </div>
-<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+< src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></>
 <script>
   let vm = new Vue({
     el:'#app',
@@ -976,11 +980,11 @@ Vue.use(VueLazyload, {
     },
     data(){
       return {
-        msg: 'a<script>alert(1)<\/script>b'
+        msg: 'a<>alert(1)<\/script>b'
       }
     },
   })
-</script>
+</>
 ```
 此时script虽然会加载为标签而不是字符串，但不会执行内容；如图
 ![](/img/Vue/vhtml.png)
@@ -1232,7 +1236,7 @@ methods：{
   </div>
 </template>
 
-<script>
+<>
 import {debounce} from 'lodash'
 const VChart = {
   template: '<span>chart</span>',
@@ -1254,7 +1258,7 @@ export default{
     VChart
   }
 }
-</script>
+</>
 ```
 页面中有两个 Chart 组件，他们会监听 window.resize 事件，然后在控制台输出 "resize"。 
 但每次改变页面大小，控制台只输出了 1 次 "resize"

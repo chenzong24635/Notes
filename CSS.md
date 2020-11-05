@@ -391,8 +391,8 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
 
 ### inline,block,inline-block特性
 inline: 
-  * 多个标签存在一行，设置宽高不生效，完全靠内容撑开宽高
-  * 设置padding/margin-left/right有效果，但是padding/margin-top/bottom无效
+  * 多个标签存在一行，设置宽高不生效，完全靠内容和padding撑开宽高
+  * 设置margin-left/right有效果，但是margin-top/bottom无效
 
 
 block: 
@@ -638,7 +638,7 @@ css2层叠顺序规则
 z-index只适用于已经定位的元素
 >
     定位元素z-index越大 层级越高（限同一父元素）
-    定位元素与浮动元素（先看zindex，越大越高；若相同，再看其在html顺序，越后越高）
+    transform-origin
 
 
 ![zindex](/img/zIndex2.png)

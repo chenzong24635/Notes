@@ -49,6 +49,11 @@ toString()可以转进制字符串，String()不行
 * 十进制：str.toString(10)
 * 十六进制：str.toString(16)
 
+
+toString(radix) 方法以指定的基数返回该对象的字符串表示。
+>radix用于数字到字符串的转换的基数(从2到36)。默认 10
+  如果转换的基数大于10，则会使用字母来表示大于9的数字，比如基数为16的情况，则使用a到f的字母来表示10到15。
+
 ```js
 String(null)             // 'null'
 String(undefined)        // 'undefined'
