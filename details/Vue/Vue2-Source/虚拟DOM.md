@@ -27,3 +27,4 @@ Virtual DOM映射到真实DOM要经历VNode的create、diff、patch等阶段。
 Virtual DOM 结构类似 ast，
 Virtual DOM是 dom解析， ast是语法解析
 
+[diff算法](./diff算法.md)

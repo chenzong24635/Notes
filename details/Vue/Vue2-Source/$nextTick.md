@@ -32,7 +32,7 @@ function flushCallbacks () {
   pending = false
   const copies = callbacks.slice(0) //一层深拷贝
   callbacks.length = 0 // 清空数组
-  // 以上代码是为了在nextTick的方法里再次调用nextTick，能够新开一个异步队列
+  // 以上copies代码是为了在nextTick的方法里再次调用nextTick，能够新开一个异步队列
 
   for (let i = 0; i < copies.length; i++) {
     copies[i]()
@@ -274,4 +274,5 @@ console.log(4)
 // 1
 // 2
 // 3
+// 0
 ```

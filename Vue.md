@@ -728,7 +728,7 @@ Vue 异步执行 DOM 更新。Vue在观察到数据变化时并不是直接更�
 
 # <a name="nextTick">nextTick</a>[![bakTop](/img/backward.png)](#top)  
 
-[nextTick](/details/Vue/Vue2-Source/nextTick.md)
+[nextTick](/details/Vue/Vue2-Source/$nextTick.md)
 
 
 # <a name="组件中data为什么是一个函数">为什么组件中的 data 必须是一个函数，然后 return 一个对象，而 new Vue 实例里，data 可以直接是一个对象？</a>[![bakTop](/img/backward.png)](#top)  
