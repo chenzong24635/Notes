@@ -1,3 +1,5 @@
+https://zhuanlan.zhihu.com/p/51800345
+
 ## JavaScript中的错误类型
 [Error类型--MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
@@ -72,3 +74,4 @@ decodeURIComponent('%')
 
 ![error](/img/javascript-error-graph.png)
 
+## 

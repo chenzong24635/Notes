@@ -377,7 +377,8 @@ HTML中某些字符是预留的,预留字符必须被替换为字符实体。
     <link rel="icon" href="favicon.gif" type="image/gif" />
 
 ### <a name="预加载页面资源prefetch、prefetch">预加载页面资源prefetch、prefetch</a>[![bakTop](/img/backward.png)](#top)
-[](https://juejin.im/post/6844903646996480007)
+[什么是 Preload，Prefetch 和 Preconnect？](https://juejin.im/post/6844903646996480007)
+[用 preload 预加载页面资源](https://juejin.im/post/6844903562070196237)
 
 #### dns-prefetch
 ```html
@@ -388,7 +389,7 @@ HTML中某些字符是预留的,预留字符必须被替换为字符实体。
 ```
 
 #### preload --提前加载（提前加载重要资源）
-preload 提供了一种声明式的命令，让浏览器提前加载指定资源(加载后并不执行)，同时不阻塞文档 onload 事件，`在需要执行的时候再执行(script标签加载时执行)。`
+preload 提供了一种声明式的命令，让浏览器提前加载指定资源(加载后并不执行)，同时不阻塞文档 onload 事件
 
 使用 preload 后，不管资源是否使用都将提前加载,提升资源加载的优先级
 
@@ -397,7 +398,7 @@ preload 提供了一种声明式的命令，让浏览器提前加载指定资源
 * 提前加载指定资源，不再出现依赖的font字体隔了一段时间才刷出
 
 href: 预加载的资源  
-as: 标明资源类型
+as: 标明资源类型;忽略as属性，或者错误的as属性会使preload等同于XHR请求，浏览器不知道加载的是什么内容，因此此类资源加载优先级会非常低。
 ```html
 <!-- 获取字体时必须加上crossorigin属性，就如使用CORS的匿名模式获取一样。是的，即使你的字体与页面同域 -->
 <link rel="preload" href="xxx.woff" as="font" crossorigin />
@@ -405,9 +406,16 @@ as: 标明资源类型
 <link rel="preload" href="xxx.js"   as="script" />
 ```
 
-让 preload的 CSS 样式表立即生效吗
+`preload只是提前加载不会生效，需要引用才会生效`
 ```html
-<link rel="preload" href="xxx.css" onload="this.rel=stylesheet" as="style" />
+<link rel="preload" as="style" href="demo.css" />
+...
+<link rel="stylesheet" href="demo.css" />
+```
+
+如何让preload的 CSS 样式表立即生效？
+```html
+<link rel="preload" href="xxx.css" as="style" onload="this.rel='stylesheet'"  />
 ```
 
 

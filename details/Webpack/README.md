@@ -46,6 +46,10 @@ webpack是基于入口的。webpack会自动地递归解析入口所需要加载
   * 通过splitChunks拆分的公共代码
 * bundle: 打包后的资源文件，bundle是对chunk进行编译压缩打包等处理后产出的(一般一个chunk对应一个bundle)
 
+一句话总结：
+module，chunk 和 bundle 其实就是同一份逻辑代码在不同转换场景下的取了三个名字：
+
+我们直接写出来的是 module，webpack 处理时是 chunk，最后打包生成浏览器可以直接运行的 bundle。
 
 ## Webpack 中 hash、chunkhash 和 contenthash 的区别 
 
@@ -123,7 +127,36 @@ module.exports = {
 
 注意，当使用contenthash时，如果仅修改js文件，css文件的hash不会变化，但是仅修改css的文件，js文件的hash也会变化。
 
+## 魔法注释webpackChunkName、webpackPrefetch、webpackPreload、
+[魔法注释](https://webpack.js.org/api/module-methods/#magic-comments)
 
+添加webpackChunkName，分离路由模块
+```js
+import(
+  /* webpackChunkName: 'posts' */
+  './posts/posts'
+)
+```
+
+同时，也要在 webpack.config.js 中做一些改动：
+```js
+// webpack.config.js
+{
+  output: {
+    filename: "bundle.js",
+    chunkFilename: "[name].lazy-chunk.js"
+  }
+}
+```
+
+还有添加 webpackPrefetch， 魔术注释，Webpack 令我们可以使用与 \<link rel="prefetch"> 相同的特性;
+webpackPreload 同 \<link rel="preload">
+```js
+import(
+  /* webpackPrefetch: true */
+  './posts/posts'
+)
+```
 
 ## webpack的构建流程是什么?从读取配置到输出文件这个过程尽量说全
 * 初始化参数：从配置文件和 Shell 语句中读取与合并参数，得出最终的参数；

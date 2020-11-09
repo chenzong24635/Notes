@@ -14,6 +14,8 @@
 [「吐血整理」再来一打Webpack面试题](https://juejin.im/post/5e6f4b4e6fb9a07cd443d4a5)
 
 * <a href=""></a>
+# [Webpack面试题](/details/Webpack/README.md)
+# [Webpack优化](/details/WEB性能优化/Webpack优化.md)
 
 # 基本
 WebPack可以看做是模块打包机：它做的事情是，分析你的项目结构，找到JavaScript模块以及其它的一些浏览器不能直接运行的拓展语言（Scss，TypeScript等），并将其转换和打包为合适的格式供浏览器使用。
@@ -109,13 +111,13 @@ output: {
   // filename: 'js/[name].[hash:8].js',   //添加了hash值, 实现静态资源的长期缓存
   // filename: "js/[chunkhash].js", // chunkhash 用于长效缓存
 
-  path: path.resolve(__dirname, "dist"),//输出文件目录，必须是绝对路径
+  path: path.resolve(__dirname, "dist"), //输出文件目录，必须是绝对路径
 
   publicPath: "/assets/", // 输出解析文件的目录，url 相对于 HTML 页面
   // publicPath: "https://cdn.example.com/",
 
-  library: "MyLibrary", // 导出库(exported library)的名称
-  libraryTarget: "umd", // 导出库(exported library)的类型
+  // library: "MyLibrary", // 导出库(exported library)的名称
+  // libraryTarget: "umd", // 导出库(exported library)的类型
 },
 
 //多出口的处理
@@ -206,16 +208,11 @@ devtool类型:string | false // 在development模式中，默认开启，
 |module|包含loader的 sourceMap（如：jsx to js，babel的sourceMap），否则无法定义源文件
 
 Development推荐使用：
-* eval
-* eval-source-map
-* eval-cheap-source-map
 * eval-cheap-module-source-map
 
 Production推荐使用：
 * none
-* source-map  产生.map文件
-* hidden-source-map  借助第三方错误监控平台 Sentry 使用
-* nosources-source-map 只会显示具体行数以及查看源代码的错误栈。安全性比 sourcemap 高
+* cheap-module-source-map
 
 注意：避免在生产中使用 inline- 和 eval-，因为它们会增加 bundle 体积大小，并降低整体性能。
 
@@ -294,6 +291,7 @@ Loaders是Webpack最重要的功能之一，通过使用不同的Loader，Webpac
 
 注意：所有的Loaders都需要在npm中单独进行安装，并在webpack.config.js里进行配置。
 
+处理一类源文件的时候，单一的 loader是不够用的；多个 loader 串联使用时，`loader解析顺序从右到左（从下至上）`
 
 Loaders的配置:
 ```js
@@ -657,36 +655,6 @@ module.exports = webpackMerge(baseConfig,{
 })
 ```
 
-# [Webpack面试题](/details/面试题/Webpack面试题/README.md)
-# [Webpack优化](/details/WEB性能优化/Webpack优化.md)
-
-# 魔法注释
-[魔法注释](https://webpack.js.org/api/module-methods/#magic-comments)
-
-添加webpackChunkName，分离路由模块
-```js
-import(
-  /* webpackChunkName: 'posts' */
-  './posts/posts'
-)
-```
 
 
-同时，也要在 webpack.config.js 中做一些改动：
-```js
-// webpack.config.js
-{
-  output: {
-    filename: "bundle.js",
-    chunkFilename: "[name].lazy-chunk.js"
-  }
-}
-```
 
-还有添加 webpackPrefetch 魔术注释，Webpack 令我们可以使用与 \<link rel="prefetch"> 相同的特性
-```js
-import(
-  /* webpackPrefetch: true */
-  './posts/posts'
-)
-```

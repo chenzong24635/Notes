@@ -1036,92 +1036,7 @@ export function defineReactive() {
 ```
 
 ## <a name="typeof instanceof">typeof 、instanceof 、in</a>
-#### [typeof](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/typeof)
-[浅谈 instanceof 和 typeof 的实现原理](https://juejin.im/post/5b0b9b9051882515773ae714)
-
-typeof 能够正确的判断基本数据类型，但是除了 null, typeof null输出的是对象  
-在使用 typeof 运算符时采用引用类型存储值会出现一个问题，无论引用的是什么类型的对象，它都返回 “object”。
-
-|  | typeof |
-:-:| :-:|
-| Boolean    | "boolean"
-| Number     | "number"
-| String     | "string"
-| Undefined  | "undefined"
-| Null       | "object"
-| Symbol     | "symbol"
-| Object     | "object"
-| BigInt     | "bigint"
-| Function   | "function"
-
-
-`typeof原理`： 在 JS 的最初版本中使用的是 32 位系统，为了性能考虑使用低位存储变量的类型信息，不同的对象在底层都表示为二进制，在Javascript中二进制前（低）三位存储其类型信息。
-* 对象：000
-* 布尔值：110
-* 字符串：100
-* 浮点数：010
-* 整数：1
-* null：所有机器码均为0
-* undefined：用 −2^30 整数来表示
-
-`由于null的二进制表示全为0`，自然前三位也是0，所以执行typeof时会返回"object"。
-
-
-MDN解释：
->
-    在 JavaScript 最初的实现中，JavaScript 中的值是由一个表示类型的标签和实际数据值表示的。对象的类型标签是 0。由于 null 代表的是空指针（大多数平台下值为 0x00），因此，null 的类型标签是 0，typeof null 也因此返回 "object"。
-
-#### instanceof
-instanceof 是通过原型链判断的，判断实例对象在其原型链中是否存在一个构造函数的 prototype 属性。  
-
-A instanceof B, 在A的原型链中层层查找，是否有原型等于 B.prototype，如果一直找到A的原型链的顶端(null;即 Object.prototype.__proto__),仍然不等于B.prototype，那么返回false，否则返回true.
-
-instanceof使用
-* 语法：object instanceof constructor
-  >   （要检测的对象）    （某个构造函数）
-* 描述：instanceof 运算符用来检测 constructor.prototype 是否存在于参数 object 的原型链上。
-
-[实现instanceof](/details\常用的手写函数\instanceof.md)
-
-```js
-function P(){}
-let p = new P()
-console.log(p instanceof P) //true
-
-P = function(){}
-console.log(p instanceof P) //false
-```
-
-#### isPrototypeOf
-判断指定对象是否存在于另一个对象的原型链中
-
-```js
-function P(){}
-let p = new P()
-console.log(P.prototype.isPrototypeOf(p));//true
-```
-
-#### in
-in 操作符会检查属性是否存在对象及其 [[Prototype]] 原型链中。检查的是某个属性名是否存在
->
-    var obj = {a:1}
-    Object.prototype.b = 2
-    'a' in obj // true
-    'b' in obj // true
-
-
-    对于数组来说，4 in [2, 4, 6] 结果返回 false，因为 [2, 4, 6] 这个数组中包含的属性名是0，1，2 ，没有4。
-
-
-#### hasOwnProperty()
-hasOwnProperty 只会检查属性是否存在对象中，不会向上检查其原型链。
->
-    var obj = {a:1}
-    Object.prototype.b = 2
-    obj.hasOwnProperty('a') // true
-    obj.hasOwnProperty('b') // false
-
-所有普通对象都可以通过 Object.prototype 的委托来访问 hasOwnProperty(...)，但是对于一些特殊对象（ Object.create(null) 创建）没有连接到 Object.prototype，这种情况必须使用 Object.prototype.hasOwnProperty.call(obj, "a")，显示绑定到 obj 上。
+[判断数据类型typeof 、instanceof 、in...](/details\常用的方法\判断数据类型.md)
 
 
 ## <a name="异步编程有哪几种方法">异步编程有哪几种方法</a>
@@ -1578,7 +1493,7 @@ if (window.addEventListener) {
 ```
 
 ## <a name="重绘和回流">[重绘和回流](https://github.com/chenjigeng/blog/issues/4)</a>
-[重绘和回流](\details\面试题\JS面试题\重绘-回流.md)
+[重绘和回流](\details\JS\details\重绘-回流.md)
 
 
 ## <a name="模块化">模块化</a>

@@ -29,8 +29,8 @@
 
 ### Cache-Control 过期时长; 优先级高于 Expires
 * private：只有客户端可以缓存，默认值
-* max-age=xxx （单位为s）：缓存内容将在xxx秒后失效
 * public：都将被缓存（客户端和代理服务器都可缓存）
+* max-age=xxx （单位为s）：缓存内容将在xxx秒后失效
 * no-cache：跳过当前的强缓存，发送HTTP请求，即直接进入协商缓存阶段。
 * no-store：都不会被缓存，即不使用强制缓存，也不使用协商缓存
 * s-maxage=xxx（单位为s）：类似max-age，并会覆盖max-age，区别在于s-maxage是针对代理服务器的缓存时间。
