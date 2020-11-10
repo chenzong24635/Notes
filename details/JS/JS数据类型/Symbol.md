@@ -28,6 +28,11 @@ let s1 = Symbol("foo");
 let s2 = Symbol("foo");
 s1 === s2 // false
 
+// 参数为对象时
+Symbol({a:1}) // Symbol([object Object])
+Symbol([1,2,3]) // Symbol(1,2,3)
+Symbol(()=>{}) // Symbol(()=>{})
+
 // Symbol 值不能与其他类型的值进行运算，会报错
 Symbol("foo")+'a' // Uncaught TypeError: Cannot convert a Symbol value to a string at ...
 
@@ -42,7 +47,6 @@ Boolean(Symbol()) // true
 // 但是不能转为数值,会报错
 Number(Symbol('')) //Uncaught TypeError: Cannot convert a Symbol value to a number at Number (<anonymous>) at...
 
-
 // symbol作为键名
 let foo = Symbol('foo')
 let obj = {
@@ -54,10 +58,10 @@ obj.foo // undefined
 ```
 
 `Symbol特点：`
-* Symbol()参数表示对当前Symbol值的描述，相同参数的Symbol()返回值不相等
+* Symbol()参数表示对当前Symbol值的描述，即使相同参数的Symbol()返回值也不相等
 
 * Symbol值不能与其他类型的值进行运算
-
+* 参数会先转为字符串形式（toString）
 * Symbol值可通过String()或toString()显式转为字符串;Boolean()转换为布尔值;不能直接转换为数字
 
 * Symbol值作为对象属性名时，此属性是公开属性，但不是私有属性
