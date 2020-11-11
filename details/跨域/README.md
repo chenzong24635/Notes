@@ -421,32 +421,26 @@ CORS需要浏览器和服务器同时支持。目前，所有浏览器都支持�
 
 
 普通跨域请求：只服务端设置Access-Control-Allow-Origin即可，前端无须设置。
-带cookie请求：前后端都需要设置字段，另外需注意：所带cookie为跨域请求接口所在域的cookie，而非当前页。 
-
-
 
 整个CORS通信过程，都是浏览器自动完成，不需要用户参与。对于开发者来说，CORS通信与同源的AJAX通信没有差别，代码完全一样。浏览器一旦发现AJAX请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求，但用户不会有感觉。 因此，实现CORS通信的关键是服务器。只要服务器实现了CORS接口，就可以跨源通信。
 
 ### 两种请求
-分为两种请求，一种是简单请求，另一种是非简单请求。
+分为两种请求，一种是简单请求，另一种是非简单请求。非简单请求会先进行一次OPTION方法进行预检，看是否允许当前跨域请求。
 
 为什么要分为简单请求和非简单请求，因为浏览器对这两种请求方式的处理方式是不同的。
 
 ### 简单请求
 只要满足下面条件就是简单请求
 * 请求方式为
-  * HEAD、
+  * GET、
   * POST、
-  * GET
-* Content-Type 只能使用以下编码格式
-  * application/x-www-form-urlencoded、
-  * multipart/form-data、
-  * text/plain
+  * HEAD、
+
 * 只能设置以下集合中的请求头
   * Accept
   * Accept-Language
   * Content-Language
-  * Content-Type(但是有限制)
+  * Content-Type(只限于application/x-www-form-urlencoded、multipart/form-data、text/plain)
   * DPR
   * Downlink
   * Save-Data
@@ -457,10 +451,12 @@ CORS需要浏览器和服务器同时支持。目前，所有浏览器都支持�
 
 * 请求中没有使用 ReadableStream 对象。
 
+后端设置
 ```js
-// 设置允许跨域域名
+// 设置允许跨域域名 ，设置 * 表示接受任意域名的请求。
 res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:8085');
-//允许该请求内包含cookie信息同时，
+
+//允许该请求内包含cookie信息
 res.setHeader('Access-Control-Allow-Credentials', true); 
 
 
@@ -470,6 +466,11 @@ xhr.withCredentials = true;
 
 ```
 
+### 非简单请求
+非简单请求是那种对服务器有特殊要求的请求，比如请求方法是PUT或DELETE，或者Content-Type字段的类型是application/json。非简单请求的CORS请求，会在正式通信之前，增加一次HTTP查询请求，称为"预检"请求（[preflight](/details\HTTP\preflight请求.md)）。
+
+
+如果浏览器否定了"预检"请求，会返回一个正常的HTTP回应，但是没有任何CORS相关的头信息字段。这时，浏览器就会认定，服务器不同意预检请求，因此触发一个错误，被XMLHttpRequest对象的onerror回调函数捕获。
 
 ## <a name="node代理跨域">node代理跨域</a>
 

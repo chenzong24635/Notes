@@ -14,7 +14,8 @@
 * HTTP1.0版本，使用的是Expires，
 * HTTP1.1版本，使用的是Cache-Control
 
-「强缓存分为两种情况，一种是发送HTTP请求，一种不需要发送。」
+状态码表现为200 (from disk cache)或是200 OK (from memory cache)。
+
 
 ### Expires 过期时间
 时间是相对于服务器的时间而言的，存在于服务端返回的响应头中，在这个过期时间之前可以直接从缓存里面获取数据，无需再次请求

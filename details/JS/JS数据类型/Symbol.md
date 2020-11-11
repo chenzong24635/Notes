@@ -122,10 +122,8 @@ console.log(Object[Symbol.hasInstance]({})); //true
 console.log(Object[Symbol.hasInstance](123)); //false
 ```
 
-
 ### <a name="iterator">Symbol.iterator</a>[![bakTop](/img/backward.png)](#top)
 为每一个对象定义了默认的迭代器。该迭代器可以被 for...of 循环使用。
-
 
 让对象变为可迭代的值
 ```js
@@ -306,38 +304,17 @@ const rematch = {
 ### Symbol.search
 指向一个函数，当实例对象被String.prototype.search()调用时会重新定义search()的行为
 
+```js
+String.prototype.search(regexp)
+// 等同于
+regexp[Symbol.search](this)
+```
 
 ### Symbol.split
 指向一个函数，当实例对象被String.prototype.split()调用时会重新定义split()的行为
 
 
-
-
 ## <a name="方法">方法</a>[![bakTop](/img/backward.png)](#top)
-
-### <a name="getOwnPropertySymbols">Object.getOwnPropertySymbols()</a>[![bakTop](/img/backward.png)](#top)
-
-Symbol 作为属性名，遍历对象的时候，该属性不会出现在for...in、for...of循环中，也不会被Object.keys()、Object.getOwnPropertyNames()、JSON.stringify()返回。
-
-但是，它也不是私有属性，有一个Object.getOwnPropertySymbols()方法，可以获取指定对象的所有 Symbol 属性名。该方法返回一个数组
-
-```js
-// 不可枚举属性
-var obj = Object.create({}, {
-  num: {
-    value: 1,
-    enumerable: false
-  }
-});
-obj.str = 'str';
-obj[Symbol('syb')] = 'symbol'; // Symbol属性
-
-console.log(Object.getOwnPropertySymbols(obj)); // [Symbol(syb)]
-
-// 当使用 JSON.strIngify() 时，以 symbol 值作为键的属性会被完全忽略  
-JSON.stringify({[Symbol("foo")]: "foo"});  // '{}'
-```
-
 
 ### <a name="for">Symbol.for()</a>[![bakTop](/img/backward.png)](#top)
 在全局中搜索有没有以该参数作为名称的 Symbol 值，如果有，就返回这个 Symbol 值，否则就新建并返回一个以该字符串为名称的 Symbol 值
@@ -382,3 +359,25 @@ var s2 = Symbol("foo");
 Symbol.keyFor(s2) // undefined
 ```
 
+## <a name="getOwnPropertySymbols">Object.getOwnPropertySymbols()</a>[![bakTop](/img/backward.png)](#top)
+
+Symbol 作为属性名，遍历对象的时候，该属性不会出现在for...in、for...of循环中，也不会被Object.keys()、Object.getOwnPropertyNames()、JSON.stringify()返回。
+
+但是，它也不是私有属性，有一个Object.getOwnPropertySymbols()方法，可以获取指定对象的所有 Symbol 属性名。该方法返回一个数组
+
+```js
+// 不可枚举属性
+var obj = Object.create({}, {
+  num: {
+    value: 1,
+    enumerable: false
+  }
+});
+obj.str = 'str';
+obj[Symbol('syb')] = 'symbol'; // Symbol属性
+
+console.log(Object.getOwnPropertySymbols(obj)); // [Symbol(syb)]
+
+// 当使用 JSON.strIngify() 时，以 symbol 值作为键的属性会被完全忽略  
+JSON.stringify({[Symbol("foo")]: "foo"});  // '{}'
+```

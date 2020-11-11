@@ -96,9 +96,9 @@ JavaScript的单线程，与它的用途有关。作为浏览器脚本语言，J
 * [Undefined、Null](/details/JS/JS数据类型/Undefined、Null.md)
 * [Boolean](/details/JS/JS数据类型/Boolean.md)
 * [Number](/details/JS/JS数据类型/Number.md)
-* [String](/details/JS/JS数据类型/String)
-* [Symbol](/details/JS/JS数据类型/Symbol)
-* [BigInt](/details/JS/JS数据类型/BigInt)
+* [String](/details/JS/JS数据类型/String.md)
+* [Symbol](/details/JS/JS数据类型/Symbol.md)
+* [BigInt](/details/JS/JS数据类型/BigInt.md)
 
 复杂（引用）数据类型:   --地址传递--堆内存
 * [Object](/details/JS/JS数据类型/Object.md) 
@@ -116,7 +116,7 @@ JavaScript的单线程，与它的用途有关。作为浏览器脚本语言，J
 
     引用数据类型存储在堆(heap)中的对象,占据空间大、大小不固定。如果存储在栈中，将会影响程序运行的性能；引用数据类型在栈中存储了指针，该指针指向堆中该实体的起始地址。当解释器寻找引用值时，会首先检索其在栈中的地址，取得地址后从堆中获得实体
 
-### [堆栈](/details\面试题\JS面试题\堆-栈-队列.md)
+### [堆栈](/details\JS\details\堆-栈-队列.md)
 
 
 ### 内置对象
@@ -1321,7 +1321,7 @@ p = new P('jack')
 [作用域-作用域链-执行上下文](\details\面试题\JS面试题/作用域-作用域链-执行上下文.md)
 
 ## <a name="this">this理解</a>
-[this](/details/JS/this.md)
+[this](/details/JS/details/this.md)
 
 ## <a name="apply call bind">apply call bind用法及实现</a>
 区别

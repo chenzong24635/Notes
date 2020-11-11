@@ -1,6 +1,8 @@
-[异步更新队列](https://cn.vuejs.org/v2/guide/reactivity.html#%E5%BC%82%E6%AD%A5%E6%9B%B4%E6%96%B0%E9%98%9F%E5%88%97)
+[异步更新队列-Vue官网](https://cn.vuejs.org/v2/guide/reactivity.html#%E5%BC%82%E6%AD%A5%E6%9B%B4%E6%96%B0%E9%98%9F%E5%88%97)
 
-[](https://github.com/Ma63d/vue-analysis/issues/6)
+[Vue源码详解之nextTick：MutationObserver只是浮云，microtask才是核心！](https://github.com/Ma63d/vue-analysis/issues/6)
+
+[你真的理解$nextTick么](https://juejin.im/post/6844903843197616136)
 
 ### 前置
 [事件执行机制EventLoop](/details\面试题\JS面试题\事件执行机制EventLoop.md)
