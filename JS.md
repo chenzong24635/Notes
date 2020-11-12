@@ -145,7 +145,7 @@ Array.isArray({}) // false
 ## <a name="面向过程和面向对象">面向过程和面向对象</a>
 https://zhuanlan.zhihu.com/p/55064276
 
-### 面向过程POP（Procedure Oriented Programming））,面向对象OOP（Object Oriented Programming）
+### 面向过程POP（Procedure Oriented Programming）,面向对象OOP（Object Oriented Programming）
 `面向过程：`
 把复杂业务划分为若干个“Procedure、Function”。
 彻底的理解现实场景，理清其中的逻辑关系和运行顺序，划分为若干个小的处理单元——落实为function
@@ -256,7 +256,6 @@ hobby(dog); //bone!
 简单来说，就是增加代码的可复用性，减少咱们的工作，使代码更加流畅。
 
 
-
 ## <a name="json jsonp">json jsonp</a>
 
 JSON是一种key/value形式的数据格式，
@@ -301,7 +300,7 @@ JSON 的网络媒体类型是 application/json。
 
     通过将前端方法作为参数传递到服务器端，然后由服务器端注入参数之后再返回，实现服务器端向客户端通信(只支持get方法)
 
-[更多](/details/跨域/跨域.md#jsonp跨域)
+[更多](/details/跨域/README.md#jsonp跨域)
 
 ## <a name="BOM 浏览器对象模型">BOM 浏览器对象模型</a>
 

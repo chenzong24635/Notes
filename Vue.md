@@ -324,6 +324,7 @@ btn.addEventListener("click",function(){
 
 ## 在哪个生命周期内调用异步请求？
 可以在钩子函数 created、beforeMount、mounted 中进行调用，因为在这三个钩子函数中，data 已经创建，可以将服务端端返回的数据进行赋值。  
+
 推荐在 created 钩子函数中调用异步请求，因为在 created 钩子函数中调用异步请求有以下优点：
 * 能更快获取到服务端数据，减少页面 loading 时间；
 * ssr 只支持 beforeCreate和created 钩子函数，所以放在 created 中有助于一致性；
@@ -358,7 +359,6 @@ btn.addEventListener("click",function(){
 
 ##  从源码上看生命周期
 [从源码上看生命周期](/details\Vue\Vue2-Source\生命周期.md)
-
 
 
 # <a name="Vue事件绑定原理">Vue事件绑定原理</a>[![bakTop](/img/backward.png)](#top)  

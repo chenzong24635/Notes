@@ -25,13 +25,16 @@ export function registerRef (vnode: VNodeWithData, isRemoval: ?boolean) {
     // 添加
     // 如果是v-for绑定的ref
     if (vnode.data.refInFor) {
+      // 第一次封装为数组
       if (!Array.isArray(refs[key])) {
         refs[key] = [ref]
       } else if (refs[key].indexOf(ref) < 0) {
         // $flow-disable-line
+        // 数组中不存在，则添加
         refs[key].push(ref)
       }
     } else {
+      // 其他
       refs[key] = ref
     }
   }
