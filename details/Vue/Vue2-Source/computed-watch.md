@@ -462,6 +462,7 @@ export function initState (vm: Component) {
 进入 initComputed 看看
 ```js
 // src\core\instance\state.js
+// 传入watcher的options，！！！，表示computed watcher
 const computedWatcherOptions = { lazy: true }
 /* 
   vm: vue实例

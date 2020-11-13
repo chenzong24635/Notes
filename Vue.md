@@ -66,7 +66,6 @@
 
 </details>
 
-
 # <a name="了解">了解</a>[![bakTop](/img/backward.png)](#top)  
 Vue (读音 /vjuː/，类似于 view) 是一套用于构建用户界面的渐进式框架。
 
@@ -110,7 +109,7 @@ var newArr1 = arr.map(function (item) {
 
 因此简单来说：
 MVVM只能数据驱动视图，视图更改数据，而不能通过其他方式操作数据,
-而 Vue 可以通过其他方式操作dom（如$refs）
+而 Vue 可以通过其他方式操作dom（如ref,$refs）
 
 
 ## 对比其他框架
@@ -715,8 +714,6 @@ vm.items.splice(newLength)
 
 
 但是这种做法并不推荐，官方说如果你现在的场景需要用forceUpdate方法 ,那么99%是你的操作有问题，如上data里不显示声明对象的属性，之后添加属性时正确的做法时用 `vm.$set()` 方法，所以forceUpdate请慎用
-
-### 
 
 ### [forceUpdate源码解析](/details\Vue\Vue2-Source\$forceUpdate.md)
 
