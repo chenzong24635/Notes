@@ -7,7 +7,7 @@
 [Vue 插件-组件](/details/Vue/插件-组件.md)
 
 
-[Vue开发技巧+性能优化](/details/Vue/Vue开发技巧+性能优化.md)
+
 
 
 # 
@@ -66,6 +66,7 @@
 
 </details>
 
+# [Vue开发技巧+性能优化](/details/Vue/Vue开发技巧+性能优化.md)
 
 # <a name="了解">了解</a>[![bakTop](/img/backward.png)](#top)  
 Vue (读音 /vjuː/，类似于 view) 是一套用于构建用户界面的渐进式框架。

@@ -1622,6 +1622,8 @@ async函数表示函数里面可能会有异步方法，await后面跟一个表�
 [深浅拷贝](/details/常用的手写函数/深拷贝-浅拷贝.md)
 
 ## <a name="js延迟加载：defer,async">js异步延迟加载：async，defer</a>
+[](https://juejin.im/post/6894629999215640583)
+
 async 属性  -- 异步加载
 ` <script src="file.js" async></script>`
 * 让js并行加载, 
