@@ -322,6 +322,7 @@ npm i git //git安装
 >
     git config --global credential.helper store
 
+
 2. 
 >
     C:\Users\Administator目录下生成 .gitconfig配置文件。添加：
