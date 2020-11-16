@@ -63,5 +63,5 @@ Array.prototype.selfMap = function(fn, context){
   return arr
 }
 
-// [1,,2].selfMap(item=>item)  [1, 3]
+// [1,,2].selfMap(item=>item) 
 ```

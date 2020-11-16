@@ -21,6 +21,23 @@ function fib(n){
 }
 ```
 
+迭代
+```js
+function fib(n) {
+  let res = 1
+  if(n<=2) return res
+  n = n-2
+  let pre = 1
+  let cur = 1
+  while(n--) {
+    res= pre + cur
+    pre = cur
+    cur = res
+  }
+  return res
+}
+```
+
 
 ### 输出n个 fib 数
 ```js

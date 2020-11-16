@@ -1,6 +1,8 @@
 ﻿<a id="top"></a>
 
 # [常用链接](/details/website/CSS.md)
+
+[各种常见布局实现+知名网站实例分析](https://juejin.im/post/6844903574929932301)
 [CSS居中](/CSS居中.html)
 [CSS布局](/CSS布局.html)
 
@@ -19,6 +21,7 @@
 * <a href="#CSS引入的方式">CSS引入的方式有哪些? link和@import的区别是? 如何避免FOUC?</a>
 * <a href="#盒模型">盒模型</a>
 * <a href="#css选择器">css选择器</a>
+* <a href="#重绘回流">重绘回流</a>
 * <a href="#content属性">:before和:after伪元素的content属性</a>
 * <a href="#CSS书写顺序、规范">CSS书写顺序、规范</a>
 * <a href="#哪些属性可继承">哪些属性可继承</a>
@@ -114,17 +117,24 @@ CSS的优势：
 | 私有化前缀 | -webkit- | -moz- | -ms- | -webkit- | -webkit- |
 
 ## <a name="权重、优先级">权重、优先级</a>[![bakTop](/img/backward.png)](#top)
->
+* 内联样式 > 内部样式表 > 外部样式表  
 
-    内联样式 > 内部样式表 > 外部样式表  
-    !important > 内联样式 > ID选择器 > class选择器/属性选择器/伪类选择器 > 元素选择器/关系选择器/伪元素选择器 > 通配符(*)  
-    权值: 10000   1000      0100        0010                               0001                                000000
+---
+* mix-width,min-height
+* max-width,max-height
+* !important （10000）
+* 内联样式 （1000）
+* ID选择器 （0100）
+* class选择器/属性选择器/伪类选择器 （0010 ）
+* 元素选择器/关系选择器/伪元素选择器 （0001）
+* 通配符(*)  （00000）
 
-    max-width、mix-width、max-height、min-height 权重大于 !important
-    mix-width,min-height 权重大于 max-width,max-height
 
-    同权重下样式定义最近者为准
-    载入样式以最后载入的定位为准;
+`max-width、mix-width、max-height、min-height 权重大于 !important`
+`mix-width,min-height 权重大于 `
+
+同权重下样式定义最近者为准
+载入样式以最后载入的定位为准;
 
 ![css-specificity](/img/css-specificity.jpg)
 
@@ -185,6 +195,13 @@ HTML中每个元素都被描绘成一个矩形盒子，这些盒子通过一个�
 
 ## <a name="css选择器">css选择器</a>[![bakTop](/img/backward.png)](#top)
 
+`CSS选择器的匹配是从右向左进行的`
+
+为什么？
+
+CSS中更多的选择器是不会匹配的，所以在考虑性能问题时，需要考虑的是如何在选择器不匹配时提升效率。从右向左匹配就是为了达成这一目的的，通过这一策略能够使得CSS选择器在不匹配的时候效率更高。这样想来，在匹配时多耗费一些性能也能够想的通了。
+
+
 ### 选择器
 * 通配符选择器(*)
 * id选择器（ #myid）
@@ -195,7 +212,8 @@ HTML中每个元素都被描绘成一个矩形盒子，这些盒子通过一个�
 * 相邻选择器（div + p）紧挨div后面的第一个p（必须紧挨着div，若中间隔着其他标签不生效,包括script、style标签）
 * 通用兄弟选择器(div ~ p) //div后面所有的兄弟p
 * 属性选择器（a[rel = "external"]）
-* 伪类选择器（a:hover, li:nth-child）
+* 伪类选择器（:hover, :nth-child）
+* 伪元素选择器（:after,:before）
 * .....
 
 ### 属性选择器
@@ -285,6 +303,9 @@ css书写顺序 link visited hover active 不然有些效果不会呈现(速记�
 css2伪类和伪元素都是用单冒号，所有的浏览器都兼容，
 但是css3伪类为单冒号如:hover ，伪元素为双冒号::before；但是双冒号IE8以下不兼容
 
+
+## <a name="重绘回流">重绘回流</a>[![bakTop](/img/backward.png)](#top)
+[重绘回流](/details\JS\details\重绘-回流.md)
 
 ## <a name="content属性">::before和::after伪元素的content属性</a>[![bakTop](/img/backward.png)](#top)
 | 值 |	说明
@@ -383,8 +404,8 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
 
 ### inline,block,inline-block特性
 inline: 
-  * 多个标签存在一行，设置宽高不生效，完全靠内容撑开宽高
-  * 设置padding/margin-left/right有效果，但是padding/margin-top/bottom无效
+  * 多个标签存在一行，设置宽高不生效，完全靠内容和padding撑开宽高
+  * 设置margin-left/right有效果，但是margin-top/bottom无效
 
 
 block: 
@@ -535,111 +556,7 @@ CSS权威指南中的解释：
 
 ## <a name="zIndex">层叠上下文(stacking context )</a>[![bakTop](/img/backward.png)](#top)
 
-[MDN](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Understanding_z_index/The_stacking_context)
-
-[z-index堆叠规则](https://www.cnblogs.com/starof/p/4424926.html)
-
-[深入理解CSS中的层叠上下文和层叠顺序](https://www.zhangxinxu.com/wordpress/2016/01/understand-css-stacking-context-order-z-index/) -- 张鑫旭
-
-[CSS世界.pdf--第7章](https://www.cssworld.cn/)-- 张鑫旭
-
-### **什么是层叠上下文**
-
-层叠上下文，英文称作 stacking context，是 HTML 中的一个三维的概念。如果一个元素含有层叠上下文，我们可以理解为这个元素在 z 轴上就“高人一等”。
-
-### **什么是层叠水平**
-层叠水平，英文称作 stacking level，决定了同一个层叠上下文中元
-素在 z 轴上的显示顺序。
-
-页面中的每个元素都是独立的个体，它们一定是会有一个类似的排名顺序的存
-在。而这个排名顺序就是这里所说的“层叠水平”
-
-所有的元素都有层叠水平，包括层叠上下文元素，也包括普通元素
-
-需要注意的是，诸位`千万不要把层叠水平和 CSS 的 z-index 属性混为一谈`。尽管某些情况下 z-index 确实可以影响层叠水平，但是只限于定位元素以及 flex 盒子的孩子元素；而层叠水平是所有的元素都存在的。
-
-### **层叠顺序**
-层叠顺序，英文称作 stacking order，表示元素发生层叠时有着特定的垂直显示顺序。注意，这里跟上面两个不一样，上面的“层叠上下文”和“层叠水平”是**概念**，
-而这里的“层叠顺序”是**规则**。
-
-css2层叠顺序规则
-![zIndex](./img/zindex.jpg)
-
-为什么内联元素的层叠顺序要比浮动元素和块状元素都高？
->
-    诸如border/background一般为装饰属性，而浮动和块状元素一般用作布局，而内联元素都是内容。网页中最重要的是什么？当然是内容了哈，对不对！
-
-    因此，一定要让内容的层叠顺序相当高，当发生层叠时，重要的文字、图片内容才可以优先显示在屏幕上
-
-
-### **层叠准则**
-
-当元素发生层叠的时候，其覆盖关系遵循下面两条准则：
-* 同一个层叠上下文中，层叠级别（z-index属性值）大的显示在上面。
-* 同一个层叠上下文中，层叠级别相同的两个元素，依据它们在HTML文档流中的顺序，写在后面的会覆盖前面的。
-
-### **层叠上下文的特性**
-* 层叠上下文的层叠水平要比普通元素高（原因后面会说明）。
-* 层叠上下文可以阻断元素的混合模式（[见此文第二部分说明](https://www.zhangxinxu.com/wordpress/2016/01/understand-css3-isolation-isolate/)）。
-* 层叠上下文可以嵌套，内部层叠上下文及其所有子元素均受制于外部的“层叠上下文”。
-* 每个层叠上下文和兄弟元素独立，也就是说，当进行层叠变化或渲染的时候，只需要
-考虑后代元素。
-* 每个层叠上下文是自成体系的，当元素发生层叠的时候，整个元素被认为是在父层叠
-上下文的层叠顺序中。
-
-### **层叠上下文创建条件**： 满足以下任一条件即可
-* 文档根元素（html）
-* position: fixed | sticky  
-* z-index 值不为 "auto"的 绝对 | 相对定位， 
-* z-index 值不为 "auto"的 flex | grid  
-* opacity值 < 1  
-* transform 值不为 none  
-* filter值不为 none
-* perspective值不为 none 的元素，
-* isolation 值为 isolate 的元素，  
-* mix-blend-mode 值不为 normal
-* 在 will-change 中指定了任意 CSS 属性，即便你没有直接指定这些属性的值  
-* -webkit-overflow-scrolling 值为"touch"的元素  
-
-层叠上下文的层级是 HTML 元素层级的一个层级，因为只有某些元素才会创建层叠上下文。可以这样说，没有创建自己的层叠上下文的元素 将被父层叠上下文包含。
-
-在层叠上下文中，其子元素同样也按照上面解释的规则进行层叠。 
-<b>其子元素的 z-index 值只在父级层叠上下文中有意义</b>。子级层叠上下文被自动视为父级层叠上下文的一个独立单元。(每个层叠上下文完全独立于它的兄弟元素：当处理层叠时只考虑子元素。)
-
-
-### 层叠顺序-优先级
-* 不使用z-index的情况，默认的情况，即所有元素都不用z-index时，堆叠顺序如下：（低-->高)
->
-
-    根元素（即HTML元素）的background和borders <
-    正常流中非定位后代元素(没定位层级比有定位的低) <   
-        总是先于定位元素渲染，所以表现就是在定位元素下方，跟在HTML中出现的顺序无关。 
-    浮动元素(浮动元素之间是不会出现z-index重叠的) <
-    有定位后代元素(越靠后出现 层级越高)  
-        没有指定z-index值的定位元素，他们的堆叠顺序取决于在HTML文档中的顺序，越靠后出现的元素，位置越高，和定位属性无关。  
-
-
-![不使用z-index](/img/zIndex1.png)
-分析：
->
-    #5没有定位，处于正常流，所以根据以上规则，先于#1,#2,#3,#4这些已定位元素渲染，在最下方。
-
-    #1，#2，#3，#4都是已定位元素，且未设置z-index，所以根据其在文档中出现的顺序依次被渲染，可以去掉apacity查看清晰效果。
-
-* 使用z-index
-z-index只适用于已经定位的元素
->
-    定位元素z-index越大 层级越高（限同一父元素）
-    定位元素与浮动元素（先看zindex，越大越高；若相同，再看其在html顺序，越后越高）
-
-
-![zindex](/img/zIndex2.png)
-
-### z-index不起作用情况：
->
-    1、父标签 position属性为relative；（改为position:absolute；）
-    2、问题标签无position属性,不包括static (添加position属性)
-    3、问题标签含有浮动(float)属性。(去除浮动)
+[zIndex](/details\CSS\zIndex.md)
 
 ## <a name="float特性">float特性</a>[![bakTop](/img/backward.png)](#top)
 
@@ -714,8 +631,7 @@ https://juejin.im/post/5ea45801e51d4546d4399055
 
 
 ### [BFC](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context)
-
-概述：BFC(Block Formatting Context)是Web页面中盒模型布局的CSS渲染模式。它的定位体系属于常规文档流。
+概述：BFC(Block Formatting Context)是Web页面的可视CSS渲染的一部分，是块盒子的布局过程发生的区域，也是浮动元素与其他元素交互的区域。它的定位体系属于常规文档流。
 
 `BFC形成条件：`
 *  根元素 html
@@ -1012,6 +928,8 @@ break-all：该行为与亚洲语言的normal相同。也允许非亚洲语言�
 * fixed：固定定位。默认情况下，可定位于相对于浏览器窗口的指定坐标。元素的位置通过left、top、right、bottom 属性进行规定。不论窗口滚动与否，元素都会留在那个位置。
 
 
+`子元素是相对父元素的padding、border还是content进行绝对定位？`
+>padding
 
 注意：
 * 一旦给元素加上absolute或float就相当于给元素加上了display:block
@@ -1785,9 +1703,12 @@ format()作用
 
 
 
-## <a name="CSS预处理器">CSS预处理器Less Sass</a>[![bakTop](/img/backward.png)](#top)
+## <a name="CSS预处理器">CSS预处理器Less Sass Postcss</a>[![bakTop](/img/backward.png)](#top)
 [Less](http://lesscss.cn/)
 [Sass](https://www.sass.hk/docs/)
+[PostCss](https://www.postcss.com.cn/)  css 的兼容性处理，添加前缀，单位转换 
+
+
 
 ### Less
 Less 是一门 CSS 预处理语言，它扩展了 CSS 语言，增加了变量、Mixin、函数等特性，使 CSS 更易维护和扩展。
@@ -1807,6 +1728,15 @@ Less 是一门 CSS 预处理语言，它扩展了 CSS 语言，增加了变量�
 Sass(Syntactically Awesome StyleSheets) 是一款强化 CSS 的辅助工具，它在 CSS 语法的基础上增加了变量 (variables)、嵌套 (nested rules)、混合 (mixins)、导入 (inline imports) 等高级功能，这些拓展令 CSS 更加强大与优雅。使用 Sass 以及 Sass 的样式库（如 Compass）有助于更好地组织管理样式文件，以及更高效地开发项目
 
 `以.scss作为拓展名`
+
+常用功能:
+* 嵌套
+* 变量
+* 循环语句
+* 条件语句
+* 自动前缀
+* 单位转换
+* mixin复用
 
 ```scss
 $color: #71777c;

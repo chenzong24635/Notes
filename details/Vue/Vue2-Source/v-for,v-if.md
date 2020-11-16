@@ -16,7 +16,7 @@ export function genElement (el: ASTElement, state: CodegenState): string {
     return genFor(el, state)
   } else if (el.if && !el.ifProcessed) { // v-if 处理
     return genIf(el, state)
-  } 
+  }
   ...
 }
 

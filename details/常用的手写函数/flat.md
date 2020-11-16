@@ -2,7 +2,7 @@
 
 
 ## flat
-flat(depth) 数组扁平化,
+[flat(depth) 数组扁平化](/details\常用的方法\数组扁平化.md),
 * depth 深度，默认值为 1
 * 会移除数组中的空项
 
@@ -79,48 +79,3 @@ console.log(
 );
 ```
 
-## n 维数组展开成一维数组
-
-* flat(Infinity)
-
-- reduce + flatten
-
-  >
-
-      function flatten(arr){
-        return arr.reduce((prev,now)=>{
-          return prev.concat(Array.isArray(now) ? fun2(now) : now)
-        },[])
-      }
-      // flatten = (ary) => ary.reduce((pre, now) => pre.concat(Array.isArray(now) ? flatten(now) : now), []);
-
-- toString | join + split
-
-  >
-
-      arr.join().split(",")
-      arr.toString().split(",")
-      //返回的内容都是字符串，arr.toString().split(",").map(Number)
-      // ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-
--
-
->
-
-    flatten= (arr)=>Array.isArray(arr) ? [].concat(...arr.map(flatten)) : arr;
-    flatten(foo); // [1, 2, 3, "4", 5, "6", 7, 8, 9, 10]
-
-* 
-```js
-function flatten(arr) {
-  let res = []
-  for(let i = 0; i < arr.length; i++) {
-    if(Array.isArray(arr[i])){
-      res = res.concat(flatted(arr[i]))
-    } else {
-      res.push(arr[i])
-    }
-  }
-  return res
-}
-```

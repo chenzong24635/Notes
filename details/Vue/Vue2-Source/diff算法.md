@@ -4,7 +4,6 @@ https://juejin.im/post/5eb3b77c6fb9a0436b221e2f
 
 ## 了解
 
-
 diff 算法是一种通过同层的树节点进行比较的高效算法，避免了对树进行逐层搜索遍历，所以时间复杂度只有 O(n)。
 
 diff 算法有两个比较显著的特点：
@@ -16,13 +15,12 @@ Vue2的核心Diff算法采用了双端比较的算法，同时从新旧children�
 
 ## 源码路径 \src\core\vdom\patch.js
 在 patch.js 中 createPatchFunction 定义了一系列的辅助方法，最终返回了一个 patch 方法，
-这个方法就赋值给了 vm._update 函数里调用的 \vm.__patch__
+这个方法就赋值给了 vm.\_update 函数里调用的 vm.\__patch__
 
 patch比较新旧节点：
 * 如果新节点不存在，旧节点存在，则删除
-* 如果新节点存在，旧节点存在，则创建
+* 如果新节点存在，旧节点不存在，则创建
 * 如果新节点存在，旧节点存在，则 进行 diff 操作（patchVnode）
-
 
 ```js
 // 比较新旧节点
@@ -129,15 +127,15 @@ patch比较新旧节点：
 ```
 
 diff算法（patchVnode）有以下过程：（同级比较，再比较子节点）
-* 新旧节点相同，则不操作，直接返回（新vnode，旧oldVnode）
+* 新旧节点相同，则不操作，直接返回（新vnode，旧oldVnode）  
 * 如果 vnode 是text文本，但与 oldVnode 文本内容不同（或 oldVnode 不是文本），则直接替换文本
-* 如果 vnode 不是text文本，则对子节点 children 进行对比 （oldCh = oldVnode.children，ch = vnode.children）
+* 如果 vnode 不是text文本，则对子节点 children 进行对比 （oldCh = oldVnode.children，ch = vnode.children）  
 * 如果仅 ch 存在，则 addVnodes 添加 ch （如果 oldVnode 存在文本，先清空）
 * 如果仅 oldCh 存在，则 removeVnodes 删除 oldCh
 * 如果 ch oldCH 都存在，则进行比较（updateChildren） (核心diff)
 * 递归比较子节点
 
-子节点比较方法 updateChildren 
+子节点比较方法 updateChildren  
 ```js
 // 对新旧两个VNode的children得出最小操作补丁
 function updateChildren (parentElm, oldCh, newCh, insertedVnodeQueue, removeOnly) {

@@ -291,7 +291,7 @@ event.forEach(event=>{
   });
 })
 
-首次页面进入时：
+首次页面进入时（刷新时）：
 // DOMContentLoaded
 // load
 // pageshow
@@ -306,8 +306,6 @@ event.forEach(event=>{
 // hidden
 // pagehide
 // unload
-
-刷新时
 
 ```
 

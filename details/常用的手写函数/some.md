@@ -11,6 +11,7 @@ Array.prototype.selfSome = function(fn, context){
 
   let sourceArr = this
   for(let i = 0, len = sourceArr.length; i < len; i++) {
+    // if(!sourceArr.hasOwnProperty(i))continue
     let bool = fn.call(context,sourceArr[i],i,sourceArr)
     // 有一个为 true 则返回true
     if(bool) return true

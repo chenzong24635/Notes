@@ -1,5 +1,5 @@
 
-# [常用链接](/details/website/JS-ES-TS#ES.md)
+# [常用链接](/details/website/JS-ES-TS#JS.md)
 
 # 目录
 
@@ -96,9 +96,9 @@ JavaScript的单线程，与它的用途有关。作为浏览器脚本语言，J
 * [Undefined、Null](/details/JS/JS数据类型/Undefined、Null.md)
 * [Boolean](/details/JS/JS数据类型/Boolean.md)
 * [Number](/details/JS/JS数据类型/Number.md)
-* [String](/details/JS/JS数据类型/String)
-* [Symbol](/details/JS/JS数据类型/Symbol)
-* [BigInt](/details/JS/JS数据类型/BigInt)
+* [String](/details/JS/JS数据类型/String.md)
+* [Symbol](/details/JS/JS数据类型/Symbol.md)
+* [BigInt](/details/JS/JS数据类型/BigInt.md)
 
 复杂（引用）数据类型:   --地址传递--堆内存
 * [Object](/details/JS/JS数据类型/Object.md) 
@@ -116,7 +116,7 @@ JavaScript的单线程，与它的用途有关。作为浏览器脚本语言，J
 
     引用数据类型存储在堆(heap)中的对象,占据空间大、大小不固定。如果存储在栈中，将会影响程序运行的性能；引用数据类型在栈中存储了指针，该指针指向堆中该实体的起始地址。当解释器寻找引用值时，会首先检索其在栈中的地址，取得地址后从堆中获得实体
 
-### [堆栈](/details\面试题\JS面试题\堆-栈-队列.md)
+### [堆栈](/details\JS\details\堆-栈-队列.md)
 
 
 ### 内置对象
@@ -145,7 +145,7 @@ Array.isArray({}) // false
 ## <a name="面向过程和面向对象">面向过程和面向对象</a>
 https://zhuanlan.zhihu.com/p/55064276
 
-### 面向过程POP（Procedure Oriented Programming））,面向对象OOP（Object Oriented Programming）
+### 面向过程POP（Procedure Oriented Programming）,面向对象OOP（Object Oriented Programming）
 `面向过程：`
 把复杂业务划分为若干个“Procedure、Function”。
 彻底的理解现实场景，理清其中的逻辑关系和运行顺序，划分为若干个小的处理单元——落实为function
@@ -256,7 +256,6 @@ hobby(dog); //bone!
 简单来说，就是增加代码的可复用性，减少咱们的工作，使代码更加流畅。
 
 
-
 ## <a name="json jsonp">json jsonp</a>
 
 JSON是一种key/value形式的数据格式，
@@ -301,7 +300,7 @@ JSON 的网络媒体类型是 application/json。
 
     通过将前端方法作为参数传递到服务器端，然后由服务器端注入参数之后再返回，实现服务器端向客户端通信(只支持get方法)
 
-[更多](/details/跨域/跨域.md#jsonp跨域)
+[更多](/details/跨域/README.md#jsonp跨域)
 
 ## <a name="BOM 浏览器对象模型">BOM 浏览器对象模型</a>
 
@@ -373,8 +372,8 @@ DOM事件捕获流程:window > document > documentElement(html标签) > body > .
 在js中: document.getElementsById("demo").onclick = doSomeTing()
 ```
 
-    优点：所有浏览器都兼容
-    缺点：逻辑与显示没有分离；相同事件的监听函数只能绑定一个，后绑定的会覆盖掉前面;  无法通过事件的冒泡、委托等机制
+优点：所有浏览器都兼容
+缺点：逻辑与显示没有分离；相同事件的监听函数只能绑定一个，后绑定的会覆盖掉前面;  无法通过事件的冒泡、委托等机制
 
 2. DOM2级：W3C制定的标准模型，现代浏览器（IE6~8除外）都已经遵循这个规范
 ```js
@@ -401,7 +400,7 @@ detachEvent(eventType,handler)
 * event.preventDefault() 阻止默认行为
 * event.stopPropagation() 阻止事件传播（冒泡，捕获）
 * event.target 触发事件的元素
-* event.currentTarge 事件所绑定的元素
+* event.currentTarget 事件所绑定的元素
 
 #### 自定义事件
 [自定义事件的触发dispatchEvent](https://www.jianshu.com/p/5f9027722204)
@@ -436,6 +435,7 @@ let myEvent2 = new CustomEvent('myEvent2', {
 
 // document.createEvent('CustomEvent')定义事件
 let myEvent3 = document.createEvent('CustomEvent');// 注意这里必须为'CustomEvent'
+// 事件初始化
 myEvent3.initEvent(
   'myEvent3', // 事件名称
   true, // 是否冒泡
@@ -489,6 +489,26 @@ event.target || event.srcElement // w3c  | IE
 ```
 
 [更多兼容性写法](\details\常用的JS兼容写法\index.md)
+
+## <a name="事件委托">事件委托(代理)delegate</a>
+
+事件注册在父级元素上，依靠事件冒泡机制与事件捕获机制，子级元素的事件将委托给父级元素。
+
+优点：
+* 事件动态绑定，当新增子对象时，无需再对其进行事件绑定
+* 可以减少事件注册数量，节约内存开销，提高性能。
+
+缺点：
+* 事件委托基于冒泡，对于不冒泡的事件不支持。
+
+    层级过多，冒泡过程中，可能会被某层阻止掉。
+
+    理论上委托会导致浏览器频繁调用处理函数，虽然很可能不需要处理。所以建议就近委托，比如在table上代理td，而不是在document上代理td。
+
+    把所有事件都用代理就可能会出现事件误判。比如，在document中代理了所有button的click事件，另外的人在引用改js时，可能不知道，造成单击button触发了两个click事件。
+
+
+[实现一个事件委托](\details\常用的方法\实现一个事件委托.md)
 
 ## <a name="mouseover、mouseout、mouseenter、mouseleave区别与联系">mouseover、mouseout、mouseenter、mouseleave区别与联系</a>
 mouseover/mouseout是标准事件，所有浏览器都支持；
@@ -1015,81 +1035,7 @@ export function defineReactive() {
 ```
 
 ## <a name="typeof instanceof">typeof 、instanceof 、in</a>
-#### typeof 
-[浅谈 instanceof 和 typeof 的实现原理](https://juejin.im/post/5b0b9b9051882515773ae714)
-
-typeof 能够正确的判断基本数据类型，但是除了 null, typeof null输出的是对象  
-在使用 typeof 运算符时采用引用类型存储值会出现一个问题，无论引用的是什么类型的对象，它都返回 “object”。
-
-|  | typeof |
-:-:| :-:|
-| Boolean    | "boolean"
-| Number     | "number"
-| String     | "string"
-| Undefined  | "undefined"
-| Null       | "object"
-| Symbol     | "symbol"
-| Object     | "object"
-| BigInt     | "bigint"
-| Function   | "function"
-
-`typeof原理`： 在 JS 的最初版本中使用的是 32 位系统，为了性能考虑使用低位存储变量的类型信息，不同的对象在底层都表示为二进制，在Javascript中二进制前（低）三位存储其类型信息。
-* 对象：000
-* 布尔值：110
-* 字符串：100
-* 浮点数：010
-* 整数：1
-* null：所有机器码均为0
-* undefined：用 −2^30 整数来表示
-
-`由于null的二进制表示全为0`，自然前三位也是0，所以执行typeof时会返回"object"。
-
-#### instanceof
-instanceof 是通过原型链判断的，判断实例对象在其原型链中是否存在一个构造函数的 prototype 属性。  
-
-A instanceof B, 在A的原型链中层层查找，是否有原型等于 B.prototype，如果一直找到A的原型链的顶端(null;即 Object.prototype.__proto__),仍然不等于B.prototype，那么返回false，否则返回true.
-
->
-    语法：object instanceof constructor
-        （要检测的对象）    （某个构造函数）
-    描述：instanceof 运算符用来检测 constructor.prototype 是否存在于参数 object 的原型链上。
-
-
->
-    function P(){}
-    let p = new P()
-    console.log(p instanceof P) //true    
-
-#### isPrototypeOf
-判断指定对象是否存在于另一个对象的原型链中
-
-```js
-function P(){}
-let p = new P()
-console.log(P.prototype.isPrototypeOf(p));//true
-```
-
-#### in
-in 操作符会检查属性是否存在对象及其 [[Prototype]] 原型链中。检查的是某个属性名是否存在
->
-    var obj = {a:1}
-    Object.prototype.b = 2
-    'a' in obj // true
-    'b' in obj // true
-
-
-    对于数组来说，4 in [2, 4, 6] 结果返回 false，因为 [2, 4, 6] 这个数组中包含的属性名是0，1，2 ，没有4。
-
-
-#### hasOwnProperty()
-hasOwnProperty 只会检查属性是否存在对象中，不会向上检查其原型链。
->
-    var obj = {a:1}
-    Object.prototype.b = 2
-    obj.hasOwnProperty('a') // true
-    obj.hasOwnProperty('b') // false
-
-所有普通对象都可以通过 Object.prototype 的委托来访问 hasOwnProperty(...)，但是对于一些特殊对象（ Object.create(null) 创建）没有连接到 Object.prototype，这种情况必须使用 Object.prototype.hasOwnProperty.call(obj, "a")，显示绑定到 obj 上。
+[判断数据类型typeof 、instanceof 、in...](/details\常用的方法\判断数据类型.md)
 
 
 ## <a name="异步编程有哪几种方法">异步编程有哪几种方法</a>
@@ -1196,130 +1142,10 @@ console.log('1', a) // -> '1' 1
 因为 await 是异步操作，后来的表达式不返回 Promise 的话，就会包装成 Promise.reslove(返回值)，然后会去执行函数外的同步代码；
 
 
-## <a name="事件委托">事件委托(代理)delegate</a>
 
-事件注册在父级元素上，依靠事件冒泡机制与事件捕获机制，子级元素的事件将委托给父级元素。
-
-优点：
->
-    事件动态绑定，可以减少事件注册数量，节约内存开销，提高性能。
-
-缺点：
->
-    事件委托基于冒泡，对于不冒泡的事件不支持。
-
-    层级过多，冒泡过程中，可能会被某层阻止掉。
-
-    理论上委托会导致浏览器频繁调用处理函数，虽然很可能不需要处理。所以建议就近委托，比如在table上代理td，而不是在document上代理td。
-
-    把所有事件都用代理就可能会出现事件误判。比如，在document中代理了所有button的click事件，另外的人在引用改js时，可能不知道，造成单击button触发了两个click事件。
-
-
-[实现一个事件委托](\details\常用的方法\实现一个事件委托.md)
 
 ## <a name="闭包">闭包</a>
-
-#### 概念
-多人对于闭包的解释可能是可以访问函数外部的变量，这个解释是不完整的
-
-红宝书对于闭包的定义：闭包是指有权访问另外一个函数作用域中的变量的函数，
-
-看下[MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures)对闭包的定义：
->
-    函数和对其周围状态（lexical environment，词法环境）的引用捆绑在一起构成闭包（closure）。
-    也就是说，闭包可以让你从内部函数访问外部函数作用域。在 JavaScript 中，每当函数被创建，就会在函数生成时生成闭包。
-
-`详细概念：`
->
-    浏览器加载页面会把代码放到栈内存中执行， 
-    函数进栈执行会产生一个私有的上下文（EC），此上下文能保存里面的私有变量（也就是AO）不会被外界干扰， 
-    并且如果当前上下文中的某些内容，被上下文以外的内容所占用，当前上下文是不会出栈释放的，形成不销毁的执行上下文， 
-    这样可以保存和保护里面的变量和变量值，闭包是一种保存和保护内部私有变量的机制.
-
-
-#### 闭包的特性：
-1. 函数嵌套
-2. 函数内部引用外部的参数和变量
-3. 参数和变量不会被垃圾回收机制回收
-
-#### 闭包作用域链通常包括三个部分：
-1. 函数本身作用域。
-2. 闭包定义时的作用域。
-3. 全局作用域。
-
-#### 闭包优点：
-1. 变量长期驻扎在内存中
-2. 避免全局变量的污染
-3. 私有成员的存在
-
-
-
-闭包实例
-```js
-function init() {
-    var name = "Mozilla"; // name 是一个被 init 创建的局部变量
-    function displayName() { // displayName() 是内部函数，一个闭包
-        debugger
-        console.log(name); // 使用了父函数中声明的变量
-    }
-    displayName();
-}
-init()
-```
-![](/img/closure1.png)
-
-
-```js
-function init() {
-    var name = "Mozilla";
-    function displayName() {
-        debugger
-        console.log(name);
-    }
-    return displayName
-}
-init()()
-```
-
-
-经典面试题
-```js
-for (var i = 0; i < 5; i++) {
-  setTimeout(function() {
-      console.log(new Date, i);
-  }, 1000);
-}
-console.log(new Date, i);
-// 立即输出5
-// 大约一秒后输出5个5
-```
-因为 setTimeout 是个异步函数，所以会先把循环全部执行完毕，这时候 i 就是 5 了，所以会输出一堆 5。
-
-如何输出 0 1 2 3 4 5
-```js
-// 使用let
-for (let i = 0; i < 5; i++) {
-  setTimeout(function() {
-      console.log(new Date, i);
-  }, 1000);
-}
-console.log(new Date, i);
-
-// 或者利用立即执行函数，创建闭包
-for (var i = 0; i < 5; i++) {
-  setTimeout((function() {
-      console.log(new Date, i);
-  })(), 1000);
-}
-console.log(new Date, i);
-```
-
-[]()
-
-
-### 使用不当的闭包将会在IE(IE9之前)中造成内存泄漏
-
-因为IE9的JavaScript引擎使用的垃圾回收算法是引用计数法，对于循环引用将会导致GC无法回收“应该被回收”的内存。造成了无意义的内存占用，也就是内存泄漏。
+[闭包](/details\JS\details\闭包.md)
 
 ## <a name="垃圾回收机制">垃圾回收机制</a>
   Javascript具有自动垃圾回收机制(GC:Garbage Collecation)。
@@ -1494,7 +1320,7 @@ p = new P('jack')
 [作用域-作用域链-执行上下文](\details\面试题\JS面试题/作用域-作用域链-执行上下文.md)
 
 ## <a name="this">this理解</a>
-[this](/details/JS/this.md)
+[this](/details/JS/details/this.md)
 
 ## <a name="apply call bind">apply call bind用法及实现</a>
 区别
@@ -1622,7 +1448,11 @@ async函数表示函数里面可能会有异步方法，await后面跟一个表�
 [深浅拷贝](/details/常用的手写函数/深拷贝-浅拷贝.md)
 
 ## <a name="js延迟加载：defer,async">js异步延迟加载：async，defer</a>
+<<<<<<< HEAD
 [](https://juejin.im/post/6894629999215640583)
+=======
+[](https://www.cnblogs.com/jiasm/p/7683930.html)
+>>>>>>> 147883a0d7c138f17ef34cfceabc5f455a66552e
 
 async 属性  -- 异步加载
 ` <script src="file.js" async></script>`
@@ -1634,12 +1464,12 @@ async 属性  -- 异步加载
 defer 属性   -- 延迟加载
 `<script src="file.js" defer></script>`
 * 让js并行加载, 
-* 在页面渲染完后才会执行，
-* 脚本按加载的顺序执行。在 DOMContentLoaded 事件之前完成
+* 在页面解析渲染完后才会执行，在 DOMContentLoaded 事件之前完成
+* 脚本按加载的顺序执行。
 
 使用defer、async的脚本禁止使用document.write()方法
 
-同时使用 async 和 defer,执行效果和async一致
+同时使用 async 和 defer,defer优先级高
 
 
 
@@ -1666,7 +1496,7 @@ if (window.addEventListener) {
 ```
 
 ## <a name="重绘和回流">[重绘和回流](https://github.com/chenjigeng/blog/issues/4)</a>
-[重绘和回流](\details\面试题\JS面试题\重绘-回流.md)
+[重绘和回流](\details\JS\details\重绘-回流.md)
 
 
 ## <a name="模块化">模块化</a>
@@ -1845,7 +1675,7 @@ console.log(decoded_str); // "a啊"
 ```js
 function factorial(n) {
   if(n === 1) return n
-  return n*fac(n-1)
+  return n*factorial(n-1)
 }
 ```
 
@@ -1874,7 +1704,6 @@ function factorial(n) {
 * 尾调用不访问当前栈帧的变量(函数不是一个闭包。)
 * 尾调用是最后一条语句
 * 尾调用的结果作为函数返回
-
 
 
 非尾调用
@@ -1944,7 +1773,7 @@ function doSomething () {
 ```
 
 ### 尾递归
-当一个函数尾调用自身，就叫做尾递归
+当一个函数尾调用自身，就叫做尾递归;解决递归栈溢出问题
 ```js
 function foo () {
   return foo();

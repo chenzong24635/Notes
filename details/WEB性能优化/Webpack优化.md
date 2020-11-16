@@ -10,6 +10,10 @@
 * url-loader设置limit：文件小于 一定字节时，返回 base64 编码
 
 打包速度优化
+* resolve.extensions 配置后缀名，尽可能减少后缀尝试的可能性，加快解析
+* resolve.alias配置路径，加快解析文件路径，找到对应的文件
+* noParse 忽略不需要解析的库
+* exclude/include 缩小文件范围，
 * CDN
 * dll
 * 缓存性能开销较大的 loader: cache-loader

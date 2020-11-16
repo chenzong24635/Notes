@@ -4,7 +4,7 @@
 [Undefined](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/undefined)
 
 # null
-null 是一个字面量，不像 undefined，它不是全局对象的一个属性。null 是表示缺少的标识，指示变量未指向任何对象。
+null 是一个字面量，不像 undefined，它不是全局对象的一个属性（null in window // false）。null 是表示缺少的标识，指示变量未指向任何对象。
 
 从逻辑的角度讲null是用来表示一个空指针，并且typeof返回object。通常null是用来声明一个对象,如：```let obj = null ```
 
@@ -17,7 +17,7 @@ null的几种情况
 
 
 # undefined 
-undefined是全局对象的一个属性。也就是说，它是全局作用域的一个变量。undefined的最初值就是原始数据类型undefined。
+undefined是全局对象的一个属性。也就是说，它是全局作用域的一个变量（undefined in window // true）。undefined的最初值就是原始数据类型undefined。
 
 undefined的几种情况
 * 变量被声明了，但没有赋值时，就等于undefined。
@@ -37,6 +37,11 @@ null 用于对象 , undefined 用于变量，属性和方法。
 null表示准备用来保存对象，还没有真正保存对象的值。从逻辑角度看，null值表示一个空对象指针，意思是你定义了它,但它没有分配内存空间。
 
 ```js
+null i window // false
+undefined i window // true
+window.hasOwnProperty(undefined) // true
+Reflect.has(window,undefined) // true
+
 typeof null        // "object"
 typeof undefined   // "undefined"
 

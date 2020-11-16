@@ -36,12 +36,14 @@ selfSetTimeout(()=>{
 
 ### setTimeout 实现 setInterval
 ```js
-const selfSetInterval = (cb, delay) => {
-  const fn = () => {
-    cb() // 执行传入的回调函数
-    setTimeout(fn, delay) // 调用自身
+let selfSetInterval = (cb, delay) => {
+  let fn = () =>{
+    setTimeout(()=> {
+      fn() // 调用自身
+      cb() // 执行传入的回调函数
+    },delay)
   }
-  setTimeout(fn, delay)
+  fn()
 }
 
 // 测试

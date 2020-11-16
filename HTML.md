@@ -308,14 +308,17 @@ HTML中某些字符是预留的,预留字符必须被替换为字符实体。
 * 兼容性好
 
 缺点：  
-* table要比其它html标记占更多的字节,(延迟下载时间，占用服务器更多的流量资源)
 * table会阻挡浏览器渲染引擎的渲染顺序,(会延迟页面的生成速度，让用户等待更久的时间)
-* 灵活性差，比如要通多td才能设置tr的border属性；
+  >table要等其中的内容完全下载之后才会显示出来,显示比div+css布局慢;
+* table要比其它html标记占更多的字节,(延迟下载时间，占用服务器更多的流量资源)
 * 在某些浏览器中table里的文字的拷贝会出现问题
 * 代码臃肿，当在table中套用table的时候，阅读代码会显得异常混乱；
 * 混乱的colspan与rowspan，用来布局时，频繁使用他们会造成整个文档顺序混乱；
 * 深层的嵌套，导致搜索引擎读取困难，同时还很大程度上增加了代码冗余；
 * table对对于页面布局来说，从语义上看是不正确的。(它描述的是表现，而不是内容。)
+* 灵活性差，不易维护，无法适应响应式设计；
+* 默认的表格布局算法会产生大量重绘
+
 
 ## <a name="div较table优点">div+css较table优点</a>[![bakTop](/img/backward.png)](#top)
 * 加快了页面的加载速度（在IE中要将整个table加载完了才显示内容）
@@ -374,7 +377,8 @@ HTML中某些字符是预留的,预留字符必须被替换为字符实体。
     <link rel="icon" href="favicon.gif" type="image/gif" />
 
 ### <a name="预加载页面资源prefetch、prefetch">预加载页面资源prefetch、prefetch</a>[![bakTop](/img/backward.png)](#top)
-[](https://juejin.im/post/6844903646996480007)
+[什么是 Preload，Prefetch 和 Preconnect？](https://juejin.im/post/6844903646996480007)
+[用 preload 预加载页面资源](https://juejin.im/post/6844903562070196237)
 
 #### dns-prefetch
 ```html
@@ -385,7 +389,7 @@ HTML中某些字符是预留的,预留字符必须被替换为字符实体。
 ```
 
 #### preload --提前加载（提前加载重要资源）
-preload 提供了一种声明式的命令，让浏览器提前加载指定资源(加载后并不执行)，同时不阻塞文档 onload 事件，在需要执行的时候再执行(script标签加载时执行)。
+preload 提供了一种声明式的命令，让浏览器提前加载指定资源(加载后并不执行)，同时不阻塞文档 onload 事件
 
 使用 preload 后，不管资源是否使用都将提前加载,提升资源加载的优先级
 
@@ -394,7 +398,7 @@ preload 提供了一种声明式的命令，让浏览器提前加载指定资源
 * 提前加载指定资源，不再出现依赖的font字体隔了一段时间才刷出
 
 href: 预加载的资源  
-as: 标明资源类型
+as: 标明资源类型;忽略as属性，或者错误的as属性会使preload等同于XHR请求，浏览器不知道加载的是什么内容，因此此类资源加载优先级会非常低。
 ```html
 <!-- 获取字体时必须加上crossorigin属性，就如使用CORS的匿名模式获取一样。是的，即使你的字体与页面同域 -->
 <link rel="preload" href="xxx.woff" as="font" crossorigin />
@@ -402,9 +406,16 @@ as: 标明资源类型
 <link rel="preload" href="xxx.js"   as="script" />
 ```
 
-让 preload的 CSS 样式表立即生效吗
+`preload只是提前加载不会生效，需要引用才会生效`
 ```html
-<link rel="preload" href="xxx.css" onload="this.rel=stylesheet" as="style" />
+<link rel="preload" as="style" href="demo.css" />
+...
+<link rel="stylesheet" href="demo.css" />
+```
+
+如何让preload的 CSS 样式表立即生效？
+```html
+<link rel="preload" href="xxx.css" as="style" onload="this.rel='stylesheet'"  />
 ```
 
 
@@ -430,15 +441,7 @@ Preload是为了让当前页面的关键资源尽早被发现和加载，从而�
 
 Prefetch是为了提前加载下一个导航所需的资源，提升下一次导航的首屏渲染性能。但也可以用来在当前页面提前加载运行过程中所需的资源，加速响应。
 
-
-同时使用preload prefetch加载同一资源，会重复加载
-```html
-<link href="main.js" rel="preload">
-<link href="main.js" rel="prefetch">
-
-main.js会加载两次
-```
-
+`preload和prefetch仅提前加载资源，而不会执行，需调用link，script引入对应文件资源时才会执行`
 
 ## <a name="base标签">base标签</a>[![bakTop](/img/backward.png)](#top)
 >

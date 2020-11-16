@@ -118,27 +118,27 @@ jsonp产生原因
     7. 为了方便客户端使用数据逐渐形成非正式传输协议jsonp
 
 
-//原生的实现方式
+原生的实现方式
 
->
-    //index.html  (http://127.0.0.1:5500/jsonp/index.html)
+```js
+//index.html  (http://127.0.0.1:5500/jsonp/index.html)
 
-    let script = document.createElement('script');  //动态创建script
-    script.src = 'http://localhost:8080/crossOrigin/jsonp/test.php?callback=callback';
-    document.body.appendChild(script);
-    function callback(json) {  //回调执行函数
-      console.log(JSON.stringify(json));
-    }
+let script = document.createElement('script');  //动态创建script
+script.src = 'http://localhost:8080/crossOrigin/jsonp/test.php?callback=callback';
+document.body.appendChild(script);
+function callback(json) {  //回调执行函数
+  console.log(JSON.stringify(json));
+}
 
-    //test.php
+//test.php
 
-    <?php
-    //    使用jsonp实现跨域传输的方式，重点在于通过callback回调函数进行传递数据
-        $data = array("name"=>"张三","sex"=>"男");
-        $callback = $_GET['callback'];
-        echo $callback."(".json_encode($data).")";
-    ?>
->
+<?php
+//    使用jsonp实现跨域传输的方式，重点在于通过callback回调函数进行传递数据
+    $data = array("name"=>"张三","sex"=>"男");
+    $callback = $_GET['callback'];
+    echo $callback."(".json_encode($data).")";
+?>
+```
 
 
     
@@ -338,10 +338,9 @@ b.html http://localhost:8080/crossOrigin/postMessage/b.html
       }
     </script>
 
-## <a name=""></a>
-
 
 ## <a name="nginx代理跨域">nginx代理跨域 ??</a>
+[](https://juejin.im/post/6844904148022870023)
 
 实现原理类似于Node中间件代理，需要你搭建一个中转nginx服务器，用于转发请求。
 
@@ -402,34 +401,76 @@ proxy服务器
 ## <a name="跨域资源共享CORS">跨域资源共享CORS</a>
 [跨域资源共享CORS详解-阮一峰](http://www.ruanyifeng.com/blog/2016/04/cors.html)
 
-简介
-CORS是一个W3C标准，全称是"跨域资源共享"（Cross-origin resource sharing）。 它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制。
+[CORS](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS#Preflighted_requests)--MDN
 
-普通跨域请求：只服务端设置Access-Control-Allow-Origin即可，前端无须设置。
-带cookie请求：前后端都需要设置字段，另外需注意：所带cookie为跨域请求接口所在域的cookie，而非当前页。 
+[CORS原理及实现](https://www.jianshu.com/p/b2bdf55e1bf5)
+
+### 简介
+"跨域资源共享"CORS（Cross-origin resource sharing）是一种机制，是W3C标准。它允许浏览器向跨源服务器，发出XMLHttpRequest或Fetch请求。克服AJAX只能同源使用的限制。
 
 CORS需要浏览器和服务器同时支持。目前，所有浏览器都支持该功能，IE浏览器不能低于IE10。IE8+：IE8/9需要使用XDomainRequest对象来支持CORS。
 
+
+### 请求配置
+通常是有以下几个配置：
+* Access-Control-Allow-Origin
+* Access-Control-Allow-Methods
+* Access-Control-Allow-Headers
+* Access-Control-Allow-Credentials
+* Access-Control-Max-Age
+
+
+普通跨域请求：只服务端设置Access-Control-Allow-Origin即可，前端无须设置。
+
 整个CORS通信过程，都是浏览器自动完成，不需要用户参与。对于开发者来说，CORS通信与同源的AJAX通信没有差别，代码完全一样。浏览器一旦发现AJAX请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求，但用户不会有感觉。 因此，实现CORS通信的关键是服务器。只要服务器实现了CORS接口，就可以跨源通信。
 
-两种请求
-分为两种请求，一种是简单请求，另一种是非简单请求。只要满足下面条件就是简单请求
-请求方式为HEAD、POST 或者 GET
-http头信息不超出一下字段：Accept、Accept-Language 、 Content-Language、 Last-Event-ID、 Content-Type(限于三个值：application/x-www-form-urlencoded、multipart/form-data、text/plain)
+### 两种请求
+分为两种请求，一种是简单请求，另一种是非简单请求。非简单请求会先进行一次OPTION方法进行预检，看是否允许当前跨域请求。
+
 为什么要分为简单请求和非简单请求，因为浏览器对这两种请求方式的处理方式是不同的。
 
->
-    Referer: http://127.0.0.1:8085/
-    Origin: http://127.0.0.1:8085   //值设置为*，则会接受所有域的请求
-    Accept: */*
-    Cache-Control: no-cache
-    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8
-    Pragma: no-cache
+### 简单请求
+只要满足下面条件就是简单请求
+* 请求方式为
+  * GET、
+  * POST、
+  * HEAD、
 
-    res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:8085');
-    res.setHeader('Access-Control-Allow-Credentials', true); //允许该请求内包含cookie信息同时，在客户端，还需要在ajax请求中设置withCredentials属性为true。
-        var xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
+* 只能设置以下集合中的请求头
+  * Accept
+  * Accept-Language
+  * Content-Language
+  * Content-Type(只限于application/x-www-form-urlencoded、multipart/form-data、text/plain)
+  * DPR
+  * Downlink
+  * Save-Data
+  * Viewport-Width
+  * Width
+
+* 请求中的任意XMLHttpRequestUpload 对象均没有注册任何事件监听器；XMLHttpRequestUpload 对象可以使用 XMLHttpRequest.upload 属性访问。
+
+* 请求中没有使用 ReadableStream 对象。
+
+后端设置
+```js
+// 设置允许跨域域名 ，设置 * 表示接受任意域名的请求。
+res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:8085');
+
+//允许该请求内包含cookie信息
+res.setHeader('Access-Control-Allow-Credentials', true); 
+
+
+// 在客户端，还需要在ajax请求中设置withCredentials属性为true。
+var xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+
+```
+
+### 非简单请求
+非简单请求是那种对服务器有特殊要求的请求，比如请求方法是PUT或DELETE，或者Content-Type字段的类型是application/json。非简单请求的CORS请求，会在正式通信之前，增加一次HTTP查询请求，称为"预检"请求（[preflight](/details\HTTP\preflight请求.md)）。
+
+
+如果浏览器否定了"预检"请求，会返回一个正常的HTTP回应，但是没有任何CORS相关的头信息字段。这时，浏览器就会认定，服务器不同意预检请求，因此触发一个错误，被XMLHttpRequest对象的onerror回调函数捕获。
 
 ## <a name="node代理跨域">node代理跨域</a>
 

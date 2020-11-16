@@ -70,7 +70,8 @@ POST 的内容也可以触发反射型 XSS，只不过其触发条件比较苛�
 ### DOM 型 XSS
 DOM 型 XSS 的攻击步骤：
 
-* 攻击者构造出特殊的 URL，其中包含恶意代码。
+* 攻击者构造出特殊的 URL，其中包含恶意代码(http://abcd.com?q=\<img src="" onerror="alert(document.cookie)" />
+)。
 
 * 用户打开带有恶意代码的 URL。
 
@@ -80,28 +81,22 @@ DOM 型 XSS 的攻击步骤：
 
 DOM 型 XSS 跟前两种 XSS 的区别：DOM 型 XSS 攻击中，取出和执行恶意代码由浏览器端完成，属于前端 JavaScript 自身的安全漏洞，而其他两种 XSS 都属于服务端的安全漏洞。
 
+### 总结
+* 存储型：攻击被存储在服务端，常见的是在评论区插入攻击脚本，如果脚本被储存到服务端，那么所有看见对应评论的用户都会受到攻击。
+
+* 反射型：攻击者将脚本混在URL里，服务端接收到URL将恶意代码当做参数取出并拼接在HTML里返回，浏览器解析此HTML后即执行恶意代码
+
+* DOM型：攻击者将脚本混在URL里，诱导用户点击该URL，如果URL被解析，那么攻击脚本就会被运行。和前两者的差别主要在于DOM型攻击不经过服务端
 
 ### 预防策略：
-* 验证用户输入:
-对于用户的任何输入要进行检查、过滤和转义。建立可信任的字符和 HTML 标签白名单，对于不在白名单之列的字符或者标签进行过滤或编码
-
-* 过滤:
-移除用户上传的DOM属性，如onerror等
-移除用户上传的Style节点、Script节点、Iframe节点等
-
-* 校正:
-避免直接对HTML Entity解码
-使用DOM Parse转换，校正不配对的DOM标签
+* 输入检查：对输入内容中的标签进行转义或者过滤
+* 设置httpOnly：很多XSS攻击目标都是窃取用户cookie伪造身份认证，设置此属性可防止JS获取cookie
+* 开启CSP防护，即开启白名单，可阻止白名单以外的资源加载和运行。
+  >内容安全策略（CSP）的设计就是为了防御XSS攻击的，通过在HTTP头部中设置Content-Security-Policy,就可以配置该策略，如果将CSP设置成一下模式：
+  Content-Security-Policy: script-src 'self'
 
 
-
-### JSONP XSS
-JSONP 的 callback 参数非常危险，他有两种风险可能导致 XSS：
-* callback 参数意外截断 js 代码，特殊字符单引号双引号，换行符均存在风险。
-* callback 参数恶意添加标签（如
-
-
-### -
+### 例
 ```js
 npm install xss --save
 
@@ -109,13 +104,18 @@ let xss = reauire('xss')
 console.log(xss('<a onclick="alert(xss)"></a>'))
 ```
 
-## CSRF（Cross-Site Request Forgeries，跨站点请求伪造）
+## CSRF（Cross-Site Request Forgery，跨站点请求伪造）
 [](https://juejin.im/post/6844903928555896839)
 
 ### 概念
-引诱用户打开黑客的网站，在黑客的网站中，利用用户的登录状态发起的跨站请求。
-![CSFR](/img/CSFR.png)
 
+CSRF 攻击是攻击者借助受害者的 Cookie 骗取服务器的信任，可以在受害者毫不知情的情况下以受害者名义伪造请求发送给受攻击服务器，从而在并未授权的情况下执行在权限保护之下的操作。
+
+简单介绍一下CSRF的攻击流程：
+* 假如用户登录网站A，获取了cookie，
+* 然后访问网站B时，在网站B上放置了网站A的外链，用户点击跳转到网站A。默认情况下，浏览器会带着网站A的cookie访问这个网址，
+* 如果用户已登录过该网站且网站没有对CSRF攻击进行防御，那么服务器就会认为是用户本人在调用此接口并执行相关操作，致使账号被劫持。
+![CSFR](/img/CSFR.png)
 
 与 XSS 相比，XSS 利用的是用户对指定网站的信任，CSRF 利用的是网站对用户网页浏览器的信任。
 
@@ -148,7 +148,7 @@ console.log(xss('<a onclick="alert(xss)"></a>'))
 
 需要用户点击链接才会触发，但本质上与前两种一样。这种类型通常是在论坛中发布的图片中嵌入恶意链接，或者以广告的形式诱导用户中招，攻击者通常会以比较夸张的词语诱骗用户点击，例如：
 ```html
-<a href="http://a.com/withdraw.php?amount=1000&for=hacker" taget="_blank">
+<a href="http://a.com/withdraw.php?amount=1000&for=hacker" target="_blank">
 屠龙宝刀，点击就送！ 一刀9999999！是兄弟就来砍我！！！
 <a/>
 ```
@@ -157,7 +157,8 @@ console.log(xss('<a onclick="alert(xss)"></a>'))
 ### 预防策略：
 * token验证机制，比如请求数据字段中添加一个token，响应请求时校验其有效性  
 * 用户操作限制，比如验证码
-* 请求来源限制，比如限制HTTP Referer才能完成操作（防御效果相比较差）
+* 请求来源限制，比如Referer
+  >CSRF都是通过三方网站发起；Referer和Origin是http请求的头部字段之一，用来标志该请求是从哪个页面链接过来的。因此后台服务器可以通过检查该字段是否是来自自己的网站链接，来避免第三方网站发起CSRF攻击。
 
 ## SQL注入攻击
 ### 概念

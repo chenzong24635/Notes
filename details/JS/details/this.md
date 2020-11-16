@@ -13,16 +13,39 @@ this是在[执行上下文](/details\面试题\JS面试题\作用域-作用域�
 this永远指向的是最后调用它的对象
 
 
+this 是和执行上下文绑定的，也就是说每个执行上下文中都有一个 this。
+
+执行上下文分为 3 种：
+* 全局执行上下文
+* 函数执行上下文
+* eval 执行上下文
+
+
 当函数独立调用的时候，在严格模式下它的this指向undefined，
 在非严格模式下，当this指向undefined的时候，自动指向全局对象(浏览器中就是window)
+```js
+function foo() {
+  console.log(this); // Window
+}
+foo();
+
+function foo1() {
+  "use strict";
+  console.log(this); // undefined
+}
+foo();
+```
+
 
 在ES2019中添加了globalThis对象，从现在开始应该在任何平台上访问全局作用域：
 ```js
-let num = 1
-globalThis.num  // 1
+var num = 1 // var定义的变量会绑定到window上
+console.log(window.num)  // 1
+console.log(globalThis.num)  // 1
 
-globalThis.v = { flag: true };
-console.log(globalThis.v);//{ flag: true }
+globalThis.bool = { flag: true };
+console.log(globalThis.bool);//{ flag: true }
+
 ``` 
 
 
@@ -96,9 +119,10 @@ var obj = {
     console.log(this.name); //'window.name'
   }
 };
- 
+
+
 var fn = obj.func; //
-fn() //此时调用函数绑定this到window
+fn() //此时调用函数绑定this到window，隐式丢失
 ```
 
 ```js
@@ -116,6 +140,23 @@ function foo(fn){
   fn() //  调用位置！ this指向 Window
 }
 foo(obj.func)
+```
+
+
+还有嵌套函数中的 this 不会从外层函数中继承
+```js
+var obj = {
+  name: 'obj.name',
+  func: function(){
+    console.log(this); // 指向obj {name: "obj.name", func: ƒ}
+    function foo() {
+      console.log(this) 
+    }
+    foo()// 指向Window
+    // foo.apply(this) // 除非显示绑定到 obj
+  }
+};
+obj.func()
 ```
 
 #### 显式绑定

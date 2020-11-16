@@ -4,7 +4,6 @@ v-show是指令，控制display:none的添加移除（会先存储原display值�
 
 v-if源码
 ```js
-
 // src\compiler\codegen\index.js
 // 各个指令对应的转换逻辑
 export function genElement (el: ASTElement, state: CodegenState): string {

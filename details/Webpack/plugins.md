@@ -555,13 +555,16 @@ npm run dll后会在public目录生成 dll/vendor.dll.js
 它会自动完成以上两个插件的功能
 npm install --save-dev autodll-webpack-plugin
 ```js
+const AutoDllPlugin = require('autodll-webpack-plugin');
+
 plugins: [
   new HtmlWebpackPlugin({
     inject: true,
     template: './src/index.html',
   }),
   new AutoDllPlugin({
-    inject: true, // will inject the DLL bundles to index.html
+    inject: true, // true就把 DLL bundles 插到 index.html 里
+    // context: path.resolve(__dirname, './'), // AutoDllPlugin 的 context 必须和 package.json 的同级目录，要不然会链接失败
     filename: '[name].js',
     entry: {
       vendor: ['vue','element-ui'] 

@@ -176,7 +176,7 @@ define(['module2', 'jquery'], function(module2) {
 [CMD规范](https://github.com/cmdjs/specification/blob/master/draft/module.md)
 
 CMD整合了CommonJS和AMD规范的特点。
-    
+
 [sea.js](https://github.com/seajs/seajs)实现CMD规范
 
 特点

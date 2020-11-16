@@ -424,14 +424,6 @@
 - <a href="#查找字符串中出现最多的字符和个数">查找字符串中出现最多的字符和个数</a>
 - <a href="#类数组转化为数组">类数组转化为数组</a>
 - <a href="#判断是否回文、实现回文">判断是否回文、实现回文</a>
-- <a href="#两位大整数相加">两位大整数相加</a>
-- <a href="#实现f(a)(b)与f(a,b)一样的效果">实现 f(a)(b)与 f(a,b)一样的效果</a>
-- <a href="#无限累加的函数 add">实现一个无限累加的函数 add(1)(2)(3)...</a>
-- <a href="#数组无序排列">数组无序排列</a>
-- <a href="#数组扁平化">数组扁平化:n 维数组展开成一维数组</a>
-- <a href="#数组去重">数组去重</a>
-- <a href="#数组扁平化+去重">数组扁平化+去重</a>
-- <a href="#数组排序">数组排序</a>
 
 - <a href="#unicode转中文">unicode 转中文</a>
 - <a href="#将字符串复制到剪贴板">将字符串复制到剪贴板</a>
@@ -570,102 +562,12 @@ function jugeNet(){
 }
 ```
 
-## <a name="延迟函数delay">延迟函数 delay</a>
 
-因为 async await 本身就是 promise+generator 的语法糖。所以 await 后面的代码是 microtask。
 
-```js
-const delay = (ms) => new Promise((resolve, reject) => setTimeout(resolve, ms));
 
-const getData = (status) =>
-  new Promise((resolve, reject) => {
-    status ? resolve("done") : reject("fail");
-  });
-const getRes = async (data) => {
-  try {
-    const res = await getData(data);
-    const timestamp = new Date().getTime();
-    await delay(1000);
-    console.log(res, new Date().getTime() - timestamp);
-  } catch (error) {
-    console.log(error);
-  }
-};
-getRes(true); // 隔了1秒
-// Promise {<pending>}
-// done 1000
-```
 
-## <a name="保留小数点后两位-不足则补零">保留小数点后两位-不足则补零</a>
 
-```
-function returnFloat(value) {
-  var value = Math.round(parseFloat(value) * 100) / 100;
-  var xsd = value.toString().split('.');
-  if (xsd.length == 1) {
-    value = value.toString() + '.00';
-    return value;
-  }
-  if (xsd.length > 1) {
-    if (xsd[1].length < 2) {
-      value = value.toString() + '0';
-    }
-    return value;
-  }
-}
-```
 
-## <a name="浮点型+-*/">浮点型+-\*/</a>
-
-- 加
-
-```
-function accAdd(arg1, arg2) {
-  let r1, r2, m;
-  try { r1 = arg1.toString().split(".")[1].length } catch (e) { r1 = 0 }
-  try { r2 = arg2.toString().split(".")[1].length } catch (e) { r2 = 0 }
-  m = Math.pow(10, Math.max(r1, r2))
-  return (arg1 * m + arg2 * m) / m
-}
-```
-
-- 减
-
-```
-function accDec(arg1, arg2) {
-  let r1, r2, m, n;
-  try { r1 = arg1.toString().split(".")[1].length } catch (e) { r1 = 0 }
-  try { r2 = arg2.toString().split(".")[1].length } catch (e) { r2 = 0 }
-  m = Math.pow(10, Math.max(r1, r2));
-  //动态控制精度长度
-  n = (r1 >= r2) ? r1 : r2;
-  return ((arg1 * m - arg2 * m) / m).toFixed(n);
-}
-```
-
-- 乘
-
-```
-function accMul(arg1, arg2) {
-  let m = 0, s1 = arg1.toString(), s2 = arg2.toString();
-  try { m += s1.split(".")[1].length } catch (e) { }
-  try { m += s2.split(".")[1].length } catch (e) { }
-  return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m)
-}
-```
-
-- 除
-
-```
-function accDiv(arg1, arg2) {
-  let t1 = 0, t2 = 0, r1, r2;
-  try { t1 = arg1.toString().split(".")[1].length } catch (e) { }
-  try { t2 = arg2.toString().split(".")[1].length } catch (e) { }
-  r1 = Number(arg1.toString().replace(".", ""))
-  r2 = Number(arg2.toString().replace(".", ""))
-  return (r1 / r2) * Math.pow(10, t2 - t1);
-}
-```
 
 ## <a name="时间戳、日期 的转换">时间戳、日期 的转换</a>
 
@@ -1004,124 +906,8 @@ JavaScript 中的 number 类型就是浮点型，数字和浮点精度的处理�
           withinErrorMargin(0.1 + 0.2, 0.3) // true
 
 
-## <a name="随机字符串">随机字符串</a>
 
->
 
-    Math.random().toString(36).slice(2)
-
-    Math.random().toString(36).slice(-6)// 随机6位字符串
-
-    由于：number.toString(36) -> 0-9 a-z的字符串
-    toString(radix) 方法以指定的基数返回该对象的字符串表示。
-    radix-->用于数字到字符串的转换的基数(从2到36)。
-    如果转换的基数大于10，则会使用字母来表示大于9的数字，比如基数为16的情况，则使用a到f的字母来表示10到15。
-    如果基数没有指定，则默认使用 10
-
->
-
-    function a(n) {
-      let str = 'abcdefghijklmnopqrstuvwxyz9876543210';
-      let tmp = '',
-          i = 0,
-          len = str.length;
-      for (i = 0; i < n; i++) {
-        tmp += str.charAt(Math.floor(Math.random() * len));
-      }
-      return tmp;
-    }
-
-## <a name="随机HEX色值">随机 HEX 色值 </a>
-
-RandomColor = () => "#" + Math.floor(Math.random() \* 0xffffff).toString(16).padEnd(6, "0");
-
-## <a name="随机6个数字">随机 6 个数字 </a>
-
-Math.floor(Math.random() \* 999999)
-
-Math.random().toString().slice(-6) / 1
-
-Math.random().toFixed(6).slice(-6) / 1
-
-## <a name="范围内随机数，包括两个数在内">范围内随机数</a>
-
->
-
-    // 小数
-    const number =(min, max) => Math.random() * (max - min) + min
-
-    // 整数
-    const number = = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-
-## <a name="数字千分位">数字千分位 </a>
-
-1.  toLocaleString()
-
-    >
-
-        var a = 123456;
-        a.toLocaleString() //'123,456'
-
-2.  reg
-
-    >
-
-        function thousandth (num) {
-          return num && num
-            .toString()
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-            //.replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,')
-        }
-        //$&  表示整个被匹配的字符串
-
-        //最多只支持 小数点后三位
-        thousandth(1662367864) //"1,662,367,864"
-        thousandth(16623.678)//"16,623.678"
-        thousandth(16623.6786)//"16,623.67,86" ???
-
-3)  reduce
-
-    >
-
-        function thousandth(num) {//12345678
-          var str = num + '';
-          str = str.split("").reverse()
-          // ["8", "7", "6", "5", "4", "3", "2", "1"]
-          return str.reduce((prev, next, index) => {
-            return ((index % 3) ? next : (next + ',')) + prev;
-          })
-        }
-
-4)  for
-
-    >
-
-        function thousand(num) {
-          var str = ''
-          num = (num + '').split('') //数组
-          for(var i = num.length-1,j=0; i>=0 ; i--, j++) {
-            //每隔三位加逗号，过滤数组的最后一位
-            if(j%3 === 0 && j!=0){
-              num.splice(i,1,num[i],',')//当前索引后 添加','
-            }
-          }
-          return num.join('')
-        }
-
-5)  for
-    >
-        function format(num){
-          var str="";//字符串累加
-          num = num+'';//数字转字符串
-          for(var i=num.length- 1,j=1;i>=0;i--,j++){
-            if(j%3==0 && i!=0){//每隔三位加逗号，过滤正好在第一个数字的情况
-              str+=num[i]+",";//加千分位逗号
-              continue;
-            }
-            str+=num[i];//倒着累加数字
-          }
-          return str.split('').reverse().join("");//字符串=>数组=>反转=>字符串
-        }
 
 ## <a name="统计字符串中同一字符出现次数">统计字符串中同一字符出现次数</a>
 
@@ -1184,61 +970,6 @@ Math.random().toFixed(6).slice(-6) / 1
       temp.reverse();
       console.log(arr.concat(temp).join())
 
-## <a name="两位大整数相加">两位大整数相加</a>
-
->
-
-    function sumStrings(a,b){
-      console.log(a);
-      console.log(b);
-      var res='', c=0;
-      console.log()
-      a = a.split('');
-      b =b.split('');
-      while (a.length || b.length || c){
-          c += ~~a.pop() + ~~b.pop();
-          res = c % 10 + res;
-          //console.log(res);
-          c = c>9;
-      }
-      return res.replace(/^0+/,'');
-    }
-    console.log(sumStrings('37486040775460377773700','7669000000000000000000000000000'))
-
-    代码解析：
-    1. 使用split方法，将字符串转换为数组
-    2. 通过判断a,b,c的长度，决定是否还需要就行对应的位进行相加
-    3. 使用~~a.pop()的目的：保证若b的长度大于a的长度，则此时a.pop()=undefined，~~undefined=0
-    4. 将两个位置上的数进行相加，若大于9，则需要进位，即，将c的值存为true，这样当进行相加时，true会进行变量提升为1
-    5. 输出最后结果的时候，由于前面可能存在0，所以使用字符串的replace方法将前面的0去掉。
-
->
-
-    function func(a,b){
-      a = a + ''
-      b = b + ''
-      var len1 = a.length
-      var len2 = b.length
-      for(var i = 0;i < Math.abs(len1-len2); i++){
-        if(len1>len2) b = '0' + b
-        if(len1<len2) a = '0' + a
-      }
-      a = a.split('').reverse()
-      b = b.split('').reverse()
-      var n = Math.max(len1,len2)
-      var result = new Array(n).fill(0)
-      // var result = Array.apply(this, Array(n)).map(()=>{return 0})
-      for(var j = 0;j < n; j++){
-        var temp = Number.parseInt(a[j]) + Number.parseInt(b[j])
-        if(temp > 9){
-          result[j] += temp-10
-          result[j+1] = 1
-        } else {
-          result[j] += temp
-        }
-      }
-      return result.reverse().join('').toString()
-    }
 
 
 

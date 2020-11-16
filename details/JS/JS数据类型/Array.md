@@ -727,41 +727,11 @@ for (let item of arr.keys()) {
 ## <a name="">实现 map、filter、some、every、reduce、</a>
 [一个合格的中级前端工程师需要掌握的 28 个 JavaScript 技巧](https://juejin.im/post/5cef46226fb9a07eaf2b7516#heading-0)
 
-实现 map
->
-    Array.prototype.myMap = function(fn,context){
-      let arr = Array.prototype.slice.call(this)
-      let resultArr = []
-      for(let i = 0, len = arr.length; i < len; i++){
-        if(!arr.hasOwnProperty(i))continue;
-        resultArr[i] = fn.call(context, arr[i], i, this)
-      }
-      return resultArr
-    }
 
-实现 filter
->
-    Array.prototype.myFilter = function(fn,context){
-      let arr = Array.prototype.slice.call(this)
-      let resultArr = []
-      for(let i = 0, len = arr.length; i < len; i++){
-        if(!arr.hasOwnProperty(i))continue;
-        fn.call(context, arr[i], i, this) && resultArr.push(arr[i])
-      }
-      return resultArr
-    }
 
-实现 some
->
-    Array.prototype.mySome = function(fn,context){
-      let arr = Array.prototype.slice.call(this)
-      let resultArr = []
-      for(let i = 0, len = arr.length; i < len; i++){
-        if(!arr.hasOwnProperty(i))continue;
-        if(fn.call(context, arr[i], i, this))return true
-      }
-      return false
-    }
+
+
+
 
 实现every
     Array.prototype.myEvery = function(fn,context){

@@ -10,7 +10,7 @@
 
 
 
-# 
+# 目录
 
 <details open>
   <summary>
@@ -66,8 +66,11 @@
 
 </details>
 
+<<<<<<< HEAD
 # [Vue开发技巧+性能优化](/details/Vue/Vue开发技巧+性能优化.md)
 
+=======
+>>>>>>> 147883a0d7c138f17ef34cfceabc5f455a66552e
 # <a name="了解">了解</a>[![bakTop](/img/backward.png)](#top)  
 Vue (读音 /vjuː/，类似于 view) 是一套用于构建用户界面的渐进式框架。
 
@@ -111,7 +114,7 @@ var newArr1 = arr.map(function (item) {
 
 因此简单来说：
 MVVM只能数据驱动视图，视图更改数据，而不能通过其他方式操作数据,
-而 Vue 可以通过其他方式操作dom（如$refs）
+而 Vue 可以通过其他方式操作dom（如ref,$refs）
 
 
 ## 对比其他框架
@@ -141,7 +144,7 @@ MVVM只能数据驱动视图，视图更改数据，而不能通过其他方式�
 # <a name="MVC、MVP、MVVM">MVC、MVP、MVVM</a>[![bakTop](/img/backward.png)](#top)  
 [MVC，MVP 和 MVVM 的图示](http://www.ruanyifeng.com/blog/2015/02/mvcmvp_mvvm.html)--阮一峰
 
-[基于Vue实现一个简易MVVM](https://juejin.im/post/5cd8a7c1f265da037a3d0992)
+[基于Vue实现一个简易MVVM](https://juejin.im/post/6844904099704471559)
 
 ### MVVM(Model-View-ViewModel)
 <!-- <img src="img/Vue/mvvm.png" width="50%"/> -->
@@ -287,11 +290,11 @@ btn.addEventListener("click",function(){
 
 ## 各个生命周期作用：
 
-* beforeCreate阶段: 实例创建前发生；数据对象data和vue实例的挂载元素$el都为undefined，还未初始化。 
+* beforeCreate阶段: 实例创建前发生；数据对象data（data,props,methods,data,computed,watch,inject,provide）和vue实例的挂载元素$el都为undefined，还未初始化。 
 
-* created阶段: 实例创建完成后发生；完成data,methods初始化，$el还没有。此时无法与操作DOM，但可以通过vm.$nextTick来访问。
+* created阶段: 实例创建完成后发生；data完成初始化，$el还没有。此时无法与操作DOM，但可以通过vm.$nextTick来访问。
 
-* beforeMount阶段：挂载前发生；完成了data和$el初始化；已完成模板编译但还是挂载之前为虚拟的dom节点，data.message还未替换。 此时也可以对数据进行更改，但不会触发updated。
+* beforeMount阶段：挂载前发生；完成了$el初始化；已完成模板编译但还是挂载之前为虚拟的dom节点，data.message还未替换。 此时也可以对数据进行更改，但不会触发updated。
 
 * mounted阶段：挂载完成后发生；实例初始化完毕，$el挂载完成，data数据渲染；
 
@@ -320,11 +323,13 @@ btn.addEventListener("click",function(){
 * updated: 任何数据的更新,如果要做统一的业务逻辑处理使用此钩子函数  
 
 * beforeDestroy: 页面退出前操作(如：确认是否退出登录)
+* destroyed: 清除操作（定时器，自定义事件）
 
-* Vue的所有生命周期函数都是自动绑定到this的上下文上。所以，你这里使用箭头函数的话，就会出现this指向的父级作用域，就会报错
+Vue的所有生命周期函数都是自动绑定到this的上下文上。所以，你这里使用箭头函数的话，就会出现this指向的父级作用域，就会报错
 
 ## 在哪个生命周期内调用异步请求？
 可以在钩子函数 created、beforeMount、mounted 中进行调用，因为在这三个钩子函数中，data 已经创建，可以将服务端端返回的数据进行赋值。  
+
 推荐在 created 钩子函数中调用异步请求，因为在 created 钩子函数中调用异步请求有以下优点：
 * 能更快获取到服务端数据，减少页面 loading 时间；
 * ssr 只支持 beforeCreate和created 钩子函数，所以放在 created 中有助于一致性；
@@ -359,7 +364,6 @@ btn.addEventListener("click",function(){
 
 ##  从源码上看生命周期
 [从源码上看生命周期](/details\Vue\Vue2-Source\生命周期.md)
-
 
 
 # <a name="Vue事件绑定原理">Vue事件绑定原理</a>[![bakTop](/img/backward.png)](#top)  
@@ -717,8 +721,6 @@ vm.items.splice(newLength)
 
 但是这种做法并不推荐，官方说如果你现在的场景需要用forceUpdate方法 ,那么99%是你的操作有问题，如上data里不显示声明对象的属性，之后添加属性时正确的做法时用 `vm.$set()` 方法，所以forceUpdate请慎用
 
-### 
-
 ### [forceUpdate源码解析](/details\Vue\Vue2-Source\$forceUpdate.md)
 
 
@@ -729,7 +731,7 @@ Vue 异步执行 DOM 更新。Vue在观察到数据变化时并不是直接更�
 
 # <a name="nextTick">nextTick</a>[![bakTop](/img/backward.png)](#top)  
 
-[nextTick](/details/Vue/Vue2-Source/nextTick.md)
+[nextTick](/details/Vue/Vue2-Source/$nextTick.md)
 
 
 # <a name="组件中data为什么是一个函数">为什么组件中的 data 必须是一个函数，然后 return 一个对象，而 new Vue 实例里，data 可以直接是一个对象？</a>[![bakTop](/img/backward.png)](#top)  
