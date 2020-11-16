@@ -1,5 +1,5 @@
 
-# [常用链接](/details/website/JS-ES-TS#ES.md)
+# [常用链接](/details/website/JS-ES-TS#JS.md)
 
 # 目录
 

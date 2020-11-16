@@ -285,11 +285,11 @@ btn.addEventListener("click",function(){
 
 ## 各个生命周期作用：
 
-* beforeCreate阶段: 实例创建前发生；数据对象data和vue实例的挂载元素$el都为undefined，还未初始化。 
+* beforeCreate阶段: 实例创建前发生；数据对象data（data,props,methods,data,computed,watch,inject,provide）和vue实例的挂载元素$el都为undefined，还未初始化。 
 
-* created阶段: 实例创建完成后发生；完成data,methods初始化，$el还没有。此时无法与操作DOM，但可以通过vm.$nextTick来访问。
+* created阶段: 实例创建完成后发生；data完成初始化，$el还没有。此时无法与操作DOM，但可以通过vm.$nextTick来访问。
 
-* beforeMount阶段：挂载前发生；完成了data和$el初始化；已完成模板编译但还是挂载之前为虚拟的dom节点，data.message还未替换。 此时也可以对数据进行更改，但不会触发updated。
+* beforeMount阶段：挂载前发生；完成了$el初始化；已完成模板编译但还是挂载之前为虚拟的dom节点，data.message还未替换。 此时也可以对数据进行更改，但不会触发updated。
 
 * mounted阶段：挂载完成后发生；实例初始化完毕，$el挂载完成，data数据渲染；
 
@@ -318,8 +318,9 @@ btn.addEventListener("click",function(){
 * updated: 任何数据的更新,如果要做统一的业务逻辑处理使用此钩子函数  
 
 * beforeDestroy: 页面退出前操作(如：确认是否退出登录)
+* destroyed: 清除操作（定时器，自定义事件）
 
-* Vue的所有生命周期函数都是自动绑定到this的上下文上。所以，你这里使用箭头函数的话，就会出现this指向的父级作用域，就会报错
+Vue的所有生命周期函数都是自动绑定到this的上下文上。所以，你这里使用箭头函数的话，就会出现this指向的父级作用域，就会报错
 
 ## 在哪个生命周期内调用异步请求？
 可以在钩子函数 created、beforeMount、mounted 中进行调用，因为在这三个钩子函数中，data 已经创建，可以将服务端端返回的数据进行赋值。  
