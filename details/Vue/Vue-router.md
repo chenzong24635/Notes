@@ -15,6 +15,7 @@
 ```js
 {
   path: '/a/:id?',  //访问路径, id表示路由参数 ，？表示路由参数可选（可传可不传)
+  //多个参数：'/a/:id?/:name'
   component: comA, //具体vue页面
   name: 'a', //名称，vue页面可通过name调用,
   components: { [name: string]: Component }, // 命名视图组件
@@ -171,6 +172,33 @@ const router = new VueRouter({
 
 onComplete 和 onAbort 回调作为第二个和第三个参数。
 这些回调将会在导航成功完成 (在所有的异步钩子被解析之后) 或终止 (导航到相同的路由、或在当前导航完成之前导航到另一个不同的路由) 的时候进行相应的调用。
+
+
+`需要注意的是：`，如果定义路由时未定义路由参数，且路由跳转时使用 params 传参，此时参数不会显示在页面 url 上，但依旧可以通过 $route.params 获取此参数， `但是一旦刷新页面，参数就会丢失`。
+而 query 方式则不同，依参数旧会形式
+
+例
+```js
+{
+  name: 'A',
+  path: '/A',
+  component: () => import('../views/A.vue'),
+},
+
+// 跳转到 A 页面
+this.$router.push({
+  name: 'A',
+  params: {
+    id: 123
+  }
+})
+
+```
+跳转到 A 页面时，页面 url 为： `http://192.168.1.91:8080/#/A`
+
+`this.$route.params`，返回 `{id: 123}`
+
+而一旦页面刷新则值丢失，返回 `{}`
 
 
 ### replace() 页面跳转，不会向 history 添加新记录，而是替换掉当前的 history 记录。
