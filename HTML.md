@@ -88,6 +88,12 @@ XHTML特性：
 * 方便其他设备解析，如盲人阅读器根据语义渲染网页
 
 
+### strong b标签区别
+* 效果一样，意义不同
+* b 仅表加粗
+* strong 表加强，提示此内容比较重要
+* 使用盲人阅读器，strong 会重读 ， b不会
+
 ## <a name="HTML5 为什么只需要写">HTML5 为什么只需要写 \<!DOCTYPE HTML\></a>[![bakTop](/img/backward.png)](#top)
 
 HTML5 不基于 SGML，因此不需要对DTD进行引用，但是需要 DOCTYPE 来规范浏览器的行为（让浏览器按照它们应该的方式来运行）
@@ -194,6 +200,9 @@ HTML5新特性：
 
 
 ![替换元素](/img/替换元素display值.jpg)
+
+
+
 
 ## <a name="HTML全局属性有哪些">HTML全局属性有哪些</a>[![bakTop](/img/backward.png)](#top)
 

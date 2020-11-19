@@ -294,12 +294,15 @@ rules: [
 ```
 
 ## <a name="babel">JS语法转换 babel-loader</a>
+[Babel](/Babel.md)
+
 
 npm i babel-loader @babel/preset-env @babel/core -D 
 
 npm i @babel/polyfill -S // 安装到生产模式
 
 babel-loader 是webpack 与 babel的通信桥梁  
+
 @babel/preset-env 只会将 ES6/7/8语法转换为ES5语法，但是对新api并不会转换 例如(promise、Generator、Set、Maps、Proxy等)
 
 babel-polyfill 转换es的新特性
@@ -349,15 +352,13 @@ module.exports = {
         targets: {
           "browsers": ["> 1%", "last 2 versions", "not ie <= 8"]
         },
-        corejs: 2, //新版本需要指定核心库版本
+        corejs: 3, //新版本需要指定核心库版本，默认2
         useBuiltIns: "usage", //按需注入
       },
     ],
   ],
 };
 ```
-
-
 
 useBuiltIns 选项是 babel 7 的新功能,这个选项告诉 babel 如何配
 置 @babel/polyfill
@@ -366,21 +367,6 @@ useBuiltIns 选项是 babel 7 的新功能,这个选项告诉 babel 如何配
 * usage: 不需要 import ，全自动检测，但是要安装@babel/polyfill 。（试验阶段）  
 * false: 如果你 import "@babel/polyfill" ，它不会排除掉没有使用的垫片，程序体积会庞
 大。(不推荐)
-
-
-----
-* @babel/cli: 为babel的脚手架工具
-* @babel/core: babel-core是作为babel的核心存在，babel的核心api都在这个模块里面，比如：transform，用于字符串转码得到AST
-* babel-loader: webpack 就是用于编译JavaScript代码 
-* @babel/preset-env : 官方解释“用于编写下一代JavaScript的编译器”，编译成浏览器认识的JavaScript标准
-* @babel/polyfill ES6语法转换
-* @babel/preset-react: 用于编译react的jsx，开发react应用必备
-* @babel/plugin-proposal-class-properties: 解析class类的属性
-* @babel/plugin-proposal-decorators: 解析装饰器模式语法，如使用react-redux的@connect
-* @babel/plugin-proposal-export-default-from: 解析export xxx from 'xxx'语法
-
-
-[不容错过的 Babel7 知识](https://juejin.im/post/5ddff3abe51d4502d56bd143)
 
 
 ### 使用优化

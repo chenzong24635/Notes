@@ -23,6 +23,7 @@
 * <a href="#css选择器">css选择器</a>
 * <a href="#重绘回流">重绘回流</a>
 * <a href="#content属性">:before和:after伪元素的content属性</a>
+* <a href="#display">display</a>
 * <a href="#CSS书写顺序、规范">CSS书写顺序、规范</a>
 * <a href="#哪些属性可继承">哪些属性可继承</a>
 * <a href="#文字、盒子阴影">text-shadow 、box-shadow</a>
@@ -300,9 +301,9 @@ css书写顺序 link visited hover active 不然有些效果不会呈现(速记�
             color: red;
         }
 
-css2伪类和伪元素都是用单冒号，所有的浏览器都兼容，
-但是css3伪类为单冒号如:hover ，伪元素为双冒号::before；但是双冒号IE8以下不兼容
-
+### 伪类和伪元素区别
+* css2伪类和伪元素都是用单冒号，所有的浏览器都兼容；但是css3伪类为单冒号如:hover ，伪元素为双冒号::before；但是双冒号IE8以下不兼容
+* 是否需要添加元素才能达到效果，是则是伪元素，不是则是伪类
 
 ## <a name="重绘回流">重绘回流</a>[![bakTop](/img/backward.png)](#top)
 [重绘回流](/details\JS\details\重绘-回流.md)
@@ -402,22 +403,20 @@ counters()：该函数用来设置插入计数器的值,接受两个参数，而
 * grid
 * inline-grid 
 
-### inline,block,inline-block特性
-inline: 
-  * 多个标签存在一行，设置宽高不生效，完全靠内容和padding撑开宽高
-  * 设置margin-left/right有效果，但是margin-top/bottom无效
 
+### inline: 
+* 多个标签存在一行，设置宽高不生效，完全靠内容和padding撑开宽高
+* 设置margin-left/right有效果，但是margin-top/bottom无效
 
-block: 
-  * 独占一行（即使设置宽度），
-  * 在不设置自己的宽度的情况下，块级元素会默认填满父级元素的宽度
-  * 能够改变元素的height，width的值
-  * 设置padding/margin都有效果
-
-inline-block：
-  * 结合的行内和块级的优点，既可以设置宽高，可以让padding和margin生效，又可以和其他行内元素并排。
-  * 即不独占一行的块级元素
-  * 但是元素间会出现留白间距 （原因：HTML 中的换行符、空格符、制表符等合并为空白符, 字体大小不为 0 的情况下, 空白符自然占据一定的宽度, 因此产生了元素间的空隙）
+### block:
+* 独占一行（即使设置宽度）
+* 在不设置自己的宽度的情况下，块级元素会默认填满父级元素的宽度
+* 能够改变元素的height，width的值
+* 设置padding/margin都有效果
+### inline-block 
+* 结合的行内和块级的优点，既可以设置宽高，可以让padding和margin生效，又可以和其他行内元素并排。
+* 即不独占一行的块级元素
+* 但是元素间会出现留白间距 （原因：HTML 中的换行符、空格符、制表符等合并为空白符, 字体大小不为 0 的情况下, 空白符自然占据一定的宽度, 因此产生了元素间的空隙）
 
 ## <a name="CSS书写顺序、规范">CSS书写顺序、命名规范</a>[![bakTop](/img/backward.png)](#top)
 

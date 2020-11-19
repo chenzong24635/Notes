@@ -28,14 +28,23 @@
 </details>
 
 # <a name=""></a>
-# <a name="vscode-sync-setting">vscode-sync-setting</a>
->
+## <a name="setting sync">setting sync 插件</a>
 
-    token: bb7d41e1e039fdd294a6819e7305b73bd066d9a1
-    sync.gist: 0e3b4eb383f938cbacac6b443dd818a0
 
-    Gist ID:372add5a8785e01a4c7850cadd69314f
 
+* token: bb7d41e1e039fdd294a6819e7305b73bd066d9a1
+* sync.gist: 0e3b4eb383f938cbacac6b443dd818a0
+* Gist ID:372add5a8785e01a4c7850cadd69314f
+
+如果 网站访问不了，可能是IP地址更换了，去网站[http://ping.chinaz.com](http://ping.chinaz.com/gist.github.com)查询新IP；
+
+添加在 `C:\Windows\System32\drivers\etc` 路径下的hosts文件里
+
+现在为
+```js
+140.82.114.3 gist.github.com
+140.82.114.4 gist.github.com
+```
 
 # <a name="常用">常用</a>
 ## <a name="创建项目提交到仓库">创建项目提交到仓库</a>

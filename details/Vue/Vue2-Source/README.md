@@ -4,6 +4,8 @@
 
 [Vue源码阅读 - 依赖收集原理](https://segmentfault.com/a/1190000015562213)
 
+
+![](/img/Vue/vue.webp)
 # 源码目录
 
 src

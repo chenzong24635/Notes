@@ -282,15 +282,25 @@ str.padEnd(targetLength [, padString])
 ```
 
 ## <a name="repeat()">repeat()重复字符串</a>
-str.repeat(n)  
->n:[0, +∞) 的整数。重复字符串次数。
+重复字符串
 
+str.repeat(n)  
+>n:[0, +∞) 的整数。重复字符串次数。  
+  n是小数，向下取整；
+  n是负数或者Infinity，会报错。-0、NaN等同0
+  n是字符串转为数字，
 ```js
+"abc".repeat(NaN)     // ""
+"abc".repeat(-0)     // ""
 "abc".repeat(0)     // ""
 "abc".repeat(1)     // "abc"
 "abc".repeat(2)     // "abcabc"
+"abc".repeat(2.6)     // "abcabc"
 "abc".repeat('2.6') // "abcabc"
 "abc".repeat('2.6a')// ""
+
+"abc".repeat(-1)//Uncaught RangeError: Invalid count value
+"abc".repeat(Infinity)//Uncaught RangeError: Invalid count value
 ```
 
 ## <a name="match()、matchAll()">match()、matchAll()检索字符串</a>
