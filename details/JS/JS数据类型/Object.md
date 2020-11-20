@@ -147,6 +147,8 @@ Object.defineProperty({},'a',{
 返回一个数组，包含对象自身的所有属性（包括不可枚举属性,不含 Symbol 属性）的键名
 
 ## <a name="Object.getOwnPropertyDescriptors()">Object.getOwnPropertyDescriptors()</a>
+
+[](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptors)
 返回指定对象所有自身属性（非继承属性）的描述对象
 >
 

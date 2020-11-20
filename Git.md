@@ -11,7 +11,7 @@
 <details open>
   <summary>目录</summary>
 
-* <a href="#vscode-sync-setting">vscode-sync-setting</a>
+* <a href="#Setting Sync">Setting Sync插件</a>
 * <a href="#创建项目提交到仓库">创建项目提交到仓库</a>
 * <a href="#将本地代码文件夹作为新分支添加到远程仓库">将本地代码文件夹作为新分支添加到远程仓库</a>
 * <a href="#git基本命令">git基本命令</a>
@@ -28,13 +28,14 @@
 </details>
 
 # <a name=""></a>
-## <a name="setting sync">setting sync 插件</a>
-
-
+## <a name="Setting Sync">Setting Sync 插件</a>
 
 * token: bb7d41e1e039fdd294a6819e7305b73bd066d9a1
 * sync.gist: 0e3b4eb383f938cbacac6b443dd818a0
 * Gist ID:372add5a8785e01a4c7850cadd69314f
+
+* 上传配置: Shift + Alt + U
+* 下载配置: Shift + Alt + D
 
 如果 网站访问不了，可能是IP地址更换了，去网站[http://ping.chinaz.com](http://ping.chinaz.com/gist.github.com)查询新IP；
 

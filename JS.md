@@ -69,6 +69,8 @@
 # <a name="JS">**JS**</a>
 
 ## <a name="了解">了解</a>
+1996 年 11 月，JavaScript 的创造者 Netscape 公司，决定将 JavaScript 提交给标准化组织 ECMA，希望这种语言能够成为国际标准。次年，ECMA 发布 262 号标准文件（ECMA-262）的第一版，规定了浏览器脚本语言的标准，并将这种语言称为 
+[ECMAScript](https://www.ecma-international.org/ecma-262/)
 
 JS的特点：
 * 无需编译、

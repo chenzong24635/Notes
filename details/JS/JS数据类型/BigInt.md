@@ -1,6 +1,6 @@
 [BigInt](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-[](https://juejin.im/post/5d3f8402f265da039e129574)
+[JS最新基本数据类型：BigInt](https://juejin.im/post/5d3f8402f265da039e129574)
 
 ## 概述
 

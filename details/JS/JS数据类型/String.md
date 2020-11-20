@@ -341,7 +341,7 @@ str.match(/t(e)(st(\d?))/);
 ```
 
 
-* str.matchAll(reg|str) 方法返回一个包含所有匹配正则表达式及分组捕获结果的迭代器。配合 for...of, 扩展运算符(...), or Array.from()
+* str.matchAll(reg|str) 方法返回一个包含所有匹配正则表达式及分组捕获结果的迭代器。配合 for...of, 扩展运算符(...), or Array.from() 将其转换成数组。
 
 ```js
 var str = 'test1test2';

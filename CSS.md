@@ -944,7 +944,7 @@ break-all：该行为与亚洲语言的normal相同。也允许非亚洲语言�
 * position:fixed 降级问题:其父元素中有使用 transform 、filter属性，fixed 的效果会降级为 absolute。
 [参考](http://www.zhangxinxu.com/wordpress/2015/05/css3-transform-affect/)
 
-解决：当使用 fixed 的直接父元素的高度和屏幕的高度相同时 fixed 和 absolute 的表现效果会是一样的。如果这个直接父级内的元素存在滚动的情况，那就加上 overflow-y:auto。
+  解决：当使用 fixed 的直接父元素的高度和屏幕的高度相同时 fixed 和 absolute 的表现效果会是一样的。如果这个直接父级内的元素存在滚动的情况，那就加上 overflow-y:auto。
 
 ----
 
