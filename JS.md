@@ -1286,52 +1286,7 @@ async函数表示函数里面可能会有异步方法，await后面跟一个表�
 [深浅拷贝](/details/常用的手写函数/深拷贝-浅拷贝.md)
 
 ## <a name="js延迟加载：defer,async">js异步延迟加载：async，defer</a>
-<<<<<<< HEAD
-[](https://juejin.im/post/6894629999215640583)
-=======
-[](https://www.cnblogs.com/jiasm/p/7683930.html)
->>>>>>> 147883a0d7c138f17ef34cfceabc5f455a66552e
-
-async 属性  -- 异步加载
-` <script src="file.js" async></script>`
-* 让js并行加载, 
-* 加载完成后立即执行，
-* 脚本执行顺序和加载顺序无关。在 load 事件之前完成。
-* 对于支持async属性的浏览器，动态插入外链脚本, 相当于默认具有async=true；
-
-defer 属性   -- 延迟加载
-`<script src="file.js" defer></script>`
-* 让js并行加载, 
-* 在页面解析渲染完后才会执行，在 DOMContentLoaded 事件之前完成
-* 脚本按加载的顺序执行。
-
-使用defer、async的脚本禁止使用document.write()方法
-
-同时使用 async 和 defer,defer优先级高
-
-
-
-```JS
-// 动态创建script
-function downloadJSAtOnload() {
-  var element = document.createElement("script");
-  element.src = "defer.js";
-  document.body.appendChild(element);
-}
-if (window.addEventListener) {
-  window.addEventListener("load",downloadJSAtOnload, false);
-} else if (window.attachEvent){
-  window.attachEvent("onload",downloadJSAtOnload);
-} else{
-  window.onload =downloadJSAtOnload;
-}
-```
-
-另：preload（提前加载），prefecth（空闲加载）能提前加载文件
-```html
-<link href="xxx.js" rel="preload"  as="script">
-<link href="xxx.js" rel="prefetch">
-```
+[async-defer](/details\JS\details\async-defer.md)
 
 ## <a name="重绘和回流">[重绘和回流](https://github.com/chenjigeng/blog/issues/4)</a>
 [重绘和回流](\details\JS\details\重绘-回流.md)
@@ -1426,58 +1381,8 @@ new URL('a','https://www.aaa.com')
     username: ""
 
 ## <a name="字符转码、解码">字符转码、解码,encodeURIComponent、decodeURIComponent,encodeURI、decodeURI,escape、unescape,btoa、atob</a>
-* 编码encodeURIComponent()、解码decodeURIComponent()  
 
-将中文、韩文等特殊字符转换成utf-8格式的url编码   
-传递参数时需要使用encodeURIComponent，这样组合的url才不会被#等特殊字符截断。
-
-```js
-var url = "http://localhost:8080/#/pp?a=1&b=" ;
-encodeURIComponent(encodeURIComponent(url))
-"http%3A%2F%2Flocalhost%3A8080%2F%23%2Fpp%3Fa%3D1%26b%3D"
-```
-
-* 编码encodeURI()、解码decodeURI()  
-用于整个url跳转
-```js
-url = "http://localhost:8080/#/pro?a=1&b=张三&c=aaa"
-encodeURI(url)
-// "http://localhost:8080/#/pro?a=1&b=%E5%BC%A0%E4%B8%89&c=aaa"
-```
-
-* 编码escape() 、解码unescape()  
-js对字符串进行编码。不常用
-```js
-escape('啊') // "%u554A"
-unescape("%u554A") // '啊'
-```
-
-
-* window.atob()、window.btoa()
-
-window.btoa()：编码，Base64 to ASCII ,该方法不能直接作用于Unicode字符串.
-```js
-btoa('a') // "YQ=="
-btoa('啊') // 报错
-```
-
-window.atob() 解码，ASCII to Base64
-```js
-atob("YQ==") // "a"
-```
-
-`如何让btoa支持Unicode字符编码  `
->编码时，先用encodeURIComponent对字符串进行编码，再进行btoa进行Base64编码  
->解码时，先用atob对Base64编码的串进行解码，再用decodeURIComponent对字符串进行解码
-
-```js
-var str = "a啊";
-var encoded_str = btoa(encodeURIComponent(str));
-var decoded_str = decodeURIComponent(atob(encoded_str));
-console.log(encoded_str); // "YSVFNSU5NSU4QQ=="
-console.log(decoded_str); // "a啊"
-```
-
+[字符转码、解码](/details\其他\字符转码-解码.md)
 
 ## <a name="递归、迭代">递归、迭代</a>
 `递归（recursion）`：递归常被用来描述以自相似方法重复事物的过程，在数学和计算机科学中，指的是在函数定义中使用函数自身的方法。（调用自身）
@@ -1652,24 +1557,8 @@ factorial(500000, 1);           // 分情况
 ```
 
 ## <a name="">同步、异步、串行、并行、并发</a>
-* 同步：只存在一个线程。多个任务情况下，一个任务A执行结束，才可以执行另一个任务B
 
-* 异步：存在多条线程。多个任务情况下，一个任务A正在执行，同时可以执行另一个任务B。
-
-同步形式
-* 串行（Serial）：是指两个或多个事件按顺序执行，完成一个之后才能进行下一个，同步线程的实现方式
-  >就是任务A执行结束才能开始执行B，单个线程只能执行一个任务
-
-并发和并行是异步线程实现的两种形式
-
-* 并行（Parallel）：是指两个或多个事件在同一时刻发生。
-  >多个线程同时被多个CPU执行：当一个CPU执行一个线程时，另一个CPU可以执行另一个线程，两个线程互不抢占CPU资源，可以同时进行
-
-* 并发（Concurrent）：是指两个或多个事件在同一时间间隔发生。
-  >多个线程被一个CPU轮流切换着执行：CPU运行时间划分成若干个时间段,再将时间 段分配给各个线程执行，在一个时间段的线程代码运行时，其它线程处于挂起状。事件交叉进行
-
-
-
+[同步、异步、串行、并行、并发](/details\JS\details\同步-异步-串行-并行-并发.md)
 
 ## <a name="WebWorker">WebWorker</a>
 [WebWorker](/details\JS\WebWorker.md)

@@ -315,23 +315,24 @@ npm i git //git安装
 * git config --global user.name "chenzong24635"
 * git config --global user.email "chenzong24635@163.com"
 
-## <a name="重设用户名、邮箱">重设用户名、邮箱</a>
->
+## <a name="配置SSH Key">配置SSH Key</a>
+* 删除.ssh文件夹下的known_hosts 
+* 运行 git config --global user.name "chenzong24635"
+* 运行 git config --global user.email "chenzong24635@163.com"
+    
+* 运行 ssh-keygen -t rsa -C "chenzong24635@163.com"
+  >生成ssh，如不设密码，直接回车到底 （生成到C:\Users\Cz\.ssh 路径下）
 
-    git config --global user.name "chenzong24635"
-    git config --global user.email "chenzong24635@163.com"
-    删除.ssh文件夹下的known_hosts 
-    git Bash下生成ssh，如不设密码，直接回车到底 
-    ssh-keygen -t rsa -C "chenzong24635@163.com"
-    拷贝公钥id_rsa.pub到托管服务（github, gitee）的SSH 公钥设置中 
-    git Bash执行（管理员身份） 
-    ssh -T git@github.com 或 ssh -T git@gitee.com 
+* 拷贝公钥id_rsa.pub到托管服务（github, gitee）的SSH 公钥设置中 
+* （管理员身份）
+* 运行 ssh -T git@github.com 或 ssh -T git@gitee.com 
 
 ## <a name="本地永久保存账号密码">本地永久保存账号密码</a>
 1.   
 >
     git config --global credential.helper store
 
+    当 git push 的时候输入一次用户名和密码就会被记录
 
 2. 
 >

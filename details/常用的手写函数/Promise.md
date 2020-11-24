@@ -141,16 +141,22 @@ class MyPromise {
           // push到执行队列,等待执行，异步形式调用
           _this.resolvedFns.push(()=>{
             setTimeout(()=>{
+              try{
               let x = onFulfilled(_this.value)
-              resolve(x)
-              // resolvePromise(promise2, x, resolve, reject)
+                resolvePromise(promise2, x, resolve, reject)
+              }catch(e) {
+                reject(e)
+              }
             },0)
           })
           _this.rejectedFns.push(()=>{
             setTimeout(()=>{
+              try{
               let x = onRejected(_this.reason)
-              reject(x)
-              // resolvePromise(promise2, x, resolve, reject)
+              resolvePromise(promise2, x, resolve, reject)
+              }catch(e) {
+                reject(e)
+              }
             },0)
           })
           break;
@@ -158,14 +164,22 @@ class MyPromise {
         case RESOLVED: 
           // 异步调用成功回调函数
           setTimeout(()=>{
-            let x = onFulfilled(_this.value)
-            resolvePromise(promise2, x, resolve, reject)
+            try{
+              let x = onFulfilled(_this.value)
+              resolvePromise(promise2, x, resolve, reject)
+            }catch(e) {
+              reject(e)
+            }
           },0)
           break;
         case REJECTED: 
           setTimeout(()=>{
-            let x = onRejected(_this.reason)
+            try{
+              let x = onRejected(_this.reason)
             resolvePromise(promise2, x, resolve, reject)
+            }catch(e) {
+              reject(e)
+            }
           },0)
           break;
       }
@@ -211,9 +225,16 @@ class MyPromise {
     return new this((resolve,reject)=>{
       // 遍历promises数组，调用每个promise，
       for(let i=0;i<promises.length;i++){
-        promises[i].then(data=>{
-          processData(i,data,resolve,reject);
-        },reject);
+        let val = promises[i]
+        // 是promise
+        if(isObjOrFn(val)) {
+          val && val.then(data=>{
+            processData(i,data,resolve,reject);
+          },reject);
+        }else{
+          // 普通值
+          processData(i,val,resolve,reject);
+        }
       };
     });
   }
@@ -236,3 +257,17 @@ Promise.defer = Promise.deferred = function () {
 安装 npm install -g promises-aplus-tests
 
 执行 promises-aplus-tests promise.js
+
+# 在node里实现异步方法链式调用 promisify
+```js
+function promisify(fn) {
+  return function (...args) {
+    return new Promise((resolve,reject)=>{
+      fn(...args,function(err,data){
+        if(err)reject(errr)
+        resolve(data)
+      })
+    })
+  }
+}
+```
