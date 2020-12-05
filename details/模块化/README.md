@@ -97,11 +97,11 @@ console.log(module1) // {fn1: f fn1(), fn2: f fn2()}
 ### CommonJS
 [CommonJS规范](http://wiki.commonjs.org/wiki/CommonJS)  
 
-主要用于服务端Nodejs 中, 每个文件就是一个模块，有自己的作用域。在一个文件里面定义的变量、函数、类，都是私有的，对其他文件不可见。在服务器端，模块的加载是运行时同步加载的；在浏览器端，模块需要提前编译打包处理。
+主要用于服务端Nodejs 中, `每个文件就是一个模块`，有自己的作用域。在一个文件里面定义的变量、函数、类，都是私有的，对其他文件不可见。在服务器端，模块的加载是运行时同步加载的；在浏览器端，模块需要提前编译打包处理。
 
-CommonJS的核心思想就是通过 require 方法来同步加载所要依赖的其他模块，然后通过exports 或者 module.exports 来导出需要暴露的接口;  
+`CommonJS的核心思想`:就是通过 require 方法来同步加载所要依赖的其他模块，然后通过exports 或者 module.exports 来导出需要暴露的接口;  
 
-特点
+`CommonJS特点`
 * 一个文件就是一个模块，拥有单独的作用域  
 * 普通方式定义的 变量、函数、对象都属于该模块内  
 * 引入模块：require(xxx)
@@ -125,6 +125,24 @@ CommonJS 模块的加载顺序，按照代码的出现顺序是`同步加载`的
 
 所以只有加载完成才能执行后面的操作。像Node.js主要用于服务器的编程，加载的模块文件一般都已经存在本地硬盘，所以加载起来比较快，不用考虑异步加载的方式，所以CommonJS规范比较适用。
 但如果是浏览器环境，要从服务器加载模块，这是就必须采用异步模式。所以就有了 AMD CMD 解决方案。
+
+test.js
+```js
+module.exports = 'hello'
+```
+reqTest.js
+```js
+let r = require('./test');
+```
+
+解析为
+```js
+// 定义自执行函数返回引入的值
+let r = (function(module,exports,require,__dirname,__filename){
+  module.exports = 'hello'
+  return module.exports
+})(module,exports,require,__dirname,__filename)
+```
 
 ### AMD（Asynchronous Module Definition）异步模块定义
 [AMD规范](https://github.com/amdjs/amdjs-api/wiki/AMD)
@@ -389,11 +407,14 @@ browserify lib/app.js -o lib/bundle.js // 使用Browserify编译js
 
 * CommonJs模块输出的是一个值的拷贝（浅拷贝），也就是说，一旦输出一个值，模块内部的变化就影响不到这个值。ES6 模块输出的是值的引用，是动态引用，并且不会缓存值，模块里面的变量绑定其所在的模块。
 
+
 * CommonJs模块是运行时加载，ES6模块是编译时输出接口。
   >
       是因为 CommonJS 加载的是一个对象（即module.exports属性），在输入时是先加载整个模块，生成一个对象，然后再从这个对象上面读取方法，这种加载称为“运行时加载”。
 
       ES6 模块不是对象，而是通过 export 命令显式指定输出的代码，import时采用静态命令的形式。即在import时可以指定加载某个输出值，而不是加载整个模块，这种加载称为“编译时加载”。
+
+* CommonJS可以按需依赖， 无法实现 tree-shaking; ES6模块 只能静态依赖，可以实现tree-shaking
 
 
 # async defer

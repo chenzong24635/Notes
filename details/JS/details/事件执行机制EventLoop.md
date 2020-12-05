@@ -35,11 +35,13 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
   * setImmediate(IE10，Node.js 环境)
   * I/O
   * UI渲染
+  * requestAnimationFrame
   * postMessage
   * MessageChannel
 
 * micro-task(微任务)
-  * Promise.then
+  * promise.then
+  * queueMicroTask(相当于promise.then)
   * MutationObserver (html5新特性, 浏览器环境)
   * process.nextTick(Node.js 环境)
 

@@ -16,7 +16,7 @@ fs 模块中的方法均有异步和同步版本,
   >cb: 回调函数,传递一个异常参数 err
 
 * fs.readFile(path, options,cb) 读取文件
-
+* fs.existsSync 同步判断文件是否存在
 
 
 * fs.appendFile(path, data, cb) 追加文件
