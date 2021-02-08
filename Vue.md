@@ -6,11 +6,8 @@
 
 [Vue 插件-组件](/details/Vue/插件-组件.md)
 
+# [Vue开发技巧+性能优化](/details/Vue/Vue开发技巧+性能优化.md)
 
-
-
-
-# 目录
 
 <details open>
   <summary>
@@ -66,12 +63,9 @@
 
 </details>
 
-<<<<<<< HEAD
-# [Vue开发技巧+性能优化](/details/Vue/Vue开发技巧+性能优化.md)
 
-=======
->>>>>>> 147883a0d7c138f17ef34cfceabc5f455a66552e
-# <a name="了解">了解</a>[![bakTop](/img/backward.png)](#top)  
+
+# <a name="了解">了解Vue</a>[![bakTop](/img/backward.png)](#top)  
 Vue (读音 /vjuː/，类似于 view) 是一套用于构建用户界面的渐进式框架。
 
 与其它大型框架不同的是，Vue 被设计为可以自底向上逐层应用。Vue 的核心库只关注视图层，不仅易于上手，还便于与第三方库或既有项目整合
@@ -119,7 +113,9 @@ MVVM只能数据驱动视图，视图更改数据，而不能通过其他方式�
 
 ## 对比其他框架
 [对比其他框架-vue官网](https://doc.vue-js.com/v2/guide/comparison.html)
-
+* 数据变化的实现原理不同。react使用的是不可变数据，而Vue使用的是可变的数据
+* 组件化通信的不同。react中我们通过使用回调函数来进行通信的，而Vue中子组件向父组件传递消息有两种方式：事件和回调函数
+* diff算法不同。react主要使用diff队列保存需要更新哪些DOM，得到patch树，再统一操作批量更新DOM。Vue 使用双向指针，边对比，边更新DOM
 
 ## Vue的优缺点
 首先Vue最核心的两个特点，响应式和组件化。
@@ -471,6 +467,7 @@ v-model 本质上不过是语法糖，v-model 在内部为不同的输入元素�
 * 数据变化的同时进行异步操作或者是比较大的开销，那么watch为最佳选择  
 * computed本质是一个具备缓存(dirty: true)的watcher,内部实现了一个惰性的 watcher(lazy: true)
 
+
 ## 基本使用：
 ```js
 // watch
@@ -613,6 +610,7 @@ export default {
 ```
 
 ### [watch/computed源码解析](/details\Vue\Vue2-Source\computed-watch.md)
+
 
 # <a name="解决对象新增属性不能响应的问题">$set() 解决对象新增属性不能响应的问题</a>[![bakTop](/img/backward.png)](#top)  
 [Vue文档-深入响应式原理](https://cn.vuejs.org/v2/guide/reactivity.html)

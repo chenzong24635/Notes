@@ -41,6 +41,16 @@
 
 [Vue 项目性能优化 — 实践指南（网上最全 / 详细）](https://juejin.im/post/5d548b83f265da03ab42471d)
 
+## <a name="多事件处理器">多事件处理器</a>[![bakTop](/img/backward.png)](#top)  
+事件处理程序中可以有多个方法，这些方法由逗号运算符分隔：
+```html
+<!-- 这两个 one() 和 two() 将执行按钮点击事件 -->
+<button @click="one(), two()">
+  Submit
+</button>
+```
+`必须加上()`
+
 ## <a name="组件中name选项作用">组件中name选项作用，</a>[![bakTop](/img/backward.png)](#top)  
 name选项有什么作用，为什么要写？
 * 解析时可以通过name标识该组件，使用时通过name查找对应组件

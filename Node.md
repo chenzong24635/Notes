@@ -123,12 +123,33 @@ Node里 没有window，访问会报错
 
 ## require、exports、module
 node 遵循的是 CommonJs 模块规范
+
 ```js
-require('./module')
+let m = require('./module')
 module.exports = {
     a: 1,
 }
 exports.a = 1;
+```
+
+exports 相当于 module.exports
+
+源码中
+```js
+function xxx() {
+  ...
+  exports = module.exports;
+  return module.exports;
+}
+```
+因此 exports 和  module.exports指向同一引用地址
+
+所以可以解释 为什么 exports 只能通过 . 的形式（exports.xxx = xxxx )暴露变量，  
+要是通过 exports = xxx，则exports 指向新的引用地址，而module.exports未变，但最后函数返回的是 module.exports，因此引入模块时获取不到该变量
+
+```js
+console.log(module.exports === exports); //true
+console.log(module.exports === this); //true
 ```
 
 require方法接受以下几种参数的传递：
@@ -267,12 +288,14 @@ console.log(process.cwd());
  [fs文件系统](/details\Node\模块\fs.md)
 
  ## <a name="stream流">stream流</a>
-[stream流](/details\Node\模块\Stream.md)
-## <a name="http模块">http模块</a>
-[http模块](/details/Node/模块/http.md)
+[stream流](/details\Node\模块\stream.md)
 
 ## <a name="url模块">url模块</a>
 [url模块](/details/Node/模块/url.md)
+## <a name="http模块">http模块</a>
+[http模块](/details/Node/模块/http.md)
+
+
 
 ## <a name="util">util提供常用函数的集合</a>
 [util](/details/Node/模块/util.md)

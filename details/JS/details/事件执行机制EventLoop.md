@@ -11,7 +11,7 @@
 [深入解析你不知道的 EventLoop 和浏览器渲染、帧动画、空闲回调](https://github.com/sl1673495/blogs/issues/47)
 
 
-## [堆-栈-队列](/details\面试题\JS面试题\堆-栈-队列.md)
+## [堆-栈-队列](/details\算法\堆-栈-队列.md)
 
 ## [进程（process）,线程（thead）](/details\JS\details\线程-进程.md)
 
