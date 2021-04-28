@@ -70,6 +70,7 @@
   >git remote -v  // 查看已关联的远程仓库
 * git push origin <新分支名> // 推送当前分支并将远程设置为上游
   >git push --set-upstream origin <新分支名> // 推送当前分支并将远程设置为上游
+  
 
 ## 多人开发，git pull时需要内容冲突，需合并
 
@@ -114,6 +115,7 @@
 * git log 分支名 ^origin/分支名 // 查看未 push 已提交的代码详细信息
 * git cherry -v // 能查看未 push 已提交的描述/说明
 * git show //查看最新的 commit 信息
+* git branch -vv 查看本地分支与远程分支的关联配置 
 
 ## 其它常用
 * git reset --hard HEAD^ // 回退到上一版本
@@ -148,7 +150,15 @@ npm i git //git安装
 * git commit  -m "注释内容"  //将暂存区文件提交到当前分支
 * git commit  -am "注释内容"  //git add + git commit
 * git commit --amend  // 修改 commit 的注释
-  >在出来的编辑界面，直接编辑注释的信息,保存退出(ESC + ZZ)
+  >在出来的编辑界面，直接编辑注释的信息,
+  如何退出？(或ESC + ZZ)
+   按 ESC，进行输入以下字符
+    * :w 保存但不退出
+    * :w! 强制保存，但不退出
+    * :wq 保存并退出
+    * :q 退出
+    * :q! 强制退出，不保存
+    * :e! 放弃所有修改，从上次保存文件开始再编辑命令历史
 
 `git pull 拉取`
 * git pull origin  //从远程获取最新版本到本地，并自动merge

@@ -10,9 +10,9 @@
 # <a name="了解">了解Node</a>
 
 
-node 不是一门后台语言而是一个环境(执行时)，是一个基于 Chrome V8 引擎 能够让 js 运行在服务器的环境
+node 不是一门后台语言而是一个环境(执行时)，`是一个基于 Chrome V8 引擎 能够让 js 运行在服务器的环境`
 
-Node.js 是以单线程的模式运行的，但它使用的是事件驱动来处理并发，这样有助于我们在多核 cpu 的系统上创建多个子进程，从而提高性能。
+Node.js 是以`单线程`的模式运行的，但它使用的是`事件驱动`来处理并发，这样有助于我们在多核 cpu 的系统上创建多个子进程，从而提高性能。
 
 Node.js 是单进程单线程应用程序，但是其基于事件驱动、异步非阻塞I/O模式，可以应用于高并发场景，避免了线程创建、线程之间上下文切换所产生的资源开销。
 
@@ -84,8 +84,7 @@ vscode调试
 ```
 在代码里打断点，按 f5 启动调试
 
-# EventLoop
-[事件环EventLoop](/details\Node\EventLoop.md)
+
 # <a name="全局对象与全局变量">全局对象与全局变量</a>
 
 在浏览器 JavaScript 中，通常 window 是全局对象，
@@ -166,7 +165,7 @@ console.log(__filename);
 ```
 ## __dirname 正在执行的脚本的目录
 ```js
-console.log(__filename);
+console.log(__dirname);
 // c:\Users\Cz\Desktop\node-demo
 ```
 ## process 是一个全局变量，即 global 对象的属性。
@@ -237,7 +236,7 @@ console.log(process.env.NODE_ENV);
 export NODE_ENV = development
 node index.js
 
-打印process.env.NODE_ENV值为
+// 打印process.env.NODE_ENV值为
 development
 ```
 
@@ -259,18 +258,21 @@ production
 
 ### cwd 当前工作目录，chdir修改路径
 ```js
-console.log(process.cwd());
-// c:\Users\Cz\Desktop\node-demo
+console.log(process.cwd());// c:\Users\Cz\Desktop\node-demo
+console.log(__dirname);    // c:\Users\Cz\Desktop\node-demo
 ```
 
 该路径可被修改
 
 ```js
 process.chdir('../');
-console.log(process.cwd());
-// c:\Users\Cz\Desktop
+console.log(process.cwd());// c:\Users\Cz\Desktop
+// __dirname不会改变
+console.log(__dirname);    // c:\Users\Cz\Desktop\node-demo
 
 ```
+# node事件环EventLoop
+[事件环EventLoop](/details\Node\EventLoop.md)
 
 # node中的模块的分类
 * 核心模块/内置模块 fs http path 不需要安装 引入的时候不需要增加相对路径、绝对路径
@@ -281,6 +283,7 @@ console.log(process.cwd());
 # <a name="内置模块">内置模块</a>
 
 ## <a name="path路径">path路径</a>
+[path路径](/details\Node\模块\path.md)
 
 ## <a name="events模块">events模块</a>
 [events模块](/details\Node\模块\Events.md)

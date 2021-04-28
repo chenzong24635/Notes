@@ -43,7 +43,7 @@
 
 您可能已经注意到 process.nextTick() 在图示中没有显示，即使它是异步 API 的一部分。这是因为 process.nextTick() 从技术上讲不是事件循环的一部分。
 
-优先级高于 微任务 
+`nextTick优先级高于 微任务 `
 ```js
 console.log('start');
 Promise.resolve().then(()=>{
@@ -61,6 +61,20 @@ process.nextTick(()=>{
 ### process.nextTick()作用
 * 允许用户处理错误，清理任何不需要的资源，或者在事件循环继续之前重试请求。
 * 有时有让回调在栈展开后，但在事件循环继续之前运行的必要。
+
+## unref()和ref() 取消和恢复setTimeout和setInterval函数的调用
+
+```js
+let test = function(){
+  console.log('callback');
+}
+let timer = setInterval(test,1000);
+timer.unref();
+setTimeout(function(){
+  timer.ref();
+},3000)
+
+```
 
 ## [setImmediate() 对比 setTimeout() ](https://nodejs.org/zh-cn/docs/guides/event-loop-timers-and-nexttick/#setimmediate-settimeout)
 setImmediate() 和 setTimeout() 很类似，但是基于被调用的时机，他们也有不同表现。

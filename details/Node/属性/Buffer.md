@@ -18,11 +18,11 @@ Node中不支持GBK编码，我们需要将GBK转为UTF8编码
 
 * 缓冲区Buffer是暂时存放输入输出数据的一段内存。
 * JS语言没有二进制数据类型，而在处理TCP和文件流的时候，必须要处理二进制数据。
-* NodeJS提供了一个Buffer对象来提供对二进制数据的操作
-* 是一个表示固定内存分配的全局对象，也就是说要放到缓存区中的字节数需要提前确定
+* NodeJS提供了一个Buffer对象来提供`对二进制数据的操作`
+* 是一个表示`固定内存分配`的全局对象，也就是说要放到缓存区中的字节数需要提前确定
 * Buffer好比由一个8位字节元素组成的数组，可以有效的在JavasScript中表示二进制数据
 
-Buffer代表的是内存，不能随便调整大小，可通过拼接改变（Buffer.concat）
+* Buffer代表的是内存，`不能随便调整大小`，可通过拼接改变（Buffer.concat）
 
 ## Buffer 与 字符编码转换
 Buffer 实例一般用于表示编码字符的序列，比如 UTF-8 、 UCS2 、 Base64 、或十六进制编码的数据。 通过使用显式的字符编码，就可以在 Buffer 实例与普通的 JavaScript 字符串之间进行相互转换。
@@ -154,6 +154,18 @@ console.log(buf.toString('base64'));// cnVub29i
 
 # Buffer应用
 
+### 
+```js
+// 爬虫爬取别人网站 gbk 二进制 别人写好的包 （转码用的）
+const iconvLite = require('iconv-lite');
+const fs = require('fs');
+const path = require('path');
+let r = fs.readFileSync(path.resolve(__dirname,'1.txt'));
+console.log(r.toString());
+r = iconvLite.decode(r,'gbk'); // 2进制是gbk 的  转换成utf8  gbk的编码进行utf8的转化
+console.log(r);
+
+```
 ### 前端下载html功能
 ```js
 let str = `<h1>hello world</h1>`;

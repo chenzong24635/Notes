@@ -1,9 +1,15 @@
 ## base
 [](https://juejin.cn/post/6898104998547161096)
 
-Base64是网络上最常见的用于传输8Bit字节码的编码方式之一
-Base64就是一种基于64个可打印字符来表示二进制数据的方法
-Base64要求把每三个8Bit的字节转换为四个6Bit的字节（38 = 46 = 24），然后把6Bit再添两位高位0，组成四个8Bit的字节
+* Base64是网络上最常见的用于传输8Bit字节码的编码方式之一
+* Base64就是一种基于64个可打印字符来表示二进制数据的方法
+* Base64要求把每三个8Bit的字节转换为四个6Bit的字节（38 = 46 = 24），然后把6Bit再添两位高位0，组成四个8Bit的字节
+
+把一个汉字变成base64编码 一个汉字由个字节3组成 24个位 
+
+表示把一个汉字转化成2进制 （表现形式是16进制）  base64转化后的结果会比以前大1/3  
+
+不是所有图片都能转化成base64
 ```js
 const CHARTS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 function transfer(str){
