@@ -11,7 +11,7 @@
 [深入解析你不知道的 EventLoop 和浏览器渲染、帧动画、空闲回调](https://github.com/sl1673495/blogs/issues/47)
 
 
-## [堆-栈-队列](/details\面试题\JS面试题\堆-栈-队列.md)
+## [堆-栈-队列](/details\算法\堆-栈-队列.md)
 
 ## [进程（process）,线程（thead）](/details\JS\details\线程-进程.md)
 
@@ -35,11 +35,13 @@ JS里的一种分类方式，就是将任务分为：同步任务和异步任务
   * setImmediate(IE10，Node.js 环境)
   * I/O
   * UI渲染
+  * requestAnimationFrame
   * postMessage
   * MessageChannel
 
 * micro-task(微任务)
-  * Promise.then
+  * promise.then
+  * queueMicroTask(相当于promise.then)
   * MutationObserver (html5新特性, 浏览器环境)
   * process.nextTick(Node.js 环境)
 

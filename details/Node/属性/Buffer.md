@@ -1,5 +1,7 @@
 # 编码的发展
-一个字节由8个位组成，gbk中一个汉字2个字节，utf8中一个汉字3个字节
+一个字节由8个位组成，gbk中一个汉字2个字节，utf8中一个汉字3个字节,
+一个字母和一个数字是一个字节
+
 * ASCII编码
 * GB2312
 * GBK
@@ -11,27 +13,16 @@ Node中不支持GBK编码，我们需要将GBK转为UTF8编码
 
 [字符发展史](/details\其他\字符发展史.md)
 
-## 字节、进制
-字节
-* 字节(Byte)是计算机存储时的一种计量单位，一个字节等于8位二进制数
-* 一个位就代表一个0或1，每8个位（bit）组成一个字节（Byte）
-* 字节是通过网络传输信息的基本单位
-* 一个字节最大值十进制数是255(2**8-1)
 
-进制
-* 0b 2进制
-* 0x 16进制
-* 0o 8进制
-
-# Buffer
+# Buffer 缓冲区
 
 * 缓冲区Buffer是暂时存放输入输出数据的一段内存。
 * JS语言没有二进制数据类型，而在处理TCP和文件流的时候，必须要处理二进制数据。
-* NodeJS提供了一个Buffer对象来提供对二进制数据的操作
-* 是一个表示固定内存分配的全局对象，也就是说要放到缓存区中的字节数需要提前确定
+* NodeJS提供了一个Buffer对象来提供`对二进制数据的操作`
+* 是一个表示`固定内存分配`的全局对象，也就是说要放到缓存区中的字节数需要提前确定
 * Buffer好比由一个8位字节元素组成的数组，可以有效的在JavasScript中表示二进制数据
 
-[Buffer-所有API](http://nodejs.cn/api/buffer.html)
+* Buffer代表的是内存，`不能随便调整大小`，可通过拼接改变（Buffer.concat）
 
 ## Buffer 与 字符编码转换
 Buffer 实例一般用于表示编码字符的序列，比如 UTF-8 、 UCS2 、 Base64 、或十六进制编码的数据。 通过使用显式的字符编码，就可以在 Buffer 实例与普通的 JavaScript 字符串之间进行相互转换。
@@ -39,27 +30,36 @@ Buffer 实例一般用于表示编码字符的序列，比如 UTF-8 、 UCS2 、
 ```js
 const buf = Buffer.from('runoob', 'ascii');
 
-// 输出 72756e6f6f62
-console.log(buf.toString('hex'));
-
-// 输出 cnVub29i
-console.log(buf.toString('base64'));
+console.log(buf.toString('hex')); // 72756e6f6f62
+console.log(buf.toString('base64'));// cnVub29i
 ```
 
-## 创建Buffer类
+## Buffer常用的静态方法
+[Buffer-所有API](http://nodejs.cn/api/buffer.html)
+
+* Buffer.concat(list[, totalLength]) 缓冲区合并 
+  >list 要合并的 buffer 数组
+  >totalLength 规定合并后总长度 
+
+* Buffer.isBuffer(val) 判断是否是buffer
+
+* Buffer.byteLength(string[, encoding]) 计算字节数。
+
 * Buffer.alloc(size[, fill[, encoding]])： 返回一个指定大小的 Buffer 实例，如果没有设置 fill，则默认填满 0
 
-* Buffer.allocUnsafe(size)： 返回一个指定大小的 Buffer 实例，但是它不会被初始化，所以它可能包含敏感的数据
+* Buffer.allocUnsafe(size)： 返回一个指定大小的随机值 Buffer 实例，但是它不会被初始化，所以它可能包含敏感的数据
 
 * Buffer.allocUnsafeSlow(size)
 
-* Buffer.from(array)： 返回一个被 array 的值初始化的新的 Buffer 实例（传入的 array 的元素只能是数字，不然就会自动被 0 覆盖）
+* Buffer.from(string[, encoding])： 返回一个被 string 的值初始化的新的 Buffer 实例
 
-* Buffer.from(arrayBuffer[, byteOffset[, length]])： 返回一个新建的与给定的 ArrayBuffer 共享同一内存的 Buffer。
+* Buffer.from(array)： 返回一个被 array 的值初始化的新的 Buffer 实例（传入的 array 的元素只能是数字，不然就会自动被 0 覆盖）
 
 * Buffer.from(buffer)： 复制传入的 Buffer 实例的数据，并返回一个新的 Buffer 实例
 
-* Buffer.from(string[, encoding])： 返回一个被 string 的值初始化的新的 Buffer 实例
+
+* Buffer.from(arrayBuffer[, byteOffset[, length]])： 返回一个新建的与给定的 ArrayBuffer 共享同一内存的 Buffer。
+
 
 ## 常用的定义buffer的三种方式
 * 通过长度定义buffer
@@ -84,15 +84,15 @@ console.log(buf.toString('base64'));
   const buf6 = Buffer.from('abcd'); // <Buffer 61 62 63 64>
   
   ```
+## buffer常用属性，方法
 
-## Buffer常用属性，方法
 * buf.length 长度
 
 * buf.fill(value[, offset[, end]][, encoding]) 用指定的 value 填充 buf;`会改变原值`
   返回buffer
-  >value: 填充 buf 的值。
-  >offset: 开始填充 buf 的偏移量。默认值: 0。
-  >end: 结束填充 buf 的偏移量（不包含）。默认值: buf.length。
+  >value: 填充值。
+  >offset: 开始填充的偏移量。默认值: 0。
+  >end: 结束填充的偏移量（不包含）。默认值: buf.length。
   >encoding: 如果 value 是字符串，则指定 value 的字符编码。默认值: 'utf8'。  
 
   ```js
@@ -125,10 +125,19 @@ console.log(buf.toString('base64'));
 * buf1.compare(buf2) 缓冲区比较  
   返回一个数字(1,-1,0)，表示 buf1 在 buf2 之前，之后或相同。
 
-* buf.slice([start[, end]])  缓冲区裁剪  
-  返回一个新的缓冲区，它和旧缓冲区指向同一块内存，但是从索引 start 到 end 的位置剪切。
+* buf.slice([start[, end]])  裁剪
+  返回一个新的缓冲区，它和旧缓冲区`指向同一块内存`，但是从索引 start 到 end 的位置剪切。
   >start - 数字, 可选, 默认: 0  
   >end - 数字, 可选, 默认: buffer.length  
+
+  ```js
+  let buf = Buffer.from([1,2,3])
+  let buf1 = buf.slice(0,1)
+  buf1[0]=7
+  // buf 值被改变-- 因为指向同一块内存
+  console.log(buf); // <Buffer 07 02 03>
+  console.log(buf1); // <Buffer 07>
+  ```
 
 * buf.indexOf(value[, byteOffset][, encoding]) 字符索引
   >value 要查找的值。
@@ -136,20 +145,27 @@ console.log(buf.toString('base64'));
   >encoding 
 
 * buf.copy(targetBuffer[, targetStart[, sourceStart[, sourceEnd]]])拷贝buf
-  没有返回值
+  没有返回值 --（一般不用，使用 Buffer.concat替代）
   >targetBuffer - 要拷贝的 Buffer 对象  
   >targetStart - target 中开始写入之前要跳过的字节数。默认值: 0。
   >sourceStart - buf 中开始拷贝的偏移量。默认值: 0。 
   >sourceEnd - buf 中结束拷贝的偏移量（不包含）。默认值: buf.length。
 
-* Buffer.concat([buf1,buf2]) 缓冲区合并  
-
-* Buffer.isBuffer(val) 判断是否是buffer
-
-* Buffer.byteLength(string[, encoding]) 计算字节数。
 
 # Buffer应用
 
+### 
+```js
+// 爬虫爬取别人网站 gbk 二进制 别人写好的包 （转码用的）
+const iconvLite = require('iconv-lite');
+const fs = require('fs');
+const path = require('path');
+let r = fs.readFileSync(path.resolve(__dirname,'1.txt'));
+console.log(r.toString());
+r = iconvLite.decode(r,'gbk'); // 2进制是gbk 的  转换成utf8  gbk的编码进行utf8的转化
+console.log(r);
+
+```
 ### 前端下载html功能
 ```js
 let str = `<h1>hello world</h1>`;

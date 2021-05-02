@@ -1,24 +1,48 @@
 # fs
-操作文件
+* 在Node.js中，使用fs模块来实现所有有关文件及目录的创建、写入及删除操作。
+* 在fs模块中，所有的方法都分为同步和异步两种实现。
+  >一般使用异步方法，比起同步，异步方法性能更高，速度更快，而且没有阻塞
+* 具有sync后缀的方法为同步方法，不具有sync后缀的方法为异步方法。
+* 读取默认的编码是 buffer，写入的默认编码是utf-8
+
+
 
 [fs-所有API](http://nodejs.cn/api/fs.html) 
 
 ### 常用方法
-fs 模块中的方法均有异步和同步版本,  
-一般使用异步方法，比起同步，异步方法性能更高，速度更快，而且没有阻塞
+readFile 读取文件，文件不存在会报错， 
+writeFile 写入文件，文件不存在会创建，存在会替换
 
-读取默认的编码是 buffer，写入的默认编码是utf-8
-
+* fs.readFile(path, options,cb) 读取文件,自动
 * fs.writeFile(path, data[, options], cb) 写入（覆盖）文件
   >path: 文件路径  
   >data(String | Buffer) : 写入的数据 
   >options: 可选,该参数是一个对象({encoding, mode, flag})或字符串。默认编码为 utf8, 模式为 0666 ， flag 为 'w'  
   >cb: 回调函数,传递一个异常参数 err
 
-* fs.readFile(path, options,cb) 读取文件
 
+* fs.open(path, flags[, mode], callback)
+  >path - 文件的路径  
+  >flags - 文件打开的行为。具体值详见下文  
+  >mode - 设置文件模式(权限)，文件创建默认权限为 0666(可读，可写)  
+  >callback(err, fd) - 回调函数
 
+* fs.read(fd, buffer, offset, length, position, callback)
+  >fd 指定的文件
+  >buffer 是数据（从 fd 读取）要被写入的 buffer。
+  >offset 是 buffer 中开始写入的偏移量。
+  >length 是整数，指定要读取的字节数。
+  >position 参数指定从文件中开始读取的位置。 如果 position 为 null，则从当前文件位置读取数据，并更新文件位置。 如果 position 是整数，则文件位置会保持不变。
+  >callback(err, bytesRead, buffer)
+    >err 错误
+    >bytesRead: 真实读取的个数
 
+* fs.read(fd, [options,] callback)
+* fs.write(fd, buffer[, offset[, length[, position]]], callback)
+* fs.write(fd, string[, position[, encoding]], callback)
+* fs.close(fd, callback)释放fd
+
+* fs.existsSync 同步判断文件是否存在
 * fs.appendFile(path, data, cb) 追加文件
 * fs.unlink(path, cb) 删除文件
 
@@ -116,11 +140,7 @@ fs.readFile('./test.txt', (err, res) => {
   fs.rename('css','cssNew',(err,res)=>{})
   ```
 
-* fs.open(path, flags[, mode], cb)
-  >path - 文件的路径  
-  >flags - 文件打开的行为。具体值详见下文  
-  >mode - 设置文件模式(权限)，文件创建默认权限为 0666(可读，可写)  
-  >cb - 回调函数，带有两个参数如：cb(err, res)  
+
 
 ### flags值:
 * r   以读取模式打开文件。如果文件不存在抛出异常  

@@ -563,6 +563,7 @@ Promise.all().then()结果中数组的顺序和Promise.all()接收到的数组�
 
 all和race传入的数组中如果有会抛出异常的异步任务，那么只有最先抛出的错误会被捕获，并且是被then的第二个参数或者后面的catch捕获；但并不会影响数组中其它的异步任务的执行。
 
+## Promise.race 中断
 ## Promise为什么能链式调用
 由于它的then方法和catch、finally方法会返回一个新的Promise所以可以允许我们链式调用
 

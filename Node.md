@@ -9,17 +9,22 @@
 
 # <a name="了解">了解Node</a>
 
+
+node 不是一门后台语言而是一个环境(执行时)，`是一个基于 Chrome V8 引擎 能够让 js 运行在服务器的环境`
+
+Node.js 是以`单线程`的模式运行的，但它使用的是`事件驱动`来处理并发，这样有助于我们在多核 cpu 的系统上创建多个子进程，从而提高性能。
+
+Node.js 是单进程单线程应用程序，但是其基于事件驱动、异步非阻塞I/O模式，可以应用于高并发场景，避免了线程创建、线程之间上下文切换所产生的资源开销。
+
+Node作为中间层，可以解决跨域问题
+
+Node 遵循的是 CommonJs 模块规范
+
+
 特点
 * 单线程
 * 异步非阻塞I/O
 * 事件驱动
-
-
-node 不是一门后台语言而是一个环境，是一个基于 Chrome V8 引擎 能够让 js 运行在服务器的环境
-
-Node.js 是以单线程的模式运行的，但它使用的是事件驱动来处理并发，这样有助于我们在多核 cpu 的系统上创建多个子进程，从而提高性能。
-
-Node.js 是单进程单线程应用程序，但是其基于事件驱动、异步非阻塞I/O模式，可以应用于高并发场景，避免了线程创建、线程之间上下文切换所产生的资源开销。
 
 ## node解决哪些问题
 Node在处理高并发,I/O密集场景有明显的性能优势
@@ -30,22 +35,6 @@ Node在处理高并发,I/O密集场景有明显的性能优势
 >node不适合cpu密集，运算
 
 Web主要场景就是接收客户端的请求读取静态资源和渲染界面,所以Node非常适合Web应用的开发。
-
-## node 遵循的是 CommonJs 模块规范
-```js
-require('./module')
-module.exports = {
-    a: 1,
-}
-exports.a = 1;
-```
-
-require方法接受以下几种参数的传递：
-* 原生模块（http、fs、path等，）
-* mod，第三方模块  
-  >引用第三方模块 会去当前目录下查找 node_modules 文件夹；如果无法找到，则向上一级查找;找不到报错
-* ./mod或../mod，相对路径的文件模块  
-* /mod，绝对路径的文件模块  
 
 ## npm指令及package.json属性
 npm其实是Node.js的包管理工具（package manager），npm已经在Node.js安装的时候顺带装好了
@@ -59,27 +48,115 @@ npm其实是Node.js的包管理工具（package manager），npm已经在Node.js
 
 [npm指令及package.json属性](/npm指令.md)
 
+# 调试
+[Node调试](https://nodejs.org/zh-cn/docs/guides/debugging-getting-started/)
+
+浏览器调试
+* 终端运行 node --inspect-brk 要调试的文件
+* 打开chrome浏览器 输入 chrome://inspect
+
+
+vscode调试
+* 点击 vscode左侧 运行按钮， 
+* 点击 创建 launch.json 文件
+* 选择工作目录
+* 选择环境（Node.js)
+* 
+默认再选择的目录下生成以下 json文件
+```json
+{
+  // 使用 IntelliSense 了解相关属性。 
+  // 悬停以查看现有属性的描述。
+  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "启动程序",
+      "skipFiles": [ //要跳过的文件
+        "<node_internals>/**" //跳过node原代码
+      ],
+      "program": "${workspaceFolder}\\index.js" // 运行的文件路径
+    }
+  ]
+}
+```
+在代码里打断点，按 f5 启动调试
+
+
 # <a name="全局对象与全局变量">全局对象与全局变量</a>
+
 在浏览器 JavaScript 中，通常 window 是全局对象，
 而 Node.js 中的全局对象是 global，所有全局变量（除了 global 本身以外）都是 global 对象的属性。
 
 gloabl:
+* Buffer
+* process
+* setInterval、clearInterval
+* setTimeout、clearTimeout
+* setImmediate、clearImmediate
+* console
+* queueMicrotask
+
+
+Node里 this 是个空对象，指向module.exports，不会指向 global（node为了实现模块化，在文件执行时 增加了匿名函数，所以 this 在该函数中被更改）
 ```js
-{
-  global,
-  queueMicrotask,
-  clearInterval,
-  clearTimeout,
-  setInterval,
-  setTimeout,
-  clearImmediate,
-  setImmediate,
-}
-```
-Node里 this 是个空对象，不会指向 global（node为了实现模块化，在文件执行时 增加了匿名函数，所以 this 在该函数中辈更改） 
+// node里执行
+console.log(this) // {}
+(function(){
+  console.log(this) // global
+})()
+console.log(global);
+``` 
 
 Node里 没有window，访问会报错
 
+
+`所有模块都可以访问以下五个模块，但他们并不是全局属性 global的属性`
+* require
+* module
+* exports
+* __dirname
+* __filename
+
+## require、exports、module
+node 遵循的是 CommonJs 模块规范
+
+```js
+let m = require('./module')
+module.exports = {
+    a: 1,
+}
+exports.a = 1;
+```
+
+exports 相当于 module.exports
+
+源码中
+```js
+function xxx() {
+  ...
+  exports = module.exports;
+  return module.exports;
+}
+```
+因此 exports 和  module.exports指向同一引用地址
+
+所以可以解释 为什么 exports 只能通过 . 的形式（exports.xxx = xxxx )暴露变量，  
+要是通过 exports = xxx，则exports 指向新的引用地址，而module.exports未变，但最后函数返回的是 module.exports，因此引入模块时获取不到该变量
+
+```js
+console.log(module.exports === exports); //true
+console.log(module.exports === this); //true
+```
+
+require方法接受以下几种参数的传递：
+* 原生模块（http、fs、path等，）
+* mod，第三方模块  
+  >引用第三方模块 会去当前目录下查找 node_modules 文件夹；如果无法找到，则向上一级查找;找不到报错
+* ./mod或../mod，相对路径的文件模块  
+* /mod，绝对路径的文件模块  
 
 ## __filename 正在执行的脚本的文件名(所在位置的`绝对路径`)
 ```js
@@ -88,10 +165,18 @@ console.log(__filename);
 ```
 ## __dirname 正在执行的脚本的目录
 ```js
-console.log(__filename);
+console.log(__dirname);
 // c:\Users\Cz\Desktop\node-demo
 ```
 ## process 是一个全局变量，即 global 对象的属性。
+* argv 运行时传递参数
+* env 环境变量
+* platform 运行平台
+* cwd 当前工作目录 
+* chdir 修改路径
+* nextTick 
+* ...
+
 ### argv 运行时传递参数
 在node 运行时传入特定变量
 
@@ -102,7 +187,7 @@ console.log(process.argv);
 //终端执行
 node index.js -a -b
 
-打印process.argv
+// 打印process.argv返回
 [
   'C:\\Program Files\\nodejs\\node.exe',
   'C:\\Users\\Cz\\Desktop\\node-demo\\index.js',
@@ -112,6 +197,35 @@ node index.js -a -b
 
 process.argv.slice(2)//获取命令运行参数
 ```
+
+
+```js
+console.log(process.argv);
+let params = {};
+process.argv.slice(2).forEach((item, index, array)=>{
+  if(item.startsWith('--')) {
+    // 截取--后的字符作为键，后面的字符作为值
+    params[item.slice(2)] = array[index+1];
+  }
+})
+console.log(params);
+// { port: '3000', config: 'webpack.config.js' }
+```      
+
+使用 commander 
+
+<!-- index.js -->
+```js
+console.log(process.argv);
+let program = require("commander");
+// 需配置
+program.option('--port <v>','set user port');
+program.option('--config <v>','set user config file');
+console.log(program.parse(process.argv));
+
+```
+`node index.js  --port 3000 --config webpack.config.js`
+
 ### env 环境变量（
 当前命令行设置变量，set NODE_ENV=development 或 export NODE_ENV=development ）
 ```js
@@ -122,7 +236,7 @@ console.log(process.env.NODE_ENV);
 export NODE_ENV = development
 node index.js
 
-打印process.env.NODE_ENV值为
+// 打印process.env.NODE_ENV值为
 development
 ```
 
@@ -142,75 +256,34 @@ npm run build
 production
 ```
 
-### cwd 当前工作目录
+### cwd 当前工作目录，chdir修改路径
 ```js
-console.log(process.cwd());
-// c:\Users\Cz\Desktop\node-demo
+console.log(process.cwd());// c:\Users\Cz\Desktop\node-demo
+console.log(__dirname);    // c:\Users\Cz\Desktop\node-demo
 ```
 
+该路径可被修改
 
-* nextTick
-* stdin
-* ...
+```js
+process.chdir('../');
+console.log(process.cwd());// c:\Users\Cz\Desktop
+// __dirname不会改变
+console.log(__dirname);    // c:\Users\Cz\Desktop\node-demo
+
+```
+# node事件环EventLoop
+[事件环EventLoop](/details\Node\EventLoop.md)
 
 # node中的模块的分类
 * 核心模块/内置模块 fs http path 不需要安装 引入的时候不需要增加相对路径、绝对路径
 * 第三方模块需要安装
 * 自定义模块需要通过绝对路径或者相对路径进行引入
 
-# [Buffer(缓冲区)](/details\Node\模块\Buffer.md)
+# [Buffer(缓冲区)](/details\Node\属性\Buffer.md)
 # <a name="内置模块">内置模块</a>
 
 ## <a name="path路径">path路径</a>
-处理路径相关
-  
-[path-所有API](https://nodejs.org/api/path.html)
-
-### 常用方法
-* path.basename(path,ext) 文件名，返回路径的最后一部分
-* path.extname(path) 后缀名
-* path.join([...paths]) 路径拼接 
-* path.resolve([...paths]) 解析为绝对路径  
-* path.isAbsolute(path) 判断是否是绝对路径  
-* path.relative(from, to) 将绝对路径转为相对路径，返回从 from 到 to 的相对路径  
-
-#### path.join([path1][, path2][, ...]) 
-
-```js
-const path = require('path')
-let myPath1 = path.join('/a','b');  // \a\b
-let myPath2 = path.join('/a','/b'); // \a\b
-let myPath3 = path.join('/a','./b'); // \a\b
-let myPath4 = path.join('./a','./b'); // a\b
-let myPath5 = path.join('/a', 'b', 'c/d', 'e', '..'); // \a\b\c\d
-```
-
-//不合法的字符串将抛出异常 
-```js
-path.join('a', {}, 'b') 
-```
-
-#### path.resolve([from ...], to) 
-
-```js
-const path = require('path')
-let myPath1 = path.resolve('/a','b');  // D:\a\b
-let myPath2 = path.resolve('/a','/b'); // D:\b
-let myPath3 = path.resolve('/a','./b'); // D:\a\b
-let myPath4 = path.resolve('./a','./b'); // D:\node-learn\a\b
-let myPath5 = path.resolve('/a', 'b', 'c/d', 'e', '../'); // D:\a\b\c\d
-```
-
-#### 对比
-
-```js
-const path = require('path');
-console.log(__dirname); // D:\node-learn
-let myPath1 = path.join(__dirname,'/a/b');    // D:\node-learn\a\b
-let myPath2 = path.join(__dirname,'./a/b');   // D:\node-learn\a\b
-let myPath3 = path.resolve(__dirname,'/a/b'); // D:\a\b
-let myPath4 = path.resolve(__dirname,'./a/b');// D:\node-learn\a\b
-```
+[path路径](/details\Node\模块\path.md)
 
 ## <a name="events模块">events模块</a>
 [events模块](/details\Node\模块\Events.md)
@@ -218,12 +291,14 @@ let myPath4 = path.resolve(__dirname,'./a/b');// D:\node-learn\a\b
  [fs文件系统](/details\Node\模块\fs.md)
 
  ## <a name="stream流">stream流</a>
-[stream流](/details\Node\模块\Stream.md)
-## <a name="http模块">http模块</a>
-[http模块](/details/Node/模块/http.md)
+[stream流](/details\Node\模块\stream.md)
 
 ## <a name="url模块">url模块</a>
 [url模块](/details/Node/模块/url.md)
+## <a name="http模块">http模块</a>
+[http模块](/details/Node/模块/http.md)
+
+
 
 ## <a name="util">util提供常用函数的集合</a>
 [util](/details/Node/模块/util.md)

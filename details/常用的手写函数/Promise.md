@@ -189,7 +189,12 @@ class MyPromise {
   catch(fn){
     return this.then(null,fn);
   }
+  // 无论成功失败都执行
   finally(fn) {
+    // return的值不会传递给下一个 then
+    // 如果是个promise
+    // 该promise成功的话，不会将值传递给下一个then
+    // 如果失败的话值却会被下一个then的 reject 捕获
     return this.then(
       value  => MyPromise.resolve(fn()).then(() => value),
       reason => MyPromise.resolve(fn()).then(() => { throw reason })
