@@ -332,7 +332,7 @@ npm i git //git安装
 >
     git config --global credential.helper store
 
-    当 git push 的时候输入一次用户名和密码就会被记录
+   在输入一次账号密码就可以永久保存了，当 git push 的时候输入一次用户名和密码就会被记录
 
 2. 
 >
