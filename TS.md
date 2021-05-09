@@ -62,6 +62,7 @@ TypeScript 非常包容
 
 编译ts 为 js文件： 
 ` tsc 文件名.ts`
+` tsc 文件名.ts  --watch` // 监控ts文件变化生成js文件
 
 编译后，vscode提示重复声明的问题
 `在项目根目录添加配置文件 tsconfig.json即可，空文件也可`
@@ -124,6 +125,50 @@ TypeScript 非常包容
 }
 
 ```
+
+* 全局编译ts文件
+  * 安装依赖
+    npm install rollup typescript rollup-plugin-typescript2 @rollup/plugin-node-resolve rollup-plugin-serve -D 
+
+  * 初始化TS配置文件
+    npx tsc --init
+
+   * webpack配置操作 
+    ```js
+    // rollup.config.js
+    import ts from 'rollup-plugin-typescript2'
+    import {nodeResolve} from '@rollup/plugin-node-resolve';
+    import serve from 'rollup-plugin-serve';
+    import path from 'path'
+    export default {
+        input:'src/index.ts',
+        output:{
+            format:'iife',
+            file:path.resolve('dist/bundle.js'), 
+            sourcemap:true
+        },
+        plugins:[
+            nodeResolve({
+                extensions:['.js','.ts']
+            }),
+            ts({
+                tsconfig:path.resolve(__dirname,'tsconfig.json')
+            }),
+            serve({
+                open:true,
+                openPage:'/public/index.html',
+                port:3000,
+                contentBase:''
+            })
+        ]
+    }
+    ```
+    * package.json配置
+    ```js
+    "scripts": {
+          "dev": "rollup -c -w"
+    }
+    ```
 
 * 生成错误提示信息
 ```ts
@@ -191,7 +236,7 @@ Undefined Null Void Any Never
 
 ```ts
 let isDone: boolean = false; // ok
-let isDone: boolean = Boolean(1); // ok
+let isDone: boolean = Boolean(0); // ok
 
 // 注意，使用构造函数 Boolean 创造的对象不是布尔值：
 let newBoolean: boolean = new Boolean(1); // error!!!
@@ -210,7 +255,6 @@ let num: number = 0o744; // 八进制
 let num: number = 0xf00d; // 十六进制
 ```
 
-
 ## <a name="String">string 字符串</a>
 ```ts
 let str: string = 'aaa';
@@ -218,7 +262,6 @@ let str: string = 'aaa';
 //使用模版字符串;被反引号包围(`)，以${ expr }嵌入
 let str1: string = `${str} b`;
 ```
-
 ## <a name="Array">数组 : T[] | Array\<T> | ReadonlyArray\</a>
 ### \<T>
 在元素类型后面接上 []，表示由此类型元素组成的一个数组 T[]
@@ -232,8 +275,6 @@ let str1: string = `${str} b`;
 * {str: string, num: number}[] // 数组内容为对象且对象内有且仅有str，num属性
   >let a:{str: string, num: number}[] = [{str:'aa',num:3}]
 * ....
-
-
 
 ###  使用数组泛型，Array<T>、ReadonlyArray<T>
 * Array\<number> //数组内容都为number类型
@@ -298,6 +339,13 @@ arr = ['str', 2];
 ```ts
 let arr: [string, number];
 arr = ['str', 2， 8];// err!!! 源具有 3 个元素，但目标仅允许 2 个。
+```
+
+pop的返回值也为指定类型
+```ts
+let arr: [string, number] = ['a',1];
+let item = arr.pop(); // 类型为： string | number | undefined
+
 ```
 
 但可以通过push等方法新增
@@ -394,6 +442,9 @@ declare enum Enum1 {
 const enum Enum2 {
   A = 2
 }
+console.log(Enum.A);
+console.log(Enum2.A);
+
 ```
 编译后的js, 可以看见只编译了普通枚举
 ```js
@@ -401,6 +452,10 @@ var Enum;
 (function (Enum) {
     Enum[Enum["A"] = 0] = "A";
 })(Enum || (Enum = {}));
+
+console.log(Enum.A);
+console.log(2 /* A */);
+
 ```
 
 ### 运行时的枚举：枚举是在运行时真正存在的对象
@@ -534,7 +589,7 @@ a4 // null
 ```
 
 和 void相似   
-默认情况下null和undefined是所有类型的子类型。 就是说你可以把 null和undefined赋值给number类型的变量。 
+`默认情况（设置strictNullChecks为false时）下null和undefined是所有类型的子类型`。 就是说你可以把 null和undefined赋值给number等其他类型的变量。 
 
 ```ts
 // tsconfig.json

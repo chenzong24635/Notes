@@ -2,4 +2,6 @@
 .vscode
 .git
 demo*.*
+package.json
 /tempCodeRunnerFile.js
+/tempCodeRunnerFile.ts

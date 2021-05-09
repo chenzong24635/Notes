@@ -70,57 +70,17 @@
   >git remote -v  // 查看已关联的远程仓库
 * git push origin <新分支名> // 推送当前分支并将远程设置为上游
   >git push --set-upstream origin <新分支名> // 推送当前分支并将远程设置为上游
-  
-
-## 多人开发，git pull时需要内容冲突，需合并
-
-* git pull
-* error: xxx by merge xxx
-* git stash 
-* git pull
-* git stash pop
-* git add ./
-* git commit -m 'xxx'
-* git push
 
 ## <a name="分支合并">分支合并：一般都是合并到master</a>
-* git checkout master
-* git add ./
 * git commit -m 'master merge commit' // 提交master
-
 * git branch --all //查看所有分支(本地+远程) 可略
 * git checkout -b <新分支名> // 创建新分支并切换到该分支
   >git checkout <分支名> // 切换到现有分支
-* git add ./
 * git commit -m 'merge dev commit' // 先提交分支
 * git checkout master // 切换回 master
 * git merge <要合并的分支名> // 将分支合并到 master
   >报错fatal: refusing to merge unrelated histories -- 这是因为两个分支没有取得关系
   >使用：git merge <要合并的分支名> --allow-unrelated-histories
-
-## 撤销 git add、
-* git status // 查看文件状态
-* git reset HEAD 撤销全部 add的文件 （回退到unstage区）
-  >git reset HEAD xxx 撤销某个文件
-
-## 撤销 git commit
-* git log 查看节点 
-  >会返回最近 commit 的信息
-* git reset --soft commit id // 回退到上一个 commit节点，代码还是原来你修改的
-* git reset –-hard commit_id // 回退到上一个 commit节点，代码也发生了改变，变成上一次的 commit的内容）
-
-## 查看状态，当前修改文件
-* git status //查看文件状态
-* git log // 查看提交记录
-* git log 分支名 ^origin/分支名 // 查看未 push 已提交的代码详细信息
-* git cherry -v // 能查看未 push 已提交的描述/说明
-* git show //查看最新的 commit 信息
-* git branch -vv 查看本地分支与远程分支的关联配置 
-
-## 其它常用
-* git reset --hard HEAD^ // 回退到上一版本
-* git reset --hard commId // 回退到某一版本
-* git push origin 分支名 --force // 强制提交本地分支覆盖远程分支
 
 # <a name="git基本命令">git基本命令</a>
 npm i git //git安装
@@ -150,15 +110,7 @@ npm i git //git安装
 * git commit  -m "注释内容"  //将暂存区文件提交到当前分支
 * git commit  -am "注释内容"  //git add + git commit
 * git commit --amend  // 修改 commit 的注释
-  >在出来的编辑界面，直接编辑注释的信息,
-  如何退出？(或ESC + ZZ)
-   按 ESC，进行输入以下字符
-    * :w 保存但不退出
-    * :w! 强制保存，但不退出
-    * :wq 保存并退出
-    * :q 退出
-    * :q! 强制退出，不保存
-    * :e! 放弃所有修改，从上次保存文件开始再编辑命令历史
+  >在出来的编辑界面，直接编辑注释的信息,保存退出(ESC + ZZ)
 
 `git pull 拉取`
 * git pull origin  //从远程获取最新版本到本地，并自动merge
@@ -175,7 +127,7 @@ npm i git //git安装
 
 `git rm 删除文件`
 * git rm -r \<fileName> //删除本地文件/文件夹
-* git rm -r --cached \<fileName> //删除某个缓存文件/文件夹；(但仍保留在工作区中),(git push origin 后就能删除仓库文件)
+* git rm -r --cached \<fileName> //删除缓存文件/文件夹；(但仍保留在工作区中),(git push origin 后就能删除仓库文件)
   >git rm -r --cached .  //删除所有缓存文件
 
 执行rm -r操作后想恢复文件  
@@ -222,7 +174,7 @@ npm i git //git安装
 * git push --delete origin \<branchName>  //删除远程分支  
 * git checkout \<branchName> | git switch \<branchName> //切换分支  
 * git checkout -b \<branchName> | git switch -c \<branchName> //创建 + 切换分支   
-
+* git checkout branch -- file  //将你的某个文件还原到某个分支的版本
 * git branch -m oldName newName // 本地分支重命名(还没有推送到远程)
 * git branch --set-upstream-to \<branchName> origin/\<branchName>  //建立本地分支和远程分支的关联
 
@@ -243,7 +195,8 @@ npm i git //git安装
 
 `撤销修改`
 * git reset HEAD \<fileName> | . // 把暂存区的修改撤销掉，重新放回工作区
-* git checkout -- \<fileName> | . // 撤销本地的修改，将它还原成上次提交时的样子
+
+* git checkout -- \<fileName> | . // 撤销本地的修改
   >一种是文件修改后还没有被放到暂存区，现在，撤销修改就回到和版本库一模一样的状态；  
   >一种是文件已经添加到暂存区后，又作了修改，现在，撤销修改就回到添加到暂存区后的状态。  
   >总之，就是让这个文件回到最近一次git commit或git add时的状态。
@@ -295,7 +248,6 @@ npm i git //git安装
 
 `git log 查看记录`
 * git log   //查看提交记录
-* git long --oneline // 查看提交记录（一行显示
 * git log -p -2 // -p显示每次提交的内容差异。-2 仅显示最近两次提交
 * git reflog 可以查看所有分支的所有操作记录（包括（包括commit和reset的操作），包括已经被删除的commit记录，git log则不能察看已经删除了的commit记录
 
@@ -452,3 +404,18 @@ github插件
 * Enhanced GitHub -- 显示仓库大小、每个文件的大小以及每个文件的下载链接
 * Refined GitHub -- 简化 GitHub 界面并拥有实用功能
 * OctoLinker -- 更有效地浏览 GitHub 上的代码。它可以将特定语言的模块加载语句（如 include、require 与 import）转换为链接，根据语言将您重定向到引用的文件或外部网站
+
+# 解决访问不了GitHub问题
+
+https://www.cnblogs.com/wanpi/p/14668174.html
+
+[GitHub的ip地址](https://github.com.ipaddress.com/)
+[域名ip](https://fastly.net.ipaddress.com/github.global.ssl.fastly.net)
+[静态资源ip](https://github.com.ipaddress.com/assets-cdn.github.com)
+
+打开C:\Windows\System32\drivers\etc
+找到hosts文件添加以上查询到的ip地址
+
+保存并退出即可
+
+接着还需要刷新DNS： ipconfig /flushdns
