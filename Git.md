@@ -358,7 +358,7 @@ npm i git //git安装
 # <a name="vue-cli项目创建时，git bash箭头选择无效问题">vue-cli项目创建时，git bash箭头选择无效问题</a>
 
 >
-    选择git的安装目录，进入etc文件夹 找到bash.bashrc文件
+    选择git的安装目录，进入etc文件夹 找到bash.bashrc文件(C:\Program Files\Git\etc)
 
     文件末未添加 ：
     alias vue='winpty vue.cmd'

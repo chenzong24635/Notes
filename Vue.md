@@ -800,12 +800,20 @@ var Counter = {
 # <a name="修饰符">修饰符</a>[![bakTop](/img/backward.png)](#top)  
 [事件修饰符](https://cn.vuejs.org/v2/guide/events.html#%E4%BA%8B%E4%BB%B6%E4%BF%AE%E9%A5%B0%E7%AC%A6)
 * .native 将原生事件绑定到组件
+  主要是给自定义的组件添加原生事件，可以理解为该修饰符的作用就是把一个vue组件转化为一个普通的HTML标签，并且该修饰符对普通HTML标签是没有任何作用的。
 * .stop 阻止冒泡
+  调用 event.stopPropagation()。
 * .prevent 阻止默认行为
+  调用 event.preventDefault()。
 * .capture 事件捕获
-* .self
+* .self 有事件从元素本身发出才触发处理函数。
 * .once 事件将只会触发一次
 * .passive 事件的默认行为立即触发
+  表示监听器函数不会调用preventDefault ()  
+  主要用于移动端scroll事件，以提高浏览器的响应速度和用户体验。 由于passive=true等于事前告诉了浏览器，touchstart和touchmove不会阻止默认事件，在手开始接触后浏览器可以立即响应； 否则，手会触摸屏幕，但需要等待touchstart和touchmove的结果。 如果这个步骤多的话，响应时间会变长，用户体验也会变差。  
+  .passive 和 .prevent 不能一起使用:  Unable to preventDefault inside passive event listener invocation.
+* .exact 修饰符允许控制触发一个事件所需的确定组合的系统按键修饰符
+
 
 使用修饰符时，顺序很重要；相应的代码会以同样的顺序产生。  
 因此，用 v-on:click.prevent.self 会阻止所有的点击，而 v-on:click.self.prevent 只会阻止对元素自身的点击。
@@ -831,7 +839,7 @@ var Counter = {
 
 
 # <a name="指令">指令</a>[![bakTop](/img/backward.png)](#top)  
-[指令](https://cn.vuejs.org/v2/api/#%E6%8C%87%E4%BB%A4)
+[指令](https://cn.vuejs.org/api/built-in-directives.html)
 * v-text 渲染文本
 * v-html 渲染html
 * v-show 是否显示
@@ -846,6 +854,10 @@ var Counter = {
 * v-pre 跳过此元素和它的子元素的编译
 * v-clock 在编译结束后，才显示
 * v-once 仅渲染一次
+* v-memo （vue3.2) 期望的绑定值类型：any[] [查看文档](https://cn.vuejs.org/api/built-in-directives.html#v-memo)  
+  缓存一个模板的子树。在元素和组件上都可以使用。为了实现缓存，该指令需要传入一个固定长度的依赖值数组进行比较。如果数组里的每个值都与最后一次的渲染相同，那么整个子树的更新将被跳过  
+  传入空依赖数组 (v-memo="[]") 将与 v-once 效果相同。  
+  与 v-for 一起使用，有助于渲染海量 v-for 列表 (长度超过 1000 的情况)：
 
 
 # <a name="slot">slot插槽</a>[![bakTop](/img/backward.png)](#top)  
