@@ -1,9 +1,22 @@
-<a id="top"></a>
+
+[vue3官网](https://cn.vuejs.org/guide/introduction.html)
+[vue3模板编译在线体验](https://vue-next-template-explorer.netlify.app/)
+
+[抄笔记：尤雨溪在Vue3.0 Beta直播里聊到了这些…](https://juejin.im/post/5e9f6b3251882573a855cd52)
+
 
 # 初始化项目
 * npm init vue@latest projectName  (vite)
 * vue create projectName (webpack)
 
+
+
+# 选项式 API 和组合式 API
+* 选项API: 所定义的属性都会暴露在函数内部的 this 上，它会指向当前的组件实例
+
+[什么是组合式 API？](https://cn.vuejs.org/guide/extras/composition-api-faq.html#what-is-composition-api)
+
+![img](/img/Vue/optionsAPI_compositionAPI.jpg)
 
 # [生命周期](https://cn.vuejs.org/guide/essentials/lifecycle.html#lifecycle-diagram)
 [生命周期钩子](https://cn.vuejs.org/api/composition-api-lifecycle.html#composition-api-lifecycle-hooks)
@@ -70,6 +83,18 @@ onUnmounted  ->
 ```
 
 # [API](https://cn.vuejs.org/api/)
+## [app-config](https://cn.vuejs.org/api/application.html#app-config)
+|2.x Global API| 3.x Instance API(app)
+|:--|:--
+|Vue.config | app.config
+|Vue.config.productionTip| 已移除
+|Vue.config.ignoredElements|app.config.isCustomElement
+|Vue.component|app.component
+|Vue.directive|app.directive
+|Vue.mixin|app.mixin
+|Vue.use|app.use
+
+## 
 * createApp() 创建一个应用实例
 * createSSRApp() 创建一个应用实例
 * app.mount() 将实例挂载在一个容器元素中
@@ -112,7 +137,8 @@ onUnmounted  ->
 
 * defineComponent() 定义组件
 * defineAsyncComponent()定义异步组件  [查看文档](https://cn.vuejs.org/guide/components/async.html)
-* defineCustomElement()
+* defineCustomElement() 自定义元素
+* mergeProps() 合并多个 props 对象
 
 
 ## setup
@@ -406,8 +432,11 @@ watch 和 watchEffect 都能响应式地执行有副作用的回调。它们之�
   </template>
 
   <script setup lang="ts">
-  import {ref} from 'vue'
-  const sectionRef = ref()
+  import {ref, onMounted} from 'vue'
+  const sectionRef = ref(null)
+  onMounted(() => {
+    console.log(sectionRef.value);
+  });
   </script>
   ```
 
@@ -604,18 +633,16 @@ const getSonHander=()=>{
 </script>
 ```
 
-# [suspense](https://cn.vuejs.org/guide/built-ins/suspense.html)
-
 
 
 # CSS
 * 深度选择器 :deep()
-```html
-<style scoped>
-.a :deep(.b) {
-}
-</style>
-```
+  ```html
+  <style scoped>
+  .a :deep(.b) {
+  }
+  </style>
+  ```
 * 插槽选择器 :slotted()   
   默认情况下，作用域样式不会影响到 \<slot/> 渲染出来的内容，因为它们被认为是父组件所持有并传递进来的。使用 :slotted 伪类以明确地将插槽内容作为选择器的目标：
 
@@ -654,7 +681,7 @@ const getSonHander=()=>{
   ```
 * 全局选择器  :global
 
-* style 中使用v-bind绑定 js 中的变量  
+* v-bind(): style 中使用v-bind绑定 js 中的变量  
   ```html
   <script setup lang="ts">
     import {
@@ -678,28 +705,286 @@ const getSonHander=()=>{
 * CSS Modules  
   一个 \<style module> 标签会被编译为 CSS Modules 并且将生成的 CSS class 作为 $style 对象暴露给组件：暴露的对象默认名为  $style，也可自定义
   ```html
-<template>
-  <p :class="$style.red">我是红的</p>
-  <p :class="sy.red">没想到吧，我是蓝的</p>
+  <template>
+    <p :class="$style.red">我是红的</p>
+    <p :class="sy.red">没想到吧，我是蓝的</p>
 
-</template>
+    <p ref="pRef">xxxx</p>
+  </template>
+  <script setup>
+    // 
+    import { useCssModule, onMounted, ref } from 'vue'
+    // 获取对应的calss
+    let m1 = useCssModule()
+    let m2 = useCssModule('sy')
+    const pRef = ref(null)
+    onMounted(() => {
+      console.log(pRef,'green');
+      pRef.value.classList.add(m1.red)
+      pRef.value.classList.add(m2.green)
 
-<style module>
-.red {
-  color: red;
-}
-</style>
-<style module="sy">
+      // pRef.value.classList.add('green')
+      // pRef.value.classList.add('red')
+
+    }),
+    console.log(m1,m2);
+  </script>
+  <style module>
+  .red {
+    color: red;
+  }
+  </style>
+  <style module="sy">
   .red {
     color: blue;
   }
+  .green{
+    color: green;
+  }
   </style>
-  
+  ```
+  编译显示
+  ```html
+  <style>
+    ._red_xad9b_2 {
+      color: red;
+    }
+    ._red_np93z_2 {
+      color: blue;
+    }
+    ._green_gkpx2_5 {
+      color: green;
+    }
+  </style>
+  <p class="_red_xad9b_2">我是红的</p>
+  <p class="_red_np93z_2">没想到吧，我是蓝的</p>
+  <p class="_red_xad9b_2 _green_gkpx2_5">xxxx</p>
   ```
 
+# v-model改变
 
-# 其他
+可绑定多个 v-model
+```html
+<!-- parent -->
+<template lang="">
+  parent
+  <p>{{num1}} <span @click="changeNum1">改变num1</span></p>
+  <p>{{num2}} <span @click="changeNum2">改变num2</span></p>
+  <child
+    v-model:num1="num1"
+    v-model:num2="num2"
+  ></child>
+</template>
+<script setup>
+let num1 = ref(0)
+let num2 = ref(0)
+let changeNum1 = () => {
+  num1.value += 1
+}
+let changeNum2 = () => {
+  num2.value += 1
+}
+</script>
+<style lang="">
+</style>
 
 
-* <a href="#ref和reactive区别">ref和reactive区别</a>  
+<!-- child -->
+<template lang="">
+  child
+  <p>{{num1}} </p>
+  <p>{{num2}} </p>
+</template>
+<script setup>
+defineProps(['num1', 'num2'])
+</script>
+```
+
+
+# 指令
+```js
+v2
+const MyDirective = {
+  bind(el, binding, vnode, prevVnode) {},
+  inserted() {},
+  update() {},
+  componentUpdated() {},
+  unbind() {}
+}
+
+v3
+const MyDirective = {
+  beforeMount(el, binding, vnode, prevVnode) {},
+  mounted() {},
+  beforeUpdate() {},
+  updated() {},
+  beforeUnmount() {}, // new
+  unmounted() {}
+}
+```
+
+# [Fragment]
+vue2创建一个Vue组件，只能有一个根节点
+
+这意味着无法创建这样的组件：
+```vue
+<template>
+  <div>Hello</div>
+  <div>World</div>
+</template>
+```
+原因是代表任何Vue组件的Vue实例都需要绑定到单个DOM元素中。  
+创建具有多个DOM节点的组件的唯一方法是通过创建不具有基础Vue实例的功能组件。
+
+vue3 
+* 不再限于模板中的单个根节点
+* render 函数也可以返回数组了，类似实现了 React.Fragments 的功能 
+
+意义
+* 减少无意义的div
+* 组件递归，可以实现平级递归，不会有多余的div了 这个在以后实现虚拟列表，tree组件的时候意义重大
+
+# [Teleport](https://cn.vuejs.org/guide/built-ins/teleport.html)
+
+\<Teleport\>原先是对标 React Portal（增加多个新功能，更强）
+
+但因为Chrome有个提案，会增加一个名为Portal的原生element，为避免命名冲突，改为Teleport
+
+Teleport是特殊的组件，旨在在当前组件之外呈现某些内容。这也是这是处理模态框、弹出窗口和通常显示在页面顶部的组件的一种非常好的方法。
+
+通过使用Portals，您可以确保没有任何主机组件CSS规则，会影响您要显示的组件，并使您免于使用进行讨厌的黑客攻击
+
+vue2需通过portal-vue库实现
+
+
+### 组件属性
+* to: 必须是有效的查询选择器或 HTMLElement
+  ```html
+  <!-- 正确 -->
+  <teleport to="body" />
+  <teleport to="#some-id" />
+  <teleport to=".some-class" />
+  <teleport to="[data-teleport]" />
+
+  <!-- 错误 -->
+  <teleport to="h1" />
+  <teleport to="some-string" />
+  ```
+
+* disabled： 用于禁用 \<teleport> 的功能，这意味着其插槽内容将不会移动到任何位置，而是在您在周围父组件中指定了 \<teleport> 的位置渲染。
+
+
+```html
+<template>
+  <div class="box"></div>
+  <button @click="modalOpen = true">
+    点我打开模态框 (With teleport!)
+  </button>
+  <div id="container"></div>
+    
+  <!-- 渲染为body标签 的子级-->
+  <teleport to="body">
+  <!-- <teleport to="#container"> -->
+    <div v-if="modalOpen" class="modal">
+      <div >
+        <p>I'm a teleported modal! (My parent is "body")</p>
+        <!-- teleport也可以嵌入组件 -->
+       
+        <button @click="modalOpen = false">
+          点我关闭
+        </button>
+      </div>
+    </div>
+  </teleport>
+  
+  <!-- 在同一目标上使用多个 teleport -->
+  <teleport to="body" >
+    <div v-if="modalOpen" class="modal" style="margin-top:20px">
+      我是另一个挂在body上的teleport
+      <p>多个 teleport组件可以将其内容挂载在同一个目标元素上，而顺序就是简单的顺次追加，后挂载的将排在目标元素下更后面的位置上。</p>
+    </div>
+  </teleport>
+
+  <!-- 渲染为.box 的子级 -->
+  <teleport to=".box" >
+    <div v-if="modalOpen" class="modal" style="margin-top:20px">
+      我是.box上的teleport
+      
+    </div>
+  </teleport>
+
+  <!-- 使用disabled属性 -->
+  <teleport to="body" :disabled="isDisabled">
+    <div v-if="modalOpen" class="modal" style="margin-top:20px">
+      我是个本该挂在body上的teleport，但使用 disabled 属性，因此不会移动，挂载在定义的位置
+      <button @click="isDisabled = false">
+        点我改变位置
+      </button>
+    </div>
+  </teleport>
+</template>
+<script setup>
+const modalOpen = ref(false)
+const isDisabled = ref(true)
+
+</script>
+<style scoped >
+.modal{
+  text-align: center;
+  border: 1px solid ;
+  background-color: #ccc;
+}
+</style>
+
+```
+
+# [Suspense](https://cn.vuejs.org/guide/built-ins/suspense.html)
+
+
+
+# Vue2和Vue3响应方式对比
+
+
+# [API自动按需引入和组件自动按需注册](https://juejin.cn/post/7166802156006309918)
+```js
+// 自动引入插件
+npm i -D unplugin-auto-import
+
+// 自动注册插件
+npm i -D unplugin-vue-components
+
+
+// vite.config.ts里面配置。配置完成后保存，会产生两个.d.ts文件, auto-import.d.ts文件，和main.ts平级。这个文件就是替你去引入各种api的集成文件
+
+import AutoImport from "unplugin-auto-import/vite";
+import Componengts from "unplugin-vue-components/vite";
+
+// defineConfig里在plugins里配置
+plugins: [
+  AutoImport({
+    // 配置需要自动引入的组件
+    imports: ["vue", "vue-router", "pinia"],
+    // 创建全局 d.ts声明文件
+    dts: "src/auto-imports.d.ts",
+    // Auto import inside Vue templates
+    vueTemplate: true,
+    // vant自动按需引入
+    // resolvers: [VantResolver()],
+    dirs: []
+  }),
+  // 自动组件注册插件
+  Componengts({
+    // 定义哪里的组件需要。这里的配置是全局components和局部文件的components都需要按需引入
+    dirs: ['src/components', 'src/**/components'],
+    // 扩展那些文件
+    extensions: ["vue", 'md'],
+    // 允许自动导入和注册的组件
+    include: [/\.vue$/, /\.vue?vue/, /\.md$/],
+    // vant自动注册组件
+    // resolvers: [VantResolver()],
+    // 创建全局 d.ts声明文件
+    dts: "src/components.d.ts",
+  }),
+],
+```
 
