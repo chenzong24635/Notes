@@ -45,6 +45,9 @@
 * updated -> onUpdated
 * beforeDestroy -> onBeforeUnmount
 * destroyed -> onUnmounted
+* activated -> onActivated
+* deactivated -> onDeactivated
+
 * errorCaptured -> onErrorCaptured
 * onRenderTracked, 新增
 * onRenderTriggered, 新增
@@ -132,12 +135,15 @@ onUnmounted  ->
 * app.config  实例的配置
   * app.config.globalProperties  注册能够被应用内所有组件实例访问到的全局属性的对象(Vue 2 中 Vue.prototype 使用方式的一种替代)
   * app.config.performance 在浏览器开发工具的“性能/时间线”页中启用对组件初始化、编译、渲染和修补的性能表现追踪
+  * [app.config.errorHandler](https://cn.vuejs.org/api/application.html#app-config-errorhandler) 应用内抛出的未捕获错误指定一个全局处理函数
 
 
 
-* defineComponent() 定义组件
-* defineAsyncComponent()定义异步组件  [查看文档](https://cn.vuejs.org/guide/components/async.html)
-* defineCustomElement() 自定义元素
+* [defineComponent()](https://cn.vuejs.org/api/general.html#definecomponent) 定义组件
+* [defineAsyncComponent()](https://cn.vuejs.org/api/general.html#defineasynccomponent) 定义异步组件
+* [defineCustomElement()](https://cn.vuejs.org/api/general.html#definecustomelement) 自定义元素
+* version 
+* nextTick
 * mergeProps() 合并多个 props 对象
 
 
@@ -155,13 +161,12 @@ export default {
 * setup 它是组合式 API 的统一入口,所有生命周期函数定义都是需要定义在次函数下才生效
 * setup函数会在 beforeCreate之后 created之前执行
 * setup 函数中无法访问到 this
-* setup创建组件实例时，在初始道具解析后立即调用。在生命周期方面，它在beforeCreate挂接之前被调用。
+* setup创建组件实例时，在初始组件解析后立即调用。在生命周期方面，它在beforeCreate挂接之前被调用。
 * setup接受两个参数，
 * return 返回一个对象,会暴露给模板和组件实例
 
-
 setup接受两个参数，
-* props：组件之间通信的 props,是响应式的 
+* props：组件之间通信, props 是响应式的 ，并且会在传入新的 props 时同步更新
 * context：上下文对象 ，是非响应式
   * context.attrs：透传 Attributes（非响应式的对象，等价于 $attrs）
   * context.slots：插槽（非响应式的对象，等价于 $slots）
@@ -185,7 +190,6 @@ export default {
 }
 </script>
 ```
-
 ### expose
 子组件在 setup() 函数中返回的所有东西都可以被父组件直接访问
 ```html
@@ -219,6 +223,105 @@ let age = ref(18)
 </script>
 ```
 
+## setup语法糖 - \<script setup> 
+### [setup语法糖](https://cn.vuejs.org/api/sfc-script-setup.html#script-setup)
+起初 Vue3.0 暴露变量必须 return 出来，template中才能使用；
+vue3.2只需在script标签中添加setup。
+
+\<script setup> 是在单文件组件 (SFC) 中使用组合式 API 的编译时语法糖。当同时使用 SFC 与组合式 API 时该语法是默认推荐。相比于普通的 \<script> 语法，它具有更多优势：  
+* 更少的样板内容，更简洁的代码。
+* 能够使用纯 TypeScript 声明 props 和自定义事件。
+* 更好的运行时性能 (其模板会被编译成同一作用域内的渲染函数，避免了渲染上下文代理对象)。
+* 更好的 IDE 类型推导性能 (减少了语言服务器从代码中抽取类型的工作)。
+
+
+```html
+<script lang="ts" setup>
+  import { ref } from 'vue';
+  //flag变量不需要在 return出去了
+  let flag=ref("a")
+</>
+```
+### 组件不需要在注册
+```html
+<!-- 这个是组件 -->
+<template>
+    <div>
+        <h2> 你好-我是肖鹤云</h2>
+    </div>
+</template>
+
+
+使用的页面
+<template>
+  <div class="home">
+    <test-com></test-com>
+  </div>
+</template>
+<script lang="ts" setup>
+// 组件命名采用的是大驼峰，引入后不需要在注册，是不是爽歪歪呀!
+//在使用的使用直接是小写和横杠的方式连接 test-com
+import TestCom from "../components/TestCom.vue"
+</script>
+```
+
+\<script setup> 可以和普通的 \<script> 一起使用
+
+\<script setup> 中可以使用顶层 await。结果代码会被编译成 async setup()。 必须与 Suspense 内置组件组合使用
+
+### defineProps defineEmits defineExpose  useSlots  useAttrs
+defineProps 接收与 props 选项相同的值，defineEmits 接收与 emits 选项相同的值。  
+
+使用 \<script setup> 的组件是默认关闭的——即通过模板引用或者 $parent 链获取到的组件的公开实例，不会暴露任何在 \<script setup> 中声明的绑定。  
+
+useSlots 和 useAttrs 是真实的运行时函数，它的返回与 setupContext.slots 和 setupContext.attrs 等价  
+
+
+子组件
+```html
+<script lang="ts" setup>
+  import {defineProps, defineEmits} from 'vue'
+  // 子组件接受参数
+  defineProps({
+    info:{
+      type: String,
+      default:' '
+    },
+
+  })
+
+  // 子组件向父组件抛出事件
+  let $myemit=defineEmits(['myAdd','myDel'])
+  let hander1Click=():void=>{
+    $myemit('myAdd','新增的数据')
+  }
+
+
+  // 将组件中的属性暴露出去，这样父组件可以获取
+  defineExpose({
+    myName: 'abc'
+  })
+</script>
+```
+
+父组件
+```html
+<template>
+  <div class="home">
+    <test-com @myAdd="myAddHander" ref="testcomRef"></test-com>
+    <button @click="getSonHander">获取子组件中的数据</button>
+  </div>
+</template>
+<script lang="ts" setup>
+import TestCom from "../components/TestCom.vue"
+import {ref} from 'vue'
+const testcomRef = ref()
+const getSonHander=()=>{
+  console.log('获取子组件中的数据', testcomRef.value.myName);
+}
+</script>
+```
+
 ## ref() 、reactive()
 * ref(): 接受一个内部值，返回一个响应式的、可更改的 ref 对象，此对象只有一个指向其内部值的属性 .value
 * reactive(): 返回一个对象的响应式代理
@@ -226,11 +329,11 @@ let age = ref(18)
 区别
 * ref 函数创建的响应式数据，在模板中可以直接被使用，在 JS 中需要通过 .value 的形式才能使用。
 * ref 函数可以接收原始数据类型与引用数据类型。一般用于原始数据类型
-* reactive 函数只能接收引用数据类型。  
+* reactive 函数只能接收引用数据类型。(仅对对象类型有效（对象、数组和 Map、Set 这样的集合类型），而对 string、number 和 boolean 这样的 原始类型 无效。)
 * 如果将一个对象赋值给 ref，那么这个对象将通过 reactive() 转为具有深层次响应式的对象。这也意味着如果对象中包含了嵌套的 ref，它们将被深层地解包。
 
 
-reactive 能做的，ref 都能胜任，并且 ref 底层还是使用 reactive 来做的
+reactive 能做的，ref 都能胜任，并且 ref 底层还是使用 reactive 来做的,
 ```html
 <script setup  lang="ts">
 
@@ -294,7 +397,6 @@ watch(proxy,() => {
 * toRaw(): 返回由 reactive()、readonly()、shallowReactive() 或者 shallowReadonly() 创建的代理对应的原始对象
 * markRaw(): 将一个对象标记为不可被转为代理。返回该对象本身。
 
-
 ## computed()、watch()
 * computed()
 * watch()
@@ -312,8 +414,8 @@ watch(proxy,() => {
     * onTrigger?: (event: DebuggerEvent) => void
 
 
-* watchEffect() 使用 flush: 'post' 选项时的别名。 
-* watchEffect() 使用 flush: 'sync' 选项时的别名。
+* watchPostEffect() 使用 flush: 'post' 选项时的别名。 
+* watchsynceffect() 使用 flush: 'sync' 选项时的别名。
 
 
 在 setup() 或 \<script setup> 中用同步语句创建的侦听器，会自动绑定到宿主组件实例上，并且会在宿主组件卸载时自动停止
@@ -533,106 +635,6 @@ watch 和 watchEffect 都能响应式地执行有副作用的回调。它们之�
 </script>
 ```
 
-# setup语法糖 - \<script setup> 
-### [setup语法糖](https://cn.vuejs.org/api/sfc-script-setup.html#script-setup)
-起初 Vue3.0 暴露变量必须 return 出来，template中才能使用；
-vue3.2只需在script标签中添加setup。
-
-
-\<script setup> 是在单文件组件 (SFC) 中使用组合式 API 的编译时语法糖。当同时使用 SFC 与组合式 API 时该语法是默认推荐。相比于普通的 \<script> 语法，它具有更多优势：  
-* 更少的样板内容，更简洁的代码。
-* 能够使用纯 TypeScript 声明 props 和自定义事件。
-* 更好的运行时性能 (其模板会被编译成同一作用域内的渲染函数，避免了渲染上下文代理对象)。
-* 更好的 IDE 类型推导性能 (减少了语言服务器从代码中抽取类型的工作)。
-
-
-```html
-<script lang="ts" setup>
-  import { ref } from 'vue';
-  //flag变量不需要在 return出去了
-  let flag=ref("a")
-</>
-```
-### 组件不需要在注册
-```html
-<!-- 这个是组件 -->
-<template>
-    <div>
-        <h2> 你好-我是肖鹤云</h2>
-    </div>
-</template>
-
-
-使用的页面
-<template>
-  <div class="home">
-    <test-com></test-com>
-  </div>
-</template>
-<script lang="ts" setup>
-// 组件命名采用的是大驼峰，引入后不需要在注册，是不是爽歪歪呀!
-//在使用的使用直接是小写和横杠的方式连接 test-com
-import TestCom from "../components/TestCom.vue"
-</script>
-```
-
-\<script setup> 可以和普通的 \<script> 一起使用
-
-\<script setup> 中可以使用顶层 await。结果代码会被编译成 async setup()。 必须与 Suspense 内置组件组合使用
-
-### defineProps defineEmits defineExpose  useSlots  useAttrs
-defineProps 接收与 props 选项相同的值，defineEmits 接收与 emits 选项相同的值。  
-
-使用 \<script setup> 的组件是默认关闭的——即通过模板引用或者 $parent 链获取到的组件的公开实例，不会暴露任何在 \<script setup> 中声明的绑定。  
-
-useSlots 和 useAttrs 是真实的运行时函数，它的返回与 setupContext.slots 和 setupContext.attrs 等价  
-
-
-子组件
-```html
-<script lang="ts" setup>
-  import {defineProps, defineEmits} from 'vue'
-  // 子组件接受参数
-  defineProps({
-    info:{
-      type: String,
-      default:' '
-    },
-
-  })
-
-  // 子组件向父组件抛出事件
-  let $myemit=defineEmits(['myAdd','myDel'])
-  let hander1Click=():void=>{
-    $myemit('myAdd','新增的数据')
-  }
-
-
-  // 将组件中的属性暴露出去，这样父组件可以获取
-  defineExpose({
-    myName: 'abc'
-  })
-</script>
-```
-
-父组件
-```html
-<template>
-  <div class="home">
-    <test-com @myAdd="myAddHander" ref="testcomRef"></test-com>
-    <button @click="getSonHander">获取子组件中的数据</button>
-  </div>
-</template>
-<script lang="ts" setup>
-import TestCom from "../components/TestCom.vue"
-import {ref} from 'vue'
-const testcomRef = ref()
-const getSonHander=()=>{
-  console.log('获取子组件中的数据', testcomRef.value.myName);
-}
-</script>
-```
-
 
 
 # CSS
@@ -761,7 +763,22 @@ const getSonHander=()=>{
   <p class="_red_xad9b_2 _green_gkpx2_5">xxxx</p>
   ```
 
-# v-model改变
+# [v-model改变](https://cn.vuejs.org/guide/components/events.html#usage-with-v-model)
+去掉了 .sync ，合并到了 v-model 里
+```html
+<!-- vue 2.x -->
+<my-com :title.sync="title" />
+
+<!-- vue 3.x -->
+<my-com v-model:title="title" />
+
+```
+v-model 等价于 :modelValue="someValue" 和 @update:modelValue="someValue = $event"
+
+v-model:foo 等价于 :foo="someValue" 和 @update:foo="someValue = $event"
+
+
+
 
 可绑定多个 v-model
 ```html
@@ -770,10 +787,10 @@ const getSonHander=()=>{
   parent
   <p>{{num1}} <span @click="changeNum1">改变num1</span></p>
   <p>{{num2}} <span @click="changeNum2">改变num2</span></p>
-  <child
+  <TestDemo
     v-model:num1="num1"
     v-model:num2="num2"
-  ></child>
+  ></TestDemo>
 </template>
 <script setup>
 let num1 = ref(0)
@@ -793,10 +810,16 @@ let changeNum2 = () => {
 <template lang="">
   child
   <p>{{num1}} </p>
-  <p>{{num2}} </p>
+  <p> </p>
+  <input
+    :value="num2"
+    @input="$emit('update:num2', $event.target.value)"
+  />
+
 </template>
 <script setup>
 defineProps(['num1', 'num2'])
+defineEmits(['update:num2'])
 </script>
 ```
 
@@ -823,7 +846,7 @@ const MyDirective = {
 }
 ```
 
-# [Fragment]
+# Fragment
 vue2创建一个Vue组件，只能有一个根节点
 
 这意味着无法创建这样的组件：
@@ -939,7 +962,21 @@ const isDisabled = ref(true)
 ```
 
 # [Suspense](https://cn.vuejs.org/guide/built-ins/suspense.html)
+* 可在嵌套层级中等待嵌套的异步依赖项
+* 支持async setup()
+* 支持异步组件
 
+加载异步组件，在异步组件加载完成成并完全渲染之前 suspense 会先显示 #fallback 插槽的内容 。
+```html
+<Suspense>
+  <template #default>
+    异步的组件
+  </template>
+  <template #fallback>
+    加载状态的组件
+  </template>
+</Suspense>
+```
 
 
 # Vue2和Vue3响应方式对比
