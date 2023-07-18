@@ -1,5 +1,7 @@
 <a id="top"></a>
 
+
+[chrome调试](./img/chrome调试.png)
 ### 
 
 - [vscode 快捷键 for Windows](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf)
