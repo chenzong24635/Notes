@@ -1131,7 +1131,7 @@ child = null;//现在parent可以被释放了
 
 
 ## <a name="原型、原型链、原型继承">原型、原型链、原型继承</a>
-[原型-原型链-继承](\details\面试题\JS面试题/原型-原型链-继承.md)
+[原型-原型链-继承](\details\JS\details/原型-原型链-继承.md)
 
 ## <a name="创建对象的几种方式">创建对象的几种方式</a>
 
@@ -1155,10 +1155,10 @@ p = new P('jack')
 ```
 
 ## <a name="作用域、作用域链、执行上下文">作用域、作用域链、执行上下文(执行环境)</a>
-[作用域-作用域链-执行上下文](\details\面试题\JS面试题/作用域-作用域链-执行上下文.md)
+[作用域-作用域链-执行上下文](\details\JS\details/作用域-作用域链-执行上下文.md)
 
 ## <a name="this">this理解</a>
-[this](/details/JS/details/this.md)
+[this](/details/面试题/this.md)
 
 ## <a name="apply call bind">apply call bind用法及实现</a>
 区别
@@ -1271,7 +1271,7 @@ var user = new User(26);
 [设计模式](/details/设计模式/index.md)
 
 ## <a name="事件执行机制">事件执行机制</a>
-[事件执行机制](\details\面试题\JS面试题\事件执行机制EventLoop.md)
+[事件执行机制](\details\JS\details\事件执行机制EventLoop.md)
 
 事件循环中分为宏任务队列和微任务队列。
 
@@ -1300,7 +1300,7 @@ async函数表示函数里面可能会有异步方法，await后面跟一个表�
 [详情](/details/跨域/README.md)
 
 ## <a name="常见的web攻击">常见的web攻击</a>
-[常见的web攻击](\details\面试题\JS面试题\常见的web攻击.md)
+[常见的web攻击](\details\JS\details\常见的web攻击.md)
 
 
 ## <a name="URI、URL、URN">URI、URL、URN</a>
@@ -1492,16 +1492,16 @@ factorial(500000, 1);           // 分情况
 [WebWorker](/details\JS\WebWorker.md)
 
 ## <a name="浏览器缓存">浏览器缓存</a>
-[浏览器缓存](/details\面试题\JS面试题\浏览器的缓存机制.md)
+[浏览器缓存](/details\JS\details\浏览器的缓存机制.md)
 
 ## <a name="前端性能优化的方法">前端性能优化的方法</a>
 [WEB性能优化](/details/WEB性能优化/README.md)
 
 ## <a name="浏览器页面渲染">浏览器页面渲染</a>
-[浏览器页面渲染](/details/面试题/JS面试题/浏览器页面渲染.md)
+[浏览器页面渲染](/details/面试题/浏览器页面渲染.md)
 
 ## <a name="从浏览器地址栏输入url到显示页面的步骤">从浏览器地址栏输入url到显示页面的步骤</a>
-[从浏览器地址栏输入url到显示页面的步骤](\details\面试题\HTTP面试题\从浏览器地址栏输入url到显示页面的步骤.md)
+[从浏览器地址栏输入url到显示页面的步骤](\details\HTTP\从浏览器地址栏输入url到显示页面的步骤.md)
 
 ## <a name="前端工程化">前端工程化</a>
 前端工程化主要应该从模块化、组件化、规范化、自动化

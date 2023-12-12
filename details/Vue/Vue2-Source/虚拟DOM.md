@@ -8,7 +8,7 @@ webkit 渲染引擎工作流程图
 先看一个简单的 div 元素的属性
 ![](/img/Vue/divdom.png)
 
-[浏览器页面渲染](/details/面试题/JS面试题/浏览器页面渲染.md)
+[浏览器页面渲染](/details/面试题/浏览器页面渲染.md)
 
 ## Virtual DOM
 
