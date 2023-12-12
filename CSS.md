@@ -306,7 +306,7 @@ css书写顺序 link visited hover active 不然有些效果不会呈现(速记�
 * 是否需要添加元素才能达到效果，是则是伪元素，不是则是伪类
 
 ## <a name="重绘回流">重绘回流</a>[![bakTop](/img/backward.png)](#top)
-[重绘回流](/details\JS\details\重绘-回流.md)
+[重绘回流](/details\面试题\重绘-回流.md)
 
 ## <a name="content属性">::before和::after伪元素的content属性</a>[![bakTop](/img/backward.png)](#top)
 | 值 |	说明

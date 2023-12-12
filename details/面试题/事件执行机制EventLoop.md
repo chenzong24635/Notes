@@ -1,4 +1,6 @@
 # 事件执行机制
+ [这一次，彻底弄懂 JavaScript 执行机制 —— 掘金](https://juejin.im/post/59e85eebf265da430d571f89)
+
 [Tasks, microtasks, queues and schedules](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/)
 
 [从一道题浅说 JavaScript 的事件循环](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/7)
@@ -10,10 +12,17 @@
 
 [深入解析你不知道的 EventLoop 和浏览器渲染、帧动画、空闲回调](https://github.com/sl1673495/blogs/issues/47)
 
+ [Call Stack — MDN](https://developer.mozilla.org/zh-CN/docs/Glossary/Call_stack)
+
+[[译] JavaScript 如何工作：对引擎、运行时、调用堆栈的概述 —— 掘金](https://juejin.im/post/5a05b4576fb9a04519690d42)
+
+[解读 JavaScript 之引擎、运行时和堆栈调用 —— 开源中国](https://www.oschina.net/translate/how-does-javascript-actually-work-part-1)
+
+[Tasks, microtasks, queues and schedules（译） —— 掘金](https://juejin.im/entry/55dbd51a60b2f3a92a8f5bff)
 
 ## [堆-栈-队列](/details\算法\堆-栈-队列.md)
 
-## [进程（process）,线程（thead）](/details\JS\details\线程-进程.md)
+## [进程（process）,线程（thead）](/details\面试题\线程-进程.md)
 
 
 ## JS任务分类
