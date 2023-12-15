@@ -1,0 +1,1 @@
+[](https://github.com/sl1673495/blogs/issues/47)
