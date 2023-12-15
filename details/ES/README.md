@@ -32,7 +32,7 @@ Babel 默认只转换新的 JavaScript 句法（syntax），而不转换新的 A
 
 ## [Generators 生成器](/details/JS/Generator.md)
 
-## [箭头函数](/details/面试题/this.md)
+## [箭头函数](/details/JS/其他/this.md)
 
 
 
@@ -40,9 +40,9 @@ Babel 默认只转换新的 JavaScript 句法（syntax），而不转换新的 A
 
 ## [Set Map](/details/JS/Set、Map.md)
 
-## [Proxy](/details/JS/proxy.md)
+## [Proxy](/details/JS/Proxy.md)
 
-## [Promise](/details/JS/promise.md)
+## [Promise](/details/JS/Promise.md)
 
 ## [async await.md](/details/JS/async_await.md)
 

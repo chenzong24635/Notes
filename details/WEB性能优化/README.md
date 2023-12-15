@@ -8,9 +8,10 @@
 npm i -g lighthouse
 
 ## [图片优化](./图片优化.md)
-## [CSS优化](./CSS优化.md)
-## [JS优化](./JS优化.md)
-## [Webpack优化](./Webpack优化.md)
+## [HTML优化](/details/HTML/HTML优化.md)
+## [CSS优化](/details/CSS/CSS优化.md)
+## [JS优化](/details/JS/JS优化.md)
+## [Webpack优化](/details/Webpack/Webpack优化.md)
 
 ## 其他
 ## content方面:

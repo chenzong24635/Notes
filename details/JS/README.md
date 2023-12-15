@@ -337,7 +337,7 @@ DOM(Document Object Model)文档对象模型，是所有浏览器公共遵守的
 
 * 3级DOM - 通过引入统一方式载入和保存文档和文档验证方法对DOM进行进一步扩展，DOM3包含一个名为“DOM载入与保存”的新模块，DOM核心扩展后可支持XML1.0的所有内容，包括XML Infoset、 XPath、和XML Base。
 
-### [DOM事件](/details\面试题\DOM事件.md)
+### [DOM事件](/details\JS/其他/DOM事件.md)
 
 ## <a name="事件委托">事件委托(代理)delegate</a>
 
@@ -983,7 +983,7 @@ console.log('1', a) // -> '1' 1
 
 
 ## <a name="闭包">闭包</a>
-[闭包](/details\面试题\闭包.md)
+[闭包](/details\JS/其他/闭包.md)
 
 ## <a name="垃圾回收机制">垃圾回收机制</a>
   Javascript具有自动垃圾回收机制(GC:Garbage Collecation)。
@@ -1131,7 +1131,7 @@ child = null;//现在parent可以被释放了
 
 
 ## <a name="原型、原型链、原型继承">原型、原型链、原型继承</a>
-[原型-原型链-继承](\details\面试题/原型-原型链-继承.md)
+[原型-原型链-继承](\details\JS/其他/原型-原型链-继承.md)
 
 ## <a name="创建对象的几种方式">创建对象的几种方式</a>
 
@@ -1155,10 +1155,10 @@ p = new P('jack')
 ```
 
 ## <a name="作用域、作用域链、执行上下文">作用域、作用域链、执行上下文(执行环境)</a>
-[作用域-作用域链-执行上下文](\details\面试题/作用域-作用域链-执行上下文.md)
+[作用域-作用域链-执行上下文](\details\JS/其他/作用域-作用域链-执行上下文.md)
 
 ## <a name="this">this理解</a>
-[this](/details/面试题/this.md)
+[this](/details/JS/其他/this.md)
 
 ## <a name="apply call bind">apply call bind用法及实现</a>
 区别
@@ -1271,7 +1271,7 @@ var user = new User(26);
 [设计模式](/details/设计模式/index.md)
 
 ## <a name="事件执行机制">事件执行机制</a>
-[事件执行机制](\details\面试题\事件执行机制EventLoop.md)
+[事件执行机制](\details\JS/其他/事件执行机制EventLoop.md)
 
 事件循环中分为宏任务队列和微任务队列。
 
@@ -1286,10 +1286,10 @@ async函数表示函数里面可能会有异步方法，await后面跟一个表�
 [深浅拷贝](/details/常用的手写函数/深拷贝-浅拷贝.md)
 
 ## <a name="js延迟加载：defer,async">js异步延迟加载：async，defer</a>
-[async-defer](/details\面试题\async-defer.md)
+[async-defer](/details\JS/其他/async-defer.md)
 
 ## <a name="重绘和回流">[重绘和回流](https://github.com/chenjigeng/blog/issues/4)</a>
-[重绘和回流](\details\面试题\重绘-回流.md)
+[重绘和回流](\details\JS/其他/重绘-回流.md)
 
 
 ## <a name="模块化">模块化</a>
@@ -1300,7 +1300,7 @@ async函数表示函数里面可能会有异步方法，await后面跟一个表�
 [详情](/details/跨域/README.md)
 
 ## <a name="常见的web攻击">常见的web攻击</a>
-[常见的web攻击](\details\面试题\常见的web攻击.md)
+[常见的web攻击](\details\JS/其他/常见的web攻击.md)
 
 
 ## <a name="URI、URL、URN">URI、URL、URN</a>
@@ -1486,19 +1486,19 @@ factorial(500000, 1);           // 分情况
 
 ## <a name="">同步、异步、串行、并行、并发</a>
 
-[同步、异步、串行、并行、并发](/details\面试题\同步-异步-串行-并行-并发.md)
+[同步、异步、串行、并行、并发](/details\JS/其他/同步-异步-串行-并行-并发.md)
 
 ## <a name="WebWorker">WebWorker</a>
 [WebWorker](/details\JS\WebWorker.md)
 
 ## <a name="浏览器缓存">浏览器缓存</a>
-[浏览器缓存](/details\面试题\浏览器的缓存机制.md)
+[浏览器缓存](/details\JS/其他/浏览器的缓存机制.md)
 
 ## <a name="前端性能优化的方法">前端性能优化的方法</a>
 [WEB性能优化](/details/WEB性能优化/README.md)
 
 ## <a name="浏览器页面渲染">浏览器页面渲染</a>
-[浏览器页面渲染](/details/面试题/浏览器页面渲染.md)
+[浏览器页面渲染](/details/JS/其他/浏览器页面渲染.md)
 
 ## <a name="从浏览器地址栏输入url到显示页面的步骤">从浏览器地址栏输入url到显示页面的步骤</a>
 [从浏览器地址栏输入url到显示页面的步骤](\details\HTTP\从浏览器地址栏输入url到显示页面的步骤.md)

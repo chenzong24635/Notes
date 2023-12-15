@@ -21,7 +21,7 @@
 
 ## [堆-栈-队列](/details\算法\堆-栈-队列.md)
 
-## [进程（process）,线程（thead）](/details\面试题\线程-进程.md)
+## [进程（process）,线程（thead）](/details\JS/其他/线程-进程.md)
 
 
 ## JS任务分类

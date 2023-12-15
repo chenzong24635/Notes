@@ -5,7 +5,7 @@
 [你真的理解$nextTick么](https://juejin.im/post/6844903843197616136)
 
 ### 前置
-[事件执行机制EventLoop](/details\面试题\JS面试题\事件执行机制EventLoop.md)
+[事件执行机制EventLoop](/details\JS/其他/事件执行机制EventLoop.md)
 
 ### 参数：
 * {Function} [callback]

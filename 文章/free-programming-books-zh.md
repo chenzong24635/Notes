@@ -534,8 +534,8 @@
 * [Node.js Fullstack《從零到一的進撃》](https://github.com/jollen/nodejs-fullstack-lessons)
 * [Node入门](http://www.nodebeginner.org/index-zh-cn.html)
 * [Nodejs Wiki Book](https://github.com/nodejs-tw/nodejs-wiki-book) (繁体中文)
-* [nodejs中文文档](https://www.gitbook.com/book/0532/nodejs/details)
-* [The NodeJS 中文文档](https://www.gitbook.com/book/0532/nodejs/details) - 社区翻译
+* [nodejs中文文档](https://www.gitbook.com/book/0532/nodeJS/其他)
+* [The NodeJS 中文文档](https://www.gitbook.com/book/0532/nodeJS/其他) - 社区翻译
 
 
 #### React.js

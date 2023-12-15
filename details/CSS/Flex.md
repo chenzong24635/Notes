@@ -1,6 +1,6 @@
 # Flex
 
-[Grid-二维布局](/details/Grid.md)
+[Grid-二维布局](/details/CSS/Grid.md)
 
 [Flex 布局教程：语法篇](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
 [Flexbox](https://yoksel.github.io/flex-cheatsheet/)
