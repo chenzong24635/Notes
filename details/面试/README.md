@@ -9,6 +9,702 @@
 [前端进阶系列](https://github.com/yygmind/blog)-木易杨
 
 
+# 
+
+**前端页面由哪三层构成：结构层、表示层、行为层。**
+
+## [HTML](HTML.md)
+
+## [CSS](CSS.md)
+
+## [JS](JS.md)
+
+- [Undefined、Null](/details/JS/JS数据类型/Undefined、Null.md)
+- [Boolean](/details/JS/JS数据类型/Boolean.md)
+- [Number](/details/JS/JS数据类型/Number.md)
+- [String](/details/JS/JS数据类型/String.md)
+- [Symbol](/details/JS/JS数据类型/Symbol.md)
+- [Object](/details/JS/JS数据类型/Object.md)
+  - [Array](/details/JS/JS数据类型/Array.md)
+  - [Math](/details/JS/JS数据类型/Math.md)
+  - [Date](/details/JS/JS数据类型/Date.md)
+  - [Function](/details/JS/JS数据类型/Function.md)
+  - [Set、Map](/details/JS/JS数据类型/Set、Map.md)
+
+
+## [ES](ES.md)
+
+## [TypeScript](TS.md)
+
+## [正则](/details/JS数据类型/RegExp.md)
+
+## [AJAX](/details/Ajax.md)
+
+## [跨域](/details/crossOrigin.md)
+
+## [HTTP](HTTP.md)
+
+## [Vue](Vue.md)
+
+## [Vuex](/details/vuex.md)
+
+## [小程序](MiniProgram.md)
+
+## [WebSocket](/details/JS/其他/WebSocket.md)
+
+## [Git](Git.md)
+
+## [Node](Node.md)
+
+
+
+
+# <a name="常用">**常用**</a>
+
+
+
+## <a name="统计字符串中同一字符出现次数">统计字符串中同一字符出现次数</a>
+
+>
+
+    str.split('').reduce((val, count) => (val[count]++ || (val[count] = 1), val), {})
+    //
+    function thousand(str){
+      return str.split('').reduce((val, count) => {
+        if(val[count]){
+          val[count]++
+        }else{
+          val[count] = 1
+        }
+        return val
+      }, {})
+    }
+
+## <a name="查找字符串中出现最多的字符和个数">查找字符串中出现最多的字符和个数</a>
+
+>
+
+    let str = "abcabcabcbbccccc";
+    let num = 0;
+    let char = '';
+
+    // 使其按照一定的次序排列
+    str = str.split('').sort().join('');
+    // "aaabbbbbcccccccc"
+
+    // 定义正则表达式
+    let re = /(\w)\1+/g;
+    str.replace(re,($0,$1) => {
+        if(num < $0.length){
+            num = $0.length;
+            char = $1;
+        }
+    });
+    console.log(`字符最多的是${char}，出现了${num}次`);
+
+
+
+## <a name="判断是否回文、实现回文">判断是否回文、实现回文</a>
+
+- 判断是否回文
+
+  >
+
+      function isPalindrome(line) {
+      line += "";//转为字符串
+      line=line.replace(/\W/g, '').toLowerCase();   //替换非单词字符串，转换为小写
+      return line === line.split("").reverse().join("");
+      }
+
+- 实现回文
+  >
+      let arr=[1,2,3,4];
+      let temp=arr.join().split(',');
+      temp.pop();
+      temp.reverse();
+      console.log(arr.concat(temp).join())
+
+
+
+
+## <a name="自动触发onclick事件">自动触发 onclick 事件</a>
+
+    if(document.all) { // IE
+      document.getElementById("clickMe").click();
+    }
+    else { // 其它
+      var e = document.createEvent("MouseEvents");
+      e.initEvent("click", true, true);
+      document.getElementById("clickMe").dispatchEvent(e);
+    }
+
+## <a name="unicode转中文">unicode 转中文</a>
+
+>
+
+    document.onmousewheel = function (evt) {
+      var e = evt || window.event;
+      if(e.preventDefault && e.ctrlKey) e.preventDefault();
+      if(e.ctrlKey) e.returnValue = false;
+    };
+    if (window.addEventListener) window.addEventListener('DOMMouseScroll', document.onmousewheel, false);
+
+    // 记得head标记中加入
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">  */
+    var str = "\u6D77\u66D9\u4E2D\u5FC3\u83DC\u5E02\u573A" ;
+    unescape(str.replace(/\\u/g, '%u'))
+
+## <a name="将字符串复制到剪贴板">将字符串复制到剪贴板</a>
+
+```js
+const copyToClipboard = (str) => {
+  const el = document.createElement("textarea");
+  el.value = str;
+  el.setAttribute("readonly", "");
+  el.style.position = "absolute";
+  el.style.left = "-9999px";
+  document.body.appendChild(el);
+  const selected =
+    document.getSelection().rangeCount > 0
+      ? document.getSelection().getRangeAt(0)
+      : false;
+  el.select();
+  document.execCommand("copy");
+  document.body.removeChild(el);
+  if (selected) {
+    document.getSelection().removeAllRanges();
+    document.getSelection().addRange(selected);
+  }
+};
+
+copyToClipboard("Lorem ipsum");
+```
+
+## <a name="取消选择，防止复制，禁止剪切、粘贴">取消选择，防止复制，禁止剪切、粘贴</a>
+
+取消选择 obj.onselectstart = () => return false  
+ CSS: -moz-user-select:none 仅对 FF 有效
+
+禁止右键 document.oncontextmenu= () => false  
+禁止复制 document.oncopy= () => false  
+禁止粘贴 document.onpaste= () => false  
+禁止剪切 document.oncut= () => false
+
+>
+
+    ['selectstart', 'contextmenu', 'copy', 'paste' ,'cut'].forEach(function(ev){
+        document.addEventListener(ev, function(e){
+          let event = e || window.event;
+          return event.preventDefault ? event.preventDefault() : event.returnValue = false;
+        })
+    })
+
+>
+
+## <a name="网页是否可编辑">网页是否可编辑</a>
+
+网页最后编辑时间： document.lastModified
+
+控制、查看网页是否可编辑  
+document.body.contentEditable=true | false 控制当前文档是否可编辑 ，权限比 designMode 高
+document.body.isContentEditable //查看
+
+document.designMode='on' | 'off' 控制当前文档是否可编辑
+document.designMode // 查看
+
+## <a name="逗号操作符">逗号操作符</a>
+
+对它的每个操作对象求值（从左至右），返回最后一个操作对象的值
+
+>
+
+    var f = (function f(){ return '1'; }, function g(){ return 2; })();
+    console.log(f) //2
+
+
+
+## <a name="比较两个对象是否相等">比较两个对象是否相等</a>
+
+[链接](https://segmentfault.com/a/1190000008187911)
+
+> JSON.stringify()
+
+//深度判断
+
+>
+
+    function deepCompare(x, y) {
+      var i, l, leftChain, rightChain;
+      function compare2Objects(x, y) {
+        var p;
+        // remember that NaN === NaN returns false
+        // and isNaN(undefined) returns true
+        if (isNaN(x) && isNaN(y) && typeof x === 'number' && typeof y === 'number') {
+          return true;
+        }
+
+        // Compare primitives and functions.
+        // Check if both arguments link to the same object.
+        // Especially useful on the step where we compare prototypes
+        if (x === y) {
+          return true;
+        }
+
+        // Works in case when functions are created in constructor.
+        // Comparing dates is a common scenario. Another built-ins?
+        // We can even handle functions passed across iframes
+        if ((typeof x === 'function' && typeof y === 'function') ||
+          (x instanceof Date && y instanceof Date) ||
+          (x instanceof RegExp && y instanceof RegExp) ||
+          (x instanceof String && y instanceof String) ||
+          (x instanceof Number && y instanceof Number)) {
+          return x.toString() === y.toString();
+        }
+
+        // At last checking prototypes as good as we can
+        if (!(x instanceof Object && y instanceof Object)) {
+          return false;
+        }
+
+        if (x.isPrototypeOf(y) || y.isPrototypeOf(x)) {
+          return false;
+        }
+
+        if (x.constructor !== y.constructor) {
+          return false;
+        }
+
+        if (x.prototype !== y.prototype) {
+          return false;
+        }
+
+        // Check for infinitive linking loops
+        if (leftChain.indexOf(x) > -1 || rightChain.indexOf(y) > -1) {
+          return false;
+        }
+
+        // Quick checking of one object being a subset of another.
+        // todo: cache the structure of arguments[0] for performance
+        for (p in y) {
+          if (y.hasOwnProperty(p) !== x.hasOwnProperty(p)) {
+            return false;
+          } else if (typeof y[p] !== typeof x[p]) {
+            return false;
+          }
+        }
+
+        for (p in x) {
+          if (y.hasOwnProperty(p) !== x.hasOwnProperty(p)) {
+            return false;
+          } else if (typeof y[p] !== typeof x[p]) {
+            return false;
+          }
+          switch (typeof (x[p])) {
+            case 'object':
+            case 'function':
+              leftChain.push(x);
+              rightChain.push(y);
+              if (!compare2Objects(x[p], y[p])) {
+                return false;
+              }
+              leftChain.pop();
+              rightChain.pop();
+              break;
+            default:
+              if (x[p] !== y[p]) {
+                return false;
+              }
+              break;
+          }
+        }
+        return true;
+      }
+
+      if (arguments.length < 1) {
+        return true; //Die silently? Don't know how to handle such case, please help...
+        // throw "Need two or more arguments to compare";
+      }
+
+      for (i = 1, l = arguments.length; i < l; i++) {
+        leftChain = []; //Todo: this can be cached
+        rightChain = [];
+        if (!compare2Objects(arguments[0], arguments[i])) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+
+
+## <a name="页面加载进度条">页面加载进度条</a>
+
+>
+
+    首先，咱们要想知道页面是否加载完毕，需要知道以下几点：
+    1.document.onreadystatechange 页面加载状态改变时的事件
+    2.document.readyState 页面当前文档的状态 :有四种状态
+        uninitialized 还未开始载入
+        loading 载入中
+        interactive 已加载，文档和永和可以开始交互
+        complete 载入完成
+
+
+    document.onreadystatechange = function () {//即在加载的过程中执行下面的代码
+        if(document.readyState=="complete"){//complete加载完成
+
+        }
+    }
+
+### 通过 css3 来制作进度条小动画
+
+![loading](/img/loading.png)
+
+    .loading {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      background-color: #fff;
+    }
+
+    .loading .pic {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      margin: auto;
+    }
+
+    .loading .pic i {
+      display: block;
+      float: left;
+      width: 6px;
+      height: 50px;
+      background-color: #399;
+      margin: 0 2px;
+      transform: scaleY(.4);
+      animation: load .6s infinite;
+    }
+
+    .loading .pic i:nth-child(2) {
+      animation-delay: .1s;
+    }
+
+    .loading .pic i:nth-child(3) {
+      animation-delay: .2s;
+    }
+
+    .loading .pic i:nth-child(4) {
+      animation-delay: .3s;
+    }
+
+    .loading .pic i:nth-child(5) {
+      animation-delay: .4s;
+    }
+
+    @keyframes load {
+      0%,
+      100% {
+        transform: scaleY(.4);
+      }
+      50% {
+        transform: scaleY(1);
+      }
+    }
+
+    <div class="loading">
+        <div class="pic">
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+        </div>
+    </div>
+
+    document.onreadystatechange = function () {
+      if (document.readyState === 'complete') {//加载完成隐藏
+        document.querySelector('.loading').style.display = 'none'
+      }
+    }
+
+### 根据当前页面加载图片数/页面所有图片数 实现加载进度条
+
+    .loading1 {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      background-color: #fff;
+    }
+
+    .loading1 .pic1 {
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      margin: auto;
+      font-size: 30px;
+      text-align: center;
+      line-height: 100px;
+    }
+
+    .loading1 .pic1 span {
+      display: block;
+      width: 80px;
+      height: 80px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      border-radius: 50%;
+      box-shadow: 0 3px 0 #666;
+      animation: rotate 1s infinite linear;
+      -webkit-animation: rotate 1s infinite linear;
+    }
+
+    @-webkit-keyframes rotate {
+      0% {
+        -webkit-transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+    @keyframes rotate {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    <div class="loading1">
+        <div class="pic1">
+        <span></span>
+        <b>0%</b>
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            var imgs = $('img'); // 获取所有图片
+            var num = 0;
+            imgs.each(function (i) {
+                var cImg = new Image();
+                cImg.onload = null;
+                cImg.onload = function () { // 图片加载时
+                    num++;
+                    $('.loading1 b').html(parseInt(num / $('img').length * 100) + '%'); // 更新进度条
+                    if (num >= $('img').length) { // 所有图片加载完毕时
+                        $('.loading1').fadeOut(); // 隐藏 进度条
+                    }
+                }
+                cImg.src = imgs[i].src;
+            });
+        });
+    </script>
+
+### 根据文件加载顺序来 实现加载进度条
+
+>
+
+    设置几个加载进度节点,加载到时则实现加载动画
+    .line {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 1px;
+      background-color: #000;
+    }
+
+    <div class="line"></div>
+    <header>
+        <img src='img.jpg'>
+    </header>
+
+    <script>
+        $('.line').animate({width:'10%'},100);
+    </script>
+
+    <section class='banner'>
+        <img src='img.jpg'>
+    </section>
+
+    <script>
+        $('.line').animate({width:'60%'},100);
+    </script>
+
+    <footer'>
+        <img src='img.jpg'>
+    </footer>
+
+    <script>
+        $('.line').animate({width:'100%'},100,function(){
+            $('.line').fadeOut(); // 底部加载完成后隐藏进度条
+        });
+    </script>
+
+---
+
+## <a name="vue实现数字动态翻牌的效果">vue 实现数字动态翻牌的效果</a>
+
+[原文](https://juejin.im/post/5de8bf5851882512480a73dc#heading-0)
+
+>
+
+    <!--
+      writing-mode: vertical-lr，使数字竖直排版，
+      2d移动 transform: translate(-50%, -40%); y值控制移动至哪个数字，
+      transition 控制transform属性有动画效果
+    -->
+    <template>
+      <div class="chartNum">
+        <div class="box-item">
+          <li
+            :class="{'number-item': !isNaN(item), 'mark-item': isNaN(item) }"
+            v-for="(item,index) in orderNum"
+            :key="index"
+          >
+            <span v-if="!isNaN(item)">
+              <i ref="numberItem">0123456789</i>
+            </span>
+            <span class="comma" v-else>{{item}}</span>
+          </li>
+        </div>
+      </div>
+    </template>
+    <script>
+      export default {
+          data() {
+              return {
+                  orderNum: ['0', '0', '0', '0', '0', '0', '0', '0'], // 默认订单总数
+              }
+          },
+          mounted(){
+              setTimeout(() => {
+                  this.toOrderNum(12654) // 这里输入数字即可调用
+              }, 500);
+
+          },
+          methods: {
+                  // 设置文字滚动
+              setNumberTransform () {
+                const numberItems = this.$refs.numberItem // 拿到数字的ref，计算元素数量
+                const numberArr = this.orderNum.filter(item => !isNaN(item))
+                // 结合CSS 对数字字符进行滚动,显示订单数量
+                for (let index = 0; index < numberItems.length; index++) {
+                  const elem = numberItems[index]
+                  elem.style.transform = `translate(-50%, -${numberArr[index] * 10}%)`
+                }
+              },
+              // 处理总订单数字
+              toOrderNum(num) {
+                num = num.toString()
+                // 把订单数变成字符串
+                  if (num.length < 8) {
+                      num = '0' + num // 如未满八位数，添加"0"补位
+                      this.toOrderNum(num) // 递归添加"0"补位
+                  } else if (num.length === 8) {
+                      // 订单数中加入逗号
+                      // num = num.slice(0, 2) + ',' + num.slice(2, 5) + ',' + num.slice(5, 8)
+                      this.orderNum = num.split('') // 将其便变成数据，渲染至滚动数组
+                  } else {
+                      // 订单总量数字超过八位显示异常
+                      this.$message.warning('总量数字过大')
+                  }
+                  this.setNumberTransform()
+              },
+          }
+      }
+    </script>
+    <style scoped lang='scss'>
+    /*订单总量滚动数字设置*/
+    .box-item {
+      position: relative;
+      height: 100px;
+
+      font-size: 54px;
+      line-height: 41px;
+      text-align: center;
+      list-style: none;
+      color: #2d7cff;
+      writing-mode: vertical-lr;
+      text-orientation: upright;
+      /*文字禁止编辑*/
+      -moz-user-select: none; /*火狐*/
+      -webkit-user-select: none; /*webkit浏览器*/
+      -ms-user-select: none; /*IE10*/
+      -khtml-user-select: none; /*早期浏览器*/
+      user-select: none;
+      /* overflow: hidden; */
+    }
+    /* 默认逗号设置 */
+    .mark-item {
+      width: 10px;
+      height: 100px;
+      margin-right: 5px;
+      line-height: 10px;
+      font-size: 48px;
+      position: relative;
+      & > span {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        writing-mode: vertical-rl;
+        text-orientation: upright;
+      }
+    }
+    /*滚动数字设置*/
+    .number-item {
+      width: 41px;
+      height: 75px;
+      /* 背景图片 */
+      background: url(/images/text-bg-blue.png) no-repeat center center;
+      background-size: 100% 100%;
+      // background: #ccc;
+      list-style: none;
+      margin-right: 5px;
+      // background:rgba(250,250,250,1);
+      border-radius: 4px;
+      border: 1px solid rgba(221, 221, 221, 1);
+      & > span {
+        position: relative;
+        display: inline-block;
+        margin-right: 10px;
+        width: 100%;
+        height: 100%;
+        writing-mode: vertical-rl;
+        text-orientation: upright;
+        overflow: hidden;
+        & > i {
+          font-style: normal;
+          position: absolute;
+          top: 11px;
+          left: 50%;
+          transform: translate(-50%, 0);
+          transition: transform 1s ease-in-out;
+          letter-spacing: 10px;
+        }
+      }
+    }
+    .number-item:last-child {
+      margin-right: 0;
+    }
+    </style>
+
+
+
+
+
 ## 点击一个input依次触发的事件
 ```js
 const ipt = document.getElementById('ipt');
@@ -260,54 +956,7 @@ var player = box.animate([
 // });
 ```
 
-## 页面生命周期事件
-* DOMContentLoaded 仅当DOM解析完成后触发，不包括样式表，图片等资源 -- 刷新页面时调用
-* load 页面上所有的 DOM,样式表,脚本,图片等资源已经加载完后触发 -- 刷新页面时调用
-* beforeunload 即将离开当前页面（刷新或关闭）时触发。
-* unload 页面卸载后触发 -- 刷新页面，关闭页面时调用
-* pageshow  页面显示时触发 -- 刷新页面时调用
-* pagehide 页面隐藏时触发 -- 刷新页面，关闭页面时调用
-* visibilitychange  页面可见性改变时触发 -- 刷新页面，页面切换时调用
-  >通过document.visibilityState获取当前页面可见性(两种状态：visible | hidden)
 
-执行情况
-
-```js
-let event = ["DOMContentLoaded","load","unload", "pageshow","pagehide","visibilitychange"]
-let count=0 // 便于页面卸载观测触发顺序
-event.forEach(event=>{
-  window.addEventListener(event, function(){
-    count++
-    if(event === "visibilitychange") {
-      console.log(document.visibilityState+)
-      // 用于查看 unload，pagehide 等事件触发
-      // window.open(document.visibilityState+count)
-      // alert(document.visibilityState+count)
-    }else{
-      console.log(event)
-      // window.open(event+count)
-      // alert(event+count)
-    }
-  });
-})
-
-首次页面进入时（刷新时）：
-// DOMContentLoaded
-// load
-// pageshow
-
-切换到其他页面，再切换回来时
-// hidden
-// visible
-
-
-关闭页面时
-// beforeunload
-// hidden
-// pagehide
-// unload
-
-```
 
 
 ### 定义一个简单的模板类，使用{}作为转义标记，中间的数字表示替换目标，format 实参用来替换模板内标记
@@ -337,32 +986,8 @@ event.forEach(event=>{
 
 
 <!-- src\shared\util.js -->
-## camelize 连字符转驼峰
-```js
-const camelizeRE = /-(\w)/g
-const camelize = cached((str) => {
-  return str.replace(camelizeRE, (_, c) => c ? c.toUpperCase() : '')
-})
 
-console.log(camelize('aa-bb')); // aaBb
-```
 
-## hyphenate 驼峰转连字符
-```js
-const hyphenateRE = /\B([A-Z])/g
-const hyphenate = (str) => {
-  return str.replace(hyphenateRE, '-$1').toLowerCase()
-}
-
-console.log(hyphenate('aaBb')); // aa-bb
-```
-
-## capitalize 首字符大写
-```js
-const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1)
-console.log(capitalize('ab')); // Ab
-
-```
 
 ## cached 缓存
 ```js

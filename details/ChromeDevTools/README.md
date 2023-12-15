@@ -1,4 +1,7 @@
 
+[chrome调试](/img/chrome调试.png)
+
+
 # 开发者工具面板：
 * Elements：页面dom元素，查看网页的HTML源码和CSS代码。
 * Console：控制台，用来运行 JavaScript 命令。

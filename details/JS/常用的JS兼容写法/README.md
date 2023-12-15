@@ -200,3 +200,52 @@ IE/Chrome/Safari/Opera：mousewheel  (wheelDelta判断鼠标上下滑动)
   向上滚动：  e.wheelDelta == -120
   向下滚动 ： e.wheelDelta == 120
 ```
+
+## <a name="判断网络状态">判断网络状态</a>
+
+- [navigator.onLine](https://developer.mozilla.org/zh-CN/docs/Web/API/NavigatorOnLine/onLine)返回 Boolean 值
+
+非常简单，但是并不准确：
+navigator.onLine 只会在机器未连接到局域网或路由器时返回 false，其他情况下均返回 true。
+也就是说，机器连接上路由器后，即使这个路由器没联通网络，navigator.onLine 仍然返回 true。
+
+- [navigator.connection](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/connection)
+
+返回值：
+
+```js
+NetworkInformation {
+  onchange: null, // 有值代表网络状态变更
+  effectiveType: "4g", //网络类型 2g 3g 4g
+  rtt: 50, //估算的往返时间
+  downlink: 10, //宽带有效值  等于0时  表示无网络
+  saveData: false // 打开/请求数据保护模式
+}
+```
+
+- 事件监听 online 和 offline
+
+```js
+function jugeNet(){
+  let el = document.body;
+  let onlineFn = function () {
+    console.log("online");
+  }
+  let offlineFn = function () {
+    console.log("offline");
+  }
+
+  if (el.addEventListener) {
+    window.addEventListener("online", onlineFn, true);
+    window.addEventListener("offline", offlineFn, true);
+  }
+  else if (el.attachEvent) {
+    window.attachEvent("ononline",onlineFn);
+    window.attachEvent("onoffline", offlineFn);
+  }
+  else {
+    window.ononline = onlineFn
+    window.onoffline = offlineFn
+  }
+}
+```
