@@ -1,5 +1,5 @@
 
-
+[学会 JS 的 this 这一篇就够了，根本不用记 —— 慕课网](https://www.imooc.com/article/1758)
 [彻底理解js中的this](https://juejin.im/post/5c049e6de51d45471745eb98)
 
 [5种this绑定全面解析](https://github.com/yygmind/blog/issues/20)
@@ -179,6 +179,72 @@ var obj = {
 
 var fn = obj.func; //
 fn.call(obj) // call改变this指向，绑定到obj
+```
+
+
+
+先来看一下如何使用call方法:
+```js
+function say(content) {
+    console.log("From " + this + ": Hello "+ content);
+}
+say.call("Bob", "World"); //==> From Bob: Hello World
+```
+接下来仔细分析一下call的用法：
+
+Step1: 把第二个到最后一个参数作为函数执行时要传入的参数
+Step2: 把函数执行时的this指向第一个参数
+Step3: 在上面这个特殊的上下文中执行函数
+
+
+
+上面例子中，我们通过call方法，让say函数执行时的this指向"Bob"，然后把"World"作为参数传进去，所以输出结果是可以预见的。
+js执行函数时会默认完成以上的步骤，你可以把直接调用函数理解为一种语法糖
+比如
+```js
+function say(word) {
+    console.log(world);
+}
+say("Hello world");
+
+say.call(window, "Hello world");
+```
+以上可以把say("Hello world")看做是say.call(window,"Hello world")的语法糖。
+
+不过也有例外，在ES5的strict mode中call的第一个参数不是window而是
+
+```js
+var obj = {
+    x: 20,
+    f: function(){ console.log(this.x); }
+};
+
+obj.f(); // 可以看作  obj.f.call(obj)
+
+
+obj.innerobj = {
+    x: 30,
+    f: function(){ console.log(this.x); }
+}
+
+obj.innerobj.f(); // obj.innerobj.f.call(obj.innerobj)
+```
+
+```js
+var x = 10;
+var obj = {
+    x: 20,
+    f: function(){
+        console.log(this.x); //this equals obj
+                // ==> 20
+        var foo = function(){ console.log(this.x); }
+        foo(); // foo.call(window)
+                //foo中this被指定为window，所以==> 10
+    }
+};
+
+obj.f();  // obj.f.call(obj)
+// ==> 20 10
 ```
 
 #### new绑定
