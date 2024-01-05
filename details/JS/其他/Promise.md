@@ -277,7 +277,7 @@ Promise.resolve()
 // 输出：
 // then1
 // then1-1
-// then
+// then2
 ```
 
 

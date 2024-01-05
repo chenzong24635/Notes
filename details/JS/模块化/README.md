@@ -187,7 +187,7 @@ define(['module2', 'jquery'], function(module2) {
 
 ```
 
-[代码路径：/details/模块化/AMD](/details/模块化/AMD)
+[代码路径：/details/JS/模块化/AMD](/details/JS/模块化/AMD)
 
 
 ### CMD (Common Module Definition)通用模块定义
@@ -230,7 +230,7 @@ define(function(require, exports, module){
 })
 ```
 
-[代码路径：/details/模块化/CMD](/details/模块化/CMD)
+[代码路径：/details/JS/模块化/CMD](/details/JS/模块化/CMD)
 
 
 ### UMD(Universal Module Definition)通用模块定义
@@ -267,7 +267,7 @@ UMD主要用来解决CommonJS模式和AMD模式代码不能通用的问题，并
 
 ### ES modules
 ES Modules 是 ECMAScript 2015（ES6）中定义的模块系统
-[代码路径：/details/模块化/ES6](/details/模块化/ES6)
+[代码路径：/details/JS/模块化/ES6](/details/JS/模块化/ES6)
 
 
 #### exprot：导出模块  

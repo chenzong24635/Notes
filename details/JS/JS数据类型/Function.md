@@ -82,13 +82,13 @@ console.log(people.find("Dean Edwards")); //["Dean Edwards"]
 ```
 
 ## 函数柯里化
-[函数柯里化curry](/details/常用的手写函数/函数柯里化curry.md)
+[函数柯里化curry](/details/JS/常用的手写函数/函数柯里化curry.md)
 
 ## 偏函数partial
-[偏函数partial](/details/常用的手写函数/偏函数partial.md)
+[偏函数partial](/details/JS/常用的手写函数/偏函数partial.md)
 
 ## 函数组合compose
-[函数组合compose](/details/常用的手写函数/函数组合compose.md)
+[函数组合compose](/details/JS/常用的手写函数/函数组合compose.md)
 
 # 函数式编程
 [简明 JavaScript 函数式编程——入门篇](https://segmentfault.com/a/1190000020302184)
