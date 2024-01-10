@@ -361,26 +361,46 @@ DOM(Document Object Model)文档对象模型，是所有浏览器公共遵守的
 
 
 ## <a name="DOM常用属性">DOM常用属性</a>
-* parentNode  // 当前元素的父节点对象
-* children // 当前元素所有子元素节点对象，只返回HTML节点
-* childNodes  // 当前元素所有子节点，包括文本，HTML，属性节点。（回车也会当做一个节点）
-* firstChild || firstElementChild // 当前元素的第一个子节点对象
-* lastChild || lastElementChild // 前元素的最后一个子节点对象
+[DOM模型概述](https://javascript.ruanyifeng.com/dom/node.html)
 
-* nextSibling || nextElementSibling  // 当前元素的下一个同级元素 没有就返回null
+* parentNode  // 当前元素的父节点对象
+  >父节点只可能是三种类型：元素节点（element）、文档节点（document）和文档片段节点（documentfragment）
+* parentElement // 当前节点的父元素节点。如果当前节点没有父节点，或者父节点类型不是元素节点，则返回null。
+
+* children // 当前元素所有子元素节点对象，只返回HTML节点
+* childNodes  // 返回一个类似数组的对象，包含当前元素所有子节点，包括文本，HTML，属性节点。（回车也会当做一个节点）
+
+* firstChild || firstElementChild // 当前元素的第一个子节点对象
+  >firstChild 该属性还包括文本节点和注释节点。因此如果当前节点后面有空格，该属性会返回一个文本节点，内容为空格。
+* lastChild || lastElementChild // 前元素的最后一个子节点对象
+  >lastChild 该属性还包括文本节点和注释节点。因此如果当前节点后面有空格，该属性会返回一个文本节点，内容为空格。
+
+* nextSibling || nextElementSibling  // 当前元素的下一个同级元素 没有就返回null; 
+  >nextSibling 该属性还包括文本节点和注释节点。因此如果当前节点后面有空格，该属性会返回一个文本节点，内容为空格。
 * previousSibling || previousElementSibling // 当前元素上一个同级元素 没有就返回 null
+  >previousSibling 该属性还包括文本节点和注释节点。因此如果当前节点后面有空格，该属性会返回一个文本节点，内容为空格。
 
 * innerHTML // 元素的所有文本，包括html代码
 * innerText // 元素的自身及子代所有文本值，只是文本内容，不包括html代码
 * 
 * nodeName // 节点节点名称，返回值为大写 （如：DIV，P）
+  > 
+      文档节点（document）：#document
+      元素节点（element）：大写的标签名
+      属性节点（attr）：属性的名称
+      文本节点（text）：#text
+      文档片断节点（DocumentFragment）：#document-fragment
+      文档类型节点（DocumentType）：文档的类型
+      注释节点（Comment）：#comment
 * nodeType // 节点的类型,
-  >1 元素节点
-  >2 属性节点
-  >3 文本节点
-  >8 注释节点
-  >9 整个文档（DOM树的根节点）
-
+  >
+      文档节点（document）：9，对应常量Node.DOCUMENT_NODE
+      元素节点（element）：1，对应常量Node.ELEMENT_NODE
+      属性节点（attr）：2，对应常量Node.ATTRIBUTE_NODE
+      文本节点（text）：3，对应常量Node.TEXT_NODE
+      文档片断节点（DocumentFragment）：11，对应常量Node.DOCUMENT_FRAGMENT_NODE
+      文档类型节点（DocumentType）：10，对应常量Node.DOCUMENT_TYPE_NODE
+      注释节点（Comment）：8，对应常量Node.COMMENT_NODE
   ```html
   <div class="div"><!-- 注释 --><p class="p">文本</p></div>
 
@@ -393,6 +413,36 @@ DOM(Document Object Model)文档对象模型，是所有浏览器公共遵守的
     console.log(document.nodeType); // 9
   </script>  
   ```
+
+* nodeValue  当前节点本身的文本值, 该属性可读写
+  > 只有文本节点（text）和注释节点（comment）有文本值，因此这两类节点的nodeValue可以返回结果，其他类型的节点一律返回null。同样的，也只有这两类节点可以设置nodeValue属性的值，其他类型的节点设置无效。
+
+* textContent 当前节点和它的所有后代节点的文本内容(忽略当前节点内部的 HTML 标签，返回所有文本内容) ,该属性可读写
+```js
+// HTML 代码为
+// <div id="divA">This is <span>some</span> text</div>
+
+document.getElementById('divA').textContent
+// This is some text
+```
+
+
+* isConnected 返回一个布尔值，表示当前节点是否在文档之中。
+```js
+var test = document.createElement('p');
+test.isConnected // false
+
+document.body.appendChild(test);
+test.isConnected // true
+```
+* contains 判断参数节点是否满足以下三个条件之一。
+  >
+      参数节点为当前节点。
+      参数节点为当前节点的子节点。
+      参数节点为当前节点的后代节点。
+
+* isEqualNode  判断两个节点是否相等。所谓相等的节点，指的是两个节点的类型相同、属性相同、子节点相同。
+* isSameNode 判断两个节点是否为同一个节点。      
 
 
 ## <a name="DOM操作">DOM操作—添加、移除、移动、复制、创建和查找节点</a>
@@ -413,11 +463,13 @@ console.log(node.getAttribute("my_attrib")); // "newVal"
 
 #### 添加、移除、替换、插入、克隆
 * appendChild(childNode)  添加节点
-* insertBefore(newChild,oldChild) 添加节点
-* removeChild(childNode) 删除节点    
+* insertBefore(newChild,oldChild) 添加节点, 将某个节点插入父节点内部的指定位置
+* removeChild(childNode) 删除节点  ,返回值是移除的子节点。  
 * replaceChild(newNode,oldNode）替换节点
-* cloneNode(boolean)复制节点： newNode=oldNode.cloneNode(boolean) ; 
+* cloneNode(boolean)克隆节点： newNode=oldNode.cloneNode(boolean) ; 
   参数可选复制节点,接受一个布尔值参数， true表示深复制（复制节点及其所有子节点），  false表示浅复制（复制节点本身，不复制子节点）;默认是false 。
+    >克隆一个节点，会拷贝该节点的所有属性，但是会丧失addEventListener方法和on-属性（即node.onclick = fn），添加在这个节点上的事件回调函数。
+* hasChildNodes 判断当前节点是否有子节点。
 
 
 #### 查找节点
@@ -449,6 +501,8 @@ console.log(node.getAttribute("my_attrib")); // "newVal"
 let attr = document.createAttribute("class");
 attr.nodeValue="democlass";
 document.querySelector('#demo').setAttributeNode(attr); 
+
+// 把id为demo的元素 class设为 democlass
 ```
 
 #### 样式相关API
