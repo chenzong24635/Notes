@@ -11,7 +11,7 @@
 
 Node中不支持GBK编码，我们需要将GBK转为UTF8编码
 
-[字符发展史](/details\其他\字符发展史.md)
+[字符发展史](/details\字符\字符发展史.md)
 
 
 # Buffer 缓冲区
