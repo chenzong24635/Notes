@@ -7,6 +7,9 @@
 [ES11](https://juejin.im/post/6883306672064987149)
 
 [ES6 入门教程](https://es6.ruanyifeng.com/)--阮一峰
+
+
+[TC39 ecma262-ES提案](https://github.com/tc39/proposals/blob/HEAD/finished-proposals.md)
 #
 
 2011 年，ECMAScript 5.1 版发布后，就开始制定 6.0 版了。因此，ES6 这个词的原意，就是指 JavaScript 语言的下一个版本，已经在 2015 年 6 月正式发布了，正式名称就是《ECMAScript 2015 标准》（简称 ES2015）。它的目标，是使得 JavaScript 语言可以用来编写复杂的大型应用程序，成为企业级开发语言。
@@ -27,6 +30,11 @@ Babel 默认只转换新的 JavaScript 句法（syntax），而不转换新的 A
 ## [ES9](/details\ES\ES9.md)
 ## [ES10](/details\ES\ES10.md)
 ## [ES11](/details\ES\ES11.md)
+## [ES12](/details\ES\ES12.md)
+## [ES13](/details\ES\ES13.md)
+## [ES14](/details\ES\ES14.md)
+
+## [ES15](/details\ES\ES15.md)
 
 
 

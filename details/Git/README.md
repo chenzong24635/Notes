@@ -362,6 +362,8 @@ npm i git //git安装
 
     文件末未添加 ：
     alias vue='winpty vue.cmd'
+    alias npm='winpty npm.cmd'
+
     
     重启git bash 即可
 >

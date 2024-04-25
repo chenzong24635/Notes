@@ -819,7 +819,11 @@ var Counter = {
 因此，用 v-on:click.prevent.self 会阻止所有的点击，而 v-on:click.self.prevent 只会阻止对元素自身的点击。
 
 [表单修饰符](https://cn.vuejs.org/v2/guide/forms.html#%E4%BF%AE%E9%A5%B0%E7%AC%A6)
-* .lazy v-model在input的 change 事件后同步
+* .lazy 默认情况下，v-model 会在每次 input 事件后更新数据 (IME 拼字阶段的状态例外)。你可以添加 lazy 修饰符来改为在每次 change 事件后更新数据
+  ```html
+  <!-- 在 "change" 事件后同步更新而不是 "input" -->
+  <input v-model.lazy="msg" />
+  ```
 * .number 输入值转为数值类型
 * .trim 过滤输入框的首尾空白符  
 

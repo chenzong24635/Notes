@@ -1,4 +1,4 @@
-# <a name="npm指令">npm指令</a>
+# npm指令
 
 
 * npm -v // npm版本
@@ -45,6 +45,9 @@
   >rm -rf node_modules //移除 node_modules 文件夹
 
 * npm link //不使用npm install 而连接某个依赖包，通常用作开发本地依赖包
+
+#  [yarn](https://yarn.bootcss.com/docs/usage.html)
+
 
 # 镜像
 淘宝npm镜像  

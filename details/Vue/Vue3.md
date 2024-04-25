@@ -6,8 +6,7 @@
 
 
 # 初始化项目
-* npm init vue@latest projectName  (vite)
-* vue create projectName (webpack)
+* npm create vue@latest
 
 
 
@@ -345,7 +344,7 @@ r2.b
 
 
 </script>
-
+```
 reactive() 返回的是一个原始对象的 Proxy，它和原始对象是不相等的 
 只有代理对象是响应式的，更改原始对象不会触发更新
 ```html
@@ -381,6 +380,7 @@ watch(proxy,() => {
 </template>
 ```
 
+
 ## 其他api
 * toRef(): 基于响应式对象上的一个属性，创建一个对应的 ref;创建的 ref 与其源属性保持同步
 * toRefs()： 将一个响应式对象转换为一个普通对象，相当于批量使用 toRef
@@ -396,6 +396,8 @@ watch(proxy,() => {
 * customRef(): 创建一个自定义的 ref，显式声明对其依赖追踪和更新触发的控制方式
 * toRaw(): 返回由 reactive()、readonly()、shallowReactive() 或者 shallowReadonly() 创建的代理对应的原始对象
 * markRaw(): 将一个对象标记为不可被转为代理。返回该对象本身。
+* toValue() 3.3 版本中新增的 API。目的是将 ref 或 getter 规范化为值。如果参数是 ref，它会返回 ref 的值；如果参数是函数，它会调用函数并返回其返回值。否则，它会原样返回参数。它的工作方式类似于 unref()，但对函数有特殊处理。
+
 
 ## computed()、watch()
 * computed()
@@ -415,7 +417,7 @@ watch(proxy,() => {
 
 
 * watchPostEffect() 使用 flush: 'post' 选项时的别名。 
-* watchsynceffect() 使用 flush: 'sync' 选项时的别名。
+* watchSyncEffect() 使用 flush: 'sync' 选项时的别名。
 
 
 在 setup() 或 \<script setup> 中用同步语句创建的侦听器，会自动绑定到宿主组件实例上，并且会在宿主组件卸载时自动停止
@@ -437,6 +439,19 @@ unwatch()
 </script>
 
 ```
+注意，需要异步创建侦听器的情况很少，请尽可能选择同步创建。如果需要等待一些异步数据，你可以使用条件式的侦听逻辑：
+```js
+// 需要异步请求得到的数据
+const data = ref(null)
+
+watchEffect(() => {
+  if (data.value) {
+    // 数据加载后执行某些操作...
+  }
+})
+```
+
+
 
 watchEffect 仅会在其同步执行期间，才追踪依赖。在使用异步回调时，只有在第一个 await 正常工作前访问到的属性才会被追踪。
 
@@ -599,7 +614,7 @@ watch 和 watchEffect 都能响应式地执行有副作用的回调。它们之�
 </script>
 ```
 
-* 函数模板引用-- 通过:ref 传入一个函数,将dom引用放到数组中。当绑定的元素被卸载时，函数也会被调用一次
+* 函数模板引用-- 通过:ref 传入一个函数,将dom引用放到数组中。当绑定的元素被卸载时，函数也会被调用一次，此时的 el 参数会是 null
 ```html
 <template>
   <p>通过:ref将dom引用放到数组中</p>
@@ -763,7 +778,7 @@ watch 和 watchEffect 都能响应式地执行有副作用的回调。它们之�
   <p class="_red_xad9b_2 _green_gkpx2_5">xxxx</p>
   ```
 
-# [v-model改变](https://cn.vuejs.org/guide/components/events.html#usage-with-v-model)
+# # [组件 v-model](https://cn.vuejs.org/guide/components/v-model.html#component-v-model)
 去掉了 .sync ，合并到了 v-model 里
 ```html
 <!-- vue 2.x -->
@@ -821,8 +836,108 @@ let changeNum2 = () => {
 defineProps(['num1', 'num2'])
 defineEmits(['update:num2'])
 </script>
+
+
+defineModel写法
+<!-- child -->
+<template lang="">
+  child11
+  <p>{{num1}} </p>
+  <p> </p>
+  <input
+    v-model="num2"
+  />
+
+</template>
+<script setup>
+import {defineModel} from 'vue'
+let num1 = defineModel('num1')
+let num2 = defineModel('num2')
+
+</script>
 ```
 
+
+
+
+# [defineModel()](https://cn.vuejs.org/api/sfc-script-setup.html#definemodel)
+从 Vue 3.4 开始，推荐的实现方式是使用 [defineModel()](https://cn.vuejs.org/api/sfc-script-setup.html#definemodel) 宏：
+defineModel() 返回的值是一个 ref。它可以像其他 ref 一样被访问以及修改，不过它能起到在父组件和当前变量之间的双向绑定的作用：
+
+它的 .value 和父组件的 v-model 的值同步；
+当它被子组件变更了，会触发父组件绑定的值一起更新。
+
+
+
+父组件
+```html
+<script setup>
+import Child from './Child.vue'
+import { ref } from 'vue'
+
+const msg = ref('Hello World!')
+</script>
+
+<template>
+  <h1>{{ msg }}</h1>
+  <Child v-model="msg" />
+</template>
+
+```
+
+子组件
+```html
+<script setup>
+const model = defineModel()
+</script>
+
+<template>
+  <span>My input</span> <input v-model="model">
+</template>
+```
+
+
+### 底层机制​
+defineModel 是一个便利宏。编译器将其展开为以下内容：
+* 一个名为 modelValue 的 prop，本地 ref 的值与其同步；
+* 一个名为 update:modelValue 的事件，当本地 ref 的值发生变更时触发。
+
+### 处理 v-model 修饰符
+```html
+<script setup>
+import { ref } from 'vue'
+import MyComponent from './MyComponent.vue'
+  
+const myText = ref('')
+</script>
+
+<template>
+  This input capitalizes everything you enter:
+  <MyComponent v-model.capitalize="myText" />
+  <MyComponent v-model:title.capitalize="myText" />
+
+</template>
+
+
+<script setup>
+
+const [model, modifiers] = defineModel({
+  set(value) {
+    if (modifiers.capitalize) {
+      return value.charAt(0).toUpperCase() + value.slice(1)
+    }
+    return value
+  }
+})
+
+// 带参数的 v-model 修饰符
+const [title, titleModifiers] = defineModel('title')
+</script>
+
+<template>
+  <input type="text" v-model="model" />
+</template>
+```
 
 # 指令
 ```js

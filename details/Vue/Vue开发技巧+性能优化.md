@@ -276,6 +276,26 @@ export default {
   }
 }
 </script>
+
+
+```
+
+### 
+```html
+<input
+  type="checkbox"
+  v-model="toggle"
+  true-value="yes"
+  false-value="no" />
+```
+true-value 和 false-value 是 Vue 特有的 attributes，仅支持和 v-model 配套使用。这里 toggle 属性的值会在选中时被设为 'yes'，取消选择时设为 'no'。你同样可以通过 v-bind 将其绑定为其他动态值：
+
+```html
+<input
+  type="checkbox"
+  v-model="toggle"
+  :true-value="dynamicTrueValue"
+  :false-value="dynamicFalseValue" />
 ```
 
 ### [model](https://cn.vuejs.org/v2/api/#model)
@@ -1246,7 +1266,7 @@ methods：{
   </div>
 </template>
 
-<>
+<script>
 import {debounce} from 'lodash'
 const VChart = {
   template: '<span>chart</span>',
@@ -1268,12 +1288,15 @@ export default{
     VChart
   }
 }
-</>
+</script>
 ```
 页面中有两个 Chart 组件，他们会监听 window.resize 事件，然后在控制台输出 "resize"。 
 但每次改变页面大小，控制台只输出了 1 次 "resize"
 
 为什么？
+
+因为这个预置防抖的函数是有状态的：它在运行时维护着一个内部状态。如果多个组件实例都共享这同一个预置防抖的函数，那么它们之间将会互相影响。
+
 resize方法定义在methods里，多个实例调用的都是同一个resize方法；
 因此当两个组件同时执行 resize 方法的时候，前者被 debounce 掉了，所以我们只看到输出了 1 次 "resize"。
 
@@ -1284,6 +1307,18 @@ mounted () {
   this.resize = debounce(function () {
     console.log('resize')
   }, 1000)
+},
+```
+
+```js
+mounted() {
+  // 每个实例都有了自己的预置防抖的处理函数
+  this.debouncedClick = debounce(this.resize, 500)
+},
+beforeDestroy() {
+  // 最好是在组件卸载时
+  // 清除掉防抖计时器
+  this.debouncedClick.cancel()
 },
 ```
 
