@@ -400,9 +400,50 @@ watch(proxy,() => {
 
 
 ## computed()、watch()
-* computed()
-* watch()
+### [computed()](https://cn.vuejs.org/guide/extras/reactivity-in-depth.html#computed-debugging)
 
+我们可以向 computed() 传入第二个参数，是一个包含了 onTrack 和 onTrigger 两个回调函数的对象：
+onTrack 将在响应属性或引用作为依赖项被跟踪时被调用。
+onTrigger 将在侦听器回调被依赖项的变更触发时被调用。
+```js
+const plusOne = computed(() => count.value + 1, {
+  onTrack(e) {
+    // 当 count.value 被追踪为依赖时触发
+    debugger
+  },
+  onTrigger(e) {
+    // 当 count.value 被更改时触发
+    debugger
+  }
+})
+
+// 访问 plusOne，会触发 onTrack
+console.log(plusOne.value)
+
+// 更改 count.value，应该会触发 onTrigger
+count.value++
+```
+
+### watch()
+```js
+watch(source, callback, {
+  onTrack(e) {
+    debugger
+  },
+  onTrigger(e) {
+    debugger
+  }
+})
+
+watchEffect(callback, {
+  onTrack(e) {
+    debugger
+  },
+  onTrigger(e) {
+    debugger
+  }
+})
+```
 
 ### watchEffect
 * watchEffect(effect, options): 立即运行一个函数，同时响应式地追踪其依赖，并在依赖更改时重新执行。返回值是一个用来停止该副作用的函数。
@@ -993,6 +1034,22 @@ Teleport是特殊的组件，旨在在当前组件之外呈现某些内容。这
 通过使用Portals，您可以确保没有任何主机组件CSS规则，会影响您要显示的组件，并使您免于使用进行讨厌的黑客攻击
 
 vue2需通过portal-vue库实现
+
+```js
+interface TeleportProps {
+  /**
+   * 必填项。指定目标容器。
+   * 可以是选择器或实际元素。
+   */
+  to: string | HTMLElement
+  /**
+   * 当值为 `true` 时，内容将保留在其原始位置
+   * 而不是移动到目标容器中。
+   * 可以动态更改。
+   */
+  disabled?: boolean
+}
+```
 
 
 ### 组件属性

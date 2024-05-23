@@ -77,3 +77,26 @@ const count = ref(0)
 provide('read-only-count', readonly(count))
 </script>
 ```
+
+
+## [在模板中解包的注意事项](https://cn.vuejs.org/guide/essentials/reactivity-fundamentals.html#caveat-when-unwrapping-in-templates)
+
+在模板渲染上下文中，只有顶级的 ref 属性才会被解包。
+
+在下面的例子中，count 和 object 是顶级属性，但 object.id 不是：
+```js
+const count = ref(0)
+const object = { id: ref(1) }
+```
+
+表达式不会按预期工作
+```js
+{{ object.id + 1 }}
+```
+渲染的结果将是 [object Object]1
+
+
+另一个需要注意的点是，如果 ref 是文本插值的最终计算值 (即 {{ }} 标签)，那么它将被解包，因此以下内容将渲染为 1
+```js
+{{ object.id }}
+```
